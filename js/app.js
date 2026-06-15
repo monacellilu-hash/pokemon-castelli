@@ -294,6 +294,61 @@ function eseguiDormi(minutiTarget) {
   console.log(`[Tempo] Dormi → Giorno ${stato.tempo.giorno}, ${formatOrario(minutiTarget)}`);
 }
 
+// ── Centro Pokémon: menu scelta cura / dormi (FASE 4) ───────
+
+function interagisciCentro(idCentro) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const centro = CENTRI_POKEMON.find(c => c.id === idCentro);
+  if (!centro) return;
+  const dist = GameMap.distanzaMetri(stato.posizione, centro);
+  if (dist > RAGGIO_CURA) {
+    mostraToast(`🚶 Sei troppo lontano (${Math.round(dist)} m)!`);
+    return;
+  }
+  _mostraMenuCentro(idCentro);
+}
+
+function _mostraMenuCentro(idCentro) {
+  let ov = document.getElementById('overlay-menu-centro');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'overlay-menu-centro';
+    ov.className = 'nascosto';
+    ov.style.cssText = [
+      'position:fixed', 'top:50%', 'left:50%',
+      'transform:translate(-50%,-50%)', 'z-index:3000',
+    ].join(';');
+    ov.innerHTML = `
+      <div style="background:#f0ead8;border:5px solid #1a2940;border-radius:18px;
+                  box-shadow:inset 0 0 0 3px #e0d8c0,0 8px 28px rgba(0,0,0,.55);
+                  padding:22px 28px;text-align:center;min-width:220px;">
+        <div style="font-family:var(--font-gba);font-size:9px;color:#1a2940;
+                    margin-bottom:14px;letter-spacing:1px;">🏥 Centro Pokémon</div>
+        <p style="font-size:13px;margin:0 0 18px;color:#333;">
+          Benvenuto! I tuoi Pokémon possono riposare qui.</p>
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <button id="btn-centro-cura"
+            style="padding:9px 16px;font-size:13px;border-radius:10px;
+                   border:3px solid #1a2940;background:#48b048;color:#fff;cursor:pointer;">
+            ❤️ Cura Pokémon</button>
+          <button id="btn-centro-dormi"
+            style="padding:9px 16px;font-size:13px;border-radius:10px;
+                   border:3px solid #1a2940;background:#4868b0;color:#fff;cursor:pointer;">
+            🛏️ Dormi qui</button>
+          <button id="btn-centro-chiudi"
+            style="padding:9px 16px;font-size:13px;border-radius:10px;
+                   border:3px solid #888;background:#ccc;color:#444;cursor:pointer;">
+            ✖ Annulla</button>
+        </div>
+      </div>`;
+    document.body.appendChild(ov);
+  }
+  ov.querySelector('#btn-centro-cura').onclick    = () => { ov.classList.add('nascosto'); curaSquadraDaCentro(idCentro); };
+  ov.querySelector('#btn-centro-dormi').onclick   = () => { ov.classList.add('nascosto'); apriMenuDormi(idCentro); };
+  ov.querySelector('#btn-centro-chiudi').onclick  = () =>   ov.classList.add('nascosto');
+  ov.classList.remove('nascosto');
+}
+
 // ── HUD ─────────────────────────────────────────────────────
 
 function aggiornaHUD() {
@@ -2939,7 +2994,7 @@ function avvia() {
   });
 
   if (!stato.flags || !stato.flags.starterScelto) {
-    mostraToast('🏫 Vai al laboratorio del Prof. Castagno e clicca il marker per iniziare!', 6000);
+    mostraToast('🔬 Avvicinati all\'edificio BLU vicino a te (segui il ▼ INIZIO) e premi [A] o Spazio!', 7000);
   }
 
   console.log('[Gioco] Pokémon Castelli Romani avviato. Buon viaggio!');

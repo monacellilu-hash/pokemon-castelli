@@ -1247,3 +1247,59 @@ html, body {
 #toast.nascosto {
   display: none;
 }
+
+/* ------------------------------------------------------------
+   Overlay Interagisci — FASE 4
+   Compare quando il giocatore si avvicina a un edificio/NPC.
+   ------------------------------------------------------------ */
+#overlay-interagisci {
+  position: fixed;
+  bottom: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  pointer-events: auto;
+}
+
+#overlay-interagisci.nascosto {
+  display: none;
+}
+
+#interagisci-etichetta {
+  background: rgba(26, 41, 64, 0.92);
+  color: var(--giallo-poke);
+  font-family: var(--font-gba);
+  font-size: 7px;
+  padding: 4px 12px;
+  border-radius: 8px;
+  border: 2px solid var(--giallo-poke);
+  text-align: center;
+  max-width: 240px;
+  line-height: 1.6;
+}
+
+#btn-interagisci {
+  background: var(--blu-scuro);
+  color: #fff;
+  border: 3px solid var(--giallo-poke);
+  border-radius: 14px;
+  padding: 8px 20px;
+  font-family: var(--font-gba);
+  font-size: 8px;
+  cursor: pointer;
+  animation: pulseInteract 1.1s ease-in-out infinite;
+  white-space: nowrap;
+}
+
+#btn-interagisci:hover {
+  background: #2a3f60;
+}
+
+@keyframes pulseInteract {
+  0%, 100% { box-shadow: 0 0 5px var(--giallo-poke); }
+  50%       { box-shadow: 0 0 20px var(--giallo-poke), 0 0 6px #fff; }
+}

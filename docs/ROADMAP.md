@@ -38,6 +38,25 @@
   - `World.getZone()` esposto come API pubblica per i layer visivi
 - **Commit**: `ed7a1e3` — live su https://monacellilu-hash.github.io/pokemon-castelli/
 
+### Sessione 18 — FASE 3 + FASE 4 Phaser (15 giugno 2026)
+- **FASE 3 — Collisioni acqua**: tile tipo `acqua (idx=1)` bloccano il movimento senza MN Surf.
+  Toast: "🌊 Qui c'è l'acqua! Serve MN Surf." Con `stato.mn.surf = true` il passaggio è libero.
+  Implementato in `_sposta()` con lookup su `tilemapData[newTy][newTx]`.
+- **FASE 4 — Pulsante Interagisci**:
+  - `_costruisciListaPOI()`: costruisce array di tutti i POI dai dati globali (laboratorio,
+    palestre, centri, market, donatori, NPC, museo, funivia, meteorologo, anfratti, villa,
+    porchettaro, bunkerino, parcheggione, lega). ~40 POI totali.
+  - `#overlay-interagisci` + `#btn-interagisci`: elemento HTML fisso in basso al centro,
+    compare quando il giocatore entra nel raggio del POI più vicino. Animazione "glow" giallo.
+  - `#interagisci-etichetta`: mostra icona + nome del POI vicino.
+  - Tasto Spazio → attiva l'azione del POI corrente (come tasto A nei giochi Pokémon classici).
+  - Indicatore "!" giallo sopra il giocatore nel canvas Phaser quando vicino a un POI.
+  - Marker visivi per ogni POI nella scena: puntino colorato per categoria + icona emoji.
+  - `interagisciCentro(id)` + `_mostraMenuCentro(id)` aggiunti ad app.js:
+    menu in-game con "Cura Pokémon" e "Dormi qui" — sostituisce il vecchio popup Leaflet.
+  - `bloccaMovimento()` nasconde l'overlay; `sbloccaMovimento()` ricalcola il POI vicino.
+  - `teleporta()` aggiorna indicatore "!" e ricalcola POI dopo il teletrasporto.
+
 **Prossimo passo:** F14 Phase 2 — aggiungere sprite building reali di FireRed/LeafGreen
 per palestre, centri Pokémon, laboratorio (PNG in cartella `sprites/`). Poi: sprite
 overworld animati per NPC/allenatori, sfondo-mappa cartoon.
