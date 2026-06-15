@@ -4,7 +4,45 @@
 
 ---
 
-## 📌 PUNTO DELLA SITUAZIONE (aggiornato al 15 giugno 2026 — sera)
+## 📌 PUNTO DELLA SITUAZIONE (aggiornato al 15 giugno 2026 — notte)
+
+**Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b + F13 + F14-Phase1.**
+
+### Sessione 17 — F14 Phase 1 + Anti-spoiler (15 giugno 2026)
+- **Anti-spoiler** su tutto il gioco: rimossi/oscurati tutti i riferimenti espliciti ai leggendari nei dialoghi pre-incontro:
+  - "Piuma Sacra" → **"Piuma Iridescente"** (nome e descrizione in OGGETTI_CHIAVE)
+  - "Braciere di Nemi" description: rimossa riga "→ Lugia"
+  - "Divisa da Astronauta" description: rimossa riga "Richiesta per raggiungere Deoxys"
+  - Dialogo Bunkerino post-boss: "Mewtwo" → "il soggetto"; "Villa Aldobrandini" → "giardini di Frascati"
+  - Dialogo menu scelta Bunkerino: "Affronta Mewtwo?" → "Prosegui nel laboratorio?"
+  - Titolo incontro Mewtwo: "Mewtwo — Il Progetto 150" → **"Progetto 150 — Il Nucleo"**
+  - Toast esito Mewtwo: oscurato riferimento a Villa Aldobrandini
+  - Dialogo Deoxys: "Deoxys" → "il soggetto" nelle righe pre-incontro
+  - Titolo incontro Deoxys: "Luna — Deoxys" → **"Luna"**
+  - Lugia dialog: rimossa riga meta-esplicativa "(Braciere... Lugia risponde)"
+  - Ho-Oh dialog: "Piuma Sacra" → "piuma iridescente" nel testo
+  - Villa Aldobrandini post-Mew: messaggi genericizzati (no "Mew" nelle risposte)
+  - Nome dialogo trigger Mew: "Villa Aldobrandini — Mew" → **"Villa Aldobrandini"**
+- **F14 Phase 1 — grafica cartoon:**
+  - Tile layer: **OSM → CartoDB Voyager** (più pulito, neutro, game-like)
+  - **Zone overlay colorate**: ogni zona di world.js disegnata come cerchio/rettangolo
+    colorato sulla mappa (bosco=verde scuro, acqua=blu, grotta=grigio, neve=azzurro,
+    vigne=ambra, montagna=marrone, urbano=crema, ecc.) — grande impatto visivo
+  - **Avatar giocatore**: da Pokéball-emoji → **sprite pixel-art SVG** dell'allenatore
+    (cappellino rosso, viso, camicia bianca, pantalone blu, scarpe, zaino arancione)
+    stile FireRed/LeafGreen; `image-rendering: pixelated`, 32×40 px con drop-shadow
+  - **Font "Press Start 2P"** (Google Fonts) aggiunto via CDN: usato per titolo HUD e
+    nomi nel dialogo, dà il feel GBA autentico
+  - **Dialog box restyled**: bordo 5px blu scuro + inset crema (stile doppio bordo GBA),
+    nome dialogo con font pixel + sfondo giallo, sfondo avorio #f0ead8
+  - `World.getZone()` esposto come API pubblica per i layer visivi
+- **Commit**: `ed7a1e3` — live su https://monacellilu-hash.github.io/pokemon-castelli/
+
+**Prossimo passo:** F14 Phase 2 — aggiungere sprite building reali di FireRed/LeafGreen
+per palestre, centri Pokémon, laboratorio (PNG in cartella `sprites/`). Poi: sprite
+overworld animati per NPC/allenatori, sfondo-mappa cartoon.
+
+---
 
 **Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b-parziale + F13.**
 
