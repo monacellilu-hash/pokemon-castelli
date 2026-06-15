@@ -1,13 +1,13 @@
 /* ============================================================
-   map.js — F14: Phaser 3 con asset FireRed/LeafGreen reali
+   map.js — RISCRITTO DA ZERO
+   Architettura: mappa tile-by-tile stile Pokémon Smeraldo
+
+   STEP 1: base = tutto tile 8 (erba uniforme)
+   STEP 2: collisionData[][] separato dal tilemap visivo
+   STEP 3+4: città hand-crafted con template edifici reali
 
    Tileset: sprites/tileset-outside.png (256×16064, tile 32×32)
    Player:  sprites/player-red.png (128×192, frame 32×48, 4dir×4frame)
-
-   FASE 3: collisione acqua (senza MN Surf)
-   FASE 4: lista POI + pulsante [A] + marker edifici
-
-   API pubblica identica alla versione Leaflet — app.js invariato.
    ============================================================ */
 
 const GameMap = (function () {
@@ -21,7 +21,7 @@ const GameMap = (function () {
   };
   const MAP_W = 512;
   const MAP_H = 660;
-  const TILE  = 32;   // tile 32×32 — formato nativo FR/LG
+  const TILE  = 32;
 
   const LAT_M = (BOUNDS.latMax - BOUNDS.latMin) * 111320;
   const LON_M = (BOUNDS.lonMax - BOUNDS.lonMin) * 111320
@@ -52,139 +52,469 @@ const GameMap = (function () {
     return Math.sqrt(dLat * dLat + dLon * dLon);
   }
 
-  /* ----------------------------------------------------------
-     TERRENO → LISTA TILE  (da TILESET_DIZIONARIO_REALE_v3.md — indici verificati)
-     Array → picker deterministico per posizione (mappa sempre uguale).
-     ---------------------------------------------------------- */
-  const TT = {
-    // Erba base: R0-R1 (1-14), tutti LIBERI
-    default:  [1, 2, 3, 4, 5, 8, 9, 10, 11, 12, 13, 14],
-    prato:    [8, 9, 10, 11, 12, 13, 1, 2, 3],
-    // Erba chiara/gialla: R19-R25 (152-207) — per campagna e vigne
-    campagna: [152, 153, 154, 155, 156, 176, 177, 178, 179],
-    vigne:    [152, 153, 154, 160, 161, 176, 177, 183],
-    // Erba alta: encounters Pokémon
-    bosco:    [6],
-    // Terra battuta beige: R12-R18 (fill piatti senza bordi)
-    percorso: [121, 122, 123, 129, 130, 131, 137, 138, 139, 140, 141],
-    // Acqua: R82-R90 (688-717) — fill ACQUA
-    acqua:    [691, 692, 693, 694, 695, 699, 700, 701, 702, 703, 707, 708, 709, 710],
-    sub:      [718, 719],        // acqua profonda (Sub/Dive)
-    // Roccia/scarpata: R26-R32 (208-263) — BLOCCANTE
-    montagna: [208, 209, 210, 211, 212, 213, 216, 217, 218, 219, 220, 221, 222],
-    grotta:   [208, 209, 210, 216, 217, 218],
-    dungeon:  [208, 209, 210, 218],
-    // Neve: R33-R36 (264-303) — esiste in Outside.png!
-    neve:     [264, 265, 266, 267, 268, 269, 280, 281, 282, 283],
-    // Sabbia/asfalto: R41-R51 (392-415)
-    urbano:   [392, 393, 394, 395, 400, 401, 402, 403, 408, 409, 410, 411],
-    interno:  [392, 393, 394, 400, 401, 402, 408, 409],
+  /* ============================================================
+     TEMPLATE EDIFICI
+     t[][] = indici tile dal tileset-outside.png
+     c[][] = tipo collisione (0=libero/porta, 1=bloccante)
+     ============================================================ */
+  const TEMPL = {
+
+    TREE: {  // albero verde 3×3 — bloccante totale
+      w: 3, h: 3,
+      t: [
+        [416, 417, 418],
+        [424, 425, 426],
+        [432, 433, 434],
+      ],
+      c: [
+        [1, 1, 1],
+        [1, 1, 1],
+        [1, 1, 1],
+      ],
+    },
+
+    CASA: {  // casa verde 4×3
+      w: 4, h: 3,
+      t: [
+        [1336, 1337, 1338, 1339],
+        [1344, 1345, 1346, 1347],
+        [1352, 1353, 1354, 1355],
+      ],
+      c: [
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 0, 0, 1],  // porta al centro-basso
+      ],
+    },
+
+    PC: {  // PokéCenter — 4 colonne × 5 righe (centro del blocco 8-wide)
+      w: 4, h: 5,
+      t: [
+        [2610, 2611, 2612, 2613],
+        [2618, 2619, 2620, 2621],
+        [2626, 2627, 2628, 2629],
+        [2634, 2635, 2636, 2637],
+        [2642, 2643, 2644, 2645],
+      ],
+      c: [
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 0, 0, 1],  // porta
+        [1, 1, 1, 1],
+      ],
+    },
+
+    MART: {  // PokéMart — 4×4
+      w: 4, h: 4,
+      t: [
+        [2648, 2649, 2650, 2651],
+        [2656, 2657, 2658, 2659],
+        [2664, 2665, 2666, 2667],
+        [2672, 2673, 2674, 2675],
+      ],
+      c: [
+        [1, 1, 1, 1],
+        [1, 1, 1, 1],
+        [1, 0, 0, 1],  // porta
+        [1, 1, 1, 1],
+      ],
+    },
+
+    LAB: {  // Laboratorio Prof. Castagno — 8×6
+      w: 8, h: 6,
+      t: [
+        [2448, 2449, 2450, 2451, 2452, 2453, 2454, 2455],
+        [2456, 2457, 2458, 2459, 2460, 2461, 2462, 2463],
+        [2464, 2465, 2466, 2467, 2468, 2469, 2470, 2471],
+        [2472, 2473, 2474, 2475, 2476, 2477, 2478, 2479],
+        [2480, 2481, 2482, 2483, 2484, 2485, 2486, 2487],
+        [2488, 2489, 2490, 2491, 2492, 2493, 2494, 2495],
+      ],
+      c: [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1],  // porta al centro
+      ],
+    },
+
+    GYM: {  // Palestra — 8×6
+      w: 8, h: 6,
+      t: [
+        [2744, 2745, 2746, 2747, 2748, 2749, 2750, 2751],
+        [2752, 2753, 2754, 2755, 2756, 2757, 2758, 2759],
+        [2760, 2761, 2762, 2763, 2764, 2765, 2766, 2767],
+        [2768, 2769, 2770, 2771, 2772, 2773, 2774, 2775],
+        [2776, 2777, 2778, 2779, 2780, 2781, 2782, 2783],
+        [2784, 2785, 2786, 2787, 2788, 2789, 2790, 2791],
+      ],
+      c: [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1],  // porta
+      ],
+    },
+
+    LEGA: {  // Lega Pokémon — 8×8
+      w: 8, h: 8,
+      t: [
+        [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
+        [3128, 3129, 3130, 3131, 3132, 3133, 3134, 3135],
+        [3136, 3137, 3138, 3139, 3140, 3141, 3142, 3143],
+        [3144, 3145, 3146, 3147, 3148, 3149, 3150, 3151],
+        [3152, 3153, 3154, 3155, 3156, 3157, 3158, 3159],
+        [3160, 3161, 3162, 3163, 3164, 3165, 3166, 3167],
+        [3168, 3169, 3170, 3171, 3172, 3173, 3174, 3175],
+        [3176, 3177, 3178, 3179, 3180, 3181, 3182, 3183],
+      ],
+      c: [
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1],  // porta
+      ],
+    },
   };
 
-  // Tile acqua FILL (bloccati senza Surf)
-  const ACQUA_FILL = new Set([
-    688, 691, 692, 693, 694, 695, 699, 700, 701, 702, 703,
-    707, 708, 709, 710, 715, 716, 717, 718, 719, 723, 724, 725, 727,
-  ]);
-  // Tile riva (percorribili — bordo visivo acqua→terra)
-  const ACQUA_RIVA = new Set([690, 698, 704, 705, 706, 711, 712, 713, 714, 720]);
+  /* ============================================================
+     DEFINIZIONI CITTÀ
+     latC/lonC = centro geografico della città
+     W/H       = larghezza/altezza grid in tile
+     roads[]   = righe strade (y relativo, t=tile, coll=0 passabile)
+     buildings[]= edifici (type, x,y relativi al top-left grid)
+     grassPatches[] = erba alta (encounter zone)
+     ============================================================ */
+  const CITTA_DEFS = [
+
+    { // Borgata Tuscolana — Roma (PARTENZA)
+      latC: 41.8420, lonC: 12.6150,
+      W: 30, H: 20,
+      roads: [
+        { y: 7, t: 408 },  // marciapiede nord
+        { y: 8, t: 392 },  // strada
+        { y: 9, t: 408 },  // marciapiede sud
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },   // alberi angolo sinistra
+        { type: 'TREE', x: 27, y: 0 },   // alberi angolo destra
+        { type: 'LAB',  x: 8,  y: 1 },   // Laboratorio Prof. Castagno (8×6)
+        { type: 'PC',   x: 21, y: 2 },   // Centro Pokémon (4×5)
+        { type: 'CASA', x: 1,  y: 11 },  // case
+        { type: 'CASA', x: 8,  y: 11 },
+        { type: 'CASA', x: 20, y: 11 },
+      ],
+      grassPatches: [
+        { x: 1,  y: 16, w: 4 },
+        { x: 7,  y: 16, w: 4 },
+        { x: 18, y: 16, w: 4 },
+      ],
+    },
+
+    { // Frascati — P1 Erba (Vinicio)
+      latC: 41.8051, lonC: 12.6807,
+      W: 36, H: 24,
+      roads: [
+        { y: 10, t: 408 },
+        { y: 11, t: 392 },
+        { y: 12, t: 392 },
+        { y: 13, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 4,  y: 0 },
+        { type: 'TREE', x: 31, y: 0 },
+        { type: 'GYM',  x: 14, y: 1 },   // Palestra Frascati
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 15 },
+        { type: 'CASA', x: 8,  y: 15 },
+        { type: 'CASA', x: 22, y: 15 },
+        { type: 'CASA', x: 29, y: 15 },
+      ],
+      grassPatches: [
+        { x: 2,  y: 20, w: 4 },
+        { x: 10, y: 20, w: 4 },
+        { x: 24, y: 20, w: 4 },
+      ],
+    },
+
+    { // Grottaferrata — P2 Psico (Nilo)
+      latC: 41.7866, lonC: 12.6680,
+      W: 32, H: 22,
+      roads: [
+        { y: 9,  t: 408 },
+        { y: 10, t: 392 },
+        { y: 11, t: 392 },
+        { y: 12, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 4,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 12, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 14 },
+        { type: 'CASA', x: 8,  y: 14 },
+        { type: 'CASA', x: 24, y: 14 },
+      ],
+      grassPatches: [
+        { x: 2,  y: 19, w: 4 },
+        { x: 12, y: 19, w: 4 },
+      ],
+    },
+
+    { // Marino — P3 Acqua (Moro)
+      latC: 41.7693, lonC: 12.6635,
+      W: 30, H: 20,
+      roads: [
+        { y: 8,  t: 408 },
+        { y: 9,  t: 392 },
+        { y: 10, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 11, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 12 },
+        { type: 'CASA', x: 8,  y: 12 },
+        { type: 'CASA', x: 22, y: 12 },
+      ],
+      grassPatches: [
+        { x: 1, y: 17, w: 4 },
+        { x: 9, y: 17, w: 4 },
+      ],
+    },
+
+    { // Monte Porzio Catone — P4 Elettro (Stella)
+      latC: 41.8157, lonC: 12.7162,
+      W: 30, H: 20,
+      roads: [
+        { y: 8,  t: 408 },
+        { y: 9,  t: 392 },
+        { y: 10, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 11, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 12 },
+        { type: 'CASA', x: 22, y: 12 },
+      ],
+      grassPatches: [
+        { x: 1, y: 17, w: 4 },
+        { x: 9, y: 17, w: 4 },
+      ],
+    },
+
+    { // Rocca di Papa — P5 Roccia (Rocco)
+      latC: 41.7614, lonC: 12.7103,
+      W: 30, H: 20,
+      roads: [
+        { y: 8,  t: 408 },
+        { y: 9,  t: 392 },
+        { y: 10, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 11, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 12 },
+        { type: 'CASA', x: 8,  y: 12 },
+      ],
+      grassPatches: [
+        { x: 1, y: 17, w: 4 },
+        { x: 9, y: 17, w: 4 },
+      ],
+    },
+
+    { // Albano Laziale — P6 Lotta (Massimo)
+      latC: 41.7303, lonC: 12.6570,
+      W: 32, H: 22,
+      roads: [
+        { y: 9,  t: 408 },
+        { y: 10, t: 392 },
+        { y: 11, t: 392 },
+        { y: 12, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 4,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 12, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 14 },
+        { type: 'CASA', x: 8,  y: 14 },
+        { type: 'CASA', x: 25, y: 14 },
+      ],
+      grassPatches: [
+        { x: 2,  y: 19, w: 4 },
+        { x: 12, y: 19, w: 4 },
+      ],
+    },
+
+    { // Ariccia — P7 Buio (Ombretta)
+      latC: 41.7206, lonC: 12.6729,
+      W: 30, H: 20,
+      roads: [
+        { y: 8,  t: 408 },
+        { y: 9,  t: 392 },
+        { y: 10, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 11, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 12 },
+        { type: 'CASA', x: 8,  y: 12 },
+      ],
+      grassPatches: [
+        { x: 1, y: 17, w: 4 },
+        { x: 8, y: 17, w: 4 },
+      ],
+    },
+
+    { // Genzano di Roma — P8 Folletto (Flora)
+      latC: 41.7074, lonC: 12.6905,
+      W: 30, H: 20,
+      roads: [
+        { y: 8,  t: 408 },
+        { y: 9,  t: 392 },
+        { y: 10, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 27, y: 0 },
+        { type: 'GYM',  x: 11, y: 1 },
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 12 },
+        { type: 'CASA', x: 22, y: 12 },
+      ],
+      grassPatches: [
+        { x: 1, y: 17, w: 4 },
+      ],
+    },
+
+    { // Colonna — Lega Pokémon
+      latC: 41.8337, lonC: 12.7532,
+      W: 36, H: 26,
+      roads: [
+        { y: 11, t: 408 },
+        { y: 12, t: 392 },
+        { y: 13, t: 392 },
+        { y: 14, t: 408 },
+      ],
+      buildings: [
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 4,  y: 0 },
+        { type: 'TREE', x: 31, y: 0 },
+        { type: 'LEGA', x: 14, y: 1 },   // Lega Pokémon (8×8)
+        { type: 'PC',   x: 1,  y: 1 },
+        { type: 'MART', x: 7,  y: 3 },
+        { type: 'CASA', x: 1,  y: 16 },
+        { type: 'CASA', x: 8,  y: 16 },
+        { type: 'CASA', x: 27, y: 16 },
+      ],
+      grassPatches: [
+        { x: 2,  y: 22, w: 4 },
+        { x: 12, y: 22, w: 4 },
+      ],
+    },
+  ];
 
   /* ----------------------------------------------------------
-     COLLISION TYPE DA INDICE TILE
-     0=libero  1=bloccante  2=erba-alta  3=acqua
-     4=MN-taglio  5=MN-forza  6=MN-spaccaroccia  7=ghiaccio
+     FUNZIONI DI COSTRUZIONE
      ---------------------------------------------------------- */
-  function collisioneTile(idx) {
-    if (idx === 0)  return 1;                          // nero = fuori mappa
-    if (idx === 6)  return 2;                          // erba alta
-    if (idx === 7 || idx === 15) return 1;             // alberi piccoli bloccanti
-    if (idx >= 1   && idx <= 95)  return 0;            // erba varie
-    if (idx >= 96  && idx <= 207) return 0;            // terra/sentiero
-    if (idx >= 208 && idx <= 263) return 1;            // ROCCIA — BLOCCANTE
-    if (idx >= 264 && idx <= 303) return 0;            // neve (percorribile)
-    if (idx >= 304 && idx <= 319) return 7;            // ghiaccio scivoloso
-    if (idx >= 320 && idx <= 415) return 0;            // sabbia, asfalto
-    if (idx >= 416 && idx <= 615) {
-      if (idx === 460 || idx === 461 || idx === 462 || idx === 463) return 3; // acqua teal
-      if (idx === 465) return 0;                       // ceppo post-taglio
-      if (idx === 466) return 4;                       // alberello MN Taglio
-      return 1;                                        // alberi = bloccanti
-    }
-    if (idx >= 656 && idx <= 687) return 1;            // siepi
-    if (ACQUA_FILL.has(idx)) return 3;                 // acqua fill
-    if (ACQUA_RIVA.has(idx)) return 0;                 // riva percorribile
-    if (idx === 945 || (idx >= 1120 && idx <= 1123)) return 6;  // MN Spaccaroccia
-    if (idx === 947 || idx === 466) return 4;          // MN Taglio
-    if ((idx >= 984 && idx <= 991) || (idx >= 1112 && idx <= 1115)) return 5; // MN Forza
-    if (idx >= 728) return 1;                          // edifici/strutture = bloccanti
-    return 0;
-  }
 
-  // Restituisce un tile dalla lista, deterministico per posizione
-  function terrenoTile(tipo, tx, ty) {
-    const arr = TT[tipo] ?? TT.default;
-    if (arr.length === 1) return arr[0];
-    const h = (((tx * 2654435761) ^ (ty * 2246822519)) >>> 0) % arr.length;
-    return arr[h];
-  }
-
-  /* ----------------------------------------------------------
-     GENERAZIONE TILEMAP DAI DATI world.js
-     ---------------------------------------------------------- */
-  function generaTilemap() {
-    const data = Array.from({ length: MAP_H }, (_, ty) =>
-      Array.from({ length: MAP_W }, (_, tx) => terrenoTile('default', tx, ty))
-    );
-
-    if (typeof World === 'undefined' || typeof World.getZone !== 'function') return data;
-    const zones = [...World.getZone()].reverse();
-
-    for (const z of zones) {
-      if (z.tipo === 'cerchio') {
-        const c   = latLonToTile(z.centro.lat, z.centro.lon);
-        const rtx = Math.ceil(z.raggio / M_TX) + 1;
-        const rty = Math.ceil(z.raggio / M_TY) + 1;
-        for (let dy = -rty; dy <= rty; dy++) {
-          for (let dx = -rtx; dx <= rtx; dx++) {
-            if ((dx / rtx) ** 2 + (dy / rty) ** 2 <= 1) {
-              const tx = c.tx + dx, ty = c.ty + dy;
-              if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H)
-                data[ty][tx] = terrenoTile(z.terreno, tx, ty);
-            }
-          }
+  // Piazza un edificio template nella mappa
+  function _piazzaEdificio(tiles, coll, ox, oy, templ) {
+    for (let r = 0; r < templ.h; r++) {
+      for (let c = 0; c < templ.w; c++) {
+        const tx = ox + c, ty = oy + r;
+        if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
+          tiles[ty][tx] = templ.t[r][c];
+          coll[ty][tx]  = templ.c[r][c];
         }
-      } else if (z.tipo === 'rettangolo') {
-        const tl = latLonToTile(z.latMax, z.lonMin);
-        const br = latLonToTile(z.latMin, z.lonMax);
-        for (let ty = Math.max(0, tl.ty); ty <= Math.min(MAP_H - 1, br.ty); ty++)
-          for (let tx = Math.max(0, tl.tx); tx <= Math.min(MAP_W - 1, br.tx); tx++)
-            data[ty][tx] = terrenoTile(z.terreno, tx, ty);
       }
     }
+  }
 
-    // Seconda passata: rive acqua (piazza tile visivi di transizione terra→acqua)
-    const get = (ty, tx) => (ty >= 0 && ty < MAP_H && tx >= 0 && tx < MAP_W) ? data[ty][tx] : 691;
-    for (let ty = 0; ty < MAP_H; ty++) {
-      for (let tx = 0; tx < MAP_W; tx++) {
-        if (!ACQUA_FILL.has(data[ty][tx])) continue;
-        const above = get(ty - 1, tx), below = get(ty + 1, tx);
-        const left  = get(ty, tx - 1), right = get(ty, tx + 1);
-        const lA = !ACQUA_FILL.has(above) && !ACQUA_RIVA.has(above);
-        const lB = !ACQUA_FILL.has(below) && !ACQUA_RIVA.has(below);
-        const lL = !ACQUA_FILL.has(left)  && !ACQUA_RIVA.has(left);
-        const lR = !ACQUA_FILL.has(right) && !ACQUA_RIVA.has(right);
-        if      (lA && lL) data[ty][tx] = 704;  // angolo NW
-        else if (lA && lR) data[ty][tx] = 706;  // angolo NE
-        else if (lB && lL) data[ty][tx] = 720;  // angolo SW
-        else if (lB && lR) data[ty][tx] = 714;  // angolo SE
-        else if (lA)       data[ty][tx] = 705;  // riva N
-        else if (lB)       data[ty][tx] = 713;  // riva S
-        else if (lL)       data[ty][tx] = 712;  // riva W
-        else if (lR)       data[ty][tx] = 711;  // riva E
+  // Riempie una riga orizzontale di tile identici
+  function _riempiRiga(tiles, coll, x0, ty, w, tileV, collV) {
+    for (let c = 0; c < w; c++) {
+      const tx = x0 + c;
+      if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
+        tiles[ty][tx] = tileV;
+        coll[ty][tx]  = collV;
       }
     }
+  }
 
-    return data;
+  // Costruisce una città sulla mappa
+  function _costruisciCitta(tiles, coll, cd) {
+    const { tx: cx, ty: cy } = latLonToTile(cd.latC, cd.lonC);
+    const ox = cx - Math.floor(cd.W / 2);
+    const oy = cy - Math.floor(cd.H / 2);
+
+    // Strade e marciapiedi
+    for (const road of cd.roads) {
+      _riempiRiga(tiles, coll, ox, oy + road.y, cd.W, road.t, 0);
+    }
+
+    // Edifici tile-by-tile
+    for (const bld of cd.buildings) {
+      const templ = TEMPL[bld.type];
+      if (!templ) continue;
+      _piazzaEdificio(tiles, coll, ox + bld.x, oy + bld.y, templ);
+    }
+
+    // Patch erba alta (encounter)
+    for (const gp of (cd.grassPatches || [])) {
+      for (let c = 0; c < gp.w; c++) {
+        const tx = ox + gp.x + c, ty = oy + gp.y;
+        if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
+          tiles[ty][tx] = 6;   // erba alta
+          coll[ty][tx]  = 2;   // tipo encounter
+        }
+      }
+    }
+  }
+
+  /* ----------------------------------------------------------
+     STEP 1+2+3+4 — genera mappa completa
+     ---------------------------------------------------------- */
+  function generaMappa() {
+    // STEP 1: tutto erba base (tile 8)
+    const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(8));
+    // STEP 2: array collisioni separato (0=libero di default)
+    const coll  = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(0));
+
+    // STEP 3+4: costruisci tutte le città hand-crafted
+    for (const cd of CITTA_DEFS) {
+      _costruisciCitta(tiles, coll, cd);
+    }
+
+    return { tiles, coll };
   }
 
   /* ----------------------------------------------------------
@@ -291,16 +621,17 @@ const GameMap = (function () {
      ---------------------------------------------------------- */
   let phaserGame   = null;
   let scena        = null;
-  let playerSprite = null;   // sprite visivo (Phaser.GameObjects.Sprite)
-  let playerTrack  = null;   // tracker invisibile per la camera
+  let playerSprite = null;
+  let playerTrack  = null;
   let poiIndicator = null;
   let posTile      = { tx: 0, ty: 0 };
   let posLatLon    = { lat: 41.8420, lon: 12.6150 };
   let onPassoCb    = null;
   let bloccato     = false;
   let velocita     = 1;
-  let facciata     = 'down';   // direzione corrente del giocatore
+  let facciata     = 'down';
   let tilemapData  = null;
+  let collisionData = null;    // STEP 2 — array collisioni separato
   let listaPOI     = [];
   let poiVicino    = null;
   let spaceWasDown = false;
@@ -314,7 +645,6 @@ const GameMap = (function () {
   class GameScene extends Phaser.Scene {
     constructor() { super({ key: 'GameScene' }); }
 
-    // ── Caricamento asset reali ──
     preload() {
       this.load.image('tileset-outside', 'sprites/tileset-outside.png');
       this.load.spritesheet('player-red', 'sprites/player-red.png', {
@@ -325,8 +655,11 @@ const GameMap = (function () {
     create() {
       scena = this;
 
-      // ── 1. Tilemap con tileset FR/LG ──
-      tilemapData = generaTilemap();
+      // ── 1. Genera tilemap tile-by-tile + collisioni ──
+      const mappaGenerata = generaMappa();
+      tilemapData   = mappaGenerata.tiles;
+      collisionData = mappaGenerata.coll;
+
       const map = this.make.tilemap({
         data: tilemapData, tileWidth: TILE, tileHeight: TILE,
       });
@@ -341,8 +674,7 @@ const GameMap = (function () {
       this._aggiuntaMarcatoriPOI();
 
       // ── 4. Animazioni sprite Red ──
-      // Layout: 4 colonne × 4 righe = frame 0-15
-      // Riga 0: giù (0-3), Riga 1: sinistra (4-7), Riga 2: destra (8-11), Riga 3: su (12-15)
+      // Layout: riga 0=giù(0-3), riga 1=sinistra(4-7), riga 2=destra(8-11), riga 3=su(12-15)
       const mkAnim = (key, frameArr) => {
         this.anims.create({
           key,
@@ -363,12 +695,10 @@ const GameMap = (function () {
       const st = latLonToTile(posLatLon.lat, posLatLon.lon);
       posTile = st;
       const sx = st.tx * TILE + TILE / 2;
-      const sy = (st.ty + 1) * TILE;   // fondo del tile → origin bottom-center
+      const sy = (st.ty + 1) * TILE;
 
-      // Tracker invisibile al centro del tile (la camera lo segue)
       playerTrack = this.add.rectangle(sx, sy - TILE / 2, 1, 1, 0, 0).setDepth(29);
 
-      // Sprite visivo con origin in basso al centro
       playerSprite = this.add.sprite(sx, sy, 'player-red')
         .setOrigin(0.5, 1)
         .setDepth(30);
@@ -383,7 +713,7 @@ const GameMap = (function () {
       // ── 7. Camera ──
       this.cameras.main
         .startFollow(playerTrack, true, 0.1, 0.1)
-        .setZoom(2)   // TILE=32 → zoom 2 (era 3 con TILE=16)
+        .setZoom(2)
         .setBounds(0, 0, MAP_W * TILE, MAP_H * TILE);
 
       // ── 8. Input tastiera ──
@@ -443,7 +773,6 @@ const GameMap = (function () {
           this._sposta(dx, dy);
         }
       } else {
-        // Fermo → animazione idle
         if (playerSprite) playerSprite.anims.play(`idle-${facciata}`, true);
       }
     }
@@ -454,38 +783,36 @@ const GameMap = (function () {
       const newTy = Phaser.Math.Clamp(posTile.ty + dy, 0, MAP_H - 1);
       if (newTx === posTile.tx && newTy === posTile.ty) return;
 
-      // Sistema collisioni completo
-      const tileIdx = (tilemapData && tilemapData[newTy]) ? tilemapData[newTy][newTx] : 0;
-      const coll    = collisioneTile(tileIdx);
-      const mn      = (typeof stato !== 'undefined' && stato.mn) ? stato.mn : {};
+      // STEP 2 — leggi collisione dall'array separato
+      const coll = collisionData ? (collisionData[newTy]?.[newTx] ?? 0) : 0;
+      const mn   = (typeof stato !== 'undefined' && stato.mn) ? stato.mn : {};
 
-      if (coll === 1) return; // bloccante: muro, albero, roccia, edificio
+      if (coll === 1) return;  // bloccante: muro, albero, edificio
 
-      if (coll === 3) {       // acqua
+      if (coll === 3) {
         if (!mn.surf) {
           if (typeof mostraToast === 'function') mostraToast('🌊 Serve MN Surf!', 2000);
           return;
         }
       }
-      if (coll === 4) {       // MN Taglio
+      if (coll === 4) {
         if (!mn.taglio) {
           if (typeof mostraToast === 'function') mostraToast('🌿 Serve MN Taglio!', 2000);
           return;
         }
       }
-      if (coll === 5) {       // MN Forza
+      if (coll === 5) {
         if (!mn.forza) {
           if (typeof mostraToast === 'function') mostraToast('🪨 Serve MN Forza!', 2000);
           return;
         }
       }
-      if (coll === 6) {       // MN Spaccaroccia
+      if (coll === 6) {
         if (!mn.taglio) {
           if (typeof mostraToast === 'function') mostraToast('🪨 Serve MN Spaccaroccia!', 2000);
           return;
         }
       }
-      // coll===0 libero, coll===2 erba alta (encounter da app.js), coll===7 ghiaccio (pass)
 
       // Aggiorna direzione e animazione
       if      (dx < 0) facciata = 'left';
@@ -553,16 +880,16 @@ const GameMap = (function () {
       btn('btn-destra',    1, 0);
     }
 
-    // Etichette gialle dei comuni sulle palestre
+    // Etichette nomi comuni
     _aggiuntaEtichetteComuni() {
       if (typeof PALESTRE === 'undefined') return;
       for (const p of PALESTRE) {
         const t = latLonToTile(p.lat, p.lon);
         const bg = this.add.rectangle(
-          t.tx * TILE + TILE / 2, t.ty * TILE - TILE, 0, 14, 0x1a2940, 0.85
+          t.tx * TILE + TILE / 2, t.ty * TILE - TILE * 4, 0, 14, 0x1a2940, 0.85
         );
         const txt = this.add.text(
-          t.tx * TILE + TILE / 2, t.ty * TILE - TILE, p.comune,
+          t.tx * TILE + TILE / 2, t.ty * TILE - TILE * 4, p.comune,
           { fontSize: '8px', fontFamily: 'Arial', color: '#ffcb05', padding: { x: 4, y: 2 } }
         ).setOrigin(0.5, 0.5).setDepth(25);
         bg.width = txt.width + 8;
@@ -570,84 +897,46 @@ const GameMap = (function () {
       }
       const cp = latLonToTile(41.8420, 12.6150);
       this.add.text(
-        cp.tx * TILE + TILE / 2, cp.ty * TILE - TILE, 'Roma - Tuscolano',
+        cp.tx * TILE + TILE / 2, cp.ty * TILE - TILE * 4, 'Roma — Borgata Tuscolana',
         { fontSize: '8px', fontFamily: 'Arial', color: '#aef0ae', padding: { x: 4, y: 2 } }
       ).setOrigin(0.5, 0.5).setDepth(25);
     }
 
-    // Marker edifici per ogni POI
+    // Marker POI: solo icona + etichetta (gli edifici sono già nel tileset)
     _aggiuntaMarcatoriPOI() {
-      const PAL = {
-        '🔬': { c: 0x3D6ACC, t: 0x1A3A80, p: 0x0A1A40 },
-        '🏅': { c: 0xFF7800, t: 0xCC4400, p: 0x441100 },
-        '🏥': { c: 0xFFEEEE, t: 0xCC0000, p: 0x660000 },
-        '🛒': { c: 0x3AB030, t: 0x1A6018, p: 0x082808 },
-        '🎁': { c: 0xE8C820, t: 0xA89010, p: null     },
-        '💬': { c: 0x88CCEE, t: 0x4488AA, p: null     },
-        '⛵': { c: 0x20B2AA, t: 0x107878, p: 0x043333 },
-        '🚡': { c: 0xA0522D, t: 0x5C2D0B, p: 0x2A1006 },
-        '🌦️':{ c: 0x6699CC, t: 0x224477, p: 0x0A1A33 },
-        '🏛️':{ c: 0xB090E0, t: 0x6040A0, p: 0x200040 },
-        '🌸': { c: 0xFF80CC, t: 0xCC1166, p: null     },
-        '🍖': { c: 0xD2691E, t: 0x8A3510, p: null     },
-        '🚀': { c: 0x90A0B0, t: 0x405060, p: 0x101820 },
-        '🏆': { c: 0xFFD700, t: 0xAA8800, p: 0x443300 },
+      // POI non-edificio (NPC, donatori, abitanti): cerchio colorato
+      const CERCHI = new Set(['🎁', '💬', '🍖', '🌸']);
+      const PAL_CERCHIO = {
+        '🎁': 0xE8C820,
+        '💬': 0x88CCEE,
+        '🍖': 0xD2691E,
+        '🌸': 0xFF80CC,
       };
-      const DEF = { c: 0xAAAAAA, t: 0x666666, p: 0x222222 };
-      const EDIFICI = new Set(['🔬','🏅','🏥','🛒','⛵','🚡','🌦️','🏛️','🚀','🏆']);
-
-      // Dimensioni edifici (pixel mondo, scalati per TILE=32)
-      const BW = 26, BH = 20, TH = 10;
 
       for (const poi of listaPOI) {
-        const t = latLonToTile(poi.lat, poi.lon);
-        const px = t.tx * TILE + TILE / 2;
-        const py = t.ty * TILE + TILE / 2;
-        const pal = PAL[poi.icona] || DEF;
-        const edif = EDIFICI.has(poi.icona);
-        const gfx = this.add.graphics().setDepth(17);
+        const t   = latLonToTile(poi.lat, poi.lon);
+        const px  = t.tx * TILE + TILE / 2;
+        const py  = t.ty * TILE + TILE / 2;
 
-        if (edif) {
-          gfx.fillStyle(pal.c, 1);
-          gfx.fillRect(px - BW / 2, py - BH / 2, BW, BH);
-          gfx.fillStyle(pal.t, 1);
-          gfx.fillRect(px - BW / 2 - 2, py - BH / 2 - TH, BW + 4, TH);
-          if (poi.icona === '🏥') {
-            gfx.fillStyle(0xCC0000, 1);
-            gfx.fillRect(px - 2, py - BH / 2 + 3, 4, BH - 6);
-            gfx.fillRect(px - 6,  py - 3,          12, 4);
-          }
-          if (pal.p !== null) {
-            gfx.fillStyle(pal.p, 1);
-            gfx.fillRect(px - 4, py + BH / 2 - 8, 8, 8);
-          }
-          if (!['🏛️','🚀'].includes(poi.icona)) {
-            gfx.fillStyle(0xCCEEFF, 0.85);
-            gfx.fillRect(px - BW / 2 + 4, py - BH / 2 + 4, 6, 6);
-            gfx.fillRect(px + BW / 2 - 10, py - BH / 2 + 4, 6, 6);
-          }
-          gfx.lineStyle(1.5, 0x000000, 0.55);
-          gfx.strokeRect(px - BW / 2 - 2, py - BH / 2 - TH, BW + 4, BH + TH);
-        } else {
-          gfx.fillStyle(pal.c, 1);
+        // Cerchio solo per NPC non-edificio
+        if (CERCHI.has(poi.icona)) {
+          const gfx = this.add.graphics().setDepth(17);
+          const col = PAL_CERCHIO[poi.icona] || 0xAAAAAA;
+          gfx.fillStyle(col, 1);
           gfx.fillCircle(px, py, 10);
-          gfx.fillStyle(pal.t, 1);
-          gfx.fillCircle(px, py, 6);
           gfx.lineStyle(2, 0x000000, 0.55);
           gfx.strokeCircle(px, py, 10);
         }
 
-        // Icona sopra
-        const iconY = edif ? py - BH / 2 - TH - 2 : py - 12;
-        this.add.text(px, iconY, poi.icona, { fontSize: '12px' })
+        // Icona sopra il punto
+        this.add.text(px, py - 14, poi.icona, { fontSize: '12px' })
           .setOrigin(0.5, 1).setDepth(22);
 
-        // Etichetta nome
+        // Etichetta breve
         const rawNome = poi.etichetta.includes('—')
           ? poi.etichetta.split('—')[0].trim() : poi.etichetta;
         const corto = rawNome.length > 16 ? rawNome.substring(0, 14) + '…' : rawNome;
-        const labelY = edif ? py - BH / 2 - TH - 16 : py - 26;
-        this.add.text(px, labelY, corto, {
+        this.add.text(px, py - 28, corto, {
           fontSize: '6px', fontFamily: 'Arial', color: '#ffffff',
           backgroundColor: '#1a2940', padding: { x: 3, y: 2 },
         }).setOrigin(0.5, 1).setDepth(23);
@@ -657,9 +946,9 @@ const GameMap = (function () {
       if (typeof LABORATORIO !== 'undefined' && LABORATORIO.lat) {
         const lt  = latLonToTile(LABORATORIO.lat, LABORATORIO.lon);
         const lpx = lt.tx * TILE + TILE / 2;
-        const lpy = lt.ty * TILE + TILE / 2;
+        const lpy = lt.ty * TILE - TILE * 3;
         const freccia = this.add.text(
-          lpx, lpy - BH / 2 - TH - 28,
+          lpx, lpy,
           '▼ INIZIO',
           { fontSize: '8px', fontFamily: 'Arial', color: '#00ff44',
             backgroundColor: '#003300', padding: { x: 4, y: 2 },
@@ -674,7 +963,7 @@ const GameMap = (function () {
   }
 
   /* ----------------------------------------------------------
-     API PUBBLICA (identica alla versione Leaflet)
+     API PUBBLICA (invariata rispetto alla versione precedente)
      ---------------------------------------------------------- */
 
   function inizializza(opzioni) {
@@ -683,7 +972,7 @@ const GameMap = (function () {
     phaserGame = new Phaser.Game({
       type:            Phaser.AUTO,
       parent:          'mappa',
-      backgroundColor: '#70a040',  // verde erba di sfondo durante il caricamento
+      backgroundColor: '#70a040',
       scene:           GameScene,
       scale: {
         mode:       Phaser.Scale.RESIZE,
