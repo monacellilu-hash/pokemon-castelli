@@ -1428,15 +1428,15 @@ async function interagisciVillaAldobrandini() {
 
   if (legCatturato(151)) {
     await mostraDialogo('🏛️ Villa Aldobrandini', [
-      'I giardini barocchi sono in pace. Mew ha trovato posto nel tuo Pokédex.',
+      'I giardini barocchi sono in pace. La creatura misteriosa è nel tuo Pokédex.',
     ]);
     return;
   }
 
   if (legScomparso(151)) {
     await mostraDialogo('🏛️ Villa Aldobrandini', [
-      'La nebbia è densa. Mew era qui... ma se n\'è dissolto.',
-      'Uno spirito libero come lui non ha catene.',
+      'La nebbia è densa. Qualcosa era qui... ma se n\'è dissolto.',
+      'Uno spirito libero come quello non ha catene.',
     ]);
     return;
   }
@@ -1444,7 +1444,7 @@ async function interagisciVillaAldobrandini() {
   triggeraLeggendario(
     151, 50, 'Mew',
     {
-      nome: '🌸 Villa Aldobrandini — Mew',
+      nome: '🌸 Villa Aldobrandini',
       righe: [
         'Tra le fontane barocche una forma piccola e rosa fluttua nell\'aria.',
         'Si gira e ti fissa con occhi enormi e curiosi.',
@@ -1472,8 +1472,8 @@ async function interagisciPorchettaro() {
 
   if (stato.inventario && stato.inventario.chiave && stato.inventario.chiave['piuma-sacra']) {
     await mostraDialogo('🐷 Adriano il Porchettaro', [
-      'Hai già la Piuma Sacra!',
-      'Sul Ponte di Ariccia, all\'alba, durante la Sagra della Porchetta... vedrai tu stesso.',
+      'L\'hai già, quella piuma strana!',
+      'Sul Ponte, all\'alba, durante la Sagra... vedrai tu stesso.',
     ]);
     return;
   }
@@ -1512,7 +1512,7 @@ async function interagisciPorchettaro() {
     'Presentati sul Ponte all\'alba durante la Sagra della Porchetta. Ho la sensazione...',
     '...che quella piuma e te abbiate un appuntamento con qualcosa di straordinario.',
   ]);
-  mostraToast('🪶 Piuma Sacra ottenuta! Aspetta la Sagra (ogni 15 giorni), vai sul Ponte all\'alba.', 9000);
+  mostraToast('🪶 Piuma Iridescente ottenuta! Il Porchettaro dice: vai sul Ponte all\'alba durante la Sagra.', 9000);
 }
 
 /* ----------------------------------------------------------
@@ -1540,8 +1540,8 @@ async function interagisciBunkerino() {
 
   if (stato.flags.mewtwoSconfitto) {
     const msg = legCatturato(151)
-      ? 'Il laboratorio è silenzioso. Mew è nel tuo Pokédex.'
-      : 'Il laboratorio è silenzioso. Mewtwo se n\'è andato.\n\nQualcosa di piccolo e rosa brilla tra le siepi di Villa Aldobrandini...';
+      ? 'Il laboratorio è silenzioso. La creatura misteriosa è nel tuo Pokédex.'
+      : 'Il laboratorio è silenzioso. Il soggetto se n\'è andato.\n\nQualcosa di luminoso brilla tra i giardini barocchi di Frascati...';
     await mostraDialogo('🏭 Bunkerino', [msg]);
     return;
   }
@@ -1641,8 +1641,8 @@ async function avviaGauntletBunkerino() {
           await mostraDialogo(boss.nome, boss.dialogoDopo);
           salvaPartita();
           const scelta = await mostraScelta(
-            'Il Direttore è sconfitto! Affronta Mewtwo?',
-            '❤️ Curami prima', '🔬 Affronta Mewtwo'
+            'Il Direttore è sconfitto! Prosegui nel laboratorio?',
+            '❤️ Curami prima', '🔬 Entra nel nucleo'
           );
           if (scelta === 1) curaCompletaSquadra();
           await triggeraMewtwo();
@@ -1674,7 +1674,7 @@ async function triggeraMewtwo() {
   triggeraLeggendario(
     150, 70, 'Mewtwo',
     {
-      nome: '🔬 Mewtwo — Il Progetto 150',
+      nome: '🔬 Progetto 150 — Il Nucleo',
       righe: [
         'In fondo al laboratorio, davanti a un antico camino di pietra...',
         'Una sagoma alta e silenziosa ti osserva.',
@@ -1689,8 +1689,8 @@ async function triggeraMewtwo() {
       stato.gauntletBunkerino = null;
       salvaPartita();
       const msg = esito === 'cattura'
-        ? '🔬 Mewtwo catturato! Qualcosa di rosa brilla tra le siepi di Villa Aldobrandini…'
-        : '🔬 Mewtwo se n\'è andato. A Villa Aldobrandini... qualcosa si muove.';
+        ? '🔬 Progetto 150 risolto! Tra i giardini barocchi di Frascati... qualcosa di luminoso si muove nell\'ombra.'
+        : '🔬 Il soggetto è fuggito. Tra i giardini di Frascati... una presenza sfugge.';
       mostraToast(msg, 8000);
     }
   );
@@ -1721,7 +1721,7 @@ async function interagisciParcheggione() {
   if (legCatturato(386)) {
     await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
       'Il responsabile ti saluta con rispetto.',
-      '"Missione completata, astronauta. Hai già un Deoxys nel Pokédex."',
+      '"Missione completata, astronauta. Il tuo Pokédex si è aggiornato da solo durante il volo."',
       '"Ci vediamo sulla Luna, Campione."',
     ]);
     return;
@@ -1729,9 +1729,9 @@ async function interagisciParcheggione() {
 
   if (legScomparso(386)) {
     await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
-      '"Deoxys ha rilevato la tua presenza e si è ritirato nell\'orbita più lontana."',
+      '"Il soggetto ha rilevato la tua presenza e si è ritirato nell\'orbita più lontana."',
       '"Potremmo rilanciare... ma ci vogliono mesi."',
-      '(Deoxys è scomparso definitivamente.)',
+      '(Il soggetto è scomparso definitivamente nell\'orbita.)',
     ]);
     return;
   }
@@ -1757,7 +1757,7 @@ async function interagisciParcheggione() {
     triggeraLeggendario(
       386, 60, 'Deoxys',
       {
-        nome: '🌕 Luna — Deoxys',
+        nome: '🌕 Luna',
         righe: [
           'Sulla polvere lunare, una forma aliena pulsa di luce.',
           'Si trasforma: attacco... difesa... velocità...',
@@ -2851,7 +2851,7 @@ function alPasso(nuovaPosizione) {
             'L\'altopiano si illumina di una luce stranissima. Il vento si blocca di colpo.',
             'Un\'ombra gigantesca copre il sole. Le nuvole si aprono a ventaglio.',
             '...LUGIA! Il guardiano dei mari e dei cieli scende in spirale, attratto dalla fiamma sacra!',
-            '(Il Braciere di Nemi è un\'offerta delle navi di Caligola — Lugia risponde.)',
+            'Le fiamme dell\'antico braciere hanno chiamato qualcosa dall\'alto dei cieli.',
           ],
         });
         return;
@@ -2875,10 +2875,10 @@ function alPasso(nuovaPosizione) {
               nome: '🔥 Ponte di Ariccia — Alba della Sagra',
               righe: [
                 'La Sagra della Porchetta riempie Ariccia di profumi e luci.',
-                'All\'alba, la Piuma Sacra che tieni in mano comincia a splendere di arancio...',
+                'All\'alba, la piuma iridescente che tieni in mano comincia a splendere di arancio...',
                 'Dal cielo striato di rosa scende una scia di fuoco dorato.',
                 'HO-OH! L\'uccello dell\'arcobaleno plana sul Ponte come un augurio!',
-                '(La Piuma Sacra vibra — questa è la tua unica chance!)',
+                '(La piuma vibra — questa è la tua unica chance!)',
               ],
             });
             return;

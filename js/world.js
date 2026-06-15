@@ -554,6 +554,6 @@ const World = (function () {
     return (zona && zona.tassoIncontro !== undefined) ? zona.tassoIncontro : 0.15;
   }
 
-  return { trovaZona, estraiIncontro, tassoIncontroZona };
+  return { trovaZona, estraiIncontro, tassoIncontroZona, getZone: function () { return ZONE; } };
 
 })();

@@ -46,11 +46,15 @@ const GameMap = (function () {
     // Creiamo la mappa centrata sul giocatore
     mappa = L.map("mappa").setView([posizione.lat, posizione.lon], CENTRO_MAPPA.zoom);
 
-    // Tile OpenStreetMap. ATTENZIONE: l'attribuzione è obbligatoria, non rimuoverla.
-    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    // Tile CartoDB Voyager — stile pulito, più leggibile come base per i layer di gioco.
+    // ATTENZIONE: doppia attribuzione obbligatoria (OSM + CARTO).
+    L.tileLayer("https://a.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png", {
       maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(mappa);
+
+    // F14 — overlay zone colorate (sotto i marker, sopra i tile)
+    aggiungiOverlayZone();
 
     aggiungiPalestre();
     aggiungiCentriPokemon();
@@ -426,13 +430,66 @@ const GameMap = (function () {
     }
   }
 
-  // ---- Marker del giocatore ----
+  // ---- F14: colori terrain per gli overlay zona ----
+  const COLORI_TERRENO = {
+    'urbano':   { fill: '#d8d0a0', stroke: '#b8a870', opacity: 0.22 },
+    'prato':    { fill: '#88d048', stroke: '#5a9030', opacity: 0.32 },
+    'vigne':    { fill: '#c8a830', stroke: '#907820', opacity: 0.35 },
+    'bosco':    { fill: '#307830', stroke: '#205020', opacity: 0.40 },
+    'campagna': { fill: '#a8d060', stroke: '#789040', opacity: 0.30 },
+    'montagna': { fill: '#a08860', stroke: '#786040', opacity: 0.38 },
+    'grotta':   { fill: '#606870', stroke: '#3a3f4a', opacity: 0.52 },
+    'interno':  { fill: '#604040', stroke: '#3a2020', opacity: 0.55 },
+    'acqua':    { fill: '#50b8f0', stroke: '#2080c0', opacity: 0.42 },
+    'neve':     { fill: '#c8e8f8', stroke: '#90c8e8', opacity: 0.45 },
+    'dungeon':  { fill: '#604080', stroke: '#402060', opacity: 0.50 },
+  };
+
+  function aggiungiOverlayZone() {
+    if (typeof World === 'undefined' || typeof World.getZone !== 'function') return;
+    for (const zona of World.getZone()) {
+      const s = COLORI_TERRENO[zona.terreno] || { fill: '#cccccc', stroke: '#aaaaaa', opacity: 0.18 };
+      const opts = {
+        color: s.stroke,
+        fillColor: s.fill,
+        fillOpacity: s.opacity,
+        weight: 1.5,
+        interactive: false,
+      };
+      if (zona.tipo === 'cerchio') {
+        L.circle([zona.centro.lat, zona.centro.lon], { ...opts, radius: zona.raggio }).addTo(mappa);
+      } else if (zona.tipo === 'rettangolo') {
+        L.rectangle([[zona.latMin, zona.lonMin], [zona.latMax, zona.lonMax]], opts).addTo(mappa);
+      }
+    }
+  }
+
+  // ---- Marker del giocatore (F14: sprite pixel-art trainer) ----
   function aggiungiGiocatore() {
+    // Sprite pixel-art dell'allenatore (ispirato allo stile FireRed/LeafGreen)
+    const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="32" height="40" viewBox="0 0 8 10" style="image-rendering:pixelated">'
+      + '<rect x="2" y="0" width="4" height="1" fill="#CC0000"/>'
+      + '<rect x="1" y="1" width="6" height="1" fill="#CC0000"/>'
+      + '<rect x="1" y="2" width="1" height="1" fill="#7B4E2D"/>'
+      + '<rect x="6" y="2" width="1" height="1" fill="#7B4E2D"/>'
+      + '<rect x="2" y="2" width="4" height="1" fill="#FDBCB4"/>'
+      + '<rect x="2" y="3" width="4" height="1" fill="#FDBCB4"/>'
+      + '<rect x="3" y="3" width="1" height="1" fill="#1A0D00"/>'
+      + '<rect x="5" y="3" width="1" height="1" fill="#1A0D00"/>'
+      + '<rect x="0" y="4" width="8" height="2" fill="#FFFFFF"/>'
+      + '<rect x="5" y="5" width="2" height="1" fill="#E07830"/>'
+      + '<rect x="1" y="6" width="6" height="1" fill="#1B4488"/>'
+      + '<rect x="1" y="7" width="2" height="2" fill="#1B4488"/>'
+      + '<rect x="5" y="7" width="2" height="2" fill="#1B4488"/>'
+      + '<rect x="3" y="7" width="2" height="2" fill="#2255AA"/>'
+      + '<rect x="1" y="9" width="2" height="1" fill="#222222"/>'
+      + '<rect x="5" y="9" width="2" height="1" fill="#222222"/>'
+      + '</svg>';
     const icona = L.divIcon({
       className: "",
-      html: '<div class="icona-giocatore"></div>',
-      iconSize: [22, 22],
-      iconAnchor: [11, 11]
+      html: '<div class="icona-giocatore">' + svg + '</div>',
+      iconSize: [32, 40],
+      iconAnchor: [16, 36]
     });
     markerGiocatore = L.marker([posizione.lat, posizione.lon], {
       icon: icona,

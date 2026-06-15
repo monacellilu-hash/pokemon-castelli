@@ -1,13 +1,21 @@
 /* ============================================================
    style.css — Stile del gioco Pokémon Castelli Romani
-   F9.1: stile orologio HUD + overlay "Dormi"
+   F14: font pixel-art, tile CartoDB, zone colorate, sprite trainer
    ============================================================ */
+
+/* Font GBA disponibile globalmente — usare per titoli/nomi, non per testo lungo */
+:root {
+  --font-gba: 'Press Start 2P', monospace;
+  --font-ui:  "Segoe UI", Arial, sans-serif;
+  --giallo-poke: #ffcb05;
+  --blu-scuro:   #1a2940;
+}
 
 html, body {
   margin: 0;
   padding: 0;
   height: 100%;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: var(--font-ui);
   overflow: hidden;
 }
 
@@ -36,9 +44,12 @@ html, body {
 }
 
 #hud-titolo {
-  font-weight: bold;
-  color: #ffcb05;
-  margin-bottom: 2px;
+  font-family: var(--font-gba);
+  font-size: 9px;
+  color: var(--giallo-poke);
+  margin-bottom: 4px;
+  letter-spacing: 0;
+  line-height: 1.4;
 }
 
 /* F9.1: riga orologio */
@@ -106,13 +117,10 @@ html, body {
 /* ------------------------------------------------------------
    Icone mappa
    ------------------------------------------------------------ */
+/* F14 — sprite pixel-art dell'allenatore */
 .icona-giocatore {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: linear-gradient(to bottom, #e3350d 50%, #ffffff 50%);
-  border: 3px solid #222;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  display: block;
+  filter: drop-shadow(0 3px 4px rgba(0,0,0,0.55));
 }
 
 .icona-palestra {
@@ -1074,46 +1082,52 @@ html, body {
   display: none;
 }
 
+/* F14 — Dialog box stile GBA (doppio bordo bianco + blu scuro, angoli arrotondati) */
 #dialogo-card {
-  background: #f8f8e8;
-  border: 4px solid #41464f;
-  border-radius: 14px;
+  background: #f0ead8;
+  border: 5px solid #1a2940;
+  border-radius: 18px;
   width: 92%;
   max-width: 640px;
-  padding: 14px 20px;
-  color: #222;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  padding: 16px 22px 14px;
+  color: #1a1a1a;
+  /* doppio bordo stile GBA: inset bianco dentro il bordo blu scuro */
+  box-shadow: inset 0 0 0 3px #e0d8c0, 0 8px 28px rgba(0, 0, 0, 0.55);
 }
 
 #dialogo-nome {
   display: inline-block;
-  background: #1a2940;
-  color: #ffcb05;
-  border-radius: 8px;
-  padding: 3px 14px;
-  font-size: 15px;
-  font-weight: bold;
-  margin-bottom: 8px;
+  background: var(--blu-scuro);
+  color: var(--giallo-poke);
+  border-radius: 6px;
+  padding: 4px 14px 3px;
+  font-family: var(--font-gba);
+  font-size: 9px;
+  letter-spacing: 0;
+  margin-bottom: 10px;
+  line-height: 1.5;
 }
 
 #dialogo-testo {
-  font-size: 19px;
-  line-height: 1.5;
-  min-height: 56px;
+  font-size: 18px;
+  line-height: 1.55;
+  min-height: 54px;
   margin-bottom: 10px;
+  font-family: var(--font-ui);
 }
 
 #dialogo-avanti {
   display: block;
   margin-left: auto;
-  background: #1a2940;
-  color: #fff;
-  border: none;
+  background: var(--blu-scuro);
+  color: var(--giallo-poke);
+  border: 2px solid var(--giallo-poke);
   border-radius: 8px;
-  padding: 8px 22px;
-  font-size: 15px;
-  font-weight: bold;
+  padding: 7px 20px;
+  font-family: var(--font-gba);
+  font-size: 8px;
   cursor: pointer;
+  letter-spacing: 0;
 }
 
 #dialogo-avanti:hover {

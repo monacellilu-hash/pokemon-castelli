@@ -2873,17 +2873,17 @@ const OGGETTI_CHIAVE = {
   'braciere-nemi': {
     nome: 'Braciere di Nemi',
     icona: '🏺',
-    descrizione: 'Antico braciere recuperato dai fondali del Lago di Nemi (relitto delle navi di Caligola). Emana un calore arcano che attira esseri leggendari. Serve per la Scampagnata ai Pratoni del Vivaro → Lugia.',
+    descrizione: 'Antico braciere recuperato dai fondali del Lago di Nemi (relitto delle navi di Caligola). Emana un calore arcano ancestrale. Gli esperti dicono che risveglia qualcosa tra cielo e mare.',
   },
   'piuma-sacra': {
-    nome: 'Piuma Sacra',
+    nome: 'Piuma Iridescente',
     icona: '🪶',
-    descrizione: 'Una piuma iridescente lasciata da un essere celestiale. Illumina di arancio all\'alba. Richiesta per incontrare Ho-Oh sul Ponte di Ariccia durante la Sagra della Porchetta.',
+    descrizione: 'Una piuma strana trovata sul Ponte di Ariccia, all\'alba. Cambia colore alla luce del sole. Non appartiene a nessun uccello conosciuto.',
   },
   'divisa-astronauta': {
     nome: 'Divisa da Astronauta',
     icona: '👨‍🚀',
-    descrizione: 'Uniforme della missione spaziale "Castelli nello Spazio". Ti permette di imbarcarti al Parcheggione di Grottaferrata verso la Luna. Richiesta per raggiungere Deoxys.',
+    descrizione: 'Uniforme della missione spaziale "Castelli nello Spazio". Ti permette di imbarcarti al Parcheggione di Grottaferrata. Destinazione classificata.',
   },
 };
 
