@@ -1,0 +1,1209 @@
+/* ============================================================
+   style.css — Stile del gioco Pokémon Castelli Romani
+   F9.1: stile orologio HUD + overlay "Dormi"
+   ============================================================ */
+
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: "Segoe UI", Arial, sans-serif;
+  overflow: hidden;
+}
+
+#mappa {
+  position: absolute;
+  inset: 0;
+}
+
+/* ------------------------------------------------------------
+   HUD
+   ------------------------------------------------------------ */
+#hud {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  z-index: 1000;
+  background: rgba(20, 30, 50, 0.88);
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 10px;
+  border: 2px solid #ffcb05;
+  font-size: 14px;
+  line-height: 1.6;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  min-width: 200px;
+}
+
+#hud-titolo {
+  font-weight: bold;
+  color: #ffcb05;
+  margin-bottom: 2px;
+}
+
+/* F9.1: riga orologio */
+#hud-tempo {
+  font-size: 12px;
+  color: #b0c4de;
+  letter-spacing: 0.3px;
+}
+
+/* F9.2: portafoglio */
+#hud-soldi {
+  font-size: 13px;
+  color: #ffe082;
+  font-weight: bold;
+}
+
+#hud-squadra {
+  font-size: 13px;
+  color: #aef0ae;
+}
+
+#hud-palestra {
+  margin-top: 4px;
+  font-size: 12px;
+  color: #ffcb05;
+  border-top: 1px solid rgba(255,203,5,0.3);
+  padding-top: 4px;
+}
+
+/* ------------------------------------------------------------
+   D-Pad
+   ------------------------------------------------------------ */
+#dpad {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  display: grid;
+  grid-template-columns: 56px 56px 56px;
+  grid-template-rows: 56px 56px;
+  gap: 4px;
+}
+
+#btn-su       { grid-column: 2; grid-row: 1; }
+#btn-sinistra { grid-column: 1; grid-row: 2; }
+#btn-giu      { grid-column: 2; grid-row: 2; }
+#btn-destra   { grid-column: 3; grid-row: 2; }
+
+.dpad-btn {
+  font-size: 22px;
+  background: rgba(20, 30, 50, 0.85);
+  color: #ffcb05;
+  border: 2px solid #ffcb05;
+  border-radius: 10px;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+.dpad-btn:active {
+  background: #ffcb05;
+  color: #1a2940;
+}
+
+/* ------------------------------------------------------------
+   Icone mappa
+   ------------------------------------------------------------ */
+.icona-giocatore {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(to bottom, #e3350d 50%, #ffffff 50%);
+  border: 3px solid #222;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+}
+
+.icona-palestra {
+  font-size: 26px;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff;
+}
+
+.icona-centro {
+  font-size: 22px;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff;
+}
+
+.icona-laboratorio {
+  font-size: 28px;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff;
+}
+
+.icona-market {
+  font-size: 22px;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff;
+}
+
+.icona-npc {
+  font-size: 20px;
+  text-shadow: 0 0 4px #fff, 0 0 8px #fff;
+}
+
+.icona-donatore {
+  font-size: 24px;
+  text-shadow: 0 0 5px #ffcb05, 0 0 10px #ffcb05;
+}
+
+.icona-allenatore {
+  font-size: 22px;
+  text-shadow: 0 0 5px #e3350d, 0 0 9px #e3350d;
+}
+
+/* F12 — marker Lega */
+.icona-lega {
+  font-size: 28px;
+  text-shadow: 0 0 8px #ffd700, 0 0 16px #ffaa00;
+  animation: pulsaLega 1.5s ease-in-out infinite;
+}
+
+@keyframes pulsaLega {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.8) drop-shadow(0 0 6px #ffd700); }
+}
+
+/* F11 — marker leggendari */
+.icona-funivia {
+  font-size: 26px;
+  text-shadow: 0 0 6px #a0c8ff, 0 0 12px #60aaff;
+}
+
+.icona-meteo {
+  font-size: 24px;
+  text-shadow: 0 0 6px #ffe066, 0 0 12px #ffcc00;
+}
+
+.icona-anfratto {
+  font-size: 26px;
+  text-shadow: 0 0 6px #d4b8ff, 0 0 14px #9966ff;
+  animation: pulsaAnfratto 2s ease-in-out infinite;
+}
+
+@keyframes pulsaAnfratto {
+  0%, 100% { filter: brightness(1); }
+  50%       { filter: brightness(1.6); }
+}
+
+/* F12b — Villa Aldobrandini, oggetti mappa */
+.icona-villa {
+  font-size: 24px;
+  text-shadow: 0 0 6px #ffb6c1, 0 0 12px #ff69b4;
+}
+
+.icona-oggetto {
+  font-size: 16px;
+  opacity: 0.85;
+  animation: pulsaOggetto 2.5s ease-in-out infinite;
+}
+
+.icona-oggetto-chiave {
+  font-size: 18px;
+  text-shadow: 0 0 6px #ffe066, 0 0 12px #ffcc00;
+  animation: pulsaOggetto 1.8s ease-in-out infinite;
+}
+
+@keyframes pulsaOggetto {
+  0%, 100% { transform: scale(1);    opacity: 0.85; }
+  50%       { transform: scale(1.25); opacity: 1;    }
+}
+
+.leaflet-popup-content b {
+  color: #1a2940;
+}
+
+.btn-cura-popup {
+  margin-top: 6px;
+  padding: 6px 14px;
+  background: #e3350d;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.btn-cura-popup:hover {
+  background: #c02a0a;
+}
+
+/* F9.1: pulsante "Dormi" nel popup Centro */
+.btn-dormi-popup {
+  margin-top: 4px;
+  padding: 6px 14px;
+  background: #1a2940;
+  color: #ffcb05;
+  border: 2px solid #ffcb05;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+}
+
+.btn-dormi-popup:hover {
+  background: #2c4368;
+}
+
+/* ------------------------------------------------------------
+   Pulsante MENU e pannello di gioco
+   ------------------------------------------------------------ */
+#btn-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1000;
+  background: rgba(20, 30, 50, 0.88);
+  color: #ffcb05;
+  border: 2px solid #ffcb05;
+  border-radius: 10px;
+  padding: 10px 18px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+#btn-menu:hover {
+  background: #ffcb05;
+  color: #1a2940;
+}
+
+#pannello-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 1800;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#pannello-menu.nascosto {
+  display: none;
+}
+
+#menu-card {
+  background: #1a2940;
+  border: 3px solid #ffcb05;
+  border-radius: 16px;
+  width: 94%;
+  max-width: 520px;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+#menu-testata {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 12px;
+  border-bottom: 2px solid rgba(255, 203, 5, 0.4);
+}
+
+#menu-tabs {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+#menu-tabs .tab {
+  background: transparent;
+  color: #ccc;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#menu-tabs .tab.attiva {
+  background: #ffcb05;
+  color: #1a2940;
+  border-color: #ffcb05;
+}
+
+#btn-chiudi-menu {
+  background: transparent;
+  color: #fff;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#btn-chiudi-menu:hover {
+  border-color: #e3350d;
+  color: #e3350d;
+}
+
+#menu-contenuto {
+  padding: 12px 14px;
+  overflow-y: auto;
+}
+
+.menu-vuoto, .menu-nota {
+  color: #aaa;
+  font-size: 13px;
+  text-align: center;
+  margin: 10px 4px;
+}
+
+/* Card Pokémon */
+.card-pokemon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 2px solid #5a6377;
+  border-radius: 12px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.card-pokemon:hover {
+  border-color: #ffcb05;
+}
+
+.card-pokemon img {
+  width: 64px;
+  height: 64px;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+}
+
+.card-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.card-riga1 {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+  margin-bottom: 3px;
+}
+
+.card-tipi {
+  margin-bottom: 5px;
+}
+
+.card-hp-testo {
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 3px;
+}
+
+.mini-hp {
+  background: #41464f;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.mini-hp-barra {
+  height: 100%;
+  border-radius: 5px;
+  transition: width 0.3s ease;
+}
+
+.btn-preleva {
+  background: #ffcb05;
+  color: #1a2940;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: bold;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.btn-preleva:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Dettagli singolo Pokémon */
+.dettagli-testata {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 10px;
+}
+
+.dettagli-testata img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.dettagli-testata h3 {
+  margin: 0 0 6px;
+  font-size: 22px;
+}
+
+.dettagli-testata > div {
+  flex: 1;
+}
+
+.dettagli-statistiche {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.dettagli-statistiche div:last-child {
+  grid-column: 1 / -1;
+  color: #aef0ae;
+}
+
+#menu-contenuto h4 {
+  margin: 8px 0 6px;
+  color: #ffcb05;
+}
+
+.dettagli-mosse {
+  list-style: none;
+  margin: 0 0 12px;
+  padding: 0;
+}
+
+.dettagli-mosse li {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 8px;
+  padding: 6px 10px;
+  margin-bottom: 5px;
+  font-size: 14px;
+}
+
+.dettagli-mosse small {
+  color: #aaa;
+}
+
+.dettagli-bottoni {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.dettagli-bottoni.colonna {
+  flex-direction: column;
+}
+
+.dettagli-bottoni button {
+  flex: 1;
+  background: #f8f8e8;
+  color: #222;
+  border: 2px solid #41464f;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dettagli-bottoni button:hover:not(:disabled) {
+  border-color: #ffcb05;
+}
+
+.dettagli-bottoni button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.dettagli-bottoni button.pericolo {
+  background: #e3350d;
+  color: #fff;
+  border-color: #8f1f06;
+}
+
+/* Card oggetto zaino */
+.card-oggetto {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 2px solid #5a6377;
+  border-radius: 12px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+}
+
+.oggetto-icona {
+  font-size: 28px;
+}
+
+.card-oggetto small {
+  color: #aaa;
+}
+
+/* Riquadro sezione Salva */
+.salva-info {
+  background: rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.8;
+  margin-bottom: 12px;
+}
+
+.salva-info small {
+  color: #aaa;
+}
+
+/* F9.2 — Poké Market */
+.market-saldo {
+  background: rgba(255, 203, 5, 0.12);
+  border: 2px solid #ffcb05;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 15px;
+  text-align: center;
+  margin-bottom: 12px;
+}
+
+.market-saldo b {
+  color: #ffe082;
+}
+
+.market-posseduti {
+  display: block;
+  color: #8ad88a !important;
+  margin-top: 2px;
+}
+
+/* ------------------------------------------------------------
+   F9.1 — Overlay "Dormi" (scelta ora del risveglio)
+   ------------------------------------------------------------ */
+#overlay-dormi {
+  position: absolute;
+  inset: 0;
+  z-index: 1850;
+  background: rgba(0, 0, 0, 0.70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-dormi.nascosto {
+  display: none;
+}
+
+#dormi-card {
+  background: #1a2940;
+  border: 3px solid #ffcb05;
+  border-radius: 16px;
+  padding: 24px 28px;
+  width: 92%;
+  max-width: 400px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+#dormi-titolo {
+  font-size: 17px;
+  font-weight: bold;
+  color: #ffcb05;
+  margin-bottom: 18px;
+}
+
+#dormi-opzioni {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.btn-dormi-ora {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid #5a6377;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+
+.btn-dormi-ora:hover {
+  border-color: #ffcb05;
+  background: rgba(255,203,5,0.12);
+}
+
+#btn-dormi-chiudi {
+  background: transparent;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 14px;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+#btn-dormi-chiudi:hover {
+  border-color: #e3350d;
+  color: #e3350d;
+}
+
+/* ------------------------------------------------------------
+   Schermata di battaglia
+   ------------------------------------------------------------ */
+#schermata-battaglia {
+  position: absolute;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  background: #000;
+}
+
+#schermata-battaglia.nascosto {
+  display: none;
+}
+
+#battaglia-campo {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(to bottom,
+    #aee3f8 0%, #cdeec2 58%, #7fbf63 58%, #5ea34a 100%);
+}
+
+.sprite-zona {
+  position: absolute;
+  text-align: center;
+}
+
+#zona-nemico {
+  top: 4%;
+  right: 9%;
+  width: 320px;
+}
+
+#zona-giocatore {
+  bottom: 0%;
+  left: 6%;
+  width: 380px;
+}
+
+#nemico-sprite {
+  width: 250px;
+  height: 250px;
+  image-rendering: pixelated;
+}
+
+#giocatore-sprite {
+  width: 310px;
+  height: 310px;
+  image-rendering: pixelated;
+}
+
+.piattaforma {
+  width: 100%;
+  height: 52px;
+  margin-top: -42px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(50, 95, 45, 0.55), rgba(50, 95, 45, 0.12) 68%, transparent 72%);
+}
+
+.pannello-info {
+  position: absolute;
+  background: #f8f8e8;
+  border: 4px solid #41464f;
+  border-radius: 14px;
+  padding: 12px 18px;
+  min-width: 300px;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.25);
+  font-size: 19px;
+  color: #222;
+}
+
+#info-nemico    { top: 7%;  left: 5%; }
+#info-giocatore { bottom: 5%; right: 5%; }
+
+.riga-nome {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.hp-contorno {
+  background: #41464f;
+  border-radius: 10px;
+  padding: 4px 8px;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.hp-etichetta {
+  color: #f8b500;
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+.hp-binario {
+  flex: 1;
+  background: #555;
+  height: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.hp-barra {
+  height: 100%;
+  width: 100%;
+  background: #4caf50;
+  border-radius: 8px;
+  transition: width 0.45s ease;
+}
+
+.hp-barra.gialla { background: #f5c518; }
+.hp-barra.rossa  { background: #e3350d; }
+
+#giocatore-hp-testo {
+  text-align: right;
+  font-size: 16px;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.exp-binario {
+  margin-top: 7px;
+  background: #41464f;
+  height: 11px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.exp-barra {
+  height: 100%;
+  width: 0%;
+  background: #3fa9f5;
+  transition: width 0.45s ease;
+}
+
+@keyframes lampeggia {
+  0%, 100% { opacity: 1; }
+  25%      { opacity: 0.15; }
+  50%      { opacity: 1; }
+  75%      { opacity: 0.15; }
+}
+
+.colpito {
+  animation: lampeggia 0.45s linear;
+}
+
+/* Console di battaglia */
+#battaglia-console {
+  height: 260px;
+  background: #1a2940;
+  border-top: 5px solid #ffcb05;
+  padding: 12px 16px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+#battaglia-messaggio {
+  flex: 0 0 64px;
+  background: #10131a;
+  color: #fff;
+  border: 2px solid #5a6377;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 22px;
+  line-height: 1.45;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.menu-battaglia {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.menu-battaglia.nascosto {
+  display: none;
+}
+
+.menu-battaglia button {
+  background: #f8f8e8;
+  border: 3px solid #41464f;
+  border-radius: 12px;
+  font-size: 20px;
+  font-weight: bold;
+  color: #222;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.menu-battaglia button:hover:not(:disabled) {
+  border-color: #ffcb05;
+}
+
+.menu-battaglia button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mossa-nome {
+  flex: 1;
+}
+
+.mossa-pp {
+  font-size: 15px;
+  font-weight: normal;
+  color: #555;
+  margin-left: auto;
+}
+
+.btn-indietro {
+  grid-column: 1 / -1;
+  justify-content: center !important;
+  text-align: center !important;
+  background: #dcdcd0 !important;
+}
+
+.tipo-badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Schermi piccoli */
+@media (max-width: 620px) {
+  #nemico-sprite    { width: 140px; height: 140px; }
+  #giocatore-sprite { width: 175px; height: 175px; }
+  #zona-nemico      { width: 180px; right: 4%; }
+  #zona-giocatore   { width: 215px; left: 3%; }
+  .pannello-info    { min-width: 195px; font-size: 15px; padding: 8px 11px; border-width: 3px; }
+  #info-nemico      { top: 4%; left: 3%; }
+  #info-giocatore   { bottom: 3%; right: 3%; }
+  .hp-binario       { height: 12px; }
+  #giocatore-hp-testo { font-size: 13px; }
+  #battaglia-console { height: 250px; }
+  #battaglia-messaggio { font-size: 17px; flex-basis: 54px; }
+  .menu-battaglia button { font-size: 16px; }
+}
+
+/* ------------------------------------------------------------
+   Booster di velocità
+   ------------------------------------------------------------ */
+#btn-velocita {
+  position: absolute;
+  bottom: 145px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(20, 30, 50, 0.85);
+  color: #ffcb05;
+  border: 2px solid #ffcb05;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+#btn-velocita:active {
+  background: #ffcb05;
+  color: #1a2940;
+}
+
+/* ------------------------------------------------------------
+   F9 — Pulsante MN Volo + overlay scelta città
+   ------------------------------------------------------------ */
+#btn-volo {
+  position: absolute;
+  bottom: 205px;
+  right: 20px;
+  z-index: 1000;
+  background: rgba(20, 30, 50, 0.85);
+  color: #aee3f8;
+  border: 2px solid #aee3f8;
+  border-radius: 10px;
+  padding: 10px 16px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select: none;
+}
+
+#btn-volo:active {
+  background: #aee3f8;
+  color: #1a2940;
+}
+
+#overlay-volo {
+  position: absolute;
+  inset: 0;
+  z-index: 1850;
+  background: rgba(0, 0, 0, 0.70);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-volo.nascosto {
+  display: none;
+}
+
+#volo-card {
+  background: #1a2940;
+  border: 3px solid #aee3f8;
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 92%;
+  max-width: 400px;
+  color: #fff;
+  text-align: center;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+}
+
+#volo-titolo {
+  font-size: 18px;
+  font-weight: bold;
+  color: #aee3f8;
+  margin-bottom: 16px;
+}
+
+#volo-opzioni {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 14px;
+  max-height: 50vh;
+  overflow-y: auto;
+}
+
+.btn-volo-meta {
+  background: rgba(255,255,255,0.08);
+  border: 2px solid #5a6377;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 16px;
+  padding: 12px;
+  cursor: pointer;
+}
+
+.btn-volo-meta:hover {
+  border-color: #aee3f8;
+  background: rgba(174,227,248,0.12);
+}
+
+#btn-volo-chiudi {
+  background: transparent;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  color: #aaa;
+  font-size: 14px;
+  padding: 8px 20px;
+  cursor: pointer;
+}
+
+#btn-volo-chiudi:hover {
+  border-color: #e3350d;
+  color: #e3350d;
+}
+
+/* ------------------------------------------------------------
+   Riquadro dialoghi
+   ------------------------------------------------------------ */
+#overlay-dialogo {
+  position: absolute;
+  inset: 0;
+  z-index: 1900;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 26px;
+  box-sizing: border-box;
+}
+
+#overlay-dialogo.nascosto {
+  display: none;
+}
+
+#dialogo-card {
+  background: #f8f8e8;
+  border: 4px solid #41464f;
+  border-radius: 14px;
+  width: 92%;
+  max-width: 640px;
+  padding: 14px 20px;
+  color: #222;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+}
+
+#dialogo-nome {
+  display: inline-block;
+  background: #1a2940;
+  color: #ffcb05;
+  border-radius: 8px;
+  padding: 3px 14px;
+  font-size: 15px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+#dialogo-testo {
+  font-size: 19px;
+  line-height: 1.5;
+  min-height: 56px;
+  margin-bottom: 10px;
+}
+
+#dialogo-avanti {
+  display: block;
+  margin-left: auto;
+  background: #1a2940;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 15px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+#dialogo-avanti:hover {
+  background: #2c4368;
+}
+
+/* ------------------------------------------------------------
+   Scelta dello starter
+   ------------------------------------------------------------ */
+#overlay-starter {
+  position: absolute;
+  inset: 0;
+  z-index: 1950;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-starter.nascosto {
+  display: none;
+}
+
+#starter-card {
+  background: #1a2940;
+  border: 3px solid #ffcb05;
+  border-radius: 16px;
+  padding: 22px 26px;
+  width: 94%;
+  max-width: 560px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
+}
+
+#starter-card h2 {
+  color: #ffcb05;
+  margin: 0 0 18px;
+  font-size: 22px;
+}
+
+#starter-scelte {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.card-starter {
+  background: rgba(255, 255, 255, 0.08);
+  border: 3px solid #5a6377;
+  border-radius: 14px;
+  padding: 14px 18px;
+  cursor: pointer;
+  color: #fff;
+  font-size: 17px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: transform 0.12s, border-color 0.12s;
+}
+
+.card-starter:hover {
+  border-color: #ffcb05;
+  transform: translateY(-4px);
+}
+
+.card-starter img {
+  width: 96px;
+  height: 96px;
+  image-rendering: pixelated;
+}
+
+.gen-trio {
+  font-size: 13px;
+  color: #ccc;
+}
+
+/* ------------------------------------------------------------
+   Toast
+   ------------------------------------------------------------ */
+@keyframes fadeInSu {
+  from { opacity: 0; transform: translateX(-50%) translateY(10px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+#toast {
+  position: absolute;
+  bottom: 110px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(20, 30, 50, 0.94);
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: 2px solid #ffcb05;
+  z-index: 1500;
+  font-size: 14px;
+  pointer-events: none;
+  animation: fadeInSu 0.25s ease;
+  white-space: nowrap;
+}
+
+#toast.nascosto {
+  display: none;
+}

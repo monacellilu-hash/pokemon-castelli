@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Pokémon Castelli Romani</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Mappa: occupa tutto lo schermo -->
+  <div id="mappa"></div>
+
+  <!-- HUD in alto a sinistra -->
+  <div id="hud">
+    <div id="hud-titolo">Pokémon Castelli Romani</div>
+    <div>Passi: <span id="hud-passi">0</span></div>
+    <!-- F9.1: riga orologio -->
+    <div id="hud-tempo">Giorno 1 · 08:00 🌅</div>
+    <!-- F9.2: portafoglio -->
+    <div id="hud-soldi">₽ 3.000</div>
+    <div id="hud-zona">📍 Castelli Romani</div>
+    <div id="hud-squadra" style="display:none;"></div>
+    <div id="hud-palestra" style="display:none;"></div>
+  </div>
+
+  <!-- Pulsante MENU (in alto a destra) -->
+  <button id="btn-menu" aria-label="Apri il menu">☰ MENU</button>
+
+  <!-- Pannello menu di gioco: squadra, zaino, box, salvataggio -->
+  <div id="pannello-menu" class="nascosto" role="dialog" aria-modal="true">
+    <div id="menu-card">
+      <div id="menu-testata">
+        <div id="menu-tabs">
+          <button class="tab attiva" data-sezione="squadra">⚡ Squadra</button>
+          <button class="tab" data-sezione="zaino">🎒 Zaino</button>
+          <button class="tab" data-sezione="market">🛒 Market</button>
+          <button class="tab" data-sezione="box">📦 Box</button>
+          <button class="tab" data-sezione="salva">💾 Salva</button>
+        </div>
+        <button id="btn-chiudi-menu" aria-label="Chiudi il menu">✖</button>
+      </div>
+      <div id="menu-contenuto"></div>
+    </div>
+  </div>
+
+  <!-- Booster di velocità (cicla x1 → x2 → x3 → x5) -->
+  <button id="btn-velocita" aria-label="Velocità di movimento">⏩ x1</button>
+
+  <!-- MN Volo: appare solo quando si possiede la MN Volo (F9) -->
+  <button id="btn-volo" aria-label="Vola verso una città" style="display:none;">✈️ Volo</button>
+
+  <!-- Riquadro dialoghi (Professore, Capipalestra, NPC) -->
+  <div id="overlay-dialogo" class="nascosto" role="dialog" aria-modal="true">
+    <div id="dialogo-card">
+      <div id="dialogo-nome"></div>
+      <div id="dialogo-testo"></div>
+      <button id="dialogo-avanti">Avanti ▶</button>
+    </div>
+  </div>
+
+  <!-- Scelta dello starter dal Professore -->
+  <div id="overlay-starter" class="nascosto" role="dialog" aria-modal="true">
+    <div id="starter-card">
+      <h2 id="starter-titolo">Scegli il tuo primo Pokémon!</h2>
+      <div id="starter-scelte"></div>
+    </div>
+  </div>
+
+  <!-- Croce direzionale (mobile + desktop) -->
+  <div id="dpad">
+    <button id="btn-su"       class="dpad-btn" aria-label="Su">▲</button>
+    <button id="btn-sinistra" class="dpad-btn" aria-label="Sinistra">◀</button>
+    <button id="btn-giu"      class="dpad-btn" aria-label="Giù">▼</button>
+    <button id="btn-destra"   class="dpad-btn" aria-label="Destra">▶</button>
+  </div>
+
+  <!-- Schermata di battaglia -->
+  <div id="schermata-battaglia" class="nascosto" role="dialog" aria-modal="true">
+    <div id="battaglia-campo">
+      <div id="info-nemico" class="pannello-info">
+        <div class="riga-nome">
+          <span id="nemico-nome">—</span>
+          <span id="nemico-lv"></span>
+        </div>
+        <div class="hp-contorno">
+          <span class="hp-etichetta">HP</span>
+          <div class="hp-binario"><div id="nemico-hp" class="hp-barra"></div></div>
+        </div>
+      </div>
+      <div id="zona-nemico" class="sprite-zona">
+        <img id="nemico-sprite" src="" alt="Pokémon avversario">
+        <div class="piattaforma"></div>
+      </div>
+      <div id="zona-giocatore" class="sprite-zona">
+        <img id="giocatore-sprite" src="" alt="Il tuo Pokémon">
+        <div class="piattaforma"></div>
+      </div>
+      <div id="info-giocatore" class="pannello-info">
+        <div class="riga-nome">
+          <span id="giocatore-nome">—</span>
+          <span id="giocatore-lv"></span>
+        </div>
+        <div class="hp-contorno">
+          <span class="hp-etichetta">HP</span>
+          <div class="hp-binario"><div id="giocatore-hp" class="hp-barra"></div></div>
+        </div>
+        <div id="giocatore-hp-testo"></div>
+        <div class="exp-binario"><div id="giocatore-exp" class="exp-barra"></div></div>
+      </div>
+    </div>
+    <div id="battaglia-console">
+      <div id="battaglia-messaggio">…</div>
+      <div id="menu-principale" class="menu-battaglia nascosto">
+        <button id="btn-attacca">⚔️ Attacca</button>
+        <button id="btn-pokemon">🔄 Pokémon</button>
+        <button id="btn-zaino">🎒 Zaino</button>
+        <button id="btn-fuga">🏃 Fuga</button>
+      </div>
+      <div id="menu-mosse"   class="menu-battaglia nascosto"></div>
+      <div id="menu-zaino"   class="menu-battaglia nascosto"></div>
+      <div id="menu-squadra" class="menu-battaglia nascosto"></div>
+    </div>
+  </div>
+
+  <!-- Toast: notifiche brevi -->
+  <div id="toast" class="nascosto"></div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+          integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+  <!-- Script del gioco (ordine: dati → zone → api → mappa → battaglia → avvio) -->
+  <script src="js/data.js"></script>
+  <script src="js/world.js"></script>
+  <script src="js/pokeapi.js"></script>
+  <script src="js/map.js"></script>
+  <script src="js/battle.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

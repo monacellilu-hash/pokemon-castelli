@@ -1,0 +1,18 @@
+# Cartella di memoria di Claude Code (non fa parte del gioco)
+.claude/
+
+# File di sviluppo non necessari per il deploy
+Old Versioning Instruction/
+LAST UPDATE.txt
+
+# File di sistema Windows
+Thumbs.db
+desktop.ini
+
+# File macOS
+.DS_Store
+
+# Editor
+.vscode/
+*.swp
+*.tmp
