@@ -45,9 +45,13 @@ let stato = {
     giornoTemporale:  0,      // F11: giorno in cui arriva il temporale (→ Zapdos)
     suicuneVisto:     false,  // F11: scena cinematica al Lago di Nemi già mostrata
     suicuneRoaming:   false,  // F11: Suicune è in roaming (compare nelle zone naturali)
-    sagra:            false,  // F12b: oggi è la Sagra della Porchetta di Ariccia (→ Ho-Oh)
-    lugiaScena:       false,  // F12b: scena cinematica Lugia ai Pratoni già mostrata
+    sagra:                 false,  // F12b: oggi è la Sagra della Porchetta di Ariccia (→ Ho-Oh)
+    lugiaScena:            false,  // F12b: scena cinematica Lugia ai Pratoni già mostrata
+    cotralAricciaDebellata: false, // F12b: 4 agenti CoTrAL ad Ariccia sconfitti
+    bunkerinoDebellato:    false,  // F12b: Direttore Lucio sconfitto nel Bunkerino
+    mewtwoSconfitto:       false,  // F12b: Mewtwo incontrato (catturato o fuggito)
   },
+  gauntletBunkerino: null,  // F12b: progresso nel dungeon Bunkerino { indice: 0..4 }
   // F9.1 — Sistema del tempo
   tempo: {
     giorno:  1,    // conta-giorni globale
@@ -109,8 +113,12 @@ function caricaPartita() {
       if (!Array.isArray(stato.oggettiRaccolti)) stato.oggettiRaccolti = [];
       if (!stato.inventario || typeof stato.inventario !== 'object') stato.inventario = { chiave: {} };
       if (!stato.inventario.chiave || typeof stato.inventario.chiave !== 'object') stato.inventario.chiave = {};
-      if (stato.flags.sagra      === undefined) stato.flags.sagra      = false;
-      if (stato.flags.lugiaScena === undefined) stato.flags.lugiaScena = false;
+      if (stato.flags.sagra                  === undefined) stato.flags.sagra                  = false;
+      if (stato.flags.lugiaScena             === undefined) stato.flags.lugiaScena             = false;
+      if (stato.flags.cotralAricciaDebellata === undefined) stato.flags.cotralAricciaDebellata = false;
+      if (stato.flags.bunkerinoDebellato     === undefined) stato.flags.bunkerinoDebellato     = false;
+      if (stato.flags.mewtwoSconfitto        === undefined) stato.flags.mewtwoSconfitto        = false;
+      if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
       console.log('[Salvataggio] Partita caricata ✔');
     }
   } catch (e) {
@@ -1388,7 +1396,7 @@ function raccogliOggettiVicini() {
 }
 
 /* ----------------------------------------------------------
-   VILLA ALDOBRANDINI (F12b) — Mew post-Lega + Mewtwo
+   VILLA ALDOBRANDINI (F12b) — Mew (151) post sconfitta Mewtwo
    ---------------------------------------------------------- */
 async function interagisciVillaAldobrandini() {
   if (stato.incontroAttivo || dialogoInCorso) return;
@@ -1403,17 +1411,380 @@ async function interagisciVillaAldobrandini() {
   if (!stato.flags.legaCompletata) {
     await mostraDialogo('🏛️ Villa Aldobrandini', [
       'I cancelli della Villa sono chiusi.',
-      'Il guardiano dice: "Torna quando sei il Campione. Solo allora potrai entrare."',
+      'Il guardiano: "Solo il Campione dei Castelli può entrare."',
     ]);
     return;
   }
 
-  // Placeholder per Mew (F12b — post sconfitta Mewtwo)
-  await mostraDialogo('🏛️ Villa Aldobrandini', [
-    'I giardini in terrazza della Villa si aprono su Frascati e Roma.',
-    'Tra le fontane barocche e le siepi, qualcosa di piccolo e rosa brilla nella nebbia...',
-    '(Mew apparirà qui dopo la sconfitta di Mewtwo nel Bunkerino — prossimo aggiornamento!)',
+  if (!stato.flags.mewtwoSconfitto) {
+    await mostraDialogo('🏛️ Villa Aldobrandini', [
+      'I giardini in terrazza si aprono su Frascati e Roma.',
+      'C\'è qualcosa nell\'aria... una presenza curiosa, leggera.',
+      'Ma si nasconde ancora. Forse sente che non è arrivato il momento.',
+      'Risolvi prima la questione al Bunkerino di Colonna.',
+    ]);
+    return;
+  }
+
+  if (legCatturato(151)) {
+    await mostraDialogo('🏛️ Villa Aldobrandini', [
+      'I giardini barocchi sono in pace. Mew ha trovato posto nel tuo Pokédex.',
+    ]);
+    return;
+  }
+
+  if (legScomparso(151)) {
+    await mostraDialogo('🏛️ Villa Aldobrandini', [
+      'La nebbia è densa. Mew era qui... ma se n\'è dissolto.',
+      'Uno spirito libero come lui non ha catene.',
+    ]);
+    return;
+  }
+
+  triggeraLeggendario(
+    151, 50, 'Mew',
+    {
+      nome: '🌸 Villa Aldobrandini — Mew',
+      righe: [
+        'Tra le fontane barocche una forma piccola e rosa fluttua nell\'aria.',
+        'Si gira e ti fissa con occhi enormi e curiosi.',
+        '"Puui~!" — la voce è quasi un riso.',
+        'MEW! Il Pokémon originale, progenitore di tutti gli altri.',
+        'Contiene il DNA di ogni Pokémon mai esistito.',
+        'Era scappato dal Bunkerino. Ora ha scelto di venire qui. E di fermarsi.',
+      ]
+    }
+  );
+}
+
+/* ----------------------------------------------------------
+   PORCHETTARO DI ARICCIA (F12b) — NPC chain per la Piuma Sacra
+   ---------------------------------------------------------- */
+async function interagisciPorchettaro() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (typeof PORCHETTARO === 'undefined') return;
+
+  const distanza = GameMap.distanzaMetri(stato.posizione, PORCHETTARO);
+  if (distanza > PORCHETTARO.raggioInterazione) {
+    mostraToast(`🚶 Avvicinati ad Adriano (sei a ${Math.round(distanza)} m).`);
+    return;
+  }
+
+  if (stato.inventario && stato.inventario.chiave && stato.inventario.chiave['piuma-sacra']) {
+    await mostraDialogo('🐷 Adriano il Porchettaro', [
+      'Hai già la Piuma Sacra!',
+      'Sul Ponte di Ariccia, all\'alba, durante la Sagra della Porchetta... vedrai tu stesso.',
+    ]);
+    return;
+  }
+
+  if (!stato.flags.legaCompletata) {
+    await mostraDialogo('🐷 Adriano il Porchettaro', [
+      'Aho! Sei venuto per la porchetta? La migliore dei Castelli!',
+      'Solo che ultimamente ci sono dei tipi grigi in giro che disturbano la preparazione.',
+      'Quando sei qualcuno di importante, torna. Forse puoi aiutarci.',
+    ]);
+    return;
+  }
+
+  const agentiIds = ['cotral-ariccia-1', 'cotral-ariccia-2', 'cotral-ariccia-3', 'cotral-ariccia-4'];
+  const debellati = agentiIds.filter(id => stato.allenatoriBattuti.includes(id)).length;
+
+  if (debellati < agentiIds.length) {
+    await mostraDialogo('🐷 Adriano il Porchettaro', [
+      'Campione! Questi del CoTrAL stanno bloccando il rifornimento di legna per il forno!',
+      `Ho visto ${agentiIds.length} agenti in giro qui ad Ariccia. Ne hai sistemati ${debellati}.`,
+      'Trovali tutti e quattro qui vicino, poi torna da me!',
+    ]);
+    return;
+  }
+
+  if (!stato.inventario) stato.inventario = { chiave: {} };
+  if (!stato.inventario.chiave) stato.inventario.chiave = {};
+  stato.inventario.chiave['piuma-sacra'] = true;
+  salvaPartita();
+
+  await mostraDialogo('🐷 Adriano il Porchettaro', [
+    'Bravo Campione! Hai cacciato tutti quegli agenti grigi!',
+    'La Sagra è salva. Possiamo preparare la porchetta in pace!',
+    'Prendi questo: l\'ho trovato sul Ponte una mattina all\'alba.',
+    'Una piuma iridescente. Non so di che uccello sia. Ma brilla come il cielo al tramonto.',
+    'Presentati sul Ponte all\'alba durante la Sagra della Porchetta. Ho la sensazione...',
+    '...che quella piuma e te abbiate un appuntamento con qualcosa di straordinario.',
   ]);
+  mostraToast('🪶 Piuma Sacra ottenuta! Aspetta la Sagra (ogni 15 giorni), vai sul Ponte all\'alba.', 9000);
+}
+
+/* ----------------------------------------------------------
+   BUNKERINO DI COLONNA (F12b) — dungeon CoTrAL, boss + Mewtwo
+   ---------------------------------------------------------- */
+const GRUNTI_BUNKERINO = ['bunkerino-grunt-1', 'bunkerino-grunt-2', 'bunkerino-grunt-3', 'bunkerino-grunt-4'];
+
+async function interagisciBunkerino() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (typeof BUNKERINO === 'undefined') return;
+
+  const distanza = GameMap.distanzaMetri(stato.posizione, BUNKERINO);
+  if (distanza > BUNKERINO.raggioInterazione) {
+    mostraToast(`🚶 Avvicinati al Bunkerino (sei a ${Math.round(distanza)} m).`);
+    return;
+  }
+
+  if (!stato.flags.legaCompletata) {
+    await mostraDialogo('🏭 Bunkerino', [
+      'Una cantina sprangata con un lucchetto recente.',
+      '"Cooperativa Agricola CoTrAL — Area privata" dice una targa.',
+    ]);
+    return;
+  }
+
+  if (stato.flags.mewtwoSconfitto) {
+    const msg = legCatturato(151)
+      ? 'Il laboratorio è silenzioso. Mew è nel tuo Pokédex.'
+      : 'Il laboratorio è silenzioso. Mewtwo se n\'è andato.\n\nQualcosa di piccolo e rosa brilla tra le siepi di Villa Aldobrandini...';
+    await mostraDialogo('🏭 Bunkerino', [msg]);
+    return;
+  }
+
+  if (!stato.gauntletBunkerino) stato.gauntletBunkerino = { indice: 0 };
+
+  if (stato.gauntletBunkerino.indice === 0) {
+    await mostraDialogo('🏭 Bunkerino di Colonna', [
+      'La cantina nasconde un laboratorio segreto.',
+      'Luci al neon, centrifughe, file di botti convertite in incubatori.',
+      'Dal fondo arrivano voci del Team CoTrAL. Non si aspettano visite.',
+    ]);
+  }
+
+  await avviaGauntletBunkerino();
+}
+
+async function avviaGauntletBunkerino() {
+  const idx = stato.gauntletBunkerino.indice;
+
+  if (idx < GRUNTI_BUNKERINO.length) {
+    const idGrunt = GRUNTI_BUNKERINO[idx];
+    const grunt = ALLENATORI.find(a => a.id === idGrunt);
+    if (!grunt || stato.allenatoriBattuti.includes(idGrunt)) {
+      stato.gauntletBunkerino.indice++;
+      await avviaGauntletBunkerino();
+      return;
+    }
+
+    await mostraDialogo(`⚔️ ${grunt.classe} ${grunt.nome}`, grunt.dialogoIntro);
+    stato.incontroAttivo = true;
+    GameMap.bloccaMovimento();
+
+    Battle.avvia({
+      allenatore: {
+        nome: `${grunt.classe} ${grunt.nome}`,
+        squadra: grunt.squadra,
+        premioSoldi: grunt.premioSoldi,
+        dialogoSconfitta: grunt.dialogoSconfitta,
+      },
+      stato,
+      onFine: async (esito) => {
+        if (esito === 'vittoria') {
+          stato.allenatoriBattuti.push(idGrunt);
+          stato.soldi = (stato.soldi || 0) + grunt.premioSoldi;
+          stato.gauntletBunkerino.indice++;
+          terminaIncontro(esito);
+          await mostraDialogo(grunt.nome, grunt.dialogoDopo);
+          salvaPartita();
+          const rimasti = GRUNTI_BUNKERINO.length - stato.gauntletBunkerino.indice;
+          const scelta = await mostraScelta(
+            rimasti > 0 ? `Avanti! Rimangono ${rimasti} guardie.` : 'Guardie eliminate! Il Direttore ti aspetta.',
+            '❤️ Curami', '⚔️ Avanti'
+          );
+          if (scelta === 1) curaCompletaSquadra();
+          await avviaGauntletBunkerino();
+        } else {
+          terminaIncontro(esito);
+          stato.gauntletBunkerino = { indice: 0 };
+          salvaPartita();
+          await mostraDialogo('💀 Sconfitta', [
+            'La squadra è a terra. Il CoTrAL ti ha ricacciato fuori.',
+            'Cura i Pokémon e ritorna.',
+          ]);
+        }
+      }
+    });
+
+  } else {
+    // Boss: Direttore Lucio
+    const boss = ALLENATORI.find(a => a.id === 'bunkerino-boss');
+    if (!boss) return;
+
+    if (stato.allenatoriBattuti.includes('bunkerino-boss')) {
+      await triggeraMewtwo();
+      return;
+    }
+
+    await mostraDialogo(`🔬 ${boss.classe} ${boss.nome}`, boss.dialogoIntro);
+    stato.incontroAttivo = true;
+    GameMap.bloccaMovimento();
+
+    Battle.avvia({
+      allenatore: {
+        nome: boss.nome,
+        squadra: boss.squadra,
+        premioSoldi: boss.premioSoldi,
+        dialogoSconfitta: boss.dialogoSconfitta,
+      },
+      stato,
+      onFine: async (esito) => {
+        if (esito === 'vittoria') {
+          stato.allenatoriBattuti.push('bunkerino-boss');
+          stato.soldi = (stato.soldi || 0) + boss.premioSoldi;
+          stato.flags.bunkerinoDebellato = true;
+          terminaIncontro(esito);
+          await mostraDialogo(boss.nome, boss.dialogoDopo);
+          salvaPartita();
+          const scelta = await mostraScelta(
+            'Il Direttore è sconfitto! Affronta Mewtwo?',
+            '❤️ Curami prima', '🔬 Affronta Mewtwo'
+          );
+          if (scelta === 1) curaCompletaSquadra();
+          await triggeraMewtwo();
+        } else {
+          terminaIncontro(esito);
+          stato.gauntletBunkerino = { indice: 0 };
+          salvaPartita();
+          await mostraDialogo('💀 Sconfitta', [
+            'Il Direttore ha avuto la meglio. Cura la squadra e ritorna.',
+          ]);
+        }
+      }
+    });
+  }
+}
+
+async function triggeraMewtwo() {
+  if (legCatturato(150) || legScomparso(150)) {
+    stato.flags.mewtwoSconfitto = true;
+    stato.gauntletBunkerino = null;
+    salvaPartita();
+    await mostraDialogo('🏭 Bunkerino', [
+      'Mewtwo ha già lasciato il Bunkerino.',
+      'Un\'eco di potere immenso è rimasta nell\'aria.',
+    ]);
+    return;
+  }
+
+  triggeraLeggendario(
+    150, 70, 'Mewtwo',
+    {
+      nome: '🔬 Mewtwo — Il Progetto 150',
+      righe: [
+        'In fondo al laboratorio, davanti a un antico camino di pietra...',
+        'Una sagoma alta e silenziosa ti osserva.',
+        'Occhi viola che bruciano nell\'ombra.',
+        '"Sei venuto a catturarmi? Come tutti gli altri."',
+        '"Nessuno mi comanda più. Sono ciò che non dovevo essere."',
+        'MEWTWO usa la mente per far tremare il laboratorio!',
+      ]
+    },
+    (esito) => {
+      stato.flags.mewtwoSconfitto = true;
+      stato.gauntletBunkerino = null;
+      salvaPartita();
+      const msg = esito === 'cattura'
+        ? '🔬 Mewtwo catturato! Qualcosa di rosa brilla tra le siepi di Villa Aldobrandini…'
+        : '🔬 Mewtwo se n\'è andato. A Villa Aldobrandini... qualcosa si muove.';
+      mostraToast(msg, 8000);
+    }
+  );
+}
+
+/* ----------------------------------------------------------
+   PARCHEGGIONE DI GROTTAFERRATA (F12b) — Deoxys (386)
+   ---------------------------------------------------------- */
+async function interagisciParcheggione() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (typeof PARCHEGGIONE === 'undefined') return;
+
+  const distanza = GameMap.distanzaMetri(stato.posizione, PARCHEGGIONE);
+  if (distanza > PARCHEGGIONE.raggioInterazione) {
+    mostraToast(`🚶 Avvicinati al Parcheggione (sei a ${Math.round(distanza)} m).`);
+    return;
+  }
+
+  if (!stato.flags.legaCompletata) {
+    await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
+      'Un container bianco con il logo ASI — Agenzia Spaziale Italiana.',
+      '"Reclutamento aperto ai Campioni certificati" — dice il cartello.',
+      'Non sei ancora il Campione. Torna dopo aver vinto la Lega.',
+    ]);
+    return;
+  }
+
+  if (legCatturato(386)) {
+    await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
+      'Il responsabile ti saluta con rispetto.',
+      '"Missione completata, astronauta. Hai già un Deoxys nel Pokédex."',
+      '"Ci vediamo sulla Luna, Campione."',
+    ]);
+    return;
+  }
+
+  if (legScomparso(386)) {
+    await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
+      '"Deoxys ha rilevato la tua presenza e si è ritirato nell\'orbita più lontana."',
+      '"Potremmo rilanciare... ma ci vogliono mesi."',
+      '(Deoxys è scomparso definitivamente.)',
+    ]);
+    return;
+  }
+
+  const haDivisa = stato.inventario && stato.inventario.chiave && stato.inventario.chiave['divisa-astronauta'];
+
+  if (haDivisa) {
+    await mostraDialogo('🚀 ASI — Finestra di lancio aperta', [
+      'Il responsabile ti consegna il casco.',
+      '"La sonda parte tra dieci minuti. Destinazione: superficie lunare."',
+      '"Abbiamo rilevato una presenza aliena dopo l\'ultima eclissi. Un Pokémon cosmico."',
+      '"Buona fortuna, astronauta."',
+    ]);
+
+    await mostraDialogo('🌕 Superficie Lunare', [
+      'La sonda atterra in silenzio sulla polvere grigia.',
+      'Il cielo è nero. La Terra brilla all\'orizzonte come un marmo blu.',
+      'Davanti a te, una forma che cambia. Cristalli. Luce rossa. Un volto alieno.',
+      'DEOXYS — giunto dai confini del cosmo su un meteorite.',
+      'Ti fissa attraverso il casco. Ha visitato i Castelli prima di te.',
+    ]);
+
+    triggeraLeggendario(
+      386, 60, 'Deoxys',
+      {
+        nome: '🌕 Luna — Deoxys',
+        righe: [
+          'Sulla polvere lunare, una forma aliena pulsa di luce.',
+          'Si trasforma: attacco... difesa... velocità...',
+          'DEOXYS — Pokémon DNA originario dello spazio esterno!',
+        ]
+      },
+      () => {
+        mostraToast('🌕 Sei tornato sulla Terra. Nessuno ci crederà mai.', 7000);
+      }
+    );
+    return;
+  }
+
+  // Prima visita: dai la divisa
+  await mostraDialogo('🚀 ASI — Agenzia Spaziale Italiana', [
+    'Un uomo in camice si avvicina.',
+    '"Sono il Responsabile del programma Castelli nello Spazio."',
+    '"Cerchiamo un volontario-astronauta per una sonda di ricognizione lunare."',
+    '"Requisiti: essere Campione della Lega Pokémon di Colonna."',
+    '"Sei il Campione! La divisa è tua. Torna quando sei pronto per il lancio."',
+  ]);
+
+  if (!stato.inventario) stato.inventario = { chiave: {} };
+  if (!stato.inventario.chiave) stato.inventario.chiave = {};
+  stato.inventario.chiave['divisa-astronauta'] = true;
+  salvaPartita();
+  mostraToast('👨‍🚀 Divisa da Astronauta ricevuta! Torna al Parcheggione per partire.', 8000);
 }
 
 // Punto d'ingresso: cliccando la porta della Lega
@@ -2084,10 +2455,12 @@ function gdFStatoTesto() {
 // (NOMI_LEGGENDARI è definito sopra, in leggendariStatoTesto)
 
 const NOMI_LEGGENDARI = {
-  144: 'Articuno', 145: 'Zapdos', 146: 'Moltres',
-  245: 'Suicune',  249: 'Lugia',  250: 'Ho-Oh',
+  144: 'Articuno', 145: 'Zapdos',   146: 'Moltres',
+  150: 'Mewtwo',   151: 'Mew',
+  245: 'Suicune',  249: 'Lugia',    250: 'Ho-Oh',
   251: 'Celebi',
-  377: 'Regirock', 378: 'Regice', 379: 'Registeel',
+  377: 'Regirock', 378: 'Regice',   379: 'Registeel',
+  386: 'Deoxys',
 };
 
 function leggendariStatoTesto() {
@@ -2198,12 +2571,17 @@ async function inizializzaSquadraTest() {
   stato.flags.suicuneVisto   = true;
   stato.flags.suicuneRoaming = true;
 
-  // Dà tutti gli oggetti chiave in test per poter provare Lugia e Ho-Oh
+  // Tutti gli oggetti chiave per testare Lugia, Ho-Oh, Deoxys
   if (!stato.inventario) stato.inventario = { chiave: {} };
-  stato.inventario.chiave['braciere-nemi'] = true;
-  stato.inventario.chiave['piuma-sacra']   = true;
+  stato.inventario.chiave['braciere-nemi']    = true;
+  stato.inventario.chiave['piuma-sacra']      = true;
+  stato.inventario.chiave['divisa-astronauta'] = true;
   // La Lega dev'essere completata per i trigger post-Lega
   stato.flags.legaCompletata = true;
+  // Sblocca la catena Bunkerino e Mew (test)
+  stato.flags.bunkerinoDebellato     = true;
+  stato.flags.cotralAricciaDebellata = true;
+  stato.flags.mewtwoSconfitto        = true;
   // Sblocca tutto: Surf, Taglio, Volo, Funivia, Via Vittoria
   stato.mn.surf     = true;
   stato.mn.taglio   = true;

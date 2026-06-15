@@ -2333,6 +2333,93 @@ const ALLENATORI = [
     dialogoSconfitta: 'Sei diverso. Vai. La Lega ti aspetta.',
     dialogoDopo: ['Buona fortuna, Campione. Farai la storia dei Castelli Romani.'],
   },
+
+  // ── CoTrAL Agenti ad Ariccia (post-Lega, catena Piuma Sacra → Ho-Oh) ──
+  {
+    id: 'cotral-ariccia-1', classe: 'Agente CoTrAL', nome: 'Flavia', zona: 'Campagna Ariccia-Genzano',
+    lat: 41.7212, lon: 12.6620, premioSoldi: 2400,
+    squadra: [{ id: 229, livello: 50 }, { id: 262, livello: 51 }],
+    dialogoIntro: ['La Sagra della Porchetta è la copertura perfetta per le nostre operazioni. Non intralciare!'],
+    dialogoSconfitta: 'Il piano è compromesso!',
+    dialogoDopo: ['Maledetto. Ma siamo in tanti. Vedrai.']
+  },
+  {
+    id: 'cotral-ariccia-2', classe: 'Agente CoTrAL', nome: 'Brenno', zona: 'Campagna Ariccia-Genzano',
+    lat: 41.7225, lon: 12.6698, premioSoldi: 2440,
+    squadra: [{ id: 197, livello: 51 }, { id: 302, livello: 51 }],
+    dialogoIntro: ['Il Ponte di Ariccia è il nostro punto di controllo. Non andare oltre!'],
+    dialogoSconfitta: 'Il ponte è libero. Per ora.',
+    dialogoDopo: ['Ci vediamo al Bunkerino. Se ci arrivi.']
+  },
+  {
+    id: 'cotral-ariccia-3', classe: 'Ricercatrice CoTrAL', nome: 'Ersilia', zona: 'Campagna Ariccia-Genzano',
+    lat: 41.7198, lon: 12.6712, premioSoldi: 2480,
+    squadra: [{ id: 65, livello: 52 }, { id: 103, livello: 52 }],
+    dialogoIntro: ['Studio i DNA dei Pokémon leggendari per il Progetto 150. Vattene!'],
+    dialogoSconfitta: 'Il Progetto è a rischio!',
+    dialogoDopo: ['Avete interrotto mesi di lavoro. Non è finita.']
+  },
+  {
+    id: 'cotral-ariccia-4', classe: 'Comandante locale', nome: 'Spurinna', zona: 'Campagna Ariccia-Genzano',
+    lat: 41.7188, lon: 12.6655, premioSoldi: 2600,
+    squadra: [{ id: 229, livello: 53 }, { id: 330, livello: 53 }, { id: 359, livello: 54 }],
+    dialogoIntro: ['Sono il comandante di questa cellula. Non passerete!'],
+    dialogoSconfitta: 'La cellula di Ariccia è perduta. Ma il Bunkerino vi aspetta…',
+    dialogoDopo: ['Il Bunkerino di Colonna. È lì che tutto finisce.'],
+    flagVittoria: 'cotralAricciaDebellata',
+  },
+
+  // ── Bunkerino di Colonna (CoTrAL post-Lega, Lv 58-65) ──
+  {
+    id: 'bunkerino-grunt-1', classe: 'Guardiano CoTrAL', nome: 'Numerio', zona: 'Bunkerino',
+    lat: 41.8302, lon: 12.7542, premioSoldi: 3000,
+    squadra: [{ id: 262, livello: 58 }, { id: 229, livello: 59 }],
+    dialogoIntro: ['Chi entra nel Bunkerino non ne esce. È una promessa!'],
+    dialogoSconfitta: 'Promessa infranta.',
+    dialogoDopo: ['Il laboratorio è più in fondo. Non so cosa troverai.']
+  },
+  {
+    id: 'bunkerino-grunt-2', classe: 'Scienziato CoTrAL', nome: 'Demetrio', zona: 'Bunkerino',
+    lat: 41.8298, lon: 12.7548, premioSoldi: 3200,
+    squadra: [{ id: 103, livello: 59 }, { id: 65, livello: 60 }],
+    dialogoIntro: ['Il Progetto 150 è quasi completato. Non puoi fermarlo ora!'],
+    dialogoSconfitta: 'Non è possibile…',
+    dialogoDopo: ['Il soggetto è al piano di sotto, davanti al camino. E non obbedisce più a nessuno.']
+  },
+  {
+    id: 'bunkerino-grunt-3', classe: 'Tecnico élite', nome: 'Vibio', zona: 'Bunkerino',
+    lat: 41.8295, lon: 12.7544, premioSoldi: 3400,
+    squadra: [{ id: 82, livello: 60 }, { id: 101, livello: 61 }],
+    dialogoIntro: ['Difendo l\'ultimo esperimento del CoTrAL!'],
+    dialogoSconfitta: 'Il Bunkerino è perduto.',
+    dialogoDopo: ['Il soggetto ci ha già sopraffatti tutti. Ha poteri inimmaginabili.']
+  },
+  {
+    id: 'bunkerino-grunt-4', classe: 'Élite CoTrAL', nome: 'Faustina', zona: 'Bunkerino',
+    lat: 41.8305, lon: 12.7555, premioSoldi: 3600,
+    squadra: [{ id: 330, livello: 62 }, { id: 359, livello: 62 }, { id: 197, livello: 62 }],
+    dialogoIntro: ['L\'élite di CoTrAL non si arrende mai!'],
+    dialogoSconfitta: 'L\'élite ha ceduto.',
+    dialogoDopo: ['Scappa. Davanti a quel camino c\'è qualcosa che non ho parole per descrivere.']
+  },
+  {
+    id: 'bunkerino-boss', classe: 'Direttore Scientifico', nome: 'Lucio', zona: 'Bunkerino',
+    lat: 41.8308, lon: 12.7552, premioSoldi: 5000,
+    squadra: [{ id: 65, livello: 63 }, { id: 199, livello: 63 }, { id: 103, livello: 63 }, { id: 229, livello: 65 }],
+    dialogoIntro: [
+      'Sono il Direttore Lucio. Vent\'anni di vita al Progetto 150.',
+      'Da DNA di Mew abbiamo creato la vita perfetta. Un Pokémon senza eguali.',
+      'Il soggetto non risponde più agli ordini. Ci ha già sopraffatti. Eppure tu sei qui…',
+      'Forse sei abbastanza forte da fermarlo. Ma prima devi passare da me!'
+    ],
+    dialogoSconfitta: 'Hai vinto. Il Progetto è fallito. Forse era giusto così.',
+    dialogoDopo: [
+      'Dietro quel camino c\'è Mewtwo. Nato da DNA di Mew, clonato in segreto.',
+      'Ha già superato ogni nostro limite. Ci ha cacciati. Comanda il Bunkerino.',
+      'È potentissimo. E arrabbiato. Forse solo un vero Campione può fermarlo.',
+    ],
+    flagVittoria: 'bunkerinoDebellato',
+  },
 ];
 
 /* Nota: qui sotto vengono aggiunti i gregari di palestra (dal gauntlet),
@@ -2452,6 +2539,30 @@ const PARCHEGGIONE = {
   luogo: 'Parcheggio Via Anagnina — "Stazione Spaziale dei Castelli"',
   lat: 41.7900, lon: 12.6620,
   raggioInterazione: 120,
+};
+
+/* ----------------------------------------------------------
+   BUNKERINO DI COLONNA (F12b) — dungeon CoTrAL post-Lega.
+   Una cantina-laboratorio dove il Team CoTrAL ha creato Mewtwo.
+   ---------------------------------------------------------- */
+const BUNKERINO = {
+  id: 'bunkerino-colonna',
+  nome: 'Bunkerino di Colonna',
+  luogo: 'Cantina sotterranea — base segreta Team CoTrAL',
+  lat: 41.8320, lon: 12.7528,
+  raggioInterazione: 120,
+};
+
+/* ----------------------------------------------------------
+   PORCHETTARO DI ARICCIA (F12b) — NPC chain per la Piuma Sacra.
+   Dà la Piuma dopo aver sconfitto i 4 agenti CoTrAL ad Ariccia.
+   ---------------------------------------------------------- */
+const PORCHETTARO = {
+  id: 'porchettaro-ariccia',
+  nome: 'Adriano il Porchettaro',
+  luogo: 'Piazza di Corte, Ariccia',
+  lat: 41.7208, lon: 12.6670,
+  raggioInterazione: 100,
 };
 
 /* ----------------------------------------------------------

@@ -4,29 +4,41 @@
 
 ---
 
-## 📌 PUNTO DELLA SITUAZIONE (aggiornato al 15 giugno 2026 — notte)
+## 📌 PUNTO DELLA SITUAZIONE (aggiornato al 15 giugno 2026 — sera)
 
-**Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b-parziale.**
+**Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b-parziale + F13.**
 
-### Aggiunto in questa sessione (F12b parziale):
-- **15 allenatori Via Vittoria** (Lv 55-60, Manlio→Tullio) — la Via non era più vuota.
-- **Sistema oggetti mappa** (~74 oggetti): Pokéball sparse su tutta la mappa con oggetti (zaino e chiave). Raccolta automatica entro 40 m. Marker `📦` / `🔑` pulsanti. `OGGETTI_MAPPA`, `OGGETTI_CHIAVE`, `stato.oggettiRaccolti`, `stato.inventario.chiave`.
-- **Braciere di Nemi** (oggetto chiave): nel fondale del Lago di Nemi (richiede Surf). Serve per il trigger di Lugia.
-- **Piuma Sacra** (oggetto chiave): si otterrà dalla catena Porchettari+CoTrAL (F12b). Serve per Ho-Oh.
-- **Lugia (249)** — Pratoni del Vivaro: nuova zona vulcanica (Lv 35-50, Rhydon/Tauros/Miltank/Camerupt). Trigger post-Lega + Braciere di Nemi. Prima volta → entrata in zona → battaglia.
-- **Ho-Oh (250)** — Ponte di Ariccia: trigger post-Lega + Piuma Sacra + alba (06:00-09:00) + Sagra della Porchetta (ogni 15 giorni di gioco). Toast avviso automatico al cambio giorno.
-- **Villa Aldobrandini** (Frascati): marker `🏛️🌸` in mappa. Placeholder per Mew post-Mewtwo (F12b).
-- **NOMI_LEGGENDARI**: aggiunto Lugia (249) e Ho-Oh (250).
-- Modalità test aggiornata: dà anche Braciere+Piuma, sblocca tutte le MN, legaCompletata=true.
+### F13 — Pubblicazione GitHub Pages: COMPLETATA ✔
+- **`git init`** nella cartella di progetto (`C:/Users/Luca/Desktop/pokemon-castelli`).
+- **`.gitignore`** creato (esclude `.claude/`, `Old Versioning Instruction/`, `LAST UPDATE.txt`, file di sistema).
+- Git identity configurata (`lucamonacelli95@gmail.com` / `Luca Monacelli`).
+- Primo commit: tutti i 14 file di gioco (`index.html`, `style.css`, `js/`, `docs/`, `.gitignore`, `CLAUDE.md`).
+- Remote: `https://github.com/monacellilu-hash/pokemon-castelli.git`
+- Push su `master` completato con successo.
+- **GitHub Pages attivato** (Branch: master / root) → **sito live:**
+  **https://monacellilu-hash.github.io/pokemon-castelli/**
 
-### Ancora da fare (F12b → poi F13):
-- **Ho-Oh catena**: quest Porchettari + sconfitta cellula CoTrAL → ottieni Piuma Sacra.
-- **Team CoTrAL / Bunkerino**: Mewtwo doppio, Mew alla Villa Aldobrandini.
-- **Deoxys**: Parcheggione di Grottaferrata → Stazione Spaziale → Luna.
-- **Lugia e Ho-Oh ancora da AGGIUNGERE A NOMI_LEGGENDARI** ← già fatto questa sessione.
-- **F13**: Pubblicazione su GitHub Pages.
+### Aggiunto nella sessione precedente (F12b parziale):
+- **15 allenatori Via Vittoria** (Lv 55-60, Manlio→Tullio).
+- **Sistema oggetti mappa** (~74 oggetti): raccolta automatica entro 40 m. `OGGETTI_MAPPA`, `OGGETTI_CHIAVE`, `stato.oggettiRaccolti`, `stato.inventario.chiave`.
+- **Braciere di Nemi** (oggetto chiave, Lago di Nemi via Surf) → trigger Lugia.
+- **Piuma Sacra** (oggetto chiave, da catena Porchettari+CoTrAL) → trigger Ho-Oh.
+- **Lugia (249)** — Pratoni del Vivaro (nuova zona, Lv 35-50). Trigger post-Lega + Braciere.
+- **Ho-Oh (250)** — Ponte di Ariccia. Trigger post-Lega + Piuma Sacra + alba + Sagra ogni 15 gg.
+- **Villa Aldobrandini** (Frascati): marker `🏛️🌸`. Placeholder per Mew (F12b rimasto).
 
-**Prossima sessione:** completare F12b (Ho-Oh catena, CoTrAL, Mew), poi F13.
+### F12b — Post-game completo: COMPLETATA ✔ (sessione 16 — 15 giugno 2026)
+- **Porchettaro di Ariccia** (`PORCHETTARO`, marker 🐷): NPC Adriano. Dopo aver sconfitto i 4 agenti CoTrAL ad Ariccia dà la **Piuma Sacra** → sblocca Ho-Oh.
+- **4 CoTrAL Ariccia** (id: cotral-ariccia-1..4, Lv 50-54): auto-trigger normale, 4° con `flagVittoria: 'cotralAricciaDebellata'`. Posizionati in zona Campagna Ariccia-Genzano.
+- **Bunkerino di Colonna** (`BUNKERINO`, marker 🏭): gauntlet 4 grunti (Lv 58-62) + Direttore Lucio (Lv 63-65). Gauntlet custom (`avviaGauntletBunkerino`) con cura opzionale tra un round e l'altro. Dopo Lucio → `triggeraMewtwo()`.
+- **Mewtwo (150) Lv 70** — in coda al Bunkerino, `fuggireImpossibile: true`, `legCatturati`/`legScomparsi`. Dopo l'incontro: `flags.mewtwoSconfitto = true`.
+- **Mew (151) Lv 50** — Villa Aldobrandini (Frascati): compare solo se `mewtwoSconfitto=true`. Trigger classico `triggeraLeggendario`.
+- **Deoxys (386) Lv 60** — Parcheggione di Grottaferrata (`PARCHEGGIONE`, marker 🚀): prima visita post-Lega → Divisa da Astronauta; seconda visita con divisa → dialogo Luna → `triggeraLeggendario(386)`.
+- **NOMI_LEGGENDARI** aggiornato: ora include 150 (Mewtwo), 151 (Mew), 386 (Deoxys). Totale: 13 leggendari tracciati.
+- **Migrazione** in `caricaPartita`: 6 nuovi flag (cotralAricciaDebellata, bunkerinoDebellato, mewtwoSconfitto + gauntletBunkerino).
+- **Modalità test** aggiornata: dà divisa astronauta + imposta mewtwoSconfitto/bunkerinoDebellato (Mew e Deoxys testabili subito).
+
+**Prossima sessione:** F14 (grafica cartoon — tileset pixel, avatar animato, edifici iconici). Oppure bug fix / rifinitura gameplay su richiesta utente.
 - **~153 allenatori di percorso/dungeon** (erano 24, ora ~153):
   Percorso Tuscolana +4 (tot 8), Via F→G +6 nuovi, Vigne Frascati +3 (tot 6),
   **Boschi Tuscolo DUNGEON GROSSO +14** (tot 18!), Via G→M +5, Vigne Marino +3 (tot 6),
@@ -961,6 +973,7 @@ EXP e salita di livello, cattura con Poké Ball.
 - [x] F9 — Path, dungeon e MN + città vive (tempo, soldi, Poké Market, repellenti, NPC, donatori MN, 16 allenatori)
 - [x] F10 — Team GdF (Museo Navi, 5 Grunt, Labs, Fulvia, Crasso)
 - [x] F11 — Leggendari ed eventi pre-Lega (Articuno, Zapdos, Celebi, Regi, Suicune)
-- [ ] F12 — Via Vittoria + Lega a Colonna (Superquattro pool)
-- [ ] F13 — Pubblicazione GitHub Pages
+- [x] F12 — Via Vittoria + Lega a Colonna (Superquattro pool) + F12b parziale (Lugia/Ho-Oh/oggetti mappa)
+- [x] F13 — Pubblicazione GitHub Pages → https://monacellilu-hash.github.io/pokemon-castelli/
+- [ ] F12b rimasto — Team CoTrAL / Bunkerino / Mew / Deoxys / Ho-Oh catena
 - [ ] F14 — Grafica cartoon

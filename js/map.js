@@ -65,6 +65,9 @@ const GameMap = (function () {
     aggiungiMeteorologo();
     aggiungiAnfrattiRegi();
     aggiungiVillaAldobrandini();
+    aggiungiBunkerino();
+    aggiungiPorchettaro();
+    aggiungiParcheggione();
     aggiungiOggettiMappa();
     aggiungiGiocatore();
 
@@ -362,6 +365,57 @@ const GameMap = (function () {
         m.bindPopup(`<b>${icn} ${nome}</b> ×${obj.quantita || 1}<br><small>Avvicinati per raccogliere.</small>`);
       }
     }
+  }
+
+  // ---- Marker Bunkerino di Colonna (F12b — CoTrAL + Mewtwo) ----
+  function aggiungiBunkerino() {
+    if (typeof BUNKERINO === 'undefined') return;
+    const icona = L.divIcon({
+      className: '',
+      html: '<div class="icona-bunkerino">🏭</div>',
+      iconSize: [28, 28], iconAnchor: [14, 14]
+    });
+    L.marker([BUNKERINO.lat, BUNKERINO.lon], { icon: icona })
+      .addTo(mappa)
+      .bindPopup(
+        `<b>🏭 ${BUNKERINO.nome}</b><br>` +
+        `<small>${BUNKERINO.luogo}</small><br>` +
+        `<button class="btn-cura-popup" onclick="interagisciBunkerino()">🔓 Entra nel Bunkerino</button>`
+      );
+  }
+
+  // ---- Marker Porchettaro di Ariccia (F12b — catena Piuma Sacra) ----
+  function aggiungiPorchettaro() {
+    if (typeof PORCHETTARO === 'undefined') return;
+    const icona = L.divIcon({
+      className: '',
+      html: '<div class="icona-porchettaro">🐷</div>',
+      iconSize: [26, 26], iconAnchor: [13, 13]
+    });
+    L.marker([PORCHETTARO.lat, PORCHETTARO.lon], { icon: icona })
+      .addTo(mappa)
+      .bindPopup(
+        `<b>🐷 ${PORCHETTARO.nome}</b><br>` +
+        `<small>${PORCHETTARO.luogo}</small><br>` +
+        `<button class="btn-cura-popup" onclick="interagisciPorchettaro()">💬 Parla con Adriano</button>`
+      );
+  }
+
+  // ---- Marker Parcheggione di Grottaferrata (F12b — Deoxys) ----
+  function aggiungiParcheggione() {
+    if (typeof PARCHEGGIONE === 'undefined') return;
+    const icona = L.divIcon({
+      className: '',
+      html: '<div class="icona-parcheggione">🚀</div>',
+      iconSize: [28, 28], iconAnchor: [14, 14]
+    });
+    L.marker([PARCHEGGIONE.lat, PARCHEGGIONE.lon], { icon: icona })
+      .addTo(mappa)
+      .bindPopup(
+        `<b>🚀 ${PARCHEGGIONE.nome}</b><br>` +
+        `<small>${PARCHEGGIONE.luogo}</small><br>` +
+        `<button class="btn-cura-popup" onclick="interagisciParcheggione()">🌕 Programma Spaziale ASI</button>`
+      );
   }
 
   // ---- Rimuove un marker oggetto dalla mappa (chiamata da app.js dopo raccolta) ----

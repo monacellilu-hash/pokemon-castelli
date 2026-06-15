@@ -184,10 +184,24 @@ html, body {
   50%       { filter: brightness(1.6); }
 }
 
-/* F12b — Villa Aldobrandini, oggetti mappa */
+/* F12b — Villa Aldobrandini, Bunkerino, Porchettaro, Parcheggione, oggetti mappa */
 .icona-villa {
   font-size: 24px;
   text-shadow: 0 0 6px #ffb6c1, 0 0 12px #ff69b4;
+}
+
+.icona-bunkerino {
+  font-size: 22px;
+  text-shadow: 0 0 6px #556, 0 0 12px #888;
+  animation: pulsaAnfratto 2.5s ease-in-out infinite;
+}
+
+.icona-porchettaro { font-size: 22px; }
+
+.icona-parcheggione {
+  font-size: 24px;
+  text-shadow: 0 0 8px #a0c0ff, 0 0 18px #4488ff;
+  animation: pulsaOggetto 2s ease-in-out infinite;
 }
 
 .icona-oggetto {
