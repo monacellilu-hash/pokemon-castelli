@@ -505,7 +505,7 @@ const GameMap = (function () {
      ---------------------------------------------------------- */
   function generaMappa() {
     // STEP 1: tutto erba base (tile 8)
-    const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(8));
+    const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(2));
     // STEP 2: array collisioni separato (0=libero di default)
     const coll  = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(0));
 
