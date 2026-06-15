@@ -53,35 +53,63 @@ const GameMap = (function () {
   }
 
   /* ----------------------------------------------------------
-     TERRENO → INDICE TILE  (Outside.png, 8 tile/riga)
-     Valori ricavati campionando i pixel dell'immagine.
+     TERRENO → LISTA TILE  (Outside.png confermati dall'utente)
+     Array → picker deterministico basato su posizione (mappa consistente).
      ---------------------------------------------------------- */
   const TT = {
-    default:  1,    // erba base  RGB(112,200,160)
-    acqua:    392,  // acqua      RGB(168,184,200)
-    prato:    40,   // erba chiara RGB(160,224,192)
-    bosco:    6,    // foresta    RGB(56,88,16)
-    urbano:   240,  // grigio     RGB(168,160,152)
-    montagna: 360,  // marrone    RGB(192,168,104)
-    grotta:   560,  // teal scuro RGB(56,88,88)
-    neve:     280,  // ghiaccio   RGB(216,224,224)
-    vigne:    160,  // giallo     RGB(232,224,136)
-    percorso: 120,  // beige      RGB(208,192,128)
-    interno:  240,
-    dungeon:  560,
-    campagna: 480,  // verde medio RGB(128,208,96)
+    // Erba: varianti 1-5 + decorative 23,44-50
+    default:  [1, 2, 3, 4, 5, 23, 44, 45, 46, 47, 48, 49, 50],
+    prato:    [44, 45, 46, 47, 48, 49, 50],
+    campagna: [1, 2, 3, 4, 5, 23, 44, 45],
+    // Erba alta: trigger incontri Pokémon
+    bosco:    [6],
+    // Sentiero beige piatto
+    percorso: [162],
+    vigne:    [162],
+    // Acqua principale (blu)
+    acqua:    [713],
+    sub:      [691],
+    // Rive (rilevamento automatico bordi acqua)
+    _rivaNW:  704, _rivaNC: 705, _rivaNE:  706,
+    _rivaW:   712, _rivaE:  714,
+    _rivaS:   841,  // sabbia marrone per riva sud
+    // Grotta / dungeon (pietra grigio-celeste)
+    grotta:   [218],
+    dungeon:  [218],
+    // Montagna outdoor (placeholder: stessa roccia grotta, da affinare)
+    montagna: [218],
+    // Neve → non esiste nel tileset, uso roccia grigia
+    neve:     [218],
+    // Asfalto / strade cittadine
+    urbano:   [268, 269, 271],
+    interno:  [401],  // sanpietrini centro
   };
-  function terrenoIdx(t) { return TT[t] ?? TT.default; }
+
+  // Tutti i tile considerati "acqua" per collisione e shore detection
+  const WATER_TILES = new Set([713, 691, 704, 705, 706, 712, 714, 841, 847]);
+
+  // Restituisce un tile dalla lista, deterministico per posizione
+  function terrenoTile(tipo, tx, ty) {
+    const arr = TT[tipo] ?? TT.default;
+    if (arr.length === 1) return arr[0];
+    // Hash veloce: stessa posizione → sempre stesso tile
+    const h = (((tx * 2654435761) ^ (ty * 2246822519)) >>> 0) % arr.length;
+    return arr[h];
+  }
 
   /* ----------------------------------------------------------
      GENERAZIONE TILEMAP DAI DATI world.js
      ---------------------------------------------------------- */
   function generaTilemap() {
-    const data = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(TT.default));
+    // Riempimento base: erba variata deterministicamente
+    const data = Array.from({ length: MAP_H }, (_, ty) =>
+      Array.from({ length: MAP_W }, (_, tx) => terrenoTile('default', tx, ty))
+    );
+
     if (typeof World === 'undefined' || typeof World.getZone !== 'function') return data;
     const zones = [...World.getZone()].reverse();
+
     for (const z of zones) {
-      const idx = terrenoIdx(z.terreno);
       if (z.tipo === 'cerchio') {
         const c   = latLonToTile(z.centro.lat, z.centro.lon);
         const rtx = Math.ceil(z.raggio / M_TX) + 1;
@@ -90,7 +118,8 @@ const GameMap = (function () {
           for (let dx = -rtx; dx <= rtx; dx++) {
             if ((dx / rtx) ** 2 + (dy / rty) ** 2 <= 1) {
               const tx = c.tx + dx, ty = c.ty + dy;
-              if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) data[ty][tx] = idx;
+              if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H)
+                data[ty][tx] = terrenoTile(z.terreno, tx, ty);
             }
           }
         }
@@ -99,9 +128,29 @@ const GameMap = (function () {
         const br = latLonToTile(z.latMin, z.lonMax);
         for (let ty = Math.max(0, tl.ty); ty <= Math.min(MAP_H - 1, br.ty); ty++)
           for (let tx = Math.max(0, tl.tx); tx <= Math.min(MAP_W - 1, br.tx); tx++)
-            data[ty][tx] = idx;
+            data[ty][tx] = terrenoTile(z.terreno, tx, ty);
       }
     }
+
+    // Seconda passata: rive — bordi dell'acqua verso terra
+    const isW = v => WATER_TILES.has(v);
+    const get  = (ty, tx) => (ty >= 0 && ty < MAP_H && tx >= 0 && tx < MAP_W)
+                              ? data[ty][tx] : 713;
+    for (let ty = 0; ty < MAP_H; ty++) {
+      for (let tx = 0; tx < MAP_W; tx++) {
+        if (data[ty][tx] !== 713) continue;
+        const above = get(ty - 1, tx), below = get(ty + 1, tx);
+        const left  = get(ty, tx - 1), right = get(ty, tx + 1);
+        const lA = !isW(above), lB = !isW(below), lL = !isW(left), lR = !isW(right);
+        if      (lA && lL)  data[ty][tx] = TT._rivaNW;
+        else if (lA && lR)  data[ty][tx] = TT._rivaNE;
+        else if (lA)        data[ty][tx] = TT._rivaNC;
+        else if (lB)        data[ty][tx] = TT._rivaS;
+        else if (lL)        data[ty][tx] = TT._rivaW;
+        else if (lR)        data[ty][tx] = TT._rivaE;
+      }
+    }
+
     return data;
   }
 
@@ -372,9 +421,9 @@ const GameMap = (function () {
       const newTy = Phaser.Math.Clamp(posTile.ty + dy, 0, MAP_H - 1);
       if (newTx === posTile.tx && newTy === posTile.ty) return;
 
-      // Collisione acqua (FASE 3)
+      // Collisione acqua (FASE 3) — blocca tutti i tile acqua/riva senza Surf
       if (tilemapData && tilemapData[newTy]) {
-        if (tilemapData[newTy][newTx] === TT.acqua) {
+        if (WATER_TILES.has(tilemapData[newTy][newTx])) {
           const hasSurf = typeof stato !== 'undefined' && stato.mn && stato.mn.surf;
           if (!hasSurf) {
             if (typeof mostraToast === 'function')
