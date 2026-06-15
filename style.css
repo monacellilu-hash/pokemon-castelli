@@ -19,9 +19,21 @@ html, body {
   overflow: hidden;
 }
 
+/* Contenitore del gioco (era div Leaflet, ora parent del canvas Phaser) */
 #mappa {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+}
+
+/* Il canvas Phaser deve riempire esattamente il div */
+#mappa canvas {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100% !important;
+  height: 100% !important;
 }
 
 /* ------------------------------------------------------------
