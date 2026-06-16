@@ -354,27 +354,53 @@ const GameMap = (function () {
      ============================================================ */
   const CITTA_DEFS = [
 
-    { // Anagnina — Roma (PARTENZA)
+    { // Anagnina — Pallet Town style (PARTENZA)
+      // Path nord: 5 tile wide, esce dal gap x=10-14 sul bordo superiore
       latC: 41.8420, lonC: 12.6150,
-      W: 28, H: 20,
-      roads: [],  // nessuna strada asfaltata — piccolo borgo
+      W: 24, H: 18,
+      roads: [],
       buildings: [
-        { type: 'TREE',     x: 0,  y: 0  },  // alberi angoli nord
-        { type: 'TREE',     x: 26, y: 0  },
-        { type: 'TREE',     x: 0,  y: 17 },  // alberi angoli sud
-        { type: 'TREE',     x: 26, y: 17 },
-        { type: 'LAB',      x: 8,  y: 1  },  // Lab Prof. Castagno (8×5)
-        { type: 'PC',       x: 20, y: 1  },  // PokéCenter (6×5) — no mart
-        { type: 'CASA',     x: 1,  y: 12 },  // Casa giocatore (verde)
-        { type: 'CASA_BLU', x: 7,  y: 12 },  // Casa Remo (blu, vicina)
-        { type: 'CASA',     x: 14, y: 12 },  // Casa NPC 1
-        { type: 'CASA',     x: 20, y: 12 },  // Casa NPC 2
+        // === BORDO NORD — gap aperto a x=10-15 per il path verso nord ===
+        { type: 'TREE', x: 0,  y: 0 },
+        { type: 'TREE', x: 2,  y: 0 },
+        { type: 'TREE', x: 4,  y: 0 },
+        { type: 'TREE', x: 6,  y: 0 },
+        { type: 'TREE', x: 8,  y: 0 },
+        // (gap x=10-15, nessun albero — uscita verso nord)
+        { type: 'TREE', x: 16, y: 0 },
+        { type: 'TREE', x: 18, y: 0 },
+        { type: 'TREE', x: 20, y: 0 },
+        { type: 'TREE', x: 22, y: 0 },
+        // === BORDO OVEST ===
+        { type: 'TREE', x: 0, y: 3 },
+        { type: 'TREE', x: 0, y: 6 },
+        { type: 'TREE', x: 0, y: 9 },
+        { type: 'TREE', x: 0, y: 12 },
+        // === BORDO EST ===
+        { type: 'TREE', x: 22, y: 3 },
+        { type: 'TREE', x: 22, y: 6 },
+        { type: 'TREE', x: 22, y: 9 },
+        { type: 'TREE', x: 22, y: 12 },
+        // === BORDO SUD — chiuso totalmente ===
+        { type: 'TREE', x: 0,  y: 15 },
+        { type: 'TREE', x: 2,  y: 15 },
+        { type: 'TREE', x: 4,  y: 15 },
+        { type: 'TREE', x: 6,  y: 15 },
+        { type: 'TREE', x: 8,  y: 15 },
+        { type: 'TREE', x: 10, y: 15 },
+        { type: 'TREE', x: 12, y: 15 },
+        { type: 'TREE', x: 14, y: 15 },
+        { type: 'TREE', x: 16, y: 15 },
+        { type: 'TREE', x: 18, y: 15 },
+        { type: 'TREE', x: 20, y: 15 },
+        { type: 'TREE', x: 22, y: 15 },
+        // === EDIFICI ===
+        { type: 'PC',       x: 1,  y: 1  },  // PokéCenter (6×5)
+        { type: 'LAB',      x: 14, y: 1  },  // Laboratorio Prof. Castagno (8×5)
+        { type: 'CASA',     x: 2,  y: 11 },  // Casa giocatore
+        { type: 'CASA_BLU', x: 17, y: 11 },  // Casa Remo
       ],
-      grassPatches: [
-        { x: 3,  y: 17, w: 2 },
-        { x: 10, y: 17, w: 2 },
-        { x: 16, y: 17, w: 2 },
-      ],
+      grassPatches: [],
     },
 
     { // Frascati — P1 Erba (Vinicio)
@@ -685,25 +711,16 @@ const GameMap = (function () {
      STEP 1+2+3+4 — genera mappa completa
      ---------------------------------------------------------- */
   // Disegna un percorso di terra battuta (tile 162) tra due punti tile, largo `spessore`
-  function _disegnaPercorso(tiles, coll, x1, y1, x2, y2, spessore) {
-    const dx = x2 - x1, dy = y2 - y1;
-    const steps = Math.max(Math.abs(dx), Math.abs(dy));
-    if (steps === 0) return;
-    const isOrizz = Math.abs(dx) >= Math.abs(dy);
-    const half = Math.floor(spessore / 2);
-    for (let i = 0; i <= steps; i++) {
-      const t = i / steps;
-      const cx = Math.round(x1 + dx * t);
-      const cy = Math.round(y1 + dy * t);
-      for (let k = -half; k <= half; k++) {
-        const tx = isOrizz ? cx : cx + k;
-        const ty = isOrizz ? cy + k : cy;
+  // Disegna un rettangolo di path (usato per path orizzontali/verticali)
+  function _riempiPath(tiles, coll, x, y, w, h) {
+    for (let r = 0; r < h; r++)
+      for (let c = 0; c < w; c++) {
+        const tx = x + c, ty = y + r;
         if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
           tiles[ty][tx] = 162;  // terra battuta
           coll[ty][tx]  = 0;
         }
       }
-    }
   }
 
   function generaMappa() {
@@ -712,14 +729,32 @@ const GameMap = (function () {
     const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(2));
     const coll  = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(0));
 
-    // Percorsi tra città (disegnati PRIMA delle città, che li sovrascrivono ai bordi)
-    for (let i = 0; i < CITTA_DEFS.length - 1; i++) {
-      const ca = latLonToTile(CITTA_DEFS[i].latC,   CITTA_DEFS[i].lonC);
-      const cb = latLonToTile(CITTA_DEFS[i+1].latC, CITTA_DEFS[i+1].lonC);
-      _disegnaPercorso(tiles, coll, ca.tx, ca.ty, cb.tx, cb.ty, 5);
+    // === PATH NORD DA ANAGNINA (Via Tuscolana) ===
+    // Va dritto verso SU (freccia ↑), 5 tile di larghezza, 90 tile di lunghezza
+    const an = CITTA_DEFS[0];
+    const ac = latLonToTile(an.latC, an.lonC);
+    const aOY = ac.ty - Math.floor(an.H / 2);   // bordo nord della città
+    // Il gap nel bordo nord è a relX=10-14, cioè acx + (10-12) = acx-2 … acx+2
+    const pathX = ac.tx - 2;                     // inizio x (5 tile: pathX … pathX+4)
+    _riempiPath(tiles, coll, pathX, Math.max(0, aOY - 90), 5, 90);
+
+    // Erba alta ai lati del path (incontri Pokémon)
+    for (let r = 5; r < 80; r += 1) {
+      const ty = aOY - 1 - r;
+      if (ty < 0) break;
+      // Patch di erba alta a destra e sinistra del sentiero
+      for (let side = -1; side <= 1; side += 2) {
+        for (let k = 1; k <= 3; k++) {
+          const tx = ac.tx + side * (3 + k);
+          if (tx >= 0 && tx < MAP_W) {
+            tiles[ty][tx] = 6;   // erba alta
+            coll[ty][tx]  = 2;  // encounter
+          }
+        }
+      }
     }
 
-    // Costruisci le città (sovrascrivono i percorsi dove si intersecano)
+    // Costruisci le città (sovrascrivono il path dove si intersecano)
     for (const cd of CITTA_DEFS) {
       _costruisciCitta(tiles, coll, cd);
     }
@@ -1193,20 +1228,168 @@ const GameMap = (function () {
   }
 
   /* ----------------------------------------------------------
-     INTERNO EDIFICI — mostra PNG interno quando si entra dalla porta
+     INTERIOR SCENE — stanza camminabile dentro gli edifici
      ---------------------------------------------------------- */
-  function apriInterno(nomeFile, nomeLuogo) {
-    const overlay = document.getElementById('overlay-interno');
-    if (!overlay) return;
+  class InteriorScene extends Phaser.Scene {
+    constructor() { super({ key: 'InteriorScene' }); }
 
-    const titolo = document.getElementById('interno-titolo');
-    const img    = document.getElementById('interno-img');
+    init(data) {
+      this._nome = data.nome || 'Casa';
+    }
 
-    if (titolo) titolo.textContent = nomeLuogo || 'Interno';
-    if (img) img.src = 'sprites/Tiles%20per%20claude/' + encodeURIComponent(nomeFile);
+    create() {
+      const TI   = 32;  // tile size interno
+      const COLS = 10, ROWS = 8;
+      const CW   = this.cameras.main.width;
+      const CH   = this.cameras.main.height;
+      const RW   = COLS * TI;
+      const RH   = ROWS * TI;
+      const OX   = Math.floor((CW - RW) / 2);
+      const OY   = Math.floor((CH - RH) / 2) - 20;
 
-    overlay.classList.remove('nascosto');
+      // Griglia collisioni stanza (1=muro, 0=calpestabile, 9=uscita)
+      this._grid = [
+        [1,1,1,1,1,1,1,1,1,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,0,0,0,0,0,0,0,0,1],
+        [1,1,9,9,9,1,1,1,1,1],  // 9 = uscita (col 2-4)
+      ];
+      this._COLS = COLS; this._ROWS = ROWS;
+      this._TI = TI; this._OX = OX; this._OY = OY;
+
+      // Sfondo scuro fuori dalla stanza
+      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0a0a14).setDepth(0);
+
+      // Rendering stanza
+      const gfx = this.add.graphics().setDepth(1);
+      for (let r = 0; r < ROWS; r++) {
+        for (let c = 0; c < COLS; c++) {
+          const px = OX + c * TI, py = OY + r * TI;
+          const v  = this._grid[r][c];
+          if (v === 1) {
+            // Muro
+            gfx.fillStyle(0x3a2515).fillRect(px, py, TI, TI);
+            gfx.fillStyle(0x2a180e).fillRect(px, py, TI, 4);          // fascia top scura
+            gfx.lineStyle(1, 0x1a0a05, 0.7); gfx.strokeRect(px, py, TI, TI);
+          } else if (v === 9) {
+            // Uscita: mattonella più scura con freccia
+            gfx.fillStyle(0x6a3a1a).fillRect(px, py, TI, TI);
+          } else {
+            // Pavimento a scacchi
+            const col = ((r + c) % 2 === 0) ? 0xB09070 : 0xA08060;
+            gfx.fillStyle(col).fillRect(px, py, TI, TI);
+            gfx.lineStyle(1, 0x7a5a3a, 0.3); gfx.strokeRect(px, py, TI, TI);
+          }
+        }
+      }
+
+      // Freccia uscita
+      this.add.text(OX + 3 * TI + TI * 1.5, OY + 7 * TI + TI / 2, '▼',
+        { fontSize: '12px', color: '#ffcb05' }).setOrigin(0.5).setDepth(3);
+
+      // Titolo edificio
+      this.add.text(CW / 2, OY - 18, this._nome, {
+        fontFamily: "'Press Start 2P', monospace",
+        fontSize: '8px', color: '#ffcb05',
+        stroke: '#000', strokeThickness: 3,
+      }).setOrigin(0.5, 1).setDepth(5);
+
+      // Istruzione
+      this.add.text(CW / 2, OY + RH + 6, '↓ sulla porta per uscire',
+        { fontFamily: 'Arial', fontSize: '10px', color: '#888' }
+      ).setOrigin(0.5, 0).setDepth(5);
+
+      // Player — appare vicino all'ingresso (riga 6, colonna 4 = al centro)
+      this._px = 4; this._py = 6;
+      const spx = OX + this._px * TI + TI / 2;
+      const spy = OY + (this._py + 1) * TI;
+      this._sprite = this.add.sprite(spx, spy, 'player-red')
+        .setOrigin(0.5, 1).setDepth(10).setScale(1.2);
+      this._sprite.anims.play('idle-up', true);
+      this._facciata = 'up';
+
+      // Input (cattura frecce per non passare a GameScene in pausa)
+      this._cursors = this.input.keyboard.createCursorKeys();
+      this._wasd    = this.input.keyboard.addKeys('W,A,S,D');
+      this.input.keyboard.addCapture([38, 40, 37, 39]);
+      this._cd = 0;
+    }
+
+    update(_t, delta) {
+      this._cd -= delta;
+      if (this._cd > 0) {
+        // Controlla se il player ha raggiunto la destinazione
+        return;
+      }
+      const c = this._cursors, k = this._wasd;
+      let dx = 0, dy = 0;
+      if (c.left.isDown  || k.A.isDown) dx = -1;
+      else if (c.right.isDown || k.D.isDown) dx =  1;
+      else if (c.up.isDown    || k.W.isDown) dy = -1;
+      else if (c.down.isDown  || k.S.isDown) dy =  1;
+
+      if (dx === 0 && dy === 0) {
+        this._sprite.anims.play(`idle-${this._facciata}`, true);
+        return;
+      }
+
+      this._cd = 140;
+      const nx = this._px + dx;
+      const ny = this._py + dy;
+
+      // Uscita dalla stanza
+      if (ny >= this._ROWS - 1 && nx >= 2 && nx <= 4) {
+        this._esci(); return;
+      }
+
+      // Bounds e collisioni
+      if (nx < 0 || nx >= this._COLS || ny < 0 || ny >= this._ROWS) return;
+      if (this._grid[ny][nx] !== 0) return;
+
+      this._px = nx; this._py = ny;
+      if (dx < 0) this._facciata = 'left';
+      else if (dx > 0) this._facciata = 'right';
+      else if (dy < 0) this._facciata = 'up';
+      else this._facciata = 'down';
+      this._sprite.anims.play(`walk-${this._facciata}`, true);
+
+      const tx = this._OX + this._px * this._TI + this._TI / 2;
+      const ty = this._OY + (this._py + 1) * this._TI;
+      this.tweens.killTweensOf(this._sprite);
+      this.tweens.add({ targets: this._sprite, x: tx, y: ty, duration: 120, ease: 'Linear' });
+    }
+
+    _esci() {
+      this.scene.stop('InteriorScene');
+      this.scene.resume('GameScene');
+      // Ripristina HUD
+      ['hud', 'btn-menu', 'btn-velocita', 'dpad'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.removeProperty('display');
+      });
+      GameMap.sbloccaMovimento();
+    }
+  }
+
+  /* ----------------------------------------------------------
+     INTERNO EDIFICI — lancia InteriorScene (stanza camminabile)
+     ---------------------------------------------------------- */
+  function apriInterno(_nomeFile, nomeLuogo) {
+    // Nasconde HUD per la durata dell'interno
+    ['hud', 'btn-menu', 'btn-velocita', 'dpad'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    });
+    // Nasconde l'overlay HTML se ancora visibile
+    document.getElementById('overlay-interno')?.classList.add('nascosto');
+
     bloccaMovimento();
+    scena.scene.pause();
+    phaserGame.scene.launch('InteriorScene', { nome: nomeLuogo || 'Casa' });
   }
 
   /* ----------------------------------------------------------
@@ -1220,7 +1403,7 @@ const GameMap = (function () {
       type:            Phaser.AUTO,
       parent:          'mappa',
       backgroundColor: '#70a040',
-      scene:           GameScene,
+      scene:           [GameScene, InteriorScene],
       scale: {
         mode:       Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,
