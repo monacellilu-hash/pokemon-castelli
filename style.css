@@ -1364,3 +1364,12 @@ html, body {
   image-rendering: crisp-edges;
   display: block;
 }
+#interno-img {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+  width: auto;
+  height: auto;
+  transform: scale(2);
+  transform-origin: top left;
+}

@@ -637,11 +637,25 @@ const GameMap = (function () {
     }
   }
 
+  // Tile erba variegata random (per il pavimento città)
+  const ERBA_FILL = [1, 1, 2, 2, 3, 4, 5, 31];
+  function _tilErba() { return ERBA_FILL[Math.floor(Math.random() * ERBA_FILL.length)]; }
+
   // Costruisce una città sulla mappa
   function _costruisciCitta(tiles, coll, cd) {
     const { tx: cx, ty: cy } = latLonToTile(cd.latC, cd.lonC);
     const ox = cx - Math.floor(cd.W / 2);
     const oy = cy - Math.floor(cd.H / 2);
+
+    // Prima: riempi il suolo della città con erba variegata
+    for (let r = 0; r < cd.H; r++) {
+      for (let c = 0; c < cd.W; c++) {
+        const tx = ox + c, ty = oy + r;
+        if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
+          tiles[ty][tx] = _tilErba();
+        }
+      }
+    }
 
     // Strade e marciapiedi
     for (const road of cd.roads) {
@@ -670,13 +684,42 @@ const GameMap = (function () {
   /* ----------------------------------------------------------
      STEP 1+2+3+4 — genera mappa completa
      ---------------------------------------------------------- */
+  // Disegna un percorso di terra battuta (tile 162) tra due punti tile, largo `spessore`
+  function _disegnaPercorso(tiles, coll, x1, y1, x2, y2, spessore) {
+    const dx = x2 - x1, dy = y2 - y1;
+    const steps = Math.max(Math.abs(dx), Math.abs(dy));
+    if (steps === 0) return;
+    const isOrizz = Math.abs(dx) >= Math.abs(dy);
+    const half = Math.floor(spessore / 2);
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const cx = Math.round(x1 + dx * t);
+      const cy = Math.round(y1 + dy * t);
+      for (let k = -half; k <= half; k++) {
+        const tx = isOrizz ? cx : cx + k;
+        const ty = isOrizz ? cy + k : cy;
+        if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
+          tiles[ty][tx] = 162;  // terra battuta
+          coll[ty][tx]  = 0;
+        }
+      }
+    }
+  }
+
   function generaMappa() {
-    // Reset porte ogni volta che si rigenera la mappa
     for (const k in porteTrigger) delete porteTrigger[k];
 
     const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(2));
     const coll  = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(0));
 
+    // Percorsi tra città (disegnati PRIMA delle città, che li sovrascrivono ai bordi)
+    for (let i = 0; i < CITTA_DEFS.length - 1; i++) {
+      const ca = latLonToTile(CITTA_DEFS[i].latC,   CITTA_DEFS[i].lonC);
+      const cb = latLonToTile(CITTA_DEFS[i+1].latC, CITTA_DEFS[i+1].lonC);
+      _disegnaPercorso(tiles, coll, ca.tx, ca.ty, cb.tx, cb.ty, 5);
+    }
+
+    // Costruisci le città (sovrascrivono i percorsi dove si intersecano)
     for (const cd of CITTA_DEFS) {
       _costruisciCitta(tiles, coll, cd);
     }
@@ -1008,9 +1051,17 @@ const GameMap = (function () {
       const px = newTx * TILE + TILE / 2;
       const py = (newTy + 1) * TILE;
 
-      if (playerSprite) playerSprite.setPosition(px, py);
-      if (playerTrack)  playerTrack.setPosition(px, py - TILE / 2);
-      if (poiIndicator) poiIndicator.setPosition(px, py - TILE * 2);
+      // Movimento fluido: tween per sprite + indicatore, camera segue subito
+      const dur = Math.max(50, 130 / velocita);
+      if (playerSprite) {
+        scena.tweens.killTweensOf(playerSprite);
+        scena.tweens.add({ targets: playerSprite, x: px, y: py, duration: dur, ease: 'Linear' });
+      }
+      if (playerTrack)  playerTrack.setPosition(px, py - TILE / 2);  // camera immediata
+      if (poiIndicator) {
+        scena.tweens.killTweensOf(poiIndicator);
+        scena.tweens.add({ targets: poiIndicator, x: px, y: py - TILE * 2, duration: dur, ease: 'Linear' });
+      }
 
       if (typeof stato !== 'undefined') stato.posizione = { ...posLatLon };
       if (onPassoCb) onPassoCb({ ...posLatLon });
@@ -1149,21 +1200,10 @@ const GameMap = (function () {
     if (!overlay) return;
 
     const titolo = document.getElementById('interno-titolo');
-    const canvas  = document.getElementById('interno-canvas');
+    const img    = document.getElementById('interno-img');
 
     if (titolo) titolo.textContent = nomeLuogo || 'Interno';
-
-    if (canvas) {
-      const img = new Image();
-      img.onload = () => {
-        canvas.width  = img.naturalWidth  * 2;
-        canvas.height = img.naturalHeight * 2;
-        const ctx = canvas.getContext('2d');
-        ctx.imageSmoothingEnabled = false;
-        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      };
-      img.src = `sprites/Tiles per claude/${nomeFile}`;
-    }
+    if (img) img.src = 'sprites/Tiles%20per%20claude/' + encodeURIComponent(nomeFile);
 
     overlay.classList.remove('nascosto');
     bloccaMovimento();
