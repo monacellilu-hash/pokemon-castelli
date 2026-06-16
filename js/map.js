@@ -59,132 +59,290 @@ const GameMap = (function () {
      ============================================================ */
   const TEMPL = {
 
-    TREE: {  // albero verde 3×3 — bloccante totale
-      w: 3, h: 3,
+    TREE: {  // albero verde 2×3 — bloccante (nessun tile centrale)
+      w: 2, h: 3,
       t: [
-        [416, 417, 418],
-        [424, 425, 426],
-        [432, 433, 434],
+        [416, 418],
+        [424, 426],
+        [432, 434],
+      ],
+      c: [[1,1],[1,1],[1,1]],
+    },
+
+    CASA: {  // casa verde 5×4
+      w: 5, h: 4,
+      interno: 'Interior general.png', nomeInterno: 'Casa',
+      t: [
+        [1336,1337,1338,1339,1340],
+        [1344,1345,1346,1347,1348],
+        [1352,1353,1354,1355,1356],
+        [1360,1361,1362,1363,1364],
       ],
       c: [
-        [1, 1, 1],
-        [1, 1, 1],
-        [1, 1, 1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,8,1,1],  // 8 = porta trigger
       ],
     },
 
-    CASA: {  // casa verde 4×3
-      w: 4, h: 3,
+    CASA_BLU: {  // casa blu 5×4
+      w: 5, h: 4,
+      interno: 'Interior general.png', nomeInterno: 'Casa',
       t: [
-        [1336, 1337, 1338, 1339],
-        [1344, 1345, 1346, 1347],
-        [1352, 1353, 1354, 1355],
+        [1368,1369,1370,1371,1372],
+        [1376,1377,1378,1379,1380],
+        [1384,1385,1386,1387,1388],
+        [1392,1393,1394,1395,1396],
       ],
       c: [
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 0, 0, 1],  // porta al centro-basso
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,8,1,1],
       ],
     },
 
-    PC: {  // PokéCenter — 4 colonne × 5 righe (centro del blocco 8-wide)
-      w: 4, h: 5,
+    CASA_GRIGIA: {  // casa grigia 5×4
+      w: 5, h: 4,
+      interno: 'Interior general.png', nomeInterno: 'Casa',
       t: [
-        [2610, 2611, 2612, 2613],
-        [2618, 2619, 2620, 2621],
-        [2626, 2627, 2628, 2629],
-        [2634, 2635, 2636, 2637],
-        [2642, 2643, 2644, 2645],
+        [1432,1433,1434,1435,1436],
+        [1440,1441,1442,1443,1444],
+        [1448,1449,1450,1451,1452],
+        [1456,1457,1458,1459,1460],
       ],
       c: [
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 0, 0, 1],  // porta
-        [1, 1, 1, 1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,8,1,1,1],  // porta: tile 1457
       ],
     },
 
-    MART: {  // PokéMart — 4×4
+    PC: {  // PokéCenter 6×5
+      w: 6, h: 5,
+      interno: 'Poke Centre interior.png', nomeInterno: 'Centro Pokémon',
+      t: [
+        [2608,2609,2610,2611,2612,2613],
+        [2616,2617,2618,2619,2620,2621],
+        [2624,2625,2626,2627,2628,2629],
+        [2632,2633,2634,2635,2636,2637],
+        [2640,2641,2642,2643,2644,2645],
+      ],
+      c: [
+        [1,1,1,1,1,1],
+        [1,1,1,1,1,1],
+        [1,1,1,1,1,1],
+        [1,1,1,1,1,1],
+        [1,1,8,1,1,1],  // porta: tile 2642
+      ],
+    },
+
+    MART: {  // PokéMart 4×4
       w: 4, h: 4,
+      interno: 'Mart interior.png', nomeInterno: 'Poké Mart',
       t: [
-        [2648, 2649, 2650, 2651],
-        [2656, 2657, 2658, 2659],
-        [2664, 2665, 2666, 2667],
-        [2672, 2673, 2674, 2675],
+        [2648,2649,2650,2651],
+        [2656,2657,2658,2659],
+        [2664,2665,2666,2667],
+        [2672,2673,2674,2675],
       ],
       c: [
-        [1, 1, 1, 1],
-        [1, 1, 1, 1],
-        [1, 0, 0, 1],  // porta
-        [1, 1, 1, 1],
+        [1,1,1,1],
+        [1,1,1,1],
+        [1,1,1,1],
+        [1,1,8,1],  // porta: tile 2674
       ],
     },
 
-    LAB: {  // Laboratorio Prof. Castagno — 8×6
-      w: 8, h: 6,
+    GYM: {  // Palestra 7×7
+      w: 7, h: 7,
+      interno: 'Gyms interior.png', nomeInterno: 'Palestra',
       t: [
-        [2448, 2449, 2450, 2451, 2452, 2453, 2454, 2455],
-        [2456, 2457, 2458, 2459, 2460, 2461, 2462, 2463],
-        [2464, 2465, 2466, 2467, 2468, 2469, 2470, 2471],
-        [2472, 2473, 2474, 2475, 2476, 2477, 2478, 2479],
-        [2480, 2481, 2482, 2483, 2484, 2485, 2486, 2487],
-        [2488, 2489, 2490, 2491, 2492, 2493, 2494, 2495],
+        [2744,2745,2746,2747,2748,2749,2750],
+        [2752,2753,2754,2755,2756,2757,2758],
+        [2760,2761,2762,2763,2764,2765,2766],
+        [2768,2769,2770,2771,2772,2773,2774],
+        [2776,2777,2778,2779,2780,2781,2782],
+        [2784,2785,2786,2787,2788,2789,2790],
+        [731, 731, 2794, 731, 2796, 731, 731],
       ],
       c: [
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 0, 0, 1, 1, 1],  // porta al centro
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,8,1,1,1],  // porta: tile 2787
+        [0,0,0,0,0,0,0],  // gradini/ingresso
       ],
     },
 
-    GYM: {  // Palestra — 8×6
-      w: 8, h: 6,
-      t: [
-        [2744, 2745, 2746, 2747, 2748, 2749, 2750, 2751],
-        [2752, 2753, 2754, 2755, 2756, 2757, 2758, 2759],
-        [2760, 2761, 2762, 2763, 2764, 2765, 2766, 2767],
-        [2768, 2769, 2770, 2771, 2772, 2773, 2774, 2775],
-        [2776, 2777, 2778, 2779, 2780, 2781, 2782, 2783],
-        [2784, 2785, 2786, 2787, 2788, 2789, 2790, 2791],
-      ],
-      c: [
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 0, 0, 1, 1, 1],  // porta
-      ],
-    },
-
-    LEGA: {  // Lega Pokémon — 8×8
+    LEGA: {  // Lega Pokémon 8×8
       w: 8, h: 8,
+      interno: 'Trainer Tower interior.png', nomeInterno: 'Lega Pokémon',
       t: [
-        [3120, 3121, 3122, 3123, 3124, 3125, 3126, 3127],
-        [3128, 3129, 3130, 3131, 3132, 3133, 3134, 3135],
-        [3136, 3137, 3138, 3139, 3140, 3141, 3142, 3143],
-        [3144, 3145, 3146, 3147, 3148, 3149, 3150, 3151],
-        [3152, 3153, 3154, 3155, 3156, 3157, 3158, 3159],
-        [3160, 3161, 3162, 3163, 3164, 3165, 3166, 3167],
-        [3168, 3169, 3170, 3171, 3172, 3173, 3174, 3175],
-        [3176, 3177, 3178, 3179, 3180, 3181, 3182, 3183],
+        [3128,3129,3130,3131,3132,3133,3134,3135],
+        [3136,3137,3138,3139,3140,3141,3142,3143],
+        [3144,3145,3146,3147,3148,3149,3150,3151],
+        [3152,3153,3154,3155,3156,3157,3158,3159],
+        [3160,3161,3162,3163,3164,3165,3166,3167],
+        [3168,3169,3170,3171,3172,3173,3174,3175],
+        [3176,3177,3178,3179,3180,3181,3182,3183],
+        [731, 731, 731, 3187,3188,3189, 731, 731],
       ],
       c: [
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 0, 0, 1, 1, 1],  // porta
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,8,1,1,1],  // porta: tile 3172
+        [1,1,1,1,1,1,1,1],
+        [0,0,0,0,0,0,0,0],  // gradini/ingresso
+      ],
+    },
+
+    VILLA: {  // Villa / edificio elegante 7×8
+      w: 7, h: 8,
+      interno: 'Mansion interior.png', nomeInterno: 'Villa Aldobrandini',
+      t: [
+        [2448,2449,2450,2451,2452,2453,2454],
+        [2456,2457,2458,2459,2460,2461,2462],
+        [2464,2465,2466,2467,2468,2469,2470],
+        [2472,2473,2474,2475,2476,2477,2478],
+        [2480,2481,2482,2483,2484,2485,2486],
+        [2488,2489,2490,2491,2492,2493,2494],
+        [2496,2497,2498,2499,2500,2501,2502],
+        [2504,2505,2506,2507,2508,2509,2510],
+      ],
+      c: [
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,8,8,8,1,1],  // porta
+        [1,1,0,0,0,1,1],  // ingresso passabile
+      ],
+    },
+
+    LAB: {  // Laboratorio Prof. Castagno 8×5
+      w: 8, h: 5,
+      interno: 'Mansion interior.png', nomeInterno: 'Laboratorio — Prof. Castagno',
+      t: [
+        [3088,3089,3090,3091,3092,3093,3094,3095],
+        [3096,3097,3098,3099,3100,3101,3102,3103],
+        [3104,3105,3106,3107,3108,3109,3110,3111],
+        [3112,3113,3114,3115,3116,3117,3118,3119],
+        [3120,3121,3122,3123,3124,3125,3126,3127],
+      ],
+      c: [
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1,1],
+        [1,1,1,8,1,1,1,1],  // porta: tile 3123
+      ],
+    },
+
+    PALAZZO_GIALLO: {  // Palazzo giallo 5×5 (nessuna porta)
+      w: 5, h: 5,
+      t: [
+        [1713,1714,1715,1716,1717],
+        [1721,1722,1723,1724,1725],
+        [1729,1730,1731,1732,1733],
+        [1737,1738,1739,1740,1741],
+        [1745,1746,1747,1748,1749],
+      ],
+      c: [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+      ],
+    },
+
+    PALAZZO_CHIGI: {  // Palazzo Chigi — Ariccia 5×5
+      w: 5, h: 5,
+      interno: 'Mansion interior.png', nomeInterno: 'Palazzo Chigi',
+      t: [
+        [1713,1714,1715,1716,1717],
+        [1721,1722,1723,1724,1725],
+        [1729,1730,1731,1732,1733],
+        [1737,1738,1739,1740,1741],
+        [1745,1746,1779,1748,1749],  // 1779 = variante porta
+      ],
+      c: [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,8,1,1],
+      ],
+    },
+
+    PALAZZO_MATTONI: {  // Palazzo mattoni rossi / Abbazia 7×5
+      w: 7, h: 5,
+      interno: 'Ruins interior.png', nomeInterno: 'Abbazia di San Nilo',
+      t: [
+        [2400,2401,2402,2403,2404,2405,2406],
+        [2408,2409,2410,2411,2412,2413,2414],
+        [2416,2417,2418,2419,2420,2421,2422],
+        [2424,2425,2426,2427,2428,2429,2430],
+        [2432,2433,2434,2435,2436,2437,2438],
+      ],
+      c: [
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,8,8,8,1,1],  // porta (3 tile)
+        [1,1,0,0,0,1,1],  // ingresso passabile
+      ],
+    },
+
+    PALAZZO_VERDE: {  // Palazzo verde 5×5
+      w: 5, h: 5,
+      interno: 'Interior general.png', nomeInterno: 'Edificio',
+      t: [
+        [2328,2329,2330,2331,2332],
+        [2336,2337,2338,2339,2340],
+        [2344,2345,2346,2347,2348],
+        [2352,2353,2354,2355,2356],
+        [2392,2394,2397,2398,2399],
+      ],
+      c: [
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,1,1],
+        [1,1,1,8,1],  // porta: tile 2398
+      ],
+    },
+
+    OSSERVATORIO: {  // Osservatorio Monte Porzio 7×4
+      w: 7, h: 4,
+      interno: 'Museum interior.png', nomeInterno: 'Osservatorio',
+      t: [
+        [2544,2545,2546,2547,2548,2549,2550],
+        [2552,2553,2554,2555,2556,2557,2558],
+        [2560,2561,2562,2563,2564,2565,2566],
+        [2568,2569,2570,2571,2572,2573,2574],
+      ],
+      c: [
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,1,1,1,1],
+        [1,1,1,8,1,1,1],  // porta: tile 2571
       ],
     },
   };
+
+  // Posizioni porta: 'tx,ty' → { file, nome } — popolato da _piazzaEdificio
+  const porteTrigger = {};
 
   /* ============================================================
      DEFINIZIONI CITTÀ
@@ -196,27 +354,26 @@ const GameMap = (function () {
      ============================================================ */
   const CITTA_DEFS = [
 
-    { // Borgata Tuscolana — Roma (PARTENZA)
+    { // Anagnina — Roma (PARTENZA)
       latC: 41.8420, lonC: 12.6150,
-      W: 30, H: 20,
-      roads: [
-        { y: 7, t: 408 },  // marciapiede nord
-        { y: 8, t: 392 },  // strada
-        { y: 9, t: 408 },  // marciapiede sud
-      ],
+      W: 28, H: 20,
+      roads: [],  // nessuna strada asfaltata — piccolo borgo
       buildings: [
-        { type: 'TREE', x: 0,  y: 0 },   // alberi angolo sinistra
-        { type: 'TREE', x: 27, y: 0 },   // alberi angolo destra
-        { type: 'LAB',  x: 8,  y: 1 },   // Laboratorio Prof. Castagno (8×6)
-        { type: 'PC',   x: 21, y: 2 },   // Centro Pokémon (4×5)
-        { type: 'CASA', x: 1,  y: 11 },  // case
-        { type: 'CASA', x: 8,  y: 11 },
-        { type: 'CASA', x: 20, y: 11 },
+        { type: 'TREE',     x: 0,  y: 0  },  // alberi angoli nord
+        { type: 'TREE',     x: 26, y: 0  },
+        { type: 'TREE',     x: 0,  y: 17 },  // alberi angoli sud
+        { type: 'TREE',     x: 26, y: 17 },
+        { type: 'LAB',      x: 8,  y: 1  },  // Lab Prof. Castagno (8×5)
+        { type: 'PC',       x: 20, y: 1  },  // PokéCenter (6×5) — no mart
+        { type: 'CASA',     x: 1,  y: 12 },  // Casa giocatore (verde)
+        { type: 'CASA_BLU', x: 7,  y: 12 },  // Casa Remo (blu, vicina)
+        { type: 'CASA',     x: 14, y: 12 },  // Casa NPC 1
+        { type: 'CASA',     x: 20, y: 12 },  // Casa NPC 2
       ],
       grassPatches: [
-        { x: 1,  y: 16, w: 4 },
-        { x: 7,  y: 16, w: 4 },
-        { x: 18, y: 16, w: 4 },
+        { x: 3,  y: 17, w: 2 },
+        { x: 10, y: 17, w: 2 },
+        { x: 16, y: 17, w: 2 },
       ],
     },
 
@@ -230,16 +387,16 @@ const GameMap = (function () {
         { y: 13, t: 408 },
       ],
       buildings: [
-        { type: 'TREE', x: 0,  y: 0 },
-        { type: 'TREE', x: 4,  y: 0 },
-        { type: 'TREE', x: 31, y: 0 },
-        { type: 'GYM',  x: 14, y: 1 },   // Palestra Frascati
-        { type: 'PC',   x: 1,  y: 1 },
-        { type: 'MART', x: 7,  y: 3 },
-        { type: 'CASA', x: 1,  y: 15 },
-        { type: 'CASA', x: 8,  y: 15 },
-        { type: 'CASA', x: 22, y: 15 },
-        { type: 'CASA', x: 29, y: 15 },
+        { type: 'TREE',  x: 0,  y: 0 },
+        { type: 'TREE',  x: 4,  y: 0 },
+        { type: 'TREE',  x: 31, y: 0 },
+        { type: 'GYM',   x: 14, y: 1 },   // Palestra Frascati (7×7)
+        { type: 'PC',    x: 1,  y: 1 },   // PokéCenter (6×5)
+        { type: 'MART',  x: 7,  y: 3 },   // PokéMart (4×4)
+        { type: 'VILLA', x: 28, y: 3 },   // Villa Aldobrandini (7×8)
+        { type: 'CASA',  x: 1,  y: 15 },
+        { type: 'CASA',  x: 8,  y: 15 },
+        { type: 'CASA',  x: 22, y: 15 },
       ],
       grassPatches: [
         { x: 2,  y: 20, w: 4 },
@@ -258,15 +415,16 @@ const GameMap = (function () {
         { y: 12, t: 408 },
       ],
       buildings: [
-        { type: 'TREE', x: 0,  y: 0 },
-        { type: 'TREE', x: 4,  y: 0 },
-        { type: 'TREE', x: 27, y: 0 },
-        { type: 'GYM',  x: 12, y: 1 },
-        { type: 'PC',   x: 1,  y: 1 },
-        { type: 'MART', x: 7,  y: 3 },
-        { type: 'CASA', x: 1,  y: 14 },
-        { type: 'CASA', x: 8,  y: 14 },
-        { type: 'CASA', x: 24, y: 14 },
+        { type: 'TREE',           x: 0,  y: 0 },
+        { type: 'TREE',           x: 4,  y: 0 },
+        { type: 'TREE',           x: 29, y: 0 },
+        { type: 'GYM',            x: 12, y: 1 },
+        { type: 'PC',             x: 1,  y: 1 },
+        { type: 'MART',           x: 7,  y: 3 },
+        { type: 'PALAZZO_MATTONI',x: 22, y: 1 },  // Abbazia di San Nilo (7×5)
+        { type: 'CASA',           x: 1,  y: 14 },
+        { type: 'CASA',           x: 8,  y: 14 },
+        { type: 'CASA',           x: 24, y: 14 },
       ],
       grassPatches: [
         { x: 2,  y: 19, w: 4 },
@@ -307,13 +465,14 @@ const GameMap = (function () {
         { y: 10, t: 408 },
       ],
       buildings: [
-        { type: 'TREE', x: 0,  y: 0 },
-        { type: 'TREE', x: 27, y: 0 },
-        { type: 'GYM',  x: 11, y: 1 },
-        { type: 'PC',   x: 1,  y: 1 },
-        { type: 'MART', x: 7,  y: 3 },
-        { type: 'CASA', x: 1,  y: 12 },
-        { type: 'CASA', x: 22, y: 12 },
+        { type: 'TREE',        x: 0,  y: 0 },
+        { type: 'TREE',        x: 27, y: 0 },
+        { type: 'GYM',         x: 11, y: 1 },
+        { type: 'PC',          x: 1,  y: 1 },
+        { type: 'MART',        x: 7,  y: 3 },
+        { type: 'OSSERVATORIO',x: 20, y: 1 },  // Osservatorio (7×4)
+        { type: 'CASA',        x: 1,  y: 12 },
+        { type: 'CASA',        x: 22, y: 12 },
       ],
       grassPatches: [
         { x: 1, y: 17, w: 4 },
@@ -379,13 +538,14 @@ const GameMap = (function () {
         { y: 10, t: 408 },
       ],
       buildings: [
-        { type: 'TREE', x: 0,  y: 0 },
-        { type: 'TREE', x: 27, y: 0 },
-        { type: 'GYM',  x: 11, y: 1 },
-        { type: 'PC',   x: 1,  y: 1 },
-        { type: 'MART', x: 7,  y: 3 },
-        { type: 'CASA', x: 1,  y: 12 },
-        { type: 'CASA', x: 8,  y: 12 },
+        { type: 'TREE',          x: 0,  y: 0 },
+        { type: 'TREE',          x: 27, y: 0 },
+        { type: 'GYM',           x: 11, y: 1 },
+        { type: 'PC',            x: 1,  y: 1 },
+        { type: 'MART',          x: 7,  y: 3 },
+        { type: 'PALAZZO_CHIGI', x: 21, y: 1 },  // Palazzo Chigi (5×5)
+        { type: 'CASA',          x: 1,  y: 12 },
+        { type: 'CASA',          x: 8,  y: 12 },
       ],
       grassPatches: [
         { x: 1, y: 17, w: 4 },
@@ -446,14 +606,21 @@ const GameMap = (function () {
      FUNZIONI DI COSTRUZIONE
      ---------------------------------------------------------- */
 
-  // Piazza un edificio template nella mappa
+  // Piazza un edificio template nella mappa e registra eventuali porte
   function _piazzaEdificio(tiles, coll, ox, oy, templ) {
     for (let r = 0; r < templ.h; r++) {
       for (let c = 0; c < templ.w; c++) {
         const tx = ox + c, ty = oy + r;
-        if (tx >= 0 && tx < MAP_W && ty >= 0 && ty < MAP_H) {
-          tiles[ty][tx] = templ.t[r][c];
-          coll[ty][tx]  = templ.c[r][c];
+        if (tx < 0 || tx >= MAP_W || ty < 0 || ty >= MAP_H) continue;
+        tiles[ty][tx] = templ.t[r][c];
+        const cv = templ.c[r][c];
+        if (cv === 8) {
+          coll[ty][tx] = 0;  // porta = passabile
+          if (templ.interno) {
+            porteTrigger[`${tx},${ty}`] = { file: templ.interno, nome: templ.nomeInterno || 'Interno' };
+          }
+        } else {
+          coll[ty][tx] = cv;
         }
       }
     }
@@ -504,12 +671,12 @@ const GameMap = (function () {
      STEP 1+2+3+4 — genera mappa completa
      ---------------------------------------------------------- */
   function generaMappa() {
-    // STEP 1: tutto erba base (tile 8)
+    // Reset porte ogni volta che si rigenera la mappa
+    for (const k in porteTrigger) delete porteTrigger[k];
+
     const tiles = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(2));
-    // STEP 2: array collisioni separato (0=libero di default)
     const coll  = Array.from({ length: MAP_H }, () => new Array(MAP_W).fill(0));
 
-    // STEP 3+4: costruisci tutte le città hand-crafted
     for (const cd of CITTA_DEFS) {
       _costruisciCitta(tiles, coll, cd);
     }
@@ -783,9 +950,21 @@ const GameMap = (function () {
       const newTy = Phaser.Math.Clamp(posTile.ty + dy, 0, MAP_H - 1);
       if (newTx === posTile.tx && newTy === posTile.ty) return;
 
-      // STEP 2 — leggi collisione dall'array separato
       const coll = collisionData ? (collisionData[newTy]?.[newTx] ?? 0) : 0;
       const mn   = (typeof stato !== 'undefined' && stato.mn) ? stato.mn : {};
+
+      // Porta edificio? Apri interno senza muovere
+      const chiavePorta = `${newTx},${newTy}`;
+      if (porteTrigger[chiavePorta]) {
+        if (dx < 0) facciata = 'left';
+        else if (dx > 0) facciata = 'right';
+        else if (dy < 0) facciata = 'up';
+        else facciata = 'down';
+        if (playerSprite) playerSprite.anims.play(`idle-${facciata}`, true);
+        const p = porteTrigger[chiavePorta];
+        apriInterno(p.file, p.nome);
+        return;
+      }
 
       if (coll === 1) return;  // bloccante: muro, albero, edificio
 
@@ -897,7 +1076,7 @@ const GameMap = (function () {
       }
       const cp = latLonToTile(41.8420, 12.6150);
       this.add.text(
-        cp.tx * TILE + TILE / 2, cp.ty * TILE - TILE * 4, 'Roma — Borgata Tuscolana',
+        cp.tx * TILE + TILE / 2, cp.ty * TILE - TILE * 4, 'Anagnina',
         { fontSize: '8px', fontFamily: 'Arial', color: '#aef0ae', padding: { x: 4, y: 2 } }
       ).setOrigin(0.5, 0.5).setDepth(25);
     }
@@ -960,6 +1139,34 @@ const GameMap = (function () {
         });
       }
     }
+  }
+
+  /* ----------------------------------------------------------
+     INTERNO EDIFICI — mostra PNG interno quando si entra dalla porta
+     ---------------------------------------------------------- */
+  function apriInterno(nomeFile, nomeLuogo) {
+    const overlay = document.getElementById('overlay-interno');
+    if (!overlay) return;
+
+    const titolo = document.getElementById('interno-titolo');
+    const canvas  = document.getElementById('interno-canvas');
+
+    if (titolo) titolo.textContent = nomeLuogo || 'Interno';
+
+    if (canvas) {
+      const img = new Image();
+      img.onload = () => {
+        canvas.width  = img.naturalWidth  * 2;
+        canvas.height = img.naturalHeight * 2;
+        const ctx = canvas.getContext('2d');
+        ctx.imageSmoothingEnabled = false;
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      };
+      img.src = `sprites/Tiles per claude/${nomeFile}`;
+    }
+
+    overlay.classList.remove('nascosto');
+    bloccaMovimento();
   }
 
   /* ----------------------------------------------------------

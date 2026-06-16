@@ -1303,3 +1303,64 @@ html, body {
   0%, 100% { box-shadow: 0 0 5px var(--giallo-poke); }
   50%       { box-shadow: 0 0 20px var(--giallo-poke), 0 0 6px #fff; }
 }
+
+
+/* ============================================================
+   OVERLAY INTERNO EDIFICIO
+   ============================================================ */
+#overlay-interno {
+  position: fixed;
+  inset: 0;
+  background: #0d0d1a;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+}
+#overlay-interno.nascosto { display: none; }
+
+#interno-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+  background: var(--blu-scuro, #1a2940);
+  border-bottom: 2px solid var(--giallo-poke, #ffcb05);
+  gap: 12px;
+  flex-shrink: 0;
+}
+
+#interno-titolo {
+  font-family: var(--font-gba, 'Press Start 2P', monospace);
+  font-size: 11px;
+  color: var(--giallo-poke, #ffcb05);
+  flex: 1;
+  letter-spacing: 0.05em;
+}
+
+#btn-esci-interno {
+  font-family: var(--font-gba, 'Press Start 2P', monospace);
+  font-size: 8px;
+  padding: 7px 14px;
+  background: #c0392b;
+  color: #fff;
+  border: 2px solid #e74c3c;
+  border-radius: 8px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+#btn-esci-interno:hover { background: #e74c3c; }
+
+#interno-scroll {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 20px;
+  background: #0d0d1a;
+}
+
+#interno-canvas {
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  display: block;
+}

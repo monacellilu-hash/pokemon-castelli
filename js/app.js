@@ -2975,6 +2975,12 @@ function avvia() {
   document.getElementById('btn-menu').addEventListener('click', apriMenu);
   document.getElementById('btn-chiudi-menu').addEventListener('click', chiudiMenu);
   document.getElementById('btn-volo').addEventListener('click', apriVolo); // MN Volo (F9)
+
+  // Chiudi overlay interno edificio
+  document.getElementById('btn-esci-interno')?.addEventListener('click', () => {
+    document.getElementById('overlay-interno').classList.add('nascosto');
+    GameMap.sbloccaMovimento();
+  });
   document.querySelectorAll('#menu-tabs .tab').forEach(tab =>
     tab.addEventListener('click', () => mostraSezioneMenu(tab.dataset.sezione)));
 
