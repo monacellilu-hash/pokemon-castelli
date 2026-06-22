@@ -195,42 +195,42 @@
   </object>
   <object id="9" name="warp" type="warp" x="448" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="10" name="warp" type="warp" x="480" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="11" name="warp" type="warp" x="512" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="12" name="warp" type="warp" x="544" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="13" name="warp" type="warp" x="576" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="14" name="warp" type="warp" x="608" y="0" width="32" height="32">
    <properties>
-    <property name="destinazione" value="boschi_tuscolo"/>
+    <property name="destinazione" value="tuscolo_ingresso"/>
     <property name="spawn_id" value="da_frascati_nord"/>
     <property name="type" value="warp"/>
    </properties>
@@ -279,7 +279,7 @@
   </object>
   <object id="21" name="spawn" type="spawn" x="520.982" y="43.7895" width="32" height="32">
    <properties>
-    <property name="id" value="da_boschi_tuscolo"/>
+    <property name="id" value="da_tuscolo_ingresso"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>

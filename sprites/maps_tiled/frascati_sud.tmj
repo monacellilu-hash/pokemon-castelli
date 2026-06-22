@@ -1,5 +1,13 @@
 { "backgroundcolor":"#000000",
  "compressionlevel":-1,
+ "editorsettings":
+    {
+     "export":
+        {
+         "format":"json",
+         "target":"frascati_sud.tmj"
+        }
+    },
  "height":30,
  "infinite":false,
  "layers":[
@@ -233,16 +241,16 @@
                  "y":701.40221402214
                 }, 
                 {
-                 "height":189.054185278695,
+                 "height":172.274228005438,
                  "id":37,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":40.2718974558167,
-                 "x":408.312293649252,
-                 "y":765.166051660517
+                 "width":31.3225869100796,
+                 "x":417.261604194989,
+                 "y":781.946008933774
                 }, 
                 {
                  "height":107.391726548845,
@@ -1183,7 +1191,7 @@
          "y":0
         }],
  "nextlayerid":21,
- "nextobjectid":71,
+ "nextobjectid":72,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

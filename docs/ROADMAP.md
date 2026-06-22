@@ -6,6 +6,23 @@
 
 ## 📌 PUNTO DELLA SITUAZIONE (aggiornato al 15 giugno 2026 — notte)
 
+> ⏰ **PROMEMORIA DA NON DIMENTICARE** — Quando si integreranno i **Centri Pokémon dei comuni
+> da Marino in poi**, aggiungere in ogni Centro l'**NPC mercante scambi** (`type:npc`,
+> `azione: 'interagisciMercanteScambi'`) per le evoluzioni da scambio. La funzione è già pronta
+> in app.js. Idem: gli **oggetti-pietra a terra** previsti in `docs/PIETRE_MARKET.md` (Lago Nemi,
+> Grotta Vulcano, Boschi Tuscolo, Monte Cavo, ecc.) vanno messi come `oggetto` nei rispettivi TMJ.
+
+### Sessione 20b — Mosse a 2 turni + mappa Tuscolo (22 giugno 2026)
+- **Mosse a due turni / ricarica** in `battle.js`: Iper Raggio & co. (`MOSSE_RICARICA`) lasciano il
+  Pokémon a ricaricare il turno dopo; Volo/Scavata/Solarraggio & co. (`MOSSE_DUE_TURNI`) si caricano
+  al turno 1 e colpiscono al turno 2. Il turno viene forzato (niente menu) e i flag `inCarica`/
+  `deveRicaricare` si azzerano a inizio lotta e al cambio Pokémon. Rilevate per nome-chiave PokéAPI
+  (non serve MOSSE_DB).
+- **`tuscolo_ingresso` registrata**: il warp nord di `frascati_nord` ora punta a `tuscolo_ingresso`
+  (prima "boschi_tuscolo", nome vecchio); rinominato lo spawn di ritorno. Da `tuscolo_ingresso` il
+  warp verso `tuscolo_interno` è pronto (mappa da creare → toast "non disponibile").
+
+
 **Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b + F13 + F14-Phase1.**
 
 ### Sessione 19 — Mappe Frascati (warp) + gate condizionali (22 giugno 2026)

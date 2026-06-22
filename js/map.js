@@ -65,6 +65,10 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/frascati_nord.tmj',
       latC: 41.8150, lonC: 12.6770,
     },
+    'tuscolo_ingresso': {
+      file: 'sprites/maps_tiled/tuscolo_ingresso.tmj',
+      latC: 41.8230, lonC: 12.7050,
+    },
     'palestra_frascati': {
       file: 'sprites/maps_tiled/pokemon-castelli-palestra_Frascati.tmj',
       interno: true,

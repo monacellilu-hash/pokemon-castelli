@@ -190,6 +190,18 @@ const Battle = (function () {
     freeze:    { sigla: 'CON', nome: 'congelato' },
   };
 
+  // Mosse a "ricarica": dopo l'uso il Pokémon salta il turno successivo (chiavi
+  // PokéAPI in inglese). Iper Raggio, Idrocannone, Vampata Solare, Radicalbruco.
+  const MOSSE_RICARICA = new Set([
+    'hyper-beam', 'giga-impact', 'hydro-cannon', 'blast-burn', 'frenzy-plant', 'rock-wrecker',
+  ]);
+  // Mosse a due turni: turno 1 si caricano (testo), turno 2 colpiscono.
+  const MOSSE_DUE_TURNI = {
+    'fly': 'vola in alto', 'dig': 'scava sottoterra', 'dive': 'si tuffa in profondità',
+    'bounce': 'salta in alto', 'solar-beam': 'assorbe la luce', 'razor-wind': 'crea un turbine',
+    'skull-bash': 'abbassa la testa', 'sky-attack': "si avvolge d'energia",
+  };
+
   // Nomi italiani delle statistiche modificabili (per i messaggi)
   const STAT_NOMI = {
     attack: 'Attacco', defense: 'Difesa',
@@ -373,6 +385,12 @@ const Battle = (function () {
 
   function mostraMenuPrincipale() {
     nascondiMenu();
+    // Turno forzato: ricarica (Iper Raggio) o secondo turno di una mossa a 2 turni.
+    if (mio.hpAttuale > 0 && (mio.deveRicaricare || mio.inCarica)) {
+      const forzata = mio.inCarica || mossaFallback();
+      setTimeout(() => turnoCompleto(forzata), 60);
+      return;
+    }
     $('battaglia-messaggio').textContent = `Cosa deve fare ${mio.nome}?`;
     $('menu-principale').classList.remove('nascosto');
   }
@@ -533,8 +551,9 @@ const Battle = (function () {
   // Esegue una singola mossa di "att" contro "dif".
   // Gestisce PP, precisione, danno+efficacia (offensive), stati ed
   // effetti statistici (mosse di stato pure e secondari delle offensive).
-  async function eseguiMossa(att, dif, mossa, etichettaAtt, etichettaDif) {
-    if (mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
+  async function eseguiMossa(att, dif, mossa, etichettaAtt, etichettaDif, giaCaricata) {
+    // I PP si consumano al turno di carica, non al turno del colpo (giaCaricata)
+    if (!giaCaricata && mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
     await di(`${etichettaAtt} usa ${mossa.nomeIt}!`);
 
     if (!colpisce(att, dif, mossa)) {
@@ -622,10 +641,33 @@ const Battle = (function () {
     return true;
   }
 
-  // Un "turno" di un combattente: prima controlla se può agire, poi esegue la mossa
+  // Un "turno" di un combattente: ricarica → può agire? → carica/colpo
   async function eseguiTurno(att, dif, mossa, etichettaAtt, etichettaDif) {
+    // 1) Ricarica obbligatoria (es. Iper Raggio): salta il turno
+    if (att.deveRicaricare) {
+      att.deveRicaricare = false;
+      await di(`${etichettaAtt} deve ricaricare!`);
+      return;
+    }
+
     if (!(await puoAgire(att, etichettaAtt))) return;
-    await eseguiMossa(att, dif, mossa, etichettaAtt, etichettaDif);
+
+    // 2) Mosse a due turni: turno 1 carica (niente danno), turno 2 colpisce
+    const inCaricaQuesta = att.inCarica && att.inCarica.nome === mossa.nome;
+    if (MOSSE_DUE_TURNI[mossa.nome] && !inCaricaQuesta) {
+      att.inCarica = mossa;
+      if (mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
+      await di(`${etichettaAtt} ${MOSSE_DUE_TURNI[mossa.nome]}!`);
+      return;
+    }
+    if (inCaricaQuesta) att.inCarica = null;
+
+    await eseguiMossa(att, dif, mossa, etichettaAtt, etichettaDif, inCaricaQuesta);
+
+    // 3) Mosse a ricarica: il prossimo turno salterà (solo se entrambi vivi)
+    if (MOSSE_RICARICA.has(mossa.nome) && att.hpAttuale > 0 && dif.hpAttuale > 0) {
+      att.deveRicaricare = true;
+    }
   }
 
   // Danni di fine turno da veleno e scottatura (1/8 degli HP massimi)
@@ -646,6 +688,7 @@ const Battle = (function () {
 
   // Il nemico sceglie una mossa a caso tra quelle con PP
   function scegliMossaNemico() {
+    if (nemico.inCarica) return nemico.inCarica;   // deve completare la mossa a 2 turni
     const utilizzabili = nemico.mosse.filter(m => m.pp > 0);
     return utilizzabili.length
       ? utilizzabili[Math.floor(Math.random() * utilizzabili.length)]
@@ -843,6 +886,7 @@ const Battle = (function () {
     indiceAttivo = idx;
     mio = statoGioco.squadra[idx];
     azzeraModificatori(mio); // gli sbalzi di statistica si resettano al cambio
+    mio.inCarica = null; mio.deveRicaricare = false; // il cambio annulla carica/ricarica
     aggiornaSprite();
     aggiornaPannelli();
     await di(`Vai! ${mio.nome}!`);
@@ -1042,6 +1086,7 @@ const Battle = (function () {
     }
     mio = statoGioco.squadra[indiceAttivo];
     azzeraModificatori(mio); // sbalzi di statistica freschi a inizio lotta
+    mio.inCarica = null; mio.deveRicaricare = false; // niente carica/ricarica residue
 
     // Mostriamo subito la schermata con un messaggio di caricamento
     nascondiMenu();
