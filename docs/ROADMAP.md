@@ -12,6 +12,17 @@
 > in app.js. Idem: gli **oggetti-pietra a terra** previsti in `docs/PIETRE_MARKET.md` (Lago Nemi,
 > Grotta Vulcano, Boschi Tuscolo, Monte Cavo, ecc.) vanno messi come `oggetto` nei rispettivi TMJ.
 
+### Sessione 20c — Trainer del bosco + trainer che ti raggiungono (22 giugno 2026)
+- **18 allenatori dei Boschi del Tuscolo** in `dati/trainer.js` (`all-bosco-1..18`), squadre e
+  dialoghi presi da `ALLENATORI` in data.js. Sprite e `vista` vengono dagli oggetti Tiled.
+  ⚠️ In `tuscolo_ingresso.tmj` per ora ci sono pochi oggetti trainer e l'id `all-bosco-2` è
+  duplicato: vanno messi 18 oggetti con id UNICI `all-bosco-1..18`.
+- **4 NPC del Tuscolo** (`tusc_ing_npc1..4`) in `dati/npc.js`. Nota: `NPC 30.png` non esiste,
+  il 4° usa `NPC 26`.
+- **Trainer che ti raggiungono**: quando un trainer ti avvista (linea visiva) ora compare un
+  "!" sopra di lui, **cammina fino ad esserti accanto** e poi parte la lotta (tu resti bloccato).
+  Nuovi `_trainerSpotta`/`_passoTrainer`/`_mostraEsclamazione` + flag `trainerSpotting` in map.js.
+
 ### Sessione 20b — Mosse a 2 turni + mappa Tuscolo (22 giugno 2026)
 - **Mosse a due turni / ricarica** in `battle.js`: Iper Raggio & co. (`MOSSE_RICARICA`) lasciano il
   Pokémon a ricaricare il turno dopo; Volo/Scavata/Solarraggio & co. (`MOSSE_DUE_TURNI`) si caricano

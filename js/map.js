@@ -325,6 +325,7 @@ const GameMap = (function () {
   let npcStato         = [];   // stato dinamico di NPC e trainer (movimento, direzione)
   let frameCount       = 0;    // contatore frame per i timer di movimento NPC
   let trainerBattuti   = new Set();
+  let trainerSpotting  = false;   // un trainer ti ha visto e ti sta raggiungendo
   let transizioneAttiva = false;
   let eventoVicino     = null;
 
@@ -1373,7 +1374,7 @@ const GameMap = (function () {
     // Cono visivo dei trainer, controllato ogni frame nella direzione corrente (Fix 4).
     _controllaTrainerVista() {
       if (typeof stato === 'undefined' || stato.incontroAttivo) return;
-      if (transizioneAttiva || bloccato) return;
+      if (transizioneAttiva || bloccato || trainerSpotting) return;
       if (typeof DATI_TRAINER === 'undefined') return;
 
       for (const st of npcStato) {
@@ -1410,10 +1411,64 @@ const GameMap = (function () {
         }
 
         if (visto) {
-          this._avviaLottaTrainer(id, dati, st.ev);
+          this._trainerSpotta(st, id, dati);
           return;
         }
       }
+    }
+
+    // Il trainer ti ha avvistato: "!" sopra la testa, poi cammina verso di te
+    // fino a esserti accanto, infine parte la lotta (tu resti bloccato).
+    async _trainerSpotta(st, id, dati) {
+      if (trainerSpotting) return;
+      trainerSpotting = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(`idle-${facciata}`, true);
+
+      await this._mostraEsclamazione(st);
+
+      // Cammina in linea retta nella direzione in cui guarda, fino ad essere
+      // adiacente al giocatore (la casella davanti diventa quella del player).
+      const { dx, dy } = this._dirDelta(st.dir);
+      let guard = 0;
+      while (guard++ < 30) {
+        const nx = st.tx + dx, ny = st.ty + dy;
+        if (nx === posTile.tx && ny === posTile.ty) break;   // sei davanti a lui
+        if (!this._liberoPerNPC(nx, ny, st)) break;          // ostacolo imprevisto
+        await this._passoTrainer(st, nx, ny);
+      }
+
+      trainerSpotting = false;
+      this._avviaLottaTrainer(id, dati, st.ev);
+    }
+
+    // Mostra un "!" giallo sopra il trainer per un attimo.
+    _mostraEsclamazione(st) {
+      return new Promise(resolve => {
+        let txt = null;
+        if (scena && st.sprite) {
+          txt = scena.add.text(st.sprite.x, st.sprite.y - tileSize * 1.4, '!', {
+            fontSize: '28px', fontStyle: 'bold', color: '#ffe14d',
+            stroke: '#000', strokeThickness: 5,
+          }).setOrigin(0.5, 1).setDepth(100);
+        }
+        setTimeout(() => { if (txt) txt.destroy(); resolve(); }, 650);
+      });
+    }
+
+    // Un passo del trainer verso (nx,ny) con animazione; risolve a fine tween.
+    _passoTrainer(st, nx, ny) {
+      return new Promise(resolve => {
+        st.tx = nx; st.ty = ny;
+        this._setNpcFrame(st.sprite, st.dir, true);          // frame "in cammino"
+        if (!st.sprite || !scena) { resolve(); return; }
+        const px = nx * tileSize + tileSize / 2;
+        const py = (ny + 1) * tileSize;
+        scena.tweens.add({
+          targets: st.sprite, x: px, y: py, duration: 170, ease: 'Linear',
+          onComplete: () => { this._setNpcFrame(st.sprite, st.dir, false); resolve(); },
+        });
+      });
     }
 
     _avviaLottaTrainer(id, dati, ev) {

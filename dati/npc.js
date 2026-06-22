@@ -146,6 +146,24 @@ const DATI_NPC = {
     dialogo: ['Un buon allenatore conosce i tipi dei Pokémon a memoria!'],
   },
 
+  /* ── Tuscolo Ingresso (verso i Boschi del Tuscolo) ── */
+  'tusc_ing_npc1': {
+    sprite: 'NPC 27', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Oltre questi alberi iniziano i Boschi del Tuscolo. Tieni gli occhi aperti!'],
+  },
+  'tusc_ing_npc2': {
+    sprite: 'NPC 28', direzione: 'nord', movimento: 'random',
+    dialogo: ['Gli allenatori qui ti sfidano appena ti vedono: non passano oltre!'],
+  },
+  'tusc_ing_npc3': {
+    sprite: 'NPC 29', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Dicono che tra le antiche rovine del Tuscolo si nasconda qualcosa di raro...'],
+  },
+  'tusc_ing_npc4': {
+    sprite: 'NPC 26', direzione: 'ovest', movimento: 'fisso',  // NPC 30 non esiste: uso NPC 26
+    dialogo: ['Con la MN Taglio puoi farti strada tra gli alberi. L\'hai presa a Frascati?'],
+  },
+
   /* ── Venditore del Poké Market di Frascati ── */
   'pokemon market venditore': {
     sprite: 'NPC 21', direzione: 'sud', movimento: 'fisso',
