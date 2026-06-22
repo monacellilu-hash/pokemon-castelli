@@ -270,6 +270,22 @@ const Battle = (function () {
     $('nemico-lv').textContent = 'Lv.' + nemico.livello;
     aggiornaBarraHp('nemico-hp', nemico.hpAttuale, nemico.hpMax);
 
+    // Contatore Pokémon avversario (solo battaglie allenatore)
+    const elContatore = $('nemico-contatore');
+    if (elContatore) {
+      if (modalita === 'allenatore' && squadraNemica.length > 1) {
+        const rimasti = squadraNemica.length - indiceNemico;
+        let pallini = '';
+        for (let i = 0; i < squadraNemica.length; i++) {
+          pallini += i < rimasti ? '●' : '○';
+        }
+        elContatore.textContent = pallini;
+        elContatore.style.display = '';
+      } else {
+        elContatore.style.display = 'none';
+      }
+    }
+
     // Giocatore
     $('giocatore-nome').textContent = mio.nome + siglaCondizione(mio);
     $('giocatore-lv').textContent = 'Lv.' + mio.livello;

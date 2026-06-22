@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Tileset Viewer — Pokémon Castelli</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #1a1a2e; color: #eee; font-family: monospace; display: flex; height: 100vh; overflow: hidden; }
+
+  /* SIDEBAR */
+  #sidebar {
+    width: 220px; min-width: 220px;
+    background: #111;
+    border-right: 2px solid #333;
+    display: flex; flex-direction: column;
+    overflow: hidden;
+  }
+  #sidebar h2 { padding: 10px 12px; color: #f0c040; font-size: 13px; border-bottom: 1px solid #333; }
+  #sidebar-search { padding: 8px 10px; border-bottom: 1px solid #333; }
+  #sidebar-search input {
+    width: 100%; padding: 4px 8px;
+    background: #222; border: 1px solid #444; color: #eee;
+    border-radius: 4px; font-size: 12px;
+  }
+  #file-list { overflow-y: auto; flex: 1; }
+  .file-item {
+    padding: 7px 12px; font-size: 11px; cursor: pointer;
+    border-bottom: 1px solid #1e1e2e;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    color: #bbb;
+    transition: background 0.1s;
+  }
+  .file-item:hover { background: #222; color: #fff; }
+  .file-item.active { background: #2a2a4e; color: #f0c040; font-weight: bold; }
+
+  /* MAIN */
+  #main {
+    flex: 1; display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  /* TOOLBAR */
+  #toolbar {
+    background: #111; border-bottom: 2px solid #333;
+    padding: 8px 14px; display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
+  }
+  #toolbar h1 { color: #f0c040; font-size: 14px; margin-right: 6px; }
+  #toolbar label { font-size: 12px; color: #ccc; display: flex; align-items: center; gap: 6px; }
+  #toolbar input[type=range] { width: 100px; }
+  #toolbar select, #toolbar input[type=number] {
+    padding: 3px 6px; background: #222; border: 1px solid #444;
+    color: #eee; border-radius: 4px; font-size: 12px;
+  }
+  #toolbar button {
+    padding: 4px 10px; background: #333; color: #eee;
+    border: 1px solid #555; border-radius: 4px; cursor: pointer; font-size: 12px;
+  }
+  #toolbar button:hover { background: #444; }
+
+  /* INFO BAR */
+  #infobar {
+    background: #0d0d1a; border-bottom: 1px solid #2a2a3e;
+    padding: 5px 14px; font-size: 12px; color: #aaa;
+    display: flex; gap: 20px; align-items: center;
+  }
+  #infobar span { color: #f0c040; }
+
+  /* CANVAS AREA */
+  #canvas-area {
+    flex: 1; overflow: auto; padding: 16px;
+    background: #0d0d1a;
+  }
+  #wrapper { position: relative; display: inline-block; cursor: crosshair; }
+  #tileCanvas, #overlay { display: block; image-rendering: pixelated; }
+  #overlay { position: absolute; top: 0; left: 0; }
+
+  /* PLACEHOLDER */
+  #placeholder {
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; color: #555; font-size: 16px; text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <h2>Tileset Files (62)</h2>
+  <div id="sidebar-search">
+    <input type="text" id="filter-input" placeholder="Filtra..." oninput="filterList()">
+  </div>
+  <div id="file-list"></div>
+</div>
+
+<div id="main">
+  <div id="toolbar">
+    <h1 id="current-name">— seleziona un tileset —</h1>
+    <label>Zoom:
+      <input type="range" id="zoom" min="1" max="6" value="2" step="0.5" oninput="onZoom(this)">
+      <span id="zoom-val">2×</span>
+    </label>
+    <label>Numeri:
+      <select id="label-mode" onchange="drawOverlay()">
+        <option value="hover">Solo hover</option>
+        <option value="all">Tutti visibili</option>
+        <option value="none">Nascosti</option>
+      </select>
+    </label>
+    <label>Tile size:
+      <select id="tile-size" onchange="render()">
+        <option value="32" selected>32×32</option>
+        <option value="16">16×16</option>
+      </select>
+    </label>
+    <label>Vai al tile:
+      <input type="number" id="goto-input" min="0" placeholder="n°" style="width:70px">
+      <button onclick="gotoTile()">Vai</button>
+    </label>
+    <label id="copy-hint" style="color:#888;font-size:11px;">Click su un tile = copia numero</label>
+  </div>
+
+  <div id="infobar">
+    <div>Tile: <span id="info-tile">—</span></div>
+    <div>Riga: <span id="info-row">—</span></div>
+    <div>Col: <span id="info-col">—</span></div>
+    <div>Pixel: <span id="info-px">—</span></div>
+    <div>Totale tile: <span id="info-total">—</span></div>
+    <div id="copy-confirm" style="color:#00ff88;display:none;">Copiato!</div>
+  </div>
+
+  <div id="canvas-area">
+    <div id="placeholder">Seleziona un tileset dalla lista a sinistra</div>
+    <div id="wrapper" style="display:none;">
+      <canvas id="tileCanvas"></canvas>
+      <canvas id="overlay"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+const FILES = [
+  "Bike shop interior.png",
+  "Black.png",
+  "Blue cave floor.png",
+  "Blue cave mud.png",
+  "Boat.png",
+  "Brick path.png",
+  "Brown cave floor.png",
+  "Brown cave sand.png",
+  "Caves.png",
+  "Department store interior.png",
+  "Dirt cave highlight.png",
+  "Dirt.png",
+  "Dungeon cave.png",
+  "Dungeon forest.png",
+  "Factory interior.png",
+  "Flowers1.png",
+  "Flowers2.png",
+  "Fountain1.png",
+  "Fountain2.png",
+  "Game Corner interior.png",
+  "Gravel.png",
+  "Graveyard tower interior.png",
+  "Green cave floor.png",
+  "Gyms interior.png",
+  "Harbour interior.png",
+  "Interior general.png",
+  "Light grass.png",
+  "Mansion interior.png",
+  "Mart interior.png",
+  "Multiplayer rooms.png",
+  "Museum interior.png",
+  "Outside.png",
+  "Poke Centre interior.png",
+  "Red cave floor.png",
+  "Red cave highlight.png",
+  "Ruins interior.png",
+  "Sand shore.png",
+  "Sand.png",
+  "Sea deep.png",
+  "Sea without shore.png",
+  "Sea.png",
+  "Seaweed dark.png",
+  "Seaweed light.png",
+  "Snow cave floor.png",
+  "Snow cave highlight.png",
+  "Snow cave ice border.png",
+  "Still water.png",
+  "Trainer Tower interior.png",
+  "Underground path.png",
+  "Underwater dark.png",
+  "Underwater.png",
+  "Water current east.png",
+  "Water current north.png",
+  "Water current south.png",
+  "Water current west.png",
+  "Water rock.png",
+  "Waterfall bottom.png",
+  "Waterfall crest.png",
+  "Waterfall.png",
+  "White cave floor.png",
+  "White cave highlight.png",
+  "White path.png",
+  "tileset-outside.png"
+];
+
+const BASE = "sprites/Tiles per claude/";
+
+let currentFile = null;
+let zoom = 2;
+let hoveredTile = -1;
+let totalTiles = 0;
+let COLS = 8;
+let TILE = 32;
+
+const canvas  = document.getElementById('tileCanvas');
+const overlay = document.getElementById('overlay');
+const ctx     = canvas.getContext('2d');
+const ovCtx   = overlay.getContext('2d');
+const img     = new Image();
+
+// Costruisce la lista
+function buildList(items) {
+  const list = document.getElementById('file-list');
+  list.innerHTML = '';
+  items.forEach(f => {
+    const d = document.createElement('div');
+    d.className = 'file-item' + (f === currentFile ? ' active' : '');
+    d.textContent = f;
+    d.title = f;
+    d.onclick = () => loadFile(f);
+    list.appendChild(d);
+  });
+}
+buildList(FILES);
+
+function filterList() {
+  const q = document.getElementById('filter-input').value.toLowerCase();
+  const filtered = FILES.filter(f => f.toLowerCase().includes(q));
+  buildList(filtered);
+}
+
+function loadFile(name) {
+  currentFile = name;
+  document.getElementById('current-name').textContent = name;
+  buildList(FILES.filter(f => {
+    const q = document.getElementById('filter-input').value.toLowerCase();
+    return f.toLowerCase().includes(q);
+  }));
+  hoveredTile = -1;
+
+  img.onload = () => {
+    TILE = parseInt(document.getElementById('tile-size').value);
+    COLS = Math.floor(img.width / TILE);
+    totalTiles = Math.floor(img.width / TILE) * Math.floor(img.height / TILE);
+    document.getElementById('info-total').textContent = totalTiles;
+    document.getElementById('placeholder').style.display = 'none';
+    document.getElementById('wrapper').style.display = 'inline-block';
+    render();
+  };
+  img.src = BASE + name;
+}
+
+function render() {
+  if (!img.src || !img.complete || !img.naturalWidth) return;
+  TILE = parseInt(document.getElementById('tile-size').value);
+  COLS = Math.floor(img.width / TILE);
+  const rows = Math.floor(img.height / TILE);
+  totalTiles = COLS * rows;
+  document.getElementById('info-total').textContent = totalTiles;
+
+  const W = img.width  * zoom;
+  const H = img.height * zoom;
+  canvas.width  = W; canvas.height  = H;
+  overlay.width = W; overlay.height = H;
+
+  ctx.imageSmoothingEnabled = false;
+  ctx.drawImage(img, 0, 0, img.width, img.height, 0, 0, W, H);
+  drawOverlay();
+}
+
+function drawOverlay() {
+  if (!img.naturalWidth) return;
+  TILE = parseInt(document.getElementById('tile-size').value);
+  COLS = Math.floor(img.width / TILE);
+  const rows = Math.floor(img.height / TILE);
+  totalTiles = COLS * rows;
+
+  const mode = document.getElementById('label-mode').value;
+  const tW = TILE * zoom;
+  const tH = TILE * zoom;
+
+  ovCtx.clearRect(0, 0, overlay.width, overlay.height);
+
+  for (let i = 0; i < totalTiles; i++) {
+    const col = i % COLS;
+    const row = Math.floor(i / COLS);
+    const x = col * tW;
+    const y = row * tH;
+
+    // Griglia
+    ovCtx.strokeStyle = 'rgba(255,255,255,0.15)';
+    ovCtx.lineWidth = 0.5;
+    ovCtx.strokeRect(x, y, tW, tH);
+
+    // Hover highlight
+    if (i === hoveredTile) {
+      ovCtx.fillStyle = 'rgba(255,200,0,0.30)';
+      ovCtx.fillRect(x, y, tW, tH);
+      ovCtx.strokeStyle = '#f0c040';
+      ovCtx.lineWidth = 2;
+      ovCtx.strokeRect(x + 1, y + 1, tW - 2, tH - 2);
+    }
+
+    // Numeri
+    if (mode === 'all' || (mode === 'hover' && i === hoveredTile)) {
+      const fs = Math.max(6, Math.min(12, tW * 0.30));
+      ovCtx.font = `bold ${fs}px monospace`;
+      ovCtx.textAlign = 'center';
+      ovCtx.textBaseline = 'middle';
+      // ombra
+      ovCtx.fillStyle = 'rgba(0,0,0,0.75)';
+      ovCtx.fillText(i, x + tW / 2 + 1, y + tH / 2 + 1);
+      // testo
+      ovCtx.fillStyle = (i === hoveredTile) ? '#ffee00' : '#ffffff';
+      ovCtx.fillText(i, x + tW / 2, y + tH / 2);
+    }
+  }
+}
+
+overlay.addEventListener('mousemove', e => {
+  const rect = overlay.getBoundingClientRect();
+  TILE = parseInt(document.getElementById('tile-size').value);
+  COLS = Math.floor(img.width / TILE);
+  const col = Math.floor((e.clientX - rect.left) / (TILE * zoom));
+  const row = Math.floor((e.clientY - rect.top)  / (TILE * zoom));
+  const tile = row * COLS + col;
+  if (tile !== hoveredTile) {
+    hoveredTile = tile;
+    drawOverlay();
+    document.getElementById('info-tile').textContent = tile;
+    document.getElementById('info-row').textContent  = row;
+    document.getElementById('info-col').textContent  = col;
+    document.getElementById('info-px').textContent   = `${col*TILE}×${row*TILE}`;
+  }
+});
+
+overlay.addEventListener('mouseleave', () => {
+  hoveredTile = -1;
+  drawOverlay();
+  ['info-tile','info-row','info-col','info-px'].forEach(id =>
+    document.getElementById(id).textContent = '—'
+  );
+});
+
+overlay.addEventListener('click', () => {
+  if (hoveredTile < 0) return;
+  const text = `${currentFile.replace('.png','')} — tile ${hoveredTile}`;
+  navigator.clipboard.writeText(String(hoveredTile)).catch(() => {});
+  const cc = document.getElementById('copy-confirm');
+  cc.textContent = `Copiato: tile ${hoveredTile}`;
+  cc.style.display = 'inline';
+  setTimeout(() => cc.style.display = 'none', 1500);
+});
+
+function onZoom(el) {
+  zoom = parseFloat(el.value);
+  document.getElementById('zoom-val').textContent = zoom + '×';
+  render();
+}
+
+function gotoTile() {
+  const n = parseInt(document.getElementById('goto-input').value);
+  if (!img.naturalWidth || isNaN(n) || n < 0 || n >= totalTiles) return;
+  TILE = parseInt(document.getElementById('tile-size').value);
+  COLS = Math.floor(img.width / TILE);
+  hoveredTile = n;
+  drawOverlay();
+  const col = n % COLS;
+  const row = Math.floor(n / COLS);
+  document.getElementById('info-tile').textContent = n;
+  document.getElementById('info-row').textContent  = row;
+  document.getElementById('info-col').textContent  = col;
+  document.getElementById('info-px').textContent   = `${col*TILE}×${row*TILE}`;
+
+  // Scroll
+  const y = row * TILE * zoom;
+  document.getElementById('canvas-area').scrollTop = Math.max(0, y - 150);
+
+  // Lampeggio
+  const tW = TILE * zoom, tH = TILE * zoom;
+  const x = col * tW;
+  let b = 0;
+  const iv = setInterval(() => {
+    b++;
+    ovCtx.strokeStyle = b % 2 === 0 ? '#ff4444' : '#ffee00';
+    ovCtx.lineWidth = 3;
+    ovCtx.strokeRect(x + 1, y + 1, tW - 2, tH - 2);
+    if (b > 7) { clearInterval(iv); drawOverlay(); }
+  }, 180);
+}
+
+document.getElementById('goto-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') gotoTile();
+});
+</script>
+</body>
+</html>

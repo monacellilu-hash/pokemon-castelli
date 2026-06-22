@@ -19,3 +19,17 @@ desktop.ini
 
 # Asset originali (pack completo — solo i file specifici vengono committati)
 sprites/Essentials FRLG/
+Essentials FRLG/
+
+# Dipendenze npm (Playwright ecc.: non fanno parte del gioco)
+node_modules/
+
+# Screenshot di test (Playwright)
+test-*.png
+
+# File di sessione/progetto di Tiled (non servono al gioco)
+*.tiled-session
+*.tiled-project
+
+# Cartella di scarti asset (non referenziata dal gioco, ~35MB)
+sprites/NO/

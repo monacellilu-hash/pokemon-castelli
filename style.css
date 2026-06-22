@@ -771,6 +771,14 @@ html, body {
 #info-nemico    { top: 7%;  left: 5%; }
 #info-giocatore { bottom: 5%; right: 5%; }
 
+#nemico-contatore {
+  font-size: 12px;
+  letter-spacing: 3px;
+  color: #d04040;
+  text-align: right;
+  margin-top: 2px;
+}
+
 .riga-nome {
   display: flex;
   justify-content: space-between;

@@ -9,6 +9,12 @@ const CHIAVE_SALVATAGGIO  = 'pkc_salvataggio';
 const PASSI_PER_CHECK     = 10;   // ogni quanti passi si fa il check incontro
 const MINUTI_PER_PASSO    = 1;    // minuti di gioco per ogni passo
 
+// F14: il gioco gira sulle mappe Tiled. Tutto ciò che è legato alla MAPPA
+// (incontri, allenatori, oggetti, eventi) è gestito da map.js a tile.
+// Con questo flag il vecchio motore a coordinate lat/lon (OSM) resta spento.
+// (Leggendari ed eventi verranno riportati sul sistema a tile più avanti.)
+const MAPPA_TILED = true;
+
 // Stato di gioco — tutto ciò che viene salvato in localStorage
 let stato = {
   posizione:         { ...POSIZIONE_INIZIALE },
@@ -21,7 +27,7 @@ let stato = {
   zaino:             { pokeball: 0, pozione: 0 },
   soldi:             SOLDI_INIZIALI, // Pokéyen (F9.2)
   repellentePassi:   0,     // passi rimasti con il repellente attivo (F9.2)
-  mn:                { taglio: false, surf: false, volo: false, funivia: false, vittoria: false }, // MN possedute (F9/F11/F12)
+  mn:                { taglio: false, surf: false, volo: false, funivia: false, vittoria: false, spaccaroccia: false }, // MN possedute (F9/F11/F12)
   cittaVisitate:     [],    // comuni visitati (per la MN Volo) (F9)
   allenatoriBattuti: [],    // id degli allenatori di percorso già sconfitti (F9)
   levelCap:          LEVEL_CAP_INIZIALE,
@@ -100,6 +106,7 @@ function caricaPartita() {
       if (!Array.isArray(stato.legCatturati)) stato.legCatturati = [];
       stato.legCooldown = null; // transitorio: sempre null al caricamento
       if (!stato.mn.funivia)            stato.mn.funivia           = false;
+      if (stato.mn.spaccaroccia === undefined) stato.mn.spaccaroccia = false;
       if (stato.flags.funiviaUsata     === undefined) stato.flags.funiviaUsata     = false;
       if (stato.flags.giornoTemporale  === undefined) stato.flags.giornoTemporale  = 0;
       if (stato.flags.suicuneVisto     === undefined) stato.flags.suicuneVisto     = false;
@@ -862,6 +869,15 @@ async function vinciPalestra(palestra) {
   ]);
 }
 
+// Chiamata da map.js quando si batte il Capopalestra dentro la palestra Tiled.
+// Evita di ri-assegnare la medaglia se già presa.
+function vinciPalestraTiled(idPalestra) {
+  const palestra = PALESTRE.find(p => p.id === idPalestra);
+  if (!palestra) return;
+  if (stato.medaglie.includes(palestra.id)) return;   // già vinta
+  vinciPalestra(palestra);
+}
+
 // ── Centro Pokémon: cura + "Dormi" (F9.1) ───────────────────
 
 function curaSquadraDaCentro(idCentro) {
@@ -896,12 +912,29 @@ function curaSquadraDaCentro(idCentro) {
    ============================================================ */
 
 // Restituisce il market entro RAGGIO_MARKET dal giocatore (o null)
+// Market "forzato": quando parli col venditore dentro un negozio Tiled, si apre
+// quel market a prescindere dalla distanza geografica.
+let marketTiledForzato = null;
+
 function marketVicino() {
+  if (marketTiledForzato) return POKE_MARKET.find(m => m.id === marketTiledForzato) || null;
   for (const market of POKE_MARKET) {
     if (GameMap.distanzaMetri(stato.posizione, market) <= RAGGIO_MARKET) return market;
   }
   return null;
 }
+
+// Apre il Poké Market parlando col venditore (NPC dentro la mappa del negozio).
+function apriMarketVenditore(idMarket) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  marketTiledForzato = idMarket;
+  GameMap.bloccaMovimento();
+  document.getElementById('pannello-menu').classList.remove('nascosto');
+  mostraSezioneMenu('market');
+}
+
+// Venditore della prima città: Poké Market di Frascati (merce base).
+function apriMarketFrascati() { apriMarketVenditore('mk-frascati'); }
 
 // Apre il menu sulla tab Market (chiamata dal marker 🛒 sulla mappa)
 function apriMarket(idMarket) {
@@ -2166,9 +2199,75 @@ function apriMenu() {
 
 function chiudiMenu() {
   document.getElementById('pannello-menu').classList.add('nascosto');
+  marketTiledForzato = null;   // esci dal market del venditore
   if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   salvaPartita();
   aggiornaHUD();
+}
+
+/* ============================================================
+   TASTIERA stile Game Boy (QoL)
+   - [A]        = conferma / interagisci / avanza i dialoghi
+   - [B]        = indietro / annulla (chiude menu, avanza dialoghi)
+   - [Invio]    = Start: apre/chiude il menu
+   - frecce ← → = scorrono le schede del menu (quando è aperto)
+   Il movimento sulla mappa resta con le frecce (gestito da map.js).
+   ============================================================ */
+function initTastiera() {
+  const nascosto = (id) => {
+    const el = document.getElementById(id);
+    return !el || el.classList.contains('nascosto');
+  };
+
+  window.addEventListener('keydown', (e) => {
+    // non interferire mentre si scrive in un campo di testo
+    const t = e.target;
+    if (t && /^(input|textarea|select)$/i.test(t.tagName)) return;
+
+    const k = e.key.toLowerCase();
+    const isA     = (k === 'a');
+    const isB     = (k === 'b');
+    const isStart = (k === 'enter');
+    const isFreccia = (k === 'arrowleft' || k === 'arrowright');
+    if (!isA && !isB && !isStart && !isFreccia) return;
+
+    // In battaglia comanda l'interfaccia di battle.js (mouse): non intercettiamo.
+    if (stato.incontroAttivo) return;
+
+    const sceltaEl = document.getElementById('overlay-scelta');
+    const sceltaAperta = sceltaEl && sceltaEl.style.display === 'flex';
+
+    // 1) Riquadro a due scelte (gauntlet palestre): A = sx, B = dx
+    if (sceltaAperta) {
+      if (isA) { e.preventDefault(); document.getElementById('scelta-btn1').click(); }
+      else if (isB) { e.preventDefault(); document.getElementById('scelta-btn2').click(); }
+      return;
+    }
+
+    // 2) Dialogo in corso: A o B fanno avanzare il testo
+    if (!nascosto('overlay-dialogo')) {
+      if (isA || isB) { e.preventDefault(); document.getElementById('dialogo-avanti').click(); }
+      return;
+    }
+
+    // 3) Menu aperto: B/Start chiudono, ← → cambiano scheda
+    if (!nascosto('pannello-menu')) {
+      if (isB || isStart) { e.preventDefault(); chiudiMenu(); return; }
+      if (isFreccia) {
+        e.preventDefault();
+        const schede = ['squadra', 'zaino', 'market', 'box', 'salva'];
+        let i = schede.indexOf(sezioneMenuAttiva);
+        if (i < 0) i = 0;
+        i = (i + (k === 'arrowright' ? 1 : schede.length - 1)) % schede.length;
+        mostraSezioneMenu(schede[i]);
+      }
+      return;
+    }
+
+    // 4) Esplorazione: Start apre il menu, A interagisce con ciò che hai davanti
+    if (isStart) { e.preventDefault(); apriMenu(); }
+    else if (isA) { e.preventDefault(); if (GameMap.interagisciVicino) GameMap.interagisciVicino(); }
+  });
 }
 
 function mostraSezioneMenu(sezione) {
@@ -2774,6 +2873,13 @@ function alPasso(nuovaPosizione) {
   aggiornaHUD();
   salvaPartita();
 
+  // ── MOTORE MAPPA = TILED ──────────────────────────────────────
+  // Da qui in giù c'è il VECCHIO sistema a coordinate lat/lon (mappa OSM):
+  // incontri per zona, allenatori a distanza, raccolta automatica oggetti,
+  // leggendari/eventi geografici. Sulle mappe Tiled comanda map.js, quindi
+  // lo disattiviamo per non avere due motori che si pestano i piedi.
+  if (MAPPA_TILED) return;
+
   // F9: gli allenatori vicini (≤80 m) ti sfidano da soli, come nei giochi classici
   controllaAllenatoriVicini();
 
@@ -2961,6 +3067,7 @@ function avvia() {
 
   if (MODALITA_TEST) {
     stato.zaino.caramellarara = 999;
+    stato.zaino.repellente = 999;   // dev: per evitare gli incontri durante i test
   } else {
     delete stato.zaino.caramellarara;
   }
@@ -2974,6 +3081,7 @@ function avvia() {
 
   document.getElementById('btn-menu').addEventListener('click', apriMenu);
   document.getElementById('btn-chiudi-menu').addEventListener('click', chiudiMenu);
+  initTastiera();   // QoL: tasti A / B / Start (Invio)
   document.getElementById('btn-volo').addEventListener('click', apriVolo); // MN Volo (F9)
 
   // Chiudi overlay interno edificio

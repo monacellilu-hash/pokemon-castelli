@@ -91,6 +91,7 @@
           <span class="hp-etichetta">HP</span>
           <div class="hp-binario"><div id="nemico-hp" class="hp-barra"></div></div>
         </div>
+        <div id="nemico-contatore" style="display:none;"></div>
       </div>
       <div id="zona-nemico" class="sprite-zona">
         <img id="nemico-sprite" src="" alt="Pokémon avversario">
@@ -149,6 +150,13 @@
 
   <!-- Phaser 3 (motore grafico F14 — sostituisce Leaflet) -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+
+  <!-- Dati mappe Tiled (NPC, trainer, porte, incontri, cartelli) -->
+  <script src="dati/npc.js"></script>
+  <script src="dati/trainer.js"></script>
+  <script src="dati/porte.js"></script>
+  <script src="dati/incontri.js"></script>
+  <script src="dati/cartelli.js"></script>
 
   <!-- Script del gioco (ordine: dati → zone → api → mappa → battaglia → avvio) -->
   <script src="js/data.js"></script>

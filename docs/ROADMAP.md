@@ -8,6 +8,127 @@
 
 **Fasi completate: F1-F8 + F9 + F10 + F11 + F12 + F12b + F13 + F14-Phase1.**
 
+### Sessione 19 — Mappe Frascati (warp) + gate condizionali (22 giugno 2026)
+- **Nuove mappe registrate** in `js/map.js` (`MAPPE`): `frascati_sud`, `frascati_centro`,
+  `pokecenter_frascati`. I tileset `../outside.tsx` si risolvono al tileset `outside`
+  già esistente: le mappe renderizzano senza modifiche.
+- **Supporto al nuovo tipo `warp`** (l'utente è passato da `uscita` a `warp`): aggiunto in
+  4 punti — `buildCollGrid` (tile calpestabile), `_gestisciUscitaBordo` (trigger ai bordi),
+  `_controllaEventiCalpestabili` (trigger calpestando), gestiti come le vecchie `uscita`.
+- **Stack di ritorno per gli interni**: entrando in una mappa `interno:true` via warp si
+  fa `mappaStack.push(...)`, così l'`uscita` senza destinazione (es. Centro Pokémon) riporta
+  esattamente alla casella di partenza.
+- **`_trovaSpawn` più tollerante**: match dello `spawn_id` anche per inclusione (gestisce
+  nomi non allineati tipo `da_frascati_sud` ↔ spawn `Da Frascati`).
+- **GATE condizionali**: un warp con proprietà `richiede` = nome di un flag di `stato.flags`
+  (es. `legaCompletata`) si apre solo a flag attivo; altrimenti mostra `messaggio_gate`.
+  **Applicato alla Villa Aldobrandini** (warp in `frascati_centro`): bloccata finché non si
+  vince la Lega. La mappa interna della villa è ancora da creare.
+- **Collegamento `percorso_1b` → `frascati_sud`**: aggiunti `destinazione`/`spawn_id`
+  all'uscita "Ingresso Frascati" (in `.tmj` **e** `.tmx`).
+- Mappe ancora da creare (per ora danno toast "zona non disponibile"): `frascati_nord/ovest/est`,
+  `palestra_frascati`, `pokemon market frascati`, `villa aldobrandini`.
+
+**Aggiunte stessa sessione (richieste utente):**
+- **Trigger MN ora interagibili**: oggetti `trigger_surf` / `trigger_spaccaroccia` / `trigger_taglio`…
+  (in Percorso 1b e ovunque) sono **solidi** finché non possiedi la MN: ti avvicini, premi [A] e,
+  se hai la MN giusta (`stato.mn[chiave]`), la casella si sblocca; altrimenti avviso "Serve la MN…".
+  Aggiunta `stato.mn.spaccaroccia` (default false) + migrazione. (`_gestisciTrigger` in map.js)
+- **NPC di Frascati visibili e parlanti**: lo sprite ora ha **fallback** alla proprietà `sprite`
+  del Tiled e il loader prova sia `NPC_05` sia `NPC 05` (spazio↔underscore). Aggiunte 8 voci in
+  `dati/npc.js` (fra_sud_npc1-4, fra_centro_npc1-4) con sprite e battute a tema.
+- **QoL tastiera stile Game Boy** (`initTastiera` in app.js): movimento **solo frecce**;
+  **[A]** = conferma/interagisci/avanza dialoghi; **[B]** = indietro/annulla (chiude menu, avanza
+  testo); **[Invio]** = Start (apre/chiude il menu); **← →** scorrono le schede del menu.
+  Esposto `GameMap.interagisciVicino()`. WASD rimosso dal movimento.
+- **Incontri ribilanciati**: probabilità **15%** per casella (costante `PROB_INCONTRO`) +
+  **tregua di 4 passi** dopo ogni incontro (`PASSI_TREGUA`/`cooldownIncontro`) → niente più
+  scontri uno-dietro-l'altro. Aggiornata `dati/incontri.js` a 15.
+- **Repellenti in `MODALITA_TEST`**: 999 repellenti nello zaino per evitare incontri nei test.
+- **`frascati_est` registrata** (warp verso `percorso_2` e `villa_torlonia` ancora da creare).
+- **Interazione oggetti rettangolari**: nelle mappe nuove NPC/cartelli/oggetti sono rettangoli
+  (`point=false`), prima non rilevati. Ora `_aggiornaEventoVicino` li riconosce; gli **NPC** sono
+  rilevati dalla posizione corrente (`npcStato`, si muovono). I **cartelli rettangolari** sono
+  resi **solidi** (si leggono di fronte); i cartelli "punto" delle mappe vecchie restano com'erano.
+  Gli **oggetti a terra** si raccolgono **calpestandoli** (auto-pickup) oltre che con [A]. Nome
+  contenuto normalizzato ("caramella rara" → `caramellarara`).
+- **`frascati_ovest` registrata** (warp ↔ frascati_centro).
+
+**Sessione 19c — Palestra, Market, NPC, interazione omnidirezionale:**
+- **Mappe nuove registrate**: `frascati_nord`, `palestra_frascati` (interno), `pokemon_market_frascati`
+  (interno). Aggiunti i tileset `Mart interior` e `professor Castagno` a `TILESET_META/IMMAGINI`.
+- **Palestra di Frascati funzionante**: 3 gregari + Capopalestra **Vinicio** (tipo Erba) in
+  `dati/trainer.js`, squadre prese da `PALESTRE['frascati']`. Il leader ha `palestraId:'frascati'`:
+  alla sconfitta chiama `vinciPalestraTiled` → **Medaglia Vigna** + level cap a 14 (riusa `vinciPalestra`).
+- **Trainer interagibili con [A]** (oltre alla linea visiva): nuovo branch `trainer` in `_interagisci`
+  (sfida se non battuto, altrimenti dialogo). Il leader (vista 0) si sfida avvicinandosi.
+- **Venditore del Market**: NPC `pokemon market venditore` → `apriMarketFrascati`. Aggiunto
+  `marketTiledForzato` + override in `marketVicino` (apre `mk-frascati`, merce base: pokeball/pozione/
+  superpozione). Azzerato alla chiusura del menu.
+- **Interazione da QUALSIASI direzione**: `_aggiornaEventoVicino` riscritto con helper
+  `_eventoInCasella`; controlla la casella davanti + le 4 adiacenti + quella sotto i piedi.
+  NPC e cartelli ora parlabili/leggibili da ogni lato (richiesta utente). Risolti anche gli
+  NPC di frascati_est/nord/ovest (12 voci nuove in `dati/npc.js`).
+- **Uscita dagli interni**: qualsiasi warp dentro un interno torna al punto d'ingresso (stack),
+  un tile fuori dalla porta.
+- ⚠️ Nota dati: l'oggetto in `frascati_ovest` ha `contenuto:"raro_caramella"` (non corrisponde a
+  nessun oggetto); andrebbe messo `caramellarara` in Tiled.
+
+**Sessione 19d — Fix richiesti dall'utente:**
+- **Capopalestra non si attiva più passandoci davanti**: `vista 0` ora disattiva davvero la
+  linea visiva (`0 || '4'` rendeva la vista 4). Il leader si sfida SOLO parlandoci con [A].
+- **Warp non "anticipa" più**: lo sprite veniva teletrasportato a metà tween. Nuovo `_snapPlayer()`
+  (chiamato in `_transizioneMappa` e `_gestisciPorta`) porta il personaggio sulla casella prima
+  di cambiare mappa.
+- **Trigger di Taglio ora funzionano**: erano nel layer `collisioni` invece che in `eventi`;
+  `parseEventi` ora raccoglie i `trigger_*` anche dal layer collisioni (es. `trigger_taglio` a
+  frascati_sud). Restano solidi finché non possiedi la MN Taglio.
+- **Decorazioni solide**: oggetti `deco` e `warp_speciale` rettangolari (es. fontana San Rocco)
+  non sono più calpestabili. Gli `oggetto` restano raccolti calpestandoli (auto-pickup + toast).
+
+### Sessione 18b — Due motori in conflitto: spento il vecchio (21 giugno 2026)
+**Causa radice dei bug ripetuti:** giravano in parallelo DUE motori. Quello vecchio
+(`app.js` → `alPasso()`, basato su coordinate lat/lon della mappa OSM) sovrascriveva
+quello nuovo Tiled (`map.js`): incontri ovunque, allenatori a distanza, raccolta
+automatica oggetti, leggendari su coordinate finte.
+- **`app.js`:** nuovo flag `MAPPA_TILED = true`; in `alPasso()` dopo tempo/HUD/salvataggio
+  c'è un `return` che **spegne** tutto il vecchio sistema lat/lon. L'infrastruttura dati
+  (palestre, squadre, MN, tabelle incontri, oggetti, allenatori) resta intatta e riusabile;
+  è solo la MAPPA a essere guidata da `map.js`. Leggendari/eventi: da riportare su tile.
+- **`map.js` 3 bugfix:** (1) spawn iniziale usa il punto di partenza della mappa, non "il
+  primo spawn a caso"; (2) NPC animati con la PROPRIA texture (`setFrame`), basta scambio
+  con lo sprite di Red; (3) NPC/trainer ora SOLIDI, il giocatore non ci passa più attraverso.
+- **Verificato con Playwright:** 0 errori console, spawn al centro Borgata, sprite NPC
+  corretti, movimento senza diagonali, nessun incontro su erba normale.
+- **Aggiunti:** `docs/DIZIONARIO-TILED.md` (convenzioni tile/oggetti), `server.js` + `start.bat`
+  (il gioco va aperto via http://localhost:8000, NON col doppio click su index.html).
+
+### Sessione 18 — Fix motore mappe Tiled (21 giugno 2026)
+Quattro correzioni al loader mappe `js/map.js`, adattate alla struttura reale dei TMJ
+(spawn, warp, zone erba alta) creata dall'utente in Tiled:
+- **Fix 1 — niente diagonali**: nel game loop l'asse verticale ha la precedenza, mai
+  aggiornare X e Y nello stesso passo.
+- **Fix 2 — incontri solo su erba alta/acqua**: nuova `_getTileType(tx,ty)` che legge le
+  zone `erba_alta`/`acqua` del layer eventi; gli incontri scattano solo dentro quelle zone.
+- **Fix 3 — spawn corretti alle transizioni**: nuovo resolver `risolviMappa()` (tollerante a
+  nomi disordinati IT/EN) + `_trovaSpawn()` che sceglie lo spawn per `spawn_id`, per mappa di
+  provenienza, `default` o primo disponibile. Aggiunta `percorso_1b` al registro MAPPE.
+  Gestisce il refuso `spwan`.
+- **Fix 4 — NPC e trainer si muovono**: `npcStato[]` popolato a ogni caricamento; NPC
+  `random` vagano nel raggio, trainer `pattuglia` alternano direzione; cono visivo dei
+  trainer controllato ogni frame. Gestisce il refuso `patuglia`.
+
+**Completato nella stessa sessione:**
+- Aggiunti in `dati/trainer.js` i 5 allenatori mancanti (Path 1 = 8 totali: `1_4`, `1b_5`,
+  `1b_6`, `1b_7`, `1b_8` → all-tusc-4..8), presi da `ALLENATORI` in data.js.
+- Aggiunti via script gli spawn di ritorno nei TMJ: `Da percorso 1` in Borgata e
+  `Da percorso 1b` in Percorso 1 (vicino alle uscite nord). ⚠️ Vivono solo nel `.tmj`:
+  se riesporti da Tiled vanno riaggiunti nel `.tmx`.
+- Oggetti con id duplicato `"univoco"`: risolto nel codice usando una chiave per posizione
+  (`mappa:tx,ty`), così non spariscono più gli altri.
+- Mappa "Frascati" inesistente: la transizione ora mostra un toast "Zona non disponibile"
+  invece di rompersi (la mappa va creata in F-successiva).
+
 ### Sessione 17 — F14 Phase 1 + Anti-spoiler (15 giugno 2026)
 - **Anti-spoiler** su tutto il gioco: rimossi/oscurati tutti i riferimenti espliciti ai leggendari nei dialoghi pre-incontro:
   - "Piuma Sacra" → **"Piuma Iridescente"** (nome e descrizione in OGGETTI_CHIAVE)
