@@ -2822,6 +2822,34 @@ const OGGETTI = {
                descrizione: 'Cura qualsiasi stato alterato (veleno, paralisi, sonno, scottatura, congelamento).' },
   caramellarara: { nome: 'Caramella Rara', categoria: 'test', icona: '🍬',
                descrizione: 'MODALITÀ TEST: +1 livello a un Pokémon (dal menu Squadra, fuori battaglia).' },
+
+  // ── PIETRE EVOLUTIVE (categoria 'pietra': si usano su un Pokémon per evolverlo) ──
+  pietra_fuoco:  { nome: 'Pietra Fuoco',  categoria: 'pietra', prezzo: 2100, icona: '🔥',
+               descrizione: 'Fa evolvere alcuni Pokémon (Vulpix, Growlithe, Eevee→Flareon).' },
+  pietra_acqua:  { nome: 'Pietra Acqua',  categoria: 'pietra', prezzo: 2100, icona: '💧',
+               descrizione: 'Fa evolvere alcuni Pokémon (Poliwhirl, Shellder, Staryu, Eevee→Vaporeon, Lombre).' },
+  pietra_tuono:  { nome: 'Pietra Tuono',  categoria: 'pietra', prezzo: 2100, icona: '⚡',
+               descrizione: 'Fa evolvere Pikachu ed Eevee→Jolteon.' },
+  pietra_foglia: { nome: 'Pietra Foglia', categoria: 'pietra', prezzo: 2100, icona: '🍃',
+               descrizione: 'Fa evolvere Gloom→Vileplume, Weepinbell, Exeggcute, Nuzleaf.' },
+  pietra_luna:   { nome: 'Pietra Luna',   categoria: 'pietra', prezzo: 2100, icona: '🌙',
+               descrizione: 'Fa evolvere Nidorina/o, Clefairy, Jigglypuff, Skitty.' },
+  pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 2100, icona: '☀️',
+               descrizione: 'Fa evolvere Gloom→Bellossom e Sunkern→Sunflora.' },
+
+  // ── OGGETTI PER EVOLUZIONE DA SCAMBIO (categoria 'evo': si consegnano al mercante scambi) ──
+  rivestimetallo:    { nome: 'Rivestimetallo',    categoria: 'evo', prezzo: 3000, icona: '🛡️',
+               descrizione: 'Da scambiare col mercante: Onix→Steelix, Scyther→Scizor.' },
+  patroclo:          { nome: 'Patroclo',          categoria: 'evo', prezzo: 3000, icona: '👑',
+               descrizione: 'Da scambiare col mercante: Poliwhirl→Politoed, Slowpoke→Slowking.' },
+  squamadragone:     { nome: 'Squamadragone',     categoria: 'evo', prezzo: 3000, icona: '🐉',
+               descrizione: 'Da scambiare col mercante: Seadra→Kingdra.' },
+  dente_oscuro:      { nome: 'Dente Oscuro',      categoria: 'evo', prezzo: 3000, icona: '🦷',
+               descrizione: 'Da scambiare col mercante: Clamperl→Huntail.' },
+  conchigliamutante: { nome: 'Conchigliamutante', categoria: 'evo', prezzo: 3500, icona: '🐚',
+               descrizione: 'Da scambiare col mercante: Clamperl→Gorebyss.' },
+  upgrade:           { nome: 'Upgrade',           categoria: 'evo', prezzo: 3500, icona: '💾',
+               descrizione: 'Da scambiare col mercante: Porygon→Porygon2.' },
 };
 
 /* ----------------------------------------------------------
@@ -2840,25 +2868,25 @@ const POKE_MARKET = [
     merce: ['pokeball', 'pozione', 'superpozione'] },
 
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7873, lon: 12.6700,
-    merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi'] },
+    merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'pietra_luna'] },
 
   { id: 'mk-marino', comune: 'Marino', lat: 41.7700, lon: 12.6653,
-    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura'] },
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'pietra_fuoco', 'patroclo'] },
 
   { id: 'mk-monte-porzio', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
-    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo'] },
+    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo', 'pietra_luna', 'pietra_tuono'] },
 
   { id: 'mk-rocca-di-papa', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
-    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot'] },
+    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot', 'pietra_fuoco'] },
 
   { id: 'mk-albano', comune: 'Albano Laziale', lat: 41.7295, lon: 12.6588,
-    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot'] },
+    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_acqua', 'patroclo'] },
 
   { id: 'mk-ariccia', comune: 'Ariccia', lat: 41.7200, lon: 12.6746,
-    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot'] },
+    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_sole', 'dente_oscuro'] },
 
   { id: 'mk-genzano', comune: 'Genzano di Roma', lat: 41.7080, lon: 12.6920,
-    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot'] },
+    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_foglia', 'conchigliamutante'] },
 ];
 
 // Level cap iniziale: prima di battere la Palestra 1 (Frascati)

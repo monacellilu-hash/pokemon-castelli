@@ -74,6 +74,23 @@
 - ⚠️ Nota dati: l'oggetto in `frascati_ovest` ha `contenuto:"raro_caramella"` (non corrisponde a
   nessun oggetto); andrebbe messo `caramellarara` in Tiled.
 
+### Sessione 20 — Mosse DB, Evoluzioni, Pietre, Mercante scambi (22 giugno 2026)
+- **`dati/mosse.js`** (generato da `docs/MOSSE_GEN1_3.md`): 354 mosse Gen 1-3 con
+  tipo/categoria (fisico/speciale/stato)/potenza/accuratezza/PP + codice `effetto` snake_case.
+- **`dati/evoluzioni.js`** (da `docs/EVOLUZIONI_GEN1_3.md`): 171 Pokémon, metodi livello/
+  pietra/felicità/scambio (Gen 4 escluse, ramificate come Eevee/Gloom in array).
+- Inclusi in `index.html` prima di battle.js/app.js.
+- **Evoluzioni integrate**: `battle.js` ora usa `EVOLUZIONI_DB` (al posto di PokéAPI) per le
+  evoluzioni a livello/felicità (`trovaEvoluzioneAuto`, `evolviIstanza` esposta). Aggiunto
+  campo `felicita` (default 70, +5/livello) + migrazione salvataggi.
+- **Pietre evolutive**: 6 pietre + 6 oggetti-scambio in `OGGETTI`, in vendita nei market giusti
+  (PIETRE_MARKET.md). Uso pietra dal menu Zaino → evolve (`avviaEvoluzione` con flash bianco).
+- **Mercante scambi**: `interagisciMercanteScambi()` (da agganciare agli NPC dei Centri da Marino):
+  evolve i Pokémon da scambio consumando l'oggetto richiesto dallo zaino.
+- ⚠️ **Task "effetti mosse" (Task 2)**: `battle.js` implementa GIÀ stati/sbalzi/priorità/multi-colpo
+  dai metadati mossa di PokéAPI (Sessione 10). MOSSE_DB usa ID 1-354 propri, non quelli PokéAPI:
+  collegarlo come fonte primaria richiede un refactor (mappare ~350 mosse) — da confermare.
+
 **Sessione 19d — Fix richiesti dall'utente:**
 - **Capopalestra non si attiva più passandoci davanti**: `vista 0` ora disattiva davvero la
   linea visiva (`0 || '4'` rendeva la vista 4). Il leader si sfida SOLO parlandoci con [A].

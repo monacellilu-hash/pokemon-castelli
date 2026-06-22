@@ -126,6 +126,10 @@ function caricaPartita() {
       if (stato.flags.bunkerinoDebellato     === undefined) stato.flags.bunkerinoDebellato     = false;
       if (stato.flags.mewtwoSconfitto        === undefined) stato.flags.mewtwoSconfitto        = false;
       if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
+      // Migrazione evoluzioni: campo felicità sui Pokémon che non ce l'hanno
+      [...(stato.squadra || []), ...(stato.box || [])].forEach(p => {
+        if (p && p.felicita == null) p.felicita = 70;
+      });
       console.log('[Salvataggio] Partita caricata ✔');
     }
   } catch (e) {
@@ -878,6 +882,94 @@ function vinciPalestraTiled(idPalestra) {
   vinciPalestra(palestra);
 }
 
+/* ============================================================
+   EVOLUZIONI fuori battaglia (pietre, scambio) — usa EVOLUZIONI_DB
+   ============================================================ */
+
+// Evoluzione con animazione (flash bianco) + ricalcolo via Battle.evolviIstanza.
+async function avviaEvoluzione(pkm, idEvo) {
+  const vecchioNome = pkm.nome;
+  const flash = document.createElement('div');
+  flash.style.cssText = 'position:fixed;inset:0;background:#fff;opacity:0;z-index:3000;' +
+    'pointer-events:none;transition:opacity .45s;';
+  document.body.appendChild(flash);
+
+  await mostraDialogo('Evoluzione', [`Cosa?! ${vecchioNome} sta per evolversi!`]);
+  flash.style.opacity = '1';
+  await new Promise(r => setTimeout(r, 500));
+  try {
+    await Battle.evolviIstanza(pkm, idEvo);
+  } catch (e) {
+    flash.remove();
+    await mostraDialogo('Evoluzione', ['Serve la connessione per evolvere: riprova più tardi.']);
+    return false;
+  }
+  flash.style.opacity = '0';
+  await new Promise(r => setTimeout(r, 450));
+  flash.remove();
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo('Evoluzione', [`🎉 ${vecchioNome} si è evoluto in ${pkm.nome}!`]);
+  return true;
+}
+
+// Cerca in EVOLUZIONI_DB l'evoluzione per PIETRA del Pokémon con quella pietra.
+function trovaEvoluzionePietra(idPkm, chiavePietra) {
+  if (typeof EVOLUZIONI_DB === 'undefined') return null;
+  const e = EVOLUZIONI_DB[idPkm];
+  if (!e) return null;
+  const arr = Array.isArray(e) ? e : [e];
+  return arr.find(x => x.metodo === 'pietra' && x.valore === chiavePietra) || null;
+}
+
+// Cerca l'evoluzione per SCAMBIO del Pokémon (valore = oggetto richiesto o null).
+function trovaEvoluzioneScambio(idPkm) {
+  if (typeof EVOLUZIONI_DB === 'undefined') return null;
+  const e = EVOLUZIONI_DB[idPkm];
+  if (!e) return null;
+  const arr = Array.isArray(e) ? e : [e];
+  return arr.find(x => x.metodo === 'scambio') || null;
+}
+
+/* Mercante degli scambi (NPC nei Centri Pokémon da Marino in poi).
+   Aggancia un NPC Tiled con azione:'interagisciMercanteScambi'. Per semplicità
+   l'oggetto richiesto si verifica nello ZAINO (non "tenuto" dal Pokémon). */
+async function interagisciMercanteScambi() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Mercante degli Scambi';
+
+  // Candidati: Pokémon in squadra che evolvono per scambio e (oggetto nello zaino o scambio semplice)
+  const candidati = stato.squadra
+    .map((pkm, idx) => ({ pkm, idx, evo: trovaEvoluzioneScambio(pkm.id) }))
+    .filter(c => c.evo && (c.evo.valore === null || (stato.zaino[c.evo.valore] || 0) > 0));
+
+  if (candidati.length === 0) {
+    await mostraDialogo(nome, [
+      'Vuoi scambiare un Pokémon? Ti offro una buona squadra!',
+      'Al momento nessuno dei tuoi Pokémon può evolvere con uno scambio (serve anche l\'oggetto giusto, se richiesto).'
+    ]);
+    return;
+  }
+
+  // Propone il primo candidato (MVP). Si può estendere a una lista completa.
+  const c = candidati[0];
+  const oggReq = c.evo.valore ? OGGETTI[c.evo.valore] : null;
+  const nomeEvo = (typeof NOMI_POKEMON !== 'undefined' && NOMI_POKEMON[c.evo.idEvo]) || `n.${c.evo.idEvo}`;
+  const scelta = await mostraScelta(
+    `Il tuo ${c.pkm.nome} può evolversi con uno scambio${oggReq ? ' (serve ' + oggReq.nome + ')' : ''}. Procedo?`,
+    'Sì, scambia', 'No, lascia'
+  );
+  if (scelta !== 1) {
+    await mostraDialogo(nome, ['Va bene, torna quando vuoi!']);
+    return;
+  }
+  if (c.evo.valore) {                       // consuma l'oggetto richiesto
+    stato.zaino[c.evo.valore] -= 1;
+    if ((stato.zaino[c.evo.valore] || 0) <= 0) delete stato.zaino[c.evo.valore];
+  }
+  await avviaEvoluzione(c.pkm, c.evo.idEvo);
+}
+
 // ── Centro Pokémon: cura + "Dormi" (F9.1) ───────────────────
 
 function curaSquadraDaCentro(idCentro) {
@@ -935,6 +1027,32 @@ function apriMarketVenditore(idMarket) {
 
 // Venditore della prima città: Poké Market di Frascati (merce base).
 function apriMarketFrascati() { apriMarketVenditore('mk-frascati'); }
+
+// NPC di Frascati che insegna la MN Taglio DOPO aver vinto la palestra (Medaglia
+// Vigna). Serve a farsi strada tra gli alberi/vigne verso i Boschi del Tuscolo.
+function donaTaglioFrascati() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Vecchio Vignaiolo';
+  if (stato.mn && stato.mn.taglio) {
+    mostraDialogo(nome, ['Te la cavi già bene tra le vigne, figliuolo!']);
+    return;
+  }
+  if (!stato.medaglie.includes('frascati')) {
+    mostraDialogo(nome, [
+      'Vedo che giri tra le vigne... ma prima dimostra il tuo valore!',
+      'Batti Vinicio alla Palestra, poi ti insegno un trucco di noi vignaroli.'
+    ]);
+    return;
+  }
+  stato.mn.taglio = true;
+  salvaPartita();
+  aggiornaHUD();
+  mostraDialogo(nome, [
+    'Bravo! Hai battuto Vinicio, eh? Te lo dicevo che ce la facevi.',
+    'Tieni, questa è la MN Taglio.',
+    'Fatti strada tra le vigne de li Castelli, figliuolo!'
+  ]);
+}
 
 // Apre il menu sulla tab Market (chiamata dal marker 🛒 sulla mappa)
 function apriMarket(idMarket) {
@@ -2406,7 +2524,7 @@ function renderZaino(contenuto) {
     almenoUno = true;
 
     // Quali oggetti si possono usare dal menu (fuori battaglia)
-    const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato';
+    const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra';
     const direttamente = oggetto.categoria === 'repellente';
     const usabile = suBersaglio || direttamente;
 
@@ -2552,6 +2670,17 @@ async function usaOggettoSu(chiave, idx) {
     const risultato = await Battle.caramellaRara(pkm, stato.levelCap);
     if (risultato.ok) stato.zaino[chiave] -= 1;
     mostraToast(risultato.messaggi.join(' '), 4000);
+  } else if (oggetto.categoria === 'pietra') {
+    const evo = trovaEvoluzionePietra(pkm.id, chiave);
+    if (!evo) {
+      mostraToast(`La ${oggetto.nome} non ha effetto su ${pkm.nome}.`);
+      return;
+    }
+    stato.zaino[chiave] -= 1;
+    if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+    chiudiMenu();                       // chiude il menu per mostrare l'evoluzione
+    await avviaEvoluzione(pkm, evo.idEvo);
+    return;
   }
 
   salvaPartita();

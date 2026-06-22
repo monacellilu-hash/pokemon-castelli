@@ -124,10 +124,57 @@ const Battle = (function () {
       mosseImparabili: dati.mosse,     // lista specie: serve per i level-up futuri
       condizione: null,                // stato alterato: null | { tipo, turni }
       mod: modificatoriAzzerati(),     // sbalzi di statistica (-6..+6)
+      felicita: 70,                    // 0-255: sale coi livelli/vittorie (evol. felicità)
     };
     ricalcolaStatistiche(ist);
     ist.hpAttuale = ist.hpMax;
     return ist;
+  }
+
+  // Trasforma un'istanza nel Pokémon evoluto, mantenendo livello, exp, mosse,
+  // felicità e il rapporto di HP. Usata sia in battaglia (livello) sia fuori
+  // (pietre, scambio) tramite Battle.evolviIstanza.
+  async function evolviIstanza(ist, idEvo) {
+    const dati = await PokeAPI.getPokemon(idEvo);
+    const vecchioHpMax = ist.hpMax;
+    ist.id = dati.id;
+    ist.nome = nomeBello(dati.nome);
+    ist.tipi = dati.tipi;
+    ist.sprite = dati.sprite;
+    ist.basi = dati.statistiche;
+    ist.baseExp = dati.baseExp || ist.baseExp;
+    ist.mosseImparabili = dati.mosse;
+    ricalcolaStatistiche(ist);
+    ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - vecchioHpMax));
+    return ist;
+  }
+
+  // Cerca un'evoluzione per LIVELLO o FELICITÀ soddisfatta in EVOLUZIONI_DB.
+  function trovaEvoluzioneAuto(ist) {
+    if (typeof EVOLUZIONI_DB === 'undefined') return null;
+    const e = EVOLUZIONI_DB[ist.id];
+    if (!e) return null;
+    const arr = Array.isArray(e) ? e : [e];
+    return arr.find(x => {
+      if (x.metodo === 'livello' && x.valore != null && ist.livello >= x.valore) {
+        if (x.condizione === 'att>dif') return ist.attacco >  ist.difesa;
+        if (x.condizione === 'dif>att') return ist.difesa  >  ist.attacco;
+        if (x.condizione === 'att=dif') return ist.attacco === ist.difesa;
+        if (x.condizione === 'posto_libero') return false;  // Nincada→Shedinja: non gestito
+        return true;
+      }
+      if (x.metodo === 'felicita' && (ist.felicita || 0) >= (x.valore || 220)) {
+        // condizione giorno/notte (se il sistema tempo è disponibile)
+        if (x.condizione && typeof stato !== 'undefined' && stato.tempo) {
+          const ora = stato.tempo.minuti != null ? Math.floor(stato.tempo.minuti / 60) : 12;
+          const giorno = ora >= 6 && ora < 21;
+          if (x.condizione === 'giorno' && !giorno) return false;
+          if (x.condizione === 'notte'  &&  giorno) return false;
+        }
+        return true;
+      }
+      return false;
+    }) || null;
   }
 
   /* ==========================================================
@@ -716,28 +763,13 @@ const Battle = (function () {
   // livello (o prima), il Pokémon si trasforma mantenendo mosse ed EXP.
   async function controllaEvoluzione(ist) {
     try {
-      const evo = await PokeAPI.getEvoluzione(ist.id);
-      if (!evo || evo.nessuna || ist.livello < evo.livello) return;
+      if (ist.felicita != null) ist.felicita = Math.min(255, ist.felicita + 5);  // sale coi livelli
+      const evo = trovaEvoluzioneAuto(ist);
+      if (!evo) return;
 
       await di(`Cosa?! ${ist.nome} si sta evolvendo!`);
-
-      const dati = await PokeAPI.getPokemon(evo.id);
       const vecchioNome = ist.nome;
-      const vecchioHpMax = ist.hpMax;
-
-      // Cambia la specie: id, nome, tipi, sprite, statistiche base
-      ist.id = dati.id;
-      ist.nome = nomeBello(dati.nome);
-      ist.tipi = dati.tipi;
-      ist.sprite = dati.sprite;
-      ist.basi = dati.statistiche;
-      ist.baseExp = dati.baseExp || ist.baseExp;
-      ist.mosseImparabili = dati.mosse;
-
-      // Statistiche ricalcolate; gli HP crescono della differenza
-      ricalcolaStatistiche(ist);
-      ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - vecchioHpMax));
-
+      await evolviIstanza(ist, evo.idEvo);
       aggiornaSprite();
       aggiornaPannelli();
       await di(`🎉 ${vecchioNome} si è evoluto in ${ist.nome}!`);
@@ -958,22 +990,13 @@ const Battle = (function () {
       }
     }
 
-    // Evoluzione per livello
+    // Evoluzione per livello/felicità (EVOLUZIONI_DB)
     try {
-      const evo = await PokeAPI.getEvoluzione(ist.id);
-      if (evo && !evo.nessuna && ist.livello >= evo.livello) {
-        const dati = await PokeAPI.getPokemon(evo.id);
+      if (ist.felicita != null) ist.felicita = Math.min(255, ist.felicita + 5);
+      const evo = trovaEvoluzioneAuto(ist);
+      if (evo) {
         const vecchioNome = ist.nome;
-        const hpMaxPre = ist.hpMax;
-        ist.id = dati.id;
-        ist.nome = nomeBello(dati.nome);
-        ist.tipi = dati.tipi;
-        ist.sprite = dati.sprite;
-        ist.basi = dati.statistiche;
-        ist.baseExp = dati.baseExp || ist.baseExp;
-        ist.mosseImparabili = dati.mosse;
-        ricalcolaStatistiche(ist);
-        ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - hpMaxPre));
+        await evolviIstanza(ist, evo.idEvo);
         messaggi.push(`🎉 ${vecchioNome} si è evoluto in ${ist.nome}!`);
       }
     } catch (err) {
@@ -1062,6 +1085,6 @@ const Battle = (function () {
   }
 
   // Funzioni pubbliche del modulo
-  return { avvia, creaIstanza, caramellaRara };
+  return { avvia, creaIstanza, caramellaRara, evolviIstanza, trovaEvoluzioneAuto };
 
 })();

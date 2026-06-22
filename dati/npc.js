@@ -85,6 +85,7 @@ const DATI_NPC = {
   'fra_centro_npc3': {
     sprite: 'NPC 07', direzione: 'est', movimento: 'random',
     dialogo: ['Il vino dei Castelli è famoso in tutto il mondo!'],
+    azione: 'donaTaglioFrascati',   // dà la MN Taglio dopo la palestra
   },
   'fra_centro_npc4': {
     sprite: 'NPC 08', direzione: 'ovest', movimento: 'fisso',
