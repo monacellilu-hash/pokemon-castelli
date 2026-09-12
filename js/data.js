@@ -90,6 +90,7 @@ const PALESTRE = [
     levelCap: 14,
     descrizione: 'Tra i giardini e le vigne tuscolane, il Capopalestra coltiva Pokémon di tipo Erba.',
     medaglia: 'Medaglia Vigna',
+    mtDonata: 'mt01',
     capopalestra: {
       nome: 'Vinicio',
       premioSoldi: 1400,  // ricompensa in Pokéyen alla sconfitta
@@ -138,6 +139,7 @@ const PALESTRE = [
     levelCap: 21,
     descrizione: "Nell'antica abbazia millenaria, la meditazione potenzia i Pokémon di tipo Psico.",
     medaglia: 'Medaglia Icona',
+    mtDonata: 'mt02',
     capopalestra: {
       nome: 'Nilo',
       premioSoldi: 2100,
@@ -192,6 +194,7 @@ const PALESTRE = [
     levelCap: 28,
     descrizione: "Dalla fontana che alla Sagra dell'Uva versa vino, sgorgano Pokémon di tipo Acqua.",
     medaglia: 'Medaglia Fontana',
+    mtDonata: 'mt03',
     capopalestra: {
       nome: 'Moro',
       premioSoldi: 2800,
@@ -252,6 +255,7 @@ const PALESTRE = [
     levelCap: 34,
     descrizione: "L'osservatorio astronomico sul colle alimenta Pokémon di tipo Elettro.",
     medaglia: 'Medaglia Stella',
+    mtDonata: 'mt04',
     capopalestra: {
       nome: 'Stella',
       premioSoldi: 3400,
@@ -314,70 +318,71 @@ const PALESTRE = [
     comune: 'Rocca di Papa',
     luogo: 'Centro storico (sotto Monte Cavo)',
     lat: 41.7608, lon: 12.7096,
-    tipo: 'Roccia',
+    tipo: 'Lotta',
     levelCap: 40,
-    descrizione: 'Sul fianco del vulcano laziale, la pietra forgia Pokémon di tipo Roccia e Terra.',
-    medaglia: 'Medaglia Cratere',
+    descrizione: 'Sul fianco del vulcano laziale, chi si allena scalando la roccia viva diventa duro di corpo: Baso ne ha fatto una palestra di tipo Lotta.',
+    medaglia: 'Medaglia Pigna',
+    mtDonata: 'mt06',
     capopalestra: {
-      nome: 'Rocco',
+      nome: 'Baso',
       premioSoldi: 4000,
       squadra: [
-        { id: 28,  livello: 36 },  // Sandslash (BST 450)
-        { id: 305, livello: 37 },  // Lairon (BST 430)
-        { id: 76,  livello: 38 },  // Golem (BST 495)
-        { id: 112, livello: 39 },  // Rhydon (BST 485)
-        { id: 306, livello: 40 },  // Aggron (l'asso, BST 530)
+        { id: 107, livello: 36 },  // Hitmonchan (BST 455)
+        { id: 106, livello: 37 },  // Hitmonlee (BST 455)
+        { id: 286, livello: 38 },  // Breloom (BST 460)
+        { id: 308, livello: 39 },  // Medicham (BST 410)
+        { id: 68,  livello: 40 },  // Machamp (l'asso, BST 505)
       ],
       dialogoIntro: [
-        'Fermo lì! Sono Rocco di Rocca di Papa, e qui si lotta sulla pietra viva del Vulcano Laziale!',
-        'Il Monte Cavo ci guarda: i miei Pokémon sono nati dalla sua roccia.',
+        'Fermo lì! Sono Baso di Rocca di Papa, e qui ci si allena scalando la pietra viva del Vulcano Laziale!',
+        'Il Monte Cavo ci guarda: i miei Pokémon hanno i pugni duri come il peperino su cui mi alleno.',
         'Spero che tu non sia di quelli che si sgretolano al primo colpo!'
       ],
-      dialogoSconfitta: 'Mi hai frantumato le certezze! Sei duro come il peperino. Prendi la Medaglia Cratere!'
+      dialogoSconfitta: 'Mi hai frantumato le certezze! Sei duro come il peperino. Prendi la Medaglia Pigna!'
     },
     gregari: [
       { id: 'greg-rocca-1', classe: 'Speleologo', nome: 'Dante',
-        squadra: [{ id: 74, livello: 34 }, { id: 41, livello: 35 }],
+        squadra: [{ id: 66, livello: 34 }, { id: 67, livello: 35 }],
         premioSoldi: 700,
-        dialogoIntro: ['Ho esplorato le grotte del Vulcano Laziale. Duro come la roccia, sono!'],
-        dialogoSconfitta: 'La pietra cede, stavolta.',
-        dialogoDopo: ['Rocco ama i Pokémon pesanti come macigni.'] },
+        dialogoIntro: ['Ho esplorato le grotte del Vulcano Laziale. Duro come la roccia che scalo, sono!'],
+        dialogoSconfitta: 'La presa cede, stavolta.',
+        dialogoDopo: ['Baso ama i Pokémon che colpiscono come macigni.'] },
       { id: 'greg-rocca-2', comune: 'Rocca di Papa', classe: 'Gestore', nome: 'Ubaldo',
-        squadra: [{ id: 74, livello: 35 }, { id: 95, livello: 35 }],
+        squadra: [{ id: 56, livello: 35 }, { id: 57, livello: 35 }],
         premioSoldi: 720,
         dialogoIntro: ['Gestisco l\'accesso alla palestra. Nessuno passa senza una buona lotta!'],
         dialogoSconfitta: 'Accesso concesso.',
-        dialogoDopo: ['Avanti, ma attento: Rocco è un\'altra storia.'] },
+        dialogoDopo: ['Avanti, ma attento: Baso è un\'altra storia.'] },
       { id: 'greg-rocca-3', classe: 'Rocciatore', nome: 'Emilio',
-        squadra: [{ id: 111, livello: 35 }, { id: 299, livello: 36 }],
+        squadra: [{ id: 236, livello: 35 }, { id: 66, livello: 36 }],
         premioSoldi: 740,
-        dialogoIntro: ['Scalo le pareti del vulcano per allenamento. I miei Pokémon Roccia sono come me: inscalfibili!'],
+        dialogoIntro: ['Scalo le pareti del vulcano per allenamento. I miei Pokémon Lotta sono come me: inscalfibili!'],
         dialogoSconfitta: 'Scivolato.',
-        dialogoDopo: ['Nosepass punta sempre a nord. Orientati e prosegui.'] },
+        dialogoDopo: ['Tyrogue punta sempre in alto. Orientati e prosegui.'] },
       { id: 'greg-rocca-4', classe: 'Minatore', nome: 'Siro',
-        squadra: [{ id: 304, livello: 36 }, { id: 74, livello: 37 }],
+        squadra: [{ id: 296, livello: 36 }, { id: 67, livello: 37 }],
         premioSoldi: 760,
-        dialogoIntro: ['Scavo nel ventre del vulcano. La mia squadra di Roccia è più dura del peperino!'],
+        dialogoIntro: ['Scavo nel ventre del vulcano. La mia squadra colpisce più duro del peperino!'],
         dialogoSconfitta: 'Il filone era più sottile del previsto.',
-        dialogoDopo: ['L\'Aggron di Rocco è massiccio. Preparati.'] },
+        dialogoDopo: ['Il Machamp di Baso è massiccio. Preparati.'] },
       { id: 'greg-rocca-5', classe: 'Arrampicatrice', nome: 'Mirta',
-        squadra: [{ id: 28, livello: 37 }, { id: 111, livello: 38 }],
+        squadra: [{ id: 307, livello: 37 }, { id: 237, livello: 38 }],
         premioSoldi: 780,
         dialogoIntro: ['Scalo senza corda ogni mattina. I miei Pokémon hanno l\'agilità della roccia!'],
         dialogoSconfitta: 'Mi sono calata troppo in basso.',
-        dialogoDopo: ['Brava arrampicata! Rocco ti vede già.'] },
+        dialogoDopo: ['Brava arrampicata! Baso ti vede già.'] },
       { id: 'greg-rocca-6', classe: 'Guida', nome: 'Arnaldo',
-        squadra: [{ id: 75, livello: 38 }, { id: 304, livello: 38 }],
+        squadra: [{ id: 297, livello: 38 }, { id: 57, livello: 38 }],
         premioSoldi: 800,
         dialogoIntro: ['Porto i turisti sul Monte Cavo. Ma gli sfidanti della palestra li fermo io!'],
         dialogoSconfitta: 'Itinerario imprevisto.',
         dialogoDopo: ['La Via Sacra è bellissima. Se hai tempo, fai un giro.'] },
       { id: 'greg-rocca-7', classe: 'Vulcanologo', nome: 'Furio',
-        squadra: [{ id: 75, livello: 38 }, { id: 112, livello: 39 }],
+        squadra: [{ id: 67, livello: 38 }, { id: 296, livello: 39 }],
         premioSoldi: 820,
         dialogoIntro: ['Studio l\'attività vulcanica del Lazio. Eruzioni come queste non si vedono tutti i giorni!'],
         dialogoSconfitta: 'Eruzione inaspettata.',
-        dialogoDopo: ['Rocco è avanti. Sei arrivato fin qui: ce la puoi fare.'] },
+        dialogoDopo: ['Baso è avanti. Sei arrivato fin qui: ce la puoi fare.'] },
     ]
   },
   {
@@ -386,77 +391,77 @@ const PALESTRE = [
     comune: 'Albano Laziale',
     luogo: 'Piazza Mazzini',
     lat: 41.7310, lon: 12.6560,
-    tipo: 'Lotta',
+    tipo: 'Roccia',
     levelCap: 46,
-    descrizione: "L'eredità militare dei legionari romani di Albano vive nei Pokémon di tipo Lotta.",
-    medaglia: 'Medaglia Legione',
+    descrizione: "Le mura dei Castra Albana sono scavate nella pietra viva: Giorgia ne ha fatto una palestra di tipo Roccia.",
+    medaglia: 'Medaglia Scudo',
+    mtDonata: 'mt05',
     capopalestra: {
-      nome: 'Massimo',
+      nome: 'Giorgia',
       premioSoldi: 4600,
       squadra: [
-        { id: 107, livello: 42 },  // Hitmonchan (BST 455)
-        { id: 106, livello: 43 },  // Hitmonlee (BST 455)
-        { id: 286, livello: 44 },  // Breloom (BST 460)
-        { id: 297, livello: 44 },  // Hariyama (BST 474)
-        { id: 308, livello: 45 },  // Medicham (BST 410)
-        { id: 68,  livello: 46 },  // Machamp (l'asso, BST 505)
+        { id: 28,  livello: 42 },  // Sandslash (BST 450)
+        { id: 305, livello: 43 },  // Lairon (BST 430)
+        { id: 76,  livello: 44 },  // Golem (BST 495)
+        { id: 112, livello: 45 },  // Rhydon (BST 485)
+        { id: 306, livello: 46 },  // Aggron (l'asso, BST 530)
       ],
       dialogoIntro: [
         'ALT! Chi entra nei Castra Albana deve dimostrare il proprio valore!',
-        'Sono Massimo: qui ad Albano si allenava la Seconda Legione Partica, e la mia palestra ne custodisce lo spirito.',
-        'Niente trucchi, niente scuse: solo forza, tecnica e disciplina. AVE!'
+        'Sono Giorgia: queste mura sono di pietra viva da duemila anni, e la mia palestra ne custodisce la durezza.',
+        'Niente trucchi, niente scuse: solo pietra contro pietra. AVE!'
       ],
-      dialogoSconfitta: 'Per Giove! Combatti come un vero legionario. La Medaglia Legione è tua, ad maiora!'
+      dialogoSconfitta: 'Per Giove! Sei duro come queste mura. La Medaglia Scudo è tua, ad maiora!'
     },
     gregari: [
       { id: 'greg-albano-1', classe: 'Legionario', nome: 'Decio',
-        squadra: [{ id: 56, livello: 40 }, { id: 66, livello: 41 }],
+        squadra: [{ id: 74, livello: 40 }, { id: 95, livello: 41 }],
         premioSoldi: 900,
         dialogoIntro: ['AVE! Primo ostacolo: il legionario Decio. Nessuno passa senza combattere!'],
         dialogoSconfitta: 'Ritirata tattica.',
         dialogoDopo: ['Hai il ritmo del legionario. Avanza!'] },
       { id: 'greg-albano-2', classe: 'Gladiatrice', nome: 'Fulva',
-        squadra: [{ id: 107, livello: 41 }, { id: 296, livello: 41 }],
+        squadra: [{ id: 75, livello: 41 }, { id: 185, livello: 41 }],
         premioSoldi: 920,
         dialogoIntro: ['Nell\'arena non si danno sconti. Manco qui!'],
         dialogoSconfitta: 'Pollice verso. Hai vinto.',
         dialogoDopo: ['I Castra Albana non perdonano i deboli.'] },
       { id: 'greg-albano-3', classe: 'Centurione', nome: 'Marco',
-        squadra: [{ id: 66, livello: 42 }, { id: 307, livello: 42 }],
+        squadra: [{ id: 95, livello: 42 }, { id: 299, livello: 42 }],
         premioSoldi: 940,
-        dialogoIntro: ['Comando la terza coorte di questa palestra. A me si risponde con la forza!'],
+        dialogoIntro: ['Comando la terza coorte di questa palestra. A me si risponde con la forza della pietra!'],
         dialogoSconfitta: 'La coorte si ritira.',
         dialogoDopo: ['Avanti verso il tribuno. Il peggio deve ancora venire.'] },
       { id: 'greg-albano-4', classe: 'Veterana', nome: 'Cesira',
-        squadra: [{ id: 106, livello: 43 }, { id: 296, livello: 43 }],
+        squadra: [{ id: 74, livello: 43 }, { id: 213, livello: 43 }],
         premioSoldi: 960,
         dialogoIntro: ['Vent\'anni di servizio nei Castra Albana. Sfida ogni legionario che trova!'],
         dialogoSconfitta: 'Rispetto per il vincitore.',
-        dialogoDopo: ['Massimo ha sei Pokémon. Sii pronto a tutto.'] },
+        dialogoDopo: ['Giorgia ha cinque Pokémon. Sii pronto a tutto.'] },
       { id: 'greg-albano-5', classe: 'Campione', nome: 'Tertio',
-        squadra: [{ id: 67, livello: 43 }, { id: 308, livello: 43 }],
+        squadra: [{ id: 222, livello: 43 }, { id: 347, livello: 43 }],
         premioSoldi: 960,
         dialogoIntro: ['Sono il campione dei giochi gladiatori di Albano. Preparati a difenderti!'],
         dialogoSconfitta: 'Sconfitta onorevole.',
         dialogoDopo: ['I tuoi Pokémon combattono con onore. Vai avanti.'] },
       { id: 'greg-albano-6', classe: 'Tribuno', nome: 'Vibio',
-        squadra: [{ id: 57, livello: 44 }, { id: 107, livello: 44 }],
+        squadra: [{ id: 185, livello: 44 }, { id: 348, livello: 44 }],
         premioSoldi: 980,
         dialogoIntro: ['Come tribuno mi spetta l\'ultima parola prima del Capopalestra. Dimostrami di valere!'],
         dialogoSconfitta: 'Parola data: passi.',
-        dialogoDopo: ['Massimo è avanti. AVE!'] },
+        dialogoDopo: ['Giorgia è avanti. AVE!'] },
       { id: 'greg-albano-7', classe: 'Optio', nome: 'Lucio',
-        squadra: [{ id: 106, livello: 44 }, { id: 307, livello: 45 }],
+        squadra: [{ id: 299, livello: 44 }, { id: 75, livello: 45 }],
         premioSoldi: 1000,
-        dialogoIntro: ['L\'optio è il braccio destro del centurione. Io sono il braccio destro di Massimo!'],
+        dialogoIntro: ['L\'optio è il braccio destro del centurione. Io sono il braccio destro di Giorgia!'],
         dialogoSconfitta: 'Il braccio ha ceduto.',
-        dialogoDopo: ['Il Machamp di Massimo ha quattro braccia. Quattro!'] },
+        dialogoDopo: ["L'Aggron di Giorgia è massiccio. Preparati."] },
       { id: 'greg-albano-8', classe: 'Pretoriano', nome: 'Pio',
-        squadra: [{ id: 67, livello: 45 }, { id: 68, livello: 45 }],
+        squadra: [{ id: 348, livello: 45 }, { id: 213, livello: 45 }],
         premioSoldi: 1020,
         dialogoIntro: ['Proteggo il Capopalestra. Nessuno entra senza battere me. NESSUNO!'],
         dialogoSconfitta: 'La guardia è caduta.',
-        dialogoDopo: ['Sei l\'unico che mi ha battuto quest\'anno. Massimo ti aspetta. AVE!'] },
+        dialogoDopo: ['Sei l\'unico che mi ha battuto quest\'anno. Giorgia ti aspetta. AVE!'] },
     ]
   },
   {
@@ -469,6 +474,10 @@ const PALESTRE = [
     levelCap: 52,
     descrizione: 'Tra le fraschette di notte e il viadotto misterioso, dominano i Pokémon di tipo Buio.',
     medaglia: 'Medaglia Fraschetta',
+    mtDonata: 'mt07',
+    // MN Cascata: permesso concesso direttamente da questa palestra (sessione 12
+    // agosto). L'oggetto sul campo resta da assegnare (ancora da decidere dove).
+    mnDonata: 'cascata',
     capopalestra: {
       nome: 'Ombretta',
       premioSoldi: 5200,
@@ -550,89 +559,93 @@ const PALESTRE = [
     comune: 'Genzano di Roma',
     luogo: 'Centro storico (Infiorata)',
     lat: 41.7068, lon: 12.6898,
-    tipo: 'Folletto',
+    tipo: 'Fuoco',
     levelCap: 58,
-    descrizione: "Sulla via dell'Infiorata, i petali nascondono Pokémon di tipo Folletto.",
-    medaglia: 'Medaglia Infiorata',
+    descrizione: "Sulla via dell'Infiorata, il calore che sale dal sottosuolo vulcanico fa sbocciare i fiori migliori: Camilla coltiva anche Pokémon di tipo Fuoco.",
+    medaglia: 'Medaglia Lava',
+    mtDonata: 'mt08',
+    // MN Sub: permesso concesso direttamente da questa palestra (sessione 12
+    // agosto). L'oggetto sul campo resta da assegnare (ancora da decidere dove).
+    mnDonata: 'sub',
     capopalestra: {
-      nome: 'Flora',
+      nome: 'Camilla',
       premioSoldi: 5800,
       squadra: [
-        { id: 40,  livello: 54 },  // Wigglytuff (BST 435)
-        { id: 122, livello: 55 },  // Mr. Mime (BST 460)
-        { id: 210, livello: 55 },  // Granbull (BST 450)
-        { id: 36,  livello: 56 },  // Clefable (BST 483)
-        { id: 184, livello: 57 },  // Azumarill (BST 420)
-        { id: 282, livello: 58 },  // Gardevoir (l'asso, BST 518)
+        { id: 38,  livello: 54 },  // Ninetales (BST 505)
+        { id: 126, livello: 55 },  // Magmar (BST 495)
+        { id: 323, livello: 55 },  // Camerupt (BST 460)
+        { id: 324, livello: 56 },  // Torkoal (BST 470)
+        { id: 136, livello: 57 },  // Flareon (BST 525)
+        { id: 59,  livello: 58 },  // Arcanine (l'asso, BST 555)
       ],
       dialogoIntro: [
         'Benvenuto a Genzano, dove ogni giugno la via si copre di petali per l\'Infiorata!',
-        'Sono Flora, l\'ultima Capopalestra dei Castelli. I miei Folletto sembrano delicati come fiori…',
-        '…ma sotto i petali ci sono le spine! Sei l\'ultimo quadro della mia Infiorata: vediamo di che colori sei fatto!'
+        'Sono Camilla, l\'ultima Capopalestra dei Castelli. Sotto questi fiori scorre il calore del vulcano laziale: senza quel fuoco, l\'Infiorata non fiorirebbe così bella.',
+        'I miei Pokémon di tipo Fuoco sono la stessa fiamma che nutre i miei fiori. Sei l\'ultimo quadro della mia Infiorata: vediamo di che colori sei fatto!'
       ],
-      dialogoSconfitta: 'Splendido… un capolavoro degno dell\'Infiorata! La Medaglia Infiorata è tua: ora la Via Vittoria e la Lega di Colonna ti aspettano!'
+      dialogoSconfitta: 'Splendido… un capolavoro degno dell\'Infiorata! La Medaglia Lava è tua: ora la Via Vittoria e la Lega di Colonna ti aspettano!'
     },
     gregari: [
       { id: 'greg-genz-1', classe: 'Fioraio', nome: 'Petalino',
-        squadra: [{ id: 35, livello: 52 }, { id: 39, livello: 53 }],
+        squadra: [{ id: 4, livello: 52 }, { id: 5, livello: 53 }],
         premioSoldi: 1300,
-        dialogoIntro: ['I fiori parlano a chi sa ascoltare. E i miei Pokémon Folletto parlano con i pugni!'],
+        dialogoIntro: ['I fiori parlano a chi sa ascoltare. E i miei Pokémon di Fuoco li scaldano dalle radici!'],
         dialogoSconfitta: 'Un petalo caduto.',
-        dialogoDopo: ['Flora ama i fiori più dei Pokémon. Quasi.'] },
+        dialogoDopo: ['Camilla ama i fiori più dei Pokémon. Quasi.'] },
       { id: 'greg-genz-2', classe: 'Artista', nome: 'Fiamma',
-        squadra: [{ id: 209, livello: 53 }, { id: 175, livello: 54 }],
+        squadra: [{ id: 37, livello: 53 }, { id: 58, livello: 54 }],
         premioSoldi: 1320,
         dialogoIntro: ['Dipingo per l\'Infiorata ogni anno. E i miei Pokémon sono il mio capolavoro vivente!'],
         dialogoSconfitta: 'Un quadro incompiuto.',
-        dialogoDopo: ['I Pokémon Folletto sembrano fatti di petali. Occhio: mordono.'] },
+        dialogoDopo: ['I Pokémon di Camilla sembrano fatti di brace sotto i petali. Occhio: scottano.'] },
       { id: 'greg-genz-3', classe: 'Giardiniera', nome: 'Rosa',
-        squadra: [{ id: 35, livello: 54 }, { id: 210, livello: 54 }],
+        squadra: [{ id: 77, livello: 54 }, { id: 218, livello: 54 }],
         premioSoldi: 1340,
-        dialogoIntro: ['Ho piantato ogni fiore di questa palestra. E allevo i Pokémon Folletto come li coltivo: con pazienza!'],
+        dialogoIntro: ['Ho piantato ogni fiore di questa palestra. E allevo i Pokémon di Fuoco come li coltivo: con pazienza!'],
         dialogoSconfitta: 'Il gelo ha preso il giardino.',
-        dialogoDopo: ['Granbull sembra cattivo. Invece è dolcissimo. Quasi.'] },
+        dialogoDopo: ['Slugma sembra pigro. Invece scioglie qualunque avversario. Quasi.'] },
       { id: 'greg-genz-4', classe: 'Pittrice dei fiori', nome: 'Elisa',
-        squadra: [{ id: 176, livello: 54 }, { id: 35, livello: 55 }],
+        squadra: [{ id: 155, livello: 54 }, { id: 255, livello: 55 }],
         premioSoldi: 1360,
         dialogoIntro: ['Ogni Infiorata è un capolavoro effimero. Come questa lotta: la perderai in un attimo!'],
         dialogoSconfitta: 'Il capolavoro è tuo.',
-        dialogoDopo: ['Togetic vola sempre in cerchio qui dentro. È di buon auspicio.'] },
+        dialogoDopo: ['Torchic zampetta sempre in cerchio qui dentro. È di buon auspicio.'] },
       { id: 'greg-genz-5', classe: 'Infioritrice', nome: 'Elena',
-        squadra: [{ id: 280, livello: 55 }, { id: 209, livello: 55 }],
+        squadra: [{ id: 156, livello: 55 }, { id: 219, livello: 55 }],
         premioSoldi: 1380,
-        dialogoIntro: ['Conosco ogni tecnica dell\'Infiorata. E dei Pokémon Folletto pure!'],
+        dialogoIntro: ['Conosco ogni tecnica dell\'Infiorata. E dei Pokémon di Fuoco pure!'],
         dialogoSconfitta: 'I petali si disperdono.',
-        dialogoDopo: ['Ralts è delicata ma evolve in Gardevoir. Tienila d\'occhio.'] },
-      { id: 'greg-genz-6', classe: 'Folletto domestico', nome: 'Dino',
-        squadra: [{ id: 281, livello: 55 }, { id: 36, livello: 56 }],
+        dialogoDopo: ['Quilava scalda la terra intorno. Tienila d\'occhio.'] },
+      { id: 'greg-genz-6', classe: 'Custode del braciere', nome: 'Dino',
+        squadra: [{ id: 78, livello: 55 }, { id: 256, livello: 56 }],
         premioSoldi: 1380,
         dialogoIntro: ['Tengo in ordine questa palestra. E tengo in ordine anche i rivali scomodi!'],
         dialogoSconfitta: 'Disordine.',
-        dialogoDopo: ['Kirlia danza. Sembrano mosse di danza ma fanno male.'] },
-      { id: 'greg-genz-7', classe: 'Fatina', nome: 'Titania',
-        squadra: [{ id: 183, livello: 56 }, { id: 210, livello: 56 }],
+        dialogoDopo: ['Combusken scalcia. Sembrano mosse di danza ma fanno male.'] },
+      { id: 'greg-genz-7', classe: 'Fatina della brace', nome: 'Titania',
+        squadra: [{ id: 219, livello: 56 }, { id: 322, livello: 56 }],
         premioSoldi: 1400,
-        dialogoIntro: ['I miei Pokémon Folletto sono benedetti dalle fate dell\'Infiorata. Non hai scampo!'],
+        dialogoIntro: ['I miei Pokémon di Fuoco sono benedetti dal calore dell\'Infiorata. Non hai scampo!'],
         dialogoSconfitta: 'La magia si è infranta.',
-        dialogoDopo: ['Azumarill è Acqua e Folletto. Doppio pericolo.'] },
-      { id: 'greg-genz-8', classe: 'Mago degli Elfi', nome: 'Mirko',
-        squadra: [{ id: 176, livello: 56 }, { id: 281, livello: 57 }],
+        dialogoDopo: ['Camerupt porta il vulcano sulla schiena. Doppio pericolo.'] },
+      { id: 'greg-genz-8', classe: 'Custode delle Fiamme', nome: 'Mirko',
+        squadra: [{ id: 218, livello: 56 }, { id: 156, livello: 57 }],
         premioSoldi: 1420,
-        dialogoIntro: ['Conosco la magia antica dei Folletto. La imparo dai vecchi libri dell\'Infiorata!'],
+        dialogoIntro: ['Conosco l\'arte antica del fuoco che nutre. La imparo dai vecchi libri dell\'Infiorata!'],
         dialogoSconfitta: 'L\'incantesimo si è rotto.',
-        dialogoDopo: ['Kirlia è quasi pronta per evolvere in Gardevoir. È terrificante.'] },
+        dialogoDopo: ['Quilava è quasi pronta per evolvere in Typhlosion. È terrificante.'] },
       { id: 'greg-genz-9', classe: 'Cantastorie', nome: 'Orazio',
-        squadra: [{ id: 122, livello: 57 }, { id: 36, livello: 57 }],
+        squadra: [{ id: 126, livello: 57 }, { id: 324, livello: 57 }],
         premioSoldi: 1440,
         dialogoIntro: ['Racconto le leggende dell\'Infiorata ai bambini. Ma stasera racconto la tua sconfitta!'],
         dialogoSconfitta: 'Questa storia non me la aspettavo.',
-        dialogoDopo: ['Mr. Mime e Clefable: la coppia più strana e più forte. Poi c\'è Flora.'] },
-      { id: 'greg-genz-10', classe: 'Gran Maga', nome: 'Ninfa',
-        squadra: [{ id: 282, livello: 57 }, { id: 40, livello: 57 }],
+        dialogoDopo: ['Magmar e Torkoal: la coppia più strana e più forte. Poi c\'è Camilla.'] },
+      { id: 'greg-genz-10', classe: 'Gran Maga della Brace', nome: 'Ninfa',
+        squadra: [{ id: 59, livello: 57 }, { id: 38, livello: 57 }],
         premioSoldi: 1460,
-        dialogoIntro: ['Sono la custode dei segreti dell\'Infiorata. L\'ultima porta prima di Flora: aprila solo se sei pronto!'],
+        dialogoIntro: ['Sono la custode dei segreti dell\'Infiorata. L\'ultima porta prima di Camilla: aprila solo se sei pronto!'],
         dialogoSconfitta: 'Il segreto è tuo ora.',
-        dialogoDopo: ['Flora ti aspetta. Ha Gardevoir come asso. Vai. Sei pronto.'] },
+        dialogoDopo: ['Camilla ti aspetta. Ha Arcanine come asso. Vai. Sei pronto.'] },
     ]
   },
 ];
@@ -687,7 +700,7 @@ const RIVALE_TAPPE = [
     dialogoSconfittaRemo: 'Impossibile! Ero più forte!',
     dialogoDopoVittoria: [
       'Ok, ok… lo ammetto: sei più forte di me. Per ORA.',
-      'Vai pure da Massimo. Ma non rilassarti: prima di Genzano mi ritroverai!'
+      'Vai pure da Giorgia. Ma non rilassarti: prima di Genzano mi ritroverai!'
     ],
     dialogoDopoSconfitta: [
       'Te l\'avevo detto! La forma finale non perdona!',
@@ -709,7 +722,7 @@ const RIVALE_TAPPE = [
     dialogoIntro: [
       'Eccoci all\'ultima palestra… e all\'ultima occasione per fermarti!',
       'Squadra completa, sei contro sei. Ho allenato ogni singolo Pokémon pensando a questo momento.',
-      'Se vuoi l\'Infiorata di Flora, dovrai passare sul mio Snorlax!'
+      'Se vuoi l\'Infiorata di Camilla, dovrai passare sul mio Snorlax!'
     ],
     dialogoSconfittaRemo: 'No… NO! La mia squadra perfetta!',
     dialogoDopoVittoria: [
@@ -793,9 +806,9 @@ const ABITANTI = [
     { nome: 'Ragazzino', testo: "Ho sentito un BOOM sotto terra ieri notte. Papà dice è il vulcano. Mamma dice è papà dopo i fagioli." },
   ]},
   { id: 'ab-albano', comune: 'Albano Laziale', lat: 41.7318, lon: 12.6570, battute: [
-    { nome: 'Settimio il legionario', testo: "AVE! Qui stanziava la Seconda Legione Partica. Massimo tiene viva la disciplina. E mena pure forte." },
+    { nome: 'Settimio il legionario', testo: "AVE! Qui stanziava la Seconda Legione Partica. Giorgia tiene viva la disciplina. E le sue pietre menano pure forte." },
     { nome: 'Storico', testo: "I Castra Albana, l'accampamento, le terme di Cellomaio… Albano è Roma in piccolo. Coi Pokémon in più." },
-    { nome: 'Bambino con la spada di legno', testo: "Da grande faccio il Capopalestra de Lotta come Massimo! Intanto meno mi' sorella. Per allenarmi." },
+    { nome: 'Bambino con la spada di legno', testo: "Da grande faccio la Capopalestra de Roccia come Giorgia! Intanto meno mi' sorella. Per allenarmi." },
     { nome: 'Tizio sospettoso', testo: "Hai visto pure tu quelli vestiti di grigioverde gironzolà vicino al lago? Non me piaceno per niente." },
   ]},
   { id: 'ab-ariccia', comune: 'Ariccia', lat: 41.7218, lon: 12.6710, battute: [
@@ -808,7 +821,7 @@ const ABITANTI = [
   { id: 'ab-genzano', comune: 'Genzano di Roma', lat: 41.7074, lon: 12.6888, battute: [
     { nome: 'Romolo il panettiere', testo: "Pane de Genzano IGP, fijo! Crosta che canta. Ce reggi sopra pure un Snorlax e non se rompe." },
     { nome: "Iolanda dell'Infiorata", testo: "Ogni giugno copriamo la via di petali. Un anno feci un Gyarados tutto de fiori. Venne 'na meraviglia." },
-    { nome: 'Bambina', testo: "Flora è bravissima coi fiori. Ma se la fai arrabbià, i suoi Folletto te le sòneno. Delicati de fuori, cattivelli de dentro." },
+    { nome: 'Bambina', testo: "Camilla è bravissima coi fiori. Ma se la fai arrabbià, i suoi Folletto te le sòneno. Delicati de fuori, cattivelli de dentro." },
     { nome: 'Fioraio', testo: "Petali a tonnellate per l'Infiorata. E un Bellsprout che me li sceglie pe' colore. Dipendente modello." },
     { nome: 'Vecchietto', testo: "Dopo Genzano c'è la Via Vittoria. Robba seria. Curate bene, e non te fa' fregà dal panorama." },
   ]},
@@ -853,12 +866,13 @@ const DONATORI_MN = [
   },
   {
     id: 'mn-surf', mn: 'surf', nomeMN: 'MN Surf',
-    nome: 'Nonna Assunta', comune: 'Albano Laziale',
-    lat: 41.7405, lon: 12.6505,
-    medaglieMin: 5,
+    nome: 'Nonna Assunta', comune: 'Lago di Albano',
+    lat: 41.7420, lon: 12.6580,
+    palestraRichiesta: 'monte-porzio',   // si sblocca sconfiggendo la palestra di Monte Porzio
+    medaglieMin: 4,   // fallback documentativo, la vera condizione è palestraRichiesta
     dialogoPrima: [
       'Fijo, quella canna vale più de te. Ma prima fatti le ossa.',
-      'Torna quando sei un allenatore vero, co\' almeno 5 Medaglie, e t\'imparo a nuotà.'
+      'Torna quando avrai battuto la palestra de Monte Porzio, e t\'imparo a nuotà.'
     ],
     dialogoDono: [
       'Bravo regazzino, m\'hai dato \'na mano! Come promesso, t\'imparo a nuotà coi Pokémon.',
@@ -871,10 +885,11 @@ const DONATORI_MN = [
     id: 'mn-volo', mn: 'volo', nomeMN: 'MN Volo',
     nome: 'Faustino il funicolarista', comune: 'Rocca di Papa',
     lat: 41.7625, lon: 12.7100,
-    medaglieMin: 6,
+    palestraRichiesta: 'albano',   // sessione 12 agosto: permesso dopo la palestra di Albano, non a medaglie
+    medaglieMin: 6,   // fallback documentativo, la vera condizione è palestraRichiesta
     dialogoPrima: [
       'La funicolare risale dar \'32! Ma in cima ce porto solo i campioni veri.',
-      'Torna co\' almeno 6 Medaglie e te faccio vedè er mondo dall\'alto.'
+      'Torna quanno hai battuto la palestra de Albano, e te faccio vedè er mondo dall\'alto.'
     ],
     dialogoDono: [
       'Sei salito fin quassù? Bravo. Da Monte Cavo se vede tutto er Lazio.',
@@ -1129,7 +1144,7 @@ const ALLENATORI = [
     squadra: [{ id: 22, livello: 41 }, { id: 262, livello: 42 }], // Fearow, Mightyena
     dialogoIntro: ['Caccio in questa campagna da vent\'anni. Oggi la preda sei tu!'],
     dialogoSconfitta: 'Mi sono perso il colpo.',
-    dialogoDopo: ['Genzano è vicina. Attento ai Folletto di Flora: sembrano buffi, mordono forte.']
+    dialogoDopo: ['Genzano è vicina. Attento ai Pokémon di Fuoco di Camilla: sembrano fiori, scottano forte.']
   },
   {
     id: 'all-camp-8', classe: 'Contadino', nome: 'Ercolino', zona: 'Campagna dei Castelli',
@@ -1508,7 +1523,7 @@ const ALLENATORI = [
     squadra: [{ id: 74, livello: 17 }, { id: 95, livello: 18 }], // Geodude, Onix
     dialogoIntro: ['Studio la geologia del Vulcano Laziale. E ogni campione di roccia mi ha insegnato a combattere!'],
     dialogoSconfitta: 'Faglia imprevista.',
-    dialogoDopo: ['Il peperino di questi monti dura millenni. Come i Pokémon Roccia di Rocco.']
+    dialogoDopo: ['Il peperino di questi monti dura millenni. Chiedi alla famiglia di Baso: ci scalano sopra da generazioni.']
   },
   {
     id: 'all-mpr-2', classe: 'Escursionista', nome: 'Matilde', zona: 'Via Monte Porzio-Rocca di Papa',
@@ -1750,7 +1765,7 @@ const ALLENATORI = [
     squadra: [{ id: 56, livello: 27 }, { id: 74, livello: 28 }], // Mankey, Geodude
     dialogoIntro: ['Scendo dalla Rocca verso Albano ogni mattina. E sfido ogni allenatore sulla via!'],
     dialogoSconfitta: 'In discesa sono più veloce.',
-    dialogoDopo: ['Albano è in vista. Massimo e i suoi legionari aspettano.']
+    dialogoDopo: ['Albano è in vista. Giorgia e i suoi legionari aspettano.']
   },
   {
     id: 'all-rpa-2', classe: 'Mugnaio', nome: 'Terenzio', zona: 'Via Rocca-Albano',
@@ -1764,9 +1779,9 @@ const ALLENATORI = [
     id: 'all-rpa-3', classe: 'Soldato in congedo', nome: 'Asterio', zona: 'Via Rocca-Albano',
     lat: 41.7480, lon: 12.6940, premioSoldi: 1200,
     squadra: [{ id: 67, livello: 31 }, { id: 57, livello: 32 }], // Machoke, Primeape
-    dialogoIntro: ['Ho servito nella Seconda Legione come Massimo. Ora sono in congedo ma combatto ancora!'],
+    dialogoIntro: ['Ho servito nella Seconda Legione come Giorgia. Ora sono in congedo ma combatto ancora!'],
     dialogoSconfitta: 'Il veterano è battuto.',
-    dialogoDopo: ['Massimo è il degno erede della tradizione legionaria. Rispettalo.']
+    dialogoDopo: ['Giorgia è la degna erede della tradizione legionaria. Rispettala.']
   },
   {
     id: 'all-rpa-4', classe: 'Guida storica', nome: 'Leopoldina', zona: 'Via Rocca-Albano',
@@ -1774,7 +1789,7 @@ const ALLENATORI = [
     squadra: [{ id: 297, livello: 33 }, { id: 307, livello: 33 }], // Hariyama, Meditite
     dialogoIntro: ['Porto i turisti ai Castra Albana. E li preparo anche per la palestra!'],
     dialogoSconfitta: 'Tour inaspettato.',
-    dialogoDopo: ['I Castra Albana ospitavano diecimila legionari. Massimo ne ha sei Pokémon. Abbastanza.']
+    dialogoDopo: ['I Castra Albana ospitavano diecimila legionari. Giorgia ne ha cinque Pokémon. Abbastanza.']
   },
   {
     id: 'all-rpa-5', classe: 'Lottatore', nome: 'Brutus', zona: 'Via Rocca-Albano',
@@ -1782,7 +1797,7 @@ const ALLENATORI = [
     squadra: [{ id: 68, livello: 34 }, { id: 308, livello: 35 }], // Machamp, Medicham
     dialogoIntro: ['Bruto è il mio nome. E bruto è il mio stile di lotta. Attento!'],
     dialogoSconfitta: 'Il bruto battuto.',
-    dialogoDopo: ['Albano è avanti. Massimo aspetta. "AVE!", come diciamo noi.']
+    dialogoDopo: ['Albano è avanti. Giorgia aspetta. "AVE!", come diciamo noi.']
   },
 
   // ── Lab CoTrAL #1 (periferia Marino, Lv 22-30, scienziati/ricercatori) ──
@@ -2792,21 +2807,65 @@ const TABELLA_TIPI = {
    battaglia, quindi gli oggetti "cura stato" (Antidoto, Antiparalisi…)
    citati nella BIBBIA verranno aggiunti quando ci saranno le alterazioni.
    ---------------------------------------------------------- */
+// Cartella con le grafiche reali degli oggetti (Essentials FRLG, un PNG per
+// oggetto — nome file = codice inglese maiuscolo, es. POKEBALL.png). Quando
+// un oggetto ha "img" usiamo questo file al posto dell'emoji in "icona" (che
+// resta come fallback testuale, es. nei toast semplici).
+const CARTELLA_ICONE_OGGETTI = 'sprites/Tiles per claude/';
+
 const OGGETTI = {
-  pokeball:  { nome: 'Poké Ball',  categoria: 'ball', bonus: 1.0, prezzo: 200,  icona: '🔴',
+  // ---- Ball: nei giochi originali ne esistono molte, non solo 3 ----
+  pokeball:  { nome: 'Poké Ball',  categoria: 'ball', bonus: 1.0, prezzo: 200,  icona: '🔴', img: 'POKEBALL.png',
                descrizione: 'Cattura i Pokémon selvatici. Funziona meglio se il bersaglio è indebolito.' },
-  superball: { nome: 'Super Ball', categoria: 'ball', bonus: 1.5, prezzo: 600,  icona: '🔵',
-               descrizione: 'Ball di qualità superiore: cattura più facilmente della Poké Ball.' },
-  ultraball: { nome: 'Ultra Ball', categoria: 'ball', bonus: 2.0, prezzo: 1200, icona: '🟡',
-               descrizione: 'La Ball migliore in commercio: alta probabilità di cattura.' },
-  pozione:      { nome: 'Pozione',      categoria: 'cura', cura: 20,  prezzo: 300,  icona: '🧪',
+  superball: { nome: 'Superball', categoria: 'ball', bonus: 1.5, prezzo: 600,  icona: '🔵', img: 'GREATBALL.png',
+               descrizione: 'Ball di qualità superiore: cattura più facilmente della Poké Ball. (È la "Great Ball" dei giochi originali — "Superball" è il suo nome ufficiale in italiano.)' },
+  ultraball: { nome: 'Ultra Ball', categoria: 'ball', bonus: 2.0, prezzo: 1200, icona: '🟡', img: 'ULTRABALL.png',
+               descrizione: 'Alta probabilità di cattura.' },
+  masterball: { nome: 'Master Ball', categoria: 'ball', bonus: 255, prezzo: 0, icona: '🟣', img: 'MASTERBALL.png',
+               descrizione: 'Cattura qualsiasi Pokémon selvatico senza fallire mai. Non si trova in vendita.' },
+  premierball: { nome: 'Premier Ball', categoria: 'ball', bonus: 1.0, prezzo: 200, icona: '⚪', img: 'PREMIERBALL.png',
+               descrizione: 'Stessa efficacia della Poké Ball, ma bianca e rossa: un ricordo per l\'allenatore.' },
+  repeatball: { nome: 'Repeat Ball', categoria: 'ball', bonus: 3.5, prezzo: 1000, icona: '🔴', img: 'REPEATBALL.png',
+               descrizione: 'Molto più efficace contro una specie già catturata in precedenza.' },
+  netball: { nome: 'Net Ball', categoria: 'ball', bonus: 3.0, prezzo: 1000, icona: '🔵', img: 'NETBALL.png',
+               descrizione: 'Molto più efficace contro Pokémon di tipo Acqua o Coleottero.' },
+  diveball: { nome: 'Dive Ball', categoria: 'ball', bonus: 3.5, prezzo: 1000, icona: '🔵', img: 'DIVEBALL.png',
+               descrizione: 'Molto più efficace contro un Pokémon incontrato mentre si pesca o si è sott\'acqua.' },
+  nestball: { nome: 'Nest Ball', categoria: 'ball', bonus: 2.0, prezzo: 1000, icona: '🟢', img: 'NESTBALL.png',
+               descrizione: 'Più efficace quanto più basso è il livello del Pokémon selvatico.' },
+  timerball: { nome: 'Timer Ball', categoria: 'ball', bonus: 2.5, prezzo: 1000, icona: '⚫', img: 'TIMERBALL.png',
+               descrizione: 'Più efficace quanti più turni passano in battaglia.' },
+  luxuryball: { nome: 'Luxury Ball', categoria: 'ball', bonus: 1.0, prezzo: 3000, icona: '⚫', img: 'LUXURYBALL.png',
+               descrizione: 'Non cattura meglio, ma il Pokémon catturato si affeziona più in fretta.' },
+  duskball: { nome: 'Dusk Ball', categoria: 'ball', bonus: 3.5, prezzo: 1000, icona: '⚫', img: 'DUSKBALL.png',
+               descrizione: 'Molto più efficace di notte o nelle grotte.' },
+  healball: { nome: 'Heal Ball', categoria: 'ball', bonus: 1.0, prezzo: 300, icona: '🩷', img: 'HEALBALL.png',
+               descrizione: 'Stessa efficacia della Poké Ball: il Pokémon catturato entra in squadra con HP e PP già al massimo.' },
+  safariball: { nome: 'Safari Ball', categoria: 'ball', bonus: 1.5, prezzo: 0, icona: '🟢', img: 'SAFARIBALL.png',
+               descrizione: 'La Ball usata solo dentro la Zona Safari.' },
+
+  pozione:      { nome: 'Pozione',      categoria: 'cura', cura: 20,  prezzo: 300,  icona: '🧪', img: 'POTION.png',
                descrizione: 'Fa recuperare 20 HP a un Pokémon della squadra.' },
-  superpozione: { nome: 'Superpozione', categoria: 'cura', cura: 50,  prezzo: 700,  icona: '🥤',
+  superpozione: { nome: 'Superpozione', categoria: 'cura', cura: 50,  prezzo: 700,  icona: '🥤', img: 'SUPERPOTION.png',
                descrizione: 'Fa recuperare 50 HP a un Pokémon della squadra.' },
-  iperpozione:  { nome: 'Iperpozione',  categoria: 'cura', cura: 200, prezzo: 1500, icona: '🧴',
+  iperpozione:  { nome: 'Iperpozione',  categoria: 'cura', cura: 200, prezzo: 1500, icona: '🧴', img: 'HYPERPOTION.png',
                descrizione: 'Fa recuperare 200 HP a un Pokémon della squadra.' },
-  revitalizzante: { nome: 'Revitalizzante', categoria: 'revive', prezzo: 1500, icona: '💊',
+  maxpozione:  { nome: 'Pozione Massima', categoria: 'cura', cura: 9999, prezzo: 2500, icona: '🧴', img: 'MAXPOTION.png',
+               descrizione: 'Fa recuperare tutti gli HP a un Pokémon della squadra.' },
+  curatotale:  { nome: 'Cura Totale', categoria: 'curatotale', prezzo: 3000, icona: '✨', img: 'FULLRESTORE.png',
+               descrizione: 'Fa recuperare tutti gli HP e guarisce da qualsiasi stato alterato, in un colpo solo.' },
+  revitalizzante: { nome: 'Revitalizzante', categoria: 'revive', prezzo: 1500, icona: '💊', img: 'REVIVE.png',
                descrizione: 'Risveglia un Pokémon esausto (KO) con metà degli HP. Si usa dal menu Zaino.' },
+  revitalizzantemax: { nome: 'Revitalizzante Max', categoria: 'revive', max: true, prezzo: 4000, icona: '💊', img: 'MAXREVIVE.png',
+               descrizione: 'Risveglia un Pokémon esausto (KO) con tutti gli HP.' },
+  etere: { nome: 'Etere', categoria: 'pp', prezzo: 1200, icona: '🔵', img: 'ETHER.png',
+               descrizione: 'Restituisce PP a un Pokémon della squadra (in questo motore: a tutte le mosse insieme, versione semplificata).' },
+  elisir: { nome: 'Elisir', categoria: 'pp', max: true, prezzo: 3000, icona: '🟡', img: 'ELIXIR.png',
+               descrizione: 'Restituisce tutti i PP a tutte le mosse di un Pokémon della squadra.' },
+  superrepellente: { nome: 'Super Repellente', categoria: 'repellente', passi: 200, prezzo: 700, icona: '🚷', img: 'SUPERREPEL.png',
+               descrizione: 'Tiene lontani i Pokémon selvatici deboli per 200 passi.' },
+  massimorepellente: { nome: 'Massimo Repellente', categoria: 'repellente', passi: 400, prezzo: 900, icona: '🚷', img: 'MAXREPEL.png',
+               descrizione: 'Tiene lontani i Pokémon selvatici deboli per 400 passi.' },
   repellente:  { nome: 'Repellente', categoria: 'repellente', passi: 100, prezzo: 400, icona: '🚷',
                descrizione: 'Tiene lontani i Pokémon selvatici deboli per 100 passi.' },
   // Oggetti cura-stato (ora che il motore di battaglia gestisce le alterazioni)
@@ -2820,8 +2879,47 @@ const OGGETTI = {
                descrizione: 'Scongela un Pokémon congelato.' },
   antidototot:   { nome: 'Antidoto totale', categoria: 'curastato', stato: null,         prezzo: 600,  icona: '⭐',
                descrizione: 'Cura qualsiasi stato alterato (veleno, paralisi, sonno, scottatura, congelamento).' },
-  caramellarara: { nome: 'Caramella Rara', categoria: 'test', icona: '🍬',
+  rarecandy: { nome: 'Caramella Rara', categoria: 'raracandy', icona: '🍬', img: 'RARECANDY.png',
+               descrizione: 'Fa salire di 1 livello un Pokémon della squadra (mai oltre il level cap corrente). Oggetto vero, trovabile nel mondo — diverso dalla versione di test.' },
+  caramellarara: { nome: 'Caramella Rara (test)', categoria: 'test', icona: '🍬',
                descrizione: 'MODALITÀ TEST: +1 livello a un Pokémon (dal menu Squadra, fuori battaglia).' },
+
+  // ── VITAMINE (categoria 'vitamina': alzano un EV, sess. 12 set 2026 —
+  // aggiunte su richiesta esplicita di Luca "implementali già di tuo".
+  // ATTENZIONE: il sistema EV non esiste ancora nel motore (deciso "ok così,
+  // nessuna urgenza" — vedi docs/TODO.md), quindi oggi sono solo oggetti
+  // veri, acquistabili/raccoglibili e tenibili nello zaino: usarle non ha
+  // ancora un effetto meccanico. Va collegato quando (e se) nascerà un vero
+  // sistema EV. ──
+  proteina: { nome: 'Proteina', categoria: 'vitamina', prezzo: 10000, icona: '💪', img: 'PROTEIN.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta l\'Attacco base di un singolo Pokémon.' },
+  ferro:    { nome: 'Ferro',    categoria: 'vitamina', prezzo: 10000, icona: '🛡️', img: 'IRON.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta la Difesa base di un singolo Pokémon.' },
+  calcio:   { nome: 'Calcio',   categoria: 'vitamina', prezzo: 10000, icona: '🧠', img: 'CALCIUM.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta l\'Attacco Speciale base di un singolo Pokémon.' },
+  zinco:    { nome: 'Zinco',    categoria: 'vitamina', prezzo: 10000, icona: '🔷', img: 'ZINC.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta la Difesa Speciale base di un singolo Pokémon.' },
+  carburante: { nome: 'Carburante', categoria: 'vitamina', prezzo: 10000, icona: '💨', img: 'CARBOS.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta la Velocità base di un singolo Pokémon.' },
+  proteine_hp: { nome: 'Proteine PS', categoria: 'vitamina', prezzo: 10000, icona: '❤️', img: 'HPUP.png',
+               descrizione: 'Bevanda nutriente per Pokémon. Aumenta i PS base di un singolo Pokémon.' },
+
+  // ── FOSSILI (categoria 'fossile': si rianimano in un laboratorio dedicato,
+  // sess. 12 set 2026 — aggiunti su richiesta esplicita di Luca. Il luogo
+  // vero e proprio ("mettici un warp a Genzano per un luogo dove rianimare i
+  // fossili") non esiste ancora come mappa: per ora sono solo oggetti veri,
+  // raccoglibili e tenibili nello zaino, la rianimazione vera va collegata
+  // quando quel luogo esisterà. ──
+  fossile_elice: { nome: 'Fossile Elice', categoria: 'fossile', prezzo: 7000, icona: '🐚', img: 'HELIXFOSSIL.png',
+               descrizione: 'Fossile di un antico Pokémon marino. Sembra parte di una conchiglia a spirale.' },
+  fossile_cupola: { nome: 'Fossile Cupola', categoria: 'fossile', prezzo: 7000, icona: '🐚', img: 'DOMEFOSSIL.png',
+               descrizione: 'Fossile di un antico Pokémon marino. Sembra parte di un guscio a cupola.' },
+  ambra_antica: { nome: 'Ambra Antica', categoria: 'fossile', prezzo: 1000, icona: '🟠', img: 'OLDAMBER.png',
+               descrizione: 'Un pezzo d\'ambra che contiene i geni di un antico Pokémon. Trasparente con riflessi rossastri.' },
+  fossile_radice: { nome: 'Fossile Radice', categoria: 'fossile', prezzo: 7000, icona: '🌿', img: 'ROOTFOSSIL.png',
+               descrizione: 'Fossile di un antico Pokémon marino. Sembra parte di una radice di pianta.' },
+  fossile_artiglio: { nome: 'Fossile Artiglio', categoria: 'fossile', prezzo: 7000, icona: '🦴', img: 'CLAWFOSSIL.png',
+               descrizione: 'Fossile di un antico Pokémon marino. Sembra parte di un artiglio.' },
 
   // ── PIETRE EVOLUTIVE (categoria 'pietra': si usano su un Pokémon per evolverlo) ──
   pietra_fuoco:  { nome: 'Pietra Fuoco',  categoria: 'pietra', prezzo: 2100, icona: '🔥',
@@ -2850,7 +2948,231 @@ const OGGETTI = {
                descrizione: 'Da scambiare col mercante: Clamperl→Gorebyss.' },
   upgrade:           { nome: 'Upgrade',           categoria: 'evo', prezzo: 3500, icona: '💾',
                descrizione: 'Da scambiare col mercante: Porygon→Porygon2.' },
+
+  // ── MT (categoria 'mt': si usano su un Pokémon per insegnargli una mossa,
+  //    si consumano all'uso — stile Gen 1-3, non riutilizzabili). Il campo
+  //    "mossa" è lo slug PokéAPI usato da PokeAPI.getMossa() per scaricare i
+  //    dati completi della mossa al momento dell'uso. ──
+  mt01: { nome: 'MT01 — Foglielama', categoria: 'mt', mossa: 'razor-leaf', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Foglielama (Erba, potenza 55, alta percentuale di brutti colpi). Dono di Vinicio, Palestra di Frascati.' },
+  mt02: { nome: 'MT02 — Psiconda', categoria: 'mt', mossa: 'psybeam', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Psiconda (Psico, potenza 65, può confondere). Dono di Nilo, Palestra di Grottaferrata.' },
+  mt03: { nome: 'MT03 — Idropulsar', categoria: 'mt', mossa: 'water-pulse', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Idropulsar (Acqua, potenza 60, può confondere). Dono di Moro, Palestra di Marino.' },
+  mt04: { nome: 'MT04 — Fulmine', categoria: 'mt', mossa: 'thunderbolt', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Fulmine (Elettro, potenza 90, può paralizzare). Dono di Stella, Palestra di Monte Porzio.' },
+  mt_semitraglia: { nome: 'MT — Semi Mitraglia', categoria: 'mt', mossa: 'bullet-seed', prezzo: 1800, icona: '💿',
+               descrizione: 'Insegna Semi Mitraglia (Erba, colpisce 2-5 volte). Si trova lungo il Percorso 2.' },
+  mt05: { nome: 'MT05 — Slavina', categoria: 'mt', mossa: 'rock-slide', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Slavina (Roccia, potenza 75, può far tentennare). Dono di Giorgia, Palestra di Albano.' },
+  mt06: { nome: 'MT06 — Rissa Campale', categoria: 'mt', mossa: 'brick-break', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Rissa Campale (Lotta, potenza 75, abbatte le barriere). Dono di Baso, Palestra di Rocca di Papa.' },
+  mt07: { nome: 'MT07 — Buio Pesto', categoria: 'mt', mossa: 'dark-pulse', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Buio Pesto (Buio, potenza 80, può far tentennare). Dono di Ombretta, Palestra di Ariccia.' },
+  mt08: { nome: 'MT08 — Corpopeso', categoria: 'mt', mossa: 'body-slam', prezzo: 0, icona: '💿',
+               descrizione: 'Insegna Corpopeso (Normale, potenza 85, può paralizzare). Dono di Camilla, Palestra di Genzano (nonostante il fuoco, un buon corpo a corpo non guasta mai).' },
+  mt_scavare: { nome: 'MT — Scavare', categoria: 'mt', mossa: 'dig', prezzo: 1800, icona: '💿',
+               descrizione: 'Insegna Scavare (Terra, potenza 80, ti nasconde sottoterra per un turno). Si trova nel Tunnel Roccioso.' },
+  mt_tomba_di_roccia: { nome: 'MT — Tomba di Roccia', categoria: 'mt', mossa: 'rock-tomb', prezzo: 1800, icona: '💿',
+               descrizione: 'Insegna Tomba di Roccia (Roccia, potenza 60, riduce la velocità del bersaglio). Si trova nel Tunnel Roccioso.' },
+  mt_gelo_raggio: { nome: 'MT — Gelo Raggio', categoria: 'mt', mossa: 'ice-beam', prezzo: 3000, icona: '💿',
+               descrizione: 'Insegna Gelo Raggio (Ghiaccio, potenza 90, può congelare). Si trova a Monte Cavo.' },
+  pepita: { nome: 'Pepita', categoria: 'tesoro', prezzo: 5000, icona: '🪙',
+               descrizione: 'Una pepita d\'oro. Non serve in battaglia, ma vale un sacco di Pokéyen se venduta.' },
+  // ── TESORI da vendere (Gen 1-3, da Essentials FRLG/PBS/items.txt —
+  //    vedi docs/OGGETTI-GEN1-3-REFERENCE.md): nessun uso in battaglia,
+  //    solo da rivendere al Market. Prezzo dimezzato rispetto all'originale
+  //    per restare in linea con l'economia già tarata su 'pepita'. ──
+  perla:        { nome: 'Perla',            categoria: 'tesoro', prezzo: 1000,  icona: '⚪',
+               descrizione: 'Una piccola perla che scintilla d\'argento. Non serve in battaglia, si vende.' },
+  perla_grande: { nome: 'Perla Grande',      categoria: 'tesoro', prezzo: 4000,  icona: '⚪',
+               descrizione: 'Una grossa perla che scintilla d\'argento. Non serve in battaglia, si vende.' },
+  polvere_stelle: { nome: 'Polvere di Stelle', categoria: 'tesoro', prezzo: 1500, icona: '✨',
+               descrizione: 'Sabbia rossa e setosa, bellissima. Non serve in battaglia, si vende.' },
+  frammento_stella: { nome: 'Frammento di Stella', categoria: 'tesoro', prezzo: 6000, icona: '⭐',
+               descrizione: 'Una scheggia di gemma rossa scintillante. Non serve in battaglia, si vende.' },
+  squama_cuore: { nome: 'Squama Cuore', categoria: 'tesoro', prezzo: 50, icona: '💗',
+               descrizione: 'Una scaglia rarissima a forma di cuore, cangiante come un arcobaleno. Non serve in battaglia, si vende.' },
+
+  // ── X ITEM (categoria 'xitem'): usabili SOLO dal menu Zaino in battaglia,
+  //    alzano di uno stadio (+1) una statistica del Pokémon in campo per la
+  //    durata della battaglia — stesso meccanismo delle mosse di stato tipo
+  //    Danza Spada (vedi applicaCambiStat in js/battle.js). Si consumano
+  //    all'uso. Mordigheria/Alzo Guardia NON ci sono: richiederebbero un
+  //    sistema di colpi critici/protezione dai cali di stat che oggi non
+  //    esiste (vedi docs/TODO.md). ──
+  xattacco:     { nome: 'X Attacco',        categoria: 'xitem', stat: 'attack',           prezzo: 500, icona: '📈',
+               descrizione: 'Alza di uno stadio l\'Attacco del Pokémon in campo, solo per questa battaglia.' },
+  xdifesa:      { nome: 'X Difesa',         categoria: 'xitem', stat: 'defense',          prezzo: 550, icona: '📈',
+               descrizione: 'Alza di uno stadio la Difesa del Pokémon in campo, solo per questa battaglia.' },
+  xspatk:       { nome: 'X Att. Speciale',  categoria: 'xitem', stat: 'special-attack',   prezzo: 550, icona: '📈',
+               descrizione: 'Alza di uno stadio l\'Attacco Speciale del Pokémon in campo, solo per questa battaglia.' },
+  xspdef:       { nome: 'X Dif. Speciale',  categoria: 'xitem', stat: 'special-defense',  prezzo: 550, icona: '📈',
+               descrizione: 'Alza di uno stadio la Difesa Speciale del Pokémon in campo, solo per questa battaglia.' },
+  xvelocita:    { nome: 'X Velocità',       categoria: 'xitem', stat: 'speed',            prezzo: 550, icona: '📈',
+               descrizione: 'Alza di uno stadio la Velocità del Pokémon in campo, solo per questa battaglia.' },
+  xprecisione:  { nome: 'X Precisione',     categoria: 'xitem', stat: 'accuracy',         prezzo: 950, icona: '📈',
+               descrizione: 'Alza di uno stadio la Precisione del Pokémon in campo, solo per questa battaglia.' },
+
+  // ── OGGETTI DA TENERE (categoria 'held'): si assegnano a un Pokémon della
+  //    squadra dal menu Squadra (uno per Pokémon, si può togliere in ogni
+  //    momento) e fanno effetto automaticamente in battaglia. Vedi
+  //    js/battle.js per l'implementazione di ogni "effetto".
+  //    - boostTipo: +20% potenza alle mosse di quel tipo elementale.
+  //    - effetto: meccanica speciale (leftovers/quickclaw/focussash/
+  //      focusband/brightpowder/amuletcoin), gestita a mano in battle.js. ──
+  rimasugli:    { nome: 'Rimasugli', categoria: 'held', effetto: 'leftovers', prezzo: 2000, icona: '🍂',
+               descrizione: 'Da tenere. Il portatore recupera 1/16 dei suoi HP massimi a fine di ogni turno.' },
+  unghia_veloce:{ nome: 'Unghia Veloce', categoria: 'held', effetto: 'quickclaw', prezzo: 1500, icona: '💅',
+               descrizione: 'Da tenere. Una possibilità su 5 di agire per primi, a prescindere dalla Velocità.' },
+  cinghia_focus:{ nome: 'Cinghia Focus', categoria: 'held', effetto: 'focussash', prezzo: 1500, icona: '🎗️',
+               descrizione: 'Da tenere. Se il portatore ha HP pieni, sopravvive con 1 HP a un colpo che lo metterebbe KO. Si consuma con l\'uso.' },
+  benda_focus:  { nome: 'Benda Focus', categoria: 'held', effetto: 'focusband', prezzo: 1500, icona: '🩹',
+               descrizione: 'Da tenere. 10% di possibilità di sopravvivere con 1 HP a un colpo che lo metterebbe KO. Non si consuma.' },
+  polvere_abbaglio: { nome: 'Polvere Abbaglio', categoria: 'held', effetto: 'brightpowder', prezzo: 1500, icona: '💨',
+               descrizione: 'Da tenere. Riduce leggermente la precisione degli attacchi avversari contro il portatore.' },
+  amomoneta:    { nome: 'Amomoneta', categoria: 'held', effetto: 'amuletcoin', prezzo: 5000, icona: '🪙',
+               descrizione: 'Da tenere. Raddoppia i Pokéyen guadagnati vincendo una battaglia, se il portatore è in campo.' },
+  carbonella:      { nome: 'Carbonella',        categoria: 'held', boostTipo: 'fire',     prezzo: 1500, icona: '🔥',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Fuoco del portatore.' },
+  acqua_magica:    { nome: 'Acqua Magica',      categoria: 'held', boostTipo: 'water',    prezzo: 1500, icona: '💧',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Acqua del portatore.' },
+  magnete:         { nome: 'Magnete',           categoria: 'held', boostTipo: 'electric', prezzo: 1500, icona: '🧲',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Elettro del portatore.' },
+  seme_miracolo:   { nome: 'Seme Miracolo',     categoria: 'held', boostTipo: 'grass',    prezzo: 1500, icona: '🌱',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Erba del portatore.' },
+  ghiaccio_perenne:{ nome: 'Gelomai',  categoria: 'held', boostTipo: 'ice',      prezzo: 1500, icona: '🧊',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Ghiaccio del portatore. Si trova a Monte Cavo.' },
+  cintura_nera:    { nome: 'Cintura Nera',      categoria: 'held', boostTipo: 'fighting', prezzo: 1500, icona: '🥋',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Lotta del portatore.' },
+  aculeo_veleno:   { nome: 'Aculeo Veleno',     categoria: 'held', boostTipo: 'poison',   prezzo: 1500, icona: '☠️',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Veleno del portatore.' },
+  sabbia_soffice:  { nome: 'Sabbia Soffice',    categoria: 'held', boostTipo: 'ground',   prezzo: 1500, icona: '🏜️',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Terra del portatore.' },
+  becco_rigido:    { nome: 'Becco Rigido',      categoria: 'held', boostTipo: 'flying',   prezzo: 1500, icona: '🪶',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Volante del portatore.' },
+  cucchiaio_psico: { nome: 'Cucchiaio Psico',   categoria: 'held', boostTipo: 'psychic',  prezzo: 1500, icona: '🥄',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Psico del portatore.' },
+  polvere_argento: { nome: 'Polvere d\'Argento',categoria: 'held', boostTipo: 'bug',      prezzo: 1500, icona: '🐛',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Coleottero del portatore.' },
+  pietra_dura:     { nome: 'Pietra Dura',       categoria: 'held', boostTipo: 'rock',     prezzo: 1500, icona: '🪨',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Roccia del portatore.' },
+  sigillo_ombra:   { nome: 'Sigillo Ombra',     categoria: 'held', boostTipo: 'ghost',    prezzo: 1500, icona: '👻',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Spettro del portatore.' },
+  zanna_drago:     { nome: 'Zanna Drago',       categoria: 'held', boostTipo: 'dragon',   prezzo: 1500, icona: '🐉',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Drago del portatore.' },
+  lenti_scure:     { nome: 'Lenti Scure',       categoria: 'held', boostTipo: 'dark',     prezzo: 1500, icona: '🕶️',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Buio del portatore.' },
+  foulard_seta:    { nome: 'Foulard di Seta',   categoria: 'held', boostTipo: 'normal',   prezzo: 1500, icona: '🧣',
+               descrizione: 'Da tenere. Aumenta la potenza delle mosse di tipo Normale del portatore.' },
+
+  // Restata dal rifugio GdF: kept com'è, TM24 è davvero Fulmine nei giochi
+  // originali (coincide col Fulmine donato dalla palestra, ma con la
+  // numerazione reale — voluto, non un duplicato da correggere).
+  mt_24_fulmine: { nome: 'TM24 — Fulmine', categoria: 'mt', mossa: 'thunderbolt', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 90, può paralizzare il bersaglio.' },
+
+  mt_earthquake: { nome: 'TM26 — Terremoto', categoria: 'mt', mossa: 'earthquake', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 100, colpisce tutti i Pokémon vicini eccetto chi sta volando o è sottoterra.' },
+
+  // ---- MT reali (numerazione Smeraldo/Rosso Fuoco, fonte Essentials FRLG/PBS/items.txt) ----
+  // Chiavi già coperte da mt_scavare/mt_gelo_raggio/mt_semitraglia/mt03 non ripetute qui.
+  mt_focus_punch: { nome: 'TM01 — Braccio Martello', categoria: 'mt', mossa: 'focus-punch', prezzo: 3000, icona: '💿',
+               descrizione: 'Un attacco fortissimo (150) che parte per ultimo: se il Pokemon subisce un colpo prima di eseguirlo, fallisce.' },
+  mt_dragon_claw: { nome: 'TM02 — Artigli di Drago', categoria: 'mt', mossa: 'dragon-claw', prezzo: 3000, icona: '💿',
+               descrizione: 'Attacco Drago di potenza 80, sempre affidabile.' },
+  mt_calm_mind: { nome: 'TM04 — Calmezza', categoria: 'mt', mossa: 'calm-mind', prezzo: 3000, icona: '💿',
+               descrizione: 'Alza Attacco Speciale e Difesa Speciale di uno stadio. Fuori scala: nessun\'altra mossa fa crescere due statistiche insieme.' },
+  mt_roar: { nome: 'TM05 — Ruggito', categoria: 'mt', mossa: 'roar', prezzo: 3000, icona: '💿',
+               descrizione: 'Costringe il Pokemon avversario a lasciare il campo.' },
+  mt_toxic: { nome: 'TM06 — Tossina', categoria: 'mt', mossa: 'toxic', prezzo: 3000, icona: '💿',
+               descrizione: 'Avvelena gravemente il bersaglio: il danno cresce ogni turno.' },
+  mt_hail: { nome: 'TM07 — Grandine', categoria: 'mt', mossa: 'hail', prezzo: 3000, icona: '💿',
+               descrizione: 'Fa cadere grandine per 5 turni, danneggia chi non è di tipo Ghiaccio.' },
+  mt_bulk_up: { nome: 'TM08 — Carica Peso', categoria: 'mt', mossa: 'bulk-up', prezzo: 3000, icona: '💿',
+               descrizione: 'Alza Attacco e Difesa di uno stadio.' },
+  mt_hidden_power: { nome: 'TM10 — Forza Nascosta', categoria: 'mt', mossa: 'hidden-power', prezzo: 3000, icona: '💿',
+               descrizione: 'Il tipo cambia in base al Pokemon che la usa.' },
+  mt_sunny_day: { nome: 'TM11 — Giorno di Sole', categoria: 'mt', mossa: 'sunny-day', prezzo: 3000, icona: '💿',
+               descrizione: 'Intensifica il sole per 5 turni: potenzia Fuoco, indebolisce Acqua.' },
+  mt_taunt: { nome: 'TM12 — Provocazione', categoria: 'mt', mossa: 'taunt', prezzo: 3000, icona: '💿',
+               descrizione: 'Il bersaglio può usare solo mosse d\'attacco per un po\'.' },
+  mt_blizzard: { nome: 'TM14 — Bora', categoria: 'mt', mossa: 'blizzard', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 110, può congelare. In grandine non fallisce mai.' },
+  mt_hyper_beam: { nome: 'TM15 — Iper Raggio', categoria: 'mt', mossa: 'hyper-beam', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 150, ma il turno dopo il Pokemon deve riposare.' },
+  mt_light_screen: { nome: 'TM16 — Schermoluce', categoria: 'mt', mossa: 'light-screen', prezzo: 3000, icona: '💿',
+               descrizione: 'Riduce per 5 turni il danno delle mosse Speciali subite dalla squadra.' },
+  mt_protect: { nome: 'TM17 — Protezione', categoria: 'mt', mossa: 'protect', prezzo: 3000, icona: '💿',
+               descrizione: 'Evita completamente l\'attacco avversario in questo turno.' },
+  mt_rain_dance: { nome: 'TM18 — Danza della Pioggia', categoria: 'mt', mossa: 'rain-dance', prezzo: 3000, icona: '💿',
+               descrizione: 'Fa piovere per 5 turni: potenzia Acqua, indebolisce Fuoco.' },
+  mt_giga_drain: { nome: 'TM19 — Giga Prosciuga', categoria: 'mt', mossa: 'giga-drain', prezzo: 3000, icona: '💿',
+               descrizione: 'Danno Erba, potenza 75: il Pokemon recupera metà del danno inflitto. (nome italiano da verificare)' },
+  mt_safeguard: { nome: 'TM20 — Salvaguardia', categoria: 'mt', mossa: 'safeguard', prezzo: 3000, icona: '💿',
+               descrizione: 'Per 5 turni protegge la squadra da tutte le alterazioni di stato.' },
+  mt_frustration: { nome: 'TM21 — Frustrazione', categoria: 'mt', mossa: 'frustration', prezzo: 3000, icona: '💿',
+               descrizione: 'Più basso è l\'affetto del Pokemon, più danno fa.' },
+  mt_solar_beam: { nome: 'TM22 — Solarraggio', categoria: 'mt', mossa: 'solar-beam', prezzo: 3000, icona: '💿',
+               descrizione: 'Carica energia solare un turno, poi colpisce con potenza 120.' },
+  mt_iron_tail: { nome: 'TM23 — Coda di Ferro', categoria: 'mt', mossa: 'iron-tail', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 100, può abbassare la Difesa del bersaglio.' },
+  mt_thunder: { nome: 'TM25 — Tuono', categoria: 'mt', mossa: 'thunder', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 110, può paralizzare. Non fallisce mai sotto la pioggia.' },
+  mt_return: { nome: 'TM27 — Reciprocità', categoria: 'mt', mossa: 'return', prezzo: 3000, icona: '💿',
+               descrizione: 'Più alto è l\'affetto del Pokemon, più danno fa.' },
+  mt_psychic: { nome: 'TM29 — Psichico', categoria: 'mt', mossa: 'psychic', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 90, può abbassare la Difesa Speciale del bersaglio.' },
+  mt_shadow_ball: { nome: 'TM30 — Palla Ombra', categoria: 'mt', mossa: 'shadow-ball', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 80, può abbassare la Difesa Speciale del bersaglio.' },
+  mt_double_team: { nome: 'TM32 — Doppia Squadra', categoria: 'mt', mossa: 'double-team', prezzo: 3000, icona: '💿',
+               descrizione: 'Alza l\'elusività di uno stadio.' },
+  mt_reflect: { nome: 'TM33 — Riflesso', categoria: 'mt', mossa: 'reflect', prezzo: 3000, icona: '💿',
+               descrizione: 'Riduce per 5 turni il danno delle mosse Fisiche subite dalla squadra.' },
+  mt_shock_wave: { nome: 'TM34 — Onda d\'Urto', categoria: 'mt', mossa: 'shock-wave', prezzo: 3000, icona: '💿',
+               descrizione: 'Attacco Elettro che non fallisce mai.' },
+  mt_flamethrower: { nome: 'TM35 — Lanciafiamme', categoria: 'mt', mossa: 'flamethrower', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 90, può scottare il bersaglio.' },
+  mt_sludge_bomb: { nome: 'TM36 — Bomba Melma', categoria: 'mt', mossa: 'sludge-bomb', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 90, può avvelenare il bersaglio.' },
+  mt_sandstorm: { nome: 'TM37 — Sabbia Tempesta', categoria: 'mt', mossa: 'sandstorm', prezzo: 3000, icona: '💿',
+               descrizione: 'Fa infuriare una tempesta di sabbia per 5 turni.' },
+  mt_fire_blast: { nome: 'TM38 — Fuocobomba', categoria: 'mt', mossa: 'fire-blast', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 110, può scottare. (nome italiano da verificare)' },
+  mt_aerial_ace: { nome: 'TM40 — Asso Aereo', categoria: 'mt', mossa: 'aerial-ace', prezzo: 3000, icona: '💿',
+               descrizione: 'Attacco Volante che non fallisce mai.' },
+  mt_torment: { nome: 'TM41 — Angheria', categoria: 'mt', mossa: 'torment', prezzo: 3000, icona: '💿',
+               descrizione: 'Il bersaglio non può usare due volte di fila la stessa mossa.' },
+  mt_facade: { nome: 'TM42 — Facciata', categoria: 'mt', mossa: 'facade', prezzo: 3000, icona: '💿',
+               descrizione: 'Raddoppia potenza se il Pokemon è avvelenato, paralizzato o scottato.' },
+  mt_secret_power: { nome: 'TM43 — Forza Segreta', categoria: 'mt', mossa: 'secret-power', prezzo: 3000, icona: '💿',
+               descrizione: 'L\'effetto aggiuntivo cambia in base al terreno. (nome italiano da verificare)' },
+  mt_rest: { nome: 'TM44 — Riposo', categoria: 'mt', mossa: 'rest', prezzo: 3000, icona: '💿',
+               descrizione: 'Il Pokemon dorme due turni ma recupera tutti gli HP e guarisce da ogni stato.' },
+  mt_attract: { nome: 'TM45 — Attrazione', categoria: 'mt', mossa: 'attract', prezzo: 3000, icona: '💿',
+               descrizione: 'Il bersaglio, se di sesso opposto, potrebbe innamorarsi e non attaccare.' },
+  mt_thief: { nome: 'TM46 — Furto', categoria: 'mt', mossa: 'thief', prezzo: 3000, icona: '💿',
+               descrizione: 'Danno base e ruba l\'oggetto tenuto dal bersaglio, se il Pokemon non ne tiene già uno.' },
+  mt_steel_wing: { nome: 'TM47 — Ala d\'Acciaio', categoria: 'mt', mossa: 'steel-wing', prezzo: 3000, icona: '💿',
+               descrizione: 'Può alzare la Difesa dell\'utilizzatore.' },
+  mt_skill_swap: { nome: 'TM48 — Cambio Astuzia', categoria: 'mt', mossa: 'skill-swap', prezzo: 3000, icona: '💿',
+               descrizione: 'Scambia le abilità di attaccante e bersaglio.' },
+  mt_snatch: { nome: 'TM49 — Scippo', categoria: 'mt', mossa: 'snatch', prezzo: 3000, icona: '💿',
+               descrizione: 'Ruba l\'effetto della prossima mossa di supporto usata dall\'avversario.' },
+  mt_overheat: { nome: 'TM50 — Surriscaldo', categoria: 'mt', mossa: 'overheat', prezzo: 3000, icona: '💿',
+               descrizione: 'Potenza 130, ma abbassa di due stadi l\'Attacco Speciale di chi la usa.' },
 };
+
+// MT per tutte le mosse del sistema (dati/mt_tutte_mosse.js, generato da
+// strumenti/genera_mt_tutte_mosse.py) — aggiunte SOLO se la chiave non esiste
+// già qui sopra, così le MT scritte a mano (nome/descrizione in italiano,
+// es. mt_semitraglia, mt05, mt_gelo_raggio) restano quelle valide. Non tutte
+// verranno piazzate nel mondo, ma esistono già a sistema.
+if (typeof MT_TUTTE_LE_MOSSE !== 'undefined') {
+  for (const chiave in MT_TUTTE_LE_MOSSE) {
+    if (!OGGETTI[chiave]) OGGETTI[chiave] = MT_TUTTE_LE_MOSSE[chiave];
+  }
+}
 
 /* ----------------------------------------------------------
    POKÉ MARKET — un negozio per comune, vicino al Centro Pokémon.
@@ -2867,26 +3189,74 @@ const POKE_MARKET = [
   { id: 'mk-frascati', comune: 'Frascati', lat: 41.8066, lon: 12.6826,
     merce: ['pokeball', 'pozione', 'superpozione'] },
 
+  { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7858, lon: 12.6668,
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antiparalisi'] },
+
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7873, lon: 12.6700,
     merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'pietra_luna'] },
 
   { id: 'mk-marino', comune: 'Marino', lat: 41.7700, lon: 12.6653,
-    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'pietra_fuoco', 'patroclo'] },
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura'] },
+
+  // Venditore speciale del Market di Marino (NPC dedicato, oggetti evo rari)
+  { id: 'mk-marino-speciale', comune: 'Marino', lat: 41.7700, lon: 12.6653,
+    merce: ['pietra_fuoco', 'patroclo'] },
+
+  { id: 'mk-castel-gandolfo', comune: 'Castel Gandolfo', lat: 41.7476, lon: 12.6500,
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'repellente'] },
+
+  // Venditore speciale del Market di Castel Gandolfo (NPC dedicato, oggetti evo rari)
+  { id: 'mk-castel-gandolfo-speciale', comune: 'Castel Gandolfo', lat: 41.7476, lon: 12.6500,
+    merce: ['rivestimetallo', 'upgrade'] },
 
   { id: 'mk-monte-porzio', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
-    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo', 'pietra_luna', 'pietra_tuono'] },
+    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo'] },
+
+  // Venditore speciale del Market di Monte Porzio (NPC dedicato, oggetti evo rari)
+  { id: 'mk-monte-porzio-speciale', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
+    merce: ['pietra_luna', 'pietra_tuono'] },
 
   { id: 'mk-rocca-di-papa', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
-    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot', 'pietra_fuoco'] },
+    merce: ['superball', 'ultraball', 'repeatball', 'netball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot',
+            'xattacco', 'xdifesa', 'xspatk', 'xspdef', 'xvelocita', 'xprecisione'] },
+
+  // Venditore speciale del Market di Rocca di Papa (NPC dedicato, oggetti evo rari)
+  { id: 'mk-rocca-di-papa-speciale', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
+    merce: ['pietra_fuoco'] },
 
   { id: 'mk-albano', comune: 'Albano Laziale', lat: 41.7295, lon: 12.6588,
-    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_acqua', 'patroclo'] },
+    merce: ['superball', 'ultraball', 'timerball', 'duskball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'etere'] },
+
+  // Venditore speciale del Market di Albano (NPC dedicato, oggetti evo rari)
+  { id: 'mk-albano-speciale', comune: 'Albano Laziale', lat: 41.7295, lon: 12.6588,
+    merce: ['pietra_acqua', 'patroclo'] },
+
+  { id: 'mk-genzano', comune: 'Genzano di Roma', lat: 41.7057, lon: 12.6864,
+    merce: ['ultraball', 'luxuryball', 'premierball', 'maxpozione', 'iperpozione', 'revitalizzante', 'massimorepellente', 'antidototot', 'elisir'] },
+
+  // Venditore speciale del Market di Genzano (NPC dedicato, oggetti evo rari)
+  { id: 'mk-genzano-speciale', comune: 'Genzano di Roma', lat: 41.7057, lon: 12.6864,
+    merce: ['pietra_luna', 'patroclo'] },
 
   { id: 'mk-ariccia', comune: 'Ariccia', lat: 41.7200, lon: 12.6746,
-    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_sole', 'dente_oscuro'] },
+    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot'] },
+
+  // Venditore speciale del Market di Ariccia (NPC dedicato, oggetti evo rari,
+  // sessione 6 agosto: era tutto mischiato nel market base, ora split come le
+  // altre città da Albano in poi — stesso pattern "doppio NPC").
+  { id: 'mk-ariccia-speciale', comune: 'Ariccia', lat: 41.7200, lon: 12.6746,
+    merce: ['pietra_sole', 'dente_oscuro'] },
 
   { id: 'mk-genzano', comune: 'Genzano di Roma', lat: 41.7080, lon: 12.6920,
     merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_foglia', 'conchigliamutante'] },
+
+  // Bazar oggetti da tenere (NPC dedicato, ultima città del path): tutti gli
+  // oggetti 'held' del catalogo (potenziatori di tipo + effetti speciali).
+  { id: 'mk-genzano-held', comune: 'Genzano di Roma', lat: 41.7080, lon: 12.6920,
+    merce: ['rimasugli', 'unghia_veloce', 'cinghia_focus', 'benda_focus', 'polvere_abbaglio', 'amomoneta',
+            'carbonella', 'acqua_magica', 'magnete', 'seme_miracolo', 'ghiaccio_perenne', 'cintura_nera',
+            'aculeo_veleno', 'sabbia_soffice', 'becco_rigido', 'cucchiaio_psico', 'polvere_argento',
+            'pietra_dura', 'sigillo_ombra', 'zanna_drago', 'lenti_scure', 'foulard_seta'] },
 ];
 
 // Level cap iniziale: prima di battere la Palestra 1 (Frascati)
@@ -2912,6 +3282,31 @@ const OGGETTI_CHIAVE = {
     nome: 'Divisa da Astronauta',
     icona: '👨‍🚀',
     descrizione: 'Uniforme della missione spaziale "Castelli nello Spazio". Ti permette di imbarcarti al Parcheggione di Grottaferrata. Destinazione classificata.',
+  },
+  'flauto': {
+    nome: 'Flauto Pokémon',
+    icona: '🎵',
+    descrizione: 'Un vecchio flauto di ceramica. La sua melodia sveglia anche il sonno più profondo — utile contro certi Pokémon che bloccano la strada russando.',
+  },
+  // Grotta del Vulcano (sess. 8 set 2026): donata dallo scienziato liberato
+  // dopo la sconfitta del boss GdF. Stesso schema di "flauto": Groudon
+  // resta SEMPRE visibile nel nucleo (addormentato:true sul suo marcatore,
+  // sveglia_con:'pietra_rubino'), ma senza questa non lo puoi svegliare/
+  // sfidare — [A] mostra solo un flavor-text finché non la possiedi.
+  'pietra_rubino': {
+    nome: 'Pietra Rubino',
+    icona: '🔴',
+    descrizione: 'Una gemma rossa incandescente al tatto. Sembra placare la furia di ciò che dorme nel nucleo del vulcano.',
+  },
+  // Rifugio GdF di Marino (sess. 8 set 2026): donata da Giovanni una volta
+  // sconfitto lì (primo incontro con lui, prima della Grotta del Vulcano —
+  // vedi arco GdF riscritto in docs/STORIA_COMPLETA.md). Sblocca Kyogre nel
+  // Lago di Albano con lo stesso schema "addormentato"/"sveglia_con" già
+  // usato per Groudon/Pietra Rubino.
+  'pietra_zaffiro': {
+    nome: 'Pietra Zaffiro',
+    icona: '🔵',
+    descrizione: 'Una gemma blu fredda al tatto, anche sotto il sole di agosto. Sembra placare la furia di ciò che dorme nelle acque profonde del lago.',
   },
 };
 

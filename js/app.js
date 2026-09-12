@@ -17,17 +17,28 @@ const MAPPA_TILED = true;
 
 // Stato di gioco — tutto ciò che viene salvato in localStorage
 let stato = {
+  genere:            null,   // 'boy' | 'girl' — scelto alla primissima schermata, determina lo sprite
   posizione:         { ...POSIZIONE_INIZIALE },
+  // Ultima mappa/casella su cui si trovava il giocatore (motore Tiled), per
+  // riprendere da lì al prossimo avvio invece di ripartire sempre da Borgata
+  // Tuscolana. null = partita nuova (usa lo spawn di default). Aggiornati in
+  // salvaPartitaOra() da GameMap.posizioneAttualeSalvabile()/stackAttualeSalvabile().
+  mappaSalvata:      null,
+  // Stack "da dove sono entrato negli interni" (Centro/palestra/casa/…): se
+  // l'ultima posizione salvata era dentro un interno, serve per far
+  // funzionare l'uscita anche dopo un ricaricamento della pagina — senza,
+  // l'uscita non saprebbe più dove riportare il giocatore.
+  mappaStackSalvata: null,
   passi:             0,
   passiDaCheck:      0,    // contatore verso il prossimo check incontro
   incontroAttivo:    false, // true mentre una battaglia è in corso
   ultimaZonaLocked:  null,  // evita toast ripetuti per la stessa zona bloccata
   squadra:           [],    // i Pokémon del giocatore (max 6)
-  box:               [],    // Pokémon oltre il sesto (il "PC" dei giochi)
+  boxes:             Array.from({ length: 24 }, () => Array(30).fill(null)), // 24 box da 30 slot (il "PC" dei giochi)
   zaino:             { pokeball: 0, pozione: 0 },
   soldi:             SOLDI_INIZIALI, // Pokéyen (F9.2)
   repellentePassi:   0,     // passi rimasti con il repellente attivo (F9.2)
-  mn:                { taglio: false, surf: false, volo: false, funivia: false, vittoria: false, spaccaroccia: false }, // MN possedute (F9/F11/F12)
+  mn:                { taglio: false, surf: false, volo: false, funivia: false, vittoria: false, spaccaroccia: false, forza: false, sub: false, cascata: false }, // MN possedute (F9/F11/F12)
   cittaVisitate:     [],    // comuni visitati (per la MN Volo) (F9)
   allenatoriBattuti: [],    // id degli allenatori di percorso già sconfitti (F9)
   levelCap:          LEVEL_CAP_INIZIALE,
@@ -39,7 +50,10 @@ let stato = {
   legRespawn:        {},    // F11: { [id]: { tentativi, giornoRespawn } }
   legScomparsi:      [],    // F11: ID leggendari scomparsi (KO 3×)
   oggettiRaccolti:   [],    // ID degli oggetti mappa già raccolti
-  inventario:        { chiave: {} }, // oggetti chiave (non consumabili, per eventi)
+  // oggetti chiave (non consumabili, per eventi). bicicletta/cannaPesca già
+  // sbloccati per test — quando si decide come farli ottenere in game, basta
+  // partire da "false" e assegnarli dall'evento/NPC giusto.
+  inventario:        { chiave: { bicicletta: true, cannaPesca: true } },
   flags:             {
     starterScelto:    false,
     pokedexRicevuto:  false,
@@ -64,17 +78,41 @@ let stato = {
     minuti:  480,  // minuti dall'inizio della giornata (480 = 08:00)
     notteToast: false, // flag: toast notte già mostrato oggi
   },
+  // Meteo overworld (allineamento Essentials, sessione 31 agosto): tipo
+  // corrente + passo (stato.passi) a cui torna sereno. 'sole'/'pioggia'
+  // random ovunque all'aperto, 'grandine' solo a Monte Cavo. 'sabbia' non
+  // ancora disponibile: nessuna zona desertica in gioco (vedi aggiornaMeteo()).
+  meteo: { tipo: 'sereno', scadeAlPasso: 0 },
   // Gauntlet palestre: traccia l'indice del prossimo gregario da affrontare
   gauntletPalestra: {},
+  // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati + passi insieme + uovo pronto da ritirare
+  pensione: { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false },
 };
 
 // ── Salvataggio / caricamento ────────────────────────────────
-
+// RICHIESTA ESPLICITA: il salvataggio NON è più automatico. `salvaPartita()`
+// resta chiamata da decine di punti del codice (comprare, catturare,
+// depositare…) solo per compatibilità storica, ma ora NON scrive più nulla
+// da sola — lo stato in memoria (`stato`) resta comunque corretto per la
+// sessione in corso, viene solo persistito su azione esplicita del giocatore.
+// L'unico punto che scrive davvero su localStorage è salvaPartitaOra(),
+// agganciata al bottone "💾 Salva partita" nella scheda Salva.
 function salvaPartita() {
+  // Intenzionalmente vuota — vedi salvaPartitaOra().
+}
+
+function salvaPartitaOra() {
   try {
+    if (typeof GameMap !== 'undefined' && GameMap.posizioneAttualeSalvabile) {
+      const p = GameMap.posizioneAttualeSalvabile();
+      if (p) stato.mappaSalvata = p;
+      if (GameMap.stackAttualeSalvabile) stato.mappaStackSalvata = GameMap.stackAttualeSalvabile();
+    }
     localStorage.setItem(CHIAVE_SALVATAGGIO, JSON.stringify(stato));
+    return true;
   } catch (e) {
     console.warn('[Salvataggio] Impossibile salvare:', e.message);
+    return false;
   }
 }
 
@@ -89,6 +127,13 @@ function caricaPartita() {
         stato.tempo = { giorno: 1, minuti: 480, notteToast: false };
       }
       if (stato.tempo.notteToast === undefined) stato.tempo.notteToast = false;
+      if (!stato.meteo) stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 };
+      // Migrazione: vecchi salvataggi senza genere/oggetti chiave nuovi
+      if (stato.genere === undefined) stato.genere = null;
+      if (!stato.inventario) stato.inventario = { chiave: {} };
+      if (!stato.inventario.chiave) stato.inventario.chiave = {};
+      if (stato.inventario.chiave.bicicletta === undefined) stato.inventario.chiave.bicicletta = true;
+      if (stato.inventario.chiave.cannaPesca === undefined) stato.inventario.chiave.cannaPesca = true;
       // Migrazione F9.2: vecchi salvataggi senza economia
       if (stato.soldi === undefined) stato.soldi = SOLDI_INIZIALI;
       if (stato.repellentePassi === undefined) stato.repellentePassi = 0;
@@ -107,6 +152,9 @@ function caricaPartita() {
       stato.legCooldown = null; // transitorio: sempre null al caricamento
       if (!stato.mn.funivia)            stato.mn.funivia           = false;
       if (stato.mn.spaccaroccia === undefined) stato.mn.spaccaroccia = false;
+      if (stato.mn.forza === undefined) stato.mn.forza = false;
+      if (stato.mn.sub === undefined)   stato.mn.sub   = false;
+      if (stato.mn.cascata === undefined) stato.mn.cascata = false;
       if (stato.flags.funiviaUsata     === undefined) stato.flags.funiviaUsata     = false;
       if (stato.flags.giornoTemporale  === undefined) stato.flags.giornoTemporale  = 0;
       if (stato.flags.suicuneVisto     === undefined) stato.flags.suicuneVisto     = false;
@@ -118,16 +166,49 @@ function caricaPartita() {
       if (stato.flags.legaCompletata  === undefined) stato.flags.legaCompletata  = false;
       // Migrazione F12b: oggetti mappa, inventario chiave, sagra, Lugia scena
       if (!Array.isArray(stato.oggettiRaccolti)) stato.oggettiRaccolti = [];
+      // Vecchi salvataggi con massi spinti persistiti (sess. 37): il puzzle ora
+      // si resetta sempre lasciando la stanza, il campo non serve più.
+      if (stato.massiSpostati !== undefined) delete stato.massiSpostati;
       if (!stato.inventario || typeof stato.inventario !== 'object') stato.inventario = { chiave: {} };
       if (!stato.inventario.chiave || typeof stato.inventario.chiave !== 'object') stato.inventario.chiave = {};
+      // Migrazione: Pokédex (visti/catturati) e Opzioni (sess. 5 set 2026)
+      if (!stato.pokedex || typeof stato.pokedex !== 'object') stato.pokedex = {};
+      if (!stato.opzioni || typeof stato.opzioni !== 'object') stato.opzioni = {};
+      if (stato.opzioni.velocitaTesto === undefined) stato.opzioni.velocitaTesto = 'normale';
+      if (stato.opzioni.animazioniBattaglia === undefined) stato.opzioni.animazioniBattaglia = true;
       if (stato.flags.sagra                  === undefined) stato.flags.sagra                  = false;
       if (stato.flags.lugiaScena             === undefined) stato.flags.lugiaScena             = false;
       if (stato.flags.cotralAricciaDebellata === undefined) stato.flags.cotralAricciaDebellata = false;
       if (stato.flags.bunkerinoDebellato     === undefined) stato.flags.bunkerinoDebellato     = false;
       if (stato.flags.mewtwoSconfitto        === undefined) stato.flags.mewtwoSconfitto        = false;
       if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
+      // Migrazione F9.3: Pensione Pokémon
+      if (!stato.pensione || typeof stato.pensione !== 'object') {
+        stato.pensione = { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false };
+      }
+      // Migrazione: assegna il sesso ai Pokémon salvati prima dell'introduzione del genere
+      [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
+        if (p && p.genere === undefined && typeof Battle !== 'undefined' && Battle.generaGenere) {
+          p.genere = Battle.generaGenere(p.id);
+        }
+      });
+      // Migrazione Box PC: vecchio Box unico e piatto → 24 box da 30 slot.
+      // Riempie i box in ordine, 30 Pokémon per box, mantenendo l'ordine originale.
+      // NB: controlliamo il salvataggio grezzo (`salvato.boxes`), non
+      // `stato.boxes` — dopo il merge con lo stato di default quest'ultimo è
+      // sempre un array valido (i 24 box vuoti di default), quindi non
+      // basterebbe a distinguere un salvataggio vecchio da uno nuovo.
+      if (!Array.isArray(salvato.boxes)) {
+        const vecchioBox = Array.isArray(salvato.box) ? salvato.box : [];
+        stato.boxes = Array.from({ length: 24 }, () => Array(30).fill(null));
+        vecchioBox.forEach((pkm, i) => {
+          const b = Math.floor(i / 30), s = i % 30;
+          if (b < 24) stato.boxes[b][s] = pkm;
+        });
+        delete stato.box;
+      }
       // Migrazione evoluzioni: campo felicità sui Pokémon che non ce l'hanno
-      [...(stato.squadra || []), ...(stato.box || [])].forEach(p => {
+      [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
         if (p && p.felicita == null) p.felicita = 70;
       });
       console.log('[Salvataggio] Partita caricata ✔');
@@ -175,6 +256,40 @@ function avanzaTempo() {
       mostraToast('🐷 Oggi è la Sagra della Porchetta di Ariccia! Sul Ponte qualcosa si muove all\'alba...', 7000);
     }
   }
+}
+
+// Meteo overworld (allineamento Essentials, sessione 31 agosto): ruota
+// casualmente Sole/Pioggia (ovunque all'aperto) e Grandine (solo Monte Cavo),
+// con una durata di 30-79 passi. La Sabbia non è ancora ruotata: non esiste
+// ancora una zona desertica in gioco — quando ci sarà, basterà aggiungerla
+// alla lista "possibili" quando GameMap.contestoMeteo() segnala quella zona,
+// sullo stesso modello già usato qui per Monte Cavo/grandine.
+function aggiornaMeteo() {
+  if (!stato.meteo) stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 };
+  const ctx = (typeof GameMap !== 'undefined' && GameMap.contestoMeteo)
+    ? GameMap.contestoMeteo() : { outdoor: false, monteCavo: false };
+
+  if (stato.meteo.tipo !== 'sereno') {
+    if (stato.passi >= stato.meteo.scadeAlPasso) {
+      stato.meteo.tipo = 'sereno';
+      stato.meteo.scadeAlPasso = 0;
+      mostraToast('Il tempo torna sereno.', 3000);
+    }
+  } else if (ctx.outdoor) {
+    // ~1 possibilità su 300 passi che si scateni un nuovo evento meteo
+    if (Math.random() < 1 / 300) {
+      const possibili = ctx.monteCavo ? ['pioggia', 'sole', 'grandine'] : ['pioggia', 'sole'];
+      const scelto = possibili[Math.floor(Math.random() * possibili.length)];
+      const durata = 30 + Math.floor(Math.random() * 50); // 30-79 passi
+      stato.meteo = { tipo: scelto, scadeAlPasso: stato.passi + durata };
+      const msg = scelto === 'pioggia' ? '🌧️ Inizia a piovere.'
+                : scelto === 'sole' ? '☀️ Il sole splende forte.'
+                : '❄️ Comincia a grandinare.';
+      mostraToast(msg, 4000);
+    }
+  }
+
+  if (typeof GameMap !== 'undefined' && GameMap.aggiornaVeloMeteo) GameMap.aggiornaVeloMeteo();
 }
 
 // Aggiorna la riga orologio nell'HUD
@@ -372,6 +487,9 @@ function aggiornaHUD() {
   // Pulsante Volo (F9): visibile solo con la MN Volo
   aggiornaBottoneVolo();
 
+  // Pulsante repellente rapido (QoL): visibile solo se ne hai nello zaino
+  aggiornaBottoneRepellente();
+
   // Orologio (F9.1)
   aggiornaHUDtempo();
 
@@ -414,6 +532,22 @@ function aggiornaHUD() {
   }
 }
 
+// ── Pokédex: registro visti/catturati ────────────────────────
+// Chiamata da battle.js quando un Pokémon appare in lotta (visto) o viene
+// catturato/evolve in squadra (catturato) — non richiede chiamate PokéAPI
+// aggiuntive: il nome/sprite li ha già chi chiama (creaIstanza li ha appena
+// scaricati), li salviamo qui per poterli rileggere subito nella lista del
+// Pokédex senza rifare fetch per gli oltre 380 dati mostrati come "visti".
+function segnaPokedex(id, nome, spriteFronte, catturato) {
+  if (typeof stato === 'undefined' || !stato.pokedex) return;
+  const voce = stato.pokedex[id] || { visto: false, catturato: false };
+  voce.visto = true;
+  if (catturato) voce.catturato = true;
+  voce.nome = nome;
+  if (spriteFronte) voce.spriteFronte = spriteFronte;
+  stato.pokedex[id] = voce;
+}
+
 // ── Toast (notifiche rapide) ─────────────────────────────────
 
 let timerToast = null;
@@ -424,6 +558,24 @@ function mostraToast(messaggio, durata = 3500) {
   el.classList.remove('nascosto');
   if (timerToast) clearTimeout(timerToast);
   timerToast = setTimeout(() => el.classList.add('nascosto'), durata);
+}
+
+// ── Popup nome mappa (angolo alto-sinistra, al cambio mappa) ────
+
+let timerNomeMappa = null;
+
+function mostraNomeMappa(nome, durata = 2500) {
+  const el = document.getElementById('popup-nome-mappa');
+  if (!el || !nome) return;
+  el.textContent = nome;
+  el.classList.remove('nascosto');
+  // Riavvia l'animazione di dissolvenza anche se il popup era già visibile
+  // (cambio mappa rapido, es. dentro un cluster).
+  el.classList.remove('popup-nome-mappa-anim');
+  void el.offsetWidth;
+  el.classList.add('popup-nome-mappa-anim');
+  if (timerNomeMappa) clearTimeout(timerNomeMappa);
+  timerNomeMappa = setTimeout(() => el.classList.add('nascosto'), durata);
 }
 
 /* ============================================================
@@ -465,8 +617,18 @@ function mostraDialogo(nome, righe) {
 }
 
 /* ============================================================
-   mostraScelta — riquadro a due pulsanti (usato dal gauntlet palestre)
-   Ritorna Promise<1|2>
+   mostraScelta — finestra Sì/No (usata dal gauntlet palestre, dalle
+   risfide allenatori, ecc.). Ritorna Promise<1|2>
+
+   Riscritta (sess. 5 set 2026) leggendo pbShowCommands in
+   0187_Battle_Scene.rb: in Essentials reale un prompt Sì/No non è un
+   modale grande al centro dello schermo — è una piccola finestra-elenco
+   ancorata in basso a destra, appoggiata al riquadro del messaggio,
+   navigabile con le frecce/[A], nello stesso stile della finestra di
+   sistema (vedi PauseMenuScene in js/map.js, stesso trattamento).
+   Il vecchio pannello era un modale teal/rosa centrato, tipico "popup
+   web", per niente in stile Pokémon — lo stesso tipo di problema già
+   risolto per il menu Start.
    ============================================================ */
 
 function mostraScelta(messaggio, testo1, testo2) {
@@ -476,33 +638,143 @@ function mostraScelta(messaggio, testo1, testo2) {
       overlay = document.createElement('div');
       overlay.id = 'overlay-scelta';
       overlay.style.cssText =
-        'position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;' +
-        'display:flex;align-items:center;justify-content:center;';
+        'position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:2000;' +
+        'display:flex;align-items:flex-end;justify-content:center;padding-bottom:6vh;' +
+        "font-family:'Press Start 2P',monospace;";
       overlay.innerHTML = `
-        <div style="background:#1e2a2a;border:2px solid #4ecdc4;border-radius:12px;
-                    padding:24px;max-width:360px;text-align:center;color:#e0f7f7;">
-          <p id="scelta-msg" style="margin:0 0 20px;font-size:1.05em;line-height:1.5;"></p>
-          <div style="display:flex;gap:12px;justify-content:center;">
-            <button id="scelta-btn1" style="flex:1;padding:10px;border-radius:8px;
-              background:#4ecdc4;color:#111;font-weight:bold;cursor:pointer;border:none;"></button>
-            <button id="scelta-btn2" style="flex:1;padding:10px;border-radius:8px;
-              background:#e06c75;color:#fff;font-weight:bold;cursor:pointer;border:none;"></button>
+        <div style="display:flex;flex-direction:column;gap:14px;align-items:center;max-width:90vw;">
+          <p id="scelta-msg" style="margin:0;padding:12px 20px;background:#141420;
+                      border:2px solid #f0f4ff;border-radius:4px;color:#f0f4ff;
+                      font-family:Arial,sans-serif;font-size:15px;line-height:1.5;
+                      max-width:520px;text-align:center;"></p>
+          <div id="scelta-box" style="background:linear-gradient(180deg,#3858a8,#0c1840);
+                      border:2px solid #f0f4ff;border-radius:2px;min-width:140px;
+                      padding:8px 0;">
+            <div class="scelta-riga" data-n="1" style="padding:6px 16px;font-size:11px;
+                        color:#ffcb05;cursor:pointer;">▶ <span id="scelta-t1"></span></div>
+            <div class="scelta-riga" data-n="2" style="padding:6px 16px;font-size:11px;
+                        color:#f0f4ff;cursor:pointer;">&nbsp;&nbsp;<span id="scelta-t2"></span></div>
           </div>
         </div>`;
       document.body.appendChild(overlay);
     }
 
     document.getElementById('scelta-msg').textContent = messaggio;
-    document.getElementById('scelta-btn1').textContent = testo1;
-    document.getElementById('scelta-btn2').textContent = testo2;
+    document.getElementById('scelta-t1').textContent = testo1;
+    document.getElementById('scelta-t2').textContent = testo2;
     overlay.style.display = 'flex';
+
+    const righe = overlay.querySelectorAll('.scelta-riga');
+    let cursore = 0;
+    function aggiornaCursore() {
+      righe.forEach((r, i) => {
+        const sel = i === cursore;
+        r.style.color = sel ? '#ffcb05' : '#f0f4ff';
+        r.firstChild.textContent = sel ? '▶ ' : '  ';
+      });
+    }
 
     function scegli(n) {
       overlay.style.display = 'none';
+      document.removeEventListener('keydown', suTastiera);
       resolve(n);
     }
-    document.getElementById('scelta-btn1').onclick = () => scegli(1);
-    document.getElementById('scelta-btn2').onclick = () => scegli(2);
+    function suTastiera(e) {
+      // stopPropagation: senza, lo stesso Invio/frecce arrivano ANCHE al
+      // listener globale su window (isA/isB/isStart in initTastiera più
+      // sotto), che riapriva il menu Start o muoveva il cursore del mondo
+      // nello stesso istante in cui si sceglieva Sì/No — bug scoperto
+      // testando dal vivo questa stessa riscrittura.
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.stopPropagation();
+        cursore = cursore === 0 ? 1 : 0;
+        aggiornaCursore();
+      } else if (e.key === 'Enter' || e.key === ' ' || e.key === 'a' || e.key === 'A') {
+        e.stopPropagation();
+        scegli(cursore + 1);
+      } else if (e.key === 'Escape' || e.key === 'b' || e.key === 'B') {
+        e.stopPropagation();
+        scegli(2); // B = equivale a "No"/annulla, come nei giochi
+      }
+    }
+    document.addEventListener('keydown', suTastiera);
+    righe[0].onclick = () => scegli(1);
+    righe[1].onclick = () => scegli(2);
+    cursore = 0;
+    aggiornaCursore();
+  });
+}
+
+/* ============================================================
+   mostraSceltaLista — riquadro con N righe verticali + Annulla
+   Ritorna Promise<indice 0-based | -1 se annullato>
+
+   Ristilizzata (sess. 5 set 2026) insieme a mostraScelta: stesso motivo
+   (era un modale "popup web" teal/rosa, niente a che vedere con
+   Essentials) — qui la lista resta centrata invece che ancorata
+   nell'angolo perché può avere molte voci (es. Riapprendi Mosse, fino
+   a 19+ mosse candidate) e serve scorrere, cosa che la finestrella
+   piccola di mostraScelta non permette. Stessa palette e font pixel
+   della finestra di sistema, navigabile anche da tastiera.
+   ============================================================ */
+
+function mostraSceltaLista(messaggio, opzioni) {
+  return new Promise(resolve => {
+    let overlay = document.getElementById('overlay-scelta-lista');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'overlay-scelta-lista';
+      overlay.style.cssText =
+        'position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:2000;' +
+        'display:flex;align-items:center;justify-content:center;';
+      document.body.appendChild(overlay);
+    }
+    overlay.innerHTML = `
+      <div style="background:linear-gradient(180deg,#3858a8,#0c1840);
+                  border:2px solid #f0f4ff;border-radius:2px;
+                  padding:16px;max-width:420px;width:90%;text-align:center;color:#f0f4ff;">
+        <p style="margin:0 0 14px;font-size:14px;line-height:1.5;
+                  font-family:Arial,sans-serif;">${messaggio}</p>
+        <div id="scelta-lista-righe" style="display:flex;flex-direction:column;
+                  max-height:50vh;overflow-y:auto;"></div>
+      </div>`;
+    const cont = overlay.querySelector('#scelta-lista-righe');
+    const tutte = [...opzioni, 'Annulla'];
+    const righe = tutte.map((testo, i) => {
+      const riga = document.createElement('div');
+      riga.style.cssText = "padding:8px 10px;font-size:12px;cursor:pointer;text-align:left;" +
+        "font-family:'Press Start 2P',monospace;color:#f0f4ff;";
+      riga.innerHTML = `<span class="scelta-lista-cursore">&nbsp;&nbsp;</span>${testo}`;
+      riga.onclick = () => scegli(i);
+      cont.appendChild(riga);
+      return riga;
+    });
+
+    let cursore = 0;
+    function aggiornaCursore() {
+      righe.forEach((r, i) => {
+        const sel = i === cursore;
+        r.style.color = sel ? '#ffcb05' : '#f0f4ff';
+        r.querySelector('.scelta-lista-cursore').textContent = sel ? '▶ ' : '  ';
+      });
+      righe[cursore].scrollIntoView({ block: 'nearest' });
+    }
+    function scegli(i) {
+      overlay.style.display = 'none';
+      document.removeEventListener('keydown', suTastiera);
+      resolve(i === tutte.length - 1 ? -1 : i);
+    }
+    function suTastiera(e) {
+      // stopPropagation: stesso motivo di mostraScelta qui sopra, senza il
+      // listener globale (isA/isB/isStart) reagirebbe alla stessa pressione.
+      if (e.key === 'ArrowUp') { e.stopPropagation(); cursore = (cursore - 1 + tutte.length) % tutte.length; aggiornaCursore(); }
+      else if (e.key === 'ArrowDown') { e.stopPropagation(); cursore = (cursore + 1) % tutte.length; aggiornaCursore(); }
+      else if (e.key === 'Enter' || e.key === ' ' || e.key === 'a' || e.key === 'A') { e.stopPropagation(); scegli(cursore); }
+      else if (e.key === 'Escape' || e.key === 'b' || e.key === 'B') { e.stopPropagation(); scegli(tutte.length - 1); }
+    }
+    document.addEventListener('keydown', suTastiera);
+    aggiornaCursore();
+    overlay.style.display = 'flex';
   });
 }
 
@@ -617,6 +889,7 @@ async function interagisciLaboratorio() {
   let starter;
   try {
     starter = await Battle.creaIstanza(scelto.id, LIVELLO_STARTER);
+    segnaPokedex(starter.id, starter.nome, starter.sprite && starter.sprite.fronte, true);
   } catch (err) {
     console.error('[Lab] Errore nel creare lo starter:', err);
     mostraToast('⚠️ Errore di connessione: riprova a entrare nel laboratorio.');
@@ -861,16 +1134,30 @@ async function vinciPalestra(palestra) {
     stato.mn.vittoria = true;
   }
 
+  // Ogni Capopalestra dona anche una MT (stile giochi ufficiali)
+  const messaggi = [
+    `Hai ottenuto la ${palestra.medaglia || 'medaglia di ' + palestra.comune}! (${stato.medaglie.length}/8)`,
+    `Il level cap sale: ora i tuoi Pokémon possono crescere fino al livello ${stato.levelCap}.`,
+  ];
+  if (palestra.mtDonata && typeof OGGETTI !== 'undefined' && OGGETTI[palestra.mtDonata]) {
+    if (!stato.zaino[palestra.mtDonata]) stato.zaino[palestra.mtDonata] = 0;
+    stato.zaino[palestra.mtDonata] += 1;
+    messaggi.push(`${palestra.capopalestra.nome} ti regala anche la ${OGGETTI[palestra.mtDonata].nome}!`);
+  }
+  // Permesso MN concesso direttamente dalla palestra (Cascata/Sub, sessione 12 agosto).
+  if (palestra.mnDonata && !stato.mn[palestra.mnDonata]) {
+    stato.mn[palestra.mnDonata] = true;
+    const nomiMN = { cascata: 'Cascata', sub: 'Sub' };
+    messaggi.push(`${palestra.capopalestra.nome} ti dà anche il permesso di usare la MN ${nomiMN[palestra.mnDonata] || palestra.mnDonata}!`);
+  }
+  messaggi.push(prossima
+    ? `Prossima tappa: la palestra di ${prossima.comune} (tipo ${prossima.tipo})!`
+    : 'Hai tutte le medaglie! La Via Vittoria è aperta — cercala tra Genzano e Colonna.');
+
   salvaPartita();
   aggiornaHUD();
 
-  await mostraDialogo('🏅 ' + (palestra.medaglia || 'Medaglia'), [
-    `Hai ottenuto la ${palestra.medaglia || 'medaglia di ' + palestra.comune}! (${stato.medaglie.length}/8)`,
-    `Il level cap sale: ora i tuoi Pokémon possono crescere fino al livello ${stato.levelCap}.`,
-    prossima
-      ? `Prossima tappa: la palestra di ${prossima.comune} (tipo ${prossima.tipo})!`
-      : 'Hai tutte le medaglie! La Via Vittoria è aperta — cercala tra Genzano e Colonna.'
-  ]);
+  await mostraDialogo('🏅 ' + (palestra.medaglia || 'Medaglia'), messaggi);
 }
 
 // Chiamata da map.js quando si batte il Capopalestra dentro la palestra Tiled.
@@ -909,6 +1196,7 @@ async function avviaEvoluzione(pkm, idEvo) {
   flash.remove();
   salvaPartita();
   aggiornaHUD();
+  if (typeof GameMap.aggiornaFollowerSpecie === 'function') GameMap.aggiornaFollowerSpecie();
   await mostraDialogo('Evoluzione', [`🎉 ${vecchioNome} si è evoluto in ${pkm.nome}!`]);
   return true;
 }
@@ -1020,13 +1308,328 @@ function marketVicino() {
 function apriMarketVenditore(idMarket) {
   if (stato.incontroAttivo || dialogoInCorso) return;
   marketTiledForzato = idMarket;
+  // Market migrato a Scene nativa (MarketScene, map.js) — vedi apriMarketNativo().
+  if (typeof GameMap !== 'undefined' && GameMap.apriMarketNativo) { GameMap.apriMarketNativo(); return; }
+  impostaModalitaMenu('strumenti');
   GameMap.bloccaMovimento();
   document.getElementById('pannello-menu').classList.remove('nascosto');
   mostraSezioneMenu('market');
 }
 
 // Venditore della prima città: Poké Market di Frascati (merce base).
+// Grottaferrata riusa la STESSA mappa market (mart_interno → file di Frascati),
+// quindi lo stesso venditore/merce; nessuna funzione dedicata necessaria.
 function apriMarketFrascati() { apriMarketVenditore('mk-frascati'); }
+
+// Apre il Box interagendo col PC di un Centro Pokémon (oggetto Tiled tipo:'pc',
+// vedi js/map.js). Un solo PC per Centro basta: i box sono condivisi in tutto
+// il gioco, non serve un id come per i Market.
+function apriBoxPC() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  // Box migrato a Scene nativa (BoxScene, map.js) — vedi apriBoxNativo().
+  if (typeof GameMap !== 'undefined' && GameMap.apriBoxNativo) { GameMap.apriBoxNativo(); return; }
+  impostaModalitaMenu('strumenti');
+  GameMap.bloccaMovimento();
+  document.getElementById('pannello-menu').classList.remove('nascosto');
+  mostraSezioneMenu('box');
+}
+
+// Venditori dei Market dedicati di Marino e Castel Gandolfo (mappe proprie,
+// non più il file riusato di Frascati). Ogni città ha anche un secondo NPC,
+// il "venditore speciale", che vende solo oggetti evolutivi rari.
+function apriMarketMarino() { apriMarketVenditore('mk-marino'); }
+function apriVenditoreSpecialeMarino() { apriMarketVenditore('mk-marino-speciale'); }
+function apriMarketCastelGandolfo() { apriMarketVenditore('mk-castel-gandolfo'); }
+function apriVenditoreSpecialeCastelGandolfo() { apriMarketVenditore('mk-castel-gandolfo-speciale'); }
+
+// Venditore del Market dedicato di Albano Laziale.
+function apriMarketAlbano() { apriMarketVenditore('mk-albano'); }
+function apriVenditoreSpecialeAlbano() { apriMarketVenditore('mk-albano-speciale'); }
+function apriMarketGenzano() { apriMarketVenditore('mk-genzano'); }
+function apriVenditoreSpecialeGenzano() { apriMarketVenditore('mk-genzano-speciale'); }
+function apriMarketGrottaferrata() { apriMarketVenditore('mk-grottaferrata'); }
+
+/* ── Rocca di Papa — rocca_npc1, seconda parte cutscene "Baso è via" ──
+   Prima parte (si avvicina al giocatore) in dati/cutscene.js. Qui: dialogo
+   sul rapimento di Gianluca + dono MN Forza, una tantum. ── */
+async function interagisciRoccaNpc1() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  const nome = 'Abitante preoccupato';
+  if (!stato.flags.rocca_cutscene1_vista) {
+    await mostraDialogo(nome, ['Baso...? Non lo vedo da un bel po\'. Speriamo stia bene.']);
+    return;
+  }
+  if (!stato.flags.rocca_cutscene2_vista) {
+    await mostraDialogo(nome, [
+      'Hanno rapito Gianluca, il nostro operatore della funivia, un oltraggio!',
+      'Baso li ha inseguiti sul Percorso 11 per salvarlo e sconfiggere il team CoTrAL.',
+    ]);
+    await mostraDialogo(nome, ['Ti prego, aiutaci. Prendi questo, ti servirà.']);
+    stato.mn.forza = true;
+    stato.flags.rocca_cutscene2_vista = true;
+    salvaPartita();
+    aggiornaHUD();
+    await mostraDialogo('🎁 MN Forza', [
+      'Hai ottenuto la MN Forza!',
+      'Ora puoi spingere i massi che bloccano il cammino in giro per i Castelli.',
+    ]);
+    return;
+  }
+  await mostraDialogo(nome, ['Corri, aiuta Baso a tornare sano e salvo!']);
+}
+
+/* ── Gianluca liberato (Rocca di Papa): primo dialogo una tantum, poi
+   scelta ripetibile per salire a Monte Cavo con la funivia. ── */
+async function interagisciGianluca() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  const nome = 'Gianluca';
+  if (!stato.flags.gianluca_grato) {
+    stato.flags.gianluca_grato = true;
+    salvaPartita();
+    await mostraDialogo(nome, [
+      'Grazie per avermi salvato, te ne sarò sempre grato!',
+      'Usa pure la mia funivia quando vuoi!',
+    ]);
+    return;
+  }
+  const scelta = await mostraScelta('Vuoi salire in cima?', 'Sì', 'No');
+  if (scelta !== 1) return;
+  if (MAPPA_TILED && GameMap.vaiAMappa) {
+    GameMap.vaiAMappa('monte_cavo', null, null, 'da_gianluca_funivia');
+  }
+}
+
+/* ── Epilogo Rifugio CoTrAL di Rocca di Papa (sess. 12 set 2026): con
+   Marcello/i grunt ormai spariti, restano solo Baso e Gianluca nella stanza.
+   Baso [A] dà solo un promemoria; Gianluca [A] fa scattare la scena vera
+   (Baso si avvicina, ringrazia, invita in palestra) — vedi
+   _epilogoBasoCotralRocca in js/map.js. ── */
+async function interagisciBasoCotralRocca() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  await mostraDialogo('Baso', ['Libera Gianluca! Vai, ci penso io a sistemare questi qui dentro.']);
+}
+
+async function interagisciGianlucaCotralRocca() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.cotral_rocca_finale) {
+    await mostraDialogo('Gianluca', ['Grazie ancora, davvero.']);
+    return;
+  }
+  if (typeof GameMap !== 'undefined' && GameMap.avviaEpilogoBasoCotralRocca) {
+    GameMap.avviaEpilogoBasoCotralRocca();
+  }
+}
+
+async function interagisciOstaggioMuseo1() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Custode del Museo';
+  if (stato.flags && stato.flags.museo_nemi_password) {
+    await mostraDialogo(nome, ['Grazie per averci liberati! Speriamo che il Team GdF non torni più qui.']);
+    return;
+  }
+  await mostraDialogo(nome, [
+    'Non muoverti! Quei tizi ci minacciano da quando siamo entrati stamattina...',
+    'Il loro capo è di sopra. Ti prego, fai qualcosa!',
+  ]);
+}
+
+async function interagisciOstaggioMuseo2() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Visitatore spaventato';
+  if (stato.flags && stato.flags.museo_nemi_password) {
+    await mostraDialogo(nome, ['Sono ancora scosso, ma sto bene. Grazie di cuore.']);
+    return;
+  }
+  await mostraDialogo(nome, [
+    'Siamo bloccati qui dentro, hanno preso in ostaggio pure il custode al piano di sotto!',
+    'Non ci hanno fatto niente... per ora.',
+  ]);
+}
+
+async function interagisciScienziatoLab1() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  const nome = 'Assistente del professore';
+  if (!stato.flags.pozione_lab_data) {
+    stato.flags.pozione_lab_data = true;
+    stato.zaino.pozione = (stato.zaino.pozione || 0) + 1;
+    salvaPartita();
+    aggiornaHUD();
+    await mostraDialogo(nome, [
+      'Ne abbiamo prodotte troppe per gli esperimenti, tieni pure!',
+      'Hai ottenuto una Pozione!',
+    ]);
+    return;
+  }
+  await mostraDialogo(nome, ['In bocca al lupo con la tua avventura!']);
+}
+
+// ── Riapprendi mosse (Move Relearner) — richiesta esplicita di Luca, NPC ad
+// Albano Laziale, a pagamento. Riusa pkm.mosseImparabili (già presente su
+// ogni Pokémon per i level-up futuri, vedi battle.js) invece di ricalcolare
+// il moveset — nessun dato nuovo, solo un flusso di scelta in più.
+const PREZZO_RIAPPRENDI_MOSSE = 1000; // per mossa — importo scelto qui, Luca può cambiarlo
+
+async function interagisciRiapprendiMosse() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Maestro delle Mosse';
+  const squadraReale = stato.squadra.filter(p => p && !p.uovo);
+  if (squadraReale.length === 0) {
+    await mostraDialogo(nome, ['Torna quando avrai un Pokémon con te!']);
+    return;
+  }
+
+  await mostraDialogo(nome, [
+    'Insegno ai Pokémon le mosse che hanno dimenticato lungo la crescita.',
+    `Il servizio costa ₽ ${PREZZO_RIAPPRENDI_MOSSE.toLocaleString('it-IT')} a mossa. Su chi vuoi che lavori?`,
+  ]);
+
+  const nomiScelta = squadraReale.map(p => `${p.nome}  Lv.${p.livello}`);
+  const idxPkm = await mostraSceltaLista('Su quale Pokémon?', nomiScelta);
+  if (idxPkm < 0) return;
+  const pkm = squadraReale[idxPkm];
+
+  const candidate = (pkm.mosseImparabili || [])
+    .filter(m => m.livello <= pkm.livello && !pkm.mosse.some(k => k.nome === m.nome));
+  if (candidate.length === 0) {
+    await mostraDialogo(nome, [`${pkm.nome} conosce già tutte le mosse che potrebbe riapprendere.`]);
+    return;
+  }
+  if ((stato.soldi || 0) < PREZZO_RIAPPRENDI_MOSSE) {
+    await mostraDialogo(nome, ['Non hai abbastanza Pokéyen per il servizio.']);
+    return;
+  }
+
+  // Nomi italiani per la scelta: un fetch per candidata (in cache dopo la prima volta,
+  // stesso meccanismo usato ovunque per le mosse — vedi PokeAPI.getMossa).
+  let dettagli;
+  try {
+    dettagli = await Promise.all(candidate.map(m => PokeAPI.getMossa(m.nome)));
+  } catch (e) {
+    await mostraDialogo(nome, ['Errore di connessione: riprova più tardi.']);
+    return;
+  }
+  const nomiMosse = dettagli.map((d, i) => `${d.nomeIt} (Lv.${candidate[i].livello})`);
+  const idxMossa = await mostraSceltaLista(`Quale mossa vuoi che ${pkm.nome} riapprenda?`, nomiMosse);
+  if (idxMossa < 0) return;
+  const scelta = dettagli[idxMossa];
+
+  const paga = () => {
+    stato.soldi -= PREZZO_RIAPPRENDI_MOSSE;
+    salvaPartita();
+    aggiornaHUD();
+  };
+
+  if (pkm.mosse.length < 4) {
+    pkm.mosse.push({ ...scelta, pp: scelta.ppMax });
+    paga();
+    await mostraDialogo(nome, [`${pkm.nome} ha riappreso ${scelta.nomeIt}!`]);
+    return;
+  }
+
+  const opzioniDimentica = pkm.mosse.map(m => m.nomeIt || m.nome);
+  const idxDimentica = await mostraSceltaLista(
+    `${pkm.nome} conosce già 4 mosse. Quale dimenticare per riapprendere ${scelta.nomeIt}?`,
+    opzioniDimentica
+  );
+  if (idxDimentica < 0) { await mostraDialogo(nome, ['Va bene, torna quando vuoi.']); return; }
+  pkm.mosse[idxDimentica] = { ...scelta, pp: scelta.ppMax };
+  paga();
+  await mostraDialogo(nome, [`${pkm.nome} ha dimenticato una mossa e ha riappreso ${scelta.nomeIt}!`]);
+}
+
+// Venditori dei Market dedicati di Monte Porzio Catone e Rocca di Papa.
+function apriMarketMonteporzio() { apriMarketVenditore('mk-monte-porzio'); }
+function apriVenditoreSpecialeMonteporzio() { apriMarketVenditore('mk-monte-porzio-speciale'); }
+function apriMarketRoccaDiPapa() { apriMarketVenditore('mk-rocca-di-papa'); }
+function apriVenditoreSpecialeRoccaDiPapa() { apriMarketVenditore('mk-rocca-di-papa-speciale'); }
+
+// Venditori del Market dedicato di Ariccia (sessione 6 agosto).
+function apriMarketAriccia() { apriMarketVenditore('mk-ariccia'); }
+function apriVenditoreSpecialeAriccia() { apriMarketVenditore('mk-ariccia-speciale'); }
+
+/* ============================================================
+   MARINO (F9, sess. 37) — Snorlax addormentato, guardia con parola
+   d'ordine, puzzle masso/pulsante MN Forza. Posizioni SEGNAPOSTO nel
+   .tmj: l'utente le sposterà dove preferisce quando disegna la mappa.
+   ============================================================ */
+
+// NPC vicino a Snorlax: regala il Flauto Pokémon (oggetto chiave, unico
+// modo per svegliarlo — Snorlax addormentato è l'UNICO esemplare del gioco).
+async function donaFlautoMarino() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Suonatore Ambulante';
+  if (stato.inventario && stato.inventario.chiave && stato.inventario.chiave.flauto) {
+    await mostraDialogo(nome, ['Quella nenia ormai la conosci a memoria, eh? Bel colpo con quel bestione!']);
+    return;
+  }
+  await mostraDialogo(nome, [
+    'Visto quel coso enorme addormentato in mezzo alla strada? Nessuno riesce a passare!',
+    'Ho un vecchio flauto che potrebbe svegliarlo... Tieni, prendilo pure, io non lo suono più.',
+  ]);
+  if (!stato.inventario) stato.inventario = { chiave: {} };
+  if (!stato.inventario.chiave) stato.inventario.chiave = {};
+  stato.inventario.chiave.flauto = true;
+  salvaPartita();
+  aggiornaHUD();
+  mostraToast('🎵 Hai ricevuto il Flauto Pokémon!', 3000);
+}
+
+// NPC che (se convinto) rivela la parola d'ordine per passare la guardia
+// che blocca l'accesso a una zona di Marino (gate NPC, vedi 'guardia_marino').
+async function rivelaParolaMarino() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Comare Ersilia';
+  if (stato.flags && stato.flags.marino_password) {
+    await mostraDialogo(nome, ['Te l\'ho già detta, no? "Fontana dei Mori". Non te la scordà!']);
+    return;
+  }
+  const scelta = await mostraScelta(
+    'Pss... vuoi sapere la parola d\'ordine per passare dalla guardia?',
+    'Sì, dimmela', 'No, lascia stare'
+  );
+  if (scelta !== 1) {
+    await mostraDialogo(nome, ['Come vuoi. Se cambi idea, sono sempre qui.']);
+    return;
+  }
+  if (!stato.flags) stato.flags = {};
+  stato.flags.marino_password = true;
+  salvaPartita();
+  await mostraDialogo(nome, ['È "Fontana dei Mori". Dilla alla guardia e ti farà passare.']);
+}
+
+// Custode all'ingresso della Zona Safari: fa pagare il biglietto una volta sola
+// e sblocca il flag che apre il varco bloccato da 'guardia_safari' (gate NPC).
+const PREZZO_INGRESSO_SAFARI = 500;
+async function pagaIngressoSafari() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Custode della Riserva';
+  if (stato.flags && stato.flags.safari_pagato) {
+    await mostraDialogo(nome, ['Hai già pagato il biglietto, entra pure quando vuoi!']);
+    return;
+  }
+  const scelta = await mostraScelta(
+    `Benvenuto alla Zona Safari! L'ingresso costa ₽${PREZZO_INGRESSO_SAFARI}. Vuoi pagare?`,
+    'Sì, pago', 'No, magari dopo'
+  );
+  if (scelta !== 1) {
+    await mostraDialogo(nome, ['Va bene, torna quando vuoi provare la riserva!']);
+    return;
+  }
+  if ((stato.soldi || 0) < PREZZO_INGRESSO_SAFARI) {
+    await mostraDialogo(nome, [`Non hai abbastanza Pokéyen: te ne servono ₽${PREZZO_INGRESSO_SAFARI}.`]);
+    return;
+  }
+  stato.soldi -= PREZZO_INGRESSO_SAFARI;
+  if (!stato.flags) stato.flags = {};
+  stato.flags.safari_pagato = true;
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nome, ['Biglietto pagato! Buona caccia nella riserva.']);
+}
 
 // NPC di Frascati che insegna la MN Taglio DOPO aver vinto la palestra (Medaglia
 // Vigna). Serve a farsi strada tra gli alberi/vigne verso i Boschi del Tuscolo.
@@ -1054,6 +1657,320 @@ function donaTaglioFrascati() {
   ]);
 }
 
+// Sfida dei Porchettari (Ariccia): solo tra le 23:00 e le 02:00 (a cavallo di
+// mezzanotte). Se l'orario è giusto, apre le 5 lotte di fila orchestrate da
+// GameMap.avviaSfidaPorchettari; alla fine premia la Piuma (una tantum).
+function sfidaPorchettari() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Learco';
+  const minuti = (stato.tempo && stato.tempo.minuti) || 0;
+  const inFinestra = minuti >= 1380 || minuti < 120;   // 23:00–02:00
+
+  if (!inFinestra) {
+    mostraDialogo(nome, ['Non vedi che stiamo ancora allestendo?!? Levati dai piedi!']);
+    return;
+  }
+  if (stato.flags && stato.flags.piuma_porchettari) {
+    mostraDialogo(nome, ['Sei già stato il campione della sagra stanotte. Torna un\'altra notte!']);
+    return;
+  }
+  mostraDialogo(nome, [
+    'Benvenuto alla sagra! Vino, porchetta e buona musica per tutti!',
+    'Ma stanotte non è una sagra come le altre...',
+    'Sei uno sfidante valido per i Porchettari?',
+  ]).then(() => {
+    if (typeof GameMap !== 'undefined' && GameMap.avviaSfidaPorchettari) {
+      GameMap.avviaSfidaPorchettari();
+    }
+  });
+}
+
+// Sfida dei Parenti di Baso (Via dei Laghi): 5 lotte di fila, nessuna
+// finestra oraria (a differenza dei Porchettari). Vittoria a tutte e 5 →
+// stato.flags.famiglia_rocco_battuta (permanente, sblocca l'infermiera).
+// (nome funzione/flag tecnici lasciati invariati, invisibili al giocatore)
+function sfidaParentiRocco() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Ilario';
+  if (stato.flags && stato.flags.famiglia_rocco_battuta) {
+    mostraDialogo(nome, ['Hai già battuto tutta la famiglia. Rispetto, davero.']);
+    return;
+  }
+  mostraDialogo(nome, [
+    'Ao, fermo là! Prima de passà da qui devi vedertela co\' tutta la famija Baso.',
+    'Semo in cinque, uno più duro dell\'antro. Pronto?',
+  ]).then(() => {
+    if (typeof GameMap !== 'undefined' && GameMap.avviaSfidaParentiRocco) {
+      GameMap.avviaSfidaParentiRocco();
+    }
+  });
+}
+
+// Infermiera improvvisata di Via dei Laghi (compare solo dopo la sfida dei
+// Parenti di Baso): cura la squadra ogni volta che le parli, come un mini
+// Centro Pokémon — nessuna distanza da controllare, è già un dialogo diretto.
+function curaSquadraViaLaghi() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Cesira';
+  if (!stato.squadra || stato.squadra.length === 0) {
+    mostraDialogo(nome, ['Nun hai ancora nessun Pokémon con te!']);
+    return;
+  }
+  stato.squadra.forEach(p => {
+    p.hpAttuale = p.hpMax;
+    p.condizione = null;
+    p.mosse.forEach(m => { m.pp = m.ppMax; });
+  });
+  salvaPartita();
+  if (typeof aggiornaHUD === 'function') aggiornaHUD();
+  mostraDialogo(nome, ['Doppo avè visto voatri contro tutta la famija, er minimo che pòzzo fà è curatte la squadra!', '✨ Squadra curata!']);
+}
+
+// Infiltrato nella Grotta del Vulcano (travestito da grunt GdF, sess. 7 set
+// 2026): al PRIMO dialogo si limita a presentarsi sottovoce (nessuna cura
+// ancora, altrimenti sarebbe troppo generoso al primo incontro); da lì in
+// poi ogni volta che gli riparli cura la squadra come un Centro Pokémon
+// improvvisato, esattamente come curaSquadraViaLaghi().
+function curaSquadraGrottaVulcano() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = '???';
+  if (!stato.flags) stato.flags = {};
+  if (!stato.flags.infiltrato_grotta_vulcano_incontrato) {
+    stato.flags.infiltrato_grotta_vulcano_incontrato = true;
+    salvaPartita();
+    mostraDialogo(nome, ['Shh! Sono un infiltrato...', 'Se ti serve curare i tuoi Pokémon, vieni pure da me!']);
+    return;
+  }
+  if (!stato.squadra || stato.squadra.length === 0) {
+    mostraDialogo(nome, ['Nun hai ancora nessun Pokémon con te!']);
+    return;
+  }
+  stato.squadra.forEach(p => {
+    p.hpAttuale = p.hpMax;
+    p.condizione = null;
+    p.mosse.forEach(m => { m.pp = m.ppMax; });
+  });
+  salvaPartita();
+  if (typeof aggiornaHUD === 'function') aggiornaHUD();
+  mostraDialogo(nome, ['Ecco fatto, tutto a posto! Occhio ai miei "colleghi"...', '✨ Squadra curata!']);
+}
+
+// Scienziato prigioniero del GdF (Grotta del Vulcano, 3° piano, sess. 8 set
+// 2026): sempre visibile, ma finché il boss è vivo non gli si può parlare
+// per davvero (è sorvegliato). Il "vero" dialogo di ringraziamento + Pietra
+// Rubino parte da solo appena il boss cade (CUTSCENE grotta_vulcano_boss_dopo
+// in dati/cutscene.js) — questa funzione gestisce solo chi gli parla PRIMA
+// (flavor text) o DOPO che se n'è già andato (caso limite).
+function parlaScienziatoGrottaVulcano() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Professor Anselmi';
+  if (!stato.flags) stato.flags = {};
+  if (!stato.flags.gdf_boss_grotta_vulcano_sconfitto) {
+    mostraDialogo('???', ['(È incatenato e sorvegliato a vista... non riesci ad avvicinarti abbastanza da parlargli, non finché quei GdF sono qui.)']);
+    return;
+  }
+  mostraDialogo(nome, ['Grazie ancora per avermi salvato!']);
+}
+
+/* ============================================================
+   PENSIONE POKÉMON — Nemi (F9.3)
+   Lasci 1-2 Pokémon; se compatibili (maschio+femmina della stessa specie,
+   oppure Ditto + qualsiasi altra specie non asessuata) dopo un po' di passi
+   fatti insieme nasce un uovo. L'uovo va ritirato dal giocatore, viaggia
+   nella squadra e si schiude dopo altri passi nello stadio 1 (Lv.5) della
+   specie non-Ditto.
+   ============================================================ */
+
+const PASSI_PENSIONE_UOVO = 150;  // passi insieme (compatibili) prima che nasca l'uovo
+const PASSI_SCHIUSA_UOVO  = 80;   // passi camminati col giocatore prima della schiusa
+
+// Due Pokémon della pensione possono fare un uovo insieme?
+function pensioneCompatibili(a, b) {
+  if (!a || !b) return false;
+  const DITTO = 132;
+  if (a.id === DITTO && b.id === DITTO) return false;           // due Ditto: niente
+  if (a.id === DITTO || b.id === DITTO) return true;             // Ditto + chiunque altro
+  if (a.genere === 'N' || b.genere === 'N') return false;        // asessuati (non-Ditto): niente
+  if (!a.genere || !b.genere || a.genere === b.genere) return false; // serve maschio+femmina
+  if (typeof Battle === 'undefined' || !Battle.trovaSpecieBase) return false;
+  return Battle.trovaSpecieBase(a.id) === Battle.trovaSpecieBase(b.id);
+}
+
+// Specie (stadio 1) del cucciolo che nascerà da una coppia compatibile
+function pensioneSpecieUovo(a, b) {
+  const DITTO = 132;
+  const genitore = a.id === DITTO ? b : a; // se a è Ditto, la specie viene da b (e viceversa)
+  return Battle.trovaSpecieBase(genitore.id);
+}
+
+// Crea l'oggetto "uovo" che viaggia nella squadra come un Pokémon in più.
+// hpMax/hpAttuale a 0 di proposito: tiene l'uovo fuori da ogni logica di
+// battaglia (mai selezionato come attivo, mai considerato "vivo") anche
+// dopo una cura completa al Centro Pokémon (che imposta hpAttuale = hpMax).
+function creaUovo(speciePadreId) {
+  return {
+    uovo: true,
+    id: null,
+    nome: 'Uovo',
+    tipi: [],
+    sprite: {
+      fronte: 'sprites/NO/Graphics/Pokemon/Eggs/000.png',
+      retro:  'sprites/NO/Graphics/Pokemon/Eggs/000.png',
+    },
+    livello: 0,
+    hpMax: 0,
+    hpAttuale: 0,
+    mosse: [],
+    basi: {},
+    mod: { attack: 0, defense: 0, 'special-attack': 0, 'special-defense': 0, speed: 0, accuracy: 0, evasion: 0 },
+    condizione: null,
+    felicita: 0,
+    oggetto: null,
+    genere: 'N',
+    speciePadre: speciePadreId,
+    passiRimanenti: PASSI_SCHIUSA_UOVO,
+  };
+}
+
+// Chiamata ad ogni passo (da alPasso): fa avanzare i passi insieme dei
+// Pokémon depositati alla pensione e produce l'uovo al traguardo.
+function aggiornaPensione() {
+  if (!stato.pensione) return;
+  const { slot1, slot2 } = stato.pensione;
+  if (slot1 && slot2 && !stato.pensione.uovoPronto && pensioneCompatibili(slot1, slot2)) {
+    stato.pensione.passiInsieme += 1;
+    if (stato.pensione.passiInsieme >= PASSI_PENSIONE_UOVO) {
+      stato.pensione.uovoPronto = true;
+      stato.pensione.passiInsieme = 0;
+    }
+  }
+}
+
+// Chiamata ad ogni passo (da alPasso): fa avanzare la schiusa di ogni uovo
+// presente in squadra.
+function aggiornaUova() {
+  if (!stato.squadra) return;
+  stato.squadra.forEach(p => {
+    if (p && p.uovo) p.passiRimanenti -= 1;
+  });
+  const pronto = stato.squadra.find(p => p && p.uovo && p.passiRimanenti <= 0);
+  if (pronto) schiudiUovo(pronto);
+}
+
+async function schiudiUovo(uovo) {
+  const idx = stato.squadra.indexOf(uovo);
+  if (idx < 0) return;
+  try {
+    const nuovo = await Battle.creaIstanza(uovo.speciePadre, 5);
+    segnaPokedex(nuovo.id, nuovo.nome, nuovo.sprite && nuovo.sprite.fronte, true);
+    stato.squadra[idx] = nuovo;
+    salvaPartita();
+    aggiornaHUD();
+    mostraToast(`🥚✨ L'uovo si è schiuso! È nato ${nuovo.nome} (Lv.5)!`, 6000);
+  } catch (err) {
+    console.error('[Pensione] Errore nella schiusa dell\'uovo:', err);
+  }
+}
+
+// NPC della Pensione Pokémon di Nemi: deposita/ritira 1-2 Pokémon, ritira
+// l'uovo quando è pronto.
+async function interagisciPensione() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nomeNpc = 'Reginella';
+  if (!stato.pensione) stato.pensione = { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false };
+
+  if (stato.pensione.uovoPronto) {
+    if (stato.squadra.length >= 6) {
+      await mostraDialogo(nomeNpc, [
+        'Ce sta \'n uovo pronto pe\' te, ma la tu\' squadra è piena!',
+        'Fa\' posto e torna a trovamme.',
+      ]);
+      return;
+    }
+    const speciePadre = pensioneSpecieUovo(stato.pensione.slot1, stato.pensione.slot2);
+    stato.squadra.push(creaUovo(speciePadre));
+    stato.pensione.uovoPronto = false;
+    stato.pensione.passiInsieme = 0;
+    salvaPartita();
+    aggiornaHUD();
+    await mostraDialogo(nomeNpc, [
+      'Guarda che sorpresa! I tu\' Pokémon hanno fatto \'n uovo insieme!',
+      'Portelo con te e continua a cammina\': prima o poi se schiuderà!',
+    ]);
+    return;
+  }
+
+  const occupanti = [stato.pensione.slot1, stato.pensione.slot2].filter(Boolean);
+
+  await mostraDialogo(nomeNpc, [
+    'Bentornato alla Pensione Pokémon de Nemi!',
+    occupanti.length === 0
+      ? 'Se vuoi, pòzzo tené\' compagnia a uno o due dei tu\' Pokémon.'
+      : `Ho co\' me ${occupanti.length} tuo${occupanti.length > 1 ? 'i' : ''} Pokémon: ${occupanti.map(p => p.nome).join(' e ')}.`,
+  ]);
+
+  const opzioniMenu = [];
+  if (occupanti.length < 2) opzioniMenu.push('Lascia un Pokémon');
+  if (occupanti.length > 0) opzioniMenu.push('Ritira i tuoi Pokémon');
+  opzioniMenu.push('Niente, grazie');
+
+  const scelta = await mostraSceltaLista('Cosa vuoi fare?', opzioniMenu);
+  const testoScelta = opzioniMenu[scelta];
+
+  if (testoScelta === 'Lascia un Pokémon') await depositaPensione(nomeNpc);
+  else if (testoScelta === 'Ritira i tuoi Pokémon') await ritiraPensione(nomeNpc);
+}
+
+async function depositaPensione(nomeNpc) {
+  const eleggibili = stato.squadra
+    .map((p, idx) => ({ p, idx }))
+    .filter(({ p }) => !p.uovo);
+  if (eleggibili.length <= 1) {
+    await mostraDialogo(nomeNpc, ['Devi avé\' almeno un Pokémon co\' te fori dalla pensione!']);
+    return;
+  }
+  const opzioni = eleggibili.map(({ p }) => {
+    const iconaGenere = p.genere === 'M' ? '♂' : (p.genere === 'F' ? '♀' : '—');
+    return `${p.nome} Lv.${p.livello} (${iconaGenere})`;
+  });
+  const scelta = await mostraSceltaLista('Quale Pokémon vuoi lasciare alla pensione?', opzioni);
+  if (scelta < 0) return;
+  const { p, idx } = eleggibili[scelta];
+  if (!p.genere && typeof Battle !== 'undefined' && Battle.generaGenere) p.genere = Battle.generaGenere(p.id);
+
+  stato.squadra.splice(idx, 1);
+  if (!stato.pensione.slot1) stato.pensione.slot1 = p;
+  else stato.pensione.slot2 = p;
+  stato.pensione.passiInsieme = 0;
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nomeNpc, [`Va bene, me prendo cura de ${p.nome}!`]);
+}
+
+async function ritiraPensione(nomeNpc) {
+  const occupanti = [stato.pensione.slot1, stato.pensione.slot2].filter(Boolean);
+  if (occupanti.length === 0) return;
+  if (stato.squadra.length + occupanti.length > 6) {
+    await mostraDialogo(nomeNpc, ['Nun c\'hai posto abbastanza in squadra pe\' tutti e due! Libera qualche slot prima de torna\'.']);
+    return;
+  }
+  occupanti.forEach(p => stato.squadra.push(p));
+  stato.pensione.slot1 = null;
+  stato.pensione.slot2 = null;
+  stato.pensione.passiInsieme = 0;
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nomeNpc, ['Eccoli qua, sani e contenti!']);
+}
+
+// NPC del Tunnel Roccioso 4F (sessione 6 agosto): fa scattare la scena
+// Latios/Latias (GameMap.avviaLatiosLatiasScena) — dialogo, fuga, roaming.
+function avviaLatiosLatiasScena() {
+  if (typeof GameMap !== 'undefined' && GameMap.avviaLatiosLatiasScena) {
+    GameMap.avviaLatiosLatiasScena();
+  }
+}
+
 // Apre il menu sulla tab Market (chiamata dal marker 🛒 sulla mappa)
 function apriMarket(idMarket) {
   if (stato.incontroAttivo || dialogoInCorso) return;
@@ -1066,6 +1983,7 @@ function apriMarket(idMarket) {
     return;
   }
 
+  if (typeof GameMap !== 'undefined' && GameMap.apriMarketNativo) { GameMap.apriMarketNativo(); return; }
   GameMap.bloccaMovimento();
   document.getElementById('pannello-menu').classList.remove('nascosto');
   mostraSezioneMenu('market');
@@ -1203,6 +2121,41 @@ async function interagisciDonatore(idDonatore) {
     await mostraDialogo('✈️ MN Volo', ['È comparso il pulsante ✈️ in basso a destra: premilo per volare verso un comune già visitato!']);
   }
 }
+
+// Donatori MN sul motore Tiled: nessun controllo di distanza (ci pensa il
+// raggio di interazione [A]/Spazio del motore mappe), stesso testo/gate a
+// Medaglie di DONATORI_MN. Una funzione per donatore perché l'"azione" di un
+// NPC Tiled si chiama senza argomenti (window[dati.azione]()).
+async function _interagisciDonatoreTiled(idDonatore) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const d = DONATORI_MN.find(x => x.id === idDonatore);
+  if (!d) return;
+
+  if (stato.mn && stato.mn[d.mn]) {
+    await mostraDialogo(d.nome, d.dialogoDopo);
+    return;
+  }
+  const pronto = d.palestraRichiesta
+    ? stato.medaglie.includes(d.palestraRichiesta)
+    : stato.medaglie.length >= d.medaglieMin;
+  if (!pronto) {
+    await mostraDialogo(d.nome, d.dialogoPrima);
+    return;
+  }
+
+  await mostraDialogo(d.nome, d.dialogoDono);
+  if (!stato.mn) stato.mn = { taglio: false, surf: false, volo: false };
+  stato.mn[d.mn] = true;
+  stato.ultimaZonaLocked = null;
+  salvaPartita();
+  aggiornaHUD();
+  mostraToast(`🎉 Hai ottenuto la ${d.nomeMN}!`, 5000);
+}
+
+// NB: la MN Taglio è già ottenibile a Frascati (donaTaglioFrascati, dopo la
+// Medaglia Vigna) — non va duplicata con un secondo donatore.
+function interagisciDonatoreSurf() { _interagisciDonatoreTiled('mn-surf'); }
+function interagisciDonatoreVolo() { _interagisciDonatoreTiled('mn-volo'); }
 
 /* ============================================================
    MUSEO DELLE NAVI ROMANE DI NEMI — evento F10 (Team GdF)
@@ -1359,6 +2312,38 @@ async function triggeraLeggendario(id, livello, nomeSpec, dialogo, onFineExtra) 
         // sconfitta del giocatore: nessuna penalità per il leggendario
         terminaIncontro(esito);
         if (onFineExtra) onFineExtra(esito);
+      }
+    }
+  });
+}
+
+// Incontro ROAMING (Latios/Latias, sessione 6 agosto — stesso schema pronto
+// per Raikou/Entei quando arriveranno, vedi ROADMAP): a differenza di
+// triggeraLeggendario, qui si può fuggire/perdere senza conseguenze (il
+// leggendario resta "in giro", niente respawn/scomparsa dopo 3 KO) — solo
+// la cattura è definitiva. Nessun controllo di zona: può capitare ovunque
+// ci sia una zona incontri (vedi _checkRoamingLatiosLatias in map.js).
+function triggeraLeggendarioRoaming(id, livello, nomeSpec) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (legCatturato(id)) return;
+
+  stato.incontroAttivo = true;
+  GameMap.bloccaMovimento();
+
+  Battle.avvia({
+    idPokemon: id,
+    livello:   livello,
+    fuggireImpossibile: false,
+    stato:     stato,
+    onFine: (esito) => {
+      if (esito === 'cattura') {
+        if (!Array.isArray(stato.legCatturati)) stato.legCatturati = [];
+        if (!stato.legCatturati.includes(id)) stato.legCatturati.push(id);
+        terminaIncontro(esito);
+        mostraToast(`🌟 ${nomeSpec} catturato! È nella tua squadra o nel Box.`, 5000);
+      } else {
+        // Vittoria, fuga o sconfitta: nessuna penalità, resta in roaming.
+        terminaIncontro(esito);
       }
     }
   });
@@ -1558,6 +2543,36 @@ function estraiTeamRemo() {
   const idBase   = stato.rivale ? stato.rivale.idStarter : 252;
   const coreId   = (typeof STARTER_FINALE !== 'undefined' && STARTER_FINALE[idBase]) || idBase;
   return estraiTeamSuperquattro({ ...REMO_LEGA, coreId });
+}
+
+// Squadra del Rivale per gli incontri sulla mappa, scalata per "tappa" (n. di
+// incontro: 1 = primo, 2 = secondo, …). L'ASSO è sempre lo starter che ha scelto
+// (che si evolve con le tappe); i livelli salgono con la tappa.
+// assoLivelloOverride (opzionale, prop Tiled "asso_livello"): scavalca il livello
+// standard della tappa (14/26/38/50/62/74) quando serve un incontro "fuori scala"
+// pur mantenendo lo stadio evolutivo/comprimari di quella tappa (es. Monte Porzio,
+// richiesta esplicita: asso lv 32 invece del lv 38 che darebbe la tappa 3).
+function costruisciSquadraRivale(tappa, assoLivelloOverride) {
+  tappa = Math.max(1, Math.min(6, parseInt(tappa, 10) || 1));
+  const aceLv = (assoLivelloOverride > 0) ? assoLivelloOverride : (2 + tappa * 12);  // 14, 26, 38, 50, 62, 74
+  const lv = (g) => Math.max(5, aceLv - g);
+  const base = (stato.rivale && stato.rivale.idStarter) || 1;
+  // Stadio evolutivo dell'asso (starter) in base alla tappa
+  let ace;
+  if (tappa <= 1) ace = base;                                          // base
+  else if (tappa === 2) ace = base + 1;                                // 1ª evoluzione
+  else ace = (typeof STARTER_FINALE !== 'undefined' && STARTER_FINALE[base]) || (base + 2); // finale
+  // Comprimari che evolvono con le tappe (solo ID 1-386)
+  const uccello = tappa <= 1 ? 16 : (tappa <= 3 ? 17 : 18);            // Pidgey→Pidgeotto→Pidgeot
+  const cane    = tappa <= 2 ? 261 : 262;                              // Poochyena→Mightyena
+  const psi     = tappa <= 3 ? 63 : (tappa <= 4 ? 64 : 65);            // Abra→Kadabra→Alakazam
+  const team = [{ id: uccello, livello: lv(2) }];
+  if (tappa >= 2) team.push({ id: cane, livello: lv(2) });
+  if (tappa >= 3) team.push({ id: psi,  livello: lv(1) });
+  if (tappa >= 4) team.push({ id: 282,  livello: lv(1) });            // Gardevoir
+  if (tappa >= 5) team.push({ id: 373,  livello: lv(1) });            // Salamence
+  team.push({ id: ace, livello: aceLv });                             // ASSO = starter
+  return team;
 }
 
 /* ----------------------------------------------------------
@@ -2054,6 +3069,7 @@ async function avviaPassoLega() {
         premioSoldi:      membro.premioSoldi,
         dialogoSconfitta: membro.dialogoSconfitta,
       },
+      sfondo: `elite${passo + 1}`,
       stato,
       onFine: async (esito) => {
         if (esito === 'sconfitta') {
@@ -2100,6 +3116,7 @@ async function avviaPassoLega() {
           ? REMO_LEGA.dialogoSconfitta.join(' ')
           : REMO_LEGA.dialogoSconfitta,
       },
+      sfondo: 'champion',
       stato,
       onFine: async (esito) => {
         if (esito === 'sconfitta') {
@@ -2114,6 +3131,7 @@ async function avviaPassoLega() {
         }
         // VITTORIA!
         stato.flags.legaCompletata = true;
+        stato.flags.lingue_antiche = true;   // ora sai leggere le iscrizioni antiche
         stato.gauntletLega = null;
         terminaIncontro(esito);
         salvaPartita();
@@ -2121,6 +3139,7 @@ async function avviaPassoLega() {
           ...REMO_LEGA.dialogoSconfitta,
           '— — —',
           'Il tuo nome è stato inciso nella Hall of Fame dei Castelli Romani.',
+          'Senti qualcosa di nuovo dentro di te: ora comprendi bene le lingue antiche dei Castelli. Le iscrizioni non avranno più segreti.',
           'Ma la storia non finisce qui: qualcosa si muove nel Bunkerino di Colonna.',
           'Il Team CoTrAL emerge dall\'ombra. Il post-game ha inizio.',
         ]);
@@ -2226,6 +3245,24 @@ function controllaAllenatoriVicini() {
    MN VOLO (F9) — viaggio rapido verso i comuni già visitati
    ============================================================ */
 
+// Dove "atterra" il Volo su ogni comune: la mappa Tiled e la casella FUORI dal
+// Centro Pokémon di quel comune. Si popola man mano che le città vengono create.
+// (Borgata: porta Centro a tile 5,13 → fuori 5,14. Frascati: porta a 5,26 → fuori 5,27.
+// Marino: porta a 20,36 → fuori 20,37. Castel Gandolfo: porta a 10,29 → fuori 10,30.)
+const VOLO_TILED = {
+  // Ricalibrato: la mappa è stata allargata (30→79 di larghezza), il vecchio
+  // tx:5 era tarato sul layout di prima e ora atterra lontanissimo dalla
+  // porta del Centro Pokémon (che oggi è in tile 23,13). Atterra un tile a
+  // sud della porta (23,14), verificato libero da collisioni.
+  'Borgata Tuscolana': { mappa: 'borgata_tuscolana', tx: 23, ty: 14 },
+  'Frascati':          { mappa: 'frascati_centro',   tx: 5,  ty: 27 },
+  'Grottaferrata':     { mappa: 'grottaferrata',     tx: 11, ty: 39 },
+  'Marino':            { mappa: 'marino',            tx: 20, ty: 37 },
+  'Castel Gandolfo':   { mappa: 'castel_gandolfo',   tx: 10, ty: 30 },
+  'Monte Porzio Catone': { mappa: 'monteporzio',     tx: 37, ty: 42 },
+  'Rocca di Papa':       { mappa: 'rocca_di_papa',   tx: 18, ty: 40 },
+};
+
 // Elenco completo delle destinazioni di volo (con coordinate sicure)
 function destinazioniVolo() {
   const lista = [{ comune: 'Borgata Tuscolana', lat: CITTA_PARTENZA.lat, lon: CITTA_PARTENZA.lon }];
@@ -2235,17 +3272,25 @@ function destinazioniVolo() {
   return lista;
 }
 
-// Mostra/nasconde il pulsante ✈️ a seconda che tu abbia la MN Volo
+// Mostra/nasconde il pulsante ✈️ a seconda che tu abbia la MN Volo E che ti
+// trovi in un posto dove si può usare (mai dentro edifici/grotte/dungeon —
+// richiesta esplicita di Luca: prima non c'era nessun controllo sul luogo).
 function aggiornaBottoneVolo() {
   const btn = document.getElementById('btn-volo');
   if (!btn) return;
-  btn.style.display = (stato.mn && stato.mn.volo) ? 'block' : 'none';
+  const haVolo = stato.mn && stato.mn.volo;
+  const consentito = typeof GameMap === 'undefined' || !GameMap.mappaConsenteVolo || GameMap.mappaConsenteVolo();
+  btn.style.display = (haVolo && consentito) ? 'block' : 'none';
 }
 
 // Apre l'overlay con le città dove puoi volare (quelle visitate)
 function apriVolo() {
   if (!stato.mn || !stato.mn.volo) return;
   if (stato.incontroAttivo || dialogoInCorso) return;
+  if (typeof GameMap !== 'undefined' && GameMap.mappaConsenteVolo && !GameMap.mappaConsenteVolo()) {
+    if (typeof mostraToast === 'function') mostraToast('🚫 Non puoi usare Volo qui dentro.', 2200);
+    return;
+  }
 
   // Solo le destinazioni che hai già visitato
   const mete = destinazioniVolo().filter(d => stato.cittaVisitate.includes(d.comune));
@@ -2282,9 +3327,20 @@ function apriVolo() {
   overlay.classList.remove('nascosto');
 }
 
-// Teletrasporta il giocatore al comune scelto
+// Teletrasporta il giocatore al comune scelto: sul motore Tiled lo porta sulla
+// mappa+casella FUORI dal Centro Pokémon di quel comune (vedi VOLO_TILED).
 function voloVerso(lat, lon, comune) {
-  GameMap.teleporta({ lat, lon });
+  const meta = VOLO_TILED[comune];
+  if (MAPPA_TILED && meta && GameMap.vaiAMappa) {
+    GameMap.vaiAMappa(meta.mappa, meta.tx, meta.ty);
+  } else if (MAPPA_TILED) {
+    // Comune visitato ma senza mappa Tiled ancora pronta
+    mostraToast(`✈️ ${comune} non è ancora raggiungibile in volo.`, 3000);
+    return;
+  } else {
+    // Vecchio motore lat/lon (fallback)
+    GameMap.teleporta({ lat, lon });
+  }
   stato.posizione = { lat, lon };
   stato.passiDaCheck = 0;       // niente incontro subito dopo l'atterraggio
   stato.ultimaZonaLocked = null;
@@ -2303,25 +3359,92 @@ function mnPosseduteTesto() {
 }
 
 /* ============================================================
-   MENU DI GIOCO (☰): squadra, zaino, box, salvataggio
+   MENU DI GIOCO — due modalità:
+   'pausa'      (tasto Invio/Start): Squadra, Zaino, Recap, Salva.
+   'strumenti'  (bottone ☰):         Market, Box.
    ============================================================ */
 
-let sezioneMenuAttiva = 'squadra';
+// Il Box resta raggiungibile SOLO dal PC del Centro Pokémon ('strumenti'),
+// mai dal menu Start (richiesta esplicita dell'utente, come nei giochi veri).
+const SCHEDE_PER_MODALITA = {
+  // 'recap' non è più una scheda di pari livello (sess. 5 set): il suo
+  // contenuto è ora la seconda pagina della Scheda Allenatore nativa
+  // (TrainerCardScene/RecapScene in map.js), non un'uscita separata dal
+  // menu Start — vedi VOCI_MENU_START in map.js per il perché.
+  pausa:      ['squadra', 'zaino', 'salva'],
+  strumenti:  ['market', 'box'],
+};
 
-function apriMenu() {
+let sezioneMenuAttiva = 'squadra';
+let menuModalita = 'pausa';
+// PROBLEMA 3 (menu Start nativo, Scene Phaser dedicate): true quando il
+// pannello DOM è stato aperto come "sezione non ancora migrata" da
+// PauseMenuScene (map.js) — in quel caso chiudiMenu() torna alla lista
+// nativa invece di uscire del tutto dal menu. Vedi
+// apriSezioneMenuDaSceneNativa() più sotto.
+let menuNativoInAttesa = false;
+
+// Mostra le tab solo in modalità 'pausa' (Squadra/Zaino/Recap/Salva).
+// Market e Box ('strumenti') sono schermate indipendenti aperte interagendo
+// nel mondo (NPC del negozio, PC del Centro): NIENTE tab tra loro, altrimenti
+// aprendo il Box compariva anche la tab "Market" da cliccare per sbaglio.
+function impostaModalitaMenu(modalita) {
+  menuModalita = modalita || menuModalita || 'pausa';
+  const tabsEl = document.getElementById('menu-tabs');
+  if (menuModalita === 'strumenti') {
+    if (tabsEl) tabsEl.style.display = 'none';
+  } else {
+    if (tabsEl) tabsEl.style.display = '';
+    document.querySelectorAll('#menu-tabs .tab').forEach(t =>
+      t.style.display = (t.dataset.modalita === menuModalita) ? '' : 'none');
+  }
+}
+
+function apriMenu(modalita) {
   if (stato.incontroAttivo) return;
+  impostaModalitaMenu(modalita);
+  if (!SCHEDE_PER_MODALITA[menuModalita].includes(sezioneMenuAttiva)) {
+    sezioneMenuAttiva = SCHEDE_PER_MODALITA[menuModalita][0];
+  }
   GameMap.bloccaMovimento();
   document.getElementById('pannello-menu').classList.remove('nascosto');
   mostraSezioneMenu(sezioneMenuAttiva);
 }
 
 function chiudiMenu() {
+  // Rete di sicurezza: se stavo tenendo un Pokémon "in mano" nel Box e chiudo
+  // il menu senza posarlo, torna da solo al suo slot originale (mai perso).
+  if (boxMano) {
+    const o = boxMano.origine;
+    if (o.tipo === 'box') stato.boxes[o.box][o.slot] = boxMano.pkm;
+    else stato.squadra.splice(o.idx, 0, boxMano.pkm);
+    boxMano = null;
+  }
   document.getElementById('pannello-menu').classList.add('nascosto');
   marketTiledForzato = null;   // esci dal market del venditore
-  if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   salvaPartita();
   aggiornaHUD();
+  // PROBLEMA 3: se questo pannello era stato aperto da PauseMenuScene per
+  // una sezione non ancora migrata (Zaino/Recap/Salva), non uscire del
+  // tutto dal menu: torna alla lista nativa, come nei giochi originali
+  // (B da una sotto-schermata torna al menu, non alla mappa).
+  if (menuNativoInAttesa) {
+    menuNativoInAttesa = false;
+    if (typeof GameMap !== 'undefined' && GameMap.tornaAMenuNativo) { GameMap.tornaAMenuNativo(); return; }
+  }
+  if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
 }
+
+// PROBLEMA 3: apre una sezione del pannello DOM esistente (Zaino/Recap/
+// Salva, non ancora riscritte come Scene Phaser native) da dentro il nuovo
+// menu Start nativo — vedi PauseMenuScene in map.js. Non tocca in alcun
+// modo il modo "strumenti" (Market/Box, aperti da NPC/PC, invariati).
+function apriSezioneMenuDaSceneNativa(sezione) {
+  menuNativoInAttesa = true;
+  apriMenu('pausa');
+  mostraSezioneMenu(sezione);
+}
+window.apriSezioneMenuDaSceneNativa = apriSezioneMenuDaSceneNativa;
 
 /* ============================================================
    TASTIERA stile Game Boy (QoL)
@@ -2371,9 +3494,9 @@ function initTastiera() {
     // 3) Menu aperto: B/Start chiudono, ← → cambiano scheda
     if (!nascosto('pannello-menu')) {
       if (isB || isStart) { e.preventDefault(); chiudiMenu(); return; }
-      if (isFreccia) {
+      if (isFreccia && menuModalita === 'pausa') {
         e.preventDefault();
-        const schede = ['squadra', 'zaino', 'market', 'box', 'salva'];
+        const schede = SCHEDE_PER_MODALITA[menuModalita];
         let i = schede.indexOf(sezioneMenuAttiva);
         if (i < 0) i = 0;
         i = (i + (k === 'arrowright' ? 1 : schede.length - 1)) % schede.length;
@@ -2382,8 +3505,16 @@ function initTastiera() {
       return;
     }
 
-    // 4) Esplorazione: Start apre il menu, A interagisce con ciò che hai davanti
-    if (isStart) { e.preventDefault(); apriMenu(); }
+    // Il menu Start nativo (PauseMenuScene/PartyScene, PROBLEMA 3) gestisce
+    // da sé i propri tasti Phaser (frecce/Invio/Spazio/B/Esc): se è aperto
+    // non deve arrivare fin qui, altrimenti isA farebbe scattare ANCHE
+    // un'interazione sulla mappa sotto e isStart riaprirebbe il menu da capo.
+    if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+
+    // 4) Esplorazione: Start apre il menu (PROBLEMA 3: ora una vera Scene
+    // Phaser a schermo intero — vedi PauseMenuScene in map.js — non più il
+    // pannello DOM sopra la mappa), A interagisce con ciò che hai davanti
+    if (isStart) { e.preventDefault(); if (GameMap.apriMenuNativo) GameMap.apriMenuNativo(); }
     else if (isA) { e.preventDefault(); if (GameMap.interagisciVicino) GameMap.interagisciVicino(); }
   });
 }
@@ -2394,17 +3525,58 @@ function mostraSezioneMenu(sezione) {
     t.classList.toggle('attiva', t.dataset.sezione === sezione));
   const contenuto = document.getElementById('menu-contenuto');
   contenuto.innerHTML = '';
+  contenuto.classList.toggle('market-skin', sezione === 'market'); // reskin visivo (Fase 5)
   if (sezione === 'squadra')      renderSquadra(contenuto);
   else if (sezione === 'zaino')   renderZaino(contenuto);
   else if (sezione === 'market')  renderMarket(contenuto);
   else if (sezione === 'box')     renderBox(contenuto);
-  else                            renderSalvataggio(contenuto);
+  else if (sezione === 'recap')   renderRecap(contenuto);
+  else                            renderSalva(contenuto);
 }
 
+// ── Box PC: helper per lavorare sui 24 box × 30 slot ─────────
+function tuttiIBoxFlat() {
+  return stato.boxes.flat().filter(p => p);
+}
+
+function contaBox() {
+  return tuttiIBoxFlat().length;
+}
+
+// Deposita un Pokémon nel primo slot libero (primo box con posto).
+// Restituisce { box, slot } oppure null se anche i 24 box sono pieni (720
+// slot in totale — nella pratica non dovrebbe mai succedere).
+function depositaInBox(pkm) {
+  for (let b = 0; b < stato.boxes.length; b++) {
+    for (let s = 0; s < stato.boxes[b].length; s++) {
+      if (!stato.boxes[b][s]) {
+        stato.boxes[b][s] = pkm;
+        return { box: b, slot: s };
+      }
+    }
+  }
+  return null;
+}
+
+// Eccezioni ai nomi PBS "normalizzati" (nome inglese senza spazi/trattini,
+// tutto maiuscolo) per le icone: pochi Pokémon in Essentials FRLG hanno un
+// file con un suffisso diverso dallo schema standard.
+const ICONA_POKEMON_OVERRIDE = { 'Nidoran-f': 'NIDORANfE', 'Nidoran-m': 'NIDORANmA' };
+
+// Nome del file icona (senza estensione) dentro sprites/pokemon_icons/ per
+// un Pokémon dato il suo `ist.nome` (es. "Pikachu", "Mr-mime", "Ho-oh").
+function chiaveIconaPokemon(nomeIst) {
+  if (ICONA_POKEMON_OVERRIDE[nomeIst]) return ICONA_POKEMON_OVERRIDE[nomeIst];
+  return (nomeIst || '').replace(/[^a-zA-Z0-9]/g, '').toUpperCase();
+}
+
+// Soglie allineate a Essentials FRLG (25%/50%, non più 20%) — vedi anche
+// aggiornaBarraHp in battle.js. La barra usa la vera immagine a 3 fasce
+// colore di Essentials (sprites/ui_party/hp.png) invece di un colore piatto.
 function miniBarraHp(pkm) {
   const pct = Math.max(0, Math.min(100, pkm.hpAttuale / pkm.hpMax * 100));
-  const colore = pct <= 20 ? '#e3350d' : (pct <= 50 ? '#f5c518' : '#4caf50');
-  return `<div class="mini-hp"><div class="mini-hp-barra" style="width:${pct}%;background:${colore}"></div></div>`;
+  const classe = pct <= 25 ? 'rossa' : (pct <= 50 ? 'gialla' : '');
+  return `<div class="mini-hp"><div class="mini-hp-barra ${classe}" style="width:${pct}%"></div></div>`;
 }
 
 function badgeTipi(pkm) {
@@ -2415,25 +3587,42 @@ function badgeTipi(pkm) {
 
 // ── Sezione SQUADRA ──────────────────────────────────────────
 
+// Griglia della schermata Squadra di Essentials FRLG (Graphics/UI/Party/bg.png,
+// UI_Party.rb): il primo Pokémon ha il pannello arrotondato più grande in alto
+// a sinistra, gli altri 5 in griglia 2 colonne con un offset verticale di 16px
+// (native) sulla colonna destra. Sfondo vero + posizioni esatte al posto
+// della lista verticale semplice di prima.
 function renderSquadra(contenuto) {
   if (stato.squadra.length === 0) {
     contenuto.innerHTML = '<p class="menu-vuoto">Non hai ancora nessun Pokémon.</p>';
     return;
   }
+  const griglia = document.createElement('div');
+  griglia.className = 'squadra-griglia';
   stato.squadra.forEach((pkm, idx) => {
     const card = document.createElement('div');
-    card.className = 'card-pokemon';
-    card.innerHTML =
-      `<img src="${pkm.sprite.fronte || ''}" alt="${pkm.nome}">` +
-      `<div class="card-info">` +
-        `<div class="card-riga1"><b>${pkm.nome}</b> <span>Lv.${pkm.livello}</span></div>` +
-        `<div class="card-tipi">${badgeTipi(pkm)}</div>` +
-        `${miniBarraHp(pkm)}` +
-        `<div class="card-hp-testo">${pkm.hpAttuale}/${pkm.hpMax} HP${pkm.hpAttuale <= 0 ? ' · KO' : ''}</div>` +
-      `</div>`;
-    card.addEventListener('click', () => renderDettagli(idx));
-    contenuto.appendChild(card);
+    card.className = 'card-pokemon' + (idx === 0 ? ' card-pokemon-attiva' : '');
+    if (pkm.uovo) {
+      card.innerHTML =
+        `<img src="${pkm.sprite.fronte || ''}" alt="Uovo">` +
+        `<div class="card-info">` +
+          `<div class="card-riga1"><b>Uovo misterioso</b></div>` +
+          `<small>🥚 Ancora ${pkm.passiRimanenti} passi alla schiusa…</small>` +
+        `</div>`;
+    } else {
+      card.innerHTML =
+        `<img src="${pkm.sprite.fronte || ''}" alt="${pkm.nome}">` +
+        `<div class="card-info">` +
+          `<div class="card-riga1"><b>${pkm.nome}</b> <span>Lv.${pkm.livello}</span></div>` +
+          `<div class="card-tipi">${badgeTipi(pkm)}</div>` +
+          `${miniBarraHp(pkm)}` +
+          `<div class="card-hp-testo">${pkm.hpAttuale}/${pkm.hpMax} HP${pkm.hpAttuale <= 0 ? ' · KO' : ''}</div>` +
+        `</div>`;
+    }
+    card.addEventListener('click', () => renderDettagli({ tipo: 'squadra', idx }));
+    griglia.appendChild(card);
   });
+  contenuto.appendChild(griglia);
   const nota = document.createElement('p');
   nota.className = 'menu-nota';
   nota.textContent = 'Tocca un Pokémon per i dettagli. Il primo della lista scende in campo per primo.';
@@ -2442,10 +3631,49 @@ function renderSquadra(contenuto) {
 
 // ── Dettagli di un singolo Pokémon ───────────────────────────
 
-function renderDettagli(idx) {
+// Legge il Pokémon indicato da una "fonte": { tipo:'squadra', idx }
+// oppure { tipo:'box', box, slot }.
+function pkmDaFonte(fonte) {
+  return fonte.tipo === 'box' ? stato.boxes[fonte.box][fonte.slot] : stato.squadra[fonte.idx];
+}
+
+function renderDettagli(fonte) {
   const contenuto = document.getElementById('menu-contenuto');
-  const pkm = stato.squadra[idx];
-  if (!pkm) { mostraSezioneMenu('squadra'); return; }
+  const pkm = pkmDaFonte(fonte);
+  const daSquadra = fonte.tipo !== 'box';
+  const idx = daSquadra ? fonte.idx : fonte.slot;
+  if (!pkm) { mostraSezioneMenu(daSquadra ? 'squadra' : 'box'); return; }
+
+  if (pkm.uovo) {
+    contenuto.innerHTML =
+      `<div class="dettagli-testata">` +
+        `<img src="${pkm.sprite.fronte || ''}" alt="Uovo">` +
+        `<div><h3>Uovo misterioso</h3>` +
+        `<div>🥚 Ancora ${pkm.passiRimanenti} passi camminando insieme prima che si schiuda.</div></div>` +
+      `</div>` +
+      `<div class="dettagli-bottoni">` +
+        (!daSquadra
+          ? `<button id="btn-sposta-squadra" ${stato.squadra.length >= 6 ? 'disabled' : ''}>⬆ Sposta in squadra</button>`
+          : '') +
+        `<button id="btn-torna-squadra">↩ Indietro</button>` +
+      `</div>`;
+    // Il deposito nel Box si fa SOLO dal PC del Centro Pokémon (schermata
+    // Box vera, con lo "sgabuzzino" squadra/box), mai dalla scheda Squadra
+    // del menu Start — richiesta esplicita utente, come nei giochi veri.
+    if (!daSquadra) {
+      document.getElementById('btn-sposta-squadra').addEventListener('click', () => {
+        if (stato.squadra.length >= 6) return;
+        stato.squadra.push(pkm);
+        stato.boxes[fonte.box][fonte.slot] = null;
+        salvaPartita();
+        mostraToast('⚡ L\'uovo è entrato in squadra!');
+        mostraSezioneMenu('box');
+      });
+    }
+    document.getElementById('btn-torna-squadra').addEventListener('click', () =>
+      mostraSezioneMenu(daSquadra ? 'squadra' : 'box'));
+    return;
+  }
 
   const expProssimo = Math.pow(pkm.livello + 1, 3);
   const alCap = pkm.livello >= stato.levelCap;
@@ -2476,15 +3704,35 @@ function renderDettagli(idx) {
       `<div>💨 Velocità: <b>${pkm.velocita}</b></div>` +
       `<div>📈 ${expTesto}</div>` +
     `</div>` +
+    `<div class="dettagli-testata" style="margin-top:6px;">` +
+      (pkm.oggetto && OGGETTI[pkm.oggetto]
+        ? `<div>🎒 Tiene: <b>${OGGETTI[pkm.oggetto].icona} ${OGGETTI[pkm.oggetto].nome}</b></div>`
+        : `<div>🎒 Non tiene nessun oggetto</div>`) +
+    `</div>` +
     `<h4>Mosse</h4><ul class="dettagli-mosse">${mosseHtml}</ul>` +
     `<div class="dettagli-bottoni">` +
-      `<button id="btn-sposta-su" ${idx === 0 ? 'disabled' : ''}>⬆ Sposta su</button>` +
-      `<button id="btn-deposita" ${stato.squadra.length <= 1 ? 'disabled' : ''}>📦 Deposita nel Box</button>` +
-      (MODALITA_TEST ? `<button id="btn-caramella">🍬 Caramella Rara (×${stato.zaino.caramellarara || 0})</button>` : '') +
+      (daSquadra ? `<button id="btn-sposta-su" ${idx === 0 ? 'disabled' : ''}>⬆ Sposta su</button>` : '') +
+      (!daSquadra
+        ? `<button id="btn-sposta-squadra" ${stato.squadra.length >= 6 ? 'disabled' : ''}>⬆ Sposta in squadra</button>`
+        : '') +
+      (pkm.oggetto ? `<button id="btn-togli-oggetto">🎒 Togli oggetto</button>` : '') +
+      (daSquadra && MODALITA_TEST ? `<button id="btn-caramella">🍬 Caramella Rara (×${stato.zaino.caramellarara || 0})</button>` : '') +
+      (!daSquadra ? `<button id="btn-rilascia" class="pericolo">🗑 Rilascia</button>` : '') +
       `<button id="btn-torna-squadra">↩ Indietro</button>` +
     `</div>`;
 
-  if (MODALITA_TEST) {
+  if (pkm.oggetto) {
+    document.getElementById('btn-togli-oggetto').addEventListener('click', () => {
+      const nome = OGGETTI[pkm.oggetto].nome;
+      stato.zaino[pkm.oggetto] = (stato.zaino[pkm.oggetto] || 0) + 1;
+      pkm.oggetto = null;
+      salvaPartita();
+      mostraToast(`🎒 ${nome} torna nello zaino.`);
+      renderDettagli(fonte);
+    });
+  }
+
+  if (daSquadra && MODALITA_TEST) {
     document.getElementById('btn-caramella').addEventListener('click', async () => {
       if ((stato.zaino.caramellarara || 0) <= 0) return;
       const risultato = await Battle.caramellaRara(pkm, stato.levelCap);
@@ -2492,71 +3740,221 @@ function renderDettagli(idx) {
       salvaPartita();
       aggiornaHUD();
       mostraToast(risultato.messaggi.join(' '), 4000);
-      renderDettagli(idx);
+      renderDettagli(fonte);
     });
   }
 
-  document.getElementById('btn-sposta-su').addEventListener('click', () => {
-    [stato.squadra[idx - 1], stato.squadra[idx]] = [stato.squadra[idx], stato.squadra[idx - 1]];
-    salvaPartita();
-    renderDettagli(idx - 1);
-  });
+  if (daSquadra) {
+    document.getElementById('btn-sposta-su').addEventListener('click', () => {
+      [stato.squadra[idx - 1], stato.squadra[idx]] = [stato.squadra[idx], stato.squadra[idx - 1]];
+      salvaPartita();
+      renderDettagli({ tipo: 'squadra', idx: idx - 1 });
+    });
+  } else {
+    document.getElementById('btn-sposta-squadra').addEventListener('click', () => {
+      if (stato.squadra.length >= 6) return;
+      stato.squadra.push(pkm);
+      stato.boxes[fonte.box][fonte.slot] = null;
+      salvaPartita();
+      mostraToast(`⚡ ${pkm.nome} è entrato in squadra!`);
+      mostraSezioneMenu('box');
+    });
 
-  document.getElementById('btn-deposita').addEventListener('click', () => {
-    stato.box.push(stato.squadra.splice(idx, 1)[0]);
-    salvaPartita();
-    mostraToast(`📦 ${pkm.nome} è stato depositato nel Box.`);
-    mostraSezioneMenu('squadra');
-  });
+    document.getElementById('btn-rilascia').addEventListener('click', () => {
+      const sicuro = confirm(`Vuoi davvero rilasciare ${pkm.nome}? Non potrai più recuperarlo.`);
+      if (!sicuro) return;
+      stato.boxes[fonte.box][fonte.slot] = null;
+      salvaPartita();
+      mostraToast(`👋 ${pkm.nome} è stato liberato.`);
+      mostraSezioneMenu('box');
+    });
+  }
 
   document.getElementById('btn-torna-squadra').addEventListener('click', () =>
-    mostraSezioneMenu('squadra'));
+    mostraSezioneMenu(daSquadra ? 'squadra' : 'box'));
 }
 
-// ── Sezione ZAINO ────────────────────────────────────────────
+// ── Sezione ZAINO — 3 tasche ─────────────────────────────────
+// Tasca 1: cura/boost + vendibili + pietre evolutive + oggetti da tenere.
+// Tasca 2: oggetti chiave/storia + contenitore MT/MN.
+// Tasca 3: Poké Ball.
+
+let zainoTascaAttiva = 1;
+let zainoMtAperto = false;   // dentro la tasca 2: contenitore MT/MN aperto?
+let zainoMtEspansa = null;   // chiave della MT di cui sto mostrando i dettagli mossa
+
+function categoriaInTasca3(categoria) { return categoria === 'ball'; }
+function categoriaInTasca2(categoria) { return categoria === 'mt'; }
+
+// Icona di un oggetto: usa la grafica vera (oggetto.img, in
+// CARTELLA_ICONE_OGGETTI) quando disponibile, altrimenti l'emoji di
+// ripiego (oggetto.icona) — usata nella lista principale dello zaino.
+function iconaOggettoHtml(oggetto) {
+  if (oggetto.img) {
+    return `<img class="oggetto-icona-img" src="${CARTELLA_ICONE_OGGETTI}${oggetto.img}" alt="" width="32" height="32">`;
+  }
+  return oggetto.icona || '';
+}
+
+// Costruisce la card di un oggetto dello zaino (icona, nome, quantità,
+// descrizione, bottone "Usa" se applicabile). Riusata dalle tasche 1 e 3.
+function creaCardOggetto(chiave, oggetto, quanti) {
+  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'mt' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
+  const direttamente = oggetto.categoria === 'repellente';
+  const usabile = suBersaglio || direttamente;
+
+  const riga = document.createElement('div');
+  riga.className = 'card-oggetto';
+  riga.innerHTML =
+    `<span class="oggetto-icona">${iconaOggettoHtml(oggetto)}</span>` +
+    `<div class="card-info">` +
+      `<div class="card-riga1"><b>${oggetto.nome}</b> <span>×${quanti}</span></div>` +
+      `<small>${oggetto.descrizione}</small>` +
+    `</div>` +
+    (usabile ? `<button class="btn-preleva" ${(suBersaglio && stato.squadra.length === 0) ? 'disabled' : ''}>Usa</button>` : '');
+
+  if (usabile) {
+    riga.querySelector('.btn-preleva').addEventListener('click', () => {
+      if (direttamente) usaRepellente(chiave);
+      else renderScegliBersaglio(chiave);
+    });
+  }
+  return riga;
+}
+
+// Schermata Zaino vera di Essentials FRLG (Graphics/UI/Bag/bg_N.png come
+// sfondo intero + bag_N.png come icona zaino a (30,20) nativi — coordinate
+// lette da UI_Bag.rb, pbRefresh/initialize). Il pannello bianco dell'elenco
+// oggetti è nell'immagine stessa (misurato sui pixel: x 190-489, y 8-281 su
+// 512x384) — la lista vera viene posizionata sopra a quelle coordinate.
+const ZAINO_TEMA = {
+  1: { bg: 'bg_oggetti.png', icona: 'bag_1.png' },
+  2: { bg: 'bg_chiave.png',  icona: 'bag_3.png' },
+  3: { bg: 'bg_ball.png',    icona: 'bag_2.png' },
+};
 
 function renderZaino(contenuto) {
+  contenuto.innerHTML = '';
+  const tema = ZAINO_TEMA[zainoTascaAttiva];
+
+  const schermo = document.createElement('div');
+  schermo.className = 'zaino-schermo';
+  schermo.style.backgroundImage = `url('sprites/ui_bag/${tema.bg}')`;
+  contenuto.appendChild(schermo);
+
+  const icona = document.createElement('img');
+  icona.className = 'zaino-icona';
+  icona.src = 'sprites/ui_bag/' + tema.icona;
+  icona.alt = '';
+  schermo.appendChild(icona);
+
+  const tasche = document.createElement('div');
+  tasche.className = 'zaino-tasche';
+  [
+    { id: 1, etichetta: '🎒 Oggetti' },
+    { id: 2, etichetta: '🗝️ Chiave' },
+    { id: 3, etichetta: '🔴 Ball' },
+  ].forEach(t => {
+    const btn = document.createElement('button');
+    btn.className = 'tasca-tab' + (zainoTascaAttiva === t.id ? ' attiva' : '');
+    btn.textContent = t.etichetta;
+    btn.addEventListener('click', () => {
+      zainoTascaAttiva = t.id;
+      zainoMtAperto = false;
+      zainoMtEspansa = null;
+      mostraSezioneMenu('zaino');
+    });
+    tasche.appendChild(btn);
+  });
+  schermo.appendChild(tasche);
+
+  const corpo = document.createElement('div');
+  corpo.className = 'zaino-corpo';
+  schermo.appendChild(corpo);
+
+  if (zainoTascaAttiva === 1) renderZainoTascaOggetti(corpo);
+  else if (zainoTascaAttiva === 3) renderZainoTascaBall(corpo);
+  else renderZainoTascaChiave(corpo);
+}
+
+// Tasca 1: tutto tranne MT (tasca 2) e Ball (tasca 3)
+function renderZainoTascaOggetti(corpo) {
   let almenoUno = false;
   for (const [chiave, oggetto] of Object.entries(OGGETTI)) {
     if (oggetto.categoria === 'test' && !MODALITA_TEST) continue;
+    if (categoriaInTasca2(oggetto.categoria) || categoriaInTasca3(oggetto.categoria)) continue;
     const quanti = stato.zaino[chiave] || 0;
-    if (quanti <= 0) continue; // mostra solo ciò che possiedi
+    if (quanti <= 0) continue;
     almenoUno = true;
-
-    // Quali oggetti si possono usare dal menu (fuori battaglia)
-    const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra';
-    const direttamente = oggetto.categoria === 'repellente';
-    const usabile = suBersaglio || direttamente;
-
-    const riga = document.createElement('div');
-    riga.className = 'card-oggetto';
-    riga.innerHTML =
-      `<span class="oggetto-icona">${oggetto.icona}</span>` +
-      `<div class="card-info">` +
-        `<div class="card-riga1"><b>${oggetto.nome}</b> <span>×${quanti}</span></div>` +
-        `<small>${oggetto.descrizione}</small>` +
-      `</div>` +
-      (usabile ? `<button class="btn-preleva" ${(suBersaglio && stato.squadra.length === 0) ? 'disabled' : ''}>Usa</button>` : '');
-
-    if (usabile) {
-      riga.querySelector('.btn-preleva').addEventListener('click', () => {
-        if (direttamente) usaRepellente(chiave);
-        else renderScegliBersaglio(chiave);
-      });
-    }
-    contenuto.appendChild(riga);
+    corpo.appendChild(creaCardOggetto(chiave, oggetto, quanti));
   }
-
   if (!almenoUno) {
-    contenuto.innerHTML = '<p class="menu-vuoto">Lo zaino è vuoto. Compra oggetti al 🛒 Poké Market di un comune.</p>';
+    corpo.innerHTML = '<p class="menu-vuoto">Nessun oggetto. Compra al 🛒 Poké Market di un comune.</p>';
   } else {
     const nota = document.createElement('p');
     nota.className = 'menu-nota';
-    nota.textContent = 'Ball: solo in battaglia. Pozioni/Revitalizzanti/Antidoti: premi "Usa" e scegli il Pokémon. Il Repellente si attiva subito.';
-    contenuto.appendChild(nota);
+    nota.textContent = 'Pozioni/Revitalizzanti/Antidoti/Pietre: premi "Usa" e scegli il Pokémon. Il Repellente si attiva subito.';
+    corpo.appendChild(nota);
+  }
+}
+
+// Tasca 3: solo Poké Ball (si usano solo in battaglia, nessun bottone "Usa")
+function renderZainoTascaBall(corpo) {
+  let almenoUno = false;
+  for (const [chiave, oggetto] of Object.entries(OGGETTI)) {
+    if (!categoriaInTasca3(oggetto.categoria)) continue;
+    const quanti = stato.zaino[chiave] || 0;
+    if (quanti <= 0) continue;
+    almenoUno = true;
+    corpo.appendChild(creaCardOggetto(chiave, oggetto, quanti));
+  }
+  if (!almenoUno) {
+    corpo.innerHTML = '<p class="menu-vuoto">Non hai nessuna Ball. Comprale al 🛒 Poké Market.</p>';
+  } else {
+    const nota = document.createElement('p');
+    nota.className = 'menu-nota';
+    nota.textContent = 'Le Ball si usano solo in battaglia, dal menu Zaino della schermata di lotta.';
+    corpo.appendChild(nota);
+  }
+}
+
+// Tasca 2: oggetti chiave/storia + contenitore MT/MN
+function renderZainoTascaChiave(corpo) {
+  // Contenitore MT/MN: conta quante MT/MN diverse possiede il giocatore
+  const mtPossedute = Object.entries(OGGETTI).filter(
+    ([chiave, o]) => categoriaInTasca2(o.categoria) && (stato.zaino[chiave] || 0) > 0
+  );
+
+  const contenitore = document.createElement('div');
+  contenitore.className = 'card-oggetto card-contenitore-mt';
+  contenitore.innerHTML =
+    `<span class="oggetto-icona">📀</span>` +
+    `<div class="card-info">` +
+      `<div class="card-riga1"><b>MT/MN</b> <span>×${mtPossedute.length}</span></div>` +
+      `<small>Contiene tutte le Macchine Tecniche/Nascoste che possiedi. Tocca per aprire.</small>` +
+    `</div>` +
+    `<button class="btn-preleva">${zainoMtAperto ? '▲' : '▼'}</button>`;
+  contenitore.querySelector('.btn-preleva').addEventListener('click', () => {
+    zainoMtAperto = !zainoMtAperto;
+    zainoMtEspansa = null;
+    mostraSezioneMenu('zaino');
+  });
+  corpo.appendChild(contenitore);
+
+  if (zainoMtAperto) {
+    const elenco = document.createElement('div');
+    elenco.className = 'elenco-mt';
+    if (mtPossedute.length === 0) {
+      elenco.innerHTML = '<p class="menu-vuoto">Non possiedi ancora nessuna MT/MN.</p>';
+    } else {
+      for (const [chiave, oggetto] of mtPossedute) {
+        elenco.appendChild(creaCardMt(chiave, oggetto, stato.zaino[chiave]));
+      }
+    }
+    corpo.appendChild(elenco);
   }
 
-  // Sezione oggetti chiave (non consumabili, per eventi)
+  // Oggetti chiave/storia sciolti (bicicletta, canna da pesca, oggetti trama…)
   if (typeof OGGETTI_CHIAVE !== 'undefined' && stato.inventario && stato.inventario.chiave) {
     const chiavi = Object.entries(stato.inventario.chiave).filter(([, v]) => v);
     if (chiavi.length > 0) {
@@ -2565,7 +3963,7 @@ function renderZaino(contenuto) {
       titolo.style.marginTop = '12px';
       titolo.style.fontWeight = 'bold';
       titolo.textContent = '🔑 Oggetti chiave';
-      contenuto.appendChild(titolo);
+      corpo.appendChild(titolo);
       for (const [id] of chiavi) {
         const def = OGGETTI_CHIAVE[id] || {};
         const riga = document.createElement('div');
@@ -2576,10 +3974,89 @@ function renderZaino(contenuto) {
             `<div class="card-riga1"><b>${def.nome || id}</b></div>` +
             `<small>${def.descrizione || ''}</small>` +
           `</div>`;
-        contenuto.appendChild(riga);
+        corpo.appendChild(riga);
       }
     }
   }
+}
+
+// Card di una singola MT/MN dentro il contenitore: bottone "ℹ️" per i
+// dettagli mossa (nome inglese, tipo, categoria, potenza, precisione, PP,
+// effetto) e bottone "Insegna" che porta al flusso esistente di scelta del
+// Pokémon bersaglio (usaOggettoSu, invariato).
+function creaCardMt(chiave, oggetto, quanti) {
+  const wrapper = document.createElement('div');
+
+  const riga = document.createElement('div');
+  riga.className = 'card-oggetto';
+  riga.innerHTML =
+    `<span class="oggetto-icona">${oggetto.icona}</span>` +
+    `<div class="card-info">` +
+      `<div class="card-riga1"><b>${oggetto.nome}</b> <span>×${quanti}</span></div>` +
+      `<small>${oggetto.descrizione}</small>` +
+    `</div>` +
+    `<button class="btn-info-mossa">${zainoMtEspansa === chiave ? 'ℹ️ ▲' : 'ℹ️'}</button>` +
+    `<button class="btn-preleva" ${stato.squadra.length === 0 ? 'disabled' : ''}>Insegna</button>`;
+
+  riga.querySelector('.btn-info-mossa').addEventListener('click', () => {
+    zainoMtEspansa = (zainoMtEspansa === chiave) ? null : chiave;
+    mostraSezioneMenu('zaino');
+  });
+  riga.querySelector('.btn-preleva').addEventListener('click', () => renderScegliBersaglio(chiave));
+  wrapper.appendChild(riga);
+
+  if (zainoMtEspansa === chiave) {
+    const dettaglio = document.createElement('div');
+    dettaglio.className = 'mossa-dettaglio';
+    dettaglio.textContent = 'Caricamento…';
+    wrapper.appendChild(dettaglio);
+    PokeAPI.getMossa(oggetto.mossa).then(d => {
+      dettaglio.innerHTML =
+        `<div class="riga-nome-mossa"><b>${d.nomeIt}</b> <span class="mossa-nome-en">${d.nomeEn}</span></div>` +
+        `<div>${badgeTipoSingolo(d.tipo)} <span class="tipo-badge" style="background:#555">${classeMossaIt(d.classe)}</span></div>` +
+        `<div class="mossa-stat-riga">Potenza: <b>${d.potenza ?? '—'}</b> · Precisione: <b>${d.precisione != null ? d.precisione : '—'}</b> · PP: <b>${d.ppMax}</b></div>` +
+        `<div class="mossa-effetto">${descriviEffettoMossa(d)}</div>`;
+    }).catch(() => {
+      dettaglio.textContent = 'Errore di connessione: riprova più tardi.';
+    });
+  }
+
+  return wrapper;
+}
+
+function badgeTipoSingolo(tipo) {
+  return `<span class="tipo-badge" style="background:${TIPO_COLORI[tipo] || '#888'}">${TIPO_NOMI[tipo] || tipo}</span>`;
+}
+
+function classeMossaIt(classe) {
+  return { physical: 'Fisico', special: 'Speciale', status: 'Stato' }[classe] || classe;
+}
+
+// Traduce i campi "grezzi" di PokeAPI.getMossa in una frase italiana breve
+// (usato per il popup dettagli nel contenitore MT/MN dello zaino).
+function descriviEffettoMossa(d) {
+  const frasi = [];
+  if (d.priorita > 0) frasi.push('Va sempre per primo (priorità).');
+  else if (d.priorita < 0) frasi.push('Agisce sempre per ultimo (priorità negativa).');
+
+  if (d.statoEffetto) {
+    const nomiStato = { paralysis: 'paralizzare', poison: 'avvelenare', burn: 'scottare', sleep: 'addormentare', freeze: 'congelare', confusion: 'confondere' };
+    const verbo = nomiStato[d.statoEffetto] || d.statoEffetto;
+    frasi.push(`Può ${verbo} il bersaglio${d.statoProbabilita ? ` (${d.statoProbabilita}%)` : ''}.`);
+  }
+
+  if (d.cambiStat && d.cambiStat.length) {
+    const nomiStat = { attack: 'Attacco', defense: 'Difesa', 'special-attack': 'Att. Speciale', 'special-defense': 'Dif. Speciale', speed: 'Velocità', accuracy: 'Precisione', evasion: 'Elusione' };
+    const versoSe = (d.bersaglio === 'user' || d.bersaglio === 'users-field');
+    d.cambiStat.forEach(c => {
+      const verbo = c.modifica > 0 ? 'Aumenta' : 'Riduce';
+      const stadi = Math.abs(c.modifica);
+      frasi.push(`${verbo} ${nomiStat[c.stat] || c.stat} ${versoSe ? "dell'utilizzatore" : 'del bersaglio'} di ${stadi} stad${stadi === 1 ? 'io' : 'i'}${d.cambiStatProbabilita ? ` (${d.cambiStatProbabilita}%)` : ''}.`);
+    });
+  }
+
+  if (frasi.length === 0) frasi.push('Nessun effetto secondario.');
+  return frasi.join(' ');
 }
 
 // Attiva il repellente: niente incontri per N passi
@@ -2590,7 +4067,40 @@ function usaRepellente(chiave) {
   stato.repellentePassi = oggetto.passi || 100;
   salvaPartita();
   mostraToast(`🚷 Repellente attivato: niente incontri per ${stato.repellentePassi} passi.`);
-  mostraSezioneMenu('zaino');
+  aggiornaBottoneRepellente();
+  // Aggiorna la lista zaino solo se il menu è aperto (non aprirlo da solo)
+  const menu = document.getElementById('pannello-menu');
+  if (menu && !menu.classList.contains('nascosto')) mostraSezioneMenu('zaino');
+}
+
+// QoL — Bottone repellente rapido: chiavi repellente possedute nello zaino
+function repellentiInZaino() {
+  if (!stato.zaino) return [];
+  return Object.keys(stato.zaino).filter(k =>
+    (stato.zaino[k] || 0) > 0 && OGGETTI[k] && OGGETTI[k].categoria === 'repellente');
+}
+
+// Mostra/nasconde e aggiorna l'etichetta del bottone repellente
+function aggiornaBottoneRepellente() {
+  const btn = document.getElementById('btn-repellente');
+  if (!btn) return;
+  const chiavi = repellentiInZaino();
+  const tot = chiavi.reduce((s, k) => s + (stato.zaino[k] || 0), 0);
+  if (tot > 0 && !stato.incontroAttivo) {
+    const attivo = (stato.repellentePassi > 0) ? ` · ${stato.repellentePassi}` : '';
+    btn.textContent = `🚷 Repellente (${tot})${attivo}`;
+    btn.style.display = 'block';
+  } else {
+    btn.style.display = 'none';
+  }
+}
+
+// Usa il repellente direttamente dalla mappa, senza aprire lo zaino
+function usaRepellenteRapido() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const chiavi = repellentiInZaino();
+  if (chiavi.length === 0) return;
+  usaRepellente(chiavi[0]);
 }
 
 function renderScegliBersaglio(chiaveOggetto) {
@@ -2602,6 +4112,7 @@ function renderScegliBersaglio(chiaveOggetto) {
     `<p class="menu-nota">${oggetto.icona} <b>${oggetto.nome}</b> (×${quanti} rimaste) — su quale Pokémon?</p>`;
 
   stato.squadra.forEach((pkm, idx) => {
+    if (pkm.uovo) return; // un uovo non può ricevere oggetti
     const card = document.createElement('div');
     card.className = 'card-pokemon';
     card.innerHTML =
@@ -2643,12 +4154,42 @@ async function usaOggettoSu(chiave, idx) {
     mostraToast(`🧪 ${pkm.nome} recupera ${cura} HP!`);
   } else if (oggetto.categoria === 'revive') {
     if (pkm.hpAttuale > 0) {
-      mostraToast(`${pkm.nome} non è esausto: il Revitalizzante serve sui KO.`);
+      mostraToast(`${pkm.nome} non è esausto: il ${oggetto.nome} serve sui KO.`);
       return;
     }
-    pkm.hpAttuale = Math.floor(pkm.hpMax / 2);
+    pkm.hpAttuale = oggetto.max ? pkm.hpMax : Math.floor(pkm.hpMax / 2);
     stato.zaino[chiave] -= 1;
     mostraToast(`💊 ${pkm.nome} si è ripreso! (${pkm.hpAttuale}/${pkm.hpMax} HP)`);
+  } else if (oggetto.categoria === 'curatotale') {
+    if (pkm.hpAttuale <= 0) {
+      mostraToast(`${pkm.nome} è KO: serve un Revitalizzante, non la Cura Totale.`);
+      return;
+    }
+    const guaritoStato = !!pkm.condizione;
+    const curaHp = pkm.hpMax - pkm.hpAttuale;
+    pkm.hpAttuale = pkm.hpMax;
+    pkm.condizione = null;
+    stato.zaino[chiave] -= 1;
+    if (curaHp > 0 && guaritoStato) mostraToast(`✨ ${pkm.nome} recupera tutti gli HP e guarisce!`);
+    else if (curaHp > 0) mostraToast(`✨ ${pkm.nome} recupera tutti gli HP!`);
+    else if (guaritoStato) mostraToast(`✨ ${pkm.nome} guarisce dallo stato alterato!`);
+    else { mostraToast(`${pkm.nome} è già al massimo!`); stato.zaino[chiave] += 1; return; }
+  } else if (oggetto.categoria === 'pp') {
+    // Versione semplificata: ripristina i PP di TUTTE le mosse insieme
+    // (nei giochi originali l'Etere ne cura una sola per volta — qui non
+    // c'è ancora un selettore di mossa nello zaino).
+    const scariche = (pkm.mosse || []).filter(m => m.pp < m.ppMax);
+    if (scariche.length === 0) {
+      mostraToast(`Le mosse di ${pkm.nome} hanno già tutti i PP!`);
+      return;
+    }
+    for (const m of pkm.mosse) m.pp = m.ppMax;
+    stato.zaino[chiave] -= 1;
+    mostraToast(`${oggetto.icona} ${pkm.nome} recupera i PP di tutte le mosse!`);
+  } else if (oggetto.categoria === 'raracandy') {
+    const risultato = await Battle.caramellaRara(pkm, stato.levelCap);
+    if (risultato.ok) stato.zaino[chiave] -= 1;
+    mostraToast(risultato.messaggi.join(' '), 4000);
   } else if (oggetto.categoria === 'curastato') {
     const condTarget = oggetto.stato; // null = antidototot (cura tutto)
     if (!pkm.condizione && pkm.hpAttuale > 0) {
@@ -2681,6 +4222,61 @@ async function usaOggettoSu(chiave, idx) {
     chiudiMenu();                       // chiude il menu per mostrare l'evoluzione
     await avviaEvoluzione(pkm, evo.idEvo);
     return;
+  } else if (oggetto.categoria === 'mt') {
+    // Compatibilità: non tutti i Pokémon imparano tutte le mosse tramite MT
+    // (vedi dati/mt_compatibilita.js, generato da Essentials FRLG/PBS). Se il
+    // dato di compatibilità manca per qualche motivo (file non caricato), si
+    // lascia passare per non rompere il flusso — meglio permissivo che bloccato.
+    if (typeof MT_COMPATIBILITA !== 'undefined') {
+      const compatibili = MT_COMPATIBILITA[pkm.id];
+      if (compatibili && !compatibili.includes(oggetto.mossa)) {
+        mostraToast(`${pkm.nome} non può imparare questa mossa.`);
+        return;
+      }
+    }
+    let dettagli;
+    try {
+      dettagli = await PokeAPI.getMossa(oggetto.mossa);
+    } catch (e) {
+      mostraToast('Errore di connessione: riprova più tardi.');
+      return;
+    }
+    if (pkm.mosse.some(m => m.nome === dettagli.nome)) {
+      mostraToast(`${pkm.nome} conosce già ${dettagli.nomeIt}!`);
+      return;
+    }
+    if (pkm.mosse.length < 4) {
+      pkm.mosse.push({ ...dettagli, pp: dettagli.ppMax });
+      stato.zaino[chiave] -= 1;
+      if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+      mostraToast(`💿 ${pkm.nome} ha imparato ${dettagli.nomeIt}!`);
+    } else {
+      const opzioni = pkm.mosse.map(m => m.nomeIt || m.nome);
+      const scelta = await mostraSceltaLista(
+        `${pkm.nome} conosce già 4 mosse. Quale dimenticare per imparare ${dettagli.nomeIt}?`,
+        opzioni
+      );
+      if (scelta < 0) { renderScegliBersaglio(chiave); return; }   // annullato, l'MT non si consuma
+      pkm.mosse[scelta] = { ...dettagli, pp: dettagli.ppMax };
+      stato.zaino[chiave] -= 1;
+      if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+      mostraToast(`💿 ${pkm.nome} ha dimenticato una mossa e ha imparato ${dettagli.nomeIt}!`);
+    }
+  } else if (oggetto.categoria === 'held') {
+    if (pkm.oggetto === chiave) {
+      mostraToast(`${pkm.nome} sta già tenendo ${oggetto.nome}.`);
+      return;
+    }
+    stato.zaino[chiave] -= 1;
+    if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+    if (pkm.oggetto) {
+      // Il vecchio oggetto torna nello zaino: un Pokémon ne tiene solo uno
+      stato.zaino[pkm.oggetto] = (stato.zaino[pkm.oggetto] || 0) + 1;
+      mostraToast(`${pkm.nome} lascia ${OGGETTI[pkm.oggetto].nome} e prende ${oggetto.icona} ${oggetto.nome}.`);
+    } else {
+      mostraToast(`${oggetto.icona} ${pkm.nome} ora tiene ${oggetto.nome}.`);
+    }
+    pkm.oggetto = chiave;
   }
 
   salvaPartita();
@@ -2688,32 +4284,131 @@ async function usaOggettoSu(chiave, idx) {
   renderScegliBersaglio(chiave);
 }
 
-// ── Sezione BOX ──────────────────────────────────────────────
+// ── Sezione BOX — 24 box da 30 slot (griglia 6×5) ───────────
+// Interazione stile Essentials: tocca uno slot pieno senza nulla "in mano"
+// per prenderlo; tocca uno slot (pieno o vuoto) mentre tieni qualcosa in
+// mano per posarlo/scambiarlo. La striscia "⚡ Squadra" in basso permette
+// di scambiare direttamente col box senza passare dalla scheda Squadra.
+
+let boxIndiceAttivo = 0;
+let boxMano = null; // { origine: {tipo:'squadra'} | {tipo:'box',box,slot}, pkm }
+
+// I 24 numeri degli sfondi box_N.png usati (uno per pagina): 3 al posto di
+// 16 (richiesta esplicita, il 16 non piaceva), poi 17..39 come da Essentials.
+const NUMERI_SFONDO_BOX = [3, ...Array.from({ length: 23 }, (_, i) => 17 + i)];
 
 function renderBox(contenuto) {
-  if (stato.box.length === 0) {
-    contenuto.innerHTML = '<p class="menu-vuoto">Il Box è vuoto. Ci finiscono i Pokémon catturati a squadra piena, o quelli che depositi.</p>';
+  contenuto.innerHTML = '';
+
+  const header = document.createElement('div');
+  header.className = 'box-header';
+  header.innerHTML =
+    `<button id="box-prev">◀</button>` +
+    `<b>Box ${boxIndiceAttivo + 1}/24</b>` +
+    `<button id="box-next">▶</button>`;
+  contenuto.appendChild(header);
+  header.querySelector('#box-prev').addEventListener('click', () => {
+    boxIndiceAttivo = (boxIndiceAttivo + 23) % 24;
+    mostraSezioneMenu('box');
+  });
+  header.querySelector('#box-next').addEventListener('click', () => {
+    boxIndiceAttivo = (boxIndiceAttivo + 1) % 24;
+    mostraSezioneMenu('box');
+  });
+
+  const griglia = document.createElement('div');
+  griglia.className = 'box-griglia';
+  // Sfondo del box (24 disponibili, box_16..box_39.png, uno per pagina).
+  griglia.style.backgroundImage = `url('sprites/ui_storage/box_${NUMERI_SFONDO_BOX[boxIndiceAttivo]}.png')`;
+  stato.boxes[boxIndiceAttivo].forEach((pkm, slot) => {
+    griglia.appendChild(creaCellaBox(pkm, { tipo: 'box', box: boxIndiceAttivo, slot }, false));
+  });
+  contenuto.appendChild(griglia);
+
+  const nota = document.createElement('p');
+  nota.className = 'menu-nota';
+  nota.textContent = boxMano
+    ? `✋ Stai tenendo ${boxMano.pkm.nome}. Tocca uno slot (anche in squadra, qui sotto) per posarlo o scambiarlo.`
+    : 'Tocca uno Pokémon per prenderlo (ℹ️ per il riepilogo), uno slot vuoto per depositare.';
+  contenuto.appendChild(nota);
+
+  const dock = document.createElement('div');
+  dock.className = 'box-dock-squadra';
+  dock.innerHTML = `<div class="box-dock-titolo">⚡ Squadra</div>`;
+  const fileSquadra = document.createElement('div');
+  fileSquadra.className = 'box-dock-file';
+  for (let i = 0; i < 6; i++) {
+    fileSquadra.appendChild(creaCellaBox(stato.squadra[i] || null, { tipo: 'squadra', idx: i }, true));
+  }
+  dock.appendChild(fileSquadra);
+  contenuto.appendChild(dock);
+}
+
+// Legge/scrive uno slot dato il suo riferimento { tipo, box, slot } o { tipo, idx }
+function leggiSlotBox(ref) {
+  return ref.tipo === 'box' ? stato.boxes[ref.box][ref.slot] : (stato.squadra[ref.idx] || null);
+}
+
+function creaCellaBox(pkm, ref, isDock) {
+  const cella = document.createElement('div');
+  cella.className = 'box-cella' + (isDock ? ' box-cella-dock' : '') + (pkm ? '' : ' vuota');
+
+  if (pkm) {
+    const chiaveIcona = chiaveIconaPokemon(pkm.nome);
+    cella.title = `${pkm.nome} · Lv.${pkm.livello}`;
+    cella.innerHTML =
+      `<div class="box-icona" style="background-image:url('sprites/pokemon_icons/${chiaveIcona}.png')"></div>` +
+      `<div class="box-cella-lv">${pkm.livello}</div>` +
+      `<button class="box-cella-info" title="Riepilogo">ℹ️</button>`;
+    cella.querySelector('.box-cella-info').addEventListener('click', (e) => {
+      e.stopPropagation();
+      renderDettagli(ref);
+    });
+  }
+
+  cella.addEventListener('click', () => onClickCellaBox(ref));
+  return cella;
+}
+
+function onClickCellaBox(ref) {
+  const pkmQui = leggiSlotBox(ref);
+
+  if (!boxMano) {
+    // Niente in mano: prendo il Pokémon di questo slot (se c'è).
+    if (!pkmQui) return;
+    if (ref.tipo === 'squadra' && stato.squadra.length <= 1) {
+      mostraToast('Non puoi lasciare la squadra senza nemmeno un Pokémon!');
+      return;
+    }
+    if (ref.tipo === 'box') {
+      stato.boxes[ref.box][ref.slot] = null;
+    } else {
+      stato.squadra.splice(ref.idx, 1);
+    }
+    // Non salvo qui apposta: finché il Pokémon è "in mano" (variabile
+    // temporanea, non nello stato salvato) un ricaricamento della pagina
+    // deve ritrovarlo al suo posto originale, non perderlo.
+    boxMano = { origine: ref, pkm: pkmQui };
+    mostraSezioneMenu('box');
     return;
   }
-  stato.box.forEach((pkm, idx) => {
-    const card = document.createElement('div');
-    card.className = 'card-pokemon';
-    card.innerHTML =
-      `<img src="${pkm.sprite.fronte || ''}" alt="${pkm.nome}">` +
-      `<div class="card-info">` +
-        `<div class="card-riga1"><b>${pkm.nome}</b> <span>Lv.${pkm.livello}</span></div>` +
-        `<div class="card-tipi">${badgeTipi(pkm)}</div>` +
-      `</div>` +
-      `<button class="btn-preleva" ${stato.squadra.length >= 6 ? 'disabled' : ''}>⬆ Preleva</button>`;
-    card.querySelector('.btn-preleva').addEventListener('click', (e) => {
-      e.stopPropagation();
-      stato.squadra.push(stato.box.splice(idx, 1)[0]);
-      salvaPartita();
-      mostraToast(`⚡ ${pkm.nome} è entrato in squadra!`);
-      mostraSezioneMenu('box');
-    });
-    contenuto.appendChild(card);
-  });
+
+  // Ho qualcosa in mano: lo poso qui (scambio se lo slot è pieno).
+  if (ref.tipo === 'box') {
+    stato.boxes[ref.box][ref.slot] = boxMano.pkm;
+  } else if (pkmQui) {
+    stato.squadra[ref.idx] = boxMano.pkm; // scambio diretto, la squadra resta della stessa lunghezza
+  } else if (stato.squadra.length < 6) {
+    stato.squadra.push(boxMano.pkm); // slot vuoto in fondo alla squadra: aggiunta
+  } else {
+    mostraToast('La squadra è già al completo.');
+    return;
+  }
+  const preso = boxMano.pkm;
+  boxMano = pkmQui ? { origine: ref, pkm: pkmQui } : null;
+  salvaPartita();
+  mostraToast(boxMano ? `🔄 Scambiati ${preso.nome} e ${pkmQui.nome}.` : `📦 ${preso.nome} sistemato.`);
+  mostraSezioneMenu('box');
 }
 
 // ── Sezione SALVA ────────────────────────────────────────────
@@ -2770,32 +4465,72 @@ function leggendariStatoTesto() {
   return html;
 }
 
-function renderSalvataggio(contenuto) {
+// ── Sezione RECAP (Trainer Card) ────────────────────────────
+// Statistiche/riepilogo del giocatore — prima faceva parte della scheda
+// Salva, spostate qui perché ora Salva contiene solo azioni (esporta/
+// importa/nuova partita).
+function renderRecap(contenuto) {
   contenuto.innerHTML =
     `<div class="salva-info">` +
       `<div>👣 Passi: <b>${stato.passi}</b></div>` +
       `<div>📅 Giorno: <b>${stato.tempo.giorno}</b> · 🕐 Ora: <b>${formatOrario(stato.tempo.minuti)}</b></div>` +
       `<div>💰 Pokéyen: <b>₽ ${(stato.soldi || 0).toLocaleString('it-IT')}</b></div>` +
-      `<div>⚡ Squadra: <b>${stato.squadra.length}</b> · 📦 Box: <b>${stato.box.length}</b></div>` +
+      `<div>⚡ Squadra: <b>${stato.squadra.length}</b> · 📦 Box: <b>${contaBox()}</b></div>` +
       `<div>🏅 Medaglie: <b>${stato.medaglie.length}/8</b> · Level cap: <b>${stato.levelCap}</b></div>` +
       `<div>📀 MN: <b>${mnPosseduteTesto()}</b></div>` +
       `<div>⚔️ Allenatori battuti: <b>${(stato.allenatoriBattuti || []).length}/${ALLENATORI.length}</b></div>` +
       gdFStatoTesto() +
       leggendariStatoTesto() +
       legaStatoTesto() +
-      `<small>La partita si salva da sola a ogni passo. Qui puoi farne una copia di sicurezza.</small>` +
+    `</div>`;
+}
+
+// ── Sezione SALVA (solo azioni: esporta/importa/nuova partita/test) ──
+function renderSalva(contenuto) {
+  contenuto.innerHTML =
+    `<div class="salva-info">` +
+      `<small>Il salvataggio è manuale: premi "Salva partita" per registrare i progressi. Se non salvi e ricarichi la pagina, riparti dall'ultimo salvataggio.</small>` +
     `</div>` +
     `<div class="dettagli-bottoni colonna">` +
+      `<button id="btn-salva-ora" style="background:#2ecc71;color:#0a2a12;font-weight:bold;">💾 Salva partita</button>` +
       (MODALITA_TEST
-        ? `<button id="btn-test-squadra" style="background:#7b2fff;color:#fff;">🧪 Setup squadra TEST (Lv.100 + Regi-kit)</button>`
+        ? `<button id="btn-test-squadra" style="background:#7b2fff;color:#fff;">🧪 Setup squadra TEST (Lv.100 + Regi-kit)</button>` +
+          `<label style="display:flex;align-items:center;gap:6px;color:#fff;padding:6px 0;">` +
+            `<input type="checkbox" id="chk-no-trainer-sfide" ${stato.flags && stato.flags.testNoTrainerChallenge ? 'checked' : ''}>` +
+            `🚫 Allenatori non mi sfidano a vista (test)` +
+          `</label>` +
+          `<button id="btn-reset-cutscene" style="background:#2f7bff;color:#fff;">🔄 Reset cutscene (test)</button>`
         : '') +
       `<button id="btn-esporta">📤 Esporta salvataggio (file JSON)</button>` +
       `<button id="btn-importa">📥 Importa salvataggio da file</button>` +
       `<button id="btn-nuova-partita" class="pericolo">🗑 Nuova partita (cancella tutto)</button>` +
     `</div>`;
 
+  document.getElementById('btn-salva-ora').addEventListener('click', () => {
+    const ok = salvaPartitaOra();
+    mostraToast(ok ? '💾 Partita salvata!' : '⚠️ Errore nel salvataggio.');
+  });
+
   if (MODALITA_TEST) {
     document.getElementById('btn-test-squadra').addEventListener('click', inizializzaSquadraTest);
+    document.getElementById('chk-no-trainer-sfide').addEventListener('change', (e) => {
+      if (!stato.flags) stato.flags = {};
+      stato.flags.testNoTrainerChallenge = e.target.checked;
+      salvaPartita();
+    });
+    document.getElementById('btn-reset-cutscene').addEventListener('click', () => {
+      const sicuro = confirm('Resettare tutte le cutscene già viste? (solo test: potrai ritriggerarle tutte)');
+      if (!sicuro) return;
+      stato.cutsceneViste = [];
+      // Uniche "viste" fuori da cutsceneViste (vedi js/map.js): gate della scena
+      // Latios/Latias in due parti (npc fermo + fuga verso roaming).
+      if (stato.flags) {
+        delete stato.flags.latiosLatiasCutscene1Vista;
+        delete stato.flags.latiosLatiasRoaming;
+      }
+      salvaPartita();
+      alert('Cutscene resettate.');
+    });
   }
   document.getElementById('btn-esporta').addEventListener('click', esportaSalvataggio);
   document.getElementById('btn-importa').addEventListener('click', () => {
@@ -2822,9 +4557,11 @@ async function inizializzaSquadraTest() {
   mostraToast('🧪 Preparazione squadra test… attendi.', 3000);
   GameMap.bloccaMovimento();
 
-  // 6 Pokémon forti (~BST 535-560, tutti ID ≤ 386)
-  const idSquadra = [130, 59, 131, 143, 242, 149];
-  // Gyarados(BST540), Arcanine(555), Lapras(535), Snorlax(540), Blissey(540), Dragonite(600)
+  // 6 Pokémon forti (~BST 535-560, tutti ID ≤ 386). Arcanine primo apposta:
+  // è il primo non-KO della squadra, quindi scende in campo per primo in
+  // battaglia senza dover cambiare Pokémon per provare Flamethrower.
+  const idSquadra = [59, 130, 131, 143, 242, 149];
+  // Arcanine(555), Gyarados(BST540), Lapras(535), Snorlax(540), Blissey(540), Dragonite(600)
 
   // Pokémon "chiave Regi" nel Box: 3×Terra + 3×Volante + 3×Buio
   const idBox = [50, 74, 27, 16, 21, 41, 198, 228, 215];
@@ -2837,16 +4574,26 @@ async function inizializzaSquadraTest() {
     const pkm = await Battle.creaIstanza(id, 100);
     if (pkm) {
       pkm.hpAttuale = pkm.hpMax; // HP pieni
+      // Arcanine (id 59): forza Flamethrower in squadra per testare
+      // l'animazione mossa appena allineata a Essentials (sessione allineamento F14).
+      if (id === 59) {
+        try {
+          const fiammate = await PokeAPI.getMossa('flamethrower');
+          pkm.mosse[0] = { ...fiammate, pp: fiammate.ppMax };
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Flamethrower ad Arcanine:', e.message);
+        }
+      }
       stato.squadra.push(pkm);
     }
   }
 
   // Non svuotare il box: aggiungi solo se non ci sono già
-  const idGiaInBox = stato.box.map(p => p.id);
+  const idGiaInBox = tuttiIBoxFlat().map(p => p.id);
   for (const id of idBox) {
     if (!idGiaInBox.includes(id)) {
       const pkm = await Battle.creaIstanza(id, 10);
-      if (pkm) stato.box.push(pkm);
+      if (pkm) depositaInBox(pkm);
     }
   }
 
@@ -2861,26 +4608,38 @@ async function inizializzaSquadraTest() {
   stato.inventario.chiave['divisa-astronauta'] = true;
   // La Lega dev'essere completata per i trigger post-Lega
   stato.flags.legaCompletata = true;
+  stato.flags.lingue_antiche = true;
   // Sblocca la catena Bunkerino e Mew (test)
   stato.flags.bunkerinoDebellato     = true;
   stato.flags.cotralAricciaDebellata = true;
   stato.flags.mewtwoSconfitto        = true;
-  // Sblocca tutto: Surf, Taglio, Volo, Funivia, Via Vittoria
-  stato.mn.surf     = true;
-  stato.mn.taglio   = true;
-  stato.mn.volo     = true;
-  stato.mn.funivia  = true;
-  stato.mn.vittoria = true;
+  // Sblocca tutto: Surf, Taglio, Volo, Funivia, Forza, Spaccaroccia, Cascata,
+  // Sub, Via Vittoria — tutti i permessi d'uso delle MN, per non bloccarsi
+  // durante i test sui dungeon.
+  stato.mn.surf         = true;
+  stato.mn.taglio       = true;
+  stato.mn.volo         = true;
+  stato.mn.funivia      = true;
+  stato.mn.forza        = true;
+  stato.mn.spaccaroccia = true;
+  stato.mn.cascata      = true;
+  stato.mn.sub          = true;
+  stato.mn.vittoria     = true;
   // Level cap max
   stato.levelCap = 66;
 
   salvaPartita();
   GameMap.sbloccaMovimento();
   aggiornaHUD();
+  // Prova inequivocabile che il fix è attivo: mostra le mosse vere di
+  // Arcanine appena create, senza dover aprire altri menu per controllare.
+  const arcanineTest = stato.squadra.find(p => p.id === 59);
+  const mosseArcanine = arcanineTest ? arcanineTest.mosse.map(m => m.nomeIt || m.nome).join(', ') : 'non trovato!';
   mostraToast(
     '🧪 Squadra TEST pronta! Lv.100, tutte le MN, Braciere+Piuma. ' +
-    'Pratoni del Vivaro → Lugia · Ponte Ariccia alba+sagra → Ho-Oh!',
-    9000
+    'Pratoni del Vivaro → Lugia · Ponte Ariccia alba+sagra → Ho-Oh! ' +
+    `Mosse Arcanine: ${mosseArcanine}`,
+    12000
   );
   mostraSezioneMenu('squadra');
 }
@@ -2965,6 +4724,7 @@ function triggeraIncontro(zona) {
 function terminaIncontro(esito) {
   stato.incontroAttivo = false;
   GameMap.sbloccaMovimento();
+  if (typeof GameMap.aggiornaFollowerSpecie === 'function') GameMap.aggiornaFollowerSpecie();
   aggiornaHUD();
   salvaPartita();
   console.log(`[Incontro] Battaglia terminata: ${esito}`);
@@ -2980,6 +4740,8 @@ function alPasso(nuovaPosizione) {
   // F9.1: avanza il tempo di gioco (indipendente dal booster)
   avanzaTempo();
   controllaEventiTempo();
+  GameMap.aggiornaVeloTempo();
+  aggiornaMeteo();
 
   // F9.2: consuma i passi del repellente, se attivo
   if (stato.repellentePassi > 0) {
@@ -2991,6 +4753,10 @@ function alPasso(nuovaPosizione) {
 
   // F9: aggiorna i comuni visitati (per la MN Volo)
   segnaCittaVisitata();
+
+  // F9.3: Pensione Pokémon — passi insieme verso l'uovo + schiusa dell'uovo in squadra
+  aggiornaPensione();
+  aggiornaUova();
 
   // F11: cancella il cooldown leggendario se il giocatore ha cambiato zona
   if (stato.legCooldown) {
@@ -3189,10 +4955,31 @@ function alPasso(nuovaPosizione) {
   }
 }
 
+// ── Scelta del personaggio (ragazzo/ragazza) — primissima schermata ────────
+// Mostrata solo se manca "stato.genere" (salvataggio nuovo o vecchio senza
+// questo campo): determina lo sprite del giocatore in tutto il gioco.
+function scegliGenere() {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('overlay-genere');
+    overlay.classList.remove('nascosto');
+    overlay.querySelectorAll('.card-genere').forEach(card => {
+      card.addEventListener('click', () => {
+        overlay.classList.add('nascosto');
+        resolve(card.dataset.genere);
+      }, { once: true });
+    });
+  });
+}
+
 // ── Avvio ────────────────────────────────────────────────────
 
-function avvia() {
+async function avvia() {
   caricaPartita();
+
+  if (!stato.genere) {
+    stato.genere = await scegliGenere();
+    salvaPartita();
+  }
 
   if (MODALITA_TEST) {
     stato.zaino.caramellarara = 999;
@@ -3208,10 +4995,10 @@ function avvia() {
 
   aggiornaHUD();
 
-  document.getElementById('btn-menu').addEventListener('click', apriMenu);
   document.getElementById('btn-chiudi-menu').addEventListener('click', chiudiMenu);
   initTastiera();   // QoL: tasti A / B / Start (Invio)
   document.getElementById('btn-volo').addEventListener('click', apriVolo); // MN Volo (F9)
+  document.getElementById('btn-repellente').addEventListener('click', usaRepellenteRapido); // QoL repellente
 
   // Chiudi overlay interno edificio
   document.getElementById('btn-esci-interno')?.addEventListener('click', () => {

@@ -280,108 +280,111 @@ html, body {
 }
 
 /* ------------------------------------------------------------
-   Pulsante MENU e pannello di gioco
+   Pannello di gioco (Start = Squadra/Zaino/Recap/Salva; Market/Box si aprono
+   interagendo nel mondo, vedi apriMarketVenditore/apriBoxPC in js/app.js)
    ------------------------------------------------------------ */
-#btn-menu {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  z-index: 1000;
-  background: rgba(20, 30, 50, 0.88);
-  color: #ffcb05;
-  border: 2px solid #ffcb05;
-  border-radius: 10px;
-  padding: 10px 18px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-}
 
-#btn-menu:hover {
-  background: #ffcb05;
-  color: #1a2940;
-}
-
+/* Menu Start in stile "classico" Rosso/Blu/FRLG: overlay scuro a schermo
+   intero, lista verticale di voci a destra con cursore ▶, niente
+   card/bordo giallo squadrato come prima. Il contenuto (squadra, zaino...)
+   resta nella stessa struttura sotto/accanto per non riscrivere tutta la
+   logica di navigazione — cambia l'aspetto della "cornice", non il flusso. */
 #pannello-menu {
   position: absolute;
   inset: 0;
   z-index: 1800;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.55);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 #pannello-menu.nascosto {
   display: none;
 }
 
+/* Prima #menu-card si "stirava" (align-items:stretch) fino a riempire tutta
+   l'altezza della finestra: su schermi grandi il contenuto (griglia Squadra
+   in rapporto 4:3, poche righe di Zaino...) restava un riquadro piccolo in
+   alto con sotto un vuoto enorme — sembrava "una schermata a sé" scollegata
+   dal resto invece di un pannello coeso (bug segnalato da Luca). Ora è una
+   card centrata verticalmente, alta il necessario e comunque mai più del
+   90% della finestra (scroll interno di #menu-contenuto se serve). */
 #menu-card {
-  background: #1a2940;
-  border: 3px solid #ffcb05;
-  border-radius: 16px;
+  background: transparent;
   width: 94%;
-  max-width: 520px;
-  max-height: 86vh;
+  max-width: 640px;
+  max-height: 90vh;
   display: flex;
-  flex-direction: column;
+  flex-direction: row-reverse;
   color: #fff;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+  border-radius: 4px;
 }
 
 #menu-testata {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  padding: 10px 12px;
-  border-bottom: 2px solid rgba(255, 203, 5, 0.4);
+  flex-direction: column;
+  align-items: stretch;
+  gap: 2px;
+  padding: 24px 28px;
+  background: rgba(20, 20, 30, 0.82);
+  border-left: 3px solid #ffcb05;
+  min-width: 220px;
 }
 
 #menu-tabs {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  gap: 4px;
 }
 
 #menu-tabs .tab {
   background: transparent;
-  color: #ccc;
-  border: 2px solid #5a6377;
-  border-radius: 8px;
-  padding: 6px 12px;
-  font-size: 14px;
+  border: none;
+  color: #e8e8e8;
+  text-align: right;
+  padding: 8px 4px 8px 24px;
+  font-size: 18px;
   font-weight: bold;
   cursor: pointer;
+  position: relative;
 }
 
 #menu-tabs .tab.attiva {
-  background: #ffcb05;
-  color: #1a2940;
-  border-color: #ffcb05;
+  color: #ffcb05;
+}
+
+#menu-tabs .tab.attiva::before {
+  content: '▶';
+  position: absolute;
+  left: 0;
+  font-size: 14px;
 }
 
 #btn-chiudi-menu {
   background: transparent;
-  color: #fff;
-  border: 2px solid #5a6377;
-  border-radius: 8px;
-  width: 36px;
-  height: 36px;
-  font-size: 16px;
+  color: #999;
+  border: none;
+  align-self: flex-end;
+  width: 32px;
+  height: 32px;
+  font-size: 15px;
   cursor: pointer;
+  margin-top: 14px;
+  order: 2;
 }
 
 #btn-chiudi-menu:hover {
-  border-color: #e3350d;
   color: #e3350d;
 }
 
 #menu-contenuto {
-  padding: 12px 14px;
+  flex: 1;
+  padding: 16px 20px;
   overflow-y: auto;
+  background: rgba(26, 41, 64, 0.88);
+  max-height: 100vh;
 }
 
 .menu-vuoto, .menu-nota {
@@ -392,25 +395,56 @@ html, body {
 }
 
 /* Card Pokémon */
+/* Griglia Squadra vera di Essentials FRLG (Graphics/UI/Party/bg.png, 512x384
+   nativi): contenitore con lo sfondo con le sagome dei 6 slot già disegnate,
+   le card si posizionano esattamente sopra con le stesse coordinate del
+   motore originale (UI_Party.rb: x=(index%2)*256, y=16*(index%2)+96*(index/2),
+   pannello 256x98 — qui in percentuale dei 512x384 nativi). */
+.squadra-griglia {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 512 / 384;
+  background-image: url('sprites/ui_party/bg.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  margin-bottom: 10px;
+}
+
 .card-pokemon {
+  position: absolute;
+  width: 50%;
+  height: 25.52%;
+  box-sizing: border-box;
   display: flex;
   align-items: center;
-  gap: 12px;
-  background: rgba(255, 255, 255, 0.07);
-  border: 2px solid #5a6377;
-  border-radius: 12px;
-  padding: 8px 12px;
-  margin-bottom: 8px;
+  gap: 3%;
+  padding: 2% 4%;
+  background-image: url('sprites/ui_party/panel_rect.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
   cursor: pointer;
+  filter: brightness(1);
+  overflow: hidden;
+}
+
+.card-pokemon.card-pokemon-attiva {
+  background-image: url('sprites/ui_party/panel_round.png');
 }
 
 .card-pokemon:hover {
-  border-color: #ffcb05;
+  filter: brightness(1.15);
 }
 
+.card-pokemon:nth-of-type(1) { left: 0%;  top: 0%; }
+.card-pokemon:nth-of-type(2) { left: 50%; top: 4.17%; }
+.card-pokemon:nth-of-type(3) { left: 0%;  top: 25%; }
+.card-pokemon:nth-of-type(4) { left: 50%; top: 29.17%; }
+.card-pokemon:nth-of-type(5) { left: 0%;  top: 50%; }
+.card-pokemon:nth-of-type(6) { left: 50%; top: 54.17%; }
+
 .card-pokemon img {
-  width: 64px;
-  height: 64px;
+  width: 44px;
+  height: 44px;
   image-rendering: pixelated;
   flex-shrink: 0;
 }
@@ -423,18 +457,19 @@ html, body {
 .card-riga1 {
   display: flex;
   justify-content: space-between;
-  font-size: 16px;
-  margin-bottom: 3px;
+  font-size: 13px;
+  margin-bottom: 2px;
 }
 
 .card-tipi {
-  margin-bottom: 5px;
+  margin-bottom: 3px;
+  font-size: 11px;
 }
 
 .card-hp-testo {
-  font-size: 12px;
+  font-size: 10px;
   color: #ccc;
-  margin-top: 3px;
+  margin-top: 2px;
 }
 
 .mini-hp {
@@ -444,11 +479,20 @@ html, body {
   overflow: hidden;
 }
 
+/* Vera immagine a 3 fasce colore di Essentials (Graphics/UI/Party/overlay_hp.png,
+   96x24 = 3 righe da 8px: verde/giallo/rosso), stessa tecnica della barra HP
+   di battaglia (background-position 0%/50%/100% seleziona la fascia). */
 .mini-hp-barra {
   height: 100%;
-  border-radius: 5px;
+  background-image: url('sprites/ui_party/hp.png');
+  background-size: 100% 300%;
+  background-position: 0% 0%;
+  image-rendering: pixelated;
   transition: width 0.3s ease;
 }
+
+.mini-hp-barra.gialla { background-position: 0% 50%; }
+.mini-hp-barra.rossa  { background-position: 0% 100%; }
 
 .btn-preleva {
   background: #ffcb05;
@@ -581,8 +625,271 @@ html, body {
   font-size: 28px;
 }
 
+.oggetto-icona-img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  vertical-align: middle;
+}
+
 .card-oggetto small {
   color: #aaa;
+}
+
+/* Il vero sfondo Zaino è chiaro (bg_N.png), a differenza del resto del menu:
+   stesso pattern già usato da .market-skin per lo stesso motivo. */
+.zaino-corpo .card-oggetto {
+  background: rgba(0, 0, 0, 0.04);
+  border-color: #ccc;
+}
+
+.zaino-corpo .card-oggetto small {
+  color: #777;
+}
+
+/* Schermata Zaino vera di Essentials FRLG: sfondo intero bg_N.png (512x384
+   nativi) con dentro già disegnati pannello bianco elenco e fascia inferiore.
+   Coordinate misurate sui pixel dell'immagine (vedi app.js/renderZaino):
+   pannello bianco x 190-489, y 8-281 su 512x384 → in percentuale sotto. */
+.zaino-schermo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 512 / 384;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+  margin-bottom: 10px;
+}
+
+/* Icona zaino vera, in alto a sinistra come nell'originale (30,20 nativi) */
+.zaino-icona {
+  position: absolute;
+  left: 5.9%;
+  top: 5.2%;
+  width: 25%;
+  height: 33.3%;
+  image-rendering: pixelated;
+}
+
+/* Tab delle 3 tasche: sotto l'icona zaino, nella fascia colorata a sinistra */
+.zaino-tasche {
+  position: absolute;
+  left: 3%;
+  top: 42%;
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tasca-tab {
+  background: rgba(0, 0, 0, 0.25);
+  color: #fff;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 8px;
+  padding: 5px 8px;
+  font-size: 12px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.tasca-tab.attiva {
+  background: #fff;
+  color: #333;
+  border-color: #fff;
+}
+
+/* Corpo/elenco oggetti: sopra il pannello bianco vero dell'immagine */
+.zaino-corpo {
+  position: absolute;
+  left: 37.1%;
+  top: 2.1%;
+  width: 58.4%;
+  height: 71.1%;
+  overflow-y: auto;
+  padding: 6px 10px;
+  box-sizing: border-box;
+  color: #222;
+}
+
+.card-contenitore-mt {
+  background: rgba(47, 123, 255, 0.14);
+  border-color: #2f7bff;
+}
+
+.elenco-mt {
+  margin: 4px 0 10px 10px;
+  border-left: 2px solid #5a6377;
+  padding-left: 10px;
+}
+
+.btn-info-mossa {
+  background: transparent;
+  color: #ccc;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  padding: 6px 8px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+.mossa-dettaglio {
+  background: rgba(0, 0, 0, 0.25);
+  border: 2px solid #5a6377;
+  border-radius: 10px;
+  padding: 8px 12px;
+  margin: -4px 0 10px 0;
+  font-size: 13px;
+  color: #ddd;
+  line-height: 1.7;
+}
+
+.riga-nome-mossa {
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.mossa-nome-en {
+  color: #999;
+  font-style: italic;
+}
+
+.mossa-stat-riga {
+  margin: 2px 0;
+}
+
+.mossa-effetto {
+  color: #cde;
+}
+
+/* Box PC: header (cambio box), griglia 6×5, dock squadra */
+.box-header {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin-bottom: 10px;
+  color: #fff;
+  font-size: 15px;
+}
+
+.box-header button {
+  background: transparent;
+  color: #ffcb05;
+  border: 2px solid #5a6377;
+  border-radius: 8px;
+  width: 34px;
+  height: 34px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.box-griglia {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+  background-color: rgba(0, 0, 0, 0.2);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  border: 2px solid #5a6377;
+  border-radius: 10px;
+  padding: 8px;
+}
+
+.box-cella {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid #444d61;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.box-cella.vuota {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.box-cella:hover {
+  border-color: #ffcb05;
+}
+
+/* Icone Pokémon: sprites/pokemon_icons/ sono file singoli 64×64 (3 settembre
+   2026 — prima erano fogli Essentials a 2 fotogrammi 128×64 affiancati,
+   ritagliati al primo fotogramma con strumenti/ritaglia_icone_doppie.py),
+   scalati alla dimensione della cella. */
+.box-icona {
+  width: 48px;
+  height: 48px;
+  background-repeat: no-repeat;
+  background-position: 0 0;
+  background-size: 48px 48px;
+  image-rendering: pixelated;
+}
+
+.box-cella-lv {
+  position: absolute;
+  bottom: 1px;
+  right: 3px;
+  font-size: 9px;
+  color: #ffcb05;
+  text-shadow: 1px 1px 0 #000;
+}
+
+.box-cella-info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background: transparent;
+  border: none;
+  font-size: 10px;
+  padding: 1px 2px;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.box-dock-squadra {
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 2px dashed #5a6377;
+}
+
+.box-dock-titolo {
+  color: #ccc;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.box-dock-file {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 6px;
+}
+
+.box-cella-dock {
+  aspect-ratio: 1 / 1;
+}
+
+/* Reskin visivo Market (Fase 5): solo estetica, la logica di renderMarket
+   resta invariata — sfondo preso da Essentials FRLG/Graphics/UI/Mart/bg.png
+   (512×384, usato come sfondo intero: non è un tile ripetibile). Il file
+   cursor.png dello stesso pacchetto è una striscia 312×34 (più fotogrammi
+   di un cursore animato, non un singolo puntatore): non adatto come CSS
+   `cursor` diretto, lasciato da vagliare in futuro se si vuole un cursore
+   animato vero e proprio via sprite invece che il puntatore di sistema.  */
+.market-skin {
+  background-image: url('sprites/ui_mart/bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+}
+
+.market-skin .card-oggetto {
+  background: rgba(20, 20, 30, 0.6);
 }
 
 /* Riquadro sezione Salva */
@@ -713,6 +1020,39 @@ html, body {
 #battaglia-campo {
   flex: 1;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: #000;
+}
+
+/* PROBLEMA 2: prima lo sfondo veniva stirato con "cover" su TUTTO il viewport
+   (enorme/deforme). Poi era stato messo in un box 4:3 letterboxato (bande
+   nere ai lati su schermi larghi). Richiesta di Luca: niente bande nere, ma
+   niente immagine deformata nemmeno — quindi questo layer riempie tutto lo
+   spazio con lo stesso battleback ritagliato (mai stirato: "cover" rispetta
+   le proporzioni, taglia invece di schiacciare) e sfocato/scurito, dietro
+   allo schermo nitido. Riempimento puramente atmosferico ai lati. */
+#battaglia-sfondo-esteso {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(18px) brightness(0.55) saturate(1.1);
+  transform: scale(1.08);   /* nasconde i bordi sfocati/trasparenti del blur */
+}
+
+/* Schermo nativo Essentials: 512x384 (rapporto 4:3), sempre nitido e MAI
+   deformato — l'elemento vero della scena, sopra il riempimento atmosferico
+   di #battaglia-sfondo-esteso. */
+#battaglia-schermo {
+  position: relative;
+  z-index: 1;
+  aspect-ratio: 512 / 384;
+  max-width: 100%;
+  max-height: 100%;
   overflow: hidden;
   background: linear-gradient(to bottom,
     #aee3f8 0%, #cdeec2 58%, #7fbf63 58%, #5ea34a 100%);
@@ -723,125 +1063,257 @@ html, body {
   text-align: center;
 }
 
+/* Meteo di battaglia (Sole/Pioggia/Grandine/Sabbia): piccola etichetta in
+   alto al centro, mostrata solo mentre il meteo è attivo. */
+#battaglia-meteo {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  background: rgba(20, 24, 40, 0.72);
+  color: #fff;
+  font-size: 15px;
+  padding: 3px 12px;
+  border-radius: 12px;
+  pointer-events: none;
+}
+#battaglia-meteo.nascosto { display: none; }
+
+/* Posizioni allineate a Pokémon Essentials FRLG reale (Battle::Scene in
+   0187_Battle_Scene.rb): orizzontale già corretta da prima (nemico 75%,
+   giocatore 25% — FOE_BASE_X=384/512 e PLAYER_BASE_X=128/512). La verticale
+   invece era sbagliata: FOE_BASE_Y = (SCREEN_HEIGHT*3/4)-112 = 176/384 ≈ 46%
+   dall'alto (il Pokémon avversario sta grosso modo a metà schermo, non
+   incollato in cima) — prima era "top: 4%". Portato letteralmente al 46% lo
+   sprite nemico finiva addosso al pannello dati di Lapras sotto (il nostro
+   databox occupa più spazio verticale del layout originale): tarato dal vivo
+   al valore più alto possibile senza sovrapposizione, 22% — un miglioramento
+   netto rispetto al 4% di prima (scarto misurato di oltre 30 punti
+   percentuali), anche se non identico al numero originale per un vincolo
+   del nostro layout attuale, non un rifiuto della fedeltà. */
 #zona-nemico {
-  top: 4%;
-  right: 9%;
-  width: 320px;
+  top: 22%;
+  left: 75%;
+  transform: translateX(-50%);
+  width: 50%;
 }
 
 #zona-giocatore {
   bottom: 0%;
-  left: 6%;
-  width: 380px;
+  left: 25%;
+  transform: translateX(-50%);
+  width: 50%;
 }
 
-#nemico-sprite {
-  width: 250px;
-  height: 250px;
-  image-rendering: pixelated;
-}
-
+/* Dimensioni reali impostate in JS da impostaSfondoBattaglia() (proporzionali
+   alla larghezza attuale di #battaglia-schermo rispetto ai 512px nativi, come
+   già si fa per le piattaforme) — qui restano solo le proprietà comuni. */
+#nemico-sprite,
 #giocatore-sprite {
-  width: 310px;
-  height: 310px;
   image-rendering: pixelated;
 }
 
+/* Dimensioni reali impostate da impostaSfondoBattaglia() in battle.js
+   (proporzioni diverse tra giocatore 256x64 e nemico 256x128, come
+   nell'originale Essentials) — qui restano solo le proprietà comuni.
+   Resta un elemento di flusso normale (come prima), centrato dal
+   text-align:center del genitore .sprite-zona, tirato su sotto lo sprite
+   con un margin-top negativo impostato anch'esso da JS. */
 .piattaforma {
-  width: 100%;
-  height: 52px;
-  margin-top: -42px;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at center,
-    rgba(50, 95, 45, 0.55), rgba(50, 95, 45, 0.12) 68%, transparent 72%);
+  margin-left: auto;
+  margin-right: auto;
+  background-repeat: no-repeat;
+  background-size: contain;
+  pointer-events: none;
 }
 
+/* Pannello dati Pokémon in battaglia: sfondo vero databox_normal(_foe).png di
+   Essentials FRLG (era prima un pannello disegnato in CSS). Le coordinate dei
+   testi/barre sotto sono quelle esatte lette in Battle_Scene_Objects.rb
+   (classe PokemonDataBox: draw_name, draw_level, refresh_hp, refresh_exp),
+   moltiplicate per SCALA=2 (le immagini native sono minuscole, 260x84/260x62px,
+   pensate per uno schermo GBA). L'etichetta "HP" è già disegnata dentro
+   l'immagine, quindi lo <span class="hp-etichetta"> non serve più (nascosto). */
 .pannello-info {
   position: absolute;
-  background: #f8f8e8;
-  border: 4px solid #41464f;
-  border-radius: 14px;
-  padding: 12px 18px;
-  min-width: 300px;
-  box-shadow: 3px 4px 0 rgba(0, 0, 0, 0.25);
+  width: 520px;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
   font-size: 19px;
   color: #222;
 }
 
-#info-nemico    { top: 7%;  left: 5%; }
+#info-nemico, #info-nemico-2 {
+  height: 124px; /* 62px nativi x2, niente barra exp/numeri HP sul lato nemico */
+  background-image: url('sprites/databox_normal_foe.png');
+}
+#info-nemico { top: 7%; left: 5%; }
+#info-giocatore, #info-giocatore-2 {
+  height: 168px; /* 84px nativi x2 */
+  background-image: url('sprites/databox_normal.png');
+}
 #info-giocatore { bottom: 5%; right: 5%; }
 
+.hp-etichetta { display: none; }
+
+/* Mini Poké Ball per Pokémon rimasto alla squadra avversaria (allenatori):
+   vere icon_ball.png/icon_ball_faint.png di Essentials FRLG (30x30 native),
+   non più pallini di testo colorati. Si anneriscono (icon_ball_faint) via
+   via che il Pokémon a quella posizione viene sconfitto. */
 #nemico-contatore {
-  font-size: 12px;
-  letter-spacing: 3px;
-  color: #d04040;
-  text-align: right;
-  margin-top: 2px;
-}
-
-.riga-nome {
+  position: absolute;
+  left: 32px; top: 90px;
   display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  font-weight: bold;
-  margin-bottom: 5px;
+  gap: 2px;
 }
 
-.hp-contorno {
-  background: #41464f;
-  border-radius: 10px;
-  padding: 4px 8px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
+#nemico-contatore img {
+  width: 16px;
+  height: 16px;
+  image-rendering: pixelated;
 }
 
-.hp-etichetta {
-  color: #f8b500;
-  font-size: 13px;
-  font-weight: bold;
-  letter-spacing: 1px;
-}
+/* Nome + livello: posizione assoluta invece del flex di prima (l'immagine
+   di sfondo ha già la sagoma del pannello, il testo va sovrapposto). Le
+   varianti "-2" (secondo slot della lotta in doppio) riusano le stesse
+   coordinate pixel: il pannello intero viene rimpicciolito/riposizionato
+   con transform: scale() (vedi blocco .doppia sopra), quindi le posizioni
+   interne restano corrette senza doverle ricalcolare. */
+.riga-nome { font-weight: bold; }
+#nemico-nome, #giocatore-nome, #nemico-nome-2, #giocatore-nome-2 { position: absolute; top: 24px; font-size: 20px; }
+#nemico-nome, #nemico-nome-2       { left: 48px; }
+#giocatore-nome, #giocatore-nome-2 { left: 84px; }
+#nemico-lv, #giocatore-lv, #nemico-lv-2, #giocatore-lv-2 { position: absolute; top: 28px; font-size: 17px; font-weight: bold; }
+#nemico-lv, #nemico-lv-2       { left: 312px; }
+#giocatore-lv, #giocatore-lv-2 { left: 348px; }
+
+.hp-contorno { display: contents; }  /* era solo un contenitore flex, ora la barra si posiziona da sé */
 
 .hp-binario {
-  flex: 1;
-  background: #555;
-  height: 16px;
-  border-radius: 8px;
+  position: absolute;
+  top: 80px;
+  width: 192px;
+  height: 12px;
+  border-radius: 3px;
   overflow: hidden;
 }
+#info-nemico .hp-binario,    #info-nemico-2 .hp-binario    { left: 236px; }
+#info-giocatore .hp-binario, #info-giocatore-2 .hp-binario { left: 272px; }
 
+/* Barra HP: usa il vero overlay_hp.png di Essentials FRLG (3 fasce colore
+   impilate verticalmente: verde/giallo/rosso). background-size 100%/300% +
+   background-position 0%/50%/100% seleziona la fascia giusta (tecnica CSS
+   sprite standard) senza dover ritagliare 3 immagini separate. */
 .hp-barra {
   height: 100%;
   width: 100%;
-  background: #4caf50;
-  border-radius: 8px;
+  background-image: url('sprites/overlay_hp.png');
+  background-size: 100% 300%;
+  background-position: 0% 0%;
+  image-rendering: pixelated;
   transition: width 0.45s ease;
 }
 
-.hp-barra.gialla { background: #f5c518; }
-.hp-barra.rossa  { background: #e3350d; }
+.hp-barra.gialla { background-position: 0% 50%; }
+.hp-barra.rossa  { background-position: 0% 100%; }
 
 #giocatore-hp-testo {
+  position: absolute;
+  left: 300px;
+  top: 96px;
+  width: 200px;
   text-align: right;
   font-size: 16px;
   font-weight: bold;
-  margin-top: 5px;
 }
 
 .exp-binario {
-  margin-top: 7px;
-  background: #41464f;
-  height: 11px;
-  border-radius: 6px;
+  position: absolute;
+  left: 80px;
+  top: 148px;
+  width: 384px;
+  height: 8px;
   overflow: hidden;
 }
 
 .exp-barra {
   height: 100%;
   width: 0%;
-  background: #3fa9f5;
+  background-image: url('sprites/overlay_exp.png');
+  background-size: 100% 100%;
+  image-rendering: pixelated;
   transition: width 0.45s ease;
+}
+
+/* ------------------------------------------------------------
+   Lotta in doppio (2 allenatori vs 2 Pokémon del giocatore, vedi
+   Battle.avviaDoppia in js/battle.js). Slot 2 = stessi elementi dello slot 1
+   con id "-2": nascosti di default, mostrati solo dentro
+   #schermata-battaglia.doppia, e ridimensionati/riposizionati con
+   transform: scale() così ereditano automaticamente tutte le coordinate
+   pixel-per-pixel già tarate su databox/sprite/piattaforma dello slot 1
+   (vedi impostaSfondoBattaglia/_impostaSpriteEPiattaforma) senza doverle
+   ricalcolare da capo.
+   ------------------------------------------------------------ */
+#zona-nemico-2, #zona-giocatore-2, #info-nemico-2, #info-giocatore-2 {
+  display: none;
+}
+.sprite-zona.nascosto, .pannello-info.nascosto { display: none; }
+
+#giocatore-hp-testo-2 {
+  position: absolute;
+  left: 300px;
+  top: 96px;
+  width: 200px;
+  text-align: right;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* Riposiziona anche lo slot 1 (id normali) per far spazio allo slot 2:
+   nemici affiancati in alto, alleati affiancati in basso — invece dell'unico
+   nemico/alleato centrato della lotta singola. */
+#schermata-battaglia.doppia #zona-nemico    { top: 3%; left: 36%; }
+#schermata-battaglia.doppia #zona-giocatore { bottom: 1%; left: 20%; }
+
+#schermata-battaglia.doppia #zona-nemico-2:not(.nascosto),
+#schermata-battaglia.doppia #zona-giocatore-2:not(.nascosto) {
+  display: block;
+}
+#schermata-battaglia.doppia #zona-nemico-2 {
+  top: 3%; left: 80%; transform: translateX(-50%) scale(0.82);
+}
+#schermata-battaglia.doppia #zona-giocatore-2 {
+  bottom: 1%; left: 64%; transform: translateX(-50%) scale(0.82);
+}
+
+#schermata-battaglia.doppia #info-nemico-2:not(.nascosto),
+#schermata-battaglia.doppia #info-giocatore-2:not(.nascosto) {
+  display: block;
+}
+#schermata-battaglia.doppia #info-nemico {
+  top: 2%; left: 1%; transform: scale(0.56); transform-origin: top left;
+}
+#schermata-battaglia.doppia #info-nemico-2 {
+  top: 2%; left: 46%; transform: scale(0.56); transform-origin: top left;
+}
+#schermata-battaglia.doppia #info-giocatore {
+  bottom: 20%; right: 46%; transform: scale(0.56); transform-origin: bottom right;
+}
+#schermata-battaglia.doppia #info-giocatore-2 {
+  bottom: 20%; right: 1%; transform: scale(0.56); transform-origin: bottom right;
+}
+
+/* Titolo del selettore bersaglio ("Chi bersagli?"), stesso trattamento del
+   pulsante Indietro (occupa un'intera riga della griglia .menu-battaglia). */
+.selettore-titolo {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  font-size: 18px;
 }
 
 @keyframes lampeggia {
@@ -855,20 +1327,116 @@ html, body {
   animation: lampeggia 0.45s linear;
 }
 
-/* Console di battaglia */
+/* Effetti generici delle mosse: ~3 template per categoria (fisica/speciale/stato)
+   colorati dal tipo della mossa, non un'animazione scritta a mano per ognuna
+   delle 700+ mosse. Vedi animaMossa() in js/battle.js. */
+.mossa-fx {
+  position: absolute;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.fx-proiettile {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+}
+
+.fx-stato {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: radial-gradient(circle, currentColor 0%, transparent 70%);
+  opacity: 0;
+}
+
+/* Spritesheet RPG Maker XP (Essentials FRLG): dimensioni/background impostati
+   inline in spritesheetMossa() (js/battle.js), qui solo lo z-index comune. */
+.fx-spritesheet {
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+}
+
+@keyframes fx-stato-pulsa {
+  0%   { opacity: 0;    transform: translate(-50%, -50%) scale(0.4); }
+  40%  { opacity: 1;    transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0;    transform: translate(-50%, -50%) scale(1.35); }
+}
+
+@keyframes fx-scuoti {
+  0%, 100% { transform: translate(0, 0); }
+  20%      { transform: translate(-10px, 4px); }
+  40%      { transform: translate(10px, -4px); }
+  60%      { transform: translate(-7px, 3px); }
+  80%      { transform: translate(7px, -3px); }
+}
+
+.scuoti-schermo { animation: fx-scuoti 0.35s ease-in-out; }
+
+@keyframes fx-lunge-dx {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(38px, -16px); }
+}
+
+@keyframes fx-lunge-sx {
+  0%, 100% { transform: translate(0, 0); }
+  50%      { transform: translate(-38px, -16px); }
+}
+
+.lunge-dx { animation: fx-lunge-dx 0.4s ease-in-out; }
+.lunge-sx { animation: fx-lunge-sx 0.4s ease-in-out; }
+
+/* Animazioni Poké Ball (13 agosto): mandata in campo + lancio di cattura.
+   Sprite presi da "Essentials FRLG/Graphics/Battle animations/" (ball_*.png
+   = 8 frame di rotazione, ball_*_open.png = 2 frame chiusa/apertura).
+   Vedi animaEntrataPokemon()/animaLancioBall() in js/battle.js. */
+.ball-fx {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background-repeat: no-repeat;
+  image-rendering: pixelated;
+  pointer-events: none;
+  z-index: 55;
+}
+
+@keyframes fx-cresce-pokemon {
+  0%   { transform: scale(0.15); opacity: 0.2; }
+  60%  { transform: scale(1.08); opacity: 1; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.sprite-cresce { animation: fx-cresce-pokemon 0.45s ease-out; }
+
+@keyframes fx-ball-scossa {
+  0%, 100% { transform: translate(-50%, -50%) rotate(0deg); }
+  20%      { transform: translate(-50%, -50%) rotate(-18deg); }
+  40%      { transform: translate(-50%, -50%) rotate(14deg); }
+  60%      { transform: translate(-50%, -50%) rotate(-10deg); }
+  80%      { transform: translate(-50%, -50%) rotate(6deg); }
+}
+
+.ball-scossa { animation: fx-ball-scossa 0.42s ease-in-out; }
+
+/* Console di battaglia — layout allineato a Pokémon Essentials FRLG reale
+   (Battle::Scene::CommandMenu#initialize, 0191_Battle_Scene_Menus.rb): il
+   riquadro "Cosa deve fare X?" e la griglia di comandi stanno SULLA STESSA
+   RIGA (testo a sinistra ~220/512 ≈ 43% di larghezza, comandi a destra nel
+   resto), non impilati uno sopra l'altro come prima — verificato leggendo lo
+   script estratto, non a occhio (sess. 8 set 2026). */
 #battaglia-console {
   height: 260px;
   background: #1a2940;
   border-top: 5px solid #ffcb05;
   padding: 12px 16px 14px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   gap: 10px;
   box-sizing: border-box;
 }
 
 #battaglia-messaggio {
-  flex: 0 0 64px;
+  flex: 0 0 43%;
+  height: 100%;
   background: #10131a;
   color: #fff;
   border: 2px solid #5a6377;
@@ -880,12 +1448,15 @@ html, body {
   user-select: none;
   box-sizing: border-box;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 }
 
 .menu-battaglia {
   flex: 1;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
   gap: 10px;
   overflow-y: auto;
 }
@@ -949,31 +1520,40 @@ html, body {
 
 /* Schermi piccoli */
 @media (max-width: 620px) {
-  #nemico-sprite    { width: 140px; height: 140px; }
-  #giocatore-sprite { width: 175px; height: 175px; }
-  #zona-nemico      { width: 180px; right: 4%; }
-  #zona-giocatore   { width: 215px; left: 3%; }
   .pannello-info    { min-width: 195px; font-size: 15px; padding: 8px 11px; border-width: 3px; }
   #info-nemico      { top: 4%; left: 3%; }
   #info-giocatore   { bottom: 3%; right: 3%; }
   .hp-binario       { height: 12px; }
   #giocatore-hp-testo { font-size: 13px; }
   #battaglia-console { height: 250px; }
-  #battaglia-messaggio { font-size: 17px; flex-basis: 54px; }
+  #battaglia-messaggio { font-size: 15px; flex-basis: 40%; padding: 8px 10px; }
   .menu-battaglia button { font-size: 16px; }
 }
 
 /* ------------------------------------------------------------
-   Booster di velocità
+   Pulsanti rapidi overworld (Velocità/Volo/Repellente): un unico
+   contenitore flex ancorato in basso a destra, appena sopra il D-pad,
+   invece di 3 "bottom" fissi indipendenti (sessione 31 agosto — verifica
+   mobile: su schermi molto bassi, es. telefono in orizzontale, i "bottom"
+   indipendenti potevano spingere Volo/Repellente fuori dallo schermo in
+   alto, inaccessibili). column-reverse: il primo figlio nell'HTML
+   (velocità) resta il più vicino al D-pad, come nella disposizione
+   precedente. I pulsanti nascosti (display:none, Volo/Repellente prima di
+   averli sbloccati) non occupano spazio: la colonna si accorcia da sola.
    ------------------------------------------------------------ */
-#btn-velocita {
+#controlli-rapidi {
   position: absolute;
-  bottom: 145px;
+  bottom: 144px; /* appena sopra il D-pad (bottom:20px, alto 116px) */
   right: 20px;
   z-index: 1000;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+#controlli-rapidi button {
   background: rgba(20, 30, 50, 0.85);
-  color: #ffcb05;
-  border: 2px solid #ffcb05;
   border-radius: 10px;
   padding: 10px 16px;
   font-size: 16px;
@@ -982,34 +1562,14 @@ html, body {
   user-select: none;
 }
 
-#btn-velocita:active {
-  background: #ffcb05;
-  color: #1a2940;
-}
+#btn-velocita { color: #ffcb05; border: 2px solid #ffcb05; }
+#btn-velocita:active { background: #ffcb05; color: #1a2940; }
 
-/* ------------------------------------------------------------
-   F9 — Pulsante MN Volo + overlay scelta città
-   ------------------------------------------------------------ */
-#btn-volo {
-  position: absolute;
-  bottom: 205px;
-  right: 20px;
-  z-index: 1000;
-  background: rgba(20, 30, 50, 0.85);
-  color: #aee3f8;
-  border: 2px solid #aee3f8;
-  border-radius: 10px;
-  padding: 10px 16px;
-  font-size: 16px;
-  font-weight: bold;
-  cursor: pointer;
-  user-select: none;
-}
+#btn-volo { color: #aee3f8; border: 2px solid #aee3f8; }
+#btn-volo:active { background: #aee3f8; color: #1a2940; }
 
-#btn-volo:active {
-  background: #aee3f8;
-  color: #1a2940;
-}
+#btn-repellente { color: #b6f5b0; border: 2px solid #b6f5b0; }
+#btn-repellente:active { background: #b6f5b0; color: #1a2940; }
 
 #overlay-volo {
   position: absolute;
@@ -1227,6 +1787,38 @@ html, body {
   color: #ccc;
 }
 
+#overlay-genere {
+  position: absolute;
+  inset: 0;
+  z-index: 1950;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-genere.nascosto {
+  display: none;
+}
+
+#genere-scelte {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.ritratto-genere {
+  width: 96px;
+  height: 144px;
+  background-size: 384px 576px;
+  background-position: -96px 0px;
+  image-rendering: pixelated;
+}
+
+.card-genere.boy .ritratto-genere  { background-image: url('sprites/player-red.png'); }
+.card-genere.girl .ritratto-genere { background-image: url('sprites/player-girl-red.png'); }
+
 /* ------------------------------------------------------------
    Toast
    ------------------------------------------------------------ */
@@ -1257,59 +1849,66 @@ html, body {
 }
 
 /* ------------------------------------------------------------
-   Overlay Interagisci — FASE 4
-   Compare quando il giocatore si avvicina a un edificio/NPC.
+   Popup nome mappa — angolo alto-sinistra, al cambio mappa
    ------------------------------------------------------------ */
-#overlay-interagisci {
+#popup-nome-mappa {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(20, 30, 50, 0.94);
+  color: #fff;
+  padding: 8px 18px;
+  border-radius: 10px;
+  border: 2px solid #ffcb05;
+  z-index: 1500;
+  font-size: 15px;
+  font-weight: bold;
+  pointer-events: none;
+  white-space: nowrap;
+}
+
+#popup-nome-mappa.nascosto {
+  display: none;
+}
+
+#popup-nome-mappa.popup-nome-mappa-anim {
+  animation: fadeInMappaNome 0.25s ease;
+}
+
+@keyframes fadeInMappaNome {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ------------------------------------------------------------
+   Pulsante Interagisci — sess. 5 set 2026: prima era un overlay che
+   compariva/spariva come un popup (con tanto di etichetta col nome di
+   chi hai vicino e un bagliore pulsante), richiesta esplicita di Luca
+   di toglierlo ("non serve"). Resta un pulsante fisso e discreto — è
+   l'unico modo per interagire da telefono/touch (niente tasto [A]
+   fisico lì) — ma senza animazione né notifica: fa qualcosa solo
+   quando c'è davvero qualcosa vicino (eventoVicino, vedi js/map.js),
+   altrimenti il click non ha effetto.
+   ------------------------------------------------------------ */
+#btn-interagisci {
   position: fixed;
   bottom: 150px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 500;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  pointer-events: auto;
-}
-
-#overlay-interagisci.nascosto {
-  display: none;
-}
-
-#interagisci-etichetta {
-  background: rgba(26, 41, 64, 0.92);
-  color: var(--giallo-poke);
-  font-family: var(--font-gba);
-  font-size: 7px;
-  padding: 4px 12px;
-  border-radius: 8px;
-  border: 2px solid var(--giallo-poke);
-  text-align: center;
-  max-width: 240px;
-  line-height: 1.6;
-}
-
-#btn-interagisci {
-  background: var(--blu-scuro);
+  background: rgba(26, 41, 64, 0.75);
   color: #fff;
-  border: 3px solid var(--giallo-poke);
+  border: 2px solid var(--giallo-poke);
   border-radius: 14px;
-  padding: 8px 20px;
+  padding: 6px 14px;
   font-family: var(--font-gba);
   font-size: 8px;
   cursor: pointer;
-  animation: pulseInteract 1.1s ease-in-out infinite;
   white-space: nowrap;
 }
 
 #btn-interagisci:hover {
   background: #2a3f60;
-}
-
-@keyframes pulseInteract {
-  0%, 100% { box-shadow: 0 0 5px var(--giallo-poke); }
-  50%       { box-shadow: 0 0 20px var(--giallo-poke), 0 0 6px #fff; }
 }
 
 
