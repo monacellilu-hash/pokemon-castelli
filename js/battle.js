@@ -2097,17 +2097,20 @@ const Battle = (function () {
   // "<tema>_base0.png" sotto il Pokémon avversario, "<tema>_base1.png" sotto il
   // nostro. "grass" non ha un proprio _bg (usa "field_bg.png", il compagno di
   // "field" nella cartella); tutti gli altri temi hanno bg+base0+base1 propri.
-  // #battaglia-schermo resta SEMPRE 512x384px "veri" (vedi style.css): qui si
-  // calcola solo un transform:scale() per adattarlo allo spazio disponibile,
-  // "il più grande possibile dentro #battaglia-campo senza deformarsi" (stile
-  // emulatore). PRIMA si ridimensionava il box stesso (width/height dirette)
-  // — sbagliato: i pannelli/barre HP dentro usano coordinate in pixel assoluti
-  // (.pannello-info, .hp-binario…) tarate su un box realmente largo 512px, e
-  // ridurre solo il CONTENITORE senza scalare anche LORO li faceva restare
-  // "veri" 520px dentro un box magari largo 390px su telefono: sovrapposti e
-  // tagliati (bug segnalato da Luca su iPhone, verticale e orizzontale).
-  // transform:scale() invece scala TUTTO insieme (box + figli), proporzioni
-  // sempre coerenti a qualunque dimensione schermo.
+  // #battaglia-schermo è largo SEMPRE 512px "nativi" (vedi style.css), ma
+  // la sua ALTEZZA nativa non è più fissa a 384: si ricalcola per
+  // combaciare esattamente col rapporto reale dello spazio disponibile
+  // (availH/availW * 512), così lo schermo riempie SEMPRE tutta la
+  // larghezza E tutta l'altezza di #battaglia-campo, senza bande vuote né
+  // ritagli — niente più "contenimento" 4:3 con spazio sprecato ai lati
+  // (PC widescreen) o sotto (telefono verticale), richiesta esplicita di
+  // Luca dopo aver visto gli screenshot. La scala (larghezza reale / 512)
+  // è la stessa su entrambi gli assi: niente distorsione, il pixel art
+  // resta pulito, solo l'altezza LOGICA del "mondo" cambia — i pannelli/
+  // sprite che sono posizionati in percentuale (top/bottom %) si
+  // ridistribuiscono da soli sulla nuova altezza, quelli in pixel assoluti
+  // (dimensioni databox/HP) restano proporzionati alla larghezza, che è
+  // l'asse che conta per loro.
   // Fattore di scala visivo corrente (memorizzato: serve a chiunque debba
   // posizionare un elemento dentro #battaglia-schermo usando coordinate
   // MISURATE a schermo reale via getBoundingClientRect — quelle vanno
@@ -2120,7 +2123,9 @@ const Battle = (function () {
     const schermo = $('battaglia-schermo');
     if (!campo || !schermo) return;
     const availW = campo.clientWidth, availH = campo.clientHeight;
-    scalaBattagliaCorrente = Math.min(availW / 512, availH / 384) || 1;
+    scalaBattagliaCorrente = (availW / 512) || 1;
+    const altezzaNativa = availH / scalaBattagliaCorrente;
+    schermo.style.height = altezzaNativa + 'px';
     schermo.style.transform = `scale(${scalaBattagliaCorrente})`;
   }
   window.addEventListener('resize', _dimensionaSchermoBattaglia);
@@ -2192,14 +2197,14 @@ const Battle = (function () {
     const piattaformaGiocatore = document.querySelector('#zona-giocatore' + suffix + ' .piattaforma');
     if (spriteNemico) { spriteNemico.style.position = 'relative'; spriteNemico.style.zIndex = '2'; }
     if (spriteGiocatore) { spriteGiocatore.style.position = 'relative'; spriteGiocatore.style.zIndex = '2'; }
-    // Dimensioni sprite Pokémon proporzionate allo schermo nativo 512x384
-    // (fronte nemico ~128px, dorso giocatore ~160px a scala 1): prima erano
-    // px fissi (320/380) tarati per riempire l'intero viewport, enormi ora
-    // che lo schermo è limitato al rapporto nativo (bug "battleback troppo
-    // grandi" segnalato da Luca).
+    // Dimensioni sprite Pokémon proporzionate allo schermo nativo 512
+    // (fronte nemico ~144px, dorso giocatore ~160px a scala 1). Il fronte
+    // nemico era 128px: ingrandito ~12% su richiesta esplicita di Luca
+    // ("l'avversario deve essere un 10/15% più grande di come è ora").
+    const DIM_NEMICO = 144;
     if (spriteNemico) {
-      spriteNemico.style.width = (128 * scala) + 'px';
-      spriteNemico.style.height = (128 * scala) + 'px';
+      spriteNemico.style.width = (DIM_NEMICO * scala) + 'px';
+      spriteNemico.style.height = (DIM_NEMICO * scala) + 'px';
     }
     if (spriteGiocatore) {
       spriteGiocatore.style.width = (160 * scala) + 'px';
@@ -2215,7 +2220,7 @@ const Battle = (function () {
       piattaformaNemico.style.transform = '';
       piattaformaNemico.style.width = w + 'px';
       piattaformaNemico.style.height = h + 'px';
-      piattaformaNemico.style.marginTop = (-(128 * scala) * 0.85) + 'px';
+      piattaformaNemico.style.marginTop = (-(DIM_NEMICO * scala) * 0.85) + 'px';
     }
     if (piattaformaGiocatore) {
       const w = 256 * scala, h = 64 * scala;
