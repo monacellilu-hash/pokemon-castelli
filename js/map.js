@@ -1995,10 +1995,17 @@ const GameMap = (function () {
 
       this._collegaDpad();
 
+      // [A] a schermo: passa SEMPRE da premiA() (app.js), che decide da solo
+      // il da farsi secondo il contesto (dialogo/scelta/battaglia/menu
+      // nativo/interazione col mondo) — vedi commit precedenti. Prima
+      // chiamava direttamente _interagisci() qui, bypassando del tutto
+      // premiA(): bug reale per cui [A] non confermava mai nulla fuori dal
+      // "parla con questo NPC" (funzionava solo [B], mai ricollegato allo
+      // stesso modo).
       btnInteragisci = document.getElementById('btn-interagisci');
       if (btnInteragisci) {
         btnInteragisci.addEventListener('click', () => {
-          if (eventoVicino && !bloccato) this._interagisci(eventoVicino);
+          if (typeof premiA === 'function') premiA();
         });
       }
 

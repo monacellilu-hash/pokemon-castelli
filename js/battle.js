@@ -610,15 +610,23 @@ const Battle = (function () {
      mossa.classe/mossa.potenza/mossa.tipo (già letti da PokéAPI).
      ========================================================== */
 
-  // Centro di uno sprite, in coordinate relative a #battaglia-schermo
+  // Centro di uno sprite, in coordinate LOCALI (spazio nativo 512x384 di
+  // #battaglia-schermo, PRIMA del transform:scale) — le misure vengono da
+  // getBoundingClientRect (schermo REALE, già scalato), quindi si divide
+  // per scalaBattagliaCorrente per tornare allo spazio locale: un elemento
+  // creato con questi valori come style.left/top, appeso dentro
+  // #battaglia-schermo, viene ri-scalato automaticamente dal transform del
+  // genitore — usare direttamente le coordinate reali lo scalerebbe due
+  // volte (bug: sprite/effetti/Ball fuori posto o rimpiccioliti sui mobile).
   function centroSprite(chi) {
     const campo = $('battaglia-schermo');
     const el = elementoSprite(chi);
     const rC = campo.getBoundingClientRect();
     const rE = el.getBoundingClientRect();
+    const s = scalaBattagliaCorrente || 1;
     return {
-      x: rE.left - rC.left + rE.width / 2,
-      y: rE.top - rC.top + rE.height / 2,
+      x: (rE.left - rC.left) / s + (rE.width / s) / 2,
+      y: (rE.top - rC.top) / s + (rE.height / s) / 2,
     };
   }
 
@@ -747,8 +755,9 @@ const Battle = (function () {
     const campo = $('battaglia-schermo');
     const rC = campo.getBoundingClientRect();
     const rE = el.getBoundingClientRect();
-    const cx = rE.left - rC.left + rE.width / 2;
-    const cy = rE.top - rC.top + rE.height / 2;
+    const s = scalaBattagliaCorrente || 1;   // schermo reale → spazio locale, vedi centroSprite
+    const cx = (rE.left - rC.left) / s + (rE.width / s) / 2;
+    const cy = (rE.top - rC.top) / s + (rE.height / s) / 2;
 
     el.style.opacity = '0';
 
@@ -808,8 +817,9 @@ const Battle = (function () {
     const aEl = $('nemico-sprite');
     const rD = daEl.getBoundingClientRect();
     const rA = aEl.getBoundingClientRect();
-    const da = { x: rD.left - rC.left + rD.width * 0.55, y: rD.top - rC.top + rD.height * 0.35 };
-    const a  = { x: rA.left - rC.left + rA.width * 0.5,  y: rA.top - rC.top + rA.height * 0.55 };
+    const s = scalaBattagliaCorrente || 1;   // schermo reale → spazio locale, vedi centroSprite
+    const da = { x: (rD.left - rC.left) / s + (rD.width / s) * 0.55, y: (rD.top - rC.top) / s + (rD.height / s) * 0.35 };
+    const a  = { x: (rA.left - rC.left) / s + (rA.width / s) * 0.5,  y: (rA.top - rC.top) / s + (rA.height / s) * 0.55 };
 
     const nome = nomeFileBall(chiaveBall);
     const dim = 42;
@@ -846,7 +856,7 @@ const Battle = (function () {
     // dove si trova il Pokémon da catturare, non dove si trovava mezzo
     // secondo prima (richiesta esplicita di Luca).
     const rA2 = aEl.getBoundingClientRect();
-    const aFinale = { x: rA2.left - rC.left + rA2.width * 0.5, y: rA2.top - rC.top + rA2.height * 0.55 };
+    const aFinale = { x: (rA2.left - rC.left) / s + (rA2.width / s) * 0.5, y: (rA2.top - rC.top) / s + (rA2.height / s) * 0.55 };
     ball.style.left = aFinale.x + 'px';
     ball.style.top = aFinale.y + 'px';
 
@@ -2098,13 +2108,20 @@ const Battle = (function () {
   // tagliati (bug segnalato da Luca su iPhone, verticale e orizzontale).
   // transform:scale() invece scala TUTTO insieme (box + figli), proporzioni
   // sempre coerenti a qualunque dimensione schermo.
+  // Fattore di scala visivo corrente (memorizzato: serve a chiunque debba
+  // posizionare un elemento dentro #battaglia-schermo usando coordinate
+  // MISURATE a schermo reale via getBoundingClientRect — quelle vanno
+  // riportate allo spazio LOCALE/nativo del box (÷ scala) prima di scriverle
+  // come style.left/top, altrimenti il transform le scala una seconda volta
+  // — vedi centroSprite/animaEntrataPokemon/animaLancioBall più sotto).
+  let scalaBattagliaCorrente = 1;
   function _dimensionaSchermoBattaglia() {
     const campo = $('battaglia-campo');
     const schermo = $('battaglia-schermo');
     if (!campo || !schermo) return;
     const availW = campo.clientWidth, availH = campo.clientHeight;
-    const scala = Math.min(availW / 512, availH / 384);
-    schermo.style.transform = `scale(${scala})`;
+    scalaBattagliaCorrente = Math.min(availW / 512, availH / 384) || 1;
+    schermo.style.transform = `scale(${scalaBattagliaCorrente})`;
   }
   window.addEventListener('resize', _dimensionaSchermoBattaglia);
 
@@ -2146,12 +2163,17 @@ const Battle = (function () {
     // Dimensioni reali Essentials: base0 (giocatore) 256x64px, base1 (nemico)
     // 256x128px — NON la stessa forma scalata uniformemente (era il bug
     // segnalato da Luca: usavamo scale(4.5) identico per entrambe, ma
-    // l'originale ha proporzioni diverse tra le due piattaforme). Scala
-    // proporzionale alla larghezza reale del campo rispetto ai 512px nativi
-    // di Essentials (Settings::SCREEN_WIDTH), così la resa resta coerente
-    // qualunque sia la dimensione dello schermo del giocatore.
-    const campoRect = campo ? campo.getBoundingClientRect() : { width: 512 };
-    const scala = campoRect.width / 512;
+    // l'originale ha proporzioni diverse tra le due piattaforme).
+    // #battaglia-schermo ora è SEMPRE 512px nativi (vedi
+    // _dimensionaSchermoBattaglia): sprite/piattaforme si dimensionano in
+    // pixel NATIVI fissi (scala=1) e il transform:scale() dell'ancestor li
+    // riporta automaticamente alla dimensione reale corretta per qualunque
+    // schermo. PRIMA si leggeva campo.getBoundingClientRect().width (la
+    // dimensione REALE già scalata) per ricavare "scala" e poi si scriveva
+    // quel valore come pixel LOCALI — un doppio scaling che su mobile
+    // rimpiccioliva gli sprite invece di ingrandirli (bug introdotto nel
+    // passaggio al transform, corretto qui).
+    const scala = 1;
     // Slot 0 (id normali) sempre; in doppia anche lo slot 1 (id "-2"), che il
     // CSS (.doppia) rimpicciolisce e riposiziona come un'unica unità tramite
     // transform: scale(), quindi qui usa le stesse dimensioni "native" dello

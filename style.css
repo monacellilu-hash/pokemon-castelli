@@ -1059,6 +1059,13 @@ html, body {
      le coordinate interne restavano scalate al 100% comunque). */
   width: 512px;
   height: 384px;
+  /* #battaglia-campo è un flex container: senza flex-shrink:0 il browser
+     RESTRINGE comunque questo box per farlo stare nello spazio disponibile
+     (comportamento di default di flexbox, ignora "width" se il contenitore
+     è più stretto) — vanificando tutto il senso del transform:scale() sopra
+     (bug trovato via ispezione diretta: su schermo stretto computed width
+     tornava 390px invece di 512px fissi, doppio restringimento). */
+  flex-shrink: 0;
   overflow: hidden;
   background: linear-gradient(to bottom,
     #aee3f8 0%, #cdeec2 58%, #7fbf63 58%, #5ea34a 100%);
