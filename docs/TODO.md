@@ -1,5 +1,48 @@
 # TO-DO — Pokémon Castelli Romani
 
+> **15 settembre 2026 — Osservatorio interno (rifugio segreto CoTrAL) completo**: 3 piani cablati con
+> porte a scomparsa (chiave + interruttore statua), 7 coppie di grunt in doppia con Camilla alleata,
+> 2 cutscene (invito a Genzano dopo l'8ª palestra + confronto/reclutamento all'Osservatorio). **Boss del
+> 2F: solo trigger/dialogo, NESSUNA lotta** — deciso con Luca, da fare in sessione dedicata. Dettagli
+> tecnici completi in `docs/ROADMAP.md`.
+>
+> **Comandi console per testare senza rigiocare tutto** (F12 → Console):
+> ```js
+> // Salta all'8ª medaglia + tutta la rivelazione CoTrAL in un colpo solo
+> if (!stato.medaglie.includes('genzano')) stato.medaglie.push('genzano');
+> stato.flags.camilla_invito_vista = true;
+> stato.flags.osservatorio_confronto_vista = true;
+> stato.flags.osservatorio_cotral_scoperto = true;
+> stato.flags.osservatorio_camilla_alleata = true;
+> ['cotral_osservatorio_1f_a1','cotral_osservatorio_1f_b1','cotral_osservatorio_1f_c1',
+>  'cotral_osservatorio_2f_a1','cotral_osservatorio_2f_b1','cotral_osservatorio_3f_a1',
+>  'cotral_osservatorio_luogotenente'].forEach(id => stato.flags['grunt_attivo_'+id] = true);
+> salvaPartita();
+> // Chiave Segreta senza dover battere il Luogotenente
+> stato.inventario.chiave.chiave_segreta_cotral = true;
+> // Per ritestare lo stato "prima della rivelazione" (ricercatori normali)
+> stato.flags.camilla_invito_vista = false;
+> stato.flags.osservatorio_confronto_vista = false;
+> stato.flags.osservatorio_cotral_scoperto = false;
+> stato.flags.osservatorio_camilla_alleata = false;
+> // Teletrasporto diretto ai 3 piani
+> GameMap.vaiAMappa('osservatorio_interno');      // 1F
+> GameMap.vaiAMappa('osservatorio_interno_2f');   // 2F
+> GameMap.vaiAMappa('osservatorio_interno_3f');   // 3F
+> ```
+>
+> **14 settembre 2026 — Colonna (città finale) collegata e popolata**: Luca aveva disegnato
+> `Colonna.tmj`/`Colonna_2.tmj`/`Colonna.world` — registrate in `MAPPE`, cluster rigenerato con
+> `strumenti/genera_clusters.py` (include anche `lega_pokemon`, contiguo). Cablati: i 2 gate npc e il
+> warp-stub verso il Bunkerino già piazzati da Luca in `Colonna.tmj`; a `Colonna_2.tmj` (vuoto,
+> popolato da zero) Centro Pokémon + Market dedicato con merce end-game + Erborista (4 erbe medicinali
+> vere, funzionanti), statua CoTrAL in piazza (cartello leggibile), 5 NPC che rivelano il mistero della
+> statua a pezzi, 2 NPC CoTrAL scontrosi che girano per la piazza (`movimento:'random'`, già supportato
+> dal motore), 2 NPC di colore sulla Lega, 6 oggetti forti/MT sparsi tra le due mappe (Master Ball,
+> Revitalizzante Max, Cura Totale, Pozione Massima, MT Iper Raggio, MT Palla Ombra). **Bunkerino e il
+> resto del post-game restano da fare** (il warp-stub è pronto per quando esisterà la mappa). Mai
+> verificato dal vivo — posizioni stimate sulla griglia.
+>
 > **12 settembre 2026 — Rifugio CoTrAL di Rocca di Papa completo + rifiniture varie**: cutscene
 > completa Baso/Marcello (dialogo esteso, "!" e riconoscimento del giocatore, 2 battaglie in doppia con
 > Baso come alleato — prima volta che il motore ha un vero "alleato con squadra propria", vedi

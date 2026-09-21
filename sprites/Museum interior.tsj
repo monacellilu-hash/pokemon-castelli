@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"tiles\/Museum interior.png",
+ "imageheight":736,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Museum interior",
+ "spacing":0,
+ "tilecount":184,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

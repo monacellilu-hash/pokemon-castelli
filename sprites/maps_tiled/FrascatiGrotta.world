@@ -1,0 +1,83 @@
+{
+    "maps": [
+        {
+            "fileName": "percorso_3.tmj",
+            "height": 1472,
+            "width": 1920,
+            "x": 9056,
+            "y": -3488
+        },
+        {
+            "fileName": "percorso_2.tmj",
+            "height": 4224,
+            "width": 1280,
+            "x": 6176,
+            "y": -2944
+        },
+        {
+            "fileName": "frascati_sud.tmj",
+            "height": 1152,
+            "width": 1408,
+            "x": 3744,
+            "y": 1152
+        },
+        {
+            "fileName": "frascati_ovest.tmj",
+            "height": 2752,
+            "width": 1472,
+            "x": 2272,
+            "y": -1088
+        },
+        {
+            "fileName": "frascati_nord.tmj",
+            "height": 1280,
+            "width": 1280,
+            "x": 3744,
+            "y": -1248
+        },
+        {
+            "fileName": "frascati_est.tmj",
+            "height": 2368,
+            "width": 1152,
+            "x": 5024,
+            "y": -1216
+        },
+        {
+            "fileName": "frascati_centro.tmj",
+            "height": 1120,
+            "width": 1280,
+            "x": 3744,
+            "y": 32
+        },
+        {
+            "fileName": "grottaferrata.tmj",
+            "height": 1600,
+            "width": 1600,
+            "x": 7456,
+            "y": -3456
+        },
+        {
+            "fileName": "Filler Frascati1.tmx",
+            "height": 2560,
+            "width": 1600,
+            "x": 7456,
+            "y": -6016
+        },
+        {
+            "fileName": "Percorso_11.tmx",
+            "height": 2560,
+            "width": 1600,
+            "x": 7456,
+            "y": -6016
+        },
+        {
+            "fileName": "collegamento_Cotral.tmx",
+            "height": 1280,
+            "width": 1280,
+            "x": 6176,
+            "y": -5472
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

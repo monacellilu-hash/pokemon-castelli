@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"..\/party2.png",
+ "imageheight":544,
+ "imagewidth":256,
+ "margin":0,
+ "name":"party2",
+ "spacing":0,
+ "tilecount":136,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

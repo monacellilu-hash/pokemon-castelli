@@ -4,6 +4,325 @@
 
 ---
 
+## Sessione 19 settembre 2026 — Sprite reale di Camilla + Pokémon al fianco dei capipalestra
+
+- **Primo sprite overworld "vero" di un personaggio** (prima erano tutti presi in prestito da
+  Essentials): Luca ha fornito `Camilla_capopalestra.png` (24 frame, sfondo verde, 4 direzioni × 3
+  frame camminata + 3 frame corsa non usati — questo motore non fa mai correre gli NPC). Convertito
+  al formato richiesto dal motore (32×48 per riquadro, 4×4, sfondo trasparente, ingrandito ~30% per
+  avvicinarsi alla taglia degli altri NPC — il tetto è la larghezza 32px, oltre quella il tile
+  adiacente taglierebbe lo sprite). Salvato come `trainer_LEADER_Camilla.png`, collegato ovunque
+  Camilla compare (NPC Genzano/Osservatorio, capopalestra vera, follower-alleata). **Due giri di bug
+  trovati SOLO testando in gioco** (non bastava guardare l'immagine): righe direzione scambiate
+  (nord/ovest/est sbagliati, corretto con una mappa diretta riga-per-riga invece della doppia
+  indirection che aveva causato l'errore) e ciclo di camminata "al contrario" (moonwalk — invertito
+  l'ordine dei 2 frame di passo).
+- **INCIDENTE su richiesta "fai la lava come a Grotta del Vulcano" per la palestra di Genzano**:
+  primo tentativo di auto-rilevare i tile "lava" per colore ha beccato ANCHE il pavimento normale
+  (676 tile) e li ha sovrascritti; tentativo di recupero via confronto pixel con lo screenshot
+  "prima" ha introdotto un SECONDO bug (collisione di firstgid tra due tileset nel file di gioco),
+  rompendo l'area dell'altare. **Luca ha rigenerato la mappa lui stesso** (più veloce e sicuro di un
+  altro tentativo automatico) e ha già collegato correttamente `lava_animata_v2.tsj` sul solo layer
+  "edfici" (124 celle) — il motore la anima da solo, stesso meccanismo di Grotta del Vulcano, nessun
+  codice nuovo necessario. **Lezione per il futuro**: mai più rilevare/sostituire tile "per colore" su
+  una mappa reale senza prima isolare un backup o farsi dare le coordinate esatte da Luca — un file
+  `.tmj`/`.tmx` non salvato su git (come questo) non ha rete di sicurezza.
+- **Pokémon più forte fisso al fianco dei personaggi importanti** (richiesta esplicita, "come fosse
+  un follower, fuori dalla Ball"): nuovo `_creaCompagniPokemon()` in js/map.js, stesso trattamento
+  visivo dei leggendari "ambientali" (sprite follower, fermo, rivolto a sud) ma posizionato di fianco
+  a un NPC/allenatore invece che su una casella fissa. Opt-in per allenatore via
+  `DATI_TRAINER[id].pokemonFianco = true` (attivato sugli 8 capipalestra); il "più forte" è per
+  convenzione l'ULTIMO Pokémon della squadra (l'asso, stessa idea del core Superquattro). Offset di
+  posizione regolabile per singolo allenatore con `pokemonFiancoOffset: {dx, dy}` se in qualche
+  palestra la posizione di default (1 casella a est) finisce contro un muro.
+
+---
+
+## Sessione 18 settembre 2026 — Osservatorio 2F: cutscene finale del boss CoTrAL (VERIFICATA dal vivo)
+
+Costruita da zero la cutscene del "test finale" del Comandante CoTrAL al 2F, dal rettangolo trigger
+piazzato da Luca ("inizio cutscene con boss") fino alla lotta 1v1 e alla fuga finale. Diversi giri di
+bug fix, **l'ultimo giro confermato funzionante da Luca dopo un refresh pulito della pagina**.
+
+**Contenuto della cutscene** (`_cutsceneBossFinaleOsservatorio`, js/map.js):
+- Monologo del Comandante sul controllo del meteo, ordina il test al ricercatore al computer, breve
+  pausa, poi **animazione delle strutture**: i 2 blocchi ai capi del tubo (tile locale 1428, tileset
+  Interior_general_32) lampeggiano ciclando 1428→1450→1451, mentre una "pallina" attraversa il tubo
+  (1430/1438 → 1431/1439, una colonna alla volta, da sinistra a destra, ~2.5s) — la camera fa una
+  panoramica lì apposta (`_cutscenaCamera`) perché la macchina sta molti tile a nord di dove si ferma
+  il giocatore, altrimenti l'animazione sarebbe fuori schermo (bug trovato e corretto).
+- Il Comandante si gira, ti riconosce come quello che ha smantellato il rifugio CoTrAL di Rocca di
+  Papa (stessa organizzazione, dialogo esteso su richiesta di Luca), ride, ti sfida.
+- Camilla (follower) si oppone: "andiamo uno alla volta", si avvicina al boss, schermata nera (tenuta
+  apposta 1s più lunga), si fa da parte di un passo, **si stacca per davvero come follower** (torna a
+  mostrarsi il tuo Pokémon in squadra — combatti da solo, lei non si riaggancia più per il resto della
+  scena, richiesta esplicita di Luca).
+- Lotta 1v1 vera (non doppia) contro `DATI_TRAINER['cotral_boss_osservatorio']`: Zapdos+Jirachi
+  (esplicitamente "i Pokémon necessari" di cui parla) + Aggron/Milotic/Salamence/Metagross lv58-62 —
+  Flygon/Steelix restano esclusivi del Luogotenente, questi 4 sono scelte nuove per il Comandante.
+- Vittoria: monologo di sconfitta, premio ₽6000, poi (in sequenza) dialogo → **schermata nera** →
+  boss/comparse rimossi dalla mappa (`_rigeneraNpc`) → torna la luce — non spariscono mai a vista.
+
+**Bug trovati e corretti in questo giro** (tutti confermati con test mirati, non a intuito):
+- **Lotta singola dopo una doppia rendeva tutto invisibile** (sprite/HP/sfondo del boss E del proprio
+  Pokémon): causa doppia — la classe CSS `doppia` su `#schermata-battaglia` E il flag interno
+  `modoDoppia` restavano accesi dall'ultima lotta in doppia (i grunt). Corretto **dentro
+  `Battle.avvia()`** (non solo nel codice del boss): ogni lotta singola ora si pulisce sempre da sola
+  a inizio funzione, protegge qualunque lotta singola futura dopo una doppia, non solo questa. Verificato
+  con un test diretto (Battle.avvia isolato + ispezione DOM: sprite/HP/sfondo tutti corretti).
+- **Animazione del tubo non si vedeva**: prima pensavo fosse un problema di layer sbagliato e avevo
+  tolto il filtro di profondità dalla funzione di scrittura tile — sbagliato: così facendo scriveva su
+  **ogni** layer con un tile in quella cella, incluso "sopra_testa" (depth 50), che a tx9/ty3 ha un suo
+  tile decorativo (1458) sovrascritto per sbaglio ("hai sostituito troppi tile", segnalato da Luca).
+  Vero problema era che la telecamera non si spostava mai sulla zona (il tubo è molti tile a nord del
+  trigger) — risolto con `_cutscenaCamera`. La scrittura tile ora è ristretta al solo layer "edifici"
+  (depth 2), come da convenzione già in uso altrove nel file.
+- **Il trigger del confronto esterno e la visibilità di Camilla/grunt** (bug ereditato dalla sessione
+  precedente): causa vera trovata SOLO dopo test dal vivo mirati — dentro il cluster 'montepo' i
+  bounding box di monteporzio e osservatorio si sovrappongono, e `_mappaSottoGiocatore()` risolveva
+  sempre 'monteporzio' in quella zona; e gli oggetti Camilla/grunt erano configurati come "gate"
+  (visibili finché una condizione è falsa) invece che "premio" (visibili solo quando è vera) — quindi
+  comparivano fin dall'inizio del gioco, indipendentemente da aver fatto la scena a Genzano. Entrambi
+  corretti.
+- **Volo non funzionava da Genzano/Albano/Ariccia dopo la cura**: mancavano proprio le 3 voci nella
+  tabella `VOLO_TILED` (js/app.js) — la città risultava visitata ma `voloVerso()` non trovava un
+  atterraggio Tiled e mostrava solo "non ancora raggiungibile". Aggiunte, atterraggio verificato senza
+  collisioni appena fuori da ciascun Centro Pokémon.
+
+**Altre modifiche minori**: orientamento del giocatore ora INVERTITO rispetto alla direzione con cui si
+è entrati in un warp/scala/porta (richiesta esplicita di Luca); `update()` ora blocca il movimento su
+TRE condizioni indipendenti (`bloccato` / `stato.incontroAttivo` / `dialogoInCorso`), non solo una, per
+evitare che il giocatore possa camminare durante una cutscene se uno dei tre non fosse stato impostato
+in tempo; aggiunti debug hook (`GameMap.debugChiamaMetodo/debugImpostaPosTile/debugCollisione/
+debugValoreTile`) e `disableVisibilityChange:true` sulla config Phaser, utili sia per i test futuri sia
+per il gioco reale.
+
+**Promemoria per Luca**: dopo ogni giro di fix, fai un refresh vero della pagina (F5) prima di
+ritestare — tenere la stessa tab aperta tra un giro e l'altro non prende il JS nuovo anche se il
+server non tiene cache, perché la pagina stessa non si ricarica da sola.
+
+---
+
+## Sessione 17 settembre 2026 — Osservatorio: trigger confronto + doppia 2v2 vera + warp
+
+Feedback dal vivo di Luca su questo secondo test:
+- **Il trigger `trigger_confronto_osservatorio` non scattava**: causa trovata, era la STESSA classe di
+  bug della sessione scorsa (montepo) — Luca aveva di nuovo ampliato `Osservatorio.tmj`/`.tmx` (ora
+  90×40, non più 50×40) senza che `js/clusters.js` (file GENERATO) venisse rigenerato, quindi le
+  coordinate del trigger nel cluster `montepo` non corrispondevano più a dove si trovava davvero il
+  giocatore. Fix: `python3 strumenti/genera_clusters.py`. **Promemoria per il futuro**: ogni volta che
+  una mappa dentro un `.world` cambia dimensioni, `clusters.js` va rigenerato SUBITO, altrimenti
+  qualunque trigger/warp rettangolare su quella mappa punta a coordinate sbagliate.
+- **Bug reale trovato in più**: Camilla + i 2 grunt esterni (oggetti Tiled 35/37/39) erano gated solo su
+  `osservatorio_confronto_vista` (spariscono dopo la scena) ma NON su `camilla_invito_vista` (comparire
+  solo dopo la scena a Genzano) — potevano quindi comparire anche prima che il giocatore avesse mai
+  parlato con Camilla a Genzano. Corretto con un flag sintetico nuovo, `osservatorio_confronto_attivo`
+  (true da quando parte l'invito a Genzano, false quando parte/si vince la scena del confronto, ripristinato
+  a true se la lotta viene persa e si può ritentare) — stesso pattern già usato per `grunt_attivo_<id>`.
+- **Mappa Osservatorio ampliata**: Luca ha aggiunto 2 nuovi allenatori (`trainer_osservatorio_1`
+  "Bruno"/`trainer_osservatorio_2` "Italo", entrambi Escursionisti livello ~29-32, squadre
+  Roccia/Terra coerenti col 4° cap) e 2 oggetti a terra — **TM26 Terremoto** (`mt_earthquake`, già
+  esisteva in `data.js`) e **Sabbia Soffice** (`sabbia_soffice`, booster mosse Terra, anche questo già
+  esisteva). Tutti gli oggetti booster di tipo richiesti da Luca (Carbonella, Acqua Magica, Magnete,
+  Seme Miracolo, Gelomai, Becco Rigido…) risultano **già integrati end-to-end da tempo**: registrati in
+  `OGGETTI` (data.js) E già letti in `calcolaDanno()` (battle.js, +20% se `heldAtt.boostTipo ===
+  mossa.tipo`) — non serviva altro lavoro, solo piazzare i 2 nuovi dot sulla mappa.
+- **Lotta in doppia con UN SOLO allenatore vero**: prima schierava solo 1 Pokémon alla volta (lo slot 2
+  restava sempre vuoto). Corretto su richiesta esplicita ("se disponibili pokemon si schierano 2
+  pokemon alla volta, sia 2v1 sia 1v2"): nuovo stato `doppiaBancoCondiviso` in `js/battle.js` — con un
+  solo allenatore nemico, i primi 2 Pokémon della sua squadra scendono in campo INSIEME (non uno a
+  testa come coi 2 allenatori), e il bench è condiviso tra i due slot (un rimpiazzo dopo un KO arriva
+  sempre dalla stessa riserva, indipendentemente da quale slot si è svuotato). Il lato giocatore era
+  già corretto (con alleato: io + lui; senza alleato: i miei primi 2 Pokémon vivi).
+- **NUOVA MECCANICA — blocco movimento dopo un warp** (richiesta esplicita, "modifica forte"): prima, se
+  si attraversava un warp/porta/scala tenendo premuta una direzione, il personaggio continuava a
+  camminare da solo sulla mappa nuova ereditando l'input. Ora QUALUNQUE cambio mappa reale (singola,
+  cluster, tutti passano dallo stesso punto, `caricaMappa()`) arma un blocco (`attesaRilascioDirezione`)
+  che tiene il personaggio fermo finché il giocatore non rilascia TUTTI i tasti direzionali almeno una
+  volta — solo dopo il rilascio una nuova pressione lo fa ripartire. Le cuciture interne di un cluster
+  (si cammina da una mappa all'altra senza fermarsi, "warp spento") NON sono toccate: continuano a
+  scorrere lisce come prima, per design.
+
+Ancora non verificato dal vivo (il browser era di nuovo disconnesso) — da testare al prossimo giro.
+
+---
+
+## Sessione 16 settembre 2026 — Osservatorio: terzo giro di fix + audit mosse
+
+Luca ha testato dal vivo il secondo giro e riportato 10 punti. Applicati (senza verifica dal vivo,
+browser disconnesso quasi tutta la sessione — stesso disclaimer di sempre):
+
+1. **Grunt/Luogotenente non sparivano dopo la sconfitta**: `_rigeneraNpc()` ora è AWAITATO dentro
+   `_avviaCotralSoloConCamilla` (prima era fire-and-forget), quindi sparisce davvero prima che il
+   controllo torni al giocatore.
+2. **Dialogo prima della lotta**: confermato che è una FEATURE, non un bug ("ad ora c'è solo punto
+   esclamativo io voglio dialogo") — ora `dati.dialogo_prima` viene mostrato via `mostraDialogo` prima
+   di ogni lotta CoTrAL dell'Osservatorio, per ogni allenatore (il punto esclamativo di avvistamento
+   resta, il dialogo va dopo).
+3. **2 contro 1**: nessuna modifica ulteriore — `Battle.avviaDoppia` già tollera un solo allenatore
+   nemico dalla sessione scorsa; "il grunt combatte un Pokémon alla volta" è comportamento corretto
+   (è UN allenatore con una squadra di 4-6, non due allenatori): resta da confermare dal vivo se Luca
+   intendeva altro.
+4. **Audit mosse (scelta esplicita di Luca: "Voglio l'audit completo ora")**: `js/battle.js` NON
+   gestiva affatto drenaggio/contraccolpo (Assorbimento, Giga Prosciugo, Testata, Doppia Sfida…) né la
+   cura pura delle mosse di stato (Riposo, Rilassamento…) — questi campi (`meta.drain`/`meta.healing`)
+   non venivano nemmeno estratti da PokéAPI in `js/pokeapi.js`. Aggiunti entrambi (`mossa.drain`,
+   `mossa.healing`), con cache-bust automatico per le mosse già in cache. **Bug trovato durante
+   l'audit**: le mosse di stato con `bersaglio:"user"` (es. Riposo) applicavano lo stato alterato
+   all'AVVERSARIO invece che a chi le usa (`applicaStato(dif, ...)` era fisso, ignorava
+   `mossa.bersaglio`) — corretto con lo stesso controllo `versoSe` già usato da `applicaCambiStat`. I
+   cambi di statistica (`cambiStat`/`applicaCambiStat`) erano invece già corretti e già tenuti in conto
+   nel calcolo danno (`statEffettiva`/`moltiplicatoreStage`). **Nuovo feedback visivo**: testo
+   fluttuante generico (`testoFluttuante()`, stile "quella dell'EXP" richiesto da Luca) per HP
+   guadagnati/persi da drenaggio/contraccolpo/cura, e frecce ▲/▼ per ogni cambio di statistica
+   (`frecceStat()`) — entrambi in `js/battle.js` + nuove classi `.fx-testo`/`@keyframes fx-testo-fluttua`
+   in `style.css`. **Fuori scope**: le abilità che influenzano questi effetti (es. Liquid Ooze) non sono
+   implementate — il gioco non ha ancora un motore abilità in battaglia, è un sistema a parte.
+5. **Chiave/dialogo del Luogotenente fuori dal combattimento**: `dialogoSconfitta` rimosso dalla
+   chiamata a `Battle.avviaDoppia` (sia per i grunt interni sia per la scena esterna con Camilla);
+   dialogo di commiato e consegna della Chiave Segreta ora avvengono DOPO `sbloccaMovimento()`, a
+   schermo di mappa già tornato visibile.
+6-7. **Tempesta di sabbia fissa fuori dall'Osservatorio**: nuovo tipo meteo `sabbia` in
+   `_aggiornaVeloMeteo()`/`_gestisciParticelleMeteo()` (velo ocra + particelle orizzontali "di vento"),
+   **non pilotato da `stato.meteo.tipo`** — è fisso e sempre attivo sulla mappa esterna `osservatorio`
+   (come la grandine è fissa su Monte Cavo), indipendente dal meteo globale del resto del gioco.
+8. **Luogotenente fermo, si parla per combattere**: nuovo metodo scena `_avviaLottaOsservatorioSingolaDaId`
+   + wrapper `GameMap.avviaLottaOsservatorioSingola(id)` + `interagisciLuogotenenteOsservatorio()` in
+   `js/app.js`, agganciato come `azione` sull'NPC in `dati/npc.js` (`movimento` passato da `random` a
+   `fisso` anche sull'oggetto Tiled in `Osservatorio_3f.tmj`). Il Boss al 2F era già `fisso` di suo
+   (nessuna `movimento` impostata = default fisso) e già escluso dal trigger di vicinanza automatico
+   (nuovo `_idCotralFermi()`, lista di id esclusi da `_checkOsservatorioGruntTrigger`) — non aveva
+   bisogno di modifiche, solo del filtro.
+9. **Bici disabilitata in edifici/interni**: il tasto B ora rifiuta di attivare la bici quando
+   `mappaInfo.interno === true` (palestre, stazioni, case, Lega di Colonna…), con toast dedicato; la
+   bici si spegne anche automaticamente entrando in un interno se era già attiva (3 punti di
+   caricamento mappa in `js/map.js`: singola, cluster-entrata, cluster-durante-movimento).
+10. **Collisioni 1F aggiornate/scale 2F**: nessuna azione di codice necessaria — le modifiche di Luca
+   in Tiled toccavano solo tile/collisioni (caricate dinamicamente ad ogni load mappa), gli oggetti
+   `eventi` (NPC, warp, trigger) non sono cambiati.
+
+---
+
+## Sessione 15 settembre 2026 (secondo giro, stesso giorno) — correzioni sull'Osservatorio
+
+Feedback diretto di Luca sul primo giro, tutto applicato:
+- **Niente più coppie "in scatola"**: ogni grunt/ricercatore era piazzato a 2 caselle dal suo gemello
+  dentro un rettangolo di trigger fisso — bocciato ("brutto"). Tolti i rettangoli `trigger_cotral_coppia`
+  e riscritto tutto: ogni grunt è SOLO, `movimento:'random'` con raggio ampio (libero di girare per il
+  piano), squadra allargata a 4-6 Pokémon per reggere da solo un **2 CONTRO 1** (tu + Camilla alleata).
+  `Battle.avviaDoppia` ora tollera `opzioni.allenatori` con un solo elemento (prima richiedeva sempre 2
+  allenatori, andava in errore).
+- **Scale**: 1F è lo snodo, collega direttamente sia 2F sia 3F (non più una catena 1F→2F→3F).
+- **Cutscene coi grunt esterni**: confermato che resta sulla mappa esterna "Osservatorio", non
+  sull'interno — era già così, nessuna modifica necessaria.
+- **Camilla a Genzano**: non è più già ferma ad aspettarti fuori dalla palestra — ora compare alla porta
+  solo DOPO che hai vinto (nuovo flag `camilla_pronta_uscita`, sganciato dal vecchio `camilla_invito_vista`
+  che ora fa solo da "l'ho già vista una volta") e ti raggiunge camminando (`_camminaVersoGiocatore`,
+  stesso trattamento dello scienziato alla Grotta del Vulcano) prima di parlare.
+- **Nuovi ricercatori "ignari"** (1 per piano, sempre presenti, mai diventano grunt): dialogo dinamico
+  via `azione` (`interagisciRicercatoreIgnaro1f/2f/3f` in `js/app.js`) invece di due oggetti Tiled gemelli
+  — prima della rivelazione parlano di dati climatici, dopo sono confusi ("i miei colleghi si comportano
+  strano, non so cosa stia succedendo").
+
+Mai verificato dal vivo — stesso disclaimer di sempre.
+
+---
+
+## Sessione 15 settembre 2026 — Osservatorio interno: rifugio segreto CoTrAL
+
+Luca ha disegnato 3 piani (`Osservatorio_1f/2f/3f.tmj`, collisioni già presenti, eventi tutti da zero)
+per un dungeon che nasconde il vero covo CoTrAL sotto copertura di "ricerca sul clima" — registrati in
+`MAPPE` come mappe interne standalone (`osservatorio_interno`/`_2f`/`_3f`, warp+spawn già preparati da
+Luca sull'esterno riusati com'erano). Arco narrativo in due cutscene:
+
+1. **Genzano, fuori dalla palestra**: dopo l'8ª medaglia, Camilla ti raggiunge e ti invita
+   all'Osservatorio (nota anomalie climatiche). Trigger = rettangolo `trigger_camilla_invito` che Luca
+   aveva già piazzato in Tiled (object 81, solo io ho dato tipo/dialogo); NPC Camilla sull'altro
+   marker vuoto adiacente (object 82).
+2. **Osservatorio, fuori dall'ingresso**: al ritorno, Camilla discute con 2 grunt CoTrAL che bloccano
+   l'entrata — chiede aiuto, battaglia in doppia con lei alleata (prima volta per Camilla, stessa
+   tecnica di Baso al Rifugio CoTrAL Rocca, `Battle.avviaDoppia opzioni.alleato`). Vinta: **rivelazione
+   totale** — ogni ricercatore sui 3 piani "diventa" un grunt CoTrAL (coppie NPC gemelle, una gated
+   pre-rivelazione una post, stesso schema premio/gate della sessione scorsa — stavolta scritto giusto
+   fin da subito, proprietà sulle mappe Tiled non su `dati/npc.js`), la receptionist del 1F sparisce e
+   basta, Camilla diventa alleata permanente e **ti segue come un Pokémon** per tutto il dungeon (nuovo
+   override `_impostaFollowerAlleato()` sul sistema follower esistente).
+
+**Novità di motore**:
+- **Porta a scomparsa** (`porta_scomparsa`): rettangolo Tiled solido finché non si preme [A] avendo la
+  chiave giusta in `stato.inventario.chiave` — a quel punto dialogo + tile rimossi per sempre
+  (`_nascondiTileOstacolo`, già esisteva per Taglio/Forza, riusato). 4 istanze sui 3 piani, tutte con
+  la stessa **Chiave Segreta** (bottino del Luogotenente al 3F).
+- **Porta controllata da interruttore** (`controllata_da_interruttore:true`): una delle 4, al 1F, non
+  si apre con la chiave — la comanda una **statua-interruttore** di Mewtwo al 2F (`statua_interruttore`,
+  scelta Sì/No, scambia il proprio tile 1315/1323↔1316/1324 con `_impostaTileOstacolo`, nuova funzione
+  gemella di `_nascondiTileOstacolo` che SOSTITUISCE invece di cancellare). Prima della rivelazione
+  risponde solo "ha qualcosa di strano, chissà" — attivabile solo dopo.
+- **Lotte in coppia CoTrAL** (`trigger_cotral_coppia`, rettangolo con trainer_id + trainer_id_2): 7
+  coppie sui 3 piani (3+2+2, l'ultima è Luogotenente+guardia), tutte in doppia con Camilla alleata.
+  Attive solo con `stato.flags.osservatorio_camilla_alleata` — flag sintetico `grunt_attivo_<id1>`
+  (stesso schema `_controllaPasswordRifugio`) copre in un colpo solo "non ancora rivelato" E "già
+  battuto".
+- **Boss CoTrAL (2F)**: SOLO trigger di avvicinamento + battuta minacciosa una tantum, **nessuna lotta**
+  — deciso esplicitamente con Luca, sessione dedicata in futuro. Posizionato sul marker che Luca aveva
+  già lasciato nel `.tmx` (mai esportato nel `.tmj`, recuperato controllando entrambi i file).
+
+**10 oggetti** (5 end-game: Ultra Ball/Revitalizzante Max/Cura Totale/Elisir/Pozione Massima — 5 mid,
+tenore 4ª palestra: Superpozione/Iperpozione/Antidoto Totale/Super Repellente/Etere) sparsi sui 3 piani.
+
+**Trovato e NON toccato**: `Osservatorio.tmx` (l'esterno) è disallineato dal `.tmj` (50×40 contro 25×30,
+più oggetti nel tmx) — probabile mancata riesportazione da Tiled. Il gioco legge solo il `.tmj`, quindi
+funziona tutto, ma il `.tmx` resta com'era per non rischiare di sovrascrivere lavoro di Luca.
+
+**Mai verificato dal vivo**: posizioni NPC/oggetti/trigger sono stime sulla griglia (stesso disclaimer
+di sempre) — da ripercorrere e ricalibrare in game. Comandi console per testare pre/post rivelazione in
+`docs/TODO.md`.
+
+---
+
+## Sessione 14 settembre 2026 — Colonna (città finale, post-Lega) collegata e popolata
+
+Luca ha disegnato `Colonna.tmj`/`Colonna_2.tmj` + un `Colonna.world` che le mette in fila verticale
+CONTIGUA con `Lega_pokemon.tmj` (hall in cima → Colonna_2 → Colonna): stesso schema "cluster" già usato
+per Frascati/Monte Porzio, si cammina dall'uscita della Lega dentro la città senza fade. Registrate in
+`MAPPE` (`colonna`, `colonna_2`) e rigenerato `js/clusters.js` con `strumenti/genera_clusters.py` — il
+nuovo cluster `Colonna` include automaticamente anche `lega_pokemon` (che resta `interno:true`, "niente
+Volo dentro la Lega": l'appartenenza al cluster non cambia quel controllo, che è per singola sotto-mappa).
+
+**Colonna.tmj** (dintorni, verso sud): i 3 marcatori-placeholder di Luca cablati — i 2 "gate npc"
+(`gate_colonna_calcio_1/2`, condizione `legaCompletata`, bloccano finché non si è finita la Lega,
+flavor "Colle Sant'Andrea bloccato per la partita di calcio" — da qui il tileset `pokemon_soccer_field`
+sistemato la sessione scorsa) e il warp verso il Bunkerino (ancora da costruire: stub `destinazione:
+'bunkerino'` non registrato in MAPPE, mostra "zona non ancora disponibile" finché non esiste, stesso
+schema già rodato con `nascondiglio_cotral`/il laboratorio fossili di Genzano). Aggiunti anche 2 oggetti
+forti (Pozione Massima, MT — Palla Ombra).
+
+**Colonna_2.tmj** (la città vera e propria, layer eventi creato da zero — era completamente vuoto):
+- **Centro Pokémon e Market dedicati** (`pokecenter_colonna` riusa il file generico di Frascati,
+  `mart_colonna` è un file NUOVO — copiato da `poke_market_monteporzio.tmj` e reskinnato — perché vende
+  merce end-game UNICA: Ultra Ball, Massimo Repellente, Elisir, Pozione Massima, Revitalizzante
+  (`mk-colonna` in `POKE_MARKET`, js/data.js). Stesso negozio ospita l'**Erborista** (2° NPC, stesso
+  schema "venditore speciale" delle altre città) che vende le 4 erbe medicinali di FireRed/LeafGreen
+  (Polvere Energetica/Radice Energetica/Polvere Curativa/Erba Rediviva — nuove in `OGGETTI`, categorie
+  `cura`/`curastato`/`revive` esistenti quindi già funzionanti meccanicamente, non solo dati come
+  vitamine/fossili della sessione scorsa).
+- **Statua del Team CoTrAL in piazza**: oggetto `type:'cartello'` (letto da `dati/cartelli.js`, NON da
+  `dati/npc.js` — occhio a questa distinzione, ci sono già cascato una volta con gate/condizione la
+  sessione scorsa), testo che descrive una figura incappucciata "al Nostro Dio, che veglia sulla pioggia
+  e sul raccolto".
+- **5 NPC che rivelano il mistero a pezzi** (`colonna_npc_cotral_lore_1..5`): serve parlare con più
+  persone per farsi un'idea completa, come richiesto esplicitamente.
+- **2 NPC CoTrAL scontrosi** (`colonna_cotral_npc_1/2`, sprite `trainer_CoTral_M/F`): `type:'npc'` (NON
+  `'trainer'`, niente sfida) con `movimento:'random'` — il motore supportava già il movimento casuale
+  con leash (`raggio`, letto da `ev.props`), non è stata una feature nuova da scrivere.
+- 2 NPC di colore sulla Lega, 4 oggetti forti (Master Ball, Revitalizzante Max, Cura Totale, MT — Iper
+  Raggio) sparsi in piazza.
+
+**Mai verificato dal vivo**: posizioni di porte/NPC/oggetti sono stime sulla griglia (stesso disclaimer
+di sempre per le mappe appena cablate) — da ripercorrere e ricalibrare in game.
+
+---
+
 ## Sessione 12 settembre 2026 — Rifugio CoTrAL di Rocca di Papa completo
 
 **Cutscene Baso vs Marcello** (specifica dettagliata di Luca): trigger su rettangolo Tiled

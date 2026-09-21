@@ -23,6 +23,7 @@ const MIME = {
   '.jpg':  'image/jpeg',
   '.jpeg': 'image/jpeg',
   '.gif':  'image/gif',
+  '.webp': 'image/webp',
   '.svg':  'image/svg+xml',
   '.ico':  'image/x-icon',
   '.tsx':  'text/plain; charset=utf-8',
@@ -47,7 +48,13 @@ const server = http.createServer((req, res) => {
       return;
     }
     const ext = path.extname(filePath).toLowerCase();
-    res.writeHead(200, { 'Content-Type': MIME[ext] || 'application/octet-stream' });
+    res.writeHead(200, {
+      'Content-Type': MIME[ext] || 'application/octet-stream',
+      // Server di sviluppo locale: il browser NON deve mai tenere in cache
+      // mappe/script vecchi, altrimenti aggiornare un .tmj in Tiled e ricaricare
+      // il gioco non mostra le modifiche finché non si svuota la cache a mano.
+      'Cache-Control': 'no-store, no-cache, must-revalidate',
+    });
     res.end(data);
   });
 });

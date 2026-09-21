@@ -1,0 +1,15 @@
+{ "columns":4,
+ "image":"..\/sub.png",
+ "imageheight":672,
+ "imagewidth":128,
+ "margin":0,
+ "name":"sub",
+ "spacing":0,
+ "tilecount":84,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

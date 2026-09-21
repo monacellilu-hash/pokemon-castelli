@@ -1,0 +1,15 @@
+{ "columns":32,
+ "image":"..\/gen-d11b8b31-806c-4b99-8fd0-9f94b9e05455.png",
+ "imageheight":1024,
+ "imagewidth":1024,
+ "margin":0,
+ "name":"gen-d11b8b31-806c-4b99-8fd0-9f94b9e05455",
+ "spacing":0,
+ "tilecount":1024,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

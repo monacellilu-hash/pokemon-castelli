@@ -1,0 +1,14 @@
+{ "columns":88,
+ "image":"pokemon_emerald_exterior_32x32.png",
+ "imageheight":2208,
+ "imagewidth":2816,
+ "margin":0,
+ "name":"pokemon_emerald_exterior_32",
+ "spacing":0,
+ "tilecount":6072,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

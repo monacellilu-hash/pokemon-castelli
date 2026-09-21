@@ -1,0 +1,15 @@
+{ "columns":7,
+ "image":"..\/fiori.png",
+ "imageheight":427,
+ "imagewidth":241,
+ "margin":0,
+ "name":"fiori",
+ "spacing":0,
+ "tilecount":91,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

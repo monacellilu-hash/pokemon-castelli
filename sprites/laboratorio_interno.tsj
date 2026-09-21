@@ -1,0 +1,15 @@
+{ "columns":29,
+ "image":"..\/laboratorio_interno.png",
+ "imageheight":709,
+ "imagewidth":958,
+ "margin":0,
+ "name":"laboratorio_interno",
+ "spacing":0,
+ "tilecount":638,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

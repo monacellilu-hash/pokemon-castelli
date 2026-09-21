@@ -45,6 +45,15 @@ const Battle = (function () {
   let doppiaAllenatori = [];         // [{nome, squadra:[{id,livello}], dialogoSconfitta, premioSoldi}, {...}]
   let doppiaBanchi = [[], []];       // istanze di riserva (create ma non ancora scese in campo) per allenatore
   let doppiaNemiciAttivi = [null, null];   // istanza nemica attiva per slot 0/1 (null = slot vuoto)
+  // Un SOLO allenatore nemico ma la lotta è comunque in doppia (es. i grunt
+  // singoli dell'Osservatorio, sess. 15 set): in questo caso i 2 slot nemici
+  // NON appartengono a due allenatori diversi, ma allo STESSO allenatore, che
+  // schiera 2 Pokémon insieme dalla sua squadra — bench condiviso tra i due
+  // slot invece che uno a testa (richiesta esplicita di Luca, sess. 17 set
+  // 2026: "se disponibili pokemon si schierano 2 pokemon alla volta", non
+  // importa se 2v1 o 1v2). Quando true, doppiaBanchi[0] è il bench VERO e
+  // doppiaBanchi[1] resta sempre vuoto.
+  let doppiaBancoCondiviso = false;
   let doppiaMieiAttivi = [null, null];     // istanza del giocatore attiva per slot 0/1
   let doppiaMieiIndici = [null, null];     // indice in statoGioco.squadra per ciascuno slot
   let doppiaOnFine = null;
@@ -679,6 +688,37 @@ const Battle = (function () {
     });
   }
 
+  // Testo fluttuante generico sopra un bersaglio: usato per far VEDERE cosa
+  // sta succedendo quando una mossa cambia HP (drenaggio/contraccolpo/cura)
+  // o statistiche (frecce ↑/↓), oltre al messaggio di testo — richiesta
+  // esplicita di Luca ("crea un'animazione o una scritta tipo quella
+  // dell'exp"), sess. 16 set 2026 (punto 4).
+  function testoFluttuante(bersaglio, testo, colore) {
+    return new Promise(resolve => {
+      const campo = $('battaglia-schermo');
+      const c = centroSprite(bersaglio);
+      const el = document.createElement('div');
+      el.className = 'mossa-fx fx-testo';
+      el.style.left = c.x + 'px';
+      el.style.top = c.y + 'px';
+      el.style.color = colore;
+      el.textContent = testo;
+      const durata = durataFx(900);
+      el.style.animation = `fx-testo-fluttua ${durata}ms ease-out`;
+      campo.appendChild(el);
+      setTimeout(() => { el.remove(); resolve(); }, durata);
+    });
+  }
+
+  // Frecce su/giù per un cambio di statistica (una freccia per stage,
+  // massimo 3 per non affollare lo schermo su cambi di ±6).
+  function frecceStat(bersaglio, modifica) {
+    const n = Math.min(3, Math.abs(modifica));
+    const freccia = modifica > 0 ? '▲'.repeat(n) : '▼'.repeat(n);
+    const colore = modifica > 0 ? '#5cd65c' : '#ff5c5c';
+    return testoFluttuante(bersaglio, freccia, colore);
+  }
+
   /* ==========================================================
      ANIMAZIONI POKÉ BALL (13 agosto): mandata in campo di un Pokémon
      (esce dalla Ball e "si ingrandisce") + lancio per la cattura (Ball che
@@ -1127,8 +1167,10 @@ const Battle = (function () {
       if (obiettivo.mod[c.stat] === prima) {
         await di(`${nome} di ${etich} non può cambiare ancora!`);
       } else if (c.modifica > 0) {
+        await frecceStat(obiettivo, c.modifica);
         await di(`${nome} di ${etich} ${c.modifica >= 2 ? 'è aumentato molto!' : 'è aumentato!'}`);
       } else {
+        await frecceStat(obiettivo, c.modifica);
         await di(`${nome} di ${etich} ${c.modifica <= -2 ? 'è diminuito molto!' : 'è diminuito!'}`);
       }
     }
@@ -1206,6 +1248,32 @@ const Battle = (function () {
       if (eff > 1) await di('È superefficace!');
       else if (eff < 1) await di('Non è molto efficace...');
 
+      // Drenaggio/contraccolpo (mossa.drain, % del danno INFLITTO, da
+      // PokéAPI meta.drain): positivo = l'attaccante recupera HP
+      // (Assorbimento, Giga Prosciugo…), negativo = l'attaccante si fa male
+      // da solo (Doppia Sfida, Testata…). Si applica sempre, anche se il
+      // bersaglio va KO dal colpo (il contraccolpo colpisce comunque chi
+      // attacca — punto 4, sess. 16 set 2026: "alcune ti levano o ridanno vita").
+      if (mossa.drain && danno > 0) {
+        const variazione = Math.max(1, Math.round(danno * Math.abs(mossa.drain) / 100));
+        if (mossa.drain > 0) {
+          const primaHp = att.hpAttuale;
+          att.hpAttuale = Math.min(att.hpMax, att.hpAttuale + variazione);
+          const recuperati = att.hpAttuale - primaHp;
+          if (recuperati > 0) {
+            aggiornaPannelli();
+            await testoFluttuante(att, `+${recuperati}`, '#5cd65c');
+            await di(`${etichettaAtt} ha drenato energia da ${etichettaDif}!`);
+          }
+        } else {
+          att.hpAttuale = Math.max(0, att.hpAttuale - variazione);
+          lampeggia(att);
+          aggiornaPannelli();
+          await testoFluttuante(att, `-${variazione}`, '#ff5c5c');
+          await di(`${etichettaAtt} subisce il contraccolpo!`);
+        }
+      }
+
       if (dif.hpAttuale <= 0) return; // KO: niente effetti secondari
 
       // Effetto di stato secondario (es. 30% di paralisi)
@@ -1233,14 +1301,35 @@ const Battle = (function () {
     }
     if (mossa.statoEffetto && STATI[mossa.statoEffetto]) {
       qualcosa = true;
+      // Mosse come Riposo hanno bersaglio "user": lo stato va a chi la usa,
+      // non all'avversario (bug corretto punto 4, sess. 16 set 2026 — prima
+      // "dif" era fisso, ignorando mossa.bersaglio).
+      const versoSe = (mossa.bersaglio === 'user' || mossa.bersaglio === 'users-field');
+      const obiettivoStato = versoSe ? att : dif;
+      const etichObiettivo = versoSe ? etichettaAtt : etichettaDif;
       // Per le mosse di stato pure la probabilità API è 0 = effetto garantito
       const prob = mossa.statoProbabilita > 0 ? mossa.statoProbabilita : 100;
-      if (Math.random() * 100 < prob) await applicaStato(dif, mossa.statoEffetto, etichettaDif);
+      if (Math.random() * 100 < prob) await applicaStato(obiettivoStato, mossa.statoEffetto, etichObiettivo);
       else await di('...ma non ha funzionato!');
     }
     if (mossa.cambiStat && mossa.cambiStat.length > 0) {
       qualcosa = true;
       await applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif);
+    }
+    // Cura pura (Rilassamento, Riposo, Morso di Luna…): mossa.healing è la
+    // % di HP MASSIMI da PokéAPI meta.healing, sempre verso chi la usa.
+    if (mossa.healing && mossa.healing > 0) {
+      qualcosa = true;
+      if (att.hpAttuale >= att.hpMax) {
+        await di(`${etichettaAtt} ha già HP pieni!`);
+      } else {
+        const variazione = Math.max(1, Math.round(att.hpMax * mossa.healing / 100));
+        const primaHp = att.hpAttuale;
+        att.hpAttuale = Math.min(att.hpMax, att.hpAttuale + variazione);
+        aggiornaPannelli();
+        await testoFluttuante(att, `+${att.hpAttuale - primaHp}`, '#5cd65c');
+        await di(`${etichettaAtt} recupera energia!`);
+      }
     }
     if (!qualcosa) await di('...ma non succede nulla!');
   }
@@ -2065,6 +2154,15 @@ const Battle = (function () {
     modalita = opzioni.allenatore ? 'allenatore' : 'selvatico';
     datiAllenatore = opzioni.allenatore || null;
     fuggireImpossibile = opzioni.fuggireImpossibile || false;
+    // Difesa: se la lotta precedente era in doppia e per qualunque motivo
+    // fineBattagliaDoppia() non ha ripulito lo stato, modoDoppia restava
+    // "true" — con quel flag agganciato, aggiornaPannelli()/aggiornaSprite()
+    // richiamano SEMPRE le varianti doppia (che leggono doppiaNemiciAttivi/
+    // doppiaMieiAttivi, qui vuoti): sprite/HP/sfondo sparivano del tutto in
+    // una lotta singola dopo una doppia (bug del boss dell'Osservatorio,
+    // sess. 18 set 2026 — non bastava solo la classe CSS "doppia", andava
+    // anche il flag). Una lotta singola parte SEMPRE pulita da questo stato.
+    modoDoppia = false;
     collegaUI();
 
     // Meteo di mappa ereditato in battaglia (come nei giochi originali): se
@@ -2092,6 +2190,14 @@ const Battle = (function () {
     // Mostriamo subito la schermata con un messaggio di caricamento
     nascondiMenu();
     $('schermata-battaglia').classList.remove('nascosto');
+    // Difesa: se la lotta precedente era in doppia (Battle.avviaDoppia), la
+    // classe "doppia" riposiziona/ridimensiona TUTTI gli elementi del campo
+    // (vedi style.css) — se restasse attaccata, una lotta singola dopo una
+    // doppia renderebbe sprite/HP/sfondo tutti fuori posto o invisibili
+    // (bug trovato sess. 18 set 2026: boss dell'Osservatorio dopo i grunt in
+    // doppia). fineBattagliaDoppia() la toglie già a fine lotta, ma qui la
+    // togliamo comunque per sicurezza, non deve mai dipendere da quello.
+    $('schermata-battaglia').classList.remove('doppia');
     // Sfondo/piattaforme DOPO aver tolto "nascosto": impostaSfondoBattaglia
     // legge le dimensioni reali del campo (getBoundingClientRect), che sono
     // 0x0 finché lo schermo è display:none — prima le piattaforme uscivano
@@ -2677,15 +2783,19 @@ const Battle = (function () {
       if (!n || n.hpAttuale > 0) continue;
       await di(`${etichettaDi(n)} è esausto!`);
       await _doppiaExpKO(n);
-      const all = doppiaAllenatori[s];
-      if (doppiaBanchi[s].length > 0) {
-        const prossimo = doppiaBanchi[s].shift();
+      // Bench condiviso (un solo allenatore vero, 2 Pokémon suoi in campo):
+      // il sostituto arriva SEMPRE dal bench dello slot 0, qualunque slot si
+      // sia svuotato — è la stessa squadra, non due bench separati.
+      const all = doppiaBancoCondiviso ? doppiaAllenatori[0] : doppiaAllenatori[s];
+      const banco = doppiaBancoCondiviso ? doppiaBanchi[0] : doppiaBanchi[s];
+      if (banco.length > 0) {
+        const prossimo = banco.shift();
         doppiaNemiciAttivi[s] = prossimo;
         _registraSlotDoppia(prossimo, 'nemico', s);
         aggiornaSprite();
         aggiornaPannelli();
         await animaEntrataPokemon('nemico', 'nemico-sprite' + (s === 0 ? '' : '-2'));
-        const rimasti = doppiaBanchi[s].length + 1;
+        const rimasti = banco.length + 1;
         await di(`${all.nome} manda in campo ${prossimo.nome}! (gliene restano ${rimasti})`);
       } else {
         doppiaNemiciAttivi[s] = null;
@@ -2737,6 +2847,7 @@ const Battle = (function () {
     doppiaOnFine = null;
     doppiaAllenatori = [];
     doppiaBanchi = [[], []];
+    doppiaBancoCondiviso = false;
     doppiaNemiciAttivi = [null, null];
     doppiaMieiAttivi = [null, null];
     doppiaMieiIndici = [null, null];
@@ -2830,13 +2941,30 @@ const Battle = (function () {
     try {
       doppiaBanchi = [[], []];
       doppiaNemiciAttivi = [null, null];
-      for (let s = 0; s < 2; s++) {
-        const all = doppiaAllenatori[s];
+      // 2 CONTRO 1 (sess. 15 set 2026, Osservatorio CoTrAL — grunt singoli con
+      // squadra grande invece che in coppia): opzioni.allenatori può avere UN
+      // solo elemento. In quel caso (sess. 17 set 2026) quell'UNICO allenatore
+      // schiera comunque 2 Pokémon insieme, non 1: bench condiviso tra i 2 slot.
+      doppiaBancoCondiviso = !doppiaAllenatori[1] && !!doppiaAllenatori[0];
+      if (doppiaBancoCondiviso) {
+        const all = doppiaAllenatori[0];
         const istanze = [];
         for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello));
-        doppiaNemiciAttivi[s] = istanze.shift() || null;
-        doppiaBanchi[s] = istanze;
-        if (doppiaNemiciAttivi[s]) _registraSlotDoppia(doppiaNemiciAttivi[s], 'nemico', s);
+        doppiaNemiciAttivi[0] = istanze.shift() || null;
+        doppiaNemiciAttivi[1] = istanze.shift() || null;
+        doppiaBanchi[0] = istanze;   // bench VERO, condiviso da entrambi gli slot
+        if (doppiaNemiciAttivi[0]) _registraSlotDoppia(doppiaNemiciAttivi[0], 'nemico', 0);
+        if (doppiaNemiciAttivi[1]) _registraSlotDoppia(doppiaNemiciAttivi[1], 'nemico', 1);
+      } else {
+        for (let s = 0; s < 2; s++) {
+          const all = doppiaAllenatori[s];
+          if (!all) continue;
+          const istanze = [];
+          for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello));
+          doppiaNemiciAttivi[s] = istanze.shift() || null;
+          doppiaBanchi[s] = istanze;
+          if (doppiaNemiciAttivi[s]) _registraSlotDoppia(doppiaNemiciAttivi[s], 'nemico', s);
+        }
       }
     } catch (err) {
       console.error('[Battle] Errore nel creare gli avversari della doppia:', err);
@@ -2850,16 +2978,26 @@ const Battle = (function () {
 
     // Un solo boss "diviso" in 2 slot (stesso nome ripetuto, es. Marcello con
     // le sue 6 Pokémon) legge male come "Marcello e Marcello": frase diversa
-    // quando i due nomi coincidono.
-    await di(doppiaAllenatori[0].nome === doppiaAllenatori[1].nome
-      ? `${doppiaAllenatori[0].nome} scende in campo con tutta la sua squadra!`
-      : `${doppiaAllenatori[0].nome} e ${doppiaAllenatori[1].nome} vogliono lottare insieme!`);
+    // quando i due nomi coincidono. Con bench condiviso (un solo allenatore
+    // vero, 2 Pokémon suoi in campo) frase diversa ancora.
+    if (doppiaBancoCondiviso) {
+      await di(`${doppiaAllenatori[0].nome} scende in campo con tutta la sua squadra!`);
+    } else if (!doppiaAllenatori[1]) {
+      await di(`${doppiaAllenatori[0].nome} scende in campo!`);
+    } else {
+      await di(doppiaAllenatori[0].nome === doppiaAllenatori[1].nome
+        ? `${doppiaAllenatori[0].nome} scende in campo con tutta la sua squadra!`
+        : `${doppiaAllenatori[0].nome} e ${doppiaAllenatori[1].nome} vogliono lottare insieme!`);
+    }
     await Promise.all([
       animaEntrataPokemon('nemico', 'nemico-sprite'),
       doppiaNemiciAttivi[1] ? animaEntrataPokemon('nemico', 'nemico-sprite-2') : Promise.resolve(),
     ]);
+    // Nome dell'allenatore dello slot 1: se il bench è condiviso è lo STESSO
+    // allenatore dello slot 0 (doppiaAllenatori[1] non esiste in quel caso).
+    const nomeAllenatoreSlot1 = doppiaAllenatori[1] ? doppiaAllenatori[1].nome : doppiaAllenatori[0].nome;
     await di(`${doppiaAllenatori[0].nome} manda in campo ${doppiaNemiciAttivi[0].nome}!` +
-      (doppiaNemiciAttivi[1] ? ` ${doppiaAllenatori[1].nome} manda in campo ${doppiaNemiciAttivi[1].nome}!` : ''));
+      (doppiaNemiciAttivi[1] ? ` ${nomeAllenatoreSlot1} manda in campo ${doppiaNemiciAttivi[1].nome}!` : ''));
     await Promise.all([
       animaEntrataPokemon('giocatore', 'giocatore-sprite'),
       doppiaMieiAttivi[1] ? animaEntrataPokemon('giocatore', 'giocatore-sprite-2') : Promise.resolve(),

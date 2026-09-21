@@ -1,0 +1,15 @@
+{ "columns":29,
+ "image":"..\/palestra_roccia.webp",
+ "imageheight":1344,
+ "imagewidth":945,
+ "margin":0,
+ "name":"palestra_roccia",
+ "spacing":0,
+ "tilecount":1218,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

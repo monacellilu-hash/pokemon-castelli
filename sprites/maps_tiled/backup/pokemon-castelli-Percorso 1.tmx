@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="36" height="52" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="52">
- <tileset firstgid="1" source="../../../outside.tsx"/>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="36" height="52" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="60">
+ <editorsettings>
+  <export target="pokemon-castelli-Percorso 1.tmj" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../../outside.tsx"/>
  <layer id="1" name="ground" width="36" height="52">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,162,163,163,163,163,164,2,2,2,2,2,2,2,
@@ -13,7 +16,7 @@
 2,2,2,2,2,2,154,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,710,711,712,2,2,
 2,2,2,2,2,2,162,163,163,163,163,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,162,163,163,163,163,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,32,32,2,2,2,2,2,
-2,2,2,2,2,2,162,163,163,163,163,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,32,32,2,2,2,2,2,
+2,2,2,2,2,2,162,163,163,163,163,2,2,2,476,2,2,2,2,2,2,2,2,2,2,2,2,2,2,32,32,2,2,2,2,2,
 2,2,2,2,2,2,162,163,163,163,163,164,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,32,32,2,2,2,2,2,
 2,2,2,2,2,2,162,163,163,163,163,164,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
 2,2,2,2,2,2,162,163,163,163,163,164,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,
@@ -174,7 +177,7 @@
   <object id="2" x="5.59332" y="1656.74" width="378.108"/>
   <object id="3" x="1.11866" y="1473.28" width="8.94931" height="191.292"/>
   <object id="4" x="549.264" y="1648.91" width="599.604" height="11.1866"/>
-  <object id="5" x="1138.8" y="3.35599" width="104.036" height="1653.39"/>
+  <object id="5" x="1138.8" y="3.35599" width="14.7027" height="1653.39"/>
   <object id="6" x="-2.23733" y="1.11866" width="738.318" height="6.71198"/>
   <object id="7" x="928.491" y="-4.47466" width="220.377" height="7.83065"/>
   <object id="8" x="102.917" y="230.445" width="82.7811" height="89.4931"/>
@@ -216,6 +219,7 @@
   </object>
   <object id="49" x="387.058" y="382.583" width="29.0853" height="158.85"/>
   <object id="50" x="419.499" y="381.464" width="156.613" height="27.9666"/>
+  <object id="59" x="157.333" y="1408" width="834.667" height="28"/>
  </objectgroup>
  <objectgroup id="5" name="eventi">
   <object id="29" name="trainer percorso 1 - numero 1" x="142.07" y="620.858">
@@ -263,30 +267,47 @@
    </properties>
    <point/>
   </object>
-  <object id="45" name="erba alta percorso 1" x="993.373" y="1147.75" width="156.613" height="290.853">
+  <object id="46" name="erba alta percorso 1" x="579.401" y="384.203" width="541.373" height="163.065">
    <properties>
     <property name="id" value="incontri percorso 1"/>
-    <property name="type" value="incontri"/>
+    <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="46" name="erba alta percorso 1" x="10.0679" y="1478.87" width="368.04" height="157.732">
+  <object id="53" name="spwan_percorso 1" x="444.667" y="1630" width="34" height="17.3333">
+   <properties>
+    <property name="id" value="da Borgata Tuscolana"/>
+    <property name="type" value="spwan"/>
+   </properties>
+  </object>
+  <object id="54" name="uscita_sud" x="392.467" y="1650.49" width="144.398" height="13.0138">
+   <properties>
+    <property name="destinazione" value="pokemon-castelli-Borgata_Tuscolana"/>
+    <property name="type" value="uscita"/>
+   </properties>
+  </object>
+  <object id="55" name="uscita_nord_" x="745.134" y="1.4931" width="175.065" height="13.0138">
+   <properties>
+    <property name="destinazione" value="pokemon-castelli- Percorso 1b"/>
+    <property name="type" value="uscita"/>
+   </properties>
+  </object>
+  <object id="56" name="erba alta percorso 1" x="9.3133" y="1471.8" width="368.04" height="157.732">
    <properties>
     <property name="id" value="incontri percorso 1"/>
-    <property name="type" value="incontri"/>
+    <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="47" name="erba alta percorso 1" x="578.349" y="382.583" width="539.196" height="162.207">
+  <object id="57" name="erba alta percorso 1" x="993.313" y="1153.14" width="152.04" height="293.732">
    <properties>
     <property name="id" value="incontri percorso 1"/>
-    <property name="type" value="incontri"/>
+    <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="48" name="erba alta percorso 1" x="484.381" y="10.0678" width="214.784" height="183.461">
+  <object id="58" name="erba alta percorso 1" x="477.313" y="3.80083" width="232.04" height="188.398">
    <properties>
     <property name="id" value="incontri percorso 1"/>
-    <property name="type" value="incontri"/>
+    <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="51" x="393.77" y="1644.44" width="138.714" height="14.5426"/>
  </objectgroup>
 </map>

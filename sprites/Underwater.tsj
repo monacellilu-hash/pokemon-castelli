@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"tiles\/Underwater.png",
+ "imageheight":448,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Underwater",
+ "spacing":0,
+ "tilecount":112,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

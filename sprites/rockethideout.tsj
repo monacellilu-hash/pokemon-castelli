@@ -1,0 +1,15 @@
+{ "columns":18,
+ "image":"..\/rockethideout.jpg",
+ "imageheight":909,
+ "imagewidth":586,
+ "margin":0,
+ "name":"rockethideout",
+ "spacing":0,
+ "tilecount":504,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

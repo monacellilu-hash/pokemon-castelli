@@ -1,0 +1,15 @@
+{ "columns":6,
+ "image":"..\/fontana.webp",
+ "imageheight":160,
+ "imagewidth":192,
+ "margin":0,
+ "name":"fontana",
+ "spacing":0,
+ "tilecount":30,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

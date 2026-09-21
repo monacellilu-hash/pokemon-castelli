@@ -1,0 +1,27 @@
+{
+    "maps": [
+        {
+            "fileName": "Lega_pokemon.tmj",
+            "height": 1920,
+            "width": 2240,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "Colonna.tmj",
+            "height": 1632,
+            "width": 2112,
+            "x": 0,
+            "y": 4032
+        },
+        {
+            "fileName": "Colonna_2.tmj",
+            "height": 2112,
+            "width": 2112,
+            "x": 0,
+            "y": 1920
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

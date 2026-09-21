@@ -1,224 +1,572 @@
 # 📖 BIBBIA NARRATIVA — Pokémon Castelli Romani
-### Documento di design narrativo (F9 → F12) · v2
+### Documento di design narrativo · v3 (sessione documentazione, storia canonica STORIA.md)
 
 > Fonte di verità per dialoghi, leggendari, team, città e meccaniche di storia.
-> I dettagli ancora aperti restano marcati **[DA DEFINIRE]**.
+> **Questa versione sostituisce integralmente la v2**: il testo che segue (§ IL TESTO CANONICO)
+> è riportato **verbatim** da `STORIA.md`, fornito da Luca in sessione. In caso di conflitto con
+> qualunque altro documento del progetto (compreso `CLAUDE.md`), **questo testo vince**.
+> I dettagli ancora aperti restano marcati **[DA DECIDERE — Luca]**.
 
 ---
 
-## ✅ DECISIONI BLOCCATE (aggiornate)
+## IL TESTO CANONICO DELLA STORIA
 
-1. **Due team**: **GdF** (meteo/business, pre-Lega) + **CoTrAL** (scienza/clonazione, post-Lega).
-2. **CoTrAL** nasce per **scissione** del GdF (ex-membri delusi).
-3. **Kyogre → Lago Albano** · **Groudon → Grotta del Vulcano**.
-4. **Sistema del tempo**: orologio coi passi + "Dormi" al PC del Centro Pokémon (scegli l'ora del risveglio).
-5. Solo specie **ID 1-386 (Gen 1-3)**.
-6. **Mew → Villa Aldobrandini** (Frascati) — cattura dopo lo scontro col Mewtwo.
-7. **Ho-Oh / Piuma**: ricompensa per una **catena di buone azioni** (NON palestre/rivale), incl. sgominare una cellula **CoTrAL**, e i **Porchettari** (al posto delle Kimono Girl).
-8. **Trio Regi (Tuscolo)**: enigma in **latino** che indica il **tipo** richiesto. Per aprire ogni camera servono **almeno 3 Pokémon dello stesso tipo** in squadra → **Terra**, **Volante**, **Buio**.
-9. **Bunkerino** = laboratorio grigio/asettico (vibe "grotta Celeste" ma artificiale). Mewtwo ha **sconfitto i suoi creatori** (la CoTrAL) e ora trama di **prendere il controllo**.
-10. **Rayquaza**: dopo aver catturato Kyogre e Groudon, va a **Frascati, San Rocco**; con **entrambi in squadra** premi la **fontana** → si apre un **dungeon** → dentro c'è Rayquaza.
+### IL MONDO
 
----
+I Castelli Romani non sono colline: sono un vulcano spento. Il Vulcano Laziale. I laghi di
+Albano e di Nemi sono crateri riempiti d'acqua. Sotto i paesi, sotto le vigne, sotto le
+fraschette, c'è una camera magmatica addormentata.
 
-## 🦹 I DUE TEAM
+Tutta la storia nasce da qui: da qualcuno che vuole svegliare ciò che dorme lì sotto, e da
+qualcun altro che ha paura che ci riesca.
 
-### TEAM GdF — meteo & business (PRE-Lega) · costante `TEAM_GDF_NOME`
-- Risveglia **Kyogre e Groudon** (servono le **sfere/pietre**) per controllare il meteo e manovrare l'economia (vino, acqua, turismo).
-- **Comandante Crasso** (capo) · Admin **Fulvia** (acqua) · Admin **Tarcisio** (terra) · Grunt.
-- **Le Sfere/pietre**: custodite al **Museo delle Navi Romane di Nemi** (luogo VERO, ospita i relitti delle navi di Caligola). Le navi romane le trasportavano quando affondarono nel lago. Il GdF le **ruba e scappa davanti al giocatore** in una **cutscene** (i cattivi parlano, tu assisti). Da lì la caccia per recuperarle prima del risveglio.
-- Climax: scontro al cratere → Crasso arrestato. Dopo, i due leggendari restano dormienti (Albano / Grotta) e si catturano post-Lega.
-
-### TEAM CoTrAL — scienza & clonazione (POST-Lega) · costante `TEAM_COTRAL_NOME`
-- **Scissione del GdF**: "il meteo è roba da dilettanti, noi creiamo la vita".
-- Facciata da cooperativa di trasporti (il bus che non arriva mai…), dietro un programma genetico: **Progetto 150 → Mewtwo** (da DNA di **Mew**).
-- **Laboratori-dungeon pre-Lega** con indizi (no boss): **Lab 1 ~dopo Palestra 3 (Marino)**, **Lab 2 ~dopo Palestra 6 (Albano)**.
-- **Bunkerino (Colonna, post-Lega)** — **laboratorio-dungeon travestito da cantina**: dall'esterno e nei primi ambienti sembra una cantina dei Castelli (botti di vino, marmellate, conserve, frutta, attrezzi da orto e vigna), ma sotto è un laboratorio grigio. Si attraversa **sfidando un po' di gente della CoTrAL** (resti del team), fino alla sala finale: **Mewtwo davanti a un grande camino**. **Colpo di scena**: la CoTrAL non comanda più — **Mewtwo ha già sconfitto i suoi creatori** e ora trama il controllo. Boss = **Mewtwo si sdoppia** → **doppia** Mewtwo + Mew (Mew IA). *(richiede estensione del motore: oggi solo 1v1.)*
+Il tono resta quello di una commedia locale. La minaccia è vera, ma il mondo intorno è caldo
+e ridicolo: c'è sempre qualcuno che ti parla del vino, della porchetta o della sagra mentre
+il mondo sta per finire.
 
 ---
 
-## ⭐ LEGGENDARI (Gen 1-3) — POSIZIONAMENTO DEFINITIVO
+### I DUE NEMICI
+
+#### Team GdF
+
+Si presentano come un'autorità. Uniformi, tesserini, controlli, sequestri, documentazione.
+Non entrano in un posto sfondando la porta: ci entrano dicendo che hanno il diritto di
+starci.
+
+Vogliono risvegliare **Groudon** nella Grotta del Vulcano, nel cuore del cratere, per
+sfruttarne l'energia. Il risveglio prosciugherebbe i laghi: significa distruggere Albano e
+Nemi, e con loro Kyogre e Suicune.
+
+Per svegliarlo servono le **Pietre del Cratere**, reperti antichi finiti nei secoli dentro
+le istituzioni della zona. È per questo che il GdF occupa esattamente i luoghi patrimoniali
+dei Castelli — l'Abbazia di San Nilo, la Villa Pontificia di Castel Gandolfo, il Museo delle
+Navi di Nemi — sempre con la scusa dell'ispezione.
+
+Le pietre sono due: la **Pietra Rossa** e la **Pietra Blu**. Il giocatore le strapperà
+entrambe, una per volta, ai **due capi** dell'organizzazione.
+
+Il GdF ha anche un **rifugio a Marino**, chiuso da una **password divisa in tre parti**, che
+il giocatore raccoglierà una alla volta lungo l'intera partita.
+
+#### Team CoTrAL
+
+Non si presentano come autorità: si presentano come servizio. Gestiscono ciò che permette di
+muoversi — mezzi, tunnel, la funivia di Monte Cavo. E quando qualcosa non gli serve più,
+chiudono la linea.
+
+La loro storia si svolge in **tre tempi**, distanti fra loro:
+
+1. **Il rapimento a Rocca di Papa.** Hanno delle strutture sotto Monte Cavo e vogliono capire
+   cosa stia combinando il GdF sul vulcano: se quelli svegliano Groudon, salta tutto, e con
+   tutto saltano anche loro.
+2. **L'Osservatorio di Monte Porzio Catone.** Lì studiano il meteo, e da quello studio nasce
+   qualcosa che non dovrebbe esistere. Si scopre solo dopo l'ottava medaglia.
+3. **Il Bunkerino.** Dove si scopre chi comanda davvero, e dove nulla di quello che il
+   giocatore credeva regge più.
+
+Il loro vero obiettivo — **Mewtwo**, la vita fabbricata — resta nascosto quasi fino alla fine.
+
+**I due team non sono alleati e non si parlano.** Sono rivali che si spiano. Nessun uomo del
+GdF sa che CoTrAL esiste. Nessun uomo di CoTrAL parla del GdF con simpatia.
+
+---
+
+### I DUE RIVALI
+
+Il giocatore non ne ha uno, ne ha due, e sono opposti.
+
+**Remo** è quello che si prende in faccia dal primo minuto: sceglie lo starter forte contro
+il tuo, ti sfida davanti al laboratorio, perde, e continua a perdere male per tutta la
+partita. Ma non si ferma mai, e alla fine della strada lo ritroverai seduto sul trono più
+alto: è lui il **Campione della Lega di Colonna**.
+
+L'altro *(nome da definire)* compare più tardi, e non vuole battere nessuno. Ha **la tua
+stessa missione**: completare il Pokédex. Non è un antagonista, è uno specchio — l'unica
+persona nel gioco che sta facendo esattamente ciò che fai tu, per gli stessi motivi.
+
+Lo affronti **all'uscita della Via Vittoria**, un attimo prima di entrare alla Lega. Vinci,
+e lui ti regala il **Braciere**: l'oggetto che serve a chiamare **Lugia**. Se lo dà perché
+ha capito che di noi due sei tu quello che arriverà in fondo.
+
+---
+
+### ATTO I — Il mondo è bello
+
+#### Anagnina
+
+Un quartiere di periferia sulla Via Tuscolana, piccolo, senza palestra. Il **Prof. Castagno**
+consegna il primo Pokémon — prima si sceglie la generazione, poi lo starter — insieme al
+Pokédex e alle prime Poké Ball.
+
+Sarà lo stesso uomo, molto tempo dopo e a partita quasi finita, a consegnare l'ultimo
+strumento del gioco.
+
+**Remo** prende lo starter forte contro il tuo e ti sfida fuori dal laboratorio. Perde e dice
+una parolaccia.
+
+Tua madre dice solo: *"torna presto"*.
+
+#### Percorso Tuscolana
+
+Curve, erba alta anche in mezzo al sentiero, due allenatori. Un alberello da tagliare che non
+sbarra la strada ma nasconde una Poké Ball. Un cartello: *via Tuscolana*.
+
+#### Frascati
+
+Le vigne, il vino, Villa Aldobrandini. **Vinicio** e la prima medaglia. Non succede nient'altro:
+è l'ultimo posto del gioco in cui non succede nient'altro.
+
+Da qualche parte, in questo paese, c'è la piazza di **San Rocco**. Il giocatore ci passerà
+sopra decine di volte senza notarla, e ci tornerà solo da Campione.
+
+#### Grottaferrata
+
+Seconda medaglia, capopalestra **Nilo**.
+
+E il primo contatto col Team GdF. Tre uomini presidiano l'esterno dell'**Abbazia di San Nilo**.
+La porta è sbarrata. Parlano di verifiche in corso, di documentazione, di accesso
+temporaneamente sospeso. Il giocatore non può entrare e non capisce perché.
+
+Quella porta resterà chiusa fino alla settima medaglia. È la prima promessa del gioco: una
+soglia che vedi al secondo paese e potrai varcare solo nell'atto finale.
+
+---
+
+### ATTO II — C'è un piano, e riguarda delle pietre
+
+#### Marino
+
+La fontana, la Sagra dell'Uva, la terza medaglia.
+
+E due cose che il giocatore vede e non può toccare.
+
+La prima è il **rifugio del Team GdF**: sta lì, in mezzo al paese, chiuso da una password di
+cui non possiede nemmeno un pezzo. Nessuno gli spiega cosa sia.
+
+La seconda è una **biforcazione del percorso**, sbarrata da una roccia troppo dura. In fondo a
+quel ramo dorme uno **Snorlax** che non si sveglia con niente di quello che il giocatore ha
+in tasca.
+
+La palestra insegna a spaccare le rocce — ma lo strumento per farlo non ce l'ha ancora.
+
+#### Castel Gandolfo
+
+Non è una città-palestra: è il primo vero scontro col GdF. Sette uomini occupano la **Villa
+Pontificia**. L'ultimo, sconfitto, lascia cadere un **documento**: *le pietre sono al Museo
+delle Navi di Nemi.*
+
+Il giocatore ci crede. Attraverserà mezzo gioco per arrivare a quel museo.
+
+Liberata la Villa, riceve finalmente lo strumento per spaccare le rocce — e con quello si
+apre il **tunnel roccioso** che sale verso Monte Porzio Catone.
+
+#### Monte Porzio Catone
+
+L'Osservatorio astronomico domina il paese. Quarta medaglia.
+
+**Dentro l'Osservatorio c'è il Team CoTrAL, e c'è già adesso.** Non è un posto che si
+corromperà dopo: è un laboratorio loro fin da questo momento della storia.
+
+Ma **non sono ostili**. Il giocatore entra, gira, ci parla. Sono tecnici cortesi, forse
+perfino utili. Studiano il tempo atmosferico, dicono. Nessuna battaglia, nessuna minaccia,
+nessun sospetto. Solo gente in camice che lavora.
+
+Passeranno sette medaglie prima che quelle stesse persone smettano di sorridere.
+
+La palestra insegna a spostare i massi. Di nuovo: il permesso senza lo strumento.
+
+#### La soglia di Nemi
+
+La strada per Nemi è sbarrata da massi enormi. Il giocatore sa come si spostano ma non ha di
+che farlo. Passa oltre.
+
+---
+
+### ATTO III — C'è un secondo nemico
+
+#### Il paese fermo
+
+Il giocatore arriva a Rocca di Papa e trova un paese in crisi. **La funivia è ferma.** La
+palestra è aperta ma il capopalestra non c'è.
+
+Il racconto che gli fanno è questo: l'**addetto alla funivia** — l'uomo che sale e scende
+dalla montagna tutti i giorni, e che quindi vede tutto quello che succede lassù — si è
+rifiutato di collaborare col **Team CoTrAL**. Loro l'hanno rapito per farlo parlare, l'hanno
+portato nel proprio **covo ai piedi di Monte Cavo**, e hanno fermato la linea per tenere la
+montagna chiusa a chiunque.
+
+Quello che il giocatore non può ancora sapere è **perché** volevano farlo parlare: CoTrAL
+vuole capire cosa stia combinando il GdF sul vulcano, perché se quelli lo svegliano, le
+strutture sotto Monte Cavo saltano in aria.
+
+Il **capopalestra** è salito a combattere per liberarlo, e finché la faccenda non si chiude
+non c'è nessuna sfida da fare.
+
+Un uomo del paese consegna al giocatore lo strumento per spostare i massi, perché possa
+salire anche lui.
+
+#### Il covo ai piedi di Monte Cavo
+
+In fondo al covo c'è il **luogotenente di CoTrAL**. Sconfitto, consegna la **prima delle tre
+parti della password** del rifugio GdF di Marino.
+
+Non lo fa per gratitudine e non lo fa da vinto. Lo fa **con un calcolo**: vuole che sia
+qualcun altro ad andare a rompere le scatole al GdF. Così quelli si distraggono, si
+indeboliscono, e le strutture di CoTrAL sotto la montagna restano al sicuro senza che nessuno
+di loro si esponga.
+
+Il giocatore esce da quella stanza convinto di aver vinto. Ha appena ricevuto un ordine
+travestito da premio, e se ne accorgerà solo molto più avanti.
+
+**L'addetto alla funivia viene liberato.** Dice: *"batti la palestra e torna da me"*, e regala
+il **Pokéflauto** — che serve a svegliare uno Snorlax addormentato molto, molto indietro nel
+cammino.
+
+#### La palestra di Rocca di Papa
+
+Risolta la faccenda, il capopalestra torna. Quinta medaglia.
+
+E il gioco si spalanca in un colpo solo: il giocatore impara a usare il Surf fuori dalla
+lotta, **la funivia riparte**, e si apre la strada verso la Spiaggia di Albano, chiusa fino a
+questo momento.
+
+#### Il dungeon innevato
+
+Ci si arriva solo con la funivia. Neve costante. In fondo un **miniboss** e, oltre di lui,
+**Articuno** e lo strumento per volare.
+
+---
+
+### ATTO IV — La stanza vuota
+
+Nessuna medaglia nuova. Il giocatore torna sui propri passi con poteri che prima non aveva.
+
+#### Nemi
+
+I massi si spostano, la strada si apre. E il Museo delle Navi, finalmente, è affrontabile —
+perché CoTrAL a Rocca di Papa è stato sconfitto e nessuno respinge più nessuno.
+
+Dentro c'è un **boss del Team GdF**. Sconfitto, lascia la **seconda parte della password**.
+
+**Ma le pietre non ci sono.**
+
+Il documento trovato alla Villa Pontificia mezzo gioco fa mandava qui, e qui non c'è niente.
+Sono state portate via mesi prima, o forse non ci sono mai state. Il giocatore ha
+attraversato tre paesi, liberato una montagna e imparato a spostare i massi per arrivare a
+una stanza vuota.
+
+È il punto più basso dell'intera vicenda, e deve pesare.
+
+#### Marino, di nuovo
+
+Il Pokéflauto sveglia lo Snorlax, e il ramo bloccato del percorso si apre finalmente.
+
+Il rifugio del GdF, invece, resta chiuso. Il giocatore ha due parti su tre. Passerà davanti a
+quella porta sapendo che gli manca un pezzo solo.
+
+---
+
+### ATTO V — Il sud
+
+#### La Spiaggia di Albano
+
+Il percorso si biforca: da una parte la città, dall'altra la spiaggia — che un uomo tiene
+sbarrata finché non hai abbastanza medaglie.
+
+Sulla spiaggia il giocatore riceve lo strumento per il Surf. Da qui in poi i due laghi di
+cratere sono navigabili.
+
+Ed è mettendo piede sulla spiaggia che succede la cosa. **Suicune** è là, fermo sullo
+specchio d'acqua del **Lago di Nemi**, e per un istante si lascia guardare. Poi se ne va —
+e da quel momento **Raikou** ed **Entei** cominciano a girare per la provincia senza fermarsi
+mai da nessuna parte.
+
+Un solo sguardo, e tre creature che non staranno più ferme per il resto della partita.
+
+#### Albano Laziale
+
+Tradizione militare, sesta medaglia. La palestra insegna a volare fuori dalla lotta — e non è
+un caso che succeda proprio adesso, perché da qui in avanti il giocatore dovrà correre avanti
+e indietro fra Grottaferrata, Rocca di Papa e Marino per chiudere i conti col GdF.
+
+#### Ariccia
+
+I vicoli, le fraschette, il Ponte. Settima medaglia.
+
+Nei sotterranei c'è il **dungeon dei porchettari**, e lì dentro si trova la **Piuma**.
+
+Sotto il Ponte c'è un allenatore. Bisogna prima batterlo, e solo dopo mostrargli la Piuma:
+non è un lasciapassare, è la prova di meritarlo, e va esibita a qualcuno che ti ha già
+misurato. Allora lui apre la strada verso la **grotta di Ho-Oh**.
+
+La palestra insegna a immergersi sott'acqua fuori dalla lotta. Ed è il caso più crudele del
+gioco: **lo strumento per farlo arriverà solo dopo la Lega**.
+
+**Con la settima medaglia si apre l'Abbazia di San Nilo.**
+
+---
+
+### ATTO VI — La caduta del Team GdF
+
+Tre tappe, nessuna medaglia, il climax del primo grande arco.
+
+#### Dentro l'Abbazia di San Nilo
+
+La porta che il giocatore guarda dal secondo paese si apre.
+
+Dentro c'è un **boss del Team GdF**. Sconfitto, lascia due cose: la **terza e ultima parte
+della password**, e le **indicazioni per la Grotta del Vulcano**.
+
+Adesso il giocatore ha la password completa. Ma le indicazioni lo mandano prima altrove, e
+l'ordine conta.
+
+#### La Grotta del Vulcano
+
+Nel cuore del cratere, sopra Rocca di Papa. Qui si affronta il **primo dei due capi del Team
+GdF**, e sconfiggendolo si ottiene la **Pietra Rossa**.
+
+Groudon dorme in questa grotta. Ma la camera che lo contiene resta chiusa.
+
+#### Il rifugio di Marino
+
+Con le tre parti della password, la porta che il giocatore guarda dalla terza medaglia si apre
+finalmente.
+
+Dentro c'è il **secondo capo del Team GdF**. Sconfitto, lascia la **Pietra Blu**.
+
+**E qui l'arco del Team GdF si chiude.** Non ricompaiono più.
+
+Nel rifugio c'è anche un passaggio che scende sott'acqua, verso **Kyogre**. Ma per percorrerlo
+serve immergersi, e lo strumento per farlo il giocatore non ce l'ha.
+
+Esce di lì con due pietre in tasca, un'organizzazione smantellata e due porte chiuse alle
+spalle — Groudon e Kyogre — che potrà aprire solo da Campione.
+
+---
+
+### ATTO VII — Genzano, e la maschera che cade
+
+#### Genzano
+
+L'Infiorata, i fiori, l'ottava e ultima medaglia. La capopalestra è **Camilla**, e non è uno
+di quei capipalestra che stringi la mano e non rivedi più: è l'ultima alleata del gioco.
+
+La palestra insegna a risalire le cascate. Da Genzano parte il lungo percorso che si
+ricongiunge alla Via dei Laghi.
+
+#### L'Osservatorio
+
+Con l'ottava medaglia in tasca, qualcosa richiama il giocatore a **Monte Porzio Catone**.
+
+L'Osservatorio dove all'andata gli offrivano il caffè non è più quel posto. I tecnici che
+studiavano il tempo atmosferico stavano studiando molto di più, e da quello studio è nato
+**Jirachi**.
+
+**Camilla arriva ad aiutarlo.** È la prima volta in tutta la partita che il giocatore non
+combatte da solo: lo scontro finale contro il boss di CoTrAL è una **lotta in doppio**,
+fianco a fianco con la capopalestra che ha appena finito di battere.
+
+Vincendo si smaschera la vera identità dell'organizzazione — o almeno, quella che il
+giocatore crede sia la vera identità. Camilla, per ringraziarlo, gli mette in mano una
+**Master Ball**.
+
+Da qualche parte nell'Osservatorio, su un sentiero che con tutta questa storia non c'entra
+niente, c'è anche **Zapdos**.
+
+---
+
+### ATTO VIII — La Lega
+
+#### Via Vittoria
+
+Il dungeon finale, fra Genzano e Colonna. Si apre solo con tutte e otto le medaglie.
+
+All'**uscita**, un attimo prima della Lega, aspetta **il secondo rivale**. Non ti sbarra la
+strada per fermarti: vuole solo misurarsi, un'ultima volta, con l'unica altra persona che
+stava facendo la sua stessa cosa.
+
+Perde, e ti consegna il **Braciere**.
+
+#### Colonna
+
+Colonna non è una palestra: è la fine del gioco. **Captain**, **Pres**, **Dema** e
+**Marcuois**, uno dopo l'altro.
+
+E dietro l'ultima porta c'è **Remo**. Quello che perdeva sempre. Quello che diceva le
+parolacce davanti al laboratorio del professore. È lui il Campione, e ci è arrivato prima di
+te.
+
+---
+
+### DOPO LA LEGA
+
+#### Il professore, un'ultima volta
+
+Battuta la Lega, il **Prof. Castagno** consegna lo strumento per immergersi. È l'ultimo pezzo
+del gioco, e lo dà lo stesso uomo che aveva dato il primo Pokémon: la partita si chiude dove
+si era aperta.
+
+Con quello si aprono le due porte rimaste: la camera di **Groudon** nella Grotta del Vulcano,
+e il passaggio sommerso sotto il rifugio di Marino dove aspetta **Kyogre**.
+
+Le due Pietre, Rossa e Blu, sono ciò per cui il GdF aveva messo sottosopra mezza provincia.
+Adesso ce l'ha il giocatore.
+
+#### Il Bunkerino, e chi comanda davvero
+
+*(La vicenda interna del Bunkerino è ancora da definire.)*
+
+Quello che si sa è come finisce. Il Team CoTrAL non ha un capo umano: il capo è **Mewtwo**.
+Tutto — i trasporti, l'Osservatorio, il rapimento del funivista, la clonazione — è stato
+diretto da lui.
+
+E ha preparato l'unica squadra che nessun allenatore può battere con l'abitudine: **la copia
+esatta della squadra del giocatore**. Gli stessi Pokémon, le stesse mosse, gli stessi punti
+di forza — solo, più veloci. Il giocatore combatte contro sé stesso, e perde sempre l'iniziativa.
+
+Dalla sconfitta di Mewtwo si ricava la **tuta spaziale**.
+
+#### L'atto finale, doppio
+
+**Villa Aldobrandini, Frascati.** Dove il gioco è quasi cominciato. Là dentro, tenuto
+prigioniero da chi lo aveva generato, c'è **Mew** — e il giocatore lo libera.
+
+**E con la tuta spaziale** si può andare dove nessuno può respirare, e trovare **Deoxys**.
+
+Il gioco si chiude così: a Frascati, dove era iniziato, e in un posto dove nessuno era mai
+arrivato.
+
+#### Il cielo sopra San Rocco
+
+**Rayquaza** non sta su nessuna montagna. Sta sopra **Piazza San Rocco, a Frascati**: la
+piazza che il giocatore ha attraversato cento volte alla prima medaglia, senza mai alzare
+gli occhi.
+
+#### Il Braciere e il treno
+
+Il Braciere che il secondo rivale consegna all'uscita della Via Vittoria non serve a niente
+finché non lo si porta abbastanza lontano.
+
+Da **Genzano** *(o da Velletri — la stazione è da decidere)* parte un treno. Non è un mezzo
+di trasporto e non porta in nessun altro posto: porta **da Lugia**, e basta. È un passaggio
+simbolico, l'unico momento in cui il giocatore esce davvero dai Castelli.
+
+#### Le due ombre
+
+E quando ha ormai finito tutto, due sagome cominciano a comparire ai margini della vista:
+**Latias** e **Latios**. Non si fanno mai trovare dove le hai viste.
+
+---
+
+## ⭐ LEGGENDARI (Gen 1-3) — POSIZIONAMENTO AGGIORNATO
+
+> Tabella ricostruita dal testo canonico sopra. Dove il testo non specifica un meccanismo di
+> gioco preciso, la riga "Trigger" riporta il meccanismo della v2 se non contraddetto — altrimenti
+> **[DA DECIDERE — Luca]**.
 
 | Pokémon | ID | Luogo / Modalità | Trigger |
 |---|---|---|---|
-| Articuno | 144 | **Rocca di Papa** → funivia → sentiero innevato | Sali con la funivia |
-| Zapdos | 145 | **Osservatorio (Monte Porzio)**, in un temporale | NPC meteorologo annuncia la pioggia → vai nel giorno giusto (conta-giorni) |
-| Moltres | 146 | **Via Vittoria** | Incontro fisso |
-| Mewtwo | 150 | **Bunkerino** | Boss post-Lega, doppia con Mew |
-| Mew | 151 | **Villa Aldobrandini** (Frascati) | Dopo lo scontro col Mewtwo |
-| Raikou | 243 | **Roaming** | Sblocco post-Lega (dopo un temporale) |
-| Entei | 244 | **Roaming** | Sblocco dopo il cratere (calore residuo) |
-| Suicune | 245 | Lago (1ª volta) → **roaming** | Post-Surf, poi insegue |
-| Lugia | 249 | **Monte Cavo** | In quota, post-Lega |
-| Ho-Oh | 250 | All'**alba**, con la **Piuma** | Catena di buone azioni + Porchettari + cellula CoTrAL |
-| Celebi | 251 | **Boschi del Tuscolo** | Evento tra le rovine |
-| Regirock | 377 | **Tuscolo** (camera I) | Enigma latino → **3× Terra** in squadra |
-| Registeel | 379 | **Tuscolo** (camera II) | Enigma latino → **3× Volante** in squadra |
-| Regice | 378 | **Tuscolo** (camera III) | Enigma latino → **3× Buio** in squadra |
-| Latias | 380 | **Roaming** | Post-Lega |
-| Latios | 381 | **Roaming** | Post-Lega (sfalsato) |
-| Kyogre | 382 | **Lago Albano** (sub) | Post-Lega |
-| Groudon | 383 | **Grotta del Vulcano** (nucleo) | Post-Lega |
-| Rayquaza | 384 | **Frascati, San Rocco** → fontana → dungeon | Premi la fontana con **Kyogre + Groudon** in squadra |
-| Jirachi | 385 | **Osservatorio (Monte Porzio)** | Di **notte**, nei **giorni dispari**, usa il telescopio: dopo **5 osservazioni** si sblocca l'evento |
-| Deoxys | 386 | **Luna** 🌕 | Astronauta volontario dalla base di lancio del "parcheggione" di Grottaferrata |
-
-> Mappatura Regi↔tipo arbitraria (adattabile). Roaming sfalsati: Suicune → Entei → Raikou → Latias → Latios.
+| Articuno | 144 | **Rocca di Papa** → funivia → dungeon innevato | Sconfitto il miniboss (sfidante indipendente, non di nessun team) si arriva direttamente ad Articuno + MN Volo |
+| Zapdos | 145 | **Osservatorio (Monte Porzio)** | Storia conferma solo "c'è anche un percorso per Zapdos" — meccanismo esatto (temporale/conta-giorni della v2?) **[DA CONFERMARE — Luca]** |
+| Moltres | 146 | **Via Vittoria** | Incontro fisso (invariato dalla v2) |
+| Mewtwo | 150 | **Bunkerino** | Capo del Team CoTrAL; squadra = copia della squadra del giocatore, più veloce **[dettaglio ancora da definire]** |
+| Mew | 151 | **Villa Aldobrandini** (Frascati) | Prigioniero, liberato dopo il Bunkerino |
+| Raikou | 243 | **Roaming** | Inizia a vagare **nell'Atto V (pre-Lega)**, nello stesso istante in cui Suicune si mostra a Nemi — **non più legato a un evento post-Lega** |
+| Entei | 244 | **Roaming** | Idem sopra: parte insieme a Raikou all'apparizione di Suicune, non più "dopo il cratere" |
+| Suicune | 245 | **Fisso al Lago di Nemi**, poi roaming | Scatta arrivando sulla **Spiaggia di Albano** (Atto V) — **da chiarire come si collega spazialmente Spiaggia di Albano ↔ Lago di Nemi**, vedi contraddizioni |
+| Lugia | 249 | **Raggiunto in treno** da Genzano *(o Velletri — [DA DECIDERE])* | Serve il **Braciere**, dato dal secondo rivale all'uscita della Via Vittoria. Il treno è un passaggio simbolico, nessuna meccanica di trasporto esiste nel motore oggi |
+| Ho-Oh | 250 | **Grotta**, sbloccata dopo la palestra di Ariccia | Piuma dal dungeon dei porchettari → mostrata a un allenatore sotto il Ponte (va battuto **prima**) → si apre la grotta |
+| Celebi | 251 | **Boschi del Tuscolo** | Invariato (non toccato dalla storia nuova) |
+| Regirock/Registeel/Regice | 377/378/379 | **Tuscolo**, enigmi in latino | Invariato (non toccato dalla storia nuova) |
+| Latias | 380 | **Roaming, post-Lega** | Invariato |
+| Latios | 381 | **Roaming, post-Lega** | Invariato |
+| Kyogre | 382 | **Rifugio GdF di Marino**, passaggio sommerso | Serve la MN Sub (Prof. Castagno, post-Lega); accessibile solo dopo aver sconfitto il secondo capo GdF |
+| Groudon | 383 | **Grotta del Vulcano**, camera sigillata | Si apre solo da Campione (post-Lega), dopo aver preso la Pietra Rossa dal primo capo GdF |
+| Rayquaza | 384 | **Frascati, Piazza San Rocco** | Invariato dalla v2 — **confermato coerente**, nessuna contraddizione |
+| Jirachi | 385 | **Osservatorio (Monte Porzio)** | Nasce dagli studi del Team CoTrAL, scoperto dopo l'8ª medaglia — **meccanica di sblocco esatta [DA DECIDERE — Luca]**, la v2 aveva "5 osservazioni al telescopio" ma ora l'Osservatorio è un dungeon-laboratorio, non chiaro se il telescopio resti rilevante |
+| Deoxys | 386 | **Base di lancio "parcheggione" di Grottaferrata** | Serve la **tuta spaziale**, ottenuta dalla sconfitta di Mewtwo (era "astronauta volontario" nella v2, ora richiede l'oggetto) |
 
 ---
 
-## 🕒 SISTEMA DEL TEMPO
-`stato.tempo = { giorno, minuti }`. Scorre coi passi (~+1 min/passo, da tarare).
-Fasce: 🌅 Mattina 06-12 · ☀️ Pomeriggio 12-18 · 🌆 Sera 18-21 · 🌙 Notte 21-06.
-**"Dormi" al PC del Centro Pokémon**: scegli l'ora del risveglio → cura la squadra, avanza `giorno`/`minuti`, scatena gli eventi a tempo (pioggia di Zapdos, alba di Ho-Oh, notte di Ariccia).
+## 🦹 I DUE TEAM — riferimento rapido
+
+### TEAM GdF — costante `TEAM_GDF_NOME` (già in codice: `js/data.js:67`)
+- **Due capi**, non uno: primo alla **Grotta del Vulcano** (lascia la **Pietra Rossa**), secondo nel
+  **rifugio di Marino** (lascia la **Pietra Blu**).
+- Nomi dei due capi: **[DA DECIDERE — Luca]**. Restano da riconciliare con "Comandante Crasso"/Fulvia/
+  Tarcisio della v2 — **non risolto in questa sessione**, vedi contraddizioni.
+- **Rifugio di Marino**: chiuso da password in **3 parti** — 1) luogotenente CoTrAL (covo Monte Cavo),
+  2) boss GdF al Museo di Nemi, 3) boss GdF dentro l'Abbazia di San Nilo.
+- **Museo delle Navi di Nemi**: le Pietre **non ci sono** — il documento trovato a Castel Gandolfo è
+  una pista fredda. Dentro c'è comunque un boss GdF (2ª parte password).
+- Nomi dei due boss di sede (Museo di Nemi, Abbazia di San Nilo): **[DA DECIDERE — Luca]**.
+- Climax: Grotta del Vulcano (Pietra Rossa) → Rifugio di Marino (Pietra Blu). Dopo, il GdF non
+  ricompare più.
+
+### TEAM CoTrAL — costante `TEAM_COTRAL_NOME` (già in codice: `js/data.js:68`)
+- **Presente e attivo durante il gioco**, non solo post-Lega. Tre tempi: 1) rapimento del funivista a
+  Rocca di Papa (Atto III), 2) Osservatorio di Monte Porzio — non ostili fino all'8ª medaglia, poi
+  boss in doppio con Camilla (Atto VII), 3) Bunkerino (post-Lega).
+- Capo: **Mewtwo stesso**. Squadra: copia della squadra del giocatore, più veloce. *(Dettaglio ancora
+  da definire.)*
+- Lore interna del Bunkerino: **[DA DECIDERE — Luca]**.
+- Dalla sconfitta di Mewtwo: **tuta spaziale** (serve per Deoxys).
 
 ---
 
-## 🏙️ SCHELETRO CITTÀ PER CITTÀ
-> Schema per ogni città: **Palestra · Centro Pokémon · Poké Market · Case · NPC notevoli · Luogo speciale · Gate/MN**.
-> Gli **slot NPC** sono da riempire (nome + battuta). Ogni città ha 1 dialogo di esempio come template.
-> Sulla mappa OSM gli NPC stanno "davanti agli edifici" (gli interni arrivano in F14).
+## 🔑 LE MN — possesso e permesso (due flag distinti, non ancora nel codice)
 
-### 🏠 0 · BORGATA TUSCOLANA (partenza)
-- **Casa del protagonista** — la mamma: dialogo di partenza.
-- **Laboratorio Prof. Castagno** 🏫 — starter, Pokédex, Ball, Pozioni.
-- **Centro Pokémon** 🏥 (sì, anche qui, per il tutorial del "Dormi").
-- **Poké Market** — base: Poké Ball, Pozione, Antidoto.
-- **Case (×3)** — slot NPC: [vicino di casa], [vecchietta], [bambino con Pokémon].
-- **NPC notevoli**: *Tizio del GRA* (all'imbocco del Percorso Tuscolana).
-- *Esempio (Tizio del GRA):* "Aho, esci dar raccordo? Prima volta? In bocca ar lupo… ai Castelli mangiano li romani." *(ride da solo)*
+> Nel motore oggi esiste **un solo flag** `stato.mn.<nome>` (verificato in `js/map.js`,
+> `_gestisciTrigger`): possesso e permesso d'uso sono la stessa cosa. La tabella sotto descrive la
+> **narrativa decisa**, da implementare come due flag separati quando si passerà al codice.
 
-### 🍇 1 · FRASCATI (Palestra Erba — Vinicio · Medaglia Vigna)
-- **Palestra** 🏛️ (Villa Torlonia).
-- **Centro Pokémon** 🏥 · **Poké Market** (base + Superpozione).
-- **Case (×4)** — slot NPC: [produttore di vino], [oste], [turista], [nonna].
-- **Luogo speciale — Villa Aldobrandini**: giardini esplorabili, NPC storico, **Mew (post-game)**.
-- **Luogo speciale — San Rocco (fontana)**: **dungeon di Rayquaza (post-game)**.
-- **NPC notevoli**: donatore item, *Porchettaro #1* (catena Ho-Oh).
-- *Esempio (NPC giardiniere Villa Aldobrandini):* "Queste fontane le disegnò un genio. Dicono che di notte, tra gli zampilli, si veda qualcosa di rosa… ma sarà il vino."
+| MN | Dove si ottiene l'OGGETTO | Chi concede il PERMESSO |
+|---|---|---|
+| Taglio | Frascati, Fra' Potatore (deciso in sessione precedente, **già implementato**: `donaTaglioFrascati` in `js/app.js`) | Stesso momento, Palestra di Frascati |
+| Spaccaroccia | Castel Gandolfo, Villa liberata | Palestra di **Marino** |
+| Forza | NPC a **Rocca di Papa** (libera il funivista) | Palestra di **Monte Porzio** |
+| Surf | **Spiaggia di Albano** | Palestra di **Rocca di Papa** |
+| Volo | Miniboss del **dungeon innevato** (Rocca di Papa) | Palestra di **Albano Laziale** |
+| Sub | **Prof. Castagno, dopo la Lega** | Palestra di **Ariccia** |
+| Cascata | **[DA DECIDERE — Luca]** | Palestra di **Genzano** |
 
-### ⛪ 2 · GROTTAFERRATA (Palestra Psico — Nilo · Medaglia Icona)
-- **Palestra** 🏛️ (Abbazia di San Nilo).
-- **Centro Pokémon** 🏥 · **Poké Market** (base + Antiparalisi/Antiscottatura).
-- **Case (×3)** — slot NPC: [monaco], [studioso], [restauratore].
-- **Luogo speciale — Abbazia (chiostro)**: silenzio, NPC monaci.
-- **Luogo speciale — "Parcheggione"/Piazza del Mercato**: **base di lancio Deoxys (post-game)**.
-- **Gate/MN**: qui si ottiene la **MN Taglio** (donatore NPC).
-- *Esempio (monaco):* "La fretta è nemica della mente. Siediti. Anche i Pokémon Psico imparano prima a stare fermi."
-
-### ⛲ 3 · MARINO (Palestra Acqua — Moro · Medaglia Fontana)
-- **Palestra** 🏛️ (Fontana Quattro Mori).
-- **Centro Pokémon** 🏥 · **Poké Market** (Super Ball, Superpozione).
-- **Case (×3)** — slot NPC: [vignaiolo della Sagra], [ragazzino], [pescatore].
-- **Luogo speciale — Fontana di Marino / piazza**: durante la Sagra dell'Uva esce vino dalla fontana (evento).
-- **Lab CoTrAL #1** nei dintorni (indizi, post-Palestra 3).
-- **NPC**: *Porchettaro #2*.
-- *Esempio (Moro, fuori palestra):* "OHÉ! Sei arrivato! Aspetta che finisco… ecco. L'acqua de Marino è la mejo, e li mii Pokémon pure!"
-
-### 🔭 4 · MONTE PORZIO CATONE (Palestra Elettro — Stella · Medaglia Stella)
-- **Palestra** 🏛️ (Osservatorio).
-- **Centro Pokémon** 🏥 · **Poké Market** (Super Ball, Iperpozione).
-- **Case (×3)** — slot NPC: [astrofilo], [insegnante], [contadino].
-- **Luogo speciale — Osservatorio**: telescopio (notte), **Zapdos** in un giorno di temporale.
-- **NPC notevoli**: *Meteorologo* (annuncia i giorni di pioggia → conta-giorni).
-- *Esempio (Meteorologo):* "Tra tre giorni piove. E quando piove qui, sul telescopio, i fulmini fanno cose… strane. Portati qualcosa che regge l'elettricità."
-
-### 🪨 5 · ROCCA DI PAPA (Palestra Roccia — Rocco · Medaglia Cratere)
-- **Palestra** 🏛️.
-- **Centro Pokémon** 🏥 · **Poké Market** (Ultra Ball, Iperpozione, Revitalizzante).
-- **Case (×3)** — slot NPC: [guida alpina], [anziano del paese], [ragazza].
-- **Luogo speciale — Funivia**: sale al sentiero innevato → **Articuno**.
-- **Luogo speciale — accesso Monte Cavo** (Lugia) e vicinanza **Grotta del Vulcano** (covo GdF, Groudon).
-- **Gate/MN**: snodo verso i dungeon vulcanici.
-- *Esempio (guida funivia):* "Lassù fa freddo pure d'agosto. C'è chi giura di aver visto un uccello tutto ghiaccio. Io non salgo più da solo."
-
-### 🏛️ 6 · ALBANO LAZIALE (Palestra Lotta — Massimo · Medaglia Legione)
-- **Palestra** 🏛️ (Castra Albana).
-- **Centro Pokémon** 🏥 · **Poké Market** (Ultra Ball, Iperpozione, Revitalizzante, Repellente).
-- **Case (×3)** — slot NPC: [ex-militare], [storico], [bambino].
-- **Luogo speciale — Villa Comunale/parco**: allenatori "militari in pensione".
-- **Lab CoTrAL #2** nei dintorni (post-Palestra 6).
-- **Gate/MN**: **MN Surf** via evento al **Lago Albano** (Nonna Assunta).
-- *Esempio (Nonna Assunta, al lago):* "Fijo mio, quella canna vale più de te. Ripescamela e t'imparo a nuotà coi Pokémon."
-
-### 🌉 7 · ARICCIA (Palestra Buio — Ombretta · Medaglia Fraschetta)
-- **Palestra** 🏛️.
-- **Centro Pokémon** 🏥 · **Poké Market** (Ultra Ball, Iperpozione, Repellente, Antidoto totale).
-- **Case (×3)** — slot NPC: [oste della fraschetta], [musicista], [vecchio del ponte].
-- **Luogo speciale — Ponte di Ariccia**: tappa obbligata; **di notte** nebbiolina, più Pokémon Buio, NPC misterioso.
-- **NPC**: fraschetta → porchetta (+cura piccola una tantum), *Porchettaro #3*.
-- *Esempio (NPC sul ponte, di notte):* "Di giorno è solo un ponte. Di notte… guarda meglio le ombre. A volte ti guardano indietro."
-
-### 🌸 8 · GENZANO (Palestra Folletto — Flora · Medaglia Infiorata)
-- **Palestra** 🏛️.
-- **Centro Pokémon** 🏥 · **Poké Market** (Ultra Ball, Iperpozione, Revitalizzante max, Repellente).
-- **Case (×3)** — slot NPC: [artista dell'Infiorata], [fioraio], [nonna].
-- **Luogo speciale — Infiorata**: piazza decorata (evento visivo), NPC racconta la tradizione.
-- **Gate**: dopo l'8ª medaglia, **Flora annuncia la Via Vittoria**.
-- *Esempio (Flora, dopo sconfitta):* "Sei forte. L'anno prossimo ti disegno coi fiori. Tieni la Medaglia Infiorata… e va' verso la Via Vittoria."
-
-### ⛵ • CASTEL GANDOLFO (cittadina secondaria)
-- **Centro Pokémon** 🏥 (no market).
-- **Case (×2)** — slot NPC: [guardia papale], [pescatore].
-- **Luogo speciale — vista Lago Albano** (accesso riva con Surf).
-- *Esempio (NPC buffo):* "Il Papa c'ha un Pokémon? Dicono de sì. Dicono che è un… Slowpoke. Ce sta tutto."
-
-### 🌊 • NEMI (borgo del lago) — opzionale
-- **Centro Pokémon** 🏥.
-- **Luogo speciale — Lago di Nemi** ("specchio di Diana"): acqua avanzata, Suicune (1ª comparsa).
-- **NPC**: *Er Baretto* (vende info sui percorsi notturni).
-
-### 🏟️ • COLONNA (Lega + post-game)
-- **Lega Pokémon**: Superquattro (Captain, Pres, Dema, Marcuois) + Campione **Remo**.
-- **Bunkerino**: base CoTrAL → Mewtwo (doppia), Registeel, Deoxys (via lancio da Grottaferrata).
-- **Centro Pokémon** 🏥 prima della Lega.
+Per Spaccaroccia, Forza e Sub il permesso arriva **prima** dell'oggetto; per Surf e Volo **dopo**.
+Voluto, non è un errore.
 
 ---
 
-## 🛒 POKÉ MARKET — progressione merce (riferimento)
-- **Inizio (Borgata/Frascati)**: Poké Ball, Pozione, Antidoto.
-- **Metà (Marino→Rocca)**: + Super Ball, Superpozione, Antiparalisi, Antiscottatura.
-- **Tardo (Albano→Genzano)**: + Ultra Ball, Iperpozione, Revitalizzante, Repellente, Antidoto totale.
-- Le **Mega/Ultra Ball** e oggetti speciali anche da eventi/NPC.
+## 🚧 [DA DECIDERE — Luca] — restano aperti
+
+1. Nomi/aspetto/squadre dei **due capi del Team GdF** e dei **due boss di sede** (Museo di Nemi,
+   Abbazia di San Nilo) — e come si riconciliano con "Comandante Crasso"/Fulvia/Tarcisio della v2.
+2. Nome, aspetto, carattere del **secondo rivale**.
+3. Meccanica esatta di sblocco di **Jirachi** e ruolo del telescopio nel nuovo Osservatorio-dungeon.
+4. Come si collega spazialmente la **Spiaggia di Albano** al **Lago di Nemi** per il trigger di Suicune.
+5. Stazione di partenza del **treno per Lugia** (Genzano o Velletri) e cosa serve costruire per
+   rappresentare il viaggio in treno (nessuna meccanica di "trasporto a lungo raggio" esiste oggi).
+6. Dove esattamente si ottiene l'**oggetto MN Cascata** a Genzano.
+7. Dettaglio della squadra-copia di Mewtwo (livelli, se è una copia esatta 1:1 o adattata).
+8. Lore interna del **Bunkerino**.
+9. Nomi/aspetto/squadre dei capipalestra ancora mancanti: Monte Porzio (Stella, dati già presenti),
+   Rocca di Papa (Baso, dati già presenti — tipo Lotta, ex Rocco/Roccia), Albano (Giorgia, dati già
+   presenti — tipo Roccia, ex Massimo/Lotta), Ariccia (Ombretta), Genzano (Camilla).
+10. Se **Fulvia** e **Tarcisio** (admin GdF della v2) restano nel gioco come intermedi sotto i due
+    capi, o vengono rimossi del tutto.
 
 ---
 
-## 🏛️ TUSCOLO — dungeon che cresce col giocatore
-- **Prima visita (early game)**: dungeon-bosco tra le rovine. Ci vai per un **beat col rivale Remo** (ti avverte/sfida). Abitanti: **archeologi** (allenatori), selvatici coleottero/erba/roccia, all'occorrenza un **grunt GdF** che fruga tra i ruderi.
-- **Post-game — santuario dei Regi**: 3 anfratti legati alle vere rovine, ognuno con enigma in **latino** che svela il tipo (servono **≥3 Pokémon di quel tipo** in squadra):
-  - **Antro del Foro** → 3× **Terra** → **Regirock**
-  - **Antro del Teatro** → 3× **Volante** → **Registeel**
-  - **Antro dell'Anfiteatro** → 3× **Buio** → **Regice**
-- **Celebi**: evento raro tra le rovine (post-game). Così il luogo non è "4 leggendari ammucchiati": dungeon → santuario → evento.
+## 🏙️ SCHELETRO CITTÀ — riferimento invariato dalla v2
 
----
+> Non toccato dalla nuova storia (nomi NPC, Poké Market, dettagli di ambientazione): resta valido.
+> Vedi la v2 in cronologia git per il dettaglio città-per-città completo (Poké Market, case, NPC
+> locali) — qui si riportano solo le città con contenuto narrativo **cambiato** dalla storia nuova.
 
-## 👤 NOMI NPC (locali + agganci a luoghi/prodotti veri)
-- **Borgata Tuscolana**: mamma · *Sor Otello* (vicino) · *Tizio del GRA*.
-- **Frascati**: *Settimio il cantiniere* (Frascati DOC/Cannellino) · *Iride* (giardiniera Villa Aldobrandini).
-- **Grottaferrata**: **Cesare il fornaio** · *Fra' Bartolo* (Abbazia) · *Anselmo il rigattiere* (parcheggione/mercato).
-- **Marino**: *Nello il vignarolo* · *Pina della Sagra* (fontana del vino).
-- **Monte Porzio**: *Ruggero il meteorologo* · *Aldo l'astrofilo*.
-- **Rocca di Papa**: *Faustino il funicolarista* · *Bruno la guida* (Via Sacra/Monte Cavo).
-- **Albano**: *Settimio il legionario* (Castra Albana) · **Nonna Assunta** (MN Surf, al lago).
-- **Ariccia**: *Sora Nunzia della fraschetta* · *Peppe er porchettaro* · *il vecchio del ponte*.
-- **Genzano**: *Romolo il panettiere* (Pane di Genzano IGP) · *Iolanda dell'Infiorata*.
-- **Castel Gandolfo**: *la guardia svizzera* · *Tonino il barcaiolo*.
-- **Nemi**: *Rosa la fragolara* (fragoline di Nemi) · *il custode del Museo delle Navi*.
-
----
-
-## 🚧 [DA DEFINIRE] — restano aperti
-1. **Bunkerino**: nomi/storia dei creatori sconfitti da Mewtwo (lore di dettaglio).
-2. **Battute di trama** degli NPC (i filler sono in `DIALOGHI-NPC.md`; i dialoghi di storia si rifiniscono in F9).
-3. **Coordinate dei luoghi nuovi** (vedi checklist sotto): da assegnare in F9-F11.
-
----
-
-## 🔧 RICONCILIAZIONE COL CODICE (gap analysis — sessione 8)
-> Nessun conflitto bloccante: il canone si appoggia bene su `data.js`/`world.js`. Todo per fase:
-- **F9** — Economia: soldi nello stato, Poké Market, Super/Ultra Ball, Iper/Superpozione, Revitalizzante, Repellente, Antidoti. Sistema **tempo**, **MN**, donatori, gate-MN. **Centri Pokémon nuovi**: Borgata Tuscolana (serve per il tutorial "Dormi"!), Castel Gandolfo, Nemi.
-- **Coordinate nuove da creare (F9-F11)**: Museo delle Navi (Nemi), Villa Aldobrandini (Frascati), fontana di San Rocco (Frascati), funivia Rocca di Papa, **Osservatorio come luogo-evento** (oggi è solo il punto-palestra), "parcheggione" di Grottaferrata, **Bunkerino** (oggi c'è solo la coord `LEGA`), Lab CoTrAL #1 (Marino) e #2 (Albano), Ponte di Ariccia (evento notte).
-- **F10** — Riconciliare la costante: il codice ha `NOME_TEAM = 'Team GdF'` → rinominare in `TEAM_GDF_NOME` e aggiungere `TEAM_COTRAL_NOME`.
-- **F11** — Sezione LEGGENDARI di CLAUDE.md già allineata nel file nuovo. Attenzione alla **sovrapposizione**: grotta-vulcano (Groudon) sta dentro monte-cavo (Lugia); la priorità zone la gestisce, ma i due trigger vanno tenuti distinti.
-- **F12** — `LEGA`: aggiungere campo **Campione = Remo** e i **pool** dei Superquattro.
+- **Genzano (P8)**: capopalestra **Camilla** (non più "Flora" — nome della v2 superato).
+- **Marino (P3)**: rifugio GdF ora a **3 parti** di password (non più 2).
+- **Nemi**: Museo delle Navi ora **senza le Pietre** (pista fredda), ma con un boss GdF (2ª parte
+  password).
+- **Osservatorio (Monte Porzio)**: CoTrAL presente **da subito** (4ª medaglia), non ostile fino
+  all'8ª; poi boss in doppio con Camilla; Jirachi nasce da questi studi.
+- Per tutte le altre città (Poké Market, NPC locali, dettagli minori) restano validi i contenuti
+  della versione precedente di questo documento — nessuna contraddizione rilevata dalla storia nuova.

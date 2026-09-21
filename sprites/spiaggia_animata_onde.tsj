@@ -1,0 +1,15 @@
+{ "columns":18,
+ "image":"Tile_nuovi\/spiaggia_animata_onde.png",
+ "imageheight":128,
+ "imagewidth":576,
+ "margin":0,
+ "name":"spiaggia_animata_onde",
+ "spacing":0,
+ "tilecount":72,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

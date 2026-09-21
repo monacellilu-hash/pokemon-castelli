@@ -1,0 +1,14 @@
+{ "columns":15,
+ "image":"Tile_nuovi\/house2.jpg",
+ "imageheight":384,
+ "imagewidth":480,
+ "margin":0,
+ "name":"house2",
+ "spacing":0,
+ "tilecount":180,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

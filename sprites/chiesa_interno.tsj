@@ -1,0 +1,15 @@
+{ "columns":15,
+ "image":"..\/chiesa_interno.jpg",
+ "imageheight":523,
+ "imagewidth":481,
+ "margin":0,
+ "name":"chiesa_interno",
+ "spacing":0,
+ "tilecount":240,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

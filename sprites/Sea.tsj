@@ -1,0 +1,15 @@
+{ "columns":24,
+ "image":"tiles\/Sea.png",
+ "imageheight":128,
+ "imagewidth":768,
+ "margin":0,
+ "name":"Sea",
+ "spacing":0,
+ "tilecount":96,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

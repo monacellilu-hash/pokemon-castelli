@@ -1,0 +1,15 @@
+{ "columns":103,
+ "image":"..\/team_rocket_base__indoor__by_ghha90_defxj7s-fullview.png",
+ "imageheight":1582,
+ "imagewidth":3322,
+ "margin":0,
+ "name":"team_rocket_base__indoor__by_ghha90_defxj7s-fullview",
+ "spacing":0,
+ "tilecount":5047,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

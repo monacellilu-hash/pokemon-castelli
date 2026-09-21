@@ -1,0 +1,15 @@
+{ "columns":15,
+ "image":"Tile_nuovi\/prova37.jpg",
+ "imageheight":498,
+ "imagewidth":510,
+ "margin":0,
+ "name":"prova37",
+ "spacing":0,
+ "tilecount":225,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

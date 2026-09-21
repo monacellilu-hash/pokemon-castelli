@@ -29,6 +29,38 @@ const DATI_TRAINER = {
     dialogo_dopo: 'La roccia regge, la mia squadra un po\' meno...',
     premio: 780,
   },
+  // Osservatorio esterno (mappa ampliata da Luca, sess. 17 set 2026): 2 nuovi
+  // escursionisti, livello coerente con l'area (poco sopra il cap P4, 34).
+  'trainer_osservatorio_1': {
+    sprite: 'trainer_HIKER',
+    ritratto: 'HIKER',
+    vista: 4,
+    classe: 'Escursionista',
+    nome: 'Bruno',
+    squadra: [
+      { id: 111, livello: 30 },
+      { id: 74, livello: 29 },
+      { id: 27, livello: 31 },
+    ],
+    dialogo_prima: 'Quassù il vento è tagliente, ma i miei Pokémon di roccia non se ne accorgono nemmeno!',
+    dialogo_dopo: 'Nemmeno la roccia più dura regge sempre...',
+    premio: 930,
+  },
+  'trainer_osservatorio_2': {
+    sprite: 'trainer_HIKER',
+    ritratto: 'HIKER',
+    vista: 4,
+    classe: 'Escursionista',
+    nome: 'Italo',
+    squadra: [
+      { id: 95, livello: 30 },
+      { id: 328, livello: 32 },
+    ],
+    dialogo_prima: 'Ti sei spinto fin quassù? Rispetto. Vediamo se hai anche la squadra giusta.',
+    dialogo_dopo: 'Ok, ok, hai vinto. La vista da qui resta comunque la mia rivincita.',
+    premio: 960,
+  },
+
   'trainer monteporzio 2': {
     sprite: 'trainer_POKEMONRANGER_F',
     ritratto: 'POKEMONRANGER_F',
@@ -201,8 +233,9 @@ const DATI_TRAINER = {
   },
 
   'gym_leader_palestra frascati': {
-    sprite: 'trainer_LEADER_Erika', ritratto: 'LEADER_Erika', vista: 0,
+    sprite: 'Primapalestra_capopalestra', ritratto: 'LEADER_Erika', vista: 0,
     classe: 'Capopalestra', nome: 'Vinicio',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 43,  livello: 11 },  // Oddish
       { id: 285, livello: 12 },  // Shroomish
@@ -256,8 +289,9 @@ const DATI_TRAINER = {
   },
 
   'gym_leader_palestra grottaferrata': {
-    sprite: 'trainer_LEADER_Sabrina', ritratto: 'LEADER_Sabrina', vista: 0,
+    sprite: 'Nilo_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
     classe: 'Capopalestra', nome: 'Nilo',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 177, livello: 17 },  // Natu
       { id: 325, livello: 18 },  // Spoink
@@ -373,8 +407,9 @@ const DATI_TRAINER = {
     premio: 580,
   },
   'gym_leader_palestra monteporzio': {
-    sprite: 'trainer_LEADER_Surge', ritratto: 'LEADER_Surge', vista: 0,
+    sprite: 'Er_biretta_Capopalestra', ritratto: 'LEADER_Surge', vista: 0,
     classe: 'Capopalestra', nome: 'Stella',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 26,  livello: 31 },  // Raichu
       { id: 101, livello: 32 },  // Electrode
@@ -466,7 +501,7 @@ const DATI_TRAINER = {
      `gdf_sconfitto` (Atto 7, Pietra Rossa/Blu dall'Abbazia post-Lega) — vedi
      l'NPC-gate `gdf_gate_grotta_vulcano` in dati/npc.js. */
   'gdf_grunt_grotta_vulcano_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 40 }, { id: 110, livello: 41 }],
     dialogo_prima: 'Nessuno entra nella Grotta del Vulcano. Il Comandante ha i suoi piani per quello che dorme là dentro.',
@@ -480,7 +515,7 @@ const DATI_TRAINER = {
      si sblocca da Rocca di Papa (cap 40) e non a fine gioco vero. L'ultimo
      (D3) è un "ufficiale" con 3 Pokémon, il più tosto del gruppo. */
   'gdf_grotta_vulcano_1f_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Nazzareno',
     squadra: [{ id: 28, livello: 50 }, { id: 76, livello: 51 }],
     dialogo_prima: 'Manco morto te lascio passà.',
@@ -488,7 +523,7 @@ const DATI_TRAINER = {
     premio: 1500,
   },
   'gdf_grotta_vulcano_1f_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Ottaviano',
     squadra: [{ id: 126, livello: 51 }, { id: 323, livello: 52 }],
     dialogo_prima: 'Sta grotta è nostra, statte accorto.',
@@ -496,7 +531,7 @@ const DATI_TRAINER = {
     premio: 1530,
   },
   'gdf_grotta_vulcano_1f_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Fiorenzo',
     squadra: [{ id: 34, livello: 51 }, { id: 51, livello: 52 }],
     dialogo_prima: 'Er Comandante sa già che sei entrato. Preparate.',
@@ -504,7 +539,7 @@ const DATI_TRAINER = {
     premio: 1530,
   },
   'gdf_grotta_vulcano_1f_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Publio',
     squadra: [{ id: 105, livello: 51 }, { id: 112, livello: 52 }],
     dialogo_prima: 'Questo braccio della grotta è mio. Nun se passa.',
@@ -512,7 +547,7 @@ const DATI_TRAINER = {
     premio: 1530,
   },
   'gdf_grotta_vulcano_1f_5': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Ermenegildo',
     squadra: [{ id: 262, livello: 52 }, { id: 302, livello: 51 }],
     dialogo_prima: 'Te sei perso, o sei venuto a cercà guai?',
@@ -520,7 +555,7 @@ const DATI_TRAINER = {
     premio: 1560,
   },
   'gdf_grotta_vulcano_1f_6': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Anacleto',
     squadra: [{ id: 208, livello: 52 }, { id: 219, livello: 51 }],
     dialogo_prima: 'Guardie de ferro, giovino. Nun passi de sicuro.',
@@ -528,7 +563,7 @@ const DATI_TRAINER = {
     premio: 1560,
   },
   'gdf_grotta_vulcano_1f_7': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Learco',
     squadra: [{ id: 38, livello: 52 }, { id: 59, livello: 53 }],
     dialogo_prima: 'Sti Pokémon de fòco ce piaceno più della lava vera.',
@@ -536,7 +571,7 @@ const DATI_TRAINER = {
     premio: 1600,
   },
   'gdf_grotta_vulcano_1f_8': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Domiziano',
     squadra: [{ id: 344, livello: 52 }, { id: 338, livello: 52 }],
     dialogo_prima: 'Terra e roccia, propio come sta grotta. Provace.',
@@ -544,7 +579,7 @@ const DATI_TRAINER = {
     premio: 1600,
   },
   'gdf_grotta_vulcano_1f_9': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Erasmo',
     squadra: [{ id: 229, livello: 53 }, { id: 359, livello: 52 }],
     dialogo_prima: 'Qua dentro er buio te magna, statte attento.',
@@ -552,7 +587,7 @@ const DATI_TRAINER = {
     premio: 1630,
   },
   'gdf_grotta_vulcano_1f_10': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Vitaliano',
     squadra: [{ id: 306, livello: 53 }, { id: 136, livello: 52 }],
     dialogo_prima: 'Sei arrivato fin qua? Mo\' se fa sul serio.',
@@ -560,7 +595,7 @@ const DATI_TRAINER = {
     premio: 1700,
   },
   'gdf_grotta_vulcano_1f_11': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Corradino',
     squadra: [{ id: 324, livello: 53 }, { id: 323, livello: 53 }],
     dialogo_prima: 'Semo vicini ar nucleo. Da qui nun se passa senza combatte.',
@@ -568,7 +603,7 @@ const DATI_TRAINER = {
     premio: 1700,
   },
   'gdf_grotta_vulcano_1f_12': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 6,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 6,
     classe: 'Ufficiale GdF', nome: 'Massimiliano',
     squadra: [{ id: 248, livello: 54 }, { id: 229, livello: 53 }, { id: 219, livello: 52 }],
     dialogo_prima: 'So\' l\'ufficiale più anziano de sta grotta. Chi vò passà, prima deve passà da me.',
@@ -581,7 +616,7 @@ const DATI_TRAINER = {
      piazzati sul layer eventi in posizioni provvisorie — Luca li sposta a
      piacere in Tiled, qui restano solo i dati (squadra/dialoghi/premio). */
   'gdf_grotta_vulcano_2f_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Aureliano',
     squadra: [{ id: 28, livello: 54 }, { id: 219, livello: 55 }],
     dialogo_prima: 'Mo\' te fermo io, statte bono.',
@@ -589,7 +624,7 @@ const DATI_TRAINER = {
     premio: 1750,
   },
   'gdf_grotta_vulcano_2f_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Ciriaco',
     squadra: [{ id: 51, livello: 55 }, { id: 105, livello: 56 }],
     dialogo_prima: 'Ancora avanti? Sei più tosto de quello che pensavo.',
@@ -597,7 +632,7 @@ const DATI_TRAINER = {
     premio: 1780,
   },
   'gdf_grotta_vulcano_2f_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Bonaventura',
     squadra: [{ id: 302, livello: 56 }, { id: 208, livello: 55 }],
     dialogo_prima: 'Più vai giù, più fa caldo — e più semo tosti noi.',
@@ -605,7 +640,7 @@ const DATI_TRAINER = {
     premio: 1800,
   },
   'gdf_grotta_vulcano_2f_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Filiberto',
     squadra: [{ id: 38, livello: 56 }, { id: 323, livello: 57 }],
     dialogo_prima: 'Er Comandante nun deve esse disturbato. Fine der discorso.',
@@ -613,7 +648,7 @@ const DATI_TRAINER = {
     premio: 1830,
   },
   'gdf_grotta_vulcano_2f_5': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Ottone',
     squadra: [{ id: 227, livello: 56 }, { id: 344, livello: 57 }],
     dialogo_prima: 'Da qui in poi è tutta salita, giovino. E nun parlo solo della strada.',
@@ -621,7 +656,7 @@ const DATI_TRAINER = {
     premio: 1850,
   },
   'gdf_grotta_vulcano_2f_6': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Costantino',
     squadra: [{ id: 359, livello: 57 }, { id: 306, livello: 58 }],
     dialogo_prima: 'Er Comandante sa sempre chi je passa davanti. E mo\' sa pure de te.',
@@ -637,7 +672,7 @@ const DATI_TRAINER = {
      NPC decorativo — NON ha una voce trainer propria, la sua identità è
      "presa in prestito" dal primo stadio della catena qui sotto. ── */
   'gdf_grotta_vulcano_3f_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Marcantonio',
     squadra: [{ id: 105, livello: 54 }, { id: 76, livello: 55 }],
     dialogo_prima: 'Quaggiù nemmeno la luce ce prova più a entrà. E manco tu passi.',
@@ -645,7 +680,7 @@ const DATI_TRAINER = {
     premio: 1850,
   },
   'gdf_grotta_vulcano_3f_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Sigismondo',
     squadra: [{ id: 38, livello: 55 }, { id: 323, livello: 54 }],
     dialogo_prima: 'Er nucleo è vicino. Da qui, o me batti o te ne torni indietro.',
@@ -653,7 +688,7 @@ const DATI_TRAINER = {
     premio: 1850,
   },
   'gdf_grotta_vulcano_3f_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Zenobio',
     squadra: [{ id: 208, livello: 55 }, { id: 219, livello: 54 }],
     dialogo_prima: 'Er Comandante sta a du\' passi da qui. Prima passi da me.',
@@ -661,7 +696,7 @@ const DATI_TRAINER = {
     premio: 1880,
   },
   'gdf_grotta_vulcano_3f_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 5,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Venanzio',
     squadra: [{ id: 359, livello: 55 }, { id: 262, livello: 56 }],
     dialogo_prima: 'Tra un po\' senti puzza de zolfo vero, eh? Significa che sei arrivato troppo avanti.',
@@ -679,7 +714,7 @@ const DATI_TRAINER = {
     // grunt (voluto — è solo il luogotenente, non il vero comandante).
     // Giovanni in persona entra in scena SOLO dopo, camminando verso il
     // giocatore, vedi _arrivoGiovanniGrottaVulcano in js/map.js.
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 6,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 6,
     classe: 'Luogotenente GdF', nome: 'Levantino',
     squadra: [{ id: 112, livello: 57 }, { id: 229, livello: 58 }],
     // Il vero discorso da cattivo lo fa Giovanni PRIMA di questa lotta (vedi
@@ -698,7 +733,7 @@ const DATI_TRAINER = {
   // scienziato liberato + Pietra Rubino), CUTSCENE['grotta_vulcano_boss_dopo']
   // in dati/cutscene.js.
   'gdf_boss_grotta_vulcano': {
-    sprite: 'trainer_LEADER_Giovanni', ritratto: 'trainer_LEADER_Giovanni', vista: 0,
+    sprite: 'NPC', ritratto: 'trainer_LEADER_Giovanni', vista: 0,
     classe: 'Comandante GdF', nome: 'Giovanni',
     squadra: [{ id: 306, livello: 60 }, { id: 373, livello: 61 }, { id: 376, livello: 62 }],
     dialogo_prima: 'Basta così. Adesso vengo io di persona — e questa volta non ti sbaglierai due volte.',
@@ -771,6 +806,7 @@ const DATI_TRAINER = {
   'gym_leader_palestra rocca di papa': {
     sprite: 'trainer_ELITEFOUR_Bruno', ritratto: 'ELITEFOUR_Bruno', vista: 0,
     classe: 'Capopalestra', nome: 'Baso',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 107, livello: 36 },  // Hitmonchan
       { id: 106, livello: 37 },  // Hitmonlee
@@ -855,8 +891,9 @@ const DATI_TRAINER = {
     premio: 1020,
   },
   'gym_leader_palestra albano': {
-    sprite: 'trainer_LEADER_Brock', ritratto: 'LEADER_Brock', vista: 0,
+    sprite: 'Giorgia_capopalestra', ritratto: 'LEADER_Brock', vista: 0,
     classe: 'Capopalestra', nome: 'Giorgia',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 28,  livello: 42 },  // Sandslash
       { id: 305, livello: 43 },  // Lairon
@@ -871,8 +908,9 @@ const DATI_TRAINER = {
   },
 
   'gym_leader_palestra marino': {
-    sprite: 'trainer_LEADER_Misty', ritratto: 'LEADER_Misty', vista: 0,
+    sprite: 'marino_capopalestra', ritratto: 'LEADER_Misty', vista: 0,
     classe: 'Capopalestra', nome: 'Moro',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 279, livello: 25 },  // Pelipper
       { id: 119, livello: 26 },  // Seaking
@@ -966,8 +1004,9 @@ const DATI_TRAINER = {
     premio: 1220,
   },
   'gym_leader_palestra ariccia': {
-    sprite: 'trainer_LEADER_Koga', ritratto: 'LEADER_Koga', vista: 0,
+    sprite: 'Capopalestra_Ariccia', ritratto: 'LEADER_Koga', vista: 0,
     classe: 'Capopalestra', nome: 'Ombretta',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 262, livello: 48 },  // Mightyena
       { id: 319, livello: 49 },  // Sharpedo
@@ -1067,8 +1106,11 @@ const DATI_TRAINER = {
     premio: 1460,
   },
   'gym_leader_palestra genzano': {
-    sprite: 'trainer_LEADER_Blaine', ritratto: 'LEADER_Blaine', vista: 0,
+    // sprite overworld vero (fornito da Luca, sess. 19 set 2026); ritratto da
+    // battaglia resta il placeholder Essentials finché non arriva quello dedicato.
+    sprite: 'trainer_LEADER_Camilla', ritratto: 'LEADER_Blaine', vista: 0,
     classe: 'Capopalestra', nome: 'Camilla',
+    pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 38,  livello: 54 },  // Ninetales
       { id: 126, livello: 55 },  // Magmar
@@ -1086,7 +1128,7 @@ const DATI_TRAINER = {
   /* ── TEAM GdF all'Abbazia di San Nilo (Grottaferrata) — 3 grunt (Lv 18-21) ──
      Presidiano l'ingresso dell'Abbazia. Vedi docs/REMINDER-MAPPE-FUTURE.md (MOD 1). */
   'gdf_grunt_abbazia_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 3,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 3,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 19, livello: 18 }, { id: 109, livello: 19 }],
     dialogo_prima: 'Ehi! Non dovresti essere qui. Muoviti, non c\'è niente da vedere.',
@@ -1094,7 +1136,7 @@ const DATI_TRAINER = {
     premio: 600,
   },
   'gdf_grunt_abbazia_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 3,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 3,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 23, livello: 19 }, { id: 88, livello: 20 }],
     dialogo_prima: 'Questo posto ha segreti di secoli fa, e il Comandante li conosce tutti. Battiti!',
@@ -1102,7 +1144,7 @@ const DATI_TRAINER = {
     premio: 640,
   },
   'gdf_grunt_abbazia_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE', vista: 7,
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 7,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 20 }, { id: 89, livello: 21 }],
     dialogo_prima: 'La porta? È sbarrata. Solo chi ha l\'autorizzazione del Comandante entra.',
@@ -1115,7 +1157,7 @@ const DATI_TRAINER = {
      custodisce il documento: a vittoria setta il flag "documentoVillaOttenuto" (letto
      dal futuro trigger del Museo delle Navi di Nemi). Dialoghi in tmj castel_gandolfo. */
   'gdf-villa-1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 39 }, { id: 42, livello: 40 }],
     dialogo_prima: 'Ehi tu! Questa è zona riservata. La Villa è sotto il nostro controllo!',
@@ -1123,7 +1165,7 @@ const DATI_TRAINER = {
     premio: 1600,
   },
   'gdf-villa-2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 89, livello: 40 }, { id: 20, livello: 41 }],
     dialogo_prima: 'Un ragazzino? Il Comandante Crasso ci ha detto di non far passare NESSUNO.',
@@ -1131,7 +1173,7 @@ const DATI_TRAINER = {
     premio: 1640,
   },
   'gdf-villa-3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 110, livello: 41 }, { id: 24, livello: 42 }],
     dialogo_prima: 'Cerchiamo un documento negli archivi pontifici. Ma tu non hai visto niente, chiaro?',
@@ -1139,7 +1181,7 @@ const DATI_TRAINER = {
     premio: 1680,
   },
   'gdf-villa-4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 41 }, { id: 89, livello: 42 }],
     dialogo_prima: 'Il meteo dei Castelli sarà nostro! Immagina: pioggia a comando sulle vigne dei concorrenti...',
@@ -1147,7 +1189,7 @@ const DATI_TRAINER = {
     premio: 1680,
   },
   'gdf-villa-5': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 42 }, { id: 110, livello: 43 }],
     dialogo_prima: 'Fulvia dice che sei tu quello che ci dà fastidio da Frascati. Ora ci penso io!',
@@ -1155,7 +1197,7 @@ const DATI_TRAINER = {
     premio: 1720,
   },
   'gdf-villa-6': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 89, livello: 43 }, { id: 42, livello: 44 }],
     dialogo_prima: 'Sei arrivato fin qui? Non importa. Quello che cercavamo l\'abbiamo già trovato.',
@@ -1167,7 +1209,7 @@ const DATI_TRAINER = {
   // solo Lab CoTrAL/Michela/Ginevra): la sua sconfitta rivela il documento che
   // punta al Museo delle Navi di Nemi.
   'gdf-villa-7': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'Luogotenente_GdF_1', ritratto: 'Luogotenente_GdF_1',
     classe: 'Luogotenente GdF', nome: 'Fernando',
     squadra: [{ id: 110, livello: 44 }, { id: 24, livello: 45 }],
     dialogo_prima: 'Il documento? Non passa da un dilettante come te. Sono Fernando, e questi archivi li difendo io di persona.',
@@ -1181,7 +1223,7 @@ const DATI_TRAINER = {
      dati/npc.js, property Tiled condizione sullo stesso flag): presidiano il museo
      mentre il Team ruba l'Orb Rossa e l'Orb Blu (STORIA_COMPLETA, Atto 4). */
   'gdf_grunt_nemi_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 44 }, { id: 89, livello: 45 }],
     dialogo_prima: 'Le navi romane nascondono le Orb da secoli. Mo\' so\' nostre.',
@@ -1189,7 +1231,7 @@ const DATI_TRAINER = {
     premio: 1840,
   },
   'gdf_grunt_nemi_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 110, livello: 45 }, { id: 42, livello: 46 }],
     dialogo_prima: 'Il museo è nostro finché non finiamo il lavoro. Fatti da parte!',
@@ -1197,7 +1239,7 @@ const DATI_TRAINER = {
     premio: 1880,
   },
   'gdf_grunt_nemi_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 20, livello: 46 }, { id: 24, livello: 47 }],
     dialogo_prima: 'Rossa e Blu, le abbiamo trovate esattamente dove diceva il documento.',
@@ -1205,7 +1247,7 @@ const DATI_TRAINER = {
     premio: 1920,
   },
   'gdf_grunt_nemi_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 89, livello: 47 }, { id: 110, livello: 47 }],
     dialogo_prima: 'Kyogre e Groudon si risveglieranno grazie a queste due pietre. Non puoi fermarci.',
@@ -1213,7 +1255,7 @@ const DATI_TRAINER = {
     premio: 1960,
   },
   'gdf_grunt_nemi_5': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 47 }, { id: 24, livello: 48 }],
     dialogo_prima: 'L\'ultimo ostacolo prima che ce ne annamo con le Orb. Fatte sotto.',
@@ -1226,7 +1268,7 @@ const DATI_TRAINER = {
      vedi docs/STORIA_COMPLETA.md): sconfiggerla dà la 2ª parte della
      password del Rifugio GdF di Marino (flagVittoria 'museo_nemi_password'). */
   'gdf_grunt_museo_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 46 }, { id: 89, livello: 47 }],
     dialogo_prima: 'Il museo è chiuso al pubblico. Motivi de sicurezza, capisci?',
@@ -1234,7 +1276,7 @@ const DATI_TRAINER = {
     premio: 1840,
   },
   'gdf_grunt_museo_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 110, livello: 47 }, { id: 42, livello: 48 }],
     dialogo_prima: 'Nun te distraeva, e nun te distraere pure tu!',
@@ -1242,7 +1284,7 @@ const DATI_TRAINER = {
     premio: 1880,
   },
   'gdf_grunt_museo_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 20, livello: 48 }, { id: 24, livello: 49 }],
     dialogo_prima: 'Er Capo nun vuole ospiti. Levate!',
@@ -1250,7 +1292,7 @@ const DATI_TRAINER = {
     premio: 1920,
   },
   'gdf_capo_museo': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'Luogotenente_GdF_2', ritratto: 'Luogotenente_GdF_2',
     classe: 'Luogotenente GdF', nome: 'Michela',
     squadra: [
       { id: 130, livello: 48 },  // Gyarados
@@ -1269,7 +1311,7 @@ const DATI_TRAINER = {
      sconfitta dà la 3ª parte della password del Rifugio GdF di Marino (vedi
      _controllaPasswordRifugio in js/map.js e docs/STORIA_COMPLETA.md). ── */
   'gdf_sannilo_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 302, livello: 49 }, { id: 51, livello: 50 }],
     dialogo_prima: 'Ginevra ci ha detto di non far passare nessuno oltre le panche. Fatti sotto!',
@@ -1277,7 +1319,7 @@ const DATI_TRAINER = {
     premio: 2000,
   },
   'gdf_sannilo_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 268, livello: 49 }, { id: 267, livello: 50 }],
     dialogo_prima: 'Quest\'Abbazia nasconde più segreti di quanto pensi. Ma tu non li scoprirai.',
@@ -1285,7 +1327,7 @@ const DATI_TRAINER = {
     premio: 2040,
   },
   'gdf_sannilo_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 227, livello: 50 }, { id: 31, livello: 51 }],
     dialogo_prima: 'Il Comandante conta su di noi per proteggere l\'ultima parte della password.',
@@ -1293,7 +1335,7 @@ const DATI_TRAINER = {
     premio: 2080,
   },
   'gdf_sannilo_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 302, livello: 50 }, { id: 354, livello: 51 }],
     dialogo_prima: 'Fernando e Michela sono già stati sconfitti. Ginevra non farà lo stesso errore.',
@@ -1301,7 +1343,7 @@ const DATI_TRAINER = {
     premio: 2120,
   },
   'gdf_sannilo_5': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 267, livello: 51 }, { id: 268, livello: 51 }],
     dialogo_prima: 'Ultimo ostacolo prima dell\'altare. Ginevra ti sta aspettando lì davanti.',
@@ -1309,7 +1351,7 @@ const DATI_TRAINER = {
     premio: 2160,
   },
   'gdf_sannilo_ginevra': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'Luogotenente_Cotral_Rifugio_rocca_di_papa', ritratto: 'Luogotenente_Cotral_Rifugio_rocca_di_papa',
     classe: 'Luogotenente GdF', nome: 'Ginevra',
     squadra: [
       { id: 302, livello: 50 },
@@ -1331,7 +1373,7 @@ const DATI_TRAINER = {
      la Pietra Zaffiro (Kyogre) — vedi blocco "id === 'gdf_capo_marino'" in
      _applicaEsitoTrainer, js/map.js. */
   'gdf_grunt_marino_1f_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 28 }, { id: 88, livello: 29 }],
     dialogo_prima: 'Fermo là! Questo rifugio non è mica un parco giochi.',
@@ -1339,7 +1381,7 @@ const DATI_TRAINER = {
     premio: 1160,
   },
   'gdf_grunt_marino_1f_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 29 }, { id: 20, livello: 30 }],
     dialogo_prima: 'Come hai fatto ad entrà? La password mica se trova per strada!',
@@ -1347,7 +1389,7 @@ const DATI_TRAINER = {
     premio: 1220,
   },
   'gdf_grunt_marino_1f_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 72, livello: 30 }, { id: 89, livello: 31 }],
     dialogo_prima: 'Il Capo non vuole visite. Levate dai piedi!',
@@ -1355,7 +1397,7 @@ const DATI_TRAINER = {
     premio: 1280,
   },
   'gdf_grunt_marino_1f_4': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 42, livello: 31 }, { id: 24, livello: 32 }],
     dialogo_prima: 'Quest\'acqua nasconde più cose de quello che pensi.',
@@ -1363,7 +1405,7 @@ const DATI_TRAINER = {
     premio: 1340,
   },
   'gdf_grunt_marino_2fa_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 89, livello: 33 }, { id: 110, livello: 32 }],
     dialogo_prima: 'Er caveau è roba nostra. Nun se tocca!',
@@ -1371,7 +1413,7 @@ const DATI_TRAINER = {
     premio: 1380,
   },
   'gdf_grunt_marino_2fa_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 31, livello: 34 }, { id: 42, livello: 33 }],
     dialogo_prima: 'Qui dentro c\'è più refurtiva che a un mercato de Porta Portese.',
@@ -1379,7 +1421,7 @@ const DATI_TRAINER = {
     premio: 1420,
   },
   'gdf_grunt_marino_2fc_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 34 }, { id: 73, livello: 35 }],
     dialogo_prima: 'Perso in questo labirinto de rocce? Te ce faccio perde pe\' davero!',
@@ -1387,7 +1429,7 @@ const DATI_TRAINER = {
     premio: 1460,
   },
   'gdf_grunt_marino_2fc_2': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 89, livello: 35 }, { id: 20, livello: 34 }],
     dialogo_prima: 'Questi massi nun se spostano da soli, sai?',
@@ -1395,7 +1437,7 @@ const DATI_TRAINER = {
     premio: 1480,
   },
   'gdf_grunt_marino_2fc_3': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 110, livello: 36 }, { id: 34, livello: 35 }],
     dialogo_prima: 'Ancora un po\' e sei davanti al Capo. Peccato che nun ce arriverai.',
@@ -1403,7 +1445,7 @@ const DATI_TRAINER = {
     premio: 1520,
   },
   'gdf_grunt_marino_2fb_1': {
-    sprite: 'GDF_GRUNT_SPRITE', ritratto: 'GDF_GRUNT_SPRITE',
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 73, livello: 37 }, { id: 89, livello: 36 }],
     dialogo_prima: 'Da qui in poi c\'è solo l\'isola del Capo. Nun se passa!',
@@ -1411,7 +1453,7 @@ const DATI_TRAINER = {
     premio: 1560,
   },
   'gdf_capo_marino': {
-    sprite: 'trainer_LEADER_Giovanni', ritratto: 'trainer_LEADER_Giovanni',
+    sprite: 'NPC', ritratto: 'trainer_LEADER_Giovanni',
     classe: 'Comandante GdF', nome: 'Giovanni',
     squadra: [
       { id: 195, livello: 36 },
@@ -1616,7 +1658,7 @@ const DATI_TRAINER = {
      In Tiled: oggetto type "trainer" id "rivale_tuscolo" (oppure "trigger_rivale",
      che il motore converte). Con "vista" scatta appena incroci il suo sguardo. */
   'rivale_tuscolo': {
-    sprite: 'trainer_POKEMONTRAINER_Brendan', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
+    sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
     classe: 'Rivale', nome: 'Remo',
     rivale: true,               // squadra dinamica per "tappa" (l'asso è lo starter)
     flagVittoria: 'rivale_tuscolo_battuto',
@@ -2585,7 +2627,7 @@ const DATI_TRAINER = {
      _cutsceneBasoCotralRocca in js/map.js.
      Identità/nomi ancora provvisori vista la nota "Team CoTrAL da rifare". ── */
   'cotral_grunt_rocca_1': {
-    sprite: 'trainer_CoTral_M', ritratto: 'trainer_CoTral_M', vista: 5,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
     squadra: [ { id: 74, livello: 36 }, { id: 27, livello: 37 } ],
     dialogo_prima: 'Sei entrato più a fondo di quanto dovresti. Fatti sotto, allora.',
@@ -2593,7 +2635,7 @@ const DATI_TRAINER = {
     premio: 1440,
   },
   'cotral_grunt_rocca_2': {
-    sprite: 'trainer_CoTral_F', ritratto: 'trainer_CoTral_F', vista: 5,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
     squadra: [ { id: 41, livello: 36 }, { id: 218, livello: 37 } ],
     dialogo_prima: 'Il rifugio è sorvegliato a vista. Non farai un altro passo.',
@@ -2601,7 +2643,7 @@ const DATI_TRAINER = {
     premio: 1440,
   },
   'cotral_grunt_rocca_3': {
-    sprite: 'trainer_CoTral_M', ritratto: 'trainer_CoTral_M', vista: 5,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
     squadra: [ { id: 76, livello: 37 }, { id: 111, livello: 38 } ],
     dialogo_prima: 'Qua sotto la montagna nessuno ci trova. O almeno, così credevamo.',
@@ -2609,7 +2651,7 @@ const DATI_TRAINER = {
     premio: 1480,
   },
   'cotral_grunt_rocca_4': {
-    sprite: 'trainer_CoTral_F', ritratto: 'trainer_CoTral_F', vista: 5,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
     squadra: [ { id: 218, livello: 37 }, { id: 74, livello: 38 } ],
     dialogo_prima: 'Marcello ci ha ordinato di non far passare nessuno. Nessuno.',
@@ -2617,7 +2659,7 @@ const DATI_TRAINER = {
     premio: 1480,
   },
   'cotral_grunt_rocca_5': {
-    sprite: 'trainer_CoTral_M', ritratto: 'trainer_CoTral_M', vista: 5,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
     squadra: [ { id: 111, livello: 38 }, { id: 76, livello: 39 } ],
     dialogo_prima: 'Un altro? Ma quanti siete lassù a Rocca di Papa?',
@@ -2625,7 +2667,7 @@ const DATI_TRAINER = {
     premio: 1520,
   },
   'cotral_grunt_rocca_6': {
-    sprite: 'trainer_CoTral_F', ritratto: 'trainer_CoTral_F', vista: 5,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
     squadra: [ { id: 27, livello: 38 }, { id: 41, livello: 39 } ],
     dialogo_prima: 'Ultima linea di difesa prima della sala di comando. Fatte sotto.',
@@ -2654,7 +2696,7 @@ const DATI_TRAINER = {
   // se in futuro serve anche un 1v1 "normale" contro di lui, questa stessa
   // squadra intera resta comunque utilizzabile.
   'cotral_marcello_rocca': {
-    sprite: 'trainer_SCIENTIST', ritratto: 'trainer_SCIENTIST', vista: 5,
+    sprite: 'Luogotenente_Cotral_Osservatorio', ritratto: 'trainer_SCIENTIST', vista: 5,
     classe: 'Ammiraglio CoTrAL', nome: 'Marcello',
     squadra: [
       { id: 75,  livello: 40 },  // Graveler
@@ -3027,7 +3069,7 @@ const DATI_TRAINER = {
      vedi costruisciSquadraRivale in js/map.js). Flag di vittoria dedicato
      e diverso da rivale_tuscolo_battuto: è un incontro distinto. ── */
   'rivale_via_vittoria': {
-    sprite: 'trainer_POKEMONTRAINER_Brendan', ritratto: 'POKEMONTRAINER_Brendan', vista: 6,
+    sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 6,
     classe: 'Rivale', nome: 'Remo',
     rivale: true,
     flagVittoria: 'rivale_via_vittoria_battuto',
@@ -3063,7 +3105,7 @@ const DATI_TRAINER = {
      forte sempre per ultimo, come da CLAUDE.md). "squadra" resta solo come
      fallback di sicurezza se quelle funzioni non fossero disponibili. ── */
   'sq_captain': {
-    sprite: 'trainer_ELITEFOUR_Bruno', ritratto: 'ELITEFOUR_Bruno', vista: 5,
+    sprite: 'Capitano', ritratto: 'ELITEFOUR_Bruno', vista: 5,
     classe: 'Superquattro', nome: 'Captain',
     superquattro: 'sq-captain',
     flagVittoria: 'sq_captain_battuto',
@@ -3072,7 +3114,7 @@ const DATI_TRAINER = {
     premio: 12000,
   },
   'sq_pres': {
-    sprite: 'trainer_ELITEFOUR_Lance', ritratto: 'ELITEFOUR_Lance', vista: 5,
+    sprite: 'Er_pres_superquattro', ritratto: 'ELITEFOUR_Lance', vista: 5,
     classe: 'Superquattro', nome: 'Pres',
     superquattro: 'sq-pres',
     flagVittoria: 'sq_pres_battuto',
@@ -3081,7 +3123,7 @@ const DATI_TRAINER = {
     premio: 13000,
   },
   'sq_dema': {
-    sprite: 'trainer_ELITEFOUR_Lorelei', ritratto: 'ELITEFOUR_Lorelei', vista: 5,
+    sprite: 'Dema_superquattro', ritratto: 'ELITEFOUR_Lorelei', vista: 5,
     classe: 'Superquattro', nome: 'Dema',
     superquattro: 'sq-dema',
     flagVittoria: 'sq_dema_battuto',
@@ -3090,7 +3132,7 @@ const DATI_TRAINER = {
     premio: 13000,
   },
   'sq_marcuois': {
-    sprite: 'trainer_ELITEFOUR_Agatha', ritratto: 'ELITEFOUR_Agatha', vista: 5,
+    sprite: 'Marcus_superquattro', ritratto: 'ELITEFOUR_Agatha', vista: 5,
     classe: 'Superquattro', nome: 'Marcuois',
     superquattro: 'sq-marcuois',
     flagVittoria: 'sq_marcuois_battuto',
@@ -3101,12 +3143,158 @@ const DATI_TRAINER = {
   'campione_remo': {
     // Stesso sprite del Remo "rivale" (rivale_via_vittoria sopra): è lo
     // stesso personaggio, non un allenatore generico — deve sembrare lui.
-    sprite: 'trainer_POKEMONTRAINER_Brendan', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
+    sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
     classe: 'Campione', nome: 'Remo',
     campioneLega: true,
     flagVittoria: 'campione_remo_battuto',
     squadra: [ { id: 6, livello: 65 } ],     // fallback: solo un core plausibile
     dialogo_dopo: 'Hai vinto. Sei tu il nuovo Campione dei Castelli Romani.',
     premio: 20000,
+  },
+
+  /* ── Osservatorio CoTrAL (sess. 15 set 2026, ridisegnato dopo il primo
+     giro — coppie "in scatola" bocciate da Luca): ogni grunt è SOLO, libera
+     di girare per il piano (movimento:'random' sull'oggetto Tiled), con una
+     squadra da 4-6 Pokémon per reggere da solo un 2 CONTRO 1 (tu + Camilla
+     alleata contro di lui — Battle.avviaDoppia opzioni.alleato, vedi
+     js/map.js _checkOsservatorioGruntTrigger). Il Boss del 2F resta
+     deferito a una sessione dedicata (solo trigger/cutscene, nessuna
+     squadra qui). ── */
+  // Progressione di livello/squadra RIVISTA (sess. 17 set 2026, richiesta
+  // esplicita di Luca: "i grunt non possono avere lo stesso team del
+  // luogotenente, devono essere un pochino più scarsi"). Prima tutti i
+  // grunt (esterni + 3 piani) e il Luogotenente pescavano dalla STESSA
+  // manciata di specie Roccia/Terra/Acciaio a livelli quasi identici
+  // (54-58 i grunt, 57-60 il Luogotenente): nessuna vera scalata di
+  // difficoltà. Ora: Flygon e Steelix sono ESCLUSIVI del Luogotenente
+  // (nessun grunt li usa), e i livelli salgono per davvero via via che si
+  // sale nell'edificio (45 esterni → 48-50 1F → 51-53 2F → 53-55 3F → 57-60
+  // Luogotenente), così il salto di forza all'ultimo piano si sente.
+  'cotral_osservatorio_grunt_ext_1': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 74, livello: 45 } ],   // Geodude
+    dialogo_prima: 'Qui non si passa, ficcanaso. Ordini dall\'alto.',
+    dialogo_dopo: 'Impossibile... richiamo rinforzi.',
+    premio: 1800,
+  },
+  'cotral_osservatorio_grunt_ext_2': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 27, livello: 45 } ],   // Sandshrew
+    dialogo_prima: 'La Capopalestra ha già dato fastidio abbastanza. Tu non ti aggiungere.',
+    dialogo_dopo: 'Non... non doveva andare così.',
+    premio: 1800,
+  },
+  'cotral_osservatorio_1f_a': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [
+      { id: 75,  livello: 48 },   // Graveler
+      { id: 105, livello: 48 },   // Marowak
+      { id: 28,  livello: 49 },   // Sandslash
+    ],
+    dialogo_prima: 'Il rifugio è scoperto, tanto vale sporcarsi le mani.',
+    premio: 2600,
+  },
+  'cotral_osservatorio_1f_b': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [
+      { id: 34,  livello: 48 },   // Nidoking
+      { id: 31,  livello: 48 },   // Nidoqueen
+      { id: 51,  livello: 49 },   // Dugtrio
+    ],
+    dialogo_prima: 'Non dovevi vedere niente di tutto questo.',
+    premio: 2600,
+  },
+  'cotral_osservatorio_1f_c': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [
+      { id: 112, livello: 49 },   // Rhydon
+      { id: 75,  livello: 49 },   // Graveler
+      { id: 31,  livello: 50 },   // Nidoqueen
+    ],
+    dialogo_prima: 'Qui dentro comandiamo noi, ricordatelo.',
+    premio: 2800,
+  },
+  'cotral_osservatorio_2f_a': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [
+      { id: 51,  livello: 51 },   // Dugtrio
+      { id: 105, livello: 51 },   // Marowak
+      { id: 34,  livello: 52 },   // Nidoking
+      { id: 75,  livello: 52 },   // Graveler
+    ],
+    dialogo_prima: 'Sei arrivato più a fondo di chiunque altro. Fin qui, però.',
+    premio: 3200,
+  },
+  'cotral_osservatorio_2f_b': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [
+      { id: 112, livello: 51 },   // Rhydon
+      { id: 28,  livello: 52 },   // Sandslash
+      { id: 31,  livello: 52 },   // Nidoqueen
+      { id: 105, livello: 53 },   // Marowak
+    ],
+    dialogo_prima: 'La statua non è un semplice ornamento, sai? Ma questo non ti riguarda.',
+    premio: 3200,
+  },
+  'cotral_osservatorio_3f_a': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [
+      { id: 34,  livello: 53 },   // Nidoking
+      { id: 51,  livello: 53 },   // Dugtrio
+      { id: 112, livello: 54 },   // Rhydon
+      { id: 75,  livello: 54 },   // Graveler
+      { id: 105, livello: 55 },   // Marowak
+    ],
+    dialogo_prima: 'Ultimo piano, ultima possibilità di andartene.',
+    premio: 3600,
+  },
+  // Luogotenente CoTrAL (3F, SOLO — nessuna guardia): sconfitto, lascia la
+  // Chiave Segreta. Squadra da 6, tenore boss di piano: Flygon e Steelix
+  // sono SOLO suoi (nessun grunt li schiera), livelli 57-60 chiaramente
+  // sopra tutto il resto del roster CoTrAL dell'Osservatorio.
+  'cotral_osservatorio_luogotenente': {
+    sprite: 'Capo_Cotral', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Luogotenente CoTrAL', nome: 'Luogotenente',
+    squadra: [
+      { id: 75,  livello: 57 },   // Graveler
+      { id: 105, livello: 57 },   // Marowak
+      { id: 31,  livello: 58 },   // Nidoqueen
+      { id: 330, livello: 58 },   // Flygon (esclusivo)
+      { id: 208, livello: 59 },   // Steelix (esclusivo)
+      { id: 112, livello: 60 },   // Rhydon (asso)
+    ],
+    dialogo_prima: 'Tu... non dovresti essere qui. Nessuno arriva così lontano senza essere fermato prima.',
+    dialogo_dopo: 'Va bene, va bene! Tieni questa maledetta chiave, e sparisci da qui prima che arrivi il Comandante.',
+    premio: 4500,
+  },
+  // Comandante CoTrAL — boss finale della cutscene del 2F (sess. 18 set
+  // 2026). Lotta 1 CONTRO 1 (Camilla si tira indietro apposta, "andiamo uno
+  // alla volta"), gestita per intero da _cutsceneBossFinaleOsservatorio in
+  // map.js (dialoghi/animazioni prima e dopo, non passa da _avviaLottaTrainer).
+  // Squadra scelta con Luca: Zapdos e Jirachi sono ESPLICITAMENTE suoi (il
+  // "controllo dei pokémon necessari" di cui parla nel dialogo), + 4 forti
+  // non leggendari di taglia pseudo-leggendaria per reggere il ruolo di
+  // vero boss dell'intero dungeon — nessuno nel resto dell'Osservatorio
+  // arriva a questo livello.
+  'cotral_boss_osservatorio': {
+    sprite: 'NPC', ritratto: 'trainer_ROCKETBOSS', vista: 0,
+    classe: 'Comandante CoTrAL', nome: 'Comandante',
+    squadra: [
+      { id: 145, livello: 58 },   // Zapdos
+      { id: 385, livello: 58 },   // Jirachi
+      { id: 306, livello: 59 },   // Aggron
+      { id: 350, livello: 59 },   // Milotic
+      { id: 373, livello: 60 },   // Salamence
+      { id: 376, livello: 62 },   // Metagross (asso)
+    ],
+    premio: 6000,
   },
 };

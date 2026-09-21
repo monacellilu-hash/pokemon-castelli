@@ -1,0 +1,15 @@
+{ "columns":49,
+ "image":"Tile_nuovi\/Stazione_treno.png",
+ "imageheight":1056,
+ "imagewidth":1568,
+ "margin":0,
+ "name":"Stazione_treno",
+ "spacing":0,
+ "tilecount":1617,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

@@ -1,0 +1,15 @@
+{ "columns":7,
+ "image":"Tile_nuovi\/cantina.png",
+ "imageheight":1191,
+ "imagewidth":253,
+ "margin":0,
+ "name":"cantina",
+ "spacing":0,
+ "tilecount":259,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

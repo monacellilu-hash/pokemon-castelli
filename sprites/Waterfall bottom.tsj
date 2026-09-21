@@ -1,0 +1,15 @@
+{ "columns":4,
+ "image":"Waterfall bottom.png",
+ "imageheight":32,
+ "imagewidth":128,
+ "margin":0,
+ "name":"Waterfall bottom",
+ "spacing":0,
+ "tilecount":4,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

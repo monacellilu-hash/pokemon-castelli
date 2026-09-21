@@ -28,19 +28,19 @@
     <div id="hud-palestra" style="display:none;"></div>
   </div>
 
-  <!-- Pulsante MENU (in alto a destra) -->
-  <button id="btn-menu" aria-label="Apri il menu">☰ MENU</button>
-
-  <!-- Pannello menu di gioco: squadra, zaino, box, salvataggio -->
+  <!-- Pannello menu di gioco: due modalità.
+       "pausa" (tasto Invio/Start): Squadra, Zaino, Recap, Salva.
+       "strumenti" (aperto interagendo nel mondo: PC del Centro → Box, NPC del Market → Market). -->
   <div id="pannello-menu" class="nascosto" role="dialog" aria-modal="true">
     <div id="menu-card">
       <div id="menu-testata">
         <div id="menu-tabs">
-          <button class="tab attiva" data-sezione="squadra">⚡ Squadra</button>
-          <button class="tab" data-sezione="zaino">🎒 Zaino</button>
-          <button class="tab" data-sezione="market">🛒 Market</button>
-          <button class="tab" data-sezione="box">📦 Box</button>
-          <button class="tab" data-sezione="salva">💾 Salva</button>
+          <button class="tab attiva" data-modalita="pausa" data-sezione="squadra">⚡ Squadra</button>
+          <button class="tab" data-modalita="pausa" data-sezione="zaino">🎒 Zaino</button>
+          <button class="tab" data-modalita="pausa" data-sezione="recap">🎫 Recap</button>
+          <button class="tab" data-modalita="pausa" data-sezione="salva">💾 Salva</button>
+          <button class="tab" data-modalita="strumenti" data-sezione="market">🛒 Market</button>
+          <button class="tab" data-modalita="strumenti" data-sezione="box">📦 Box</button>
         </div>
         <button id="btn-chiudi-menu" aria-label="Chiudi il menu">✖</button>
       </div>
@@ -48,11 +48,21 @@
     </div>
   </div>
 
-  <!-- Booster di velocità (cicla x1 → x2 → x3 → x5) -->
-  <button id="btn-velocita" aria-label="Velocità di movimento">⏩ x1</button>
+  <!-- Pulsanti rapidi overworld (Velocità/Repellente/Volo): impilati in un
+       unico contenitore flex ancorato in basso a destra (mobile, sessione 31
+       agosto) invece di 3 "bottom" fissi indipendenti — su schermi molto
+       bassi (telefono in orizzontale) i "bottom" indipendenti potevano
+       spingere Repellente/Volo fuori dallo schermo, in alto, inaccessibili. -->
+  <div id="controlli-rapidi">
+    <!-- Booster di velocità (cicla x1 → x2 → x3 → x5) -->
+    <button id="btn-velocita" aria-label="Velocità di movimento">⏩ x1</button>
 
-  <!-- MN Volo: appare solo quando si possiede la MN Volo (F9) -->
-  <button id="btn-volo" aria-label="Vola verso una città" style="display:none;">✈️ Volo</button>
+    <!-- MN Volo: appare solo quando si possiede la MN Volo (F9) -->
+    <button id="btn-volo" aria-label="Vola verso una città" style="display:none;">✈️ Volo</button>
+
+    <!-- Repellente rapido: appare solo se ne hai nello zaino (QoL) -->
+    <button id="btn-repellente" aria-label="Usa repellente" style="display:none;">🚷 Repellente</button>
+  </div>
 
   <!-- Riquadro dialoghi (Professore, Capipalestra, NPC) -->
   <div id="overlay-dialogo" class="nascosto" role="dialog" aria-modal="true">
@@ -60,6 +70,23 @@
       <div id="dialogo-nome"></div>
       <div id="dialogo-testo"></div>
       <button id="dialogo-avanti">Avanti ▶</button>
+    </div>
+  </div>
+
+  <!-- Scelta del personaggio (ragazzo/ragazza) a inizio partita -->
+  <div id="overlay-genere" class="nascosto" role="dialog" aria-modal="true">
+    <div id="starter-card">
+      <h2>Chi sei tu?</h2>
+      <div id="genere-scelte">
+        <button class="card-starter card-genere boy" data-genere="boy">
+          <div class="ritratto-genere"></div>
+          <b>Ragazzo</b>
+        </button>
+        <button class="card-starter card-genere girl" data-genere="girl">
+          <div class="ritratto-genere"></div>
+          <b>Ragazza</b>
+        </button>
+      </div>
     </div>
   </div>
 
@@ -82,36 +109,83 @@
   <!-- Schermata di battaglia -->
   <div id="schermata-battaglia" class="nascosto" role="dialog" aria-modal="true">
     <div id="battaglia-campo">
-      <div id="info-nemico" class="pannello-info">
-        <div class="riga-nome">
-          <span id="nemico-nome">—</span>
-          <span id="nemico-lv"></span>
+      <!-- PROBLEMA 2 (richiesta esplicita di Luca): niente bande nere ai lati
+           su schermi larghi, ma niente sfondo stirato/deformato nemmeno. Questo
+           layer riempie TUTTO #battaglia-campo con lo stesso battleback in
+           "cover" (ritagliato, non stirato: le proporzioni restano quelle
+           originali) e sfocato/scurito, come sfondo atmosferico ai lati.
+           #battaglia-schermo sopra resta nitido e a rapporto 4:3 esatto, MAI
+           deformato: l'elemento "vero" della scena. Vedi impostaSfondoBattaglia(). -->
+      <div id="battaglia-sfondo-esteso"></div>
+      <!-- Schermo a rapporto fisso 512x384 (risoluzione nativa Essentials FRLG):
+           qui dentro tutto è scalato in proporzione, per non "stirare" sfondi e
+           sprite su viewport larghi/16:9 come succedeva prima (bug segnalato:
+           battleback troppo grandi/deformati). Vedi impostaSfondoBattaglia(). -->
+      <div id="battaglia-schermo">
+        <div id="battaglia-meteo" class="nascosto"></div>
+        <div id="info-nemico" class="pannello-info">
+          <div class="riga-nome">
+            <span id="nemico-nome">—</span>
+            <span id="nemico-lv"></span>
+          </div>
+          <div class="hp-contorno">
+            <span class="hp-etichetta">HP</span>
+            <div class="hp-binario"><div id="nemico-hp" class="hp-barra"></div></div>
+          </div>
+          <div id="nemico-contatore" style="display:none;"></div>
         </div>
-        <div class="hp-contorno">
-          <span class="hp-etichetta">HP</span>
-          <div class="hp-binario"><div id="nemico-hp" class="hp-barra"></div></div>
+        <div id="zona-nemico" class="sprite-zona">
+          <img id="nemico-sprite" src="" alt="Pokémon avversario">
+          <div class="piattaforma"></div>
         </div>
-        <div id="nemico-contatore" style="display:none;"></div>
-      </div>
-      <div id="zona-nemico" class="sprite-zona">
-        <img id="nemico-sprite" src="" alt="Pokémon avversario">
-        <div class="piattaforma"></div>
-      </div>
-      <div id="zona-giocatore" class="sprite-zona">
-        <img id="giocatore-sprite" src="" alt="Il tuo Pokémon">
-        <div class="piattaforma"></div>
-      </div>
-      <div id="info-giocatore" class="pannello-info">
-        <div class="riga-nome">
-          <span id="giocatore-nome">—</span>
-          <span id="giocatore-lv"></span>
+        <!-- Slot 2 (lotta in doppio, js/map.js _trainerSpottaDoppia + Battle.avviaDoppia):
+             stessi elementi dello slot 1, id con suffisso "-2". Nascosti di
+             default (style.css), mostrati solo con #schermata-battaglia.doppia. -->
+        <div id="zona-nemico-2" class="sprite-zona nascosto">
+          <img id="nemico-sprite-2" src="" alt="Secondo Pokémon avversario">
+          <div class="piattaforma"></div>
         </div>
-        <div class="hp-contorno">
-          <span class="hp-etichetta">HP</span>
-          <div class="hp-binario"><div id="giocatore-hp" class="hp-barra"></div></div>
+        <div id="zona-giocatore" class="sprite-zona">
+          <img id="giocatore-sprite" src="" alt="Il tuo Pokémon">
+          <div class="piattaforma"></div>
         </div>
-        <div id="giocatore-hp-testo"></div>
-        <div class="exp-binario"><div id="giocatore-exp" class="exp-barra"></div></div>
+        <div id="zona-giocatore-2" class="sprite-zona nascosto">
+          <img id="giocatore-sprite-2" src="" alt="Il tuo secondo Pokémon">
+          <div class="piattaforma"></div>
+        </div>
+        <div id="info-nemico-2" class="pannello-info nascosto">
+          <div class="riga-nome">
+            <span id="nemico-nome-2">—</span>
+            <span id="nemico-lv-2"></span>
+          </div>
+          <div class="hp-contorno">
+            <span class="hp-etichetta">HP</span>
+            <div class="hp-binario"><div id="nemico-hp-2" class="hp-barra"></div></div>
+          </div>
+        </div>
+        <div id="info-giocatore" class="pannello-info">
+          <div class="riga-nome">
+            <span id="giocatore-nome">—</span>
+            <span id="giocatore-lv"></span>
+          </div>
+          <div class="hp-contorno">
+            <span class="hp-etichetta">HP</span>
+            <div class="hp-binario"><div id="giocatore-hp" class="hp-barra"></div></div>
+          </div>
+          <div id="giocatore-hp-testo"></div>
+          <div class="exp-binario"><div id="giocatore-exp" class="exp-barra"></div></div>
+        </div>
+        <div id="info-giocatore-2" class="pannello-info nascosto">
+          <div class="riga-nome">
+            <span id="giocatore-nome-2">—</span>
+            <span id="giocatore-lv-2"></span>
+          </div>
+          <div class="hp-contorno">
+            <span class="hp-etichetta">HP</span>
+            <div class="hp-binario"><div id="giocatore-hp-2" class="hp-barra"></div></div>
+          </div>
+          <div id="giocatore-hp-testo-2"></div>
+        </div>
       </div>
     </div>
     <div id="battaglia-console">
@@ -125,11 +199,17 @@
       <div id="menu-mosse"   class="menu-battaglia nascosto"></div>
       <div id="menu-zaino"   class="menu-battaglia nascosto"></div>
       <div id="menu-squadra" class="menu-battaglia nascosto"></div>
+      <!-- Selettore bersaglio (solo lotta in doppio): quando una mossa a
+           bersaglio singolo viene scelta con 2 nemici vivi in campo. -->
+      <div id="selettore-bersaglio" class="menu-battaglia nascosto"></div>
     </div>
   </div>
 
   <!-- Toast: notifiche brevi -->
   <div id="toast" class="nascosto"></div>
+
+  <!-- Popup nome mappa: appare in alto a sinistra al cambio mappa -->
+  <div id="popup-nome-mappa" class="nascosto"></div>
 
   <!-- Overlay interno edificio: appare quando si entra dalla porta -->
   <div id="overlay-interno" class="nascosto">
@@ -142,11 +222,14 @@
     </div>
   </div>
 
-  <!-- Pulsante Interagisci: compare avvicinandosi a edifici/NPC -->
-  <div id="overlay-interagisci" class="nascosto">
-    <div id="interagisci-etichetta"></div>
-    <button id="btn-interagisci">🔔 [A] Interagisci</button>
-  </div>
+  <!-- Pulsante Interagisci: sempre visibile (sess. 5 set 2026, richiesta
+       esplicita di Luca — prima compariva/scompariva come un popup con
+       tanto di etichetta col nome di chi hai vicino, "non serve"). Resta
+       comunque l'unico modo per interagire da telefono/touch (niente tasto
+       [A] fisico lì): un pulsante fisso e discreto, senza notifica, che fa
+       qualcosa solo quando c'è davvero qualcosa vicino (vedi btnInteragisci
+       in js/map.js — il click controlla eventoVicino, a vuoto non fa nulla). -->
+  <button id="btn-interagisci">[A]</button>
 
   <!-- Phaser 3 (motore grafico F14 — sostituisce Leaflet) -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
@@ -157,15 +240,26 @@
   <script src="dati/porte.js"></script>
   <script src="dati/incontri.js"></script>
   <script src="dati/cartelli.js"></script>
+  <script src="dati/cutscene.js"></script>
 
   <!-- Database mosse ed evoluzioni Gen 1-3 (prima di battle.js e app.js) -->
   <script src="dati/mosse.js"></script>
+  <!-- Animazioni mosse: motore preciso da Pokémon Essentials FRLG (sostituisce mosse-animazioni.js) -->
+  <script src="dati/animazioni_mosse_essentials.js"></script>
+  <script src="js/animazioni-essentials.js"></script>
+  <!-- Offset per-specie in battaglia (Essentials FRLG species_metrics.dat) -->
+  <script src="dati/offset_sprite_battaglia.js"></script>
   <script src="dati/evoluzioni.js"></script>
+  <!-- MT per tutte le mosse (generato, vedi strumenti/genera_mt_tutte_mosse.py) — PRIMA di js/data.js -->
+  <script src="dati/mt_tutte_mosse.js"></script>
+  <!-- Compatibilità Pokémon <-> MT (generato da Essentials FRLG/PBS/pokemon.txt) -->
+  <script src="dati/mt_compatibilita.js"></script>
 
   <!-- Script del gioco (ordine: dati → zone → api → mappa → battaglia → avvio) -->
   <script src="js/data.js"></script>
   <script src="js/world.js"></script>
   <script src="js/pokeapi.js"></script>
+  <script src="js/clusters.js"></script>
   <script src="js/map.js"></script>
   <script src="js/battle.js"></script>
   <script src="js/app.js"></script>

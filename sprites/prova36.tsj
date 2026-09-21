@@ -1,0 +1,15 @@
+{ "columns":30,
+ "image":"..\/prova36.png",
+ "imageheight":970,
+ "imagewidth":970,
+ "margin":0,
+ "name":"prova36",
+ "spacing":0,
+ "tilecount":900,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

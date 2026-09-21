@@ -1,0 +1,14 @@
+{ "columns":51,
+ "image":"nuovi tileset\/interni_lega_2.png",
+ "imageheight":1678,
+ "imagewidth":1654,
+ "margin":0,
+ "name":"interni_lega_2",
+ "spacing":0,
+ "tilecount":2652,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

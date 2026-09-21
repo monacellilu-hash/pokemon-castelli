@@ -60,8 +60,30 @@ const PokeAPI = (function () {
       },
       // Mosse imparate salendo di livello: [{ nome, url, livello }] ordinate per livello.
       // Servirà in battaglia (F5) per scegliere le 4 mosse del Pokémon.
-      mosse: estraiMosseLivello(dati.moves)
+      mosse: estraiMosseLivello(dati.moves),
+      // Abilità della specie: [{ nome, nascosta }] (nome = slug inglese, es.
+      // "static"). Assegnata a caso alla creazione dell'istanza (vedi
+      // creaIstanza in battle.js) — solo lo SLUG qui, nome/descrizione in
+      // italiano si scaricano a parte con PokeAPI.getAbilita() (F9.4).
+      abilita: (dati.abilities || []).map(a => ({ nome: a.ability.name, nascosta: !!a.is_hidden }))
     };
+  }
+
+  // Tasso di cattura ufficiale (0-255, da /pokemon-species/{id}, campo
+  // capture_rate). Es. Moltres=3, Rattata=190. Serve alla formula di
+  // cattura in battle.js: senza questo campo TUTTI i Pokémon avevano la
+  // stessa difficoltà, leggendari inclusi (bug segnalato 13 agosto — un
+  // Moltres lv60 catturato con la prima Ultra Ball). Fallback 45 (valore
+  // "medio" di PokéAPI) se il fetch fallisce.
+  async function fetchCatchRate(id) {
+    try {
+      const risposta = await fetch(`${BASE_URL}/pokemon-species/${id}`);
+      if (!risposta.ok) return 45;
+      const specie = await risposta.json();
+      return (typeof specie.capture_rate === 'number') ? specie.capture_rate : 45;
+    } catch (e) {
+      return 45;
+    }
   }
 
   // Estrae le mosse apprese per livello ("level-up"), col livello più basso
@@ -100,24 +122,27 @@ const PokeAPI = (function () {
     }
 
     // 1) Proviamo prima la cache.
-    // Se la voce in cache è "vecchia" (senza baseExp, aggiunto in F5),
-    // la ignoriamo e riscarichiamo: così la cache si aggiorna da sola.
+    // Se la voce in cache è "vecchia" (senza baseExp/catchRate o senza
+    // abilita, aggiunto per le Abilità F9.4), la ignoriamo e riscarichiamo:
+    // così la cache si aggiorna da sola.
     const inCache = leggiCache("pokemon_" + id);
-    if (inCache && inCache.baseExp !== undefined) {
+    if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined && inCache.abilita !== undefined) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);
       return inCache;
     }
 
-    // 2) Non in cache: fetch dall'API
+    // 2) Non in cache: fetch dall'API (+ tasso di cattura dalla specie)
     console.log(`[PokeAPI] Pokémon #${id} non in cache: lo scarico dall'API...`);
     const risposta = await fetch(`${BASE_URL}/pokemon/${id}`);
     if (!risposta.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${risposta.status} per il Pokémon #${id}`);
     }
     const datiCompleti = await risposta.json();
+    const catchRate = await fetchCatchRate(id);
 
     // 3) Riduciamo i dati e salviamo in cache per le prossime volte
     const datiSnelli = riduciPokemon(datiCompleti);
+    datiSnelli.catchRate = catchRate;
     scriviCache("pokemon_" + id, datiSnelli);
     console.log(`[PokeAPI] Pokémon #${id} (${datiSnelli.nome}) scaricato e salvato in cache ✔`);
     return datiSnelli;
@@ -133,11 +158,20 @@ const PokeAPI = (function () {
       ? vocePerLingua.name
       : dati.name.charAt(0).toUpperCase() + dati.name.slice(1);
 
+    // Nome inglese "vero" (Title Case, es. "Razor Leaf"), utile per i
+    // tooltip delle MT/MN e in futuro per far combaciare le mosse con gli
+    // spritesheet delle animazioni (spesso nominati col nome inglese).
+    const voceInglese = (dati.names || []).find(n => n.language.name === "en");
+    const nomeEn = voceInglese
+      ? voceInglese.name
+      : dati.name.split("-").map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+
     const meta = dati.meta || {};
 
     return {
       nome: dati.name,                 // nome inglese "tecnico" (chiave)
       nomeIt: nomeIt,                  // nome italiano da mostrare
+      nomeEn: nomeEn,                  // nome inglese "vero" da mostrare (tooltip MT)
       tipo: dati.type.name,            // es. "grass"
       classe: dati.damage_class ? dati.damage_class.name : "physical", // physical/special/status
       potenza: dati.power,             // null per le mosse di stato
@@ -152,7 +186,14 @@ const PokeAPI = (function () {
       statoProbabilita: meta.ailment_chance || 0, // 0 = effetto garantito (mosse di stato pure)
       // Cambi di statistica: [{ stat: "attack", modifica: +1 }, …]
       cambiStat: (dati.stat_changes || []).map(s => ({ stat: s.stat.name, modifica: s.change })),
-      cambiStatProbabilita: meta.stat_chance || 0
+      cambiStatProbabilita: meta.stat_chance || 0,
+      // Drenaggio/contraccolpo: % del danno inflitto che torna (positivo,
+      // es. Assorbimento/Giga Prosciugo) o si sottrae (negativo, es.
+      // Doppia Sfida/Testata) all'attaccante. 0 = nessun effetto.
+      drain: meta.drain || 0,
+      // Cura del %HP massimo per le mosse di stato pure (Rilassamento,
+      // Riposo, Morso di Luna…). 0 = nessuna cura.
+      healing: meta.healing || 0
     };
   }
 
@@ -160,10 +201,11 @@ const PokeAPI = (function () {
   // (es. "tackle") oppure direttamente l'URL fornito da getPokemon.
   // Esempio d'uso:  const m = await PokeAPI.getMossa("tackle");
   async function getMossa(nome, url) {
-    // 1) Cache (se "vecchia", cioè senza il campo priorita aggiunto per gli
-    //    effetti di stato, la ignoriamo e riscarichiamo: la cache si aggiorna da sola)
+    // 1) Cache (se "vecchia", cioè senza i campi priorita/nomeEn/drain/healing
+    //    aggiunti nel tempo, la ignoriamo e riscarichiamo: la cache si aggiorna da sola)
     const inCache = leggiCache("mossa_" + nome);
-    if (inCache && inCache.priorita !== undefined) return inCache;
+    if (inCache && inCache.priorita !== undefined && inCache.nomeEn !== undefined &&
+        inCache.drain !== undefined && inCache.healing !== undefined) return inCache;
 
     // 2) Fetch dall'API
     const indirizzo = url || `${BASE_URL}/move/${nome}`;
@@ -177,6 +219,46 @@ const PokeAPI = (function () {
     const datiSnelli = riduciMossa(datiCompleti);
     scriviCache("mossa_" + nome, datiSnelli);
     console.log(`[PokeAPI] Mossa "${nome}" scaricata e salvata in cache ✔`);
+    return datiSnelli;
+  }
+
+  // ---- Abilità: nome italiano + descrizione di una singola abilità (F9.4) ----
+
+  function riduciAbilita(dati, nomeSlug) {
+    const vocePerLingua = (dati.names || []).find(n => n.language.name === "it");
+    const nomeIt = vocePerLingua
+      ? vocePerLingua.name
+      : nomeSlug.split("-").map(p => p.charAt(0).toUpperCase() + p.slice(1)).join(" ");
+
+    // La descrizione "flavor" (frase breve, tipo Pokédex) è più spesso
+    // disponibile in italiano rispetto a effect_entries (quasi sempre solo
+    // inglese) — usiamo quella, con fallback inglese se proprio manca.
+    const testi = dati.flavor_text_entries || [];
+    const testoIt = testi.find(t => t.language.name === "it");
+    const testoEn = testi.find(t => t.language.name === "en");
+    const scelto = testoIt || testoEn;
+    const descrizione = scelto
+      ? scelto.flavor_text.replace(/[\n\f\r]+/g, " ").replace(/\s+/g, " ").trim()
+      : "";
+
+    return { nome: nomeSlug, nomeIt, descrizione };
+  }
+
+  // Restituisce { nome, nomeIt, descrizione } per una singola abilità.
+  // Esempio d'uso:  const a = await PokeAPI.getAbilita("static");
+  async function getAbilita(nome) {
+    const inCache = leggiCache("abilita_" + nome);
+    if (inCache) return inCache;
+
+    const risposta = await fetch(`${BASE_URL}/ability/${nome}`);
+    if (!risposta.ok) {
+      throw new Error(`[PokeAPI] Errore HTTP ${risposta.status} per l'abilità "${nome}"`);
+    }
+    const datiCompleti = await risposta.json();
+
+    const datiSnelli = riduciAbilita(datiCompleti, nome);
+    scriviCache("abilita_" + nome, datiSnelli);
+    console.log(`[PokeAPI] Abilità "${nome}" scaricata e salvata in cache ✔`);
     return datiSnelli;
   }
 
@@ -248,6 +330,46 @@ const PokeAPI = (function () {
     return risultato;
   }
 
+  // ---- Pokédex: altezza/peso/categoria/descrizione di una specie (F: Pokédex) ----
+
+  function riduciPokedexEntry(pokemon, specie) {
+    const testi = specie.flavor_text_entries || [];
+    const testoIt = testi.find(t => t.language.name === "it");
+    const testoEn = testi.find(t => t.language.name === "en");
+    const scelto = testoIt || testoEn;
+    const descrizione = scelto
+      ? scelto.flavor_text.replace(/[\n\f\r]+/g, " ").replace(/\s+/g, " ").trim()
+      : "";
+    const genPerLingua = (specie.genera || []).find(g => g.language.name === "it")
+      || (specie.genera || []).find(g => g.language.name === "en");
+    return {
+      altezza: (pokemon.height || 0) / 10,   // decimetri → metri
+      peso: (pokemon.weight || 0) / 10,      // ettogrammi → kg
+      categoria: genPerLingua ? genPerLingua.genus : "",
+      descrizione,
+    };
+  }
+
+  // Restituisce { altezza (m), peso (kg), categoria, descrizione } per la
+  // scheda Pokédex di una specie. In cache separata da getPokemon perché
+  // getPokemon tiene solo i dati "di battaglia" (niente altezza/peso/testo,
+  // inutili lì e ingombranti su 386 specie in localStorage).
+  async function getPokedexEntry(id) {
+    const inCache = leggiCache("pokedex_" + id);
+    if (inCache) return inCache;
+    const [rPokemon, rSpecie] = await Promise.all([
+      fetch(`${BASE_URL}/pokemon/${id}`),
+      fetch(`${BASE_URL}/pokemon-species/${id}`),
+    ]);
+    if (!rPokemon.ok || !rSpecie.ok) {
+      throw new Error(`[PokeAPI] Errore HTTP per la scheda Pokédex #${id}`);
+    }
+    const [pokemon, specie] = await Promise.all([rPokemon.json(), rSpecie.json()]);
+    const voce = riduciPokedexEntry(pokemon, specie);
+    scriviCache("pokedex_" + id, voce);
+    return voce;
+  }
+
   // Svuota tutta la cache PokéAPI (utile per i test).
   // Da console: PokeAPI.svuotaCache()
   function svuotaCache() {
@@ -261,6 +383,6 @@ const PokeAPI = (function () {
   }
 
   // Esponiamo solo le funzioni pubbliche del modulo
-  return { getPokemon, getMossa, getEvoluzione, svuotaCache };
+  return { getPokemon, getMossa, getAbilita, getEvoluzione, getPokedexEntry, svuotaCache };
 
 })();

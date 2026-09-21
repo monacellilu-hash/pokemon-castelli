@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="53">
- <tileset firstgid="1" source="../../../outside.tsx"/>
- <tileset firstgid="16065" source="../../../Tiled/Gyms interior.tsx"/>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="30" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="54">
+ <editorsettings>
+  <export target="pokemon-castelli-Borgata_Tuscolana.tmj" format="json"/>
+ </editorsettings>
+ <tileset firstgid="1" source="../../outside.tsx"/>
+ <tileset firstgid="16065" source="../Tiled/Gyms interior.tsx"/>
  <layer id="1" name="ground" width="30" height="20" locked="1">
   <data encoding="csv">
 417,418,417,418,417,418,417,418,417,418,417,418,417,418,163,163,417,418,417,418,417,418,417,418,417,418,417,418,417,418,
@@ -56,7 +59,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,953,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,949,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -157,22 +160,6 @@
    </properties>
    <point/>
   </object>
-  <object id="39" name="Porta_casa_pg_pallet" x="5.98613" y="-69.864" width="32.1006" height="35.9527">
-   <properties>
-    <property name="arrivo_x" value="5"/>
-    <property name="arrivo_y" value="8"/>
-    <property name="destinazione" value="casa_personaggio_giocatore"/>
-    <property name="type" value="porta"/>
-   </properties>
-  </object>
-  <object id="40" name="Porta_casa_rivale" x="710.802" y="-115.099" width="32.1006" height="35.9527">
-   <properties>
-    <property name="arrivo_x" value="5"/>
-    <property name="arrivo_y" value="8"/>
-    <property name="destinazione" value="casa_rivale"/>
-    <property name="type" value="porta"/>
-   </properties>
-  </object>
   <object id="41" name="Porta_poke_center" x="191.961" y="446.84" width="32.1006" height="35.9527">
    <properties>
     <property name="arrivo_x" value="5"/>
@@ -202,7 +189,7 @@
    <properties>
     <property name="arrivo_x" value="15"/>
     <property name="arrivo_y" value="1"/>
-    <property name="destinazione" value="percorso_tuscolana"/>
+    <property name="destinazione" value="pokemon-castelli-Percorso 1"/>
     <property name="type" value="uscita"/>
    </properties>
   </object>
@@ -212,6 +199,11 @@
     <property name="type" value="cartel"/>
    </properties>
    <point/>
+  </object>
+  <object id="53" name="spwan_borgata_tuscolana" x="450.042" y="38.8766" width="55.4411" height="17.3333">
+   <properties>
+    <property name="type" value="spawn"/>
+   </properties>
   </object>
  </objectgroup>
 </map>

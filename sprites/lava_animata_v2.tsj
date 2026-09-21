@@ -1,0 +1,15 @@
+{ "columns":48,
+ "image":"Tile_nuovi\/lava_animata_v2.png",
+ "imageheight":128,
+ "imagewidth":1536,
+ "margin":0,
+ "name":"lava_animata_v2",
+ "spacing":0,
+ "tilecount":192,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

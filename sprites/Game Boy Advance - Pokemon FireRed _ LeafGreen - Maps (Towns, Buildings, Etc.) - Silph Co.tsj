@@ -1,0 +1,14 @@
+{ "columns":37,
+ "image":"Tile_nuovi\/proveclaude\/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Silph Co.png",
+ "imageheight":1824,
+ "imagewidth":1184,
+ "margin":0,
+ "name":"Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Silph Co",
+ "spacing":0,
+ "tilecount":2109,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

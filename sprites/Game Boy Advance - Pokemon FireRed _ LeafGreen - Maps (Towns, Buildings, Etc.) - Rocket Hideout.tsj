@@ -1,0 +1,14 @@
+{ "columns":54,
+ "image":"..\/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.png",
+ "imageheight":576,
+ "imagewidth":1736,
+ "margin":0,
+ "name":"Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout",
+ "spacing":0,
+ "tilecount":972,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

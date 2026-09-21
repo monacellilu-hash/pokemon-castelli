@@ -1,0 +1,15 @@
+{ "columns":6,
+ "image":"..\/..\/party3.png",
+ "imageheight":276,
+ "imagewidth":216,
+ "margin":0,
+ "name":"party3",
+ "spacing":0,
+ "tilecount":48,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

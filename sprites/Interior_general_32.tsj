@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"tiles\/Interior general.png",
+ "imageheight":8032,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Interior general",
+ "spacing":0,
+ "tilecount":2008,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#ffffff",
+ "type":"tileset",
+ "version":"1.10"
+}

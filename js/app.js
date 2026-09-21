@@ -1349,6 +1349,52 @@ function apriMarketGenzano() { apriMarketVenditore('mk-genzano'); }
 function apriVenditoreSpecialeGenzano() { apriMarketVenditore('mk-genzano-speciale'); }
 function apriMarketGrottaferrata() { apriMarketVenditore('mk-grottaferrata'); }
 
+// Market di Colonna (città finale, post-Lega): merce end-game + l'Erborista
+// come secondo venditore, stesso schema "venditore speciale" delle altre città.
+function apriMarketColonna() { apriMarketVenditore('mk-colonna'); }
+function apriErboristaColonna() { apriMarketVenditore('mk-colonna-erborista'); }
+
+// Ricercatori "ignari" dell'Osservatorio (sess. 15 set 2026, richiesta
+// esplicita di Luca): a differenza degli altri NON diventano mai grunt —
+// restano ricercatori per sempre, solo la battuta cambia dopo la
+// rivelazione CoTrAL (confusi, non capiscono cosa stia succedendo intorno
+// a loro). Un solo NPC sempre presente (nessun gate), dialogo dinamico via
+// azione invece di due oggetti Tiled gemelli.
+function _interagisciRicercatoreIgnaro(nomeBase) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const scoperto = !!(stato.flags && stato.flags.osservatorio_cotral_scoperto);
+  if (!scoperto) {
+    mostraDialogo(nomeBase, ['Interessante, i dati di quest\'anno non hanno alcun senso. Il clima è impazzito.']);
+    return;
+  }
+  mostraDialogo(nomeBase, [
+    'Aspetta... i miei colleghi si comportano in modo strano da un po\'. Non capisco cosa stia succedendo.',
+    'Io mi occupo solo di analizzare i dati, giuro! Non so niente di nessun "CoTrAL".',
+  ]);
+}
+function interagisciRicercatoreIgnaro1f() { _interagisciRicercatoreIgnaro('Ricercatore'); }
+function interagisciRicercatoreIgnaro2f() { _interagisciRicercatoreIgnaro('Ricercatrice'); }
+function interagisciRicercatoreIgnaro3f() { _interagisciRicercatoreIgnaro('Ricercatore'); }
+
+// Luogotenente (3F): resta fermo, si combatte SOLO parlandoci con [A]
+// (richiesta esplicita di Luca — non un'imboscata automatica come i grunt
+// liberi). Riusa la stessa lotta 2 contro 1 con Camilla alleata.
+function interagisciLuogotenenteOsservatorio() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (!stato.flags['grunt_attivo_cotral_osservatorio_luogotenente']) return;
+  // Già sconfitto: resta lì (richiesta esplicita di Luca, non deve sparire
+  // subito), ma non si può più rifare la lotta parlandogli di nuovo.
+  if (stato.flags['grunt_sconfitto_cotral_osservatorio_luogotenente']) {
+    if (typeof mostraDialogo === 'function') {
+      mostraDialogo('Luogotenente', ['Ho già perso una volta. Non ho altro da dire.']);
+    }
+    return;
+  }
+  if (typeof GameMap === 'undefined' || !GameMap.avviaLottaOsservatorioSingola) return;
+  GameMap.avviaLottaOsservatorioSingola('cotral_osservatorio_luogotenente');
+}
+
 /* ── Rocca di Papa — rocca_npc1, seconda parte cutscene "Baso è via" ──
    Prima parte (si avvicina al giocatore) in dati/cutscene.js. Qui: dialogo
    sul rapimento di Gianluca + dono MN Forza, una tantum. ── */
@@ -3261,6 +3307,15 @@ const VOLO_TILED = {
   'Castel Gandolfo':   { mappa: 'castel_gandolfo',   tx: 10, ty: 30 },
   'Monte Porzio Catone': { mappa: 'monteporzio',     tx: 37, ty: 42 },
   'Rocca di Papa':       { mappa: 'rocca_di_papa',   tx: 18, ty: 40 },
+  // Mancavano questi 3 (sess. 18 set 2026, segnalato da Luca: "se mi curo in
+  // un Centro Pokémon posso volarci, ma con Genzano Albano e Ariccia non
+  // funziona") — la città risultava visitata/curata ma voloVerso() non
+  // trovava una voce qui, quindi mostrava solo "non ancora raggiungibile in
+  // volo" invece di teletrasportare. Atterrano 1 casella a sud della porta
+  // del rispettivo Centro Pokémon, verificato libero da collisioni.
+  'Albano Laziale':   { mappa: 'albano',  tx: 31, ty: 33 },
+  'Ariccia':          { mappa: 'ariccia', tx: 21, ty: 36 },
+  'Genzano di Roma':  { mappa: 'genzano', tx: 9,  ty: 46 },
 };
 
 // Elenco completo delle destinazioni di volo (con coordinate sicure)

@@ -9,12 +9,43 @@
 const POSIZIONE_INIZIALE = { lat: 41.8421, lon: 12.6158 };
 
 /* ----------------------------------------------------------
-   ⚠️ MODALITÀ TEST — DA METTERE A false A GIOCO COMPLETO! ⚠️
-   Con true: 999 Caramelle Rare nello zaino a ogni avvio
-   (ogni caramella = +1 livello, fuori battaglia, dal menu Squadra).
-   Serve solo per testare velocemente palestre e progressione.
+   ⚠️ MODALITÀ TEST — protetta da password quando il gioco gira online ⚠️
+   Con true: 999 Caramelle Rara nello zaino a ogni avvio, oggetti/bottoni di
+   debug visibili, gate che non bloccano più il passaggio.
+   In locale (localhost/127.0.0.1/file://) si attiva DA SOLA come sempre,
+   nessun cambiamento per Luca. Online (GitHub Pages o altro host) resta
+   spenta finché non si chiama dalla console `attivaModalitaTest('password')`
+   con la password giusta — vedi funzione più sotto in questo file.
    ---------------------------------------------------------- */
-const MODALITA_TEST = true;
+let MODALITA_TEST = false;
+
+// SHA-256 della password di sblocco online (mai la password in chiaro nel
+// codice pubblico). La password vera la conosce solo Luca.
+const _HASH_PASSWORD_TEST = 'b74e0bc290cde0e6a8ccfff1124d7e69cded735995a70e797199deb884ed8bea';
+
+(function _autoModalitaTestLocale() {
+  const h = (typeof location !== 'undefined') ? location.hostname : '';
+  const eLocale = h === 'localhost' || h === '127.0.0.1' || h === '' || h === '0.0.0.0';
+  if (eLocale) MODALITA_TEST = true;
+})();
+
+// Da console (F12), solo online: attivaModalitaTest('la-password-giusta')
+async function attivaModalitaTest(password) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(password)));
+  const hex = [...new Uint8Array(buf)].map(b => b.toString(16).padStart(2, '0')).join('');
+  if (hex === _HASH_PASSWORD_TEST) {
+    MODALITA_TEST = true;
+    console.log('%c✅ Modalità test attivata.', 'color:lime;font-weight:bold');
+    return true;
+  }
+  console.log('%c❌ Password sbagliata.', 'color:red;font-weight:bold');
+  return false;
+}
+
+function disattivaModalitaTest() {
+  MODALITA_TEST = false;
+  console.log('%cModalità test disattivata.', 'color:orange');
+}
 
 /* ----------------------------------------------------------
    CITTÀ DI PARTENZA + LABORATORIO DEL PROFESSORE (F7)
@@ -2858,6 +2889,19 @@ const OGGETTI = {
                descrizione: 'Risveglia un Pokémon esausto (KO) con metà degli HP. Si usa dal menu Zaino.' },
   revitalizzantemax: { nome: 'Revitalizzante Max', categoria: 'revive', max: true, prezzo: 4000, icona: '💊', img: 'MAXREVIVE.png',
                descrizione: 'Risveglia un Pokémon esausto (KO) con tutti gli HP.' },
+
+  // ── Erbe medicinali (categoria esistente, effetto meccanico vero — a
+  // differenza di vitamine/fossili): venduta dall'Erborista di Colonna,
+  // sess. 14 set 2026. Stessi 4 oggetti dell'anziana erborista di Fuchsia/
+  // Celadon in FireRed/LeafGreen (Essentials FRLG/PBS/items.txt).
+  polvere_energetica: { nome: 'Polvere Energetica', categoria: 'cura', cura: 60, prezzo: 500, icona: '🌿', img: 'ENERGYPOWDER.png',
+               descrizione: 'Una polvere medicinale molto amara. Fa recuperare 60 HP a un Pokémon della squadra.' },
+  radice_energetica: { nome: 'Radice Energetica', categoria: 'cura', cura: 120, prezzo: 1200, icona: '🌱', img: 'ENERGYROOT.png',
+               descrizione: 'Una radice medicinale estremamente amara. Fa recuperare 120 HP a un Pokémon della squadra.' },
+  polvere_curativa: { nome: 'Polvere Curativa', categoria: 'curastato', stato: null, prezzo: 300, icona: '🍃', img: 'HEALPOWDER.png',
+               descrizione: 'Una polvere medicinale molto amara. Cura qualsiasi stato alterato di un Pokémon.' },
+  erba_rediviva: { nome: 'Erba Rediviva', categoria: 'revive', max: true, prezzo: 2800, icona: '🌾', img: 'REVIVALHERB.png',
+               descrizione: 'Un\'erba medicinale molto amara. Risveglia un Pokémon esausto (KO) con tutti gli HP.' },
   etere: { nome: 'Etere', categoria: 'pp', prezzo: 1200, icona: '🔵', img: 'ETHER.png',
                descrizione: 'Restituisce PP a un Pokémon della squadra (in questo motore: a tutte le mosse insieme, versione semplificata).' },
   elisir: { nome: 'Elisir', categoria: 'pp', max: true, prezzo: 3000, icona: '🟡', img: 'ELIXIR.png',
@@ -3257,6 +3301,18 @@ const POKE_MARKET = [
             'carbonella', 'acqua_magica', 'magnete', 'seme_miracolo', 'ghiaccio_perenne', 'cintura_nera',
             'aculeo_veleno', 'sabbia_soffice', 'becco_rigido', 'cucchiaio_psico', 'polvere_argento',
             'pietra_dura', 'sigillo_ombra', 'zanna_drago', 'lenti_scure', 'foulard_seta'] },
+
+  // Market di Colonna (città finale, post-Lega — sess. 14 set 2026): merce
+  // end-game su richiesta esplicita di Luca. Aperto tramite NPC dedicato
+  // (apriMarketVenditore('mk-colonna'), non dalla vicinanza GPS — vedi
+  // mart_colonna in MAPPE, js/map.js).
+  { id: 'mk-colonna', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
+    merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante'] },
+
+  // Erborista di Colonna (stesso negozio, secondo NPC — venditore speciale):
+  // le 4 erbe medicinali di FireRed/LeafGreen (Essentials FRLG).
+  { id: 'mk-colonna-erborista', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
+    merce: ['polvere_energetica', 'radice_energetica', 'polvere_curativa', 'erba_rediviva'] },
 ];
 
 // Level cap iniziale: prima di battere la Palestra 1 (Frascati)
@@ -3268,6 +3324,14 @@ const LEVEL_CAP_INIZIALE = 14;
    Salvati in stato.inventario.chiave[id] = true.
    ---------------------------------------------------------- */
 const OGGETTI_CHIAVE = {
+  // Osservatorio CoTrAL (sess. 15 set 2026): bottino del luogotenente al 3F,
+  // apre le porte "a scomparsa" sparse sui 3 piani (non quella comandata
+  // dall'interruttore della statua al 2F, quella è indipendente).
+  'chiave_segreta_cotral': {
+    nome: 'Chiave Segreta',
+    icona: '🗝️',
+    descrizione: 'Una chiave metallica pesante, tolta a un luogotenente del Team CoTrAL. Apre le porte blindate del loro rifugio dentro l\'Osservatorio.',
+  },
   'braciere-nemi': {
     nome: 'Braciere di Nemi',
     icona: '🏺',

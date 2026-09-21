@@ -56,6 +56,11 @@ const GameMap = (function () {
     'frascati_centro': {
       file: 'sprites/maps_tiled/frascati_centro.tmj',
       latC: 41.8090, lonC: 12.6770,
+      // Rete di sicurezza (sess. 19 set 2026): coordinate LOCALI dello spawn
+      // "da_palestra_frascati" — se mai lo spawn Tiled non venisse trovato
+      // a runtime, questo fallback tiene comunque l'atterraggio dentro
+      // Frascati Centro, mai su un'altra mappa del cluster.
+      spawn: { tx: 30, ty: 11 },
     },
     'frascati_est': {
       file: 'sprites/maps_tiled/frascati_est.tmj',
@@ -228,6 +233,27 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/Osservatorio.tmj',
       latC: 41.8195, lonC: 12.7185,
     },
+    // ── Osservatorio interno, 3 piani (sess. 15 set 2026): rifugio segreto
+    // CoTrAL sotto copertura di "ricerca sul clima" — vedi
+    // _checkOsservatorioTrigger/dati/cutscene.js per l'arco narrativo
+    // completo (rivelazione dopo l'8ª palestra). Il warp e lo spawn di
+    // ritorno su Osservatorio.tmj esistevano già (Luca li aveva piazzati:
+    // destinazione 'osservatorio_interno', spawn_id 'entrata_principale').
+    'osservatorio_interno': {
+      file: 'sprites/maps_tiled/Osservatorio_1f.tmj',
+      interno: true,
+      latFissa: 41.8195, lonFissa: 12.7185,
+    },
+    'osservatorio_interno_2f': {
+      file: 'sprites/maps_tiled/Osservatorio_2f.tmj',
+      interno: true,
+      latFissa: 41.8195, lonFissa: 12.7185,
+    },
+    'osservatorio_interno_3f': {
+      file: 'sprites/maps_tiled/Osservatorio_3f.tmj',
+      interno: true,
+      latFissa: 41.8195, lonFissa: 12.7185,
+    },
     // Interno palestra di Monte Porzio (chiave = destinazione della porta in monteporzio.tmj)
     'palestra_monteporzio_interno': {
       file: 'sprites/maps_tiled/pokemon-castelli-palestra_monteporzio.tmj',
@@ -298,6 +324,40 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/Lega_pokemon.tmj',
       latC: 41.8337, lonC: 12.7532,
       interno: true,   // niente Volo dentro la Lega (richiesta esplicita, sess. 5 set)
+    },
+    // ── Colonna (città finale, post-Lega — sess. 14 set 2026): Luca ha
+    // disegnato Colonna.tmj/Colonna_2.tmj e un Colonna.world che le mette in
+    // fila verticale CONTIGUA con Lega_pokemon.tmj (hall in cima, poi
+    // Colonna_2, poi Colonna) — stesso schema "cluster" di Frascati/
+    // Monte Porzio: si cammina dall'uscita della Lega dentro la città senza
+    // fade. 'lega_pokemon' resta 'interno:true' (niente Volo lì dentro): la
+    // sua appartenenza al cluster non lo cambia, il controllo è per singola
+    // sotto-mappa (mappaInfo si aggiorna quando si passa da un riquadro
+    // all'altro del cluster). colonna_2 = la città vera e propria (piazza,
+    // Centro Pokémon, Market, statua CoTrAL); colonna = i dintorni verso sud
+    // (già con 2 gate npc e uno stub warp verso il Bunkerino, piazzati da
+    // Luca in Tiled).
+    'colonna_2': {
+      file: 'sprites/maps_tiled/Colonna_2.tmj',
+      latC: 41.8144, lonC: 12.7607,
+    },
+    'colonna': {
+      file: 'sprites/maps_tiled/Colonna.tmj',
+      latC: 41.8110, lonC: 12.7607,
+    },
+    // Centro Pokémon e Market dedicati di Colonna: il Market è un file a sé
+    // (non il generico 'mart_interno') perché vende merce END-GAME unica,
+    // diversa da quella base — vedi 'mk-colonna'/'mk-colonna-erborista' in
+    // POKE_MARKET (js/data.js).
+    'pokecenter_colonna': {
+      file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_frascati.tmj',
+      interno: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
+    'mart_colonna': {
+      file: 'sprites/maps_tiled/pokemon-castelli-poke_market_colonna.tmj',
+      interno: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
     },
     // 1f/2f/3f/5f registrate qui (sess. 5 set 2026): i file .tmj esistevano
     // già ma non erano ancora agganciate a MAPPE — solo 4f lo era. Ognuna
@@ -1548,6 +1608,11 @@ const GameMap = (function () {
   let followerSprite  = null;
   let followerPos      = { tx: 0, ty: 0, dir: 'sud' };
   let followerSpecieId = null;   // id squadra[0] già caricato, per non ricaricare la texture ad ogni passo
+  // Override "alleato" (Osservatorio CoTrAL, sess. 15 set 2026): quando
+  // valorizzato, il follower mostra QUESTO sprite trainer (es. Camilla) al
+  // posto del Pokémon in testa alla squadra — "Camilla ti segue al posto
+  // del pokemon", richiesta esplicita di Luca. null = comportamento normale.
+  let followerAlleatoTexKey = null;
 
   // Girati-prima-di-camminare (Game_Player#update_command_new, Essentials
   // reale): la prima pressione di una direzione DIVERSA da quella tenuta
@@ -1568,6 +1633,15 @@ const GameMap = (function () {
   // posto ogni casella"). Così il ciclo del passo prosegue naturale finché il
   // passo fisico non è davvero concluso.
   let giocatoreInMovimento = false;
+
+  // Dopo un warp/cambio mappa il giocatore deve FERMARSI e ripremere una
+  // direzione per ripartire, anche se tiene premuto lo stesso tasto con cui
+  // è entrato nel warp — altrimenti "eredita" il movimento e continua a
+  // camminare da solo sulla mappa nuova (richiesta esplicita di Luca,
+  // sess. 17 set 2026). Impostato a true da caricaMappa() a ogni cambio
+  // mappa reale; l'update() blocca il movimento finché non vede TUTTI i
+  // tasti direzionali rilasciati almeno una volta.
+  let attesaRilascioDirezione = false;
 
   let mappaCorrente    = null;
   let mappaInfo        = null;
@@ -1975,6 +2049,13 @@ const GameMap = (function () {
         console.error('[Map] Errore caricamento mappa:', chiave, err);
       }
 
+      // Da qui in poi il movimento resta sospeso finché il giocatore non
+      // rilascia TUTTI i tasti direzionali almeno una volta (vedi update()):
+      // tenere premuta la direzione con cui si è entrati nel warp non deve
+      // far ripartire subito il cammino sulla mappa nuova.
+      attesaRilascioDirezione = true;
+      ultimaDirezionePremuta = null;
+
       bloccato = false;
     }
 
@@ -1989,6 +2070,7 @@ const GameMap = (function () {
       tileSize  = tmj.tilewidth;
       mappaCorrente = chiave;
       mappaInfo = { ...def, mapW, mapH };
+      if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
 
       // Segna la città come "visitata" (sblocca la destinazione per la MN Volo)
       const comune = MAPPA_COMUNE[chiave];
@@ -2034,6 +2116,7 @@ const GameMap = (function () {
       }
 
       this._ripristinaOggettiRaccolti();
+      this._applicaPorteScomparse();
 
       // ── Scelta del punto di spawn (Fix 3) ──
       // Priorità: spawn che combacia (per spawn_id o per mappa di provenienza)
@@ -2081,6 +2164,7 @@ const GameMap = (function () {
       this._creaNpcStato();
       await this._creaSpritesNPC();
       this._creaLeggendari();
+      this._creaCompagniPokemon();
       this._creaMassi();
       this._creaSpritesMassi();
       this._creaLuci();
@@ -2249,6 +2333,7 @@ const GameMap = (function () {
       }
 
       this._ripristinaOggettiRaccolti();
+      this._applicaPorteScomparse();
 
       clusterAttivo = nomeCluster;   // da qui in poi il cluster è "attivo" a tutti gli effetti
 
@@ -2286,6 +2371,7 @@ const GameMap = (function () {
       spawnGuard = { tx: sx, ty: sy };
 
       mappaInfo = { ...MAPPE[chiaveEntrata], mapW: boxEntrata.w, mapH: boxEntrata.h };
+      if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
 
       // Camera sul bounding box dell'INTERO cluster (Parte 4): nessun ricalcolo
       // quando il player attraversa una cucitura interna.
@@ -2296,6 +2382,7 @@ const GameMap = (function () {
       this._creaNpcStato();
       await this._creaSpritesNPC();
       this._creaLeggendari();
+      this._creaCompagniPokemon();
       this._creaMassi();
       this._creaSpritesMassi();
       this._creaLuci();
@@ -2622,9 +2709,16 @@ const GameMap = (function () {
           const c = centro(e);
           return c.tx >= 0 && c.tx < mapW && c.ty >= 0 && c.ty < mapH;
         });
+      // Se è richiesta una mappa precisa (soloMappa), la restrizione vale
+      // SEMPRE, anche a lista vuota — MAI ripiegare silenziosamente su uno
+      // spawn di un'ALTRA mappa del cluster (bug reale trovato sess. 19 set
+      // 2026: un singolo spawn "invisibile" a runtime su frascati_centro
+      // faceva atterrare il giocatore sul primo spawn di TUTTO il cluster,
+      // cioè quello di Percorso 3 — che non c'entrava niente). Con la lista
+      // vuota si passa null al chiamante, che ha il suo fallback più
+      // localizzato (centro della mappa giusta), mai una mappa a caso.
       if (soloMappa) {
-        const ristretti = spawns.filter(s => s._mappaChiave === soloMappa);
-        if (ristretti.length) spawns = ristretti;
+        spawns = spawns.filter(s => s._mappaChiave === soloMappa);
       }
       if (spawns.length === 0) return null;
 
@@ -2664,6 +2758,26 @@ const GameMap = (function () {
     /* ────────── STATO NPC / TRAINER (Fix 4) ────────── */
 
     _creaNpcStato() {
+      // Auto-sincronizza osservatorio_confronto_attivo da camilla_invito_vista
+      // PRIMA di decidere chi è visibile: serve per i salvataggi già esistenti
+      // prima che questo flag esistesse (avevano solo camilla_invito_vista=true,
+      // mai passato di qui) — va fatto qui, non solo nel trigger, altrimenti
+      // Camilla/i grunt restano invisibili fino al prossimo _rigeneraNpc()
+      // anche dopo che il flag si è auto-sincronizzato altrove (bug, sess. 17
+      // set 2026, scoperto correggendo la visibilità gate→premio).
+      if (typeof stato !== 'undefined' && stato.flags &&
+          stato.flags.camilla_invito_vista && !stato.flags.osservatorio_confronto_vista) {
+        stato.flags.osservatorio_confronto_attivo = true;
+      }
+      // Stesso self-heal per il boss finale del 2F (sess. 18 set 2026): il
+      // boss + le sue comparse (ricercatori/grunt) sono visibili da quando
+      // il CoTrAL è scoperto fino a quando non lo batti — niente gate,
+      // condizione unica gestita a mano per evitare lo stesso bug di prima.
+      if (typeof stato !== 'undefined' && stato.flags &&
+          stato.flags.osservatorio_cotral_scoperto && !stato.flags.osservatorio_boss_finale_sconfitto &&
+          stato.flags.osservatorio_boss_area_attiva === undefined) {
+        stato.flags.osservatorio_boss_area_attiva = true;
+      }
       npcStato = [];
       for (const ev of eventiMappa) {
         const isLeg = (ev.tipo === 'pokemon leggendario' || ev.tipo === 'leggendario');
@@ -2997,6 +3111,7 @@ const GameMap = (function () {
       this._creaNpcStato();
       await this._creaSpritesNPC();
       await this._creaLeggendari();
+      await this._creaCompagniPokemon();
     }
 
     // Mostra i leggendari (type "pokemon leggendario"/"leggendario_ambientale",
@@ -3052,6 +3167,43 @@ const GameMap = (function () {
         const dim = Math.max(img.width || 96, img.height || 96);
         spr.setScale((tileSize * 1.7) / dim);
         st.sprite = spr;
+        npcSprites.push(spr);
+      }
+    }
+
+    // Personaggi importanti (capipalestra ecc.) con il loro Pokémon più forte
+    // FISSO al fianco, fuori dalla Ball — sess. 19 set 2026, richiesta
+    // esplicita di Luca. Opt-in per allenatore: DATI_TRAINER[id].pokemonFianco
+    // = true (di norma sui capipalestra). Il "più forte" è per convenzione
+    // di progetto l'ULTIMO della squadra (l'asso, es. "Rhydon (asso)" nei
+    // commenti di dati/trainer.js) — stessa idea del core Superquattro.
+    // Stesso sprite del follower del giocatore (_caricaTexFollower), fermo,
+    // rivolto a sud, un passo a destra dell'allenatore. Chiamata sempre
+    // insieme a _creaLeggendari() (stessa vita: creata a ogni caricamento
+    // mappa/_rigeneraNpc, distrutta con gli altri npcSprites).
+    async _creaCompagniPokemon() {
+      if (typeof PokeAPI === 'undefined' || typeof DATI_TRAINER === 'undefined') return;
+      for (const st of npcStato) {
+        if (st.tipo !== 'trainer' || !st.id) continue;
+        const dati = DATI_TRAINER[st.id];
+        if (!dati || !dati.pokemonFianco || !dati.squadra || !dati.squadra.length) continue;
+        const asso = dati.squadra[dati.squadra.length - 1];
+
+        let nomeSpecie = null;
+        try { const pkm = await PokeAPI.getPokemon(asso.id); nomeSpecie = pkm && pkm.nome; }
+        catch (e) { /* offline o non in cache: niente compagno stavolta */ }
+        if (!nomeSpecie) continue;
+
+        const texKey = await this._caricaTexFollower(nomeSpecie);
+        if (!texKey) continue;
+
+        const offsetTx = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dx) ?? 1;
+        const offsetTy = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dy) ?? 0;
+        const px = (st.tx + offsetTx) * tileSize + tileSize / 2;
+        const py = (st.ty + offsetTy + 1) * tileSize;
+        const spr = this.add.sprite(px, py, texKey, 1).setOrigin(0.5, 1).setDepth(20);   // frame 1 = sud, fermo
+        const frameW = this.textures.get(texKey).get(0).width || 64;
+        spr.setScale((tileSize * 1.4) / frameW);
         npcSprites.push(spr);
       }
     }
@@ -3140,6 +3292,18 @@ const GameMap = (function () {
     // spawn/warp e ogni volta che la squadra potrebbe essere cambiata
     // (rigeneraFollower esposta in app.js per quei casi, es. dopo il Box).
     async _aggiornaFollowerSpecie() {
+      // Override alleato attivo (Camilla all'Osservatorio): ignora squadra/
+      // Pokémon, mostra sempre e solo questo sprite finché non viene tolto.
+      if (followerAlleatoTexKey) {
+        if (!followerSprite) return;
+        if (followerSpecieId === followerAlleatoTexKey) return;
+        const texKey = await this._caricaTexNpc(followerAlleatoTexKey);
+        followerSpecieId = followerAlleatoTexKey;
+        if (!texKey) { followerSprite.setVisible(false); return; }
+        followerSprite.setTexture(texKey, this._npcFrameBase(followerPos.dir) + 1);
+        this._aggiornaVisibilitaFollower();
+        return;
+      }
       if (typeof stato === 'undefined' || !stato.squadra || !stato.squadra.length || !followerSprite) {
         followerSpecieId = null;
         if (followerSprite) followerSprite.setVisible(false);
@@ -3170,6 +3334,16 @@ const GameMap = (function () {
       this._aggiornaVisibilitaFollower();
     }
 
+    // Attiva/disattiva l'override "alleato" del follower (Camilla
+    // all'Osservatorio CoTrAL). Attivare: passa lo sprite file (stesso nome
+    // usato in DATI_TRAINER, es. 'trainer_LEADER_Blaine'). Disattivare:
+    // chiamare senza argomenti — torna a mostrare il Pokémon in squadra.
+    async _impostaFollowerAlleato(spriteFile) {
+      followerAlleatoTexKey = spriteFile || null;
+      followerSpecieId = null;   // forza il ricaricamento della texture giusta
+      await this._aggiornaFollowerSpecie();
+    }
+
     // Mostra/nasconde il follower secondo la modalità attuale: MAI in
     // Bicicletta o mentre si Surfa (richiesta esplicita di Luca — troppo
     // veloce/incoerente da seguire a piedi), sempre visibile altrimenti
@@ -3185,7 +3359,7 @@ const GameMap = (function () {
     // Compare già dietro al giocatore, una casella nella direzione opposta a
     // quella verso cui è rivolto (se libera, altrimenti sulla stessa
     // casella — si sistema da solo al primo passo).
-    _posizionaFollower(tx, ty) {
+    async _posizionaFollower(tx, ty) {
       const dirGiocatore = this._normDir(facciata);
       const { dx, dy } = this._dirDelta(dirGiocatore);
       let ftx = tx - dx, fty = ty - dy;
@@ -3204,7 +3378,7 @@ const GameMap = (function () {
         scena.tweens.killTweensOf(followerSprite);
         followerSprite.setPosition(px, py);
       }
-      this._aggiornaFollowerSpecie();
+      await this._aggiornaFollowerSpecie();
       this._aggiornaVisibilitaFollower();
     }
 
@@ -3492,7 +3666,16 @@ const GameMap = (function () {
     /* ────────── GAME LOOP ────────── */
 
     update(_time, delta) {
+      // Difesa in più oltre a "bloccato": se per qualunque motivo una
+      // cutscene/lotta ha dimenticato di chiamare bloccaMovimento() in un
+      // punto preciso (o l'ha richiamato in ritardo dopo un await), il
+      // giocatore non deve MAI poter camminare mentre stato.incontroAttivo
+      // è vero o un dialogo è a schermo — segnalato da Luca, sess. 18 set
+      // 2026 ("durante la cutscene ad ora posso muovermi, questa cosa non
+      // va bene").
       if (bloccato) return;
+      if (typeof stato !== 'undefined' && stato.incontroAttivo) return;
+      if (typeof dialogoInCorso !== 'undefined' && dialogoInCorso) return;
 
       // NPC e trainer si muovono/guardano ogni frame (Fix 4)
       frameCount++;
@@ -3506,7 +3689,8 @@ const GameMap = (function () {
       corsaAttiva = this.shiftKey.isDown;
 
       // Bicicletta: tasto B, si indossa/toglie solo se posseduta. Non si può
-      // pedalare mentre si sta surfando.
+      // pedalare mentre si sta surfando né dentro edifici/interni (palestre,
+      // stazioni, case, Lega...) — richiesta esplicita punto 9, sess. 16 set 2026.
       if (Phaser.Input.Keyboard.JustDown(this.biciKey)) {
         const haBici = typeof stato !== 'undefined' && stato.inventario &&
                        stato.inventario.chiave && stato.inventario.chiave.bicicletta;
@@ -3514,6 +3698,8 @@ const GameMap = (function () {
           if (typeof mostraToast === 'function') mostraToast('🚲 Non hai la Bicicletta.', 1800);
         } else if (surfAttivo) {
           if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici in acqua.', 1800);
+        } else if (mappaInfo && mappaInfo.interno) {
+          if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici qui dentro.', 1800);
         } else {
           biciAttiva = !biciAttiva;
           if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
@@ -3552,6 +3738,24 @@ const GameMap = (function () {
       // this.dpadDx/dpadDy (vedi _collegaDpad) invece di muovere per conto
       // suo con un setInterval separato — prima i due controlli divergevano.
       const c = this.cursors;
+
+      // Dopo un warp: niente movimento finché non si vedono TUTTI i tasti
+      // direzionali rilasciati almeno una volta (vedi attesaRilascioDirezione,
+      // impostato in caricaMappa()) — tenere premuta la direzione con cui si
+      // è entrati nel warp non deve far ripartire subito il cammino.
+      if (attesaRilascioDirezione) {
+        const tastoTenuto = c.left.isDown || c.right.isDown || c.up.isDown || c.down.isDown ||
+                             !!this.dpadDx || !!this.dpadDy;
+        if (tastoTenuto) {
+          if (!giocatoreInMovimento && playerSprite) {
+            playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          }
+          this._aggiornaMountSurf();
+          return;
+        }
+        attesaRilascioDirezione = false;
+      }
+
       let dx = 0, dy = 0;
       if (c.left.isDown)  dx = -1;
       if (c.right.isDown) dx =  1;
@@ -3718,6 +3922,16 @@ const GameMap = (function () {
         }
       }
 
+      // Porta a scomparsa (Osservatorio CoTrAL, sess. 15 set 2026): solida
+      // finché non è stata aperta (con la chiave, o tramite l'interruttore
+      // della statua per quella controllata_da_interruttore). Una volta
+      // aperta, il tile è già stato rimosso da _applicaPorteScomparse al
+      // caricamento mappa: qui basta non bloccare più il passaggio.
+      if (this._portaScomparsaBlocca(newTx, newTy)) {
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        return;
+      }
+
       // Masso spingibile (MN Forza): camminandoci contro, prova a spingerlo
       // di una casella. Se non si sposta (bloccato, o niente MN Forza) il
       // giocatore resta fermo, esattamente come contro un ostacolo qualsiasi.
@@ -3760,6 +3974,7 @@ const GameMap = (function () {
           mappaCorrente = nuovaSub;
           const box = clusterBoxes[mappaCorrente];
           mappaInfo = { ...MAPPE[mappaCorrente], mapW: box.w, mapH: box.h };
+          if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
           const comune = MAPPA_COMUNE[mappaCorrente];
           if (comune && typeof stato !== 'undefined' && Array.isArray(stato.cittaVisitate) &&
               !stato.cittaVisitate.includes(comune)) {
@@ -3898,6 +4113,22 @@ const GameMap = (function () {
 
       let tipoVisibile = (eInterno || eGrottaBuia) ? 'sereno' : tipo;
       if (tipoVisibile === 'grandine' && mappaCorrente !== 'monte_cavo') tipoVisibile = 'sereno';
+      // Tempesta di sabbia FISSA e permanente fuori dall'Osservatorio (punto
+      // 7, sess. 16 set 2026: "gli eventi metereologici strani... si vedono
+      // fuori dall'osservatorio... c'è sempre questa tempesta lì") — non è
+      // pilotata da stato.meteo.tipo, sovrascrive qualunque meteo globale.
+      // NON basta controllare mappaCorrente === 'osservatorio': dentro il
+      // cluster 'montepo' il bounding box di monteporzio si sovrappone a
+      // quello di osservatorio, e _mappaSottoGiocatore() (primo box che
+      // contiene la casella) risolve quella zona come 'monteporzio', non
+      // 'osservatorio' — stesso bug scovato sul trigger del confronto, sess.
+      // 17 set 2026. Qui controlliamo la posizione VERA contro il bounding
+      // box reale di osservatorio, indipendentemente da cosa dice mappaCorrente.
+      const boxOss = clusterAttivo === 'montepo' ? clusterBoxes.osservatorio : null;
+      const suOsservatorio = mappaCorrente === 'osservatorio' || (boxOss &&
+        posTile.tx >= boxOss.offsetX && posTile.tx < boxOss.offsetX + boxOss.w &&
+        posTile.ty >= boxOss.offsetY && posTile.ty < boxOss.offsetY + boxOss.h);
+      if (!eInterno && suOsservatorio) tipoVisibile = 'sabbia';
 
       if (!this._veloMeteoRect) {
         this._veloMeteoRect = this.add.rectangle(
@@ -3914,6 +4145,7 @@ const GameMap = (function () {
         pioggia:  { colore: 0x1a2a4a, opacita: 0.22 },
         sole:     { colore: 0xffdd66, opacita: 0.12 },
         grandine: { colore: 0xcfe6f5, opacita: 0.20 },
+        sabbia:   { colore: 0xc9a15c, opacita: 0.30 },
       };
       const t = TINTE_METEO[tipoVisibile] || TINTE_METEO.sereno;
       this._veloMeteoRect.setFillStyle(t.colore, t.opacita);
@@ -3933,7 +4165,7 @@ const GameMap = (function () {
         this._emitterMeteo.destroy();
         this._emitterMeteo = null;
       }
-      if (tipo !== 'pioggia' && tipo !== 'grandine') return;
+      if (tipo !== 'pioggia' && tipo !== 'grandine' && tipo !== 'sabbia') return;
 
       if (!this.textures.exists('meteo-goccia')) {
         const g1 = this.make.graphics({ x: 0, y: 0, add: false });
@@ -3947,8 +4179,16 @@ const GameMap = (function () {
         g2.generateTexture('meteo-fiocco', 6, 6);
         g2.destroy();
       }
+      if (!this.textures.exists('meteo-sabbia')) {
+        const g3 = this.make.graphics({ x: 0, y: 0, add: false });
+        g3.fillStyle(0xffffff, 1);
+        g3.fillRect(0, 0, 10, 3);
+        g3.generateTexture('meteo-sabbia', 10, 3);
+        g3.destroy();
+      }
 
       const w = this.cameras.main.width;
+      const h = this.cameras.main.height;
       if (tipo === 'pioggia') {
         this._emitterMeteo = this.add.particles(0, 0, 'meteo-goccia', {
           x: { min: 0, max: w }, y: -20,
@@ -3958,6 +4198,18 @@ const GameMap = (function () {
           alpha: { start: 0.55, end: 0.2 },
           quantity: 3, frequency: 20,
           tint: 0xbcd6f0,
+        });
+      } else if (tipo === 'sabbia') {
+        // Vento orizzontale carico di sabbia: entra da sinistra, attraversa
+        // tutto lo schermo (niente caduta verticale come pioggia/grandine).
+        this._emitterMeteo = this.add.particles(0, 0, 'meteo-sabbia', {
+          x: -20, y: { min: 0, max: h },
+          lifespan: 1100,
+          speedX: { min: 500, max: 760 }, speedY: { min: -30, max: 30 },
+          scaleX: { min: 0.6, max: 1.4 },
+          alpha: { start: 0.6, end: 0.15 },
+          quantity: 3, frequency: 18,
+          tint: 0xd8b26e,
         });
       } else {
         this._emitterMeteo = this.add.particles(0, 0, 'meteo-fiocco', {
@@ -4161,9 +4413,13 @@ const GameMap = (function () {
         // acqua (vedi modello acqua/surfAttivo/collisioni in _sposta) — non è
         // più "interagibile" finché non si torna a piedi.
         if (ev.tipo === 'trigger_surf' && surfAttivo) continue;
+        // Porta a scomparsa già aperta: è ormai solo pavimento, niente più
+        // da interagire lì (non deve restare "premibile" per sempre).
+        if (ev.tipo === 'porta_scomparsa' && this._portaScomparsaApertaEv(ev)) continue;
         const interagibile =
           ev.tipo === 'cartello' || ev.tipo === 'cartel' || ev.tipo === 'pc' ||
           ev.tipo === 'oggetto'  || ev.tipo === 'object' ||
+          ev.tipo === 'porta_scomparsa' || ev.tipo === 'statua_interruttore' ||
           isMnTrigger(ev.tipo) || ev.tipo === 'trigger_storia';
         if (!interagibile) continue;
         const occ = (ev.w > 0 && ev.h > 0)
@@ -4373,6 +4629,75 @@ const GameMap = (function () {
         if (testoFinale && typeof mostraDialogo === 'function') {
           mostraDialogo('Cartello', [testoFinale]);
         }
+        return;
+      }
+
+      // Porta a scomparsa (Osservatorio CoTrAL, sess. 15 set 2026): con la
+      // chiave giusta nello zaino-chiave, [A] la apre per sempre (dialogo +
+      // tile rimossi con _nascondiTileOstacolo, niente re-render necessario).
+      // ev.props.controllata_da_interruttore:true = questa NON si apre con
+      // nessuna chiave, solo l'interruttore della statua al 2F la comanda —
+      // qui ci si limita a spiegarlo.
+      if (tipo === 'porta_scomparsa') {
+        const controllataDaInterruttore = ev.props.controllata_da_interruttore === true ||
+          ev.props.controllata_da_interruttore === 'true';
+        if (controllataDaInterruttore) {
+          if (typeof mostraDialogo === 'function') {
+            mostraDialogo('', ['Questa porta non ha una serratura: sembra comandata da qualcos\'altro, da qualche altra parte.']);
+          }
+          return;
+        }
+        const chiaveId = ev.props.chiave;
+        const haChiave = !!(chiaveId && stato.inventario && stato.inventario.chiave && stato.inventario.chiave[chiaveId]);
+        if (!haChiave) {
+          if (typeof mostraDialogo === 'function') {
+            mostraDialogo('', ['La porta è chiusa a chiave. Ci vorrebbe la chiave giusta.']);
+          }
+          return;
+        }
+        (async () => {
+          const nomeChiave = (typeof OGGETTI_CHIAVE !== 'undefined' && OGGETTI_CHIAVE[chiaveId]) ? OGGETTI_CHIAVE[chiaveId].nome : 'la chiave segreta';
+          if (typeof mostraDialogo === 'function') {
+            await mostraDialogo('', [`${this._nomeGiocatore()} usa ${nomeChiave}!`]);
+          }
+          if (!stato.flags) stato.flags = {};
+          stato.flags['porta_aperta_' + ev.id] = true;
+          const tx0 = ev.w > 0 ? ev.tx0 : ev.tx, tx1 = ev.w > 0 ? ev.tx1 : ev.tx;
+          const ty0 = ev.h > 0 ? ev.ty0 : ev.ty, ty1 = ev.h > 0 ? ev.ty1 : ev.ty;
+          for (let ty = ty0; ty <= ty1; ty++)
+            for (let tx = tx0; tx <= tx1; tx++) this._nascondiTileOstacolo(tx, ty);
+          if (typeof salvaPartita === 'function') salvaPartita();
+        })();
+        return;
+      }
+
+      // Statua-interruttore di Mewtwo (2F Osservatorio, sess. 15 set 2026):
+      // prima che il CoTrAL sia scoperto è solo scenografia sospetta; dopo,
+      // premendo A si può far scattare l'interruttore nascosto, che decide
+      // se la porta_scomparsa "controllata_da_interruttore" al 1F c'è o no.
+      if (tipo === 'statua_interruttore') {
+        (async () => {
+          if (!stato.flags) stato.flags = {};
+          const scoperto = !!stato.flags.osservatorio_cotral_scoperto;
+          if (!scoperto) {
+            if (typeof mostraDialogo === 'function') {
+              await mostraDialogo('', ['Questa statua ha qualcosa di strano, chissà...']);
+            }
+            return;
+          }
+          if (typeof mostraScelta !== 'function') return;
+          const scelta = await mostraScelta('C\'è un pulsante nascosto, vuoi premerlo?', 'Sì', 'No');
+          if (scelta !== 1) return;
+          stato.flags.cotral_interruttore_premuto = !stato.flags.cotral_interruttore_premuto;
+          // Aspetto della statua: normale (1315/1323) o "premuta" (1316/1324),
+          // stessi id locali già confermati sul tileset Interior_general_32.
+          // ev.tx/ev.ty = casella INFERIORE della statua (dove ci si mette
+          // davanti per interagire); quella superiore è una casella sopra.
+          const premuto = stato.flags.cotral_interruttore_premuto;
+          this._impostaTileOstacolo(ev.tx, ev.ty - 1, premuto ? 1316 : 1315);
+          this._impostaTileOstacolo(ev.tx, ev.ty, premuto ? 1324 : 1323);
+          if (typeof salvaPartita === 'function') salvaPartita();
+        })();
         return;
       }
 
@@ -4968,6 +5293,620 @@ const GameMap = (function () {
       }
     }
 
+    // Coppie di grunt CoTrAL all'Osservatorio (sess. 15 set 2026): ogni
+    // rettangolo Tiled type:'trigger_cotral_coppia' (props trainer_id +
+    // trainer_id_2) fa scattare, quando ci si entra, una lotta in doppia
+    // con Camilla alleata (stessa tecnica di _battagliaDoppiaAlleato già
+    // usata per Baso al Rifugio CoTrAL Rocca) — SOLO se Camilla è già stata
+    // reclutata (stato.flags.osservatorio_camilla_alleata) e la coppia non
+    // è già stata battuta in precedenza.
+    // Boss CoTrAL (2F): solo una battuta minacciosa la prima volta che ci si
+    // avvicina (nessuna lotta ancora, per scelta esplicita di Luca — "la
+    // vediamo dopo"). Da lì in poi resta un NPC normale (dialogo ripetibile).
+    _checkOsservatorioBossTrigger() {
+      if (mappaCorrente !== 'osservatorio_interno_2f') return;
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato) return;
+      if (!stato.flags) stato.flags = {};
+      if (!stato.flags.osservatorio_cotral_scoperto || stato.flags.osservatorio_boss_cutscene_vista) return;
+      const boss = npcStato.find(s => s.id === 'cotral_boss_osservatorio');
+      if (!boss) return;
+      if (Math.max(Math.abs(posTile.tx - boss.tx), Math.abs(posTile.ty - boss.ty)) <= 3) {
+        this._cutsceneOsservatorioBoss(boss);
+      }
+    }
+
+    async _cutsceneOsservatorioBoss(boss) {
+      if (!stato.flags) stato.flags = {};
+      stato.flags.osservatorio_boss_cutscene_vista = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      await this._mostraEsclamazione(boss);
+      const dir = this._direzioneTraCaselle(boss.tx, boss.ty, posTile.tx, posTile.ty);
+      boss.dir = dir;
+      if (boss.sprite) this._setNpcFrame(boss.sprite, dir, false);
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('???', [
+          'Ah, il famoso allenatore che gira con Camilla. Notizie viaggiano in fretta, qui dentro.',
+          'Non hai idea di cosa stiamo per scatenare. Ma questo... è un discorso per un\'altra volta.',
+        ]);
+      }
+      if (typeof salvaPartita === 'function') salvaPartita();
+      sbloccaMovimento();
+    }
+
+    /* ══════════════════════════════════════════════════════════
+       CUTSCENE FINALE DEL BOSS (2F) — sess. 18 set 2026.
+       Rettangolo Tiled 'inizio cutscene con boss' (Osservatorio_2f.tmj,
+       object 18): il Comandante sta spiegando a 3 ricercatori + 2 grunt
+       (comparse, dati/npc.js) quanto sono vicini a controllare il meteo.
+       Ordina il test finale, la "pallina nel tubo" si anima, poi si accorge
+       di te, ride, e Camilla si tira indietro ("uno alla volta") prima
+       della VERA lotta 1v1 contro di lui.
+       ══════════════════════════════════════════════════════════ */
+
+    // Lotta singola (non doppia) impacchettata in una Promise, sullo stesso
+    // modello di _battagliaDoppiaAlleato: serve per poterla awaitare dentro
+    // una cutscene invece di passare da _avviaLottaTrainer (che gestisce da
+    // solo dialogo/ricompensa, qui invece li scriviamo a mano nella scena).
+    _battagliaSingola(datiAllenatore) {
+      return new Promise(resolve => {
+        stato.incontroAttivo = true;
+        Battle.avvia({
+          allenatore: datiAllenatore,
+          stato,
+          onFine: (esito) => {
+            stato.incontroAttivo = false;
+            resolve(esito);
+          },
+        });
+      });
+    }
+
+    // Fa camminare il FOLLOWER (Camilla, non un npcStato qualsiasi: vedi
+    // followerSprite/followerPos) verso una casella arbitraria, passo per
+    // passo con la stessa animazione di _passoTrainer — a differenza di
+    // _camminaVersoGiocatore che punta sempre al giocatore, qui la meta è
+    // libera (serve per farla avvicinare al BOSS, non a chi la controlla).
+    // Aggiorna followerPos alla fine così il normale aggancio "segue il
+    // giocatore" (_passoFollower) riparte pulito al primo passo vero dopo
+    // la cutscene.
+    async _camminaFollowerVerso(targetTx, targetTy, maxPassi) {
+      if (!followerSprite) return;
+      const virt = { tx: followerPos.tx, ty: followerPos.ty, dir: followerPos.dir, sprite: followerSprite };
+      let tentativi = maxPassi || 15;
+      while (tentativi-- > 0) {
+        const dtx = targetTx - virt.tx, dty = targetTy - virt.ty;
+        if (Math.abs(dtx) + Math.abs(dty) <= 1) break;
+        const provaOrdine = Math.abs(dtx) >= Math.abs(dty)
+          ? [[Math.sign(dtx), 0], [0, Math.sign(dty)]]
+          : [[0, Math.sign(dty)], [Math.sign(dtx), 0]];
+        let mosso = false;
+        for (const [pdx, pdy] of provaOrdine) {
+          if (pdx === 0 && pdy === 0) continue;
+          const nx = virt.tx + pdx, ny = virt.ty + pdy;
+          if (nx < 0 || ny < 0 || nx >= mapW || ny >= mapH) continue;
+          if (collGrid && collGrid[ny] && collGrid[ny][nx] === 1) continue;
+          virt.dir = pdx > 0 ? 'est' : pdx < 0 ? 'ovest' : (pdy > 0 ? 'sud' : 'nord');
+          await this._passoTrainer(virt, nx, ny);
+          mosso = true;
+          break;
+        }
+        if (!mosso) break;
+      }
+      followerPos = { tx: virt.tx, ty: virt.ty, dir: virt.dir };
+      if (followerSprite) this._setNpcFrame(followerSprite, virt.dir, false);
+    }
+
+    // Animazione "attivazione del test" (Osservatorio_2f.tmj, tileset
+    // Interior_general_32): due blocchi ai capi del tubo (tile LOCALE 1428,
+    // trovati a tx4/tx19 ty2) lampeggiano ciclando 1428→1450→1451, mentre
+    // una "pallina" attraversa il tubo (1430 sopra/1438 sotto, tx6..17)
+    // diventando 1431/1439 una colonna alla volta da sinistra a destra, in
+    // ~2.5 secondi — descrizione esatta di Luca ("una pallina che scorre in
+    // un tubo"). Alla fine i blocchi restano "accesi" (1450): il sistema è
+    // ora attivo. NOTA: è un'animazione SOLO visiva sul tilemap in memoria
+    // (_impostaTileOstacolo), non persiste tra un caricamento mappa e
+    // l'altro — accettabile per una cutscene unica e irripetibile.
+    // Come _impostaTileOstacolo ma ristretto al SOLO layer "edifici" (depth
+    // 2, stessa convenzione di _nascondiTileOggetto altrove nel file) — la
+    // versione precedente (senza filtro di profondità) scriveva su OGNI
+    // layer con un tile in quella cella, incluso "sopra_testa" (depth 50):
+    // a tx9/ty3, proprio sopra il tubo, sopra_testa ha un suo tile decorativo
+    // (1458) che veniva sovrascritto per sbaglio con 1430/1439 a ogni
+    // passaggio della "pallina" — bug segnalato da Luca ("hai sostituito
+    // troppi tile"), sess. 18 set 2026. Il layer "edifici" qui ha comunque
+    // UN solo tileset coprendo queste celle (Interior_general_32), quindi
+    // basta il primo match a questa profondità.
+    _impostaTileTubo(tx, ty, localId) {
+      const worldX = tx * tileSize + tileSize / 2;
+      const worldY = ty * tileSize + tileSize / 2;
+      for (const o of layerObjects) {
+        if (o.depth !== 2) continue;   // 2 = depth del layer "edifici"
+        const tile = o.layer.getTileAtWorldXY(worldX, worldY, true);
+        if (tile) { o.layer.putTileAt(localId, tx, ty); return; }
+      }
+      console.warn('[Osservatorio] Nessun tile "edifici" trovato per animazione tubo a', tx, ty);
+    }
+
+    async _animazioneAttivazioneTuboOsservatorio() {
+      const CAPS = [{ tx: 4, ty: 2 }, { tx: 19, ty: 2 }];
+      const PIPE_TX_START = 6, PIPE_TX_END = 17;
+      const PIPE_TY_TOP = 2, PIPE_TY_BOTTOM = 3;
+      const DURATA_TOTALE_MS = 2500;
+      const passi = PIPE_TX_END - PIPE_TX_START + 1;
+      const perPasso = DURATA_TOTALE_MS / passi;
+
+      let lampeggioAttivo = true;
+      let frameLamp = 0;
+      const FRAMES_LAMP = [1428, 1450, 1451];
+      const timerLamp = setInterval(() => {
+        if (!lampeggioAttivo) return;
+        frameLamp = (frameLamp + 1) % FRAMES_LAMP.length;
+        for (const c of CAPS) this._impostaTileTubo(c.tx, c.ty, FRAMES_LAMP[frameLamp]);
+      }, 300);
+
+      for (let i = 0; i < passi; i++) {
+        const tx = PIPE_TX_START + i;
+        this._impostaTileTubo(tx, PIPE_TY_TOP, 1431);
+        this._impostaTileTubo(tx, PIPE_TY_BOTTOM, 1439);
+        if (i > 0) {
+          const prevTx = tx - 1;
+          this._impostaTileTubo(prevTx, PIPE_TY_TOP, 1430);
+          this._impostaTileTubo(prevTx, PIPE_TY_BOTTOM, 1438);
+        }
+        await new Promise(r => setTimeout(r, perPasso));
+      }
+      this._impostaTileTubo(PIPE_TX_END, PIPE_TY_TOP, 1430);
+      this._impostaTileTubo(PIPE_TX_END, PIPE_TY_BOTTOM, 1438);
+
+      lampeggioAttivo = false;
+      clearInterval(timerLamp);
+      for (const c of CAPS) this._impostaTileTubo(c.tx, c.ty, 1450);
+    }
+
+    _checkOsservatorioBossFinaleTrigger() {
+      if (mappaCorrente !== 'osservatorio_interno_2f') return;
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      if (!stato.flags) stato.flags = {};
+      if (!stato.flags.osservatorio_cotral_scoperto || stato.flags.osservatorio_boss_finale_vista) return;
+      const trigger = eventiMappa.find(ev => ev.tipo === 'trigger_boss_finale_osservatorio');
+      if (!trigger) return;
+      const dentro = (trigger.w > 0 && trigger.h > 0)
+        ? (posTile.tx >= trigger.tx0 && posTile.tx <= trigger.tx1 && posTile.ty >= trigger.ty0 && posTile.ty <= trigger.ty1)
+        : (posTile.tx === trigger.tx && posTile.ty === trigger.ty);
+      if (!dentro) return;
+      this._cutsceneBossFinaleOsservatorio();
+    }
+
+    async _cutsceneBossFinaleOsservatorio() {
+      if (!stato.flags) stato.flags = {};
+      // Subito: non deve poter ripartire, e supera anche la vecchia battuta
+      // a distanza (_checkOsservatorioBossTrigger) se non fosse già scattata.
+      stato.flags.osservatorio_boss_finale_vista = true;
+      stato.flags.osservatorio_boss_cutscene_vista = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      // Ri-asserisce l'override "Camilla come follower" per sicurezza — se
+      // per qualunque motivo si fosse perso prima di arrivare qui, non deve
+      // ripiombare sul tuo primo Pokémon proprio nella scena più importante
+      // (segnalato da Luca, sess. 18 set 2026).
+      await this._impostaFollowerAlleato('trainer_LEADER_Camilla');
+
+      const boss = npcStato.find(s => s.id === 'cotral_boss_osservatorio');
+      if (!boss) { sbloccaMovimento(); return; }
+
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Comandante', [
+          'Siamo così vicini. Un altro test, uno solo, e avremo il pieno controllo del meteo.',
+          'E chi controlla il meteo... controlla tutto il resto.',
+          'Abbiamo già catturato gli esemplari che ci servivano. Restano solo i test giusti da fare, e questo è l\'ultimo.',
+        ]);
+        await mostraDialogo('Comandante', ['Avvia il test.']);
+        await mostraDialogo('Ricercatore', ['Sì, capo. Procedo subito.']);
+      }
+
+      await new Promise(r => setTimeout(r, 1000));
+      // La macchina/tubo è disegnata molti tile più a nord del punto dove sei
+      // fermo (trigger a valle, per lasciare spazio alla scena) — senza
+      // spostare la camera lì, l'animazione avviene fuori schermo e non si
+      // vede MAI (bug segnalato da Luca, sess. 18 set 2026: "la fase grafica
+      // del test non l'hai implementata" — era implementata, solo invisibile).
+      await this._cutscenaCamera({ tx: 11, ty: 3, durata: 700 });
+      await this._animazioneAttivazioneTuboOsservatorio();
+      await this._eseguiPassoCutscena({ tipo: 'camera_reset' });
+      await new Promise(r => setTimeout(r, 400));   // tempo alla camera di tornare sul giocatore
+
+      // Il Comandante si accorge di te, si gira e ride.
+      boss.dir = 'sud';
+      if (boss.sprite) this._setNpcFrame(boss.sprite, 'sud', false);
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Comandante', [
+          'Tu chi... aspetta. Ti riconosco. Sei quello che è venuto a rompere le uova nel paniere anche a Rocca di Papa, vero?',
+          'Il nostro rifugio là sotto, il luogotenente, tutto quanto. Notizie di questo tipo viaggiano in fretta, anche tra un\'organizzazione e l\'altra.',
+          'Ma questa volta è diverso. Lì eravamo solo agli inizi. Qui abbiamo finito.',
+          'Vieni pure, fatti sotto! Ho appena acquisito il controllo dei Pokémon necessari: non potrai battermi.',
+        ]);
+      }
+
+      // Il giocatore si gira verso Camilla (dietro di sé: il follower sta
+      // sempre nella casella opposta alla direzione in cui si guarda).
+      const dirVersoCamilla = (facciata === 'up') ? 'down' : (facciata === 'down') ? 'up'
+        : (facciata === 'left') ? 'right' : 'left';
+      facciata = dirVersoCamilla;
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      const dirCamillaVersoPlayer = this._direzioneTraCaselle(followerPos.tx, followerPos.ty, posTile.tx, posTile.ty);
+      if (followerSprite) this._setNpcFrame(followerSprite, dirCamillaVersoPlayer, false);
+
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', [
+          `${this._nomeGiocatore()}, non è saggio affrontarlo insieme. Andiamo uno alla volta: non sappiamo di cosa è capace.`,
+        ]);
+      }
+
+      // Camilla si avvicina al boss, breve schermata nera (tenuta un po' più
+      // lunga apposta, richiesta esplicita di Luca), poi si fa da parte (un
+      // passo a sinistra rispetto a lui) e si volta verso di te. Da qui in
+      // poi combatti DA SOLO: si stacca da te come follower (torna a
+      // mostrarsi il tuo Pokémon in squadra, come prima che lei si unisse) —
+      // non ti segue più dentro la lotta (richiesta esplicita di Luca,
+      // sess. 18 set 2026: "Camilla si deve staccare da me dopo che ha
+      // provato a sfidare il boss").
+      await this._camminaFollowerVerso(boss.tx, boss.ty + 1, 12);
+      await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+      const latoTx = boss.tx - 1, latoTy = boss.ty + 1;
+      if (followerSprite) {
+        followerSprite.setPosition(latoTx * tileSize + tileSize / 2, (latoTy + 1) * tileSize);
+      }
+      followerPos = { tx: latoTx, ty: latoTy, dir: 'est' };
+      const dirCamilla2 = this._direzioneTraCaselle(latoTx, latoTy, posTile.tx, posTile.ty);
+      if (followerSprite) this._setNpcFrame(followerSprite, dirCamilla2, false);
+      await this._impostaFollowerAlleato();   // si stacca: niente più Camilla come follower
+      await new Promise(r => setTimeout(r, 1000));   // schermata nera 1s più lunga
+      await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', [
+          `Non ce l'ho fatta. È il tuo turno. In bocca al lupo, ${this._nomeGiocatore()}.`,
+        ]);
+      }
+
+      // Il boss ti si avvicina.
+      await this._camminaVersoGiocatore(boss, 10);
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Comandante', [
+          'È inutile. Anche tu non riuscirai in questa impresa folle.',
+        ]);
+      }
+
+      const esito = await this._battagliaSingola(DATI_TRAINER['cotral_boss_osservatorio']);
+      // NIENTE reset dell'override qui: da quando si è fatta da parte,
+      // Camilla resta staccata come follower per il resto della scena
+      // (richiesta esplicita di Luca) — combatti da solo, vinci o perdi.
+
+      if (esito === 'vittoria') {
+        const premio = DATI_TRAINER['cotral_boss_osservatorio'].premio || 0;
+        if (premio > 0) {
+          stato.soldi = (stato.soldi || 0) + premio;
+        }
+        if (typeof mostraDialogo === 'function') {
+          await mostraDialogo('Comandante', [
+            'Non... non è possibile. Avevo programmato tutto, ogni singola variabile, ogni singolo dettaglio.',
+            'Come diavolo è possibile che un allenatore qualunque mandi all\'aria anni di lavoro in un pomeriggio?',
+          ]);
+          await mostraDialogo('Comandante', [
+            'Filiamo, ragazzi. Ora chi lo sente, il Capo... sarà furioso.',
+          ]);
+        }
+        if (premio > 0 && typeof mostraToast === 'function') {
+          mostraToast(`Hai ricevuto ₽${premio} per la vittoria!`, 3200);
+        }
+        stato.flags.osservatorio_boss_finale_sconfitto = true;
+        stato.flags.osservatorio_boss_area_attiva = false;   // boss e comparse spariscono per sempre
+        await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+        await this._rigeneraNpc();
+        await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+        if (typeof salvaPartita === 'function') salvaPartita();
+        sbloccaMovimento();
+        return;
+      }
+
+      // Sconfitta/fuga: si può ritentare (non tocchiamo i flag "vista").
+      stato.flags.osservatorio_boss_finale_vista = false;
+      sbloccaMovimento();
+      if (typeof salvaPartita === 'function') salvaPartita();
+    }
+
+    // Grunt CoTrAL dell'Osservatorio (sess. 15 set 2026, RIDISEGNATO dopo il
+    // primo giro — "coppie in scatola" bocciate da Luca): ognuno è SOLO,
+    // libero di girare per il piano (movimento:'random' sull'oggetto Tiled),
+    // con una squadra da 4-6 Pokémon per reggere da solo un 2 CONTRO 1 (tu +
+    // Camilla alleata). Il trigger è semplicemente la prossimità/adiacenza
+    // al singolo NPC (come il vecchio "trigger_lotta_prossimita" a raggio,
+    // ma per QUALSIASI grunt attivo trovato su npcStato — si muovono, non ha
+    // senso più un rettangolo fisso in Tiled).
+    // Luogotenente e Boss restano fermi ("ci devo parlare io", richiesta
+    // esplicita di Luca): niente trigger automatico per loro, solo [A] —
+    // vedi azione:'interagisciLuogotenenteOsservatorio' in dati/npc.js.
+    _idCotralFermi() {
+      return ['cotral_osservatorio_luogotenente', 'cotral_boss_osservatorio'];
+    }
+
+    _checkOsservatorioGruntTrigger() {
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      if (!stato.flags || !stato.flags.osservatorio_camilla_alleata) return;
+      for (const st of npcStato) {
+        if (st.tipo !== 'npc') continue;
+        if (this._idCotralFermi().includes(st.id)) continue;   // solo [A], non un'imboscata automatica
+        if (!stato.flags['grunt_attivo_' + st.id]) continue;
+        // Già sconfitto: resta sulla mappa (richiesta esplicita di Luca, sess.
+        // 17 set 2026 — "non voglio che spariscano dopo che li ho sconfitti,
+        // ti dirò io quando farli sparire"), ma non riattacca più.
+        if (stato.flags['grunt_sconfitto_' + st.id]) continue;
+        if (Math.max(Math.abs(posTile.tx - st.tx), Math.abs(posTile.ty - st.ty)) > 1) continue;
+        const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[st.id] : null;
+        if (!dati) continue;
+        this._avviaCotralSoloConCamilla(st, st.id, dati);
+        return;
+      }
+    }
+
+    // 2 CONTRO 1: tu + Camilla alleata VS un solo grunt (Battle.avviaDoppia
+    // ora tollera opzioni.allenatori con un solo elemento, sess. 15 set 2026).
+    // Chiamabile sia dal trigger automatico (grunt liberi) sia da [A] diretto
+    // (Luogotenente/Boss, fermi — vedi interagisciLuogotenenteOsservatorio).
+    async _avviaCotralSoloConCamilla(st, id, dati, viaInterazione) {
+      if (trainerSpotting) return;
+      trainerSpotting = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      if (!viaInterazione) await this._mostraEsclamazione(st);
+      const dirVersoPlayer = this._direzioneTraCaselle(st.tx, st.ty, posTile.tx, posTile.ty);
+      st.dir = dirVersoPlayer;
+      if (st.sprite) this._setNpcFrame(st.sprite, dirVersoPlayer, false);
+      // Battuta prima della lotta (richiesta esplicita: "voglio dialogo"),
+      // come un allenatore normale — dati.dialogo_prima esiste già per
+      // tutti questi allenatori.
+      if (dati.dialogo_prima && typeof mostraDialogo === 'function') {
+        await mostraDialogo(dati.nome || 'Addetto CoTrAL', [dati.dialogo_prima]);
+      }
+      trainerSpotting = false;
+
+      // NIENTE dialogoSconfitta qui: la battuta finale e la consegna della
+      // chiave (Luogotenente) vanno mostrate DOPO, a schermo di battaglia
+      // già chiuso — non sovrapposte alla schermata di lotta (richiesta
+      // esplicita di Luca, punto 5).
+      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 } ] };
+      const esito = await this._battagliaDoppiaAlleato(alleatoCamilla, [
+        { nome: dati.nome, squadra: dati.squadra, premioSoldi: dati.premio || 0 },
+      ]);
+      if (esito === 'vittoria') {
+        if (!stato.flags) stato.flags = {};
+        // NON tocchiamo più grunt_attivo_<id> qui: da richiesta esplicita di
+        // Luca (sess. 17 set 2026) il grunt/Luogotenente sconfitto NON deve
+        // sparire dall'edificio subito — resta visibile, semplicemente non
+        // riattacca più (vedi il check su grunt_sconfitto_<id> nel trigger
+        // automatico e in interagisciLuogotenenteOsservatorio). Sarà Luca a
+        // dire quando (e con quale meccanica) farli sparire per davvero.
+        stato.flags['grunt_sconfitto_' + id] = true;
+        if (typeof salvaPartita === 'function') salvaPartita();
+        sbloccaMovimento();
+        // Battuta di commiato + Chiave Segreta: DOPO sbloccaMovimento, a
+        // schermo di mappa (non di battaglia) — punto 5.
+        if (dati.dialogo_dopo && typeof mostraDialogo === 'function') {
+          await mostraDialogo(dati.nome || 'Addetto CoTrAL', [dati.dialogo_dopo]);
+        }
+        if (id === 'cotral_osservatorio_luogotenente') {
+          if (!stato.inventario) stato.inventario = { chiave: {} };
+          if (!stato.inventario.chiave) stato.inventario.chiave = {};
+          stato.inventario.chiave['chiave_segreta_cotral'] = true;
+          if (typeof mostraToast === 'function') {
+            mostraToast('🗝️ Hai ottenuto la Chiave Segreta!', 3200);
+          }
+          if (typeof salvaPartita === 'function') salvaPartita();
+        }
+        return;
+      }
+      sbloccaMovimento();
+    }
+
+    // Luogotenente/boss dell'Osservatorio: fermi immobili, si combatte solo
+    // interagendo (azione NPC interagisciLuogotenenteOsservatorio in app.js),
+    // niente trigger di vicinanza (punto 8, sess. 16 set 2026).
+    _avviaLottaOsservatorioSingolaDaId(id) {
+      const st = npcStato.find(s => s.id === id);
+      if (!st) return;
+      const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[id] : null;
+      if (!dati) return;
+      return this._avviaCotralSoloConCamilla(st, id, dati, true);
+    }
+
+    // Elenco dei grunt CoTrAL dell'Osservatorio: id = chiave del flag
+    // sintetico 'grunt_attivo_<id>' (vedi _checkOsservatorioGruntTrigger).
+    // Usato per accenderli TUTTI insieme nel momento della rivelazione
+    // (_cutsceneOsservatorioConfronto).
+    _coppieGruntOsservatorio() {
+      return [
+        'cotral_osservatorio_1f_a', 'cotral_osservatorio_1f_b', 'cotral_osservatorio_1f_c',
+        'cotral_osservatorio_2f_a', 'cotral_osservatorio_2f_b',
+        'cotral_osservatorio_3f_a', 'cotral_osservatorio_luogotenente',
+      ];
+    }
+
+    // Genzano, subito fuori dalla palestra (sess. 15 set 2026): appena
+    // ottenuta l'8ª medaglia, Camilla ti raggiunge fuori e ti invita
+    // all'Osservatorio di Monte Porzio ("nota cambiamenti climatici strani").
+    // Controllata ogni passo su Genzano, una tantum
+    // (stato.flags.camilla_invito_vista). L'NPC 'camilla_uscita_genzano' è
+    // piazzato vicino alla porta della palestra, gated su questo stesso flag
+    // (sparisce per sempre dopo, non se ne parla più a Genzano).
+    _checkCamillaInvitoTrigger() {
+      if (mappaCorrente !== 'genzano') return;
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato) return;
+      if (!stato.flags) stato.flags = {};
+      if (stato.flags.camilla_invito_vista) return;
+      if (!stato.medaglie || !stato.medaglie.includes('genzano')) return;
+      // Rettangolo piazzato da Luca in Tiled (subito fuori dalla porta della
+      // palestra): attraversarlo fa scattare la cutscene, non serve essere
+      // vicini a un NPC specifico.
+      const trigger = eventiMappa.find(ev => ev.tipo === 'trigger_camilla_invito');
+      if (!trigger) return;
+      const dentro = (trigger.w > 0 && trigger.h > 0)
+        ? (posTile.tx >= trigger.tx0 && posTile.tx <= trigger.tx1 && posTile.ty >= trigger.ty0 && posTile.ty <= trigger.ty1)
+        : (posTile.tx === trigger.tx && posTile.ty === trigger.ty);
+      if (!dentro) return;
+      const camilla = npcStato.find(s => s.id === 'camilla_uscita_genzano');
+      if (camilla) this._cutsceneCamillaInvito(camilla);
+    }
+
+    async _cutsceneCamillaInvito(camilla) {
+      if (!stato.flags) stato.flags = {};
+      stato.flags.camilla_invito_vista = true;   // subito: non deve ritriggerare
+      // Da qui in poi Camilla + i 2 grunt esterni possono comparire fuori
+      // dall'Osservatorio (vedi condizione sugli oggetti Tiled 35/37/39):
+      // prima di questa scena non devono essere visibili anche se qualcuno
+      // arriva lì per altre strade — bug segnalato da Luca, sess. 17 set 2026.
+      stato.flags.osservatorio_confronto_attivo = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      // Camilla NON è già ferma lì ad aspettarti (richiesta esplicita di
+      // Luca): compare alla porta della palestra ed esce camminando verso
+      // di te, esattamente come lo scienziato alla Grotta del Vulcano.
+      await this._camminaVersoGiocatore(camilla, 20);
+      const dirVersoPlayer = this._direzioneTraCaselle(camilla.tx, camilla.ty, posTile.tx, posTile.ty);
+      camilla.dir = dirVersoPlayer;
+      if (camilla.sprite) this._setNpcFrame(camilla.sprite, dirVersoPlayer, false);
+      // Il giocatore si volta verso nord (l'entrata della palestra, da dove
+      // arriva Camilla) — altrimenti sembra che lei parli alle sue spalle,
+      // qualunque fosse la direzione in cui stava camminando prima del
+      // trigger (segnalato da Luca).
+      facciata = 'up';
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', [
+          'Aspetta! Volevo parlarti, ora che la sfida tra noi è finita.',
+          'Da un po\' di tempo noto dei cambiamenti climatici strani, troppo repentini per essere naturali.',
+          'So che all\'Osservatorio di Monte Porzio studiano proprio il clima. Volevo andarci a chiedere spiegazioni.',
+          'Potrebbe essere interessante anche per te. Ci vediamo lì, se vuoi.',
+        ]);
+      }
+      await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+      stato.flags.camilla_pronta_uscita = false;   // altrimenti resterebbe visibile per sempre
+      await this._rigeneraNpc();   // Camilla sparisce da qui per sempre (condizione ora falsa)
+      await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+      if (typeof salvaPartita === 'function') salvaPartita();
+      sbloccaMovimento();
+    }
+
+    // Osservatorio, fuori dall'ingresso (sess. 15 set 2026): trovi Camilla
+    // che discute con 2 grunt CoTrAL che non la vogliono far entrare. Ti
+    // chiede di combattere con lei — battaglia in doppia con Camilla
+    // alleata (prima volta che la usiamo per LEI, stessa tecnica di Baso al
+    // Rifugio CoTrAL Rocca). Vinta: si rivela tutto il CoTrAL dell'Osservatorio
+    // (ogni ricercatore sui 3 piani "diventa" un grunt, la receptionist del
+    // 1F sparisce e basta), Camilla resta al tuo fianco come alleata per
+    // tutto il dungeon (segue come un Pokémon — vedi _impostaFollowerAlleato).
+    _checkOsservatorioConfrontoTrigger() {
+      // BUG VERO (trovato sess. 17 set 2026): questo controllo era
+      // `mappaCorrente !== 'osservatorio'`, ma dentro il cluster 'montepo' i
+      // bounding box di monteporzio (tx 0-54) e osservatorio (tx 22-112) si
+      // SOVRAPPONGONO, e _mappaSottoGiocatore() (primo box che contiene la
+      // casella, in ordine di dichiarazione) restituisce SEMPRE 'monteporzio'
+      // in quella zona di sovrapposizione — che è esattamente dove sta il
+      // trigger del confronto. Risultato: mappaCorrente non diventava MAI
+      // 'osservatorio' lì, e il trigger restava sordo per sempre, anche con
+      // Camilla e i grunt visibili (il loro rendering non passa da
+      // mappaCorrente, solo questo controllo lo faceva). Il resto della
+      // funzione è già scoping-sufficiente (rettangolo preciso), quindi basta
+      // il cluster giusto, non serve più l'uguaglianza esatta su mappaCorrente.
+      if (mappaCorrente !== 'osservatorio' && clusterAttivo !== 'montepo') return;
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      if (!stato.flags) stato.flags = {};
+      // Auto-sincronizza osservatorio_confronto_attivo da camilla_invito_vista:
+      // serve per i salvataggi già esistenti PRIMA che questo flag esistesse
+      // (avevano solo camilla_invito_vista=true, mai passato da qui) — senza
+      // questo self-heal il trigger restava sordo per sempre su quei
+      // salvataggi anche se Camilla/i grunt erano già visibili sulla mappa
+      // (bug segnalato da Luca, sess. 17 set 2026).
+      if (stato.flags.camilla_invito_vista && !stato.flags.osservatorio_confronto_vista) {
+        stato.flags.osservatorio_confronto_attivo = true;
+      }
+      if (!stato.flags.osservatorio_confronto_attivo || stato.flags.osservatorio_confronto_vista) return;
+      // Rettangolo piazzato da Luca in Tiled (object 41): attraversarlo fa
+      // scattare la cutscene, stesso schema del trigger di Genzano.
+      const trigger = eventiMappa.find(ev => ev.tipo === 'trigger_confronto_osservatorio');
+      if (!trigger) return;
+      const dentro = (trigger.w > 0 && trigger.h > 0)
+        ? (posTile.tx >= trigger.tx0 && posTile.tx <= trigger.tx1 && posTile.ty >= trigger.ty0 && posTile.ty <= trigger.ty1)
+        : (posTile.tx === trigger.tx && posTile.ty === trigger.ty);
+      if (!dentro) return;
+      const camilla = npcStato.find(s => s.id === 'camilla_confronto_osservatorio');
+      if (camilla) this._cutsceneOsservatorioConfronto(camilla);
+    }
+
+    async _cutsceneOsservatorioConfronto(camilla) {
+      if (!stato.flags) stato.flags = {};
+      stato.flags.osservatorio_confronto_vista = true;
+      stato.flags.osservatorio_confronto_attivo = false;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+
+      const grunt1 = npcStato.find(s => s.id === 'cotral_osservatorio_grunt_ext_1');
+      const grunt2 = npcStato.find(s => s.id === 'cotral_osservatorio_grunt_ext_2');
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', ['Fatemi passare! Devo solo parlare con i ricercatori, non capisco perché mi blocchiate la strada.']);
+        await mostraDialogo('Addetto CoTrAL', ['Nessuno entra senza autorizzazione. Ordini dall\'alto, Capopalestra o no.']);
+        await mostraDialogo('Camilla', ['Questa storia puzza sempre di più. Non mi piace per niente.']);
+      }
+      const dirVersoPlayer = this._direzioneTraCaselle(camilla.tx, camilla.ty, posTile.tx, posTile.ty);
+      camilla.dir = dirVersoPlayer;
+      if (camilla.sprite) this._setNpcFrame(camilla.sprite, dirVersoPlayer, false);
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', ['Mi dai una mano? Non mi va di affrontarli da sola, e la situazione non mi convince affatto.']);
+      }
+
+      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 } ] };
+      let esito = 'vittoria';
+      if (grunt1 && grunt2) {
+        // Niente dialogoSconfitta qui (punto 5, stesso motivo del
+        // Luogotenente): il seguito narrativo lo mostra già il codice qui
+        // sotto, a schermo di battaglia chiuso.
+        esito = await this._battagliaDoppiaAlleato(alleatoCamilla, [
+          { nome: grunt1.ev.nome || 'Addetto CoTrAL', squadra: DATI_TRAINER['cotral_osservatorio_grunt_ext_1'].squadra,
+            premioSoldi: DATI_TRAINER['cotral_osservatorio_grunt_ext_1'].premio || 0 },
+          { nome: grunt2.ev.nome || 'Addetta CoTrAL', squadra: DATI_TRAINER['cotral_osservatorio_grunt_ext_2'].squadra,
+            premioSoldi: DATI_TRAINER['cotral_osservatorio_grunt_ext_2'].premio || 0 },
+        ]);
+      }
+      if (esito !== 'vittoria') {
+        stato.flags.osservatorio_confronto_vista = false;   // si può ritentare
+        stato.flags.osservatorio_confronto_attivo = true;   // Camilla/grunt ricompaiono
+        sbloccaMovimento();
+        if (typeof salvaPartita === 'function') salvaPartita();
+        return;
+      }
+
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Camilla', [
+          'Ecco, questo la dice lunga. Gente di ricerca non si comporta così.',
+          'Vengo con te qui dentro: non mi fido a lasciarti andare da solo.',
+        ]);
+      }
+
+      // Rivelazione: TUTTI i grunt sui 3 piani si "attivano" insieme, la
+      // receptionist del 1F sparisce, Camilla diventa alleata permanente
+      // (segue come un Pokémon) per tutto il resto del dungeon.
+      stato.flags.osservatorio_cotral_scoperto = true;
+      stato.flags.osservatorio_camilla_alleata = true;
+      for (const id1 of this._coppieGruntOsservatorio()) stato.flags['grunt_attivo_' + id1] = true;
+
+      await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+      await this._rigeneraNpc();   // grunt esterni spariti, Camilla del confronto sparita (gate ora vero)
+      await this._impostaFollowerAlleato('trainer_LEADER_Camilla');
+      await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+      if (typeof salvaPartita === 'function') salvaPartita();
+      sbloccaMovimento();
+    }
+
     async _prossimitaSpotta(st, id, dati, evTrigger) {
       if (trainerSpotting) return;
       trainerSpotting = true;
@@ -5525,6 +6464,60 @@ const GameMap = (function () {
       }
     }
 
+    // Come _nascondiTileOstacolo ma SOSTITUISCE il tile con un altro invece
+    // di cancellarlo (Osservatorio CoTrAL, sess. 15 set 2026: statua-
+    // interruttore che cambia aspetto). localId è l'indice LOCALE nel
+    // tileset (0-based, quello mostrato in Tiled), non il gid globale.
+    _impostaTileOstacolo(tx, ty, localId) {
+      const worldX = tx * tileSize + tileSize / 2;
+      const worldY = ty * tileSize + tileSize / 2;
+      for (const o of layerObjects) {
+        if (!o.depth) continue;
+        const tile = o.layer.getTileAtWorldXY(worldX, worldY, true);
+        if (tile) { o.layer.putTileAt(localId, tx, ty); return; }
+      }
+    }
+
+    // Porta a scomparsa (Osservatorio CoTrAL): true se ev è già stata
+    // "aperta" — con la chiave segreta (stato.flags['porta_aperta_'+id]),
+    // oppure per le porte controllata_da_interruttore, dallo stato
+    // dell'interruttore della statua (stato.flags.cotral_interruttore_premuto).
+    _portaScomparsaApertaEv(ev) {
+      if (typeof stato === 'undefined' || !stato.flags) return false;
+      const controllataDaInterruttore = ev.props.controllata_da_interruttore === true ||
+        ev.props.controllata_da_interruttore === 'true';
+      if (controllataDaInterruttore) return !!stato.flags.cotral_interruttore_premuto;
+      return !!stato.flags['porta_aperta_' + ev.id];
+    }
+
+    // true se (tx,ty) ricade dentro una porta_scomparsa NON ancora aperta
+    // (quindi ancora solida, vedi _sposta).
+    _portaScomparsaBlocca(tx, ty) {
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'porta_scomparsa') continue;
+        const dentro = (ev.w > 0 && ev.h > 0)
+          ? (tx >= ev.tx0 && tx <= ev.tx1 && ty >= ev.ty0 && ty <= ev.ty1)
+          : (ev.tx === tx && ev.ty === ty);
+        if (dentro && !this._portaScomparsaApertaEv(ev)) return true;
+      }
+      return false;
+    }
+
+    // Applica lo stato persistito di tutte le porte a scomparsa DOPO il
+    // rendering dei layer tile (chiamata subito dopo _ripristinaOggettiRaccolti,
+    // stesso momento/stesso schema): quelle già "aperte" spariscono di nuovo
+    // visivamente ad ogni caricamento mappa, senza rigiocare il dialogo.
+    _applicaPorteScomparse() {
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'porta_scomparsa') continue;
+        if (!this._portaScomparsaApertaEv(ev)) continue;
+        const tx0 = ev.w > 0 ? ev.tx0 : ev.tx, tx1 = ev.w > 0 ? ev.tx1 : ev.tx;
+        const ty0 = ev.h > 0 ? ev.ty0 : ev.ty, ty1 = ev.h > 0 ? ev.ty1 : ev.ty;
+        for (let ty = ty0; ty <= ty1; ty++)
+          for (let tx = tx0; tx <= tx1; tx++) this._nascondiTileOstacolo(tx, ty);
+      }
+    }
+
     // Attraversamento automatico e lento di una cascata (MN Cascata,
     // sessione 6 agosto, reso bidirezionale il 5 settembre 2026): il
     // giocatore NON cammina di sua iniziativa sui tile cascata, viene
@@ -5660,6 +6653,11 @@ const GameMap = (function () {
       this._checkSuicuneTrigger();
       this._checkRoccaBasoTrigger();
       this._checkBasoCotralTrigger();
+      this._checkOsservatorioGruntTrigger();
+      this._checkOsservatorioBossTrigger();
+      this._checkOsservatorioBossFinaleTrigger();
+      this._checkCamillaInvitoTrigger();
+      this._checkOsservatorioConfrontoTrigger();
       this._checkTriggerProssimita();
     }
 
@@ -6237,6 +7235,14 @@ const GameMap = (function () {
       // Il dialogo della medaglia gestisce da sé il blocco/sblocco movimento.
       if (dati.palestraId && typeof vinciPalestraTiled === 'function') {
         vinciPalestraTiled(dati.palestraId);
+        // Camilla (Genzano, 8ª palestra): appena vinta, diventa "pronta a
+        // uscire" — l'NPC compare da questo momento (non prima, non si
+        // vedeva già lì per tutto il gioco) e la cutscene la fa camminare
+        // fuori quando attraversi il trigger davanti alla palestra.
+        if (dati.palestraId === 'genzano') {
+          if (!stato.flags) stato.flags = {};
+          stato.flags.camilla_pronta_uscita = true;
+        }
         if (typeof salvaPartita === 'function') salvaPartita();
         return true;
       }
@@ -9338,6 +10344,11 @@ const GameMap = (function () {
         roundPixels: true,
       },
       banner: false,
+      // Non mette in pausa il game loop quando la tab passa in background/è
+      // nascosta — di norma è comodo per il giocatore vero (che ha sempre la
+      // tab attiva) e indispensabile per i test automatizzati via tab headless
+      // (senza, update()/i tween non avanzano mai e il gioco resta bloccato).
+      disableVisibilityChange: true,
     });
   }
 
@@ -9520,6 +10531,50 @@ const GameMap = (function () {
   }
   // Debug/test: esito di una condizione "richiede"/"condizione"
   function debugCondizione(cond) { return verificaCondizione(cond); }
+  // Debug/test: chiama un metodo della scena per nome, senza passare dal
+  // game loop (utile in tab headless dove requestAnimationFrame non gira,
+  // quindi update()/_sposta non scattano mai da soli). Es.:
+  // Map.debugChiamaMetodo('_checkOsservatorioConfrontoTrigger')
+  function debugChiamaMetodo(nome, ...args) {
+    if (!scena || typeof scena[nome] !== 'function') return undefined;
+    return scena[nome](...args);
+  }
+  // Debug/test: elenco grezzo di tutti gli oggetti "spawn" attualmente in
+  // eventiMappa (con normalizzazione dell'id, come la vede _trovaSpawn),
+  // per capire perché un warp atterra nel punto sbagliato senza dover
+  // rientrare/uscire più volte.
+  function debugSpawnList() {
+    return eventiMappa
+      .filter(e => e.tipo === 'spawn' || e.tipo === 'spwan')
+      .map(e => ({
+        id: e.id, mappaChiave: e._mappaChiave,
+        tx: e.tx, ty: e.ty,
+        idNorm: String(e.id || '').toLowerCase().replace(/[^a-z0-9]/g, ''),
+      }));
+  }
+  // Debug/test: imposta direttamente posTile (bypassa _sposta/collisioni),
+  // utile per posizionare il giocatore su una casella precisa in headless.
+  function debugImpostaPosTile(tx, ty) {
+    posTile = { tx, ty };
+    if (playerSprite) playerSprite.setPosition(tx * tileSize + tileSize / 2, (ty + 1) * tileSize);
+  }
+  // Debug/test: valore grezzo di collGrid su una casella (1 = solido/bloccato).
+  function debugCollisione(tx, ty) {
+    if (!collGrid || !collGrid[ty]) return undefined;
+    return collGrid[ty][tx];
+  }
+  // Debug/test: valore LOCALE del tile su ogni layer (depth>0) a una
+  // casella — utile per verificare da console cosa c'è davvero scritto
+  // senza dover VEDERE lo schermo (headless-friendly).
+  function debugValoreTile(tx, ty) {
+    const worldX = tx * tileSize + tileSize / 2, worldY = ty * tileSize + tileSize / 2;
+    const risultati = [];
+    for (const o of layerObjects) {
+      const tile = o.layer.getTileAtWorldXY(worldX, worldY, true);
+      risultati.push({ depth: o.depth, index: tile ? tile.index : null });
+    }
+    return risultati;
+  }
 
   // Debug/test: lancia una cutscene di dati/cutscene.js dalla console, senza
   // doverla piazzare su un NPC/oggetto Tiled. Es.: Map.debugCutscene('test_saluto')
@@ -9550,14 +10605,21 @@ const GameMap = (function () {
     if (scena) return scena._epilogoBasoCotralRocca();
   }
 
+  // Lotta del luogotenente/boss dell'Osservatorio, fermi immobili: si parla
+  // con loro (azione NPC in app.js), non c'è trigger automatico di vicinanza.
+  function avviaLottaOsservatorioSingola(id) {
+    if (scena) return scena._avviaLottaOsservatorioSingolaDaId(id);
+  }
+
   return {
     inizializza, bloccaMovimento, sbloccaMovimento, interagisciVicino,
     posizioneGiocatore, distanzaMetri, impostaVelocita,
     teleporta, vaiAMappa, rimuoviMarkerOggetto, debugStato, debugCaricaMappa,
-    debugNpcAttivi, debugCondizione, temaBattaglia, mappaConsenteVolo, aggiornaVeloTempo,
+    debugNpcAttivi, debugCondizione, debugChiamaMetodo, debugImpostaPosTile, debugCollisione, debugValoreTile, debugSpawnList,
+    temaBattaglia, mappaConsenteVolo, aggiornaVeloTempo,
     aggiornaVeloMeteo, contestoMeteo, aggiornaFollowerSpecie,
     debugCutscene, avviaSfidaPorchettari, avviaSfidaParentiRocco, avviaLatiosLatiasScena,
-    avviaEpilogoBasoCotralRocca,
+    avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
   };

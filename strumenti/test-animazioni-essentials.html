@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Test animazioni Essentials FRLG</title>
+<style>
+  body { background:#222; color:#eee; font-family: sans-serif; text-align:center; }
+  canvas { background:#345; border:2px solid #888; image-rendering: pixelated; }
+  button { margin: 4px; padding: 6px 14px; font-size: 14px; }
+  .row { display:flex; justify-content:center; gap:20px; flex-wrap:wrap; margin-top:20px; }
+  .col { display:flex; flex-direction:column; align-items:center; }
+  small { color:#aaa; }
+</style>
+</head>
+<body>
+<h1>Prova motore animazioni (dati reali da Essentials FRLG)</h1>
+<p>Valori estratti da PkmnAnimations.rxdata: posizione, pattern, zoom, angolo, opacità, focus. Frame-rate fisso a 20 fps (come nel motore originale).</p>
+<div class="row" id="root"></div>
+
+<script>
+// ---- Motore di animazione generico (equivalente di AnimFrame/BattleAnimationPlayer) ----
+const CELL_SIZE = 192;      // dimensione cella nel foglio sprite (fissa in Essentials)
+const COLS = 5;              // colonne per foglio (fisso in Essentials)
+const FPS = 20;               // frame-rate fisso del motore originale
+const CANVAS_W = 496, CANVAS_H = 384; // area di lavoro provvisoria (il layout esatto è Sistema 2)
+
+const TESTS = [
+  { key: "Move:WATERGUN",   label: "Surf (usa animazione Watergun, per regola di fallback tipo Acqua)", img: "anim-sprites/watergun.png" },
+  { key: "Move:FLAMETHROWER", label: "Flamethrower", img: "anim-sprites/flamethrower.png" },
+  { key: "Move:CRUNCH",     label: "Crunch", img: "anim-sprites/crunch.png" }
+];
+
+async function main() {
+  const data = await fetch("test-animazioni-essentials-data.json").then(r => r.json());
+  const root = document.getElementById("root");
+
+  for (const test of TESTS) {
+    const anim = data[test.key];
+    const col = document.createElement("div");
+    col.className = "col";
+    const title = document.createElement("div");
+    title.innerHTML = `<b>${test.label}</b>`;
+    const canvas = document.createElement("canvas");
+    canvas.width = CANVAS_W;
+    canvas.height = CANVAS_H;
+    const btn = document.createElement("button");
+    btn.textContent = "Play";
+    const info = document.createElement("small");
+    info.textContent = `${anim.frames.length} frame @ ${FPS}fps = ${(anim.frames.length / FPS).toFixed(2)}s`;
+    col.appendChild(title);
+    col.appendChild(canvas);
+    col.appendChild(btn);
+    col.appendChild(info);
+    root.appendChild(col);
+
+    const img = new Image();
+    img.src = test.img;
+    await new Promise(res => { img.onload = res; });
+
+    const ctx = canvas.getContext("2d");
+    let playing = false;
+
+    function drawCel(cel) {
+      if (!cel || cel.VISIBLE !== 1) return;
+      ctx.save();
+      ctx.globalAlpha = Math.max(0, Math.min(1, cel.OPACITY / 255));
+      ctx.translate(cel.X, cel.Y);
+      ctx.rotate(-cel.ANGLE * Math.PI / 180); // RGSS ruota in senso antiorario per angoli positivi
+      const scaleX = (cel.ZOOMX / 100) * (cel.MIRROR ? -1 : 1);
+      const scaleY = (cel.ZOOMY / 100);
+      ctx.scale(scaleX, scaleY);
+
+      if (cel.PATTERN >= 0) {
+        const sx = (cel.PATTERN % COLS) * CELL_SIZE;
+        const sy = Math.floor(cel.PATTERN / COLS) * CELL_SIZE;
+        ctx.drawImage(img, sx, sy, CELL_SIZE, CELL_SIZE,
+                      -CELL_SIZE / 2, -CELL_SIZE / 2, CELL_SIZE, CELL_SIZE);
+      } else {
+        // PATTERN -1 = sprite Pokémon utente, -2 = sprite Pokémon bersaglio (placeholder qui)
+        const isUser = cel.FOCUS === 2;
+        ctx.fillStyle = isUser ? "#4a8" : "#a44";
+        ctx.beginPath();
+        ctx.arc(0, 0, 40, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "#fff";
+        ctx.font = "12px sans-serif";
+        ctx.textAlign = "center";
+        ctx.fillText(isUser ? "USER" : "TARGET", 0, 4);
+      }
+      ctx.restore();
+    }
+
+    function renderFrame(idx) {
+      ctx.clearRect(0, 0, CANVAS_W, CANVAS_H);
+      const frame = anim.frames[idx] || [];
+      for (const cel of frame) drawCel(cel);
+    }
+
+    renderFrame(0);
+
+    btn.addEventListener("click", () => {
+      if (playing) return;
+      playing = true;
+      const start = performance.now();
+      function loop(now) {
+        const elapsed = (now - start) / 1000;
+        const idx = Math.floor(elapsed * FPS);
+        if (idx >= anim.frames.length) {
+          playing = false;
+          renderFrame(anim.frames.length - 1);
+          return;
+        }
+        renderFrame(idx);
+        requestAnimationFrame(loop);
+      }
+      requestAnimationFrame(loop);
+    });
+  }
+}
+main();
+</script>
+</body>
+</html>

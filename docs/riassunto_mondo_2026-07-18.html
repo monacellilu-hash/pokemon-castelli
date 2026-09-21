@@ -1,0 +1,306 @@
+<title>Castelli Romani — Stato del mondo</title>
+<style>
+:root{
+  --bg:#eeeae2; --bg-raise:#e4ded2; --ink:#2a2521; --ink-dim:#635a4f;
+  --line:#cfc4b2; --accent:#a8462a; --accent-soft:#e7d9c9;
+  --ok:#3d6b4a; --ok-bg:#dde6dc; --warn:#a3771f; --warn-bg:#efe3c8; --miss:#9c3d33; --miss-bg:#ecdcd6;
+  --mono-bg:#e2dbcb;
+  --font-display: Palatino, "Palatino Linotype", "Iowan Old Style", Georgia, serif;
+  --font-body: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root{
+    --bg:#1b1815; --bg-raise:#24201b; --ink:#e9e2d5; --ink-dim:#b3a891;
+    --line:#453d33; --accent:#e08a5c; --accent-soft:#3a2c22;
+    --ok:#7fb98c; --ok-bg:#213127; --warn:#dcb15a; --warn-bg:#332a18; --miss:#e08b7f; --miss-bg:#332120;
+    --mono-bg:#241f19;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#1b1815; --bg-raise:#24201b; --ink:#e9e2d5; --ink-dim:#b3a891;
+  --line:#453d33; --accent:#e08a5c; --accent-soft:#3a2c22;
+  --ok:#7fb98c; --ok-bg:#213127; --warn:#dcb15a; --warn-bg:#332a18; --miss:#e08b7f; --miss-bg:#332120;
+  --mono-bg:#241f19;
+}
+:root[data-theme="light"]{
+  --bg:#eeeae2; --bg-raise:#e4ded2; --ink:#2a2521; --ink-dim:#635a4f;
+  --line:#cfc4b2; --accent:#a8462a; --accent-soft:#e7d9c9;
+  --ok:#3d6b4a; --ok-bg:#dde6dc; --warn:#a3771f; --warn-bg:#efe3c8; --miss:#9c3d33; --miss-bg:#ecdcd6;
+  --mono-bg:#e2dbcb;
+}
+*{box-sizing:border-box;}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--font-body);
+  font-size:16px; line-height:1.6; margin:0; padding:0 20px 96px;
+}
+.wrap{max-width:760px; margin:0 auto;}
+header.top{
+  padding:48px 0 28px; border-bottom:1px solid var(--line);
+}
+.eyebrow{
+  font-family:var(--font-mono); font-size:12px; letter-spacing:.12em; text-transform:uppercase;
+  color:var(--accent); margin:0 0 10px;
+}
+h1{
+  font-family:var(--font-display); font-weight:400; font-size:2.3rem; margin:0 0 8px;
+  text-wrap:balance; letter-spacing:.01em;
+}
+.sub{color:var(--ink-dim); font-size:1.02rem; max-width:64ch;}
+nav.jump{
+  display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:22px; font-family:var(--font-mono); font-size:12.5px;
+}
+nav.jump a{color:var(--ink-dim); text-decoration:none; border-bottom:1px dotted var(--line);}
+nav.jump a:hover, nav.jump a:focus-visible{color:var(--accent); border-color:var(--accent);}
+
+section{margin-top:52px;}
+h2.region{
+  font-family:var(--font-mono); text-transform:uppercase; letter-spacing:.1em; font-size:13px;
+  color:var(--ink-dim); margin:0 0 4px; display:flex; align-items:baseline; gap:10px;
+}
+h2.region .n{color:var(--accent); font-weight:600;}
+h3.place{
+  font-family:var(--font-display); font-size:1.5rem; font-weight:400; margin:2px 0 10px;
+}
+.callout{
+  background:var(--warn-bg); border-left:3px solid var(--warn); border-radius:2px;
+  padding:18px 20px; margin:18px 0;
+}
+.callout h4{margin:0 0 8px; font-size:.95rem; font-family:var(--font-body); font-weight:700; color:var(--ink);}
+.callout ul{margin:0; padding-left:1.1em;}
+.callout li{margin-bottom:8px;}
+.callout li:last-child{margin-bottom:0;}
+
+.chip{
+  display:inline-flex; align-items:center; gap:5px; font-family:var(--font-mono); font-size:11.5px;
+  padding:2px 9px; border-radius:99px; letter-spacing:.02em; white-space:nowrap;
+}
+.chip.ok{background:var(--ok-bg); color:var(--ok);}
+.chip.warn{background:var(--warn-bg); color:var(--warn);}
+.chip.miss{background:var(--miss-bg); color:var(--miss);}
+
+.card{
+  background:var(--bg-raise); border:1px solid var(--line); border-radius:6px;
+  padding:20px 22px; margin-bottom:16px;
+}
+.card .head{display:flex; justify-content:space-between; align-items:baseline; gap:12px; flex-wrap:wrap;}
+.card p{margin:10px 0 0;}
+.card p.narr{color:var(--ink); }
+.card p.stato{color:var(--ink-dim); font-size:.92rem;}
+.card .links{
+  margin-top:12px; font-family:var(--font-mono); font-size:12.5px; color:var(--ink-dim);
+  display:flex; flex-wrap:wrap; gap:8px 16px;
+}
+.card .links b{color:var(--ink); font-weight:600;}
+code{
+  font-family:var(--font-mono); background:var(--mono-bg); padding:1px 6px; border-radius:4px; font-size:.88em;
+}
+.route{
+  display:flex; flex-wrap:wrap; align-items:center; gap:8px 4px; font-family:var(--font-mono); font-size:13px;
+  padding:14px 16px; background:var(--bg-raise); border:1px solid var(--line); border-radius:6px; margin-bottom:14px;
+}
+.route .arrow{color:var(--ink-dim);}
+.route .node{padding:2px 8px; border-radius:4px; background:var(--accent-soft); color:var(--ink);}
+.route .node.miss{background:var(--miss-bg); color:var(--miss); text-decoration:line-through; text-decoration-color:var(--miss); opacity:.85;}
+.route .node.warn{background:var(--warn-bg); color:var(--warn);}
+footer{margin-top:64px; padding-top:20px; border-top:1px solid var(--line); color:var(--ink-dim); font-size:.85rem;}
+</style>
+
+<div class="wrap">
+
+<header class="top">
+  <p class="eyebrow">Pokémon Castelli Romani · stato al 18 luglio 2026</p>
+  <h1>Cosa è collegato a cosa, e cosa deve succedere dove</h1>
+  <p class="sub">Riassunto ricostruito leggendo <code>js/map.js</code> (registro mappe reale), tutti i warp nei <code>.tmj</code>, <code>docs/STORIA_COMPLETA.md</code> (fonte di verità narrativa) e <code>docs/ROADMAP.md</code>. Alcune mappe che hai disegnato di recente (Percorso 6, Via dei Laghi, Albano) non sono ancora cablate nel motore — sono segnalate sotto.</p>
+  <nav class="jump">
+    <a href="#questioni">Questioni aperte</a>
+    <a href="#percorso">Il percorso, tappa per tappa</a>
+    <a href="#tuscolo">Boschi del Tuscolo</a>
+    <a href="#gdf">Team GdF</a>
+    <a href="#cotral">Team CoTrAL</a>
+    <a href="#leggendari">Leggendari</a>
+  </nav>
+</header>
+
+<section id="questioni">
+  <h2 class="region">Prima di tutto</h2>
+  <h3 class="place">Questioni aperte da chiarire</h3>
+  <div class="callout">
+    <h4>⚠️ Cose che non ho risolto da solo perché la decisione è tua</h4>
+    <ul>
+      <li><b>Percorso 6 vs Via dei Laghi.</b> <code>monteporzio.tmj</code> e <code>albano.tmj</code> hanno già un warp a vuoto verso <code>Percorso_6</code> (spawn combacianti: <code>da_monteporzio</code> ↔ <code>da_percorso_6</code>) — ma <code>Percorso_6.tmj</code> è una mappa 100×100 <b>completamente vuota</b>, nessun oggetto disegnato. Nel frattempo esiste anche <code>via_dei_laghi.tmj</code> (100×100, NON registrata in <code>map.js</code>) con warp verso Osservatorio/Monte Porzio, Albano, "lago di albano 2" e "lago di nemi". Sono la stessa strada ripensata, o due strade diverse (Percorso 6 = collegamento diretto, Via dei Laghi = percorso panoramico coi laghi)? Da questo dipende come li registro.</li>
+      <li><b>MN Surf — il gate non torna.</b> <code>STORIA_COMPLETA.md</code> dice che è <b>Moro</b> a dare la Surf a Marino, subito dopo averlo battuto. Il codice attuale invece la lega a un NPC "Nonna Assunta" piazzato al Lago di Albano, sbloccato quando hai la medaglia di <b>Monte Porzio</b> (non Marino). Sono due condizioni diverse e più lontane nel gioco di quella scritta nella bibbia narrativa: vuoi che la dia direttamente Moro a fine lotta, o tieni il donatore fisico al lago?</li>
+      <li><b>MN Forza da Remo, non dall'Osservatorio.</b> Cambio di design della sessione 30: la dà Remo battendolo alla tappa 4, non più l'NPC dell'Osservatorio come scritto in STORIA_COMPLETA. Funziona in gioco, ma se resta la scelta definitiva va aggiornato il documento narrativo (per ora è una divergenza silenziosa).</li>
+      <li><b>Il Comandante GdF: chi è, e dov'è Crasso?</b> Nel sistema vecchio (F10) Crasso è il Comandante GdF, sconfitto vicino Albano. In STORIA_COMPLETA, Crasso gestisce invece il <b>Lab CoTrAL #2 ad Ariccia</b>, e il boss GdF finale all'Abbazia (Atto 7, post-Lega) è senza nome. Prima di costruire l'Atto 5 (Albano) o il Lab di Ariccia serve decidere: Crasso è un solo personaggio con un solo ruolo, o due Crassi/nomi diversi?</li>
+      <li><b><code>interno_palazzo_colonna</code> (warp da <code>marino.tmj</code>) e <code>interno_casa_gialla_grande</code> (warp da <code>castel_gandolfo.tmj</code>).</b> Non compaiono in nessun documento narrativo: cosa dovrebbero contenere?</li>
+    </ul>
+  </div>
+</section>
+
+<section id="percorso">
+  <h2 class="region">Il mondo <span class="n">·</span> percorso principale</h2>
+  <h3 class="place">Dalla Borgata a Rocca di Papa (giocabile oggi)</h3>
+  <div class="route">
+    <span class="node">Borgata Tuscolana</span><span class="arrow">→</span>
+    <span class="node">Percorso 1</span><span class="arrow">→</span>
+    <span class="node">Percorso 1b</span><span class="arrow">→</span>
+    <span class="node">Frascati</span><span class="arrow">→</span>
+    <span class="node">Percorso 2</span><span class="arrow">→</span>
+    <span class="node">Grottaferrata</span><span class="arrow">→</span>
+    <span class="node">Percorso 3</span><span class="arrow">→</span>
+    <span class="node">Marino</span><span class="arrow">→</span>
+    <span class="node">Percorso 4</span>
+  </div>
+  <div class="route">
+    <span class="node">Percorso 4</span><span class="arrow">⇄</span>
+    <span class="node">Castel Gandolfo</span><span class="arrow">/</span>
+    <span class="node">Lago di Albano</span><span class="arrow">/</span>
+    <span class="node">Monte Porzio</span>
+    <span class="arrow" style="margin-left:8px">— tutti collegati fra loro, è uno snodo a 4 vie</span>
+  </div>
+  <div class="route">
+    <span class="node">Monte Porzio</span><span class="arrow">→</span>
+    <span class="node">Percorso montano v1</span><span class="arrow">→</span>
+    <span class="node">Rocca di Papa</span>
+  </div>
+  <div class="route">
+    <span class="node">Monte Porzio</span><span class="arrow">→</span>
+    <span class="node miss">Percorso 6 (vuota)</span><span class="arrow">→</span>
+    <span class="node miss">Albano Laziale</span>
+    <span class="arrow" style="margin-left:8px">warp già combacianti, manca solo disegnare la mappa</span>
+  </div>
+  <div class="route">
+    <span class="node warn">Albano</span><span class="arrow">→</span>
+    <span class="node miss">Percorso 7 (non esiste)</span><span class="arrow">→</span>
+    <span class="node miss">Ariccia (non esiste)</span><span class="arrow">→</span>
+    <span class="node miss">Genzano (non esiste)</span><span class="arrow">→</span>
+    <span class="node miss">Via Vittoria</span><span class="arrow">→</span>
+    <span class="node miss">Colonna / Lega</span>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">0 · Borgata Tuscolana</h3><span class="chip ok">● completo</span></div>
+    <p class="narr">Roma periferia. Prof. Castagno assegna lo starter, Remo ti sfida sul posto ("Ci vediamo ai Castelli") — è il 1° di 5 scontri col rivale lungo tutto il gioco.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">1 · Frascati</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">P1 Erba — Vinicio, <b>Medaglia Vigna</b>, cap 14. Villa Aldobrandini domina la città: il warp verso l'interno esiste già in <code>frascati_centro.tmj</code> ma è gated a Lega completata (Mew si sblocca lì dopo <code>cotral_sconfitto</code>) — <b>la mappa interna della villa non esiste ancora</b>.</p>
+    <p class="stato">Aperti: <code>villa_torlonia</code> (warp da frascati_est) e <code>rayquaza_arena</code> (warp da frascati_ovest, la fontana di San Rocco per Rayquaza) — nessuna delle due mappe esiste ancora.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">2 · Grottaferrata</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">P2 Psico — Nilo, <b>Medaglia Icona</b>, cap 21. L'Abbazia di San Nilo è dove il Team GdF appare per la prima volta (Atto 1, 3 grunt, porta sbarrata) e dove torna per il climax finale (Atto 7, post-Lega, ≥7 medaglie).</p>
+    <p class="stato">Aperti: <code>abbazia_interno</code> (l'intero dungeon GdF, sia Atto 1 che Atto 7), <code>grotta_meteora</code> (dungeon Deoxys, post-Lega) e <code>casa_grotta_2_interno</code> — nessuna esiste ancora.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">3 · Marino</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">P3 Acqua — Moro, <b>Medaglia Fontana</b>, cap 28. Secondo STORIA_COMPLETA dà la MN Surf a fine lotta (vedi questione aperta sopra). Il Lab GdF #1 (Atto 2, dati sui laghi vulcanici) è "vicino a Marino" ma non ha ancora una mappa.</p>
+    <p class="stato">Aperto: <code>interno_palazzo_colonna</code> (warp presente, contenuto da definire).</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">Castel Gandolfo</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">Città lago, Villa Pontificia. <b>Atto 3 GdF</b>: un grunt trova negli archivi il documento sulle navi romane di Nemi → flag <code>documento_villa_trovato</code>.</p>
+    <p class="stato">Aperto: <code>interno_casa_gialla_grande</code> (warp presente, contenuto da definire).</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">Lago di Albano / Lago di Nemi</h3><span class="chip warn">◐ parziale</span></div>
+    <p class="narr">Lago di Albano: 6 allenatori spiaggia + bagnante + un abitante di una casa sul lago (interno non esiste). Kyogre dorme in profondità, catturabile solo dopo l'Atto 7 GdF (Pietra Blu). Lago di Nemi: <b>Museo delle Navi</b> = Atto 4 GdF (furto Orb Rossa/Blu) e prima apparizione di Suicune (sblocca poi Raikou/Entei come roaming).</p>
+    <p class="stato">Aperto: <code>Lago di Nemi.tmj</code> esiste già come file ma <b>non è registrata</b> in <code>map.js</code> né collegata a nessun percorso attivo. Il Museo delle Navi non ha ancora una mappa dedicata. <code>interno lago</code> (per il Surf/Kyogre) non esiste ancora.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">4 · Monte Porzio Catone</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">P4 Elettro — Stella, <b>Medaglia Stella</b>, cap 34. Osservatorio INAF: prima comparsa Team CoTrAL (dati su Zapdos), poi teatro di Zapdos (giorno di temporale) e Jirachi (notte, giorno dispari + 5 osservazioni). Da qui parte la <b>Via Vittoria</b> (il cartello "Via Vittoria" è già nella mappa).</p>
+    <p class="stato">Aperti: il dialogo dell'NPC "scienziato osservatorio" (gated ≥4 medaglie) non è ancora verificato contro la scena di STORIA_COMPLETA; Zapdos/Jirachi non hanno ancora la logica meteo/conta-giorni collegata su Tiled.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">5 · Rocca di Papa</h3><span class="chip warn">◐ parziale</span></div>
+    <p class="narr">P5 Roccia — Rocco, <b>Medaglia Lava</b>, cap 40. Ha già i warp per la <b>Grotta del Vulcano</b> (Atto 6 GdF, Groudon dorme nel nucleo) e per il <b>Sentiero Innevato</b> via funivia (Articuno, ≥5 medaglie). MN Volo la dà Faustino qui, ≥6 medaglie.</p>
+    <p class="stato">Aperti: <code>interno_palestra_rocco</code> (l'interno della palestra — dati dei 7 gregari + Rocco già pronti in <code>trainer.js</code>, solo da piazzare in Tiled), <code>grotta_vulcano</code>, <code>sentiero_innevato</code> — nessuna esiste ancora.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">6 · Albano Laziale</h3><span class="chip warn">◐ parziale</span></div>
+    <p class="narr">P6 Lotta — Massimo (ex militare, squadre con tema legionario: Decio, Fulva, Marco, Cesira...), <b>Medaglia Scudo</b>, cap 46. Città generata proceduralmente con PC/Market dedicati e collegamento reale al Lago di Albano.</p>
+    <p class="stato">Aperto: <code>palestra_albano_interno</code> non esiste ancora — ma i dati di Massimo e dei gregari sono già pronti in <code>js/data.js</code>/<code>dati/trainer.js</code>, manca solo disegnare la mappa e piazzarli. Percorso 6 e Percorso 7 in uscita da qui sono ancora vuoti (vedi questioni aperte).</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">7 · Ariccia</h3><span class="chip miss">○ da creare</span></div>
+    <p class="narr">P7 Buio — Ombretta, <b>Medaglia Ombra</b>, cap 52 (palestra "di notte", vicoli bui e fraschette). Il <b>Ponte di Ariccia</b> è dove Ho-Oh appare all'alba (dopo la catena Adriano il Porchettaro → Piuma Iridescente → 5 Porchettari sconfitti post-Lega). Sede anche del Lab CoTrAL #2 (Crasso, 17 trainer — vedi questione Crasso sopra).</p>
+    <p class="stato">Nessuna mappa esiste ancora. Nessun riferimento <code>.tmj</code> a "Ariccia" nel progetto.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">8 · Genzano</h3><span class="chip miss">○ da creare</span></div>
+    <p class="narr">P8 Folletto — Flora, <b>Medaglia Infiorata</b>, cap 58 (fioraia, colori dell'Infiorata). Un NPC qui rimanda il giocatore a Monte Porzio per l'accesso a Via Vittoria. Punto di partenza della catena Lugia (post-Lega, "scampagnata" verso il Monte Cavo).</p>
+    <p class="stato">Nessuna mappa esiste ancora.</p>
+  </div>
+
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">Via Vittoria → Colonna (Lega)</h3><span class="chip miss">○ da creare</span></div>
+    <p class="narr">Dungeon finale (cap 60), gate a 8 medaglie, Moltres incontro obbligato. A Colonna: Superquattro a pool (10 specie ciascuno, 6 estratte a sorte, core = BST più alto sempre incluso) + Campione <b>Remo</b> (5° e ultimo scontro, squadra costruita sul suo starter evoluto). Sotto la Lega: il <b>Bunkerino</b>, climax CoTrAL — Mewtwo ha già battuto i suoi creatori, lo trovi solo. Sblocca Mew a Villa Aldobrandini.</p>
+    <p class="stato">Warp verso "Via Vittoria" già presente in <code>monteporzio.tmj</code>, ma nessuna mappa esiste ancora per Via Vittoria, Colonna o il Bunkerino.</p>
+  </div>
+</section>
+
+<section id="tuscolo">
+  <h2 class="region">Fuori dal percorso principale</h2>
+  <h3 class="place">Boschi del Tuscolo — giocabile da subito</h3>
+  <div class="card">
+    <div class="head"><h3 class="place" style="margin:0">Boschi del Tuscolo</h3><span class="chip ok">● giocabile</span></div>
+    <p class="narr">Accessibile da Frascati Nord fin dall'inizio (il dungeon più ricco del gioco). Dentro: gli <b>Antri del Trio Regi</b> (Regirock/terra, Regice/buio, Registeel/volante — sigillati da iscrizioni in latino, serve ≥3 Pokémon del tipo giusto), il <b>Boschetto Segreto</b> con <b>Il Solitario</b> (campione Lv65-70, Celebi Lv70 come asso, sbloccato post-Lega) e — dopo averlo battuto — <b>Celebi</b> catturabile nell'erba alta (3% per passo, niente repellente).</p>
+    <p class="stato">Tutto già giocabile su Tiled: unico gruppo di leggendari davvero implementato oggi.</p>
+  </div>
+</section>
+
+<section id="gdf">
+  <h2 class="region">Team GdF <span class="n">·</span> Kyogre &amp; Groudon</h2>
+  <h3 class="place">Sette atti, uno già ripetuto in due posti diversi nei documenti</h3>
+  <div class="card">
+    <p class="narr">
+    <b>Atto 1</b> Abbazia (Grottaferrata) — 3 grunt, porta sbarrata. <span class="chip ok">fatto</span><br>
+    <b>Atto 2</b> Lab GdF #1 vicino Marino — dati sui laghi vulcanici. <span class="chip miss">mappa assente</span><br>
+    <b>Atto 3</b> Documento a Castel Gandolfo — 7 grunt, flag <code>documentoVillaOttenuto</code>. <span class="chip ok">fatto</span><br>
+    <b>Atto 4</b> Furto Museo delle Navi (Nemi) — ruba Orb Rossa/Blu. <span class="chip warn">da riallineare</span><br>
+    <b>Atto 5</b> Tentativo fallito vicino Albano — nel vecchio sistema è invece il boss finale con Crasso: <span class="chip warn">conflitto da chiarire</span><br>
+    <b>Atto 6</b> Presidio Grotta del Vulcano (Rocca di Papa) — grunt + gate, Groudon dorme nel nucleo. <span class="chip ok">fatto</span><br>
+    <b>Atto 7</b> Climax Abbazia (post-Lega, ≥7 medaglie) — Comandante senza nome, Pietra Rossa + Pietra Blu, flag <code>gdf_sconfitto</code>. <span class="chip miss">da fare</span>
+    </p>
+    <p class="stato">Effetto finale: Kyogre (Lago Albano) e Groudon (Grotta Vulcano) catturabili; con entrambi in squadra, la fontana di San Rocco a Frascati sblocca Rayquaza.</p>
+  </div>
+</section>
+
+<section id="cotral">
+  <h2 class="region">Team CoTrAL <span class="n">·</span> Progetto Mewtwo</h2>
+  <div class="card">
+    <p class="narr">
+    Prima comparsa: Osservatorio INAF (Monte Porzio) <span class="chip warn">dialogo da verificare</span><br>
+    Lab CoTrAL #1 Albano (Fulvia, 15 trainer) <span class="chip miss">solo vecchio sistema, non su Tiled</span><br>
+    4 grunt Ariccia → Piuma Iridescente (Adriano il Porchettaro) <span class="chip miss">solo vecchio sistema</span><br>
+    Lab CoTrAL #2 Ariccia (Crasso, 17 trainer) <span class="chip warn">conflitto Crasso</span><br>
+    Climax Bunkerino (Colonna, post-Lega) — Mewtwo, sblocca Mew <span class="chip miss">solo vecchio sistema</span>
+    </p>
+  </div>
+</section>
+
+<section id="leggendari">
+  <h2 class="region">Leggendari <span class="n">·</span> 21 totali</h2>
+  <div class="card">
+    <p class="narr"><b>Già giocabili su Tiled:</b> Trio Regi, Celebi (entrambi nei Boschi del Tuscolo).</p>
+    <p class="narr"><b>Posizioni fissate, da portare su Tiled quando la mappa esiste:</b> Articuno (funivia/sentiero innevato, Rocca di Papa), Zapdos e Jirachi (Osservatorio, Monte Porzio), Moltres (Via Vittoria, incontro obbligato), Suicune (Lago di Nemi), Kyogre (Lago Albano) e Groudon (Grotta Vulcano) dopo l'Atto 7 GdF, Rayquaza (fontana San Rocco, Frascati) dopo Kyogre+Groudon in squadra, Ho-Oh (Ponte di Ariccia, alba) dopo la catena Piuma Iridescente, Lugia (Monte Cavo, via Genzano) post-Lega, Mewtwo (Bunkerino) e Mew (Villa Aldobrandini) dopo Mewtwo, Deoxys (Parcheggione di Grottaferrata, notti senza luna).</p>
+    <p class="narr"><b>Roaming post-Lega:</b> Raikou ed Entei (dopo Suicune a Nemi), Latias/Latios (trigger ancora da definire).</p>
+  </div>
+</section>
+
+<footer>
+  Fonti: <code>js/map.js</code> (registro <code>MAPPE</code>), tutti i <code>.tmj</code> in <code>sprites/maps_tiled/</code>, <code>docs/STORIA_COMPLETA.md</code>, <code>docs/ROADMAP.md</code> (sessioni 18–31). Generato il 18 luglio 2026 — non sostituisce ROADMAP.md, è una fotografia per orientarsi rapidamente.
+</footer>
+
+</div>

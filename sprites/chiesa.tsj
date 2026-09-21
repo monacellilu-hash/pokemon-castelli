@@ -1,0 +1,14 @@
+{ "columns":11,
+ "image":"..\/chiesa.png",
+ "imageheight":392,
+ "imagewidth":382,
+ "margin":0,
+ "name":"chiesa",
+ "spacing":0,
+ "tilecount":132,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

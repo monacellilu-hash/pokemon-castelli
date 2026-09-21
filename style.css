@@ -1363,6 +1363,26 @@ html, body {
   100% { opacity: 0;    transform: translate(-50%, -50%) scale(1.35); }
 }
 
+/* Testo fluttuante generico: variazioni di HP (drenaggio/contraccolpo/cura)
+   e frecce di cambio statistica (↑↑/↓), sopra il vero bersaglio. Stesso
+   template della barra EXP: leggibile, non un'animazione per mossa.
+   Vedi testoFluttuante() in js/battle.js. */
+.fx-testo {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  text-shadow: 2px 2px 0 #000, -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000;
+  transform: translate(-50%, -50%);
+}
+
+@keyframes fx-testo-fluttua {
+  0%   { opacity: 0;   transform: translate(-50%, -30%); }
+  15%  { opacity: 1;   transform: translate(-50%, -70%); }
+  75%  { opacity: 1;   transform: translate(-50%, -120%); }
+  100% { opacity: 0;   transform: translate(-50%, -150%); }
+}
+
 @keyframes fx-scuoti {
   0%, 100% { transform: translate(0, 0); }
   20%      { transform: translate(-10px, 4px); }

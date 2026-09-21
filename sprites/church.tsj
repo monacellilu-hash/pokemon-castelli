@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"..\/church.png",
+ "imageheight":320,
+ "imagewidth":256,
+ "margin":0,
+ "name":"church",
+ "spacing":0,
+ "tilecount":80,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

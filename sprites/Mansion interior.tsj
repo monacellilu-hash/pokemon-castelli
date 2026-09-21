@@ -1,0 +1,14 @@
+{ "columns":8,
+ "image":"tiles\/Mansion interior.png",
+ "imageheight":928,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Mansion interior",
+ "spacing":0,
+ "tilecount":232,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "type":"tileset",
+ "version":"1.10"
+}

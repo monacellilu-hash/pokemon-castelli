@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"maps_tiled\/snow tiles.png",
+ "imageheight":288,
+ "imagewidth":256,
+ "margin":0,
+ "name":"snow tiles",
+ "spacing":0,
+ "tilecount":72,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

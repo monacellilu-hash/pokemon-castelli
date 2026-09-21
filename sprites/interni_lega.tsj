@@ -1,0 +1,15 @@
+{ "columns":32,
+ "image":"nuovi tileset\/interni_lega.png",
+ "imageheight":1024,
+ "imagewidth":1024,
+ "margin":0,
+ "name":"interni_lega",
+ "spacing":0,
+ "tilecount":1024,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

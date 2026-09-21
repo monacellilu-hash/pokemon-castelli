@@ -1,0 +1,15 @@
+{ "columns":36,
+ "image":"Tile_nuovi\/interno_edificio.png",
+ "imageheight":1153,
+ "imagewidth":1159,
+ "margin":0,
+ "name":"interno_edificio",
+ "spacing":0,
+ "tilecount":1296,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

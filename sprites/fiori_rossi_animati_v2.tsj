@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"Tile_nuovi\/fiori_rossi_animati_v2.png",
+ "imageheight":32,
+ "imagewidth":256,
+ "margin":0,
+ "name":"fiori_rossi_animati_v2",
+ "spacing":0,
+ "tilecount":8,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

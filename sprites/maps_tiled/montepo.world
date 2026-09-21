@@ -1,0 +1,20 @@
+{
+    "maps": [
+        {
+            "fileName": "monteporzio.tmj",
+            "height": 2304,
+            "width": 1728,
+            "x": 0,
+            "y": 0
+        },
+        {
+            "fileName": "Osservatorio.tmx",
+            "height": 1472,
+            "width": 2880,
+            "x": 704,
+            "y": -1472
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

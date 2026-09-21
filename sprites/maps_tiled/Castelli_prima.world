@@ -1,0 +1,27 @@
+{
+    "maps": [
+        {
+            "fileName": "pokemon-castelli-Percorso 1b.tmj",
+            "height": 1920,
+            "width": 1856,
+            "x": 9312,
+            "y": 1024
+        },
+        {
+            "fileName": "pokemon-castelli-Borgata_Tuscolana.tmx",
+            "height": 640,
+            "width": 2528,
+            "x": 8832,
+            "y": 4608
+        },
+        {
+            "fileName": "pokemon-castelli-Percorso 1.tmj",
+            "height": 1664,
+            "width": 1920,
+            "x": 9024,
+            "y": 2944
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

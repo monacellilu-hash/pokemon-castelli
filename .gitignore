@@ -33,3 +33,15 @@ test-*.png
 
 # Cartella di scarti asset (non referenziata dal gioco, ~35MB)
 sprites/NO/
+
+# File orfani spostati qui da un censimento (non referenziati da nessuna
+# mappa/codice, sess. 21 settembre 2026) — mai committati
+non_utilizzati/
+
+# Materiale grezzo/di riferimento, non caricato dal gioco (censimento
+# sess. 21 settembre 2026): sprite NPC originali già convertiti in
+# "sprites/npc e trainer per claude/", tileset RPG Maker campione mai usato,
+# script Ruby estratti da Essentials solo per consultazione
+OW_Trainer_sprite/
+free/
+strumenti/scripts_estratti/

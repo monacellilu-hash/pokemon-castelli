@@ -1,0 +1,15 @@
+{ "columns":31,
+ "image":"Tile_nuovi\/proveclaude\/interno_casa_legno.png",
+ "imageheight":1184,
+ "imagewidth":992,
+ "margin":0,
+ "name":"interno_casa_legno",
+ "spacing":0,
+ "tilecount":1147,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

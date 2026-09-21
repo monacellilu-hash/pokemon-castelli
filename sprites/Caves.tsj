@@ -1,0 +1,15 @@
+{ "columns":8,
+ "image":"maps_tiled\/Caves.png",
+ "imageheight":6368,
+ "imagewidth":256,
+ "margin":0,
+ "name":"Caves",
+ "spacing":0,
+ "tilecount":1592,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

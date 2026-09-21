@@ -133,7 +133,7 @@ const DATI_NPC = {
 
   /* ── Lago di Albano — spiaggia ── */
   'lago_albano_npc1': {
-    sprite: 'NPC 17', direzione: 'sud', movimento: 'random',
+    sprite: 'Nuotatore_spiaggia_fuori_acqua', direzione: 'sud', movimento: 'random',
     dialogo: ["D'estate qui è pieno de gente. La domenica non trovi manco un asciugamano libero!"],
   },
   // Vive in una casa sul lago (l'utente costruirà l'interno più avanti).
@@ -168,7 +168,7 @@ const DATI_NPC = {
   },
 
   'prof_castagno': {
-    sprite: 'Professor Castagno',   // sprite dedicato (prima era uno swap sul vecchio "npc Rivale")
+    sprite: 'Nuovo_professor_oak',   // sprite dedicato (prima era uno swap sul vecchio "npc Rivale")
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -176,7 +176,7 @@ const DATI_NPC = {
   },
 
   'Rivale': {
-    sprite: 'trainer_POKEMONTRAINER_Brendan',   // il rivale ora è Brendan
+    sprite: 'RIVALE_1',   // il rivale ora è Brendan
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: ['Ehi! Non pensare di essere più forte di me!'],
@@ -477,7 +477,9 @@ const DATI_NPC = {
 
   // NPC che appare DOPO aver sconfitto Il Solitario (condizione: il_solitario_sconfitto).
   'il_solitario_post': {
-    sprite: 'CAMPIONE_SOLITARIO', direzione: 'sud', movimento: 'fisso',
+    // "Il Solitario" ha un nome vero: Simone (richiesta esplicita di Luca,
+    // sess. 19 set 2026, sprite dedicato).
+    sprite: 'Simone', nome: 'Simone', direzione: 'sud', movimento: 'fisso',
     dialogo: [
       'Celebi vive in questo bosco da prima che esistesse Tuscolo.',
       'Non si mostra a chiunque. Ma ora che mi hai battuto...',
@@ -794,7 +796,10 @@ const DATI_NPC = {
     azione: 'sfidaParentiRocco',
   },
   'via_laghi_infermiera': {
-    sprite: 'NPC 07', nome: 'Cesira', direzione: 'sud', movimento: 'fisso',
+    // Cesira è la mamma di Baso (richiesta esplicita di Luca, sess. 19 set
+    // 2026, sprite dedicato "Mamma_Baso" — la rivelazione narrativa, non
+    // solo un cambio di grafica).
+    sprite: 'Mamma_Baso', nome: 'Cesira', direzione: 'sud', movimento: 'fisso',
     condizione: 'famiglia_rocco_battuta',
     azione: 'curaSquadraViaLaghi',
   },
@@ -857,15 +862,15 @@ const DATI_NPC = {
     azione: 'interagisciBasoCotralRocca',
   },
   'cotral_marcello_rocca_npc': {
-    sprite: 'trainer_SCIENTIST', nome: 'Marcello', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Luogotenente_Cotral_Osservatorio', nome: 'Marcello', direzione: 'sud', movimento: 'fisso',
     dialogo: ['(Marcello è troppo preso dalla discussione con Baso per notarti.)'],
   },
   'cotral_grunt_forte_1_npc': {
-    sprite: 'trainer_CoTral_M', nome: 'Addetto Scelto', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Grunt_Cotral_uomo', nome: 'Addetto Scelto', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non è ancora il momento. Aspetta il tuo turno.'],
   },
   'cotral_grunt_forte_2_npc': {
-    sprite: 'trainer_CoTral_F', nome: 'Addetta Scelta', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Grunt_Cotral_donna', nome: 'Addetta Scelta', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non è ancora il momento. Aspetta il tuo turno.'],
   },
   // Grunt decorativi (solo scenografia, "tutta la gente è lì" — richiesta di
@@ -889,8 +894,167 @@ const DATI_NPC = {
   // e ringrazia, vedi _epilogoBasoCotralRocca in js/map.js). Sparisce insieme
   // a Baso solo a epilogo concluso (cotral_rocca_finale).
   'gianluca_cotral_rocca': {
-    sprite: 'NPC 26', nome: 'Gianluca', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Gianluca Funivia', nome: 'Gianluca', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciGianlucaCotralRocca',
   },
+
+  /* ── Colonna (città finale, post-Lega — sess. 14 set 2026) ── */
+
+  // Gate: bloccano il passaggio finché non si è finita la Lega ("Colle
+  // Sant'Andrea bloccato per la partita di calcio", richiesta di Luca —
+  // condizione condivisa con tutto il resto del post-game). Nessun
+  // noTestBypass: sono gate "mondani", non fanno parte di una scena da
+  // testare — MODALITA_TEST li salta come tutti gli altri gate semplici.
+  'gate_colonna_calcio_1': {
+    sprite: 'NPC 15', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Non si passa: il Colle Sant\'Andrea è bloccato per la partita di calcio!', 'Torna dopo aver finito la Lega, magari le cose si saranno calmate.'],
+    gate: true, condizione: 'legaCompletata',
+  },
+  'gate_colonna_calcio_2': {
+    sprite: 'NPC 16', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Anche da qui è bloccato, eh! Il Colle Sant\'Andrea è tutto occupato per la partita.', 'Prova a tornare quando avrai finito con la Lega.'],
+    gate: true, condizione: 'legaCompletata',
+  },
+
+  // Market e Erborista (dentro pokemon-castelli-poke_market_colonna.tmj).
+  'pokemon market venditore colonna': {
+    sprite: 'NPC 21', nome: 'Palmira', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto al Poké Market di Colonna! Qui trovi solo roba seria, da fine avventura.'],
+    azione: 'apriMarketColonna',
+  },
+  'erborista colonna': {
+    sprite: 'Erborista_colonna', nome: 'Erborista', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Niente batte i vecchi rimedi di una volta: amari, ma funzionano sempre.'],
+    azione: 'apriErboristaColonna',
+  },
+
+  // NPC che parlano della Lega (semplice colore, sess. 14 set 2026).
+  'colonna_npc_lega_1': {
+    sprite: 'NPC 12', nome: 'Tifoso della Lega', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Siamo arrivati fin qui! Si sente l\'energia nell\'aria, la Lega è proprio dietro l\'angolo.'],
+  },
+  'colonna_npc_lega_2': {
+    sprite: 'NPC 08', nome: 'Anziano di Colonna', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il Campione è imbattuto da anni, dicono. Ci vuole una squadra fortissima per sfidarlo.'],
+  },
+
+  // NPC che, uno alla volta, rivelano il mistero della statua CoTrAL in
+  // piazza (richiesta esplicita di Luca: "a pezzi da più npc" — il
+  // giocatore deve parlarci con 4/5 per farsi un'idea completa).
+  'colonna_npc_cotral_lore_1': {
+    sprite: 'NPC 02', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Hai visto quella statua enorme in piazza? Il Team CoTrAL l\'ha tirata su dal nulla, in una notte.'],
+  },
+  'colonna_npc_cotral_lore_2': {
+    sprite: 'NPC 04', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Dicono che la salutano ogni mattina all\'alba, tutti in fila. Strano, per gente che dovrebbe occuparsi di autobus.'],
+  },
+  'colonna_npc_cotral_lore_3': {
+    sprite: 'NPC 05', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho sentito dire che vogliono controllare il meteo... ma che c\'entra una statua con la pioggia?'],
+  },
+  'colonna_npc_cotral_lore_4': {
+    sprite: 'NPC 09', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Prima erano solo tizi con la tuta arancione, ora si comportano come una setta. Io la piazza la evito, di sera.'],
+  },
+  'colonna_npc_cotral_lore_5': {
+    sprite: 'NPC 14', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qualcuno dice che la statua raffigura un Pokémon leggendario. Io non ci ho mai creduto ai leggendari... ma dopo quella cosa lì, chissà.'],
+  },
+
+  // NPC col look del Team CoTrAL: NON sono allenatori (type 'npc', non
+  // 'trainer' — niente sfida), solo scontrosi, e camminano in giro per la
+  // piazza (movimento:'random', già supportato dal motore). Richiesta
+  // esplicita di Luca.
+  'colonna_cotral_npc_1': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'random',
+    dialogo: ['Non hai niente di meglio da fare che disturbarmi?'],
+  },
+  'colonna_cotral_npc_2': {
+    sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'random',
+    dialogo: ['Togliti dai piedi. Non abbiamo tempo per i turisti.'],
+  },
+
+  /* ── Osservatorio CoTrAL (sess. 15 set 2026) — gate/condizione vivono
+     SEMPRE sulle proprietà dell'oggetto Tiled (Osservatorio_*f.tmj), MAI
+     qui (lezione della sessione scorsa: "schermo nero ma non sparisce
+     nessuno" — qui sotto solo sprite/dialogo/azione). ── */
+
+  'camilla_uscita_genzano': {
+    sprite: 'trainer_LEADER_Camilla', nome: 'Camilla', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['(Camilla sembra volerti dire qualcosa.)'],
+  },
+  'camilla_confronto_osservatorio': {
+    sprite: 'trainer_LEADER_Camilla', nome: 'Camilla', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['(Camilla sta discutendo animatamente con due addetti CoTrAL.)'],
+  },
+  'cotral_osservatorio_grunt_ext_1': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Fermo lì. Zona non autorizzata.'],
+  },
+  'cotral_osservatorio_grunt_ext_2': {
+    sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Non è un buon momento per fare domande.'],
+  },
+
+  // Receptionist 1F: visibile SOLO prima della rivelazione, poi sparisce e
+  // basta (non "diventa" un grunt come gli altri — richiesta esplicita).
+  'osservatorio_receptionist': {
+    sprite: 'NPC 04', nome: 'Receptionist', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto all\'Osservatorio! Studiamo il clima dei Castelli Romani, prego, faccia pure un giro.'],
+  },
+
+  // Ricercatori "di copertura" (visibili SOLO prima della rivelazione) — 7
+  // in tutto sui 3 piani, uno per ogni grunt in cui "si trasformano". Ora
+  // liberi di girare (movimento:'random', bocciate le coppie ferme in
+  // scatola) — stesso raggio dell'oggetto Tiled gemello.
+  'osservatorio_ricercatore_1f_a': { sprite: 'NPC 02', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Stiamo analizzando le anomalie di temperatura di quest\'anno. Dati interessanti, devo dire.'] },
+  'osservatorio_ricercatore_1f_b': { sprite: 'NPC 08', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Abbiamo installato nuovi sensori pluviometrici. Presto sapremo di più.'] },
+  'osservatorio_ricercatore_1f_c': { sprite: 'NPC 12', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Il direttore è molto impegnato ultimamente. Riunioni su riunioni.'] },
+  'osservatorio_ricercatore_2f_a': { sprite: 'NPC 15', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Il secondo piano è dedicato all\'analisi dei dati satellitari.'] },
+  'osservatorio_ricercatore_2f_b': { sprite: 'NPC 19', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Quelle statue? Un regalo del direttore. Un po\' stravagante, lo ammetto.'] },
+  'osservatorio_ricercatore_3f_a': { sprite: 'NPC 25', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Quassù teniamo gli strumenti più sensibili. Non tocchi nulla, per favore.'] },
+  'osservatorio_ricercatore_luogotenente': { sprite: 'NPC 28', nome: 'Direttrice', direzione: 'sud', movimento: 'random', dialogo: ['Sono la responsabile di questo piano. Se ha domande sul clima, chieda pure pubblicazioni ufficiali.'] },
+
+  // Grunt CoTrAL "veri" (visibili SOLO dopo la rivelazione, finché non
+  // vengono battuti — vedi _checkOsservatorioGruntTrigger, ora 2 CONTRO 1
+  // con Camilla alleata, ognuno solo e libero di girare).
+  'cotral_osservatorio_1f_a': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['Il rifugio è scoperto. Fatti sotto, se hai il coraggio.'] },
+  'cotral_osservatorio_1f_b': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['Non dovevi vedere niente di tutto questo.'] },
+  'cotral_osservatorio_1f_c': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['Qui dentro comandiamo noi, ricordatelo.'] },
+  'cotral_osservatorio_2f_a': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['Sei arrivato più a fondo di chiunque altro. Fin qui, però.'] },
+  'cotral_osservatorio_2f_b': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['La statua non è un semplice ornamento, sai? Ma questo non ti riguarda.'] },
+  'cotral_osservatorio_3f_a': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'random', dialogo: ['Ultimo piano, ultima possibilità di andartene.'] },
+  // Fermo immobile: si parla con lui per iniziare la lotta (azione), NON ha
+  // un dialogo di saluto separato — dati.dialogo_prima (DATI_TRAINER) è già
+  // la battuta pre-lotta, mostrarne un'altra qui la duplicherebbe.
+  'cotral_osservatorio_luogotenente': { sprite: 'Capo_Cotral', nome: 'Luogotenente', direzione: 'sud', movimento: 'fisso', azione: 'interagisciLuogotenenteOsservatorio' },
+
+  // Ricercatori "ignari" (sess. 15 set 2026): NON diventano mai grunt,
+  // sempre presenti (nessun gate), solo la battuta cambia dopo la
+  // rivelazione — vedi interagisciRicercatoreIgnaro1f/2f/3f in app.js.
+  'osservatorio_ricercatore_ignaro_1f': { sprite: 'NPC 17', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', azione: 'interagisciRicercatoreIgnaro1f' },
+  'osservatorio_ricercatore_ignaro_2f': { sprite: 'NPC 18', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', azione: 'interagisciRicercatoreIgnaro2f' },
+  'osservatorio_ricercatore_ignaro_3f': { sprite: 'NPC 24', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', azione: 'interagisciRicercatoreIgnaro3f' },
+
+  // Boss CoTrAL (2F): la battuta minacciosa a distanza (_checkOsservatorioBossTrigger)
+  // resta come primo assaggio; la lotta finale vera è una cutscene a parte
+  // (_cutsceneBossFinaleOsservatorio in map.js, sess. 18 set 2026), niente
+  // azione qui — il boss non si interagisce col tasto [A], parte tutto dal
+  // rettangolo trigger piazzato da Luca su Osservatorio_2f.tmj.
+  'cotral_boss_osservatorio': {
+    sprite: 'NPC', nome: 'Comandante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Non hai idea di cosa stiamo per scatenare. Ma questo... è un discorso per un\'altra volta.'],
+  },
+  // Comparse della cutscene finale del boss (sess. 18 set 2026): 3 ricercatori
+  // + 2 grunt che ascoltano il Comandante mentre spiega il piano meteo, tutti
+  // fissi, nessuna azione/dialogo proprio — sono scenografia della cutscene,
+  // non NPC interagibili. Compaiono/spariscono insieme al boss stesso (stesso
+  // flag sintetico 'osservatorio_boss_area_attiva', vedi map.js).
+  'osservatorio_boss_ricercatore_1': { sprite: 'NPC 19', nome: 'Ricercatore', direzione: 'sud' },
+  'osservatorio_boss_ricercatore_2': { sprite: 'NPC 20', nome: 'Ricercatrice', direzione: 'sud' },
+  'osservatorio_boss_ricercatore_3': { sprite: 'NPC 21', nome: 'Ricercatore', direzione: 'sud' },
+  'osservatorio_boss_grunt_1': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud' },
+  'osservatorio_boss_grunt_2': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud' },
 
 };
