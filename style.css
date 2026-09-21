@@ -1434,6 +1434,21 @@ html, body {
   animation: lampeggia 0.45s linear;
 }
 
+/* Tremore leggero SUL POKÉMON colpito (richiesta esplicita di Luca al
+   posto dello scuotimento di TUTTO lo schermo, "troppo accentuato e
+   troppo frequente") — ampiezza piccola apposta, solo lo sprite si
+   sposta di qualche pixel, non tutta l'inquadratura. Vedi tremaSprite()
+   in js/battle.js, sostituisce scuotiSchermo() a fine mossa. */
+@keyframes fx-trema {
+  0%, 100% { transform: translate(0, 0); }
+  25%      { transform: translate(-3px, 0); }
+  50%      { transform: translate(3px, 0); }
+  75%      { transform: translate(-2px, 0); }
+}
+.trema {
+  animation: fx-trema 0.28s ease-in-out;
+}
+
 /* Effetti generici delle mosse: ~3 template per categoria (fisica/speciale/stato)
    colorati dal tipo della mossa, non un'animazione scritta a mano per ognuna
    delle 700+ mosse. Vedi animaMossa() in js/battle.js. */

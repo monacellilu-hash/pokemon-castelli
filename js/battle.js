@@ -610,6 +610,18 @@ const Battle = (function () {
     el.classList.add('colpito');
   }
 
+  // Tremore leggero SUL POKÉMON colpito (richiesta esplicita di Luca al
+  // posto dello scuotimento di TUTTO lo schermo — "troppo accentuato e
+  // avviene troppo spesso, magari sul pokemon che trema poco poco"):
+  // sostituisce scuotiSchermo() a fine mossa, stesso trucco di lampeggia().
+  function tremaSprite(chi) {
+    const el = elementoSprite(chi);
+    if (!el) return;
+    el.classList.remove('trema');
+    void el.offsetWidth;
+    el.classList.add('trema');
+  }
+
   /* ==========================================================
      EFFETTI VISIVI DELLE MOSSE — generici per categoria+tipo.
      Non un'animazione per ognuna delle 700+ mosse: solo 3 template
@@ -1007,7 +1019,7 @@ const Battle = (function () {
 
     if (typeof AnimazioniEssentials !== 'undefined' && AnimazioniEssentials.haAnimazione(mossa.nome)) {
       await AnimazioniEssentials.gioca(mossa.nome, elementoSprite(att), elementoSprite(bersaglioReale));
-      scuotiSchermo();
+      tremaSprite(bersaglioReale);
       return;
     }
 
@@ -1019,11 +1031,11 @@ const Battle = (function () {
     if (mossa.classe === 'physical') {
       lungeAttaccante(att);
       await new Promise(r => setTimeout(r, durataFx(220)));
-      scuotiSchermo();
+      tremaSprite(bersaglioReale);
       await new Promise(r => setTimeout(r, durataFx(180)));
     } else {
       await proiettileMossa(att, dif, colore);
-      scuotiSchermo();
+      tremaSprite(bersaglioReale);
     }
   }
 
