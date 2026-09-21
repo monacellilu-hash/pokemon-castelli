@@ -10351,7 +10351,9 @@ const GameMap = (function () {
   function apriMenuNativo(sceneKey) {
     if (!phaserGame || !scena) return;
     menuNativoAperto = true;
-    ['hud', 'btn-menu', 'btn-velocita', 'dpad', 'btn-volo', 'btn-repellente'].forEach(id => {
+    // Il D-pad NON va nascosto: su mobile è l'unico modo per muovere il
+    // cursore dentro la scena nativa (vedi _collegaDpad → simulaTastoGB).
+    ['hud', 'btn-menu', 'btn-velocita', 'btn-volo', 'btn-repellente'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.display = 'none';
     });
@@ -10379,7 +10381,7 @@ const GameMap = (function () {
   function chiudiMenuNativo() {
     menuNativoAperto = false;
     if (scena && scena.scene) scena.scene.resume();
-    ['hud', 'btn-menu', 'btn-velocita', 'dpad', 'btn-volo', 'btn-repellente'].forEach(id => {
+    ['hud', 'btn-menu', 'btn-velocita', 'btn-volo', 'btn-repellente'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.style.removeProperty('display');
     });
@@ -10441,12 +10443,10 @@ const GameMap = (function () {
 
   function bloccaMovimento() {
     bloccato = true;
-    // [A] fisso sullo schermo ma non durante dialoghi/battaglie/cutscene:
-    // lì non deve fare nulla, meglio nasconderlo invece di lasciarlo lì
-    // inerte (era "overlay-interagisci" prima di diventare un pulsante
-    // sempre visibile, sess. 5 set 2026).
-    const btnEl = document.getElementById('btn-interagisci');
-    if (btnEl) btnEl.style.display = 'none';
+    // [A] resta SEMPRE visibile su mobile (non lo nascondiamo più durante
+    // dialoghi/battaglie/menu: premiA() in app.js ora sa cosa fare in
+    // ognuno di questi contesti — conferma il dialogo, il cursore di
+    // battaglia, o il menu nativo — quindi ha sempre un compito).
     if (scena && scena.cursors) {
       try { scena.input.keyboard.resetKeys(); } catch (_) {}
     }
@@ -10454,8 +10454,6 @@ const GameMap = (function () {
 
   function sbloccaMovimento() {
     bloccato = false;
-    const btnEl = document.getElementById('btn-interagisci');
-    if (btnEl) btnEl.style.removeProperty('display');
     if (scena) scena._aggiornaEventoVicino();
   }
 
