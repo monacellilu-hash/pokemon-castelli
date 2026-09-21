@@ -7529,15 +7529,15 @@ const GameMap = (function () {
       // ECCEZIONE: se è aperta una scena nativa (Squadra/Zaino/Box/Market/
       // Pausa/Scheda…), il D-pad deve muoverne il cursore invece di spostare
       // il personaggio (che è comunque in pausa) — quella scena ascolta solo
-      // veri tasti freccia, quindi qui simuliamo anche quelli (vedi
-      // simulaTastoGB in app.js), un tap = un passo di cursore.
+      // i propri eventi Phaser keydown-UP/DOWN/…, quindi qui li emettiamo
+      // direttamente (emitTastoSceneNative), un tap = un passo di cursore.
       this.dpadDx = 0;
       this.dpadDy = 0;
       const TASTO_DIR = {
-        'btn-su':       ['ArrowUp', 38],
-        'btn-giu':      ['ArrowDown', 40],
-        'btn-sinistra': ['ArrowLeft', 37],
-        'btn-destra':   ['ArrowRight', 39],
+        'btn-su':       'keydown-UP',
+        'btn-giu':      'keydown-DOWN',
+        'btn-sinistra': 'keydown-LEFT',
+        'btn-destra':   'keydown-RIGHT',
       };
       const btn = (id, dx, dy) => {
         const el = document.getElementById(id);
@@ -7548,9 +7548,8 @@ const GameMap = (function () {
             // Battaglia: il D-pad muove il cursore fra i pulsanti (vedi
             // Battle.spostaCursore, stesso sistema delle frecce da tastiera).
             if (typeof Battle !== 'undefined' && Battle.spostaCursore) Battle.spostaCursore(dx, dy);
-          } else if (menuNativoAttivo() && typeof simulaTastoGB === 'function') {
-            const [key, keyCode] = TASTO_DIR[id];
-            simulaTastoGB(key, keyCode);
+          } else if (menuNativoAttivo()) {
+            emitTastoSceneNative(TASTO_DIR[id]);
           }
         };
         const stop = () => {
@@ -10404,6 +10403,25 @@ const GameMap = (function () {
 
   function menuNativoAttivo() { return menuNativoAperto; }
 
+  // Manda un evento "keydown-<NOME>" direttamente alla/e scena/e Phaser
+  // ATTIVE, chiamando l'emit() interno del loro KeyboardPlugin — esattamente
+  // quello che Phaser farebbe da solo con un tasto fisico vero, ma senza
+  // passare da un KeyboardEvent sintetico nel DOM (che su alcuni browser
+  // mobile può non farsi riconoscere il keyCode forzato per tutti i tasti,
+  // vedi commit precedente: [B] funzionava così ma [A]/Invio no). Usata dai
+  // controlli touch (D-pad/[A]/[B]) quando una scena nativa (Squadra/Zaino/
+  // Box/Market/Pausa/Scheda…) è aperta sopra GameScene (in pausa, esclusa).
+  function emitTastoSceneNative(nomeEvento) {
+    if (!phaserGame) return;
+    const attive = phaserGame.scene.getScenes(true);
+    for (const s of attive) {
+      if (s.scene.key === 'GameScene') continue;
+      if (s.input && s.input.keyboard) {
+        s.input.keyboard.emit(nomeEvento, { preventDefault() {} });
+      }
+    }
+  }
+
   /* ══════════════════════════════════════════════════════════
      API PUBBLICA
      ══════════════════════════════════════════════════════════ */
@@ -10700,6 +10718,7 @@ const GameMap = (function () {
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
+    emitTastoSceneNative,
   };
 
 })();
