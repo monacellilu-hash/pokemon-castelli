@@ -2174,7 +2174,8 @@ const GameMap = (function () {
       // (evita il loop "entro e vengo subito rispedito indietro").
       spawnGuard = { tx: sx, ty: sy };
 
-      this.cameras.main.setZoom(this._zoomIdeale());
+      const zoom = this._zoomIdeale();
+      this.cameras.main.setZoom(zoom);
 
       // Per mappe piccole: centra la mappa senza clamp ai bordi
       const camW = this.cameras.main.width / zoom;
