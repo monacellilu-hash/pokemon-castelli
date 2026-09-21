@@ -1581,9 +1581,7 @@ const GameMap = (function () {
   const DURATA_PASSO_CORSA_MS = 125;  // tasto Corsa (Shift) tenuto premuto
   const DURATA_PASSO_BICI_MS  = 100;  // Bicicletta indossata
 
-  // Genere → texture per ogni "modalità" del personaggio. player-girl-red va
-  // ancora fornito (l'utente lo aggiungerà): finché manca, Phaser segnala
-  // l'errore di caricamento ma il resto del gioco funziona lo stesso.
+  // Genere → texture per ogni "modalità" del personaggio.
   const SPRITE_PLAYER = {
     boy:  { normale: 'player-red',      run: 'player-red-run',  bike: 'player-red-bike',  surf: 'player-red-surf',  fish: 'player-red-fish' },
     girl: { normale: 'player-girl-red', run: 'player-girl-run', bike: 'player-girl-bike', surf: 'player-girl-surf', fish: 'player-girl-fish' },
@@ -1591,6 +1589,7 @@ const GameMap = (function () {
 
   let genereGiocatore = 'boy';  // impostato da stato.genere al primo caricamento
   let corsaAttiva      = false; // tasto Corsa tenuto premuto
+  let corsaTouchAttiva = false; // pulsante [B] a schermo tenuto premuto (solo mobile)
   let biciAttiva       = false; // Bicicletta indossata (si toglie da sola in Surf)
   let pescaFinoA       = 0;     // this.time.now: mostra la posa da pesca fino a questo istante
 
@@ -1978,9 +1977,20 @@ const GameMap = (function () {
       // (salvataggi vecchi, o se la schermata non è ancora stata mostrata).
       genereGiocatore = (typeof stato !== 'undefined' && stato.genere === 'girl') ? 'girl' : 'boy';
 
+      // Zoom libero con la rotella: SOLO in MODALITA_TEST (comodo per lo
+      // sviluppo). Per i giocatori veri l'inquadratura è fissa (calcolata da
+      // _zoomIdeale, sotto) — non regolabile, come nei giochi originali.
       this.input.on('wheel', (_p, _g, _dx, dy) => {
+        if (typeof MODALITA_TEST === 'undefined' || !MODALITA_TEST) return;
         const z = this.cameras.main.zoom;
         this.cameras.main.setZoom(Phaser.Math.Clamp(z - dy * 0.003, 1, 6));
+      });
+
+      // Ricalcola l'inquadratura quando la finestra cambia dimensione
+      // (Scale.RESIZE ridimensiona il canvas da solo, ma lo zoom fisso in
+      // "quante caselle si vedono" va ricalcolato sulla nuova dimensione).
+      this.scale.on('resize', () => {
+        if (this.cameras && this.cameras.main) this.cameras.main.setZoom(this._zoomIdeale());
       });
 
       this._collegaDpad();
@@ -1990,6 +2000,24 @@ const GameMap = (function () {
         btnInteragisci.addEventListener('click', () => {
           if (eventoVicino && !bloccato) this._interagisci(eventoVicino);
         });
+      }
+
+      // [B] a schermo (solo mobile): tenuto premuto durante l'esplorazione
+      // libera = corsa (equivalente dello Shift su PC); un tap mentre un
+      // dialogo/scelta/battaglia è aperto = "indietro" (equivalente del
+      // tasto fisico B, vedi premiB in app.js).
+      const btnB = document.getElementById('btn-b');
+      if (btnB) {
+        const libero = () => !bloccato &&
+          !(typeof stato !== 'undefined' && stato.incontroAttivo) &&
+          !(typeof dialogoInCorso !== 'undefined' && dialogoInCorso);
+        btnB.addEventListener('pointerdown', () => { if (libero()) corsaTouchAttiva = true; });
+        const rilasciaB = () => {
+          if (corsaTouchAttiva) { corsaTouchAttiva = false; return; }
+          if (typeof premiB === 'function') premiB();
+        };
+        btnB.addEventListener('pointerup', rilasciaB);
+        btnB.addEventListener('pointerleave', rilasciaB);
       }
 
       // Animazione acqua (tileset "Sea"): avanza il fotogramma ogni 450ms,
@@ -2146,8 +2174,7 @@ const GameMap = (function () {
       // (evita il loop "entro e vengo subito rispedito indietro").
       spawnGuard = { tx: sx, ty: sy };
 
-      const zoom = (tileSize < 32) ? 4 : 2;
-      this.cameras.main.setZoom(zoom);
+      this.cameras.main.setZoom(this._zoomIdeale());
 
       // Per mappe piccole: centra la mappa senza clamp ai bordi
       const camW = this.cameras.main.width / zoom;
@@ -2375,7 +2402,7 @@ const GameMap = (function () {
 
       // Camera sul bounding box dell'INTERO cluster (Parte 4): nessun ricalcolo
       // quando il player attraversa una cucitura interna.
-      this.cameras.main.setZoom(2);
+      this.cameras.main.setZoom(this._zoomIdeale());
       this.cameras.main.setBounds(0, 0, mapW * tileSize, mapH * tileSize);
 
       this._posizionaPlayer(sx, sy);
@@ -3685,8 +3712,8 @@ const GameMap = (function () {
 
       this.moveCD -= delta;
 
-      // Corsa: SHIFT tenuto premuto (equivalente del tasto B del Game Boy).
-      corsaAttiva = this.shiftKey.isDown;
+      // Corsa: SHIFT tenuto premuto su PC, pulsante [B] a schermo su mobile.
+      corsaAttiva = this.shiftKey.isDown || corsaTouchAttiva;
 
       // Bicicletta: tasto B, si indossa/toglie solo se posseduta. Non si può
       // pedalare mentre si sta surfando né dentro edifici/interni (palestre,
@@ -7472,6 +7499,25 @@ const GameMap = (function () {
       this.scene.launch('InteriorScene', { nome: nomeLuogo || 'Casa' });
     }
 
+    // Quante caselle si vedono a schermo, FISSO (non regolabile dal
+    // giocatore — richiesta esplicita di Luca): circa 24-28 orizzontali ×
+    // 16-18 verticali su PC, un po' meno su mobile ma comunque più larghe
+    // di prima (schermo piccolo = zoom vecchio troppo "appiccicato" al
+    // personaggio). Usa il minimo fra vincolo orizzontale e verticale, così
+    // si vede SEMPRE almeno il target su entrambi gli assi (mai di meno).
+    _zoomIdeale() {
+      const mobile = (typeof window.matchMedia === 'function') &&
+        window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+      const targetW = mobile ? 13 : 26;
+      const targetH = mobile ? 9  : 17;
+      const camW = this.cameras.main.width  || window.innerWidth;
+      const camH = this.cameras.main.height || window.innerHeight;
+      const ts = tileSize || 32;
+      const zoomW = camW / (targetW * ts);
+      const zoomH = camH / (targetH * ts);
+      return Phaser.Math.Clamp(Math.min(zoomW, zoomH), 0.5, 6);
+    }
+
     /* ────────── D-PAD ────────── */
 
     _collegaDpad() {
@@ -7788,10 +7834,22 @@ const GameMap = (function () {
         const val = this.add.text(302, y, valore, testoStile).setOrigin(1, 0.5);
         layer.add(et); layer.add(val);
       };
+      // Riga passi/ora/soldi/zona: prima vivevano nell'HUD sempre in
+      // sovraimpressione in alto a sinistra ("non voglio che sia presente a
+      // schermo", richiesta esplicita di Luca) — ora stanno solo qui, nella
+      // Scheda Allenatore. Sulla mappa resta solo il popup col nome del
+      // luogo al cambio mappa (mostraNomeMappa), niente più HUD fisso. Il
+      // livello degli incontri selvatici non compare da nessuna parte qui:
+      // era legato al vecchio motore a coordinate reali (World.trovaZona),
+      // non ha corrispettivo sul motore Tiled.
+      const orario = (typeof stato.tempo === 'object' && typeof formatOrario === 'function')
+        ? `${formatOrario(stato.tempo.minuti)} ${typeof iconaFascia === 'function' ? iconaFascia(fasciaOraria(stato.tempo.minuti)) : ''}`
+        : '';
       riga('Nome', nome, 70);
-      riga('Denaro', `₽ ${(stato.soldi || 0).toLocaleString('it-IT')}`, 118);
-      riga('Passi', String(stato.passi || 0), 166);
-      riga('Giorno', String((stato.tempo && stato.tempo.giorno) || 1), 214);
+      riga('Denaro', `₽ ${(stato.soldi || 0).toLocaleString('it-IT')}`, 106);
+      riga('Passi', String(stato.passi || 0), 142);
+      riga('Giorno', `${(stato.tempo && stato.tempo.giorno) || 1} · ${orario}`, 178);
+      riga('Zona', nomeVisualizzatoMappa(mappaCorrente) || '—', 214);
 
       // Medaglie: 8 caselle (72 + i*48, y=310), icona reale solo per quelle
       // ottenute — stessa griglia di icon_badges.png (32×32 per medaglia).

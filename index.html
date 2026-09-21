@@ -106,6 +106,15 @@
     <button id="btn-destra"   class="dpad-btn" aria-label="Destra">▶</button>
   </div>
 
+  <!-- Pulsanti B/Select/Start — SOLO mobile/touch (su PC ci sono i tasti
+       B/Shift/Invio sulla tastiera, vedi initTastiera in app.js). [A] è
+       #btn-interagisci più sotto, esiste già. -->
+  <button id="btn-b" class="tasto-gb solo-mobile" aria-label="B">B</button>
+  <div id="tasti-select-start" class="solo-mobile">
+    <button id="btn-select" aria-label="Select">SELECT</button>
+    <button id="btn-start"  aria-label="Start">START</button>
+  </div>
+
   <!-- Schermata di battaglia -->
   <div id="schermata-battaglia" class="nascosto" role="dialog" aria-modal="true">
     <div id="battaglia-campo">
@@ -229,7 +238,7 @@
        [A] fisico lì): un pulsante fisso e discreto, senza notifica, che fa
        qualcosa solo quando c'è davvero qualcosa vicino (vedi btnInteragisci
        in js/map.js — il click controlla eventoVicino, a vuoto non fa nulla). -->
-  <button id="btn-interagisci">[A]</button>
+  <button id="btn-interagisci" class="tasto-gb solo-mobile">A</button>
 
   <!-- Phaser 3 (motore grafico F14 — sostituisce Leaflet) -->
   <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>

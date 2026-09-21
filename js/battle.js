@@ -1028,6 +1028,7 @@ const Battle = (function () {
     }
     $('battaglia-messaggio').textContent = `Cosa deve fare ${mio.nome}?`;
     $('menu-principale').classList.remove('nascosto');
+    resetCursore();
   }
 
   function mostraMenuMosse() {
@@ -1060,6 +1061,7 @@ const Battle = (function () {
 
     menu.appendChild(bottoneIndietro());
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   function mostraMenuZaino() {
@@ -1094,6 +1096,7 @@ const Battle = (function () {
 
     menu.appendChild(bottoneIndietro());
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   // obbligatorio = true quando il Pokémon in campo è KO e BISOGNA cambiarlo
@@ -1115,6 +1118,7 @@ const Battle = (function () {
 
     if (!obbligatorio) menu.appendChild(bottoneIndietro());
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   function bottoneIndietro() {
@@ -1123,6 +1127,64 @@ const Battle = (function () {
     btn.textContent = '↩ Indietro';
     btn.addEventListener('click', mostraMenuPrincipale);
     return btn;
+  }
+
+  /* ==========================================================
+     CURSORE DA TASTIERA/[A] (richiesta esplicita di Luca: niente mouse
+     obbligatorio in battaglia — le frecce spostano un cursore fra i
+     pulsanti del pannello visibile, [A]/Invio clicca quello selezionato,
+     [B] torna indietro se il pannello ha un pulsante "Indietro"). Non serve
+     toccare ogni funzione che ricostruisce i menu: bastano queste poche
+     funzioni pubbliche richiamate da app.js (premiA/premiB/tasti freccia) e
+     una chiamata a resetCursore() a fine di ognuna delle mostraMenu*.
+     ========================================================== */
+  let cursoreIdx = 0;
+
+  function _pannelloVisibile() {
+    return document.querySelector('#battaglia-console .menu-battaglia:not(.nascosto)');
+  }
+  function _bottoniCursore() {
+    const pannello = _pannelloVisibile();
+    if (!pannello) return [];
+    return Array.from(pannello.querySelectorAll('button:not(:disabled)'));
+  }
+  function _ridisegnaCursore() {
+    const bottoni = _bottoniCursore();
+    bottoni.forEach((b, i) => b.classList.toggle('cursore', i === cursoreIdx));
+  }
+  function resetCursore() {
+    cursoreIdx = 0;
+    _ridisegnaCursore();
+  }
+  function spostaCursore(dx, dy) {
+    const bottoni = _bottoniCursore();
+    if (!bottoni.length) return;
+    if (cursoreIdx >= bottoni.length) cursoreIdx = 0;
+    const r0 = bottoni[cursoreIdx].getBoundingClientRect();
+    const cx = r0.left + r0.width / 2, cy = r0.top + r0.height / 2;
+    let migliore = -1, distMin = Infinity;
+    bottoni.forEach((b, i) => {
+      if (i === cursoreIdx) return;
+      const r = b.getBoundingClientRect();
+      const bx = r.left + r.width / 2, by = r.top + r.height / 2;
+      const ddx = bx - cx, ddy = by - cy;
+      if (dx !== 0 && (ddx === 0 || Math.sign(ddx) !== Math.sign(dx))) return;
+      if (dy !== 0 && (ddy === 0 || Math.sign(ddy) !== Math.sign(dy))) return;
+      const principale   = dx !== 0 ? Math.abs(ddx) : Math.abs(ddy);
+      const trasversale   = dx !== 0 ? Math.abs(ddy) : Math.abs(ddx);
+      const dist = principale + trasversale * 2; // penalizza gli scarti laterali
+      if (dist < distMin) { distMin = dist; migliore = i; }
+    });
+    if (migliore >= 0) { cursoreIdx = migliore; _ridisegnaCursore(); }
+  }
+  function confermaCursore() {
+    const bottoni = _bottoniCursore();
+    if (bottoni[cursoreIdx]) bottoni[cursoreIdx].click();
+  }
+  function indietroCursore() {
+    const pannello = _pannelloVisibile();
+    const indietro = pannello && pannello.querySelector('.btn-indietro');
+    if (indietro) indietro.click();
   }
 
   /* ==========================================================
@@ -2374,6 +2436,7 @@ const Battle = (function () {
     }
     $('battaglia-messaggio').textContent = `Cosa deve fare ${m.nome}?`;
     $('menu-principale').classList.remove('nascosto');
+    resetCursore();
   }
 
   function mostraMenuMosseDoppia(slot) {
@@ -2406,6 +2469,7 @@ const Battle = (function () {
     indietro.addEventListener('click', () => mostraMenuPrincipaleDoppia(slot));
     menu.appendChild(indietro);
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   // Tutti i Pokémon in campo tranne "ist" (entrambi i lati, vivi): è il vero
@@ -2463,6 +2527,7 @@ const Battle = (function () {
       cont.appendChild(btn);
     }
     cont.classList.remove('nascosto');
+    resetCursore();
   }
 
   function nascondiSelettoreBersaglio() {
@@ -2501,6 +2566,7 @@ const Battle = (function () {
     indietro.addEventListener('click', () => mostraMenuPrincipaleDoppia(slot));
     menu.appendChild(indietro);
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   async function _doppiaUsaPozione(slot, chiave) {
@@ -2559,6 +2625,7 @@ const Battle = (function () {
       menu.appendChild(indietro);
     }
     menu.classList.remove('nascosto');
+    resetCursore();
   }
 
   async function _doppiaCambiaPokemon(slot, idx, eraObbligatorio) {
@@ -3020,6 +3087,7 @@ const Battle = (function () {
   return {
     avvia, avviaDoppia, creaIstanza, caramellaRara, evolviIstanza, trovaEvoluzioneAuto, generaGenere, trovaSpecieBase,
     sceglieSlotAbilita, abilitaChiaveDaSlot,
+    spostaCursore, confermaCursore, indietroCursore,
   };
 
 })();

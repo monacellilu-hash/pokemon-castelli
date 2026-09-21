@@ -37,22 +37,17 @@ html, body {
 }
 
 /* ------------------------------------------------------------
-   HUD
+   HUD — tolto dalla vista (richiesta esplicita di Luca: "non voglio che
+   sia presente a schermo, sta in sovraimpressione su tutto"). I dati che
+   conteneva (passi/ora/soldi/zona) sono ora nella Scheda Allenatore
+   (TrainerCardScene, js/map.js). Sulla mappa resta solo il popup col nome
+   del luogo al cambio mappa (#popup-nome-mappa, invariato). aggiornaHUD()
+   in app.js continua a girare (aggiorna anche i pulsanti Volo/Repellente,
+   che sono un'altra cosa) ma scrive su elementi ormai invisibili: nessun
+   danno, evita di dover toccare quella funzione.
    ------------------------------------------------------------ */
 #hud {
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  z-index: 1000;
-  background: rgba(20, 30, 50, 0.88);
-  color: #fff;
-  padding: 10px 14px;
-  border-radius: 10px;
-  border: 2px solid #ffcb05;
-  font-size: 14px;
-  line-height: 1.6;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  min-width: 200px;
+  display: none;
 }
 
 #hud-titolo {
@@ -118,6 +113,8 @@ html, body {
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
   touch-action: manipulation;
 }
 
@@ -1505,6 +1502,19 @@ html, body {
   border-color: #ffcb05;
 }
 
+/* Cursore da tastiera/[A] (frecce per muoversi, niente mouse obbligatorio):
+   bordo dorato + triangolino, stesso trattamento visivo dell'hover ma
+   sempre attivo così è visibile anche su schermi touch senza puntatore. */
+.menu-battaglia button.cursore {
+  border-color: #ffcb05;
+  box-shadow: 0 0 0 2px #ffcb0555;
+}
+.menu-battaglia button.cursore::before {
+  content: '▶';
+  color: #ffcb05;
+  margin-right: 2px;
+}
+
 .menu-battaglia button:disabled {
   opacity: 0.45;
   cursor: not-allowed;
@@ -1538,16 +1548,52 @@ html, body {
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
-/* Schermi piccoli */
+/* Schermi piccoli (telefono): prima il pannello comandi restava quasi
+   grande come su PC (260px→250px, quasi lo stesso) e mangiava tutto lo
+   spazio verticale, lasciando i Pokémon minuscoli o fuori vista — richiesta
+   esplicita di Luca ("le battaglie in mobile fanno cagare"). Ora il
+   pannello messaggio+menu si impila in colonna invece di stare affiancato
+   (il 43%/57% affiancato non ci sta su uno schermo stretto), usa un'altezza
+   in "vh" invece di un px fisso (si adatta a QUALSIASI telefono, non solo a
+   quello su cui è stato tarato), e testo/pulsanti sono più piccoli. Con
+   meno spazio preso dal pannello, #battaglia-campo (flex:1) si riprende
+   automaticamente il resto: i Pokémon tornano grandi e visibili. */
 @media (max-width: 620px) {
-  .pannello-info    { min-width: 195px; font-size: 15px; padding: 8px 11px; border-width: 3px; }
-  #info-nemico      { top: 4%; left: 3%; }
+  .pannello-info    { min-width: 150px; font-size: 13px; padding: 6px 9px; border-width: 2px; }
+  #info-nemico      { top: 3%; left: 3%; }
   #info-giocatore   { bottom: 3%; right: 3%; }
-  .hp-binario       { height: 12px; }
-  #giocatore-hp-testo { font-size: 13px; }
-  #battaglia-console { height: 250px; }
-  #battaglia-messaggio { font-size: 15px; flex-basis: 40%; padding: 8px 10px; }
-  .menu-battaglia button { font-size: 16px; }
+  .hp-binario       { height: 9px; }
+  #giocatore-hp-testo { font-size: 11px; }
+
+  #battaglia-console {
+    height: auto;
+    max-height: 40vh;
+    flex-direction: column;
+    padding: 8px 10px 10px;
+    gap: 6px;
+  }
+  #battaglia-messaggio {
+    flex: 0 0 auto;
+    height: auto;
+    min-height: 50px;
+    max-height: 30vh;
+    font-size: 13px;
+    line-height: 1.3;
+    padding: 7px 10px;
+    overflow-y: auto;
+  }
+  .menu-battaglia { gap: 6px; }
+  .menu-battaglia button { font-size: 12px; padding: 6px 9px; gap: 4px; }
+  .mossa-pp   { font-size: 10px; }
+  .tipo-badge { font-size: 10px; padding: 2px 8px; }
+}
+
+/* Telefono in orizzontale (poca altezza, non poca larghezza): il vincolo
+   vero qui è l'altezza, non riconosciuto dal breakpoint sopra da solo. */
+@media (max-height: 480px) {
+  #battaglia-console { max-height: 44vh; padding: 6px 10px 8px; }
+  #battaglia-messaggio { font-size: 12px; padding: 6px 9px; min-height: 40px; }
+  .menu-battaglia button { font-size: 11px; padding: 5px 8px; }
 }
 
 /* ------------------------------------------------------------
@@ -1580,6 +1626,9 @@ html, body {
   font-weight: bold;
   cursor: pointer;
   user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
 }
 
 #btn-velocita { color: #ffcb05; border: 2px solid #ffcb05; }
@@ -1910,25 +1959,81 @@ html, body {
    quando c'è davvero qualcosa vicino (eventoVicino, vedi js/map.js),
    altrimenti il click non ha effetto.
    ------------------------------------------------------------ */
-#btn-interagisci {
+/* Tasti [A]/[B] stile Game Boy: cerchietti in basso a sinistra, speculari
+   al D-pad che sta in basso a destra (richiesta esplicita di Luca: la
+   croce direzionale resta dov'è, A/B/Select/Start compaiono SOLO su
+   mobile/touch — su PC restano i tasti fisici A/B/Shift/Invio). */
+.tasto-gb {
   position: fixed;
-  bottom: 150px;
+  z-index: 500;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: rgba(26, 41, 64, 0.85);
+  color: var(--giallo-poke);
+  border: 2px solid var(--giallo-poke);
+  font-family: var(--font-gba);
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+.tasto-gb:active {
+  background: var(--giallo-poke);
+  color: #1a2940;
+}
+
+#btn-interagisci {
+  bottom: 84px;
+  left: 78px;
+}
+
+#btn-b {
+  bottom: 24px;
+  left: 24px;
+}
+
+#tasti-select-start {
+  position: fixed;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 500;
-  background: rgba(26, 41, 64, 0.75);
-  color: #fff;
-  border: 2px solid var(--giallo-poke);
-  border-radius: 14px;
-  padding: 6px 14px;
-  font-family: var(--font-gba);
-  font-size: 8px;
-  cursor: pointer;
-  white-space: nowrap;
+  gap: 10px;
 }
 
-#btn-interagisci:hover {
-  background: #2a3f60;
+#tasti-select-start button {
+  background: rgba(26, 41, 64, 0.85);
+  color: var(--giallo-poke);
+  border: 2px solid var(--giallo-poke);
+  border-radius: 20px;
+  padding: 6px 14px;
+  font-family: var(--font-gba);
+  font-size: 7px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation;
+}
+
+#tasti-select-start button:active {
+  background: var(--giallo-poke);
+  color: #1a2940;
+}
+
+/* Mostrati SOLO su dispositivi touch-primari (niente hover fine, puntatore
+   grossolano): su PC restano i tasti fisici, niente doppione a schermo. */
+.solo-mobile { display: none; }
+@media (hover: none) and (pointer: coarse) {
+  .solo-mobile { display: flex; }
+  #btn-interagisci.solo-mobile { display: flex; }
 }
 
 

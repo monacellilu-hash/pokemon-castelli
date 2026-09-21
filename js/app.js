@@ -3503,53 +3503,100 @@ window.apriSezioneMenuDaSceneNativa = apriSezioneMenuDaSceneNativa;
 
 /* ============================================================
    TASTIERA stile Game Boy (QoL)
-   - [A]        = conferma / interagisci / avanza i dialoghi
-   - [B]        = indietro / annulla (chiude menu, avanza dialoghi)
+   - [A]        = conferma / interagisci / avanza i dialoghi / in battaglia
+                  conferma la voce col cursore (vedi Battle.confermaCursore)
+   - [B]        = indietro / annulla (chiude menu, avanza dialoghi, in
+                  battaglia torna al menu precedente)
    - [Invio]    = Start: apre/chiude il menu
-   - frecce ← → = scorrono le schede del menu (quando è aperto)
+   - [Shift]    = Select (in attesa della Bicicletta, vedi premiSelect)
+   - frecce ← → = scorrono le schede del menu (quando è aperto) / in
+                  battaglia muovono il cursore fra i pulsanti (↑↓ pure)
    Il movimento sulla mappa resta con le frecce (gestito da map.js).
+   Le stesse funzioni premiA/premiB/premiStart/premiSelect sono richiamate
+   anche dai pulsanti a schermo [A]/[B]/Start/Select (solo mobile, vedi
+   initControlliMobile) — un'unica logica, due modi di premerla.
    ============================================================ */
-function initTastiera() {
-  const nascosto = (id) => {
-    const el = document.getElementById(id);
-    return !el || el.classList.contains('nascosto');
-  };
+const nascostoEl = (id) => {
+  const el = document.getElementById(id);
+  return !el || el.classList.contains('nascosto');
+};
 
+function premiA() {
+  if (stato.incontroAttivo) {
+    if (typeof Battle !== 'undefined' && Battle.confermaCursore) Battle.confermaCursore();
+    return;
+  }
+  const sceltaEl = document.getElementById('overlay-scelta');
+  if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn1').click(); return; }
+  if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
+  if (!nascostoEl('pannello-menu')) return;   // si naviga col mouse/tocco diretto
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+  if (typeof GameMap !== 'undefined' && GameMap.interagisciVicino) GameMap.interagisciVicino();
+}
+
+function premiB() {
+  if (stato.incontroAttivo) {
+    if (typeof Battle !== 'undefined' && Battle.indietroCursore) Battle.indietroCursore();
+    return;
+  }
+  const sceltaEl = document.getElementById('overlay-scelta');
+  if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn2').click(); return; }
+  if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
+  if (!nascostoEl('pannello-menu')) { chiudiMenu(); return; }
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+}
+
+function premiStart() {
+  if (stato.incontroAttivo) return;
+  if (!nascostoEl('overlay-dialogo')) return;
+  const sceltaEl = document.getElementById('overlay-scelta');
+  if (sceltaEl && sceltaEl.style.display === 'flex') return;
+  if (!nascostoEl('pannello-menu')) { chiudiMenu(); return; }
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+  if (typeof GameMap !== 'undefined' && GameMap.apriMenuNativo) GameMap.apriMenuNativo();
+}
+
+// Select: riservato alla Bicicletta (si otterrà più avanti in partita).
+// Per ora solo il collegamento del tasto, come richiesto esplicitamente:
+// nessuna meccanica reale finché la Bicicletta non è ottenibile in gioco.
+function premiSelect() {
+  if (stato.incontroAttivo || !nascostoEl('overlay-dialogo') || !nascostoEl('pannello-menu')) return;
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+  if (typeof mostraToast === 'function') mostraToast('🚲 Non hai ancora la Bicicletta.');
+}
+
+function initTastiera() {
   window.addEventListener('keydown', (e) => {
     // non interferire mentre si scrive in un campo di testo
     const t = e.target;
     if (t && /^(input|textarea|select)$/i.test(t.tagName)) return;
 
     const k = e.key.toLowerCase();
+
+    // In battaglia le frecce muovono il cursore fra i pulsanti (menu 2x2,
+    // liste mosse/zaino/squadra…), A/Invio/Spazio confermano, B torna indietro.
+    if (stato.incontroAttivo) {
+      const dir = { arrowup: [0, -1], arrowdown: [0, 1], arrowleft: [-1, 0], arrowright: [1, 0] }[k];
+      if (dir) { e.preventDefault(); if (typeof Battle !== 'undefined' && Battle.spostaCursore) Battle.spostaCursore(dir[0], dir[1]); return; }
+      if (k === 'a' || k === 'enter' || k === ' ') { e.preventDefault(); premiA(); return; }
+      if (k === 'b') { e.preventDefault(); premiB(); return; }
+      return;
+    }
+
     const isA     = (k === 'a');
     const isB     = (k === 'b');
     const isStart = (k === 'enter');
+    const isSelect = (k === 'shift' && !e.repeat);
     const isFreccia = (k === 'arrowleft' || k === 'arrowright');
-    if (!isA && !isB && !isStart && !isFreccia) return;
+    if (!isA && !isB && !isStart && !isSelect && !isFreccia) return;
 
-    // In battaglia comanda l'interfaccia di battle.js (mouse): non intercettiamo.
-    if (stato.incontroAttivo) return;
+    if (isA) { e.preventDefault(); premiA(); return; }
+    if (isB) { e.preventDefault(); premiB(); return; }
+    if (isSelect) { e.preventDefault(); premiSelect(); return; }
 
-    const sceltaEl = document.getElementById('overlay-scelta');
-    const sceltaAperta = sceltaEl && sceltaEl.style.display === 'flex';
-
-    // 1) Riquadro a due scelte (gauntlet palestre): A = sx, B = dx
-    if (sceltaAperta) {
-      if (isA) { e.preventDefault(); document.getElementById('scelta-btn1').click(); }
-      else if (isB) { e.preventDefault(); document.getElementById('scelta-btn2').click(); }
-      return;
-    }
-
-    // 2) Dialogo in corso: A o B fanno avanzare il testo
-    if (!nascosto('overlay-dialogo')) {
-      if (isA || isB) { e.preventDefault(); document.getElementById('dialogo-avanti').click(); }
-      return;
-    }
-
-    // 3) Menu aperto: B/Start chiudono, ← → cambiano scheda
-    if (!nascosto('pannello-menu')) {
-      if (isB || isStart) { e.preventDefault(); chiudiMenu(); return; }
-      if (isFreccia && menuModalita === 'pausa') {
+    // Frecce ← →: cambiano scheda solo col menu di pausa aperto (invariato)
+    if (isFreccia) {
+      if (!nascostoEl('pannello-menu') && menuModalita === 'pausa') {
         e.preventDefault();
         const schede = SCHEDE_PER_MODALITA[menuModalita];
         let i = schede.indexOf(sezioneMenuAttiva);
@@ -3560,17 +3607,7 @@ function initTastiera() {
       return;
     }
 
-    // Il menu Start nativo (PauseMenuScene/PartyScene, PROBLEMA 3) gestisce
-    // da sé i propri tasti Phaser (frecce/Invio/Spazio/B/Esc): se è aperto
-    // non deve arrivare fin qui, altrimenti isA farebbe scattare ANCHE
-    // un'interazione sulla mappa sotto e isStart riaprirebbe il menu da capo.
-    if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
-
-    // 4) Esplorazione: Start apre il menu (PROBLEMA 3: ora una vera Scene
-    // Phaser a schermo intero — vedi PauseMenuScene in map.js — non più il
-    // pannello DOM sopra la mappa), A interagisce con ciò che hai davanti
-    if (isStart) { e.preventDefault(); if (GameMap.apriMenuNativo) GameMap.apriMenuNativo(); }
-    else if (isA) { e.preventDefault(); if (GameMap.interagisciVicino) GameMap.interagisciVicino(); }
+    if (isStart) { e.preventDefault(); premiStart(); }
   });
 }
 
@@ -5051,9 +5088,16 @@ async function avvia() {
   aggiornaHUD();
 
   document.getElementById('btn-chiudi-menu').addEventListener('click', chiudiMenu);
-  initTastiera();   // QoL: tasti A / B / Start (Invio)
+  initTastiera();   // QoL: tasti A / B / Start (Invio) / Select (Shift)
   document.getElementById('btn-volo').addEventListener('click', apriVolo); // MN Volo (F9)
   document.getElementById('btn-repellente').addEventListener('click', usaRepellenteRapido); // QoL repellente
+
+  // Pulsanti Select/Start a schermo (solo mobile — vedi .solo-mobile in
+  // style.css): stessa logica dei tasti fisici, richiamano le stesse funzioni.
+  const btnSelect = document.getElementById('btn-select');
+  if (btnSelect) btnSelect.addEventListener('click', premiSelect);
+  const btnStart = document.getElementById('btn-start');
+  if (btnStart) btnStart.addEventListener('click', premiStart);
 
   // Chiudi overlay interno edificio
   document.getElementById('btn-esci-interno')?.addEventListener('click', () => {
