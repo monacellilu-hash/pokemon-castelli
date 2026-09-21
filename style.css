@@ -1532,14 +1532,19 @@ html, body {
    RIGA (testo a sinistra ~220/512 ≈ 43% di larghezza, comandi a destra nel
    resto), non impilati uno sopra l'altro come prima — verificato leggendo lo
    script estratto, non a occhio (sess. 8 set 2026). */
+/* Pannello comandi (messaggio + Attacca/Pokémon/Zaino/Fuga) ridotto ~15%
+   su richiesta esplicita di Luca ("sono sproporzionate rispetto alla
+   scena, principalmente su mobile") — libera spazio verticale per
+   #battaglia-campo (flex:1), che lo riprende da solo: la scena appare più
+   grande di conseguenza, SENZA toccare il suo codice di scaling. */
 #battaglia-console {
-  height: 260px;
+  height: 221px;   /* era 260px */
   background: #1a2940;
   border-top: 5px solid #ffcb05;
-  padding: 12px 16px 14px;
+  padding: 10px 14px 12px;
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 8px;
   box-sizing: border-box;
 }
 
@@ -1550,8 +1555,8 @@ html, body {
   color: #fff;
   border: 2px solid #5a6377;
   border-radius: 10px;
-  padding: 12px 16px;
-  font-size: 22px;
+  padding: 10px 14px;
+  font-size: 19px;   /* era 22px */
   line-height: 1.45;
   cursor: pointer;
   user-select: none;
@@ -1566,7 +1571,7 @@ html, body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
-  gap: 10px;
+  gap: 8px;
   overflow-y: auto;
 }
 
@@ -1578,15 +1583,15 @@ html, body {
   background: #f8f8e8;
   border: 3px solid #41464f;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 17px;   /* era 20px */
   font-weight: bold;
   color: #222;
-  padding: 8px 16px;
+  padding: 7px 14px;
   cursor: pointer;
   text-align: left;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 
@@ -1657,33 +1662,33 @@ html, body {
      CSS qui romperebbe di nuovo l'allineamento interno dei pannelli. */
   #battaglia-console {
     height: auto;
-    max-height: 40vh;
+    max-height: 34vh;   /* era 40vh — ridotto ~15%, libera spazio per la scena */
     flex-direction: column;
-    padding: 8px 10px 10px;
-    gap: 6px;
+    padding: 7px 9px 9px;
+    gap: 5px;
   }
   #battaglia-messaggio {
     flex: 0 0 auto;
     height: auto;
-    min-height: 50px;
-    max-height: 30vh;
-    font-size: 13px;
+    min-height: 42px;
+    max-height: 25vh;
+    font-size: 11px;
     line-height: 1.3;
-    padding: 7px 10px;
+    padding: 6px 9px;
     overflow-y: auto;
   }
-  .menu-battaglia { gap: 6px; }
-  .menu-battaglia button { font-size: 12px; padding: 6px 9px; gap: 4px; }
-  .mossa-pp   { font-size: 10px; }
-  .tipo-badge { font-size: 10px; padding: 2px 8px; }
+  .menu-battaglia { gap: 5px; }
+  .menu-battaglia button { font-size: 10px; padding: 5px 8px; gap: 3px; }
+  .mossa-pp   { font-size: 9px; }
+  .tipo-badge { font-size: 9px; padding: 2px 7px; }
 }
 
 /* Telefono in orizzontale (poca altezza, non poca larghezza): il vincolo
    vero qui è l'altezza, non riconosciuto dal breakpoint sopra da solo. */
 @media (max-height: 480px) {
-  #battaglia-console { max-height: 44vh; padding: 6px 10px 8px; }
-  #battaglia-messaggio { font-size: 12px; padding: 6px 9px; min-height: 40px; }
-  .menu-battaglia button { font-size: 11px; padding: 5px 8px; }
+  #battaglia-console { max-height: 37vh; padding: 5px 9px 7px; }
+  #battaglia-messaggio { font-size: 10px; padding: 5px 8px; min-height: 34px; }
+  .menu-battaglia button { font-size: 9px; padding: 4px 7px; }
 }
 
 /* ------------------------------------------------------------
