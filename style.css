@@ -1074,6 +1074,15 @@ html, body {
 .sprite-zona {
   position: absolute;
   text-align: center;
+  /* Deve stare SEMPRE sopra .pannello-info (databox): senza z-index qui,
+     l'ordine nell'HTML decide da solo la sovrapposizione — #info-giocatore
+     viene dopo #zona-giocatore nel markup e quindi ci finiva sopra,
+     coprendo COMPLETAMENTE lo sprite del proprio Pokémon (bug trovato via
+     ispezione diretta: elementFromPoint sul centro dello sprite tornava il
+     pannello, non lo sprite — mai visibile). Lo sprite nemico non aveva
+     questo problema per puro caso di ordine (#info-nemico viene PRIMA di
+     #zona-nemico nel markup). */
+  z-index: 3;
 }
 
 /* Meteo di battaglia (Sole/Pioggia/Grandine/Sabbia): piccola etichetta in
