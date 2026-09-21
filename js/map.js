@@ -10314,6 +10314,16 @@ const GameMap = (function () {
 
   function interagisciCentroTiled() {
     if (typeof stato === 'undefined') return;
+    // Ricorda "dove sei stato curato l'ultima volta" (richiesta esplicita
+    // di Luca: se perdi una lotta, riparti davanti alla porta dell'ultimo
+    // Centro Pokémon usato). mappaStack contiene lo stack di ritorno agli
+    // esterni — il suo ultimo elemento è ESATTAMENTE il punto fuori dalla
+    // porta di QUESTO Centro (mappa/tx/ty impostati quando ci sei entrato),
+    // niente da configurare a mano per ogni Centro.
+    if (mappaStack.length > 0) {
+      const ritorno = mappaStack[mappaStack.length - 1];
+      stato.ultimoCentroCura = { mappa: ritorno.mappa, tx: ritorno.tx, ty: ritorno.ty };
+    }
     bloccaMovimento();
     if (typeof mostraDialogo === 'function') {
       mostraDialogo('Infermiera Joy', [

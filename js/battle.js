@@ -1187,7 +1187,13 @@ const Battle = (function () {
     });
     if (migliore >= 0) { cursoreIdx = migliore; _ridisegnaCursore(); }
   }
+  // Riquadro statistiche al level-up (vedi mostraSchermataLevelUp): mentre è
+  // aperto, [A] non deve cliccare il cursore dei menu sotto — fa avanzare
+  // QUESTO invece. _levelUpRisolvi è la funzione che sblocca la Promise in
+  // attesa, impostata da mostraSchermataLevelUp e azzerata subito dopo l'uso.
+  let _levelUpRisolvi = null;
   function confermaCursore() {
+    if (_levelUpRisolvi) { const r = _levelUpRisolvi; _levelUpRisolvi = null; r(); return; }
     const bottoni = _bottoniCursore();
     if (bottoni[cursoreIdx]) bottoni[cursoreIdx].click();
   }
@@ -1712,35 +1718,100 @@ const Battle = (function () {
      ESPERIENZA E LEVEL-UP (con level cap)
      ========================================================== */
 
-  async function assegnaExp(ist, exp) {
+  // silenzioso = true per i compagni di squadra che NON hanno sferrato il
+  // colpo decisivo (richiesta esplicita di Luca: guadagnano EXP ridotta
+  // "in sordina", senza il messaggio "guadagna X Punti Esperienza" e senza
+  // barra/riquadro statistiche — MA se salgono comunque di livello lo si
+  // dice sempre, quello non si nasconde mai).
+  async function assegnaExp(ist, exp, silenzioso) {
     const cap = statoGioco.levelCap || 100;
     // L'EXP non può superare la soglia massima del cap:
     // si "blocca" finché non arriva la medaglia successiva.
     const expMassima = Math.pow(cap + 1, 3) - 1;
+    // La barra Exp a schermo è quella di "mio" soltanto: i compagni panchinati
+    // non hanno alcuna barra visibile, quindi tutta l'animazione (barra che
+    // si riempie, si azzera, riquadro statistiche) ha senso SOLO per lui.
+    const mostraBarra = (ist === mio) && !silenzioso;
 
     ist.exp += exp;
     let capRaggiunto = false;
     if (ist.exp > expMassima) { ist.exp = expMassima; capRaggiunto = true; }
 
-    await di(`${ist.nome} guadagna ${exp} Punti Esperienza!`);
+    if (!silenzioso) await di(`${ist.nome} guadagna ${exp} Punti Esperienza!`);
+    if (mostraBarra) aggiornaPannelli();   // la barra si riempie fino al punto raggiunto ORA (CSS transition)
 
     // Sale di livello finché l'EXP lo consente (e il cap lo permette)
     while (ist.livello < cap && ist.exp >= Math.pow(ist.livello + 1, 3)) {
+      // Prima di salire di livello: la barra arriva al 100% del livello
+      // VECCHIO (stile giochi originali), poi si azzera e riparte dopo il
+      // riquadro statistiche — non salta direttamente al valore del nuovo
+      // livello.
+      if (mostraBarra) {
+        const el = $('giocatore-exp');
+        if (el) el.style.width = '100%';
+        await new Promise(r => setTimeout(r, durataFx(450)));
+      }
+
+      const vecchie = {
+        hp: ist.hpMax, atk: ist.attacco, def: ist.difesa,
+        spa: ist.attSp, spd: ist.difSp, vel: ist.velocita,
+      };
       ist.livello += 1;
       const vecchioHpMax = ist.hpMax;
       ricalcolaStatistiche(ist);
       // Gli HP attuali crescono insieme agli HP massimi
       ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - vecchioHpMax));
-      aggiornaPannelli();
+      const nuove = {
+        hp: ist.hpMax, atk: ist.attacco, def: ist.difesa,
+        spa: ist.attSp, spd: ist.difSp, vel: ist.velocita,
+      };
+
+      if (!mostraBarra) aggiornaPannelli();
       await di(`✨ ${ist.nome} sale al livello ${ist.livello}!`);
+
+      if (mostraBarra) {
+        await mostraSchermataLevelUp(ist, vecchie, nuove);
+        const el = $('giocatore-exp');
+        if (el) el.style.width = '0%';
+        aggiornaPannelli();   // riparte da 0% verso il punto vero del nuovo livello
+      }
+
       await controllaNuoveMosse(ist);
       await controllaEvoluzione(ist);
     }
 
-    aggiornaPannelli();
-    if (capRaggiunto) {
+    if (!mostraBarra) aggiornaPannelli();
+    if (capRaggiunto && !silenzioso) {
       await di(`⛔ ${ist.nome} ha raggiunto il level cap (Lv.${cap}). Serve la prossima medaglia!`);
     }
+  }
+
+  // Riquadro statistiche al level-up (in basso a destra, sovrapposto in
+  // parte al pannello HP — vedi #levelup-box in style.css/index.html).
+  // Tre stadi scanditi da [A] (vedi confermaCursore, _levelUpRisolvi):
+  // 1) mostra "+N" per ogni statistica, 2) mostra il nuovo totale,
+  // 3) si chiude (la barra Exp riparte da 0% verso il nuovo livello).
+  async function mostraSchermataLevelUp(ist, vecchie, nuove) {
+    const box = $('levelup-box');
+    if (!box) return;
+    const titolo = $('levelup-titolo');
+    if (titolo) titolo.textContent = `${ist.nome} · statistiche`;
+    const RIGHE = { hp: 'lv-hp', atk: 'lv-atk', def: 'lv-def', spa: 'lv-spa', spd: 'lv-spd', vel: 'lv-vel' };
+
+    for (const k in RIGHE) {
+      const el = $(RIGHE[k]);
+      if (el) el.textContent = `+${Math.round(nuove[k] - vecchie[k])}`;
+    }
+    box.classList.remove('nascosto');
+    await new Promise(r => { _levelUpRisolvi = r; });
+
+    for (const k in RIGHE) {
+      const el = $(RIGHE[k]);
+      if (el) el.textContent = String(Math.round(nuove[k]));
+    }
+    await new Promise(r => { _levelUpRisolvi = r; });
+
+    box.classList.add('nascosto');
   }
 
   // Al level-up: se la specie impara una mossa proprio a questo livello, la aggiunge
@@ -1968,6 +2039,19 @@ const Battle = (function () {
     if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
     await assegnaExp(mio, exp);
 
+    // EXP condivisa con il resto della squadra (richiesta esplicita di
+    // Luca, come lo "Scambio Esperienza" sempre attivo dei giochi veri):
+    // chi ha sferrato il colpo decisivo ("mio") guadagna il pieno, gli
+    // altri in squadra il 55% (nella forbice "40/50% in meno" richiesta),
+    // in sordina — assegnaExp(..., silenzioso=true) non mostra il
+    // messaggio "guadagna X Punti Esperienza" né la barra/il riquadro
+    // statistiche, ma il "sale al livello" resta sempre visibile.
+    const expCondivisa = Math.max(1, Math.floor(exp * 0.55));
+    for (const compagno of statoGioco.squadra) {
+      if (compagno === mio || compagno.hpAttuale <= 0) continue;
+      await assegnaExp(compagno, expCondivisa, true);
+    }
+
     // L'allenatore manda in campo il prossimo Pokémon, se ne ha ancora
     if (modalita === 'allenatore' && indiceNemico < squadraNemica.length - 1) {
       indiceNemico += 1;
@@ -1998,6 +2082,22 @@ const Battle = (function () {
     fineBattaglia('vittoria');
   }
 
+  // Sconfitta totale (richiesta esplicita di Luca): come nei giochi veri,
+  // non si resta fermi dove si era — si riparte davanti alla porta
+  // dell'ultimo Centro Pokémon in cui ci si è curati (stato.ultimoCentroCura,
+  // registrato da interagisciCentroTiled in map.js). Se non ci si è ancora
+  // curati da nessuna parte (es. appena partiti, fra Borgata Tuscolana e
+  // Frascati), si torna al punto di partenza vero e proprio del gioco.
+  function _teletrasportaCentroPokemon() {
+    if (typeof GameMap === 'undefined' || !GameMap.vaiAMappa) return;
+    const centro = statoGioco.ultimoCentroCura;
+    if (centro && centro.mappa) {
+      GameMap.vaiAMappa(centro.mappa, centro.tx, centro.ty);
+    } else {
+      GameMap.vaiAMappa('borgata_tuscolana');
+    }
+  }
+
   async function gestisciKO() {
     await di(`${mio.nome} è esausto!`);
 
@@ -2012,6 +2112,7 @@ const Battle = (function () {
         p.mosse.forEach(m => { m.pp = m.ppMax; });
       });
       fineBattaglia('sconfitta');
+      _teletrasportaCentroPokemon();
     } else {
       // C'è ancora qualcuno: scelta obbligatoria del sostituto
       mostraMenuSquadra(true);
@@ -2913,6 +3014,7 @@ const Battle = (function () {
         p.mosse.forEach(m => { m.pp = m.ppMax; });
       });
       fineBattagliaDoppia('sconfitta');
+      _teletrasportaCentroPokemon();
       return true;
     }
     const nemiciTotali = doppiaBanchi[0].length + doppiaBanchi[1].length +

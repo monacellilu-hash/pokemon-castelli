@@ -1296,6 +1296,46 @@ html, body {
   transition: width 0.45s ease;
 }
 
+/* Riquadro statistiche al level-up (richiesta esplicita di Luca, stile
+   giochi veri): appare in basso a destra, sovrapposto in parte al pannello
+   HP del giocatore — posizione/dimensioni in pixel nativi come il resto
+   della schermata di battaglia (scala insieme a tutto via il transform di
+   #battaglia-schermo). [A] fa avanzare i tre stadi (vedi
+   mostraSchermataLevelUp in battle.js): "+N" per statistica → nuovo
+   totale → si chiude. */
+#levelup-box {
+  position: absolute;
+  z-index: 5;   /* sopra ai pannelli dati (4) */
+  top: 230px;
+  left: 306px;
+  width: 190px;
+  background: #f8f8e8;
+  border: 3px solid #41464f;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 10px;
+  color: #222;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+#levelup-box.nascosto { display: none; }
+
+#levelup-titolo {
+  font-weight: bold;
+  font-size: 10px;
+  margin-bottom: 3px;
+  text-align: center;
+}
+
+.levelup-riga {
+  display: flex;
+  justify-content: space-between;
+  padding: 1px 0;
+}
+.levelup-riga span:last-child {
+  font-weight: bold;
+  color: #2a7a2a;
+}
+
 /* ------------------------------------------------------------
    Lotta in doppio (2 allenatori vs 2 Pokémon del giocatore, vedi
    Battle.avviaDoppia in js/battle.js). Slot 2 = stessi elementi dello slot 1
