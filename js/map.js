@@ -868,11 +868,16 @@ const GameMap = (function () {
   const splitParts = {};
 
   const TILESET_IMMAGINI = {
-    'ts-pc-int':      'Essentials FRLG/Graphics/Tilesets/Poke Centre interior.png',
-    'ts-int-gen':     'Essentials FRLG/Graphics/Tilesets/Interior general.png',
-    'ts-gyms-int':    'Essentials FRLG/Graphics/Tilesets/Gyms interior.png',
-    'ts-mart-int':    'Essentials FRLG/Graphics/Tilesets/Mart interior.png',
-    'ts-prof-cast':   'Essentials FRLG/Graphics/Characters/NPC_ProfOak.png',
+    // Questi 5 puntavano dentro "Essentials FRLG/" (cartella SOLO locale,
+    // esclusa da git — vedi .gitignore): funzionavano su localhost ma
+    // erano invisibili (sfondo nero) sul sito pubblico. Esistevano già
+    // copie tracciate da git in sprites/, bastava puntare lì (bug trovato
+    // da Luca: "Pokemon Center Borgata Tuscolana ha sfondo nero").
+    'ts-pc-int':      'sprites/tiles/Poke Centre interior.png',
+    'ts-int-gen':     'sprites/tiles/Interior general.png',
+    'ts-gyms-int':    'sprites/tiles/Gyms interior.png',
+    'ts-mart-int':    'sprites/tiles/Mart interior.png',
+    'ts-prof-cast':   'sprites/NPC_ProfOak.png',
     // Tileset nuovi
     'ts-sea':         'sprites/tiles/Sea.png',
     'ts-caves':       'sprites/maps_tiled/Caves.png',
@@ -4496,6 +4501,14 @@ const GameMap = (function () {
     _interagisci(ev) {
       if (bloccato) return;
       const tipo = ev.tipo;
+
+      // Richiesta esplicita di Luca, per TUTTO il gioco: chi parli si gira
+      // verso di te (e tu verso di lui), come un vero dialogo faccia a
+      // faccia — non solo nelle cutscene scriptate che già lo facevano a
+      // mano (_cutscenaGuardaReciproco, riusata qui per ogni NPC/allenatore).
+      if (tipo === 'npc' || tipo === 'trainer') {
+        this._cutscenaGuardaReciproco(ev.id);
+      }
 
       // Ostacoli MN (trigger_surf, trigger_taglio, trigger_forza, …)
       if (isMnTrigger(tipo)) { this._gestisciTrigger(ev); return; }
@@ -10510,6 +10523,23 @@ const GameMap = (function () {
   // l'offset del cluster). Usata da salvaPartitaOra() per riprendere la
   // partita dall'ultima casella invece che sempre da Borgata Tuscolana.
   //
+  // Dissolvenza generica a schermo nero e ritorno (richiesta per piccole
+  // cutscene fuori dal sistema scriptato completo, es. congedo del rivale
+  // dopo la prima lotta nel laboratorio): fadeOut, pausa, fadeIn. Promise
+  // che si risolve a dissolvenza IN completata.
+  function fadeOutIn(msOut, msIn, pausaMs) {
+    return new Promise(resolve => {
+      if (!scena) { resolve(); return; }
+      scena.cameras.main.fadeOut(msOut || 500, 0, 0, 0);
+      scena.cameras.main.once('camerafadeoutcomplete', () => {
+        setTimeout(() => {
+          scena.cameras.main.fadeIn(msIn || 500, 0, 0, 0);
+          scena.cameras.main.once('camerafadeincomplete', resolve);
+        }, pausaMs || 400);
+      });
+    });
+  }
+
   // Se sei dentro un interno, questa funzione salva la posizione DENTRO
   // così com'è (non "ti sposta fuori"): quello che va salvato A PARTE è lo
   // stack di ritorno (vedi stackAttualeSalvabile), così l'uscita continua a
@@ -10735,7 +10765,7 @@ const GameMap = (function () {
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
-    emitTastoSceneNative,
+    emitTastoSceneNative, fadeOutIn,
   };
 
 })();

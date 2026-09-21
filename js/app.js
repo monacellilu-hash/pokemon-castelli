@@ -933,11 +933,15 @@ async function interagisciLaboratorio() {
   Battle.avvia({
     allenatore: {
       nome: RIVALE_NOME,
-      squadra: [{ id: starterRivale.id, livello: LIVELLO_STARTER + 1 }],
+      squadra: [{ id: starterRivale.id, livello: LIVELLO_STARTER }],
       premioSoldi: 500,
       dialogoSconfitta: 'Cosa?! Non è possibile! Avevo pure il vantaggio di tipo!',
     },
     stato: stato,
+    // Unico caso in tutto il gioco (richiesta esplicita di Luca): se perdi
+    // QUESTA lotta resti lì nel laboratorio, niente teletrasporto al
+    // Centro Pokémon — troppo presto in partita, non ha ancora senso.
+    senzaTeleportSuSconfitta: true,
     onFine: async (esito) => {
       terminaIncontro(esito);
       if (esito === 'vittoria') {
@@ -950,6 +954,10 @@ async function interagisciLaboratorio() {
           'Ahah! Te l\'avevo detto: il vantaggio di tipo non perdona!',
           'Allenati sul Percorso Tuscolana, poi riparliamone!'
         ]);
+        // Piccola cutscene di congedo (richiesta esplicita): dissolvenza a
+        // nero e ritorno — segna la fine dell'incontro prima di lasciare
+        // il giocatore libero di muoversi di nuovo nel laboratorio.
+        if (typeof GameMap !== 'undefined' && GameMap.fadeOutIn) await GameMap.fadeOutIn(500, 500, 400);
       }
       await mostraDialogo(PROFESSORE_NOME, [
         'Eheh, voi due diventerete grandi rivali, lo sento!',

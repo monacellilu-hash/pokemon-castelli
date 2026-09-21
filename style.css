@@ -1127,7 +1127,11 @@ html, body {
 }
 
 #zona-giocatore {
-  bottom: 80px;
+  /* Spostato più in basso (era 80px) su richiesta esplicita di Luca: con
+     l'interfaccia comandi ridotta (~15%, vedi #battaglia-console) c'è più
+     spazio verticale libero — il proprio Pokémon/piattaforma lo occupano
+     invece di lasciarlo vuoto fra la scena e il pannello comandi. */
+  bottom: 40px;
   left: 25%;
   transform: translateX(-50%);
   width: 50%;
@@ -1196,7 +1200,10 @@ html, body {
   height: 84px;   /* databox_normal.png */
   background-image: url('sprites/databox_normal.png');
 }
-#info-giocatore { top: 192px; left: 268px; }
+/* top spostato più in basso (era 192px, valore esatto di Essentials) su
+   richiesta esplicita di Luca: la barra HP deve "poggiare" vicino al bordo
+   in alto del pannello comandi invece di lasciare un vuoto sotto. */
+#info-giocatore { top: 230px; left: 268px; }
 
 .hp-etichetta { display: none; }
 

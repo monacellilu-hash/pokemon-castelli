@@ -35,6 +35,7 @@ const Battle = (function () {
   let squadraNemica = [];         // istanze dei Pokémon dell'allenatore
   let indiceNemico = 0;           // quale Pokémon nemico è in campo
   let fuggireImpossibile = false; // F11: true per i leggendari (fuga bloccata)
+  let nienteTeleportSuSconfitta = false; // vedi avvia(): solo la 1a lotta col rivale nel lab
 
   // ---- Lotta in DOPPIO (2 allenatori vedono il giocatore insieme, vedi map.js
   // _trainerSpottaDoppia): motore parallelo, separato da quello 1v1 sopra, per
@@ -491,7 +492,11 @@ const Battle = (function () {
   // si va avanti con un click sul messaggio, o da soli dopo una pausa.
   // La pausa è divisa per il booster di velocità (⏩ x1/x2/x3/x5):
   // a x5 i messaggi corrono via in ~un terzo di secondo.
-  function di(testo) {
+  // senzaTimeout = true: il messaggio NON avanza da solo, resta a schermo
+  // finché non lo si clicca (o non si preme [A], vedi confermaCursore più
+  // sotto) — richiesta esplicita di Luca per i messaggi importanti che
+  // vuole avere il tempo di leggere (es. "Pokémon ha imparato X").
+  function di(testo, senzaTimeout) {
     return new Promise(resolve => {
       const el = $('battaglia-messaggio');
       el.textContent = testo;
@@ -500,13 +505,16 @@ const Battle = (function () {
         if (fatto) return;
         fatto = true;
         el.removeEventListener('click', avanti);
-        clearTimeout(timer);
+        if (timer) clearTimeout(timer);
         resolve();
       };
-      const velocita = (statoGioco && statoGioco.velocita) || 1;
-      const moltTesto = (statoGioco && statoGioco.opzioni &&
-        MOLT_VELOCITA_TESTO[statoGioco.opzioni.velocitaTesto]) || 1;
-      const timer = setTimeout(avanti, 1150 / velocita / moltTesto);
+      let timer = null;
+      if (!senzaTimeout) {
+        const velocita = (statoGioco && statoGioco.velocita) || 1;
+        const moltTesto = (statoGioco && statoGioco.opzioni &&
+          MOLT_VELOCITA_TESTO[statoGioco.opzioni.velocitaTesto]) || 1;
+        timer = setTimeout(avanti, 1150 / velocita / moltTesto);
+      }
       el.addEventListener('click', avanti);
     });
   }
@@ -738,7 +746,11 @@ const Battle = (function () {
      file usato per le icone della Ball nello zaino: coincide sempre con lo
      sheet disponibile. ========================================== */
 
-  const CARTELLA_BALL_FX = 'Essentials FRLG/Graphics/Battle animations/';
+  // Puntava dentro "Essentials FRLG/" (solo locale, esclusa da git):
+  // funzionava su localhost ma era invisibile sul sito pubblico. Copiata in
+  // sprites/Battle animations/ (tracciata da git) — stesso bug del
+  // Pokemon Center di Borgata Tuscolana, stessa causa.
+  const CARTELLA_BALL_FX = 'sprites/Battle animations/';
 
   function nomeFileBall(chiaveBall) {
     const img = OGGETTI[chiaveBall] && OGGETTI[chiaveBall].img;
@@ -1195,7 +1207,13 @@ const Battle = (function () {
   function confermaCursore() {
     if (_levelUpRisolvi) { const r = _levelUpRisolvi; _levelUpRisolvi = null; r(); return; }
     const bottoni = _bottoniCursore();
-    if (bottoni[cursoreIdx]) bottoni[cursoreIdx].click();
+    if (bottoni[cursoreIdx]) { bottoni[cursoreIdx].click(); return; }
+    // Nessun menu a schermo (solo il messaggio, es. "Pikachu usa Tuononda!"
+    // o "ha imparato X"): [A] fa avanzare QUELLO — stesso click a cui
+    // risponde già di(), così su mobile/tastiera non serve per forza il
+    // mouse anche qui.
+    const msg = $('battaglia-messaggio');
+    if (msg) msg.click();
   }
   function indietroCursore() {
     const pannello = _pannelloVisibile();
@@ -1826,9 +1844,9 @@ const Battle = (function () {
 
       if (ist.mosse.length < 4) {
         ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
-        await di(`${ist.nome} impara ${dettagli.nomeIt}!`);
+        await di(`${ist.nome} impara ${dettagli.nomeIt}!`, true);   // richiede [A], niente auto-avanti
       } else {
-        await di(`${ist.nome} vorrebbe imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`);
+        await di(`${ist.nome} vorrebbe imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`, true);
       }
     }
   }
@@ -2078,6 +2096,13 @@ const Battle = (function () {
       if (datiAllenatore.dialogoSconfitta) {
         await di(`${datiAllenatore.nome}: «${datiAllenatore.dialogoSconfitta}»`);
       }
+    } else {
+      // Lotta selvatica: senza dialoghi dopo (a differenza degli allenatori
+      // sopra), si passava DRITTI da assegnaExp a fineBattaglia — la
+      // schermata di lotta spariva subito, tagliando la barra Exp a metà
+      // animazione (bug segnalato da Luca: "la barra blu non si riempie,
+      // si leva subito la schermata"). Una pausa breve la lascia vedere.
+      await new Promise(r => setTimeout(r, durataFx(600)));
     }
     fineBattaglia('vittoria');
   }
@@ -2089,6 +2114,7 @@ const Battle = (function () {
   // curati da nessuna parte (es. appena partiti, fra Borgata Tuscolana e
   // Frascati), si torna al punto di partenza vero e proprio del gioco.
   function _teletrasportaCentroPokemon() {
+    if (nienteTeleportSuSconfitta) return;   // vedi avvia(): 1a lotta col rivale nel lab
     if (typeof GameMap === 'undefined' || !GameMap.vaiAMappa) return;
     const centro = statoGioco.ultimoCentroCura;
     if (centro && centro.mappa) {
@@ -2348,6 +2374,11 @@ const Battle = (function () {
     modalita = opzioni.allenatore ? 'allenatore' : 'selvatico';
     datiAllenatore = opzioni.allenatore || null;
     fuggireImpossibile = opzioni.fuggireImpossibile || false;
+    // Richiesta esplicita di Luca: la primissima lotta col rivale nel
+    // laboratorio è l'UNICO caso in tutto il gioco in cui una sconfitta non
+    // teletrasporta al Centro Pokémon — si resta lì, gestisce tutto una
+    // piccola cutscene dedicata in app.js dopo la lotta.
+    nienteTeleportSuSconfitta = !!opzioni.senzaTeleportSuSconfitta;
     // Difesa: se la lotta precedente era in doppia e per qualunque motivo
     // fineBattagliaDoppia() non ha ripulito lo stato, modoDoppia restava
     // "true" — con quel flag agganciato, aggiornaPannelli()/aggiornaSprite()
