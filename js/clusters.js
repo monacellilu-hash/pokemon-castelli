@@ -22,7 +22,7 @@ const CLUSTERS = {
       zona_safari: { offsetX: 0, offsetY: -50, w: 100, h: 50 },
       percorso_9: { offsetX: 100, offsetY: -150, w: 50, h: 150 },
       ariccia: { offsetX: 90, offsetY: -220, w: 60, h: 70 },
-      percorso_10: { offsetX: 10, offsetY: -220, w: 80, h: 79 },
+      percorso_10: { offsetX: 10, offsetY: -233, w: 80, h: 92 },
       percorso_7b: { offsetX: -80, offsetY: 0, w: 80, h: 42 },
       genzano: { offsetX: -50, offsetY: -232, w: 60, h: 98 },
       percorso_12: { offsetX: -110, offsetY: -220, w: 60, h: 180 },
