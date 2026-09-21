@@ -2097,20 +2097,19 @@ const Battle = (function () {
   // "<tema>_base0.png" sotto il Pokémon avversario, "<tema>_base1.png" sotto il
   // nostro. "grass" non ha un proprio _bg (usa "field_bg.png", il compagno di
   // "field" nella cartella); tutti gli altri temi hanno bg+base0+base1 propri.
-  // #battaglia-schermo è largo SEMPRE 512px "nativi" (vedi style.css), ma
-  // la sua ALTEZZA nativa non è più fissa a 384: si ricalcola per
-  // combaciare esattamente col rapporto reale dello spazio disponibile
-  // (availH/availW * 512), così lo schermo riempie SEMPRE tutta la
-  // larghezza E tutta l'altezza di #battaglia-campo, senza bande vuote né
-  // ritagli — niente più "contenimento" 4:3 con spazio sprecato ai lati
-  // (PC widescreen) o sotto (telefono verticale), richiesta esplicita di
-  // Luca dopo aver visto gli screenshot. La scala (larghezza reale / 512)
-  // è la stessa su entrambi gli assi: niente distorsione, il pixel art
-  // resta pulito, solo l'altezza LOGICA del "mondo" cambia — i pannelli/
-  // sprite che sono posizionati in percentuale (top/bottom %) si
-  // ridistribuiscono da soli sulla nuova altezza, quelli in pixel assoluti
-  // (dimensioni databox/HP) restano proporzionati alla larghezza, che è
-  // l'asse che conta per loro.
+  // #battaglia-schermo è SEMPRE 512x384px "nativi" (vedi style.css — stessa
+  // risoluzione di Settings::SCREEN_WIDTH/HEIGHT in Essentials FRLG reale):
+  // qui si calcola solo un transform:scale() UNIFORME (stessa scala sui due
+  // assi, proporzioni originali sempre preservate) per adattarlo allo
+  // spazio disponibile, "il più grande possibile dentro #battaglia-campo
+  // senza deformarsi né tagliarsi" — richiesta esplicita di Luca: PC e
+  // mobile devono risultare ESTETICAMENTE IDENTICI, solo più piccoli su
+  // schermo piccolo. (Una versione precedente scalava solo in base alla
+  // larghezza per eliminare lo spazio vuoto ai lati/sotto: eliminava lo
+  // spreco ma rompeva le proporzioni fra i due dispositivi — sbagliato,
+  // tornato indietro.) Lo spazio eventualmente vuoto ai lati (schermi molto
+  // larghi) resta coperto dallo sfondo sfocato a tutto campo
+  // (#battaglia-sfondo-esteso), non da bande grigie vuote.
   // Fattore di scala visivo corrente (memorizzato: serve a chiunque debba
   // posizionare un elemento dentro #battaglia-schermo usando coordinate
   // MISURATE a schermo reale via getBoundingClientRect — quelle vanno
@@ -2123,9 +2122,7 @@ const Battle = (function () {
     const schermo = $('battaglia-schermo');
     if (!campo || !schermo) return;
     const availW = campo.clientWidth, availH = campo.clientHeight;
-    scalaBattagliaCorrente = (availW / 512) || 1;
-    const altezzaNativa = availH / scalaBattagliaCorrente;
-    schermo.style.height = altezzaNativa + 'px';
+    scalaBattagliaCorrente = Math.min(availW / 512, availH / 384) || 1;
     schermo.style.transform = `scale(${scalaBattagliaCorrente})`;
   }
   window.addEventListener('resize', _dimensionaSchermoBattaglia);
@@ -2198,10 +2195,13 @@ const Battle = (function () {
     if (spriteNemico) { spriteNemico.style.position = 'relative'; spriteNemico.style.zIndex = '2'; }
     if (spriteGiocatore) { spriteGiocatore.style.position = 'relative'; spriteGiocatore.style.zIndex = '2'; }
     // Dimensioni sprite Pokémon proporzionate allo schermo nativo 512
-    // (fronte nemico ~144px, dorso giocatore ~160px a scala 1). Il fronte
-    // nemico era 128px: ingrandito ~12% su richiesta esplicita di Luca
-    // ("l'avversario deve essere un 10/15% più grande di come è ora").
-    const DIM_NEMICO = 144;
+    // (fronte nemico 128px, dorso giocatore 160px a scala 1). Erano state
+    // ingrandite ~12% ("avversario più grande"), tornate alla dimensione
+    // di prima: ora che il resto della scena segue le proporzioni ESATTE
+    // di Essentials, ingrandire solo questa a occhio rompeva di nuovo
+    // l'equilibrio — se serve un ritocco va fatto DOPO aver verificato il
+    // risultato fedele, non prima.
+    const DIM_NEMICO = 128;
     if (spriteNemico) {
       spriteNemico.style.width = (DIM_NEMICO * scala) + 'px';
       spriteNemico.style.height = (DIM_NEMICO * scala) + 'px';

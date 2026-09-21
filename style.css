@@ -1047,16 +1047,19 @@ html, body {
 #battaglia-schermo {
   position: relative;
   z-index: 1;
-  /* Risoluzione LOGICA fissa (stile emulatore): larghezza/altezza SEMPRE
-     512x384px veri, mai ridimensionati — tutte le coordinate pixel dei
-     pannelli/barre HP dentro (databox, hp-binario, nomi/livelli) sono
+  /* Risoluzione LOGICA fissa (stile emulatore, IDENTICA a Settings::
+     SCREEN_WIDTH/HEIGHT di Essentials FRLG reale): SEMPRE 512x384px veri,
+     mai ridimensionati — tutte le coordinate pixel dei pannelli/barre HP/
+     sprite dentro sono quelle esatte lette dal codice sorgente Essentials
+     (vedi commenti su .pannello-info/#zona-nemico/#zona-giocatore),
      hardcoded assumendo questo box esatto. L'adattamento a schermi più
      piccoli/grandi (mobile compreso) avviene SOLO con un transform:scale()
-     calcolato in JS (_dimensionaSchermoBattaglia, js/battle.js) — mai
-     ridimensionando il box stesso, altrimenti i pannelli (larghi 520px
-     "veri") diventano più larghi dello schermo su telefono e si sovrappongono
-     (bug corretto: prima il box veniva ristretto via width/height dirette,
-     le coordinate interne restavano scalate al 100% comunque). */
+     UNIFORME calcolato in JS (_dimensionaSchermoBattaglia, js/battle.js) —
+     mai ridimensionando il box stesso e mai con scale X/Y diversi: la
+     richiesta esplicita di Luca è che PC e mobile risultino esteticamente
+     IDENTICI, solo più piccoli su schermo piccolo, quindi le proporzioni
+     vanno mantenute sempre uguali (min tra rapporto larghezza e altezza
+     disponibili, non solo larghezza). */
   width: 512px;
   height: 384px;
   /* #battaglia-campo è un flex container: senza flex-shrink:0 il browser
@@ -1074,15 +1077,17 @@ html, body {
 .sprite-zona {
   position: absolute;
   text-align: center;
-  /* Deve stare SEMPRE sopra .pannello-info (databox): senza z-index qui,
-     l'ordine nell'HTML decide da solo la sovrapposizione — #info-giocatore
-     viene dopo #zona-giocatore nel markup e quindi ci finiva sopra,
-     coprendo COMPLETAMENTE lo sprite del proprio Pokémon (bug trovato via
-     ispezione diretta: elementFromPoint sul centro dello sprite tornava il
-     pannello, non lo sprite — mai visibile). Lo sprite nemico non aveva
-     questo problema per puro caso di ordine (#info-nemico viene PRIMA di
-     #zona-nemico nel markup). */
-  z-index: 3;
+  /* Un tempo qui c'era z-index:3 (sopra ai pannelli) perché con le vecchie
+     dimensioni SBAGLIATE del databox (520px invece di 260) il pannello del
+     giocatore copriva per intero il suo stesso sprite. Ora che databox e
+     sprite sono alle coordinate VERE di Essentials, sul proprio lato non si
+     sovrappongono più affatto — e nei punti dove un pannello incrocia lo
+     sprite DELL'ALTRO (il layout reale è diagonale: pannello nemico in
+     alto a sx, sprite nemico in alto a dx, e viceversa per il giocatore)
+     nel gioco vero il pannello vince sempre (self.z = 150+ in
+     Battle_Scene_Objects.rb, molto sopra gli sprite): quindi qui sotto,
+     non sopra. */
+  z-index: 2;
 }
 
 /* Meteo di battaglia (Sole/Pioggia/Grandine/Sabbia): piccola etichetta in
@@ -1102,27 +1107,27 @@ html, body {
 }
 #battaglia-meteo.nascosto { display: none; }
 
-/* Posizioni allineate a Pokémon Essentials FRLG reale (Battle::Scene in
-   0187_Battle_Scene.rb): orizzontale già corretta da prima (nemico 75%,
-   giocatore 25% — FOE_BASE_X=384/512 e PLAYER_BASE_X=128/512). La verticale
-   invece era sbagliata: FOE_BASE_Y = (SCREEN_HEIGHT*3/4)-112 = 176/384 ≈ 46%
-   dall'alto (il Pokémon avversario sta grosso modo a metà schermo, non
-   incollato in cima) — prima era "top: 4%". Portato letteralmente al 46% lo
-   sprite nemico finiva addosso al pannello dati di Lapras sotto (il nostro
-   databox occupa più spazio verticale del layout originale): tarato dal vivo
-   al valore più alto possibile senza sovrapposizione, 22% — un miglioramento
-   netto rispetto al 4% di prima (scarto misurato di oltre 30 punti
-   percentuali), anche se non identico al numero originale per un vincolo
-   del nostro layout attuale, non un rifiuto della fedeltà. */
+/* Posizioni ESATTE di Pokémon Essentials FRLG reale (0187_Battle_Scene.rb):
+   FOE_BASE_X/Y = SCREEN_WIDTH-128, (SCREEN_HEIGHT*3/4)-112 = 384,176 → 75%,
+   45.8%. PLAYER_BASE_X/Y = 128, SCREEN_HEIGHT-80 = 128,304 → 25% da
+   sinistra, 80px (=384-304) dal basso. Il commento originale del sorgente
+   specifica il SIGNIFICATO di questi punti, non solo il numero: per il
+   nemico è "centre MIDDLE" (centro esatto dello sprite), per il giocatore
+   "centre BOTTOM" (centro in basso) — NON sono entrambi angoli in alto a
+   sinistra. Trattarli come "top" per entrambi (primo tentativo) piazzava
+   lo sprite nemico troppo in basso, a cavallo del pannello dati del
+   giocatore. transform:translate(-50%,-50%) per il nemico centra davvero
+   sul punto (384,176); il giocatore resta ancorato dal basso (bottom, che
+   è già "centre bottom" per definizione). */
 #zona-nemico {
-  top: 22%;
+  top: 45.8%;
   left: 75%;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   width: 50%;
 }
 
 #zona-giocatore {
-  bottom: 4%;   /* margine dal pannello comandi (era 0%, sprite quasi tagliato) */
+  bottom: 80px;
   left: 25%;
   transform: translateX(-50%);
   width: 50%;
@@ -1151,78 +1156,96 @@ html, body {
 }
 
 /* Pannello dati Pokémon in battaglia: sfondo vero databox_normal(_foe).png di
-   Essentials FRLG (era prima un pannello disegnato in CSS). Le coordinate dei
-   testi/barre sotto sono quelle esatte lette in Battle_Scene_Objects.rb
-   (classe PokemonDataBox: draw_name, draw_level, refresh_hp, refresh_exp),
-   moltiplicate per SCALA=2 (le immagini native sono minuscole, 260x84/260x62px,
-   pensate per uno schermo GBA). L'etichetta "HP" è già disegnata dentro
-   l'immagine, quindi lo <span class="hp-etichetta"> non serve più (nascosto). */
+   Essentials FRLG. TUTTE le coordinate sotto sono quelle ESATTE lette in
+   strumenti/scripts_estratti/0192_Battle_Scene_Objects.rb (classe
+   PokemonDataBox: initializeDataBoxGraphic per la posizione del box,
+   draw_name/draw_level/i setter x=/y= per gli elementi interni), scala 1:1
+   — NIENTE più raddoppiato. Una sessione precedente aveva "×2" tutto
+   (box 520px invece di 260, offset 236/272 invece di 118/136…) in modo
+   uniforme, quindi le proporzioni INTERNE al pannello sembravano giuste,
+   ma la posizione ESTERNA del pannello sullo schermo era comunque a
+   percentuali stimate ad occhio, non da queste coordinate — il box
+   "doppio" finiva nel posto sbagliato rispetto a sprite/schermo (ormai
+   posizionati alle coordinate vere di Battle_Scene.rb): il risultato
+   erano proporzioni sbagliate rispetto al gioco reale. Ora tutto (box,
+   sprite, testi, barre) usa la STESSA scala nativa 512x384, PC e mobile
+   sono quindi identici a meno della dimensione assoluta (uniform
+   contain-scaling, vedi _dimensionaSchermoBattaglia in battle.js).
+   L'etichetta "HP" è già disegnata dentro l'immagine di sfondo, quindi lo
+   <span class="hp-etichetta"> non serve (nascosto). */
 .pannello-info {
   position: absolute;
-  width: 520px;
+  z-index: 4;   /* sempre sopra .sprite-zona (z-index:2), come nel gioco vero */
+  width: 260px;
   background-repeat: no-repeat;
   background-size: 100% 100%;
   image-rendering: pixelated;
-  font-size: 19px;
+  font-size: 10px;
   color: #222;
 }
 
+/* initializeDataBoxGraphic: onPlayerSide ? spriteX=Graphics.width-244,
+   spriteY=Graphics.height-192 : spriteX=-16,spriteY=36 (Graphics.width/
+   height = Settings::SCREEN_WIDTH/HEIGHT = 512/384, vedi 0187_Battle_Scene). */
 #info-nemico, #info-nemico-2 {
-  height: 124px; /* 62px nativi x2, niente barra exp/numeri HP sul lato nemico */
+  height: 62px;   /* databox_normal_foe.png, niente barra exp/numeri HP sul lato nemico */
   background-image: url('sprites/databox_normal_foe.png');
 }
-#info-nemico { top: 7%; left: 5%; }
+#info-nemico { top: 36px; left: -16px; }
 #info-giocatore, #info-giocatore-2 {
-  height: 168px; /* 84px nativi x2 */
+  height: 84px;   /* databox_normal.png */
   background-image: url('sprites/databox_normal.png');
 }
-#info-giocatore { bottom: 5%; right: 5%; }
+#info-giocatore { top: 192px; left: 268px; }
 
 .hp-etichetta { display: none; }
 
 /* Mini Poké Ball per Pokémon rimasto alla squadra avversaria (allenatori):
-   vere icon_ball.png/icon_ball_faint.png di Essentials FRLG (30x30 native),
-   non più pallini di testo colorati. Si anneriscono (icon_ball_faint) via
-   via che il Pokémon a quella posizione viene sconfitto. */
+   vere icon_ball.png/icon_ball_faint.png di Essentials FRLG. Posizione non
+   trovata nello script estratto (classe diversa da PokemonDataBox): scalata
+   in proporzione al resto invece che presa dalla fonte, unico punto di
+   questo blocco non 1:1 dalla sorgente. */
 #nemico-contatore {
   position: absolute;
-  left: 32px; top: 90px;
+  left: 16px; top: 45px;
   display: flex;
-  gap: 2px;
+  gap: 1px;
 }
 
 #nemico-contatore img {
-  width: 16px;
-  height: 16px;
+  width: 10px;
+  height: 10px;
   image-rendering: pixelated;
 }
 
-/* Nome + livello: posizione assoluta invece del flex di prima (l'immagine
-   di sfondo ha già la sagoma del pannello, il testo va sovrapposto). Le
+/* Nome + livello: posizione assoluta (l'immagine di sfondo ha già la sagoma
+   del pannello, il testo va sovrapposto). draw_name: x=spriteBaseX+8,y=12
+   (spriteBaseX 34 giocatore / 16 nemico). draw_level: "Lv" a
+   x=spriteBaseX+140,y=16 — reso come testo unico "Lv.N" dalla stessa x. Le
    varianti "-2" (secondo slot della lotta in doppio) riusano le stesse
-   coordinate pixel: il pannello intero viene rimpicciolito/riposizionato
-   con transform: scale() (vedi blocco .doppia sopra), quindi le posizioni
-   interne restano corrette senza doverle ricalcolare. */
+   coordinate: il pannello intero viene rimpicciolito/riposizionato con
+   transform:scale() (vedi blocco .doppia sopra). */
 .riga-nome { font-weight: bold; }
-#nemico-nome, #giocatore-nome, #nemico-nome-2, #giocatore-nome-2 { position: absolute; top: 24px; font-size: 20px; }
-#nemico-nome, #nemico-nome-2       { left: 48px; }
-#giocatore-nome, #giocatore-nome-2 { left: 84px; }
-#nemico-lv, #giocatore-lv, #nemico-lv-2, #giocatore-lv-2 { position: absolute; top: 28px; font-size: 17px; font-weight: bold; }
-#nemico-lv, #nemico-lv-2       { left: 312px; }
-#giocatore-lv, #giocatore-lv-2 { left: 348px; }
+#nemico-nome, #nemico-nome-2       { position: absolute; top: 12px; font-size: 10px; left: 24px; }
+#giocatore-nome, #giocatore-nome-2 { position: absolute; top: 12px; font-size: 10px; left: 42px; }
+#nemico-lv, #nemico-lv-2       { position: absolute; top: 16px; font-size: 9px; font-weight: bold; left: 156px; }
+#giocatore-lv, #giocatore-lv-2 { position: absolute; top: 16px; font-size: 9px; font-weight: bold; left: 174px; }
 
 .hp-contorno { display: contents; }  /* era solo un contenitore flex, ora la barra si posiziona da sé */
 
+/* refresh_hp / y=(value): @hpBar.y = value+40; x = value+spriteBaseX+102.
+   overlay_hp.png è 96x18 nativo (3 fasce colore impilate da 96x6, vedi
+   .hp-barra sotto). */
 .hp-binario {
   position: absolute;
-  top: 80px;
-  width: 192px;
-  height: 12px;
-  border-radius: 3px;
+  top: 40px;
+  width: 96px;
+  height: 6px;
+  border-radius: 2px;
   overflow: hidden;
 }
-#info-nemico .hp-binario,    #info-nemico-2 .hp-binario    { left: 236px; }
-#info-giocatore .hp-binario, #info-giocatore-2 .hp-binario { left: 272px; }
+#info-nemico .hp-binario,    #info-nemico-2 .hp-binario    { left: 118px; }
+#info-giocatore .hp-binario, #info-giocatore-2 .hp-binario { left: 136px; }
 
 /* Barra HP: usa il vero overlay_hp.png di Essentials FRLG (3 fasce colore
    impilate verticalmente: verde/giallo/rosso). background-size 100%/300% +
@@ -1241,22 +1264,26 @@ html, body {
 .hp-barra.gialla { background-position: 0% 50%; }
 .hp-barra.rossa  { background-position: 0% 100%; }
 
+/* hpNumbers: BitmapSprite.new(124,16), x=value+spriteBaseX+80, y=value+52
+   (solo lato giocatore — il nemico non mostra i numeri, solo la barra). */
 #giocatore-hp-testo {
   position: absolute;
-  left: 300px;
-  top: 96px;
-  width: 200px;
+  left: 114px;
+  top: 52px;
+  width: 124px;
   text-align: right;
-  font-size: 16px;
+  font-size: 9px;
   font-weight: bold;
 }
 
+/* refresh_exp / y=(value): @expBar.y = value+74; x = value+spriteBaseX+6.
+   overlay_exp.png è 192x4 nativo. Solo lato giocatore. */
 .exp-binario {
   position: absolute;
-  left: 80px;
-  top: 148px;
-  width: 384px;
-  height: 8px;
+  left: 40px;
+  top: 74px;
+  width: 192px;
+  height: 4px;
   overflow: hidden;
 }
 
