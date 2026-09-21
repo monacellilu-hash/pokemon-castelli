@@ -2087,20 +2087,24 @@ const Battle = (function () {
   // "<tema>_base0.png" sotto il Pokémon avversario, "<tema>_base1.png" sotto il
   // nostro. "grass" non ha un proprio _bg (usa "field_bg.png", il compagno di
   // "field" nella cartella); tutti gli altri temi hanno bg+base0+base1 propri.
-  // #battaglia-schermo deve avere un rapporto 4:3 fisso (512x384 nativi),
-  // "il più grande possibile" dentro #battaglia-campo senza deformarsi. In
-  // puro CSS (aspect-ratio + max-width/max-height, senza una width/height
-  // esplicita) il box collassa a 0x0 perché non ha un contenuto intrinseco
-  // (i suoi figli sono tutti position:absolute, quindi non "spingono" una
-  // dimensione): va calcolato in JS, come per uno schermo di emulatore.
+  // #battaglia-schermo resta SEMPRE 512x384px "veri" (vedi style.css): qui si
+  // calcola solo un transform:scale() per adattarlo allo spazio disponibile,
+  // "il più grande possibile dentro #battaglia-campo senza deformarsi" (stile
+  // emulatore). PRIMA si ridimensionava il box stesso (width/height dirette)
+  // — sbagliato: i pannelli/barre HP dentro usano coordinate in pixel assoluti
+  // (.pannello-info, .hp-binario…) tarate su un box realmente largo 512px, e
+  // ridurre solo il CONTENITORE senza scalare anche LORO li faceva restare
+  // "veri" 520px dentro un box magari largo 390px su telefono: sovrapposti e
+  // tagliati (bug segnalato da Luca su iPhone, verticale e orizzontale).
+  // transform:scale() invece scala TUTTO insieme (box + figli), proporzioni
+  // sempre coerenti a qualunque dimensione schermo.
   function _dimensionaSchermoBattaglia() {
     const campo = $('battaglia-campo');
     const schermo = $('battaglia-schermo');
     if (!campo || !schermo) return;
     const availW = campo.clientWidth, availH = campo.clientHeight;
     const scala = Math.min(availW / 512, availH / 384);
-    schermo.style.width = (512 * scala) + 'px';
-    schermo.style.height = (384 * scala) + 'px';
+    schermo.style.transform = `scale(${scala})`;
   }
   window.addEventListener('resize', _dimensionaSchermoBattaglia);
 

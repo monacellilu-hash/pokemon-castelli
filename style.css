@@ -1047,9 +1047,18 @@ html, body {
 #battaglia-schermo {
   position: relative;
   z-index: 1;
-  aspect-ratio: 512 / 384;
-  max-width: 100%;
-  max-height: 100%;
+  /* Risoluzione LOGICA fissa (stile emulatore): larghezza/altezza SEMPRE
+     512x384px veri, mai ridimensionati — tutte le coordinate pixel dei
+     pannelli/barre HP dentro (databox, hp-binario, nomi/livelli) sono
+     hardcoded assumendo questo box esatto. L'adattamento a schermi più
+     piccoli/grandi (mobile compreso) avviene SOLO con un transform:scale()
+     calcolato in JS (_dimensionaSchermoBattaglia, js/battle.js) — mai
+     ridimensionando il box stesso, altrimenti i pannelli (larghi 520px
+     "veri") diventano più larghi dello schermo su telefono e si sovrappongono
+     (bug corretto: prima il box veniva ristretto via width/height dirette,
+     le coordinate interne restavano scalate al 100% comunque). */
+  width: 512px;
+  height: 384px;
   overflow: hidden;
   background: linear-gradient(to bottom,
     #aee3f8 0%, #cdeec2 58%, #7fbf63 58%, #5ea34a 100%);
@@ -1559,12 +1568,10 @@ html, body {
    meno spazio preso dal pannello, #battaglia-campo (flex:1) si riprende
    automaticamente il resto: i Pokémon tornano grandi e visibili. */
 @media (max-width: 620px) {
-  .pannello-info    { min-width: 150px; font-size: 13px; padding: 6px 9px; border-width: 2px; }
-  #info-nemico      { top: 3%; left: 3%; }
-  #info-giocatore   { bottom: 3%; right: 3%; }
-  .hp-binario       { height: 9px; }
-  #giocatore-hp-testo { font-size: 11px; }
-
+  /* NB: dentro #battaglia-schermo (pannelli dati, barre HP, sprite) non si
+     tocca più nulla qui — è tutto a risoluzione fissa 512x384 scalata in
+     blocco via transform (vedi _dimensionaSchermoBattaglia), un override
+     CSS qui romperebbe di nuovo l'allineamento interno dei pannelli. */
   #battaglia-console {
     height: auto;
     max-height: 40vh;
