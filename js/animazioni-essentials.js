@@ -115,6 +115,18 @@ const AnimazioniEssentials = (function () {
     const { w, h } = ridimensionaCanvas();
     const scalaX = w / ESS_W, scalaY = h / ESS_H;
 
+    // FOCUS_USER_X/FOCUS_TARGET_X (sopra) presumono SEMPRE "utente a
+    // sinistra (dove sta il giocatore), bersaglio a destra (dove sta il
+    // nemico)" — vero quando attacca il giocatore, MA quando è il nemico ad
+    // attaccare i ruoli sullo schermo sono invertiti (nemico in alto a dx,
+    // giocatore in basso a sx). Senza correggere, proiettili/balzi
+    // viaggiavano nel verso sbagliato — bug segnalato esplicitamente da
+    // Luca ("le mosse dell'avversario sono in senso opposto al mio").
+    // Fix: quando l'attaccante è il nemico, si specchia l'intera animazione
+    // orizzontalmente (posizione, angolo, mirroring dei singoli fotogrammi)
+    // — i dati restano identici, cambia solo il verso di lettura.
+    const specchia = !!(attaccanteEl && attaccanteEl.id && attaccanteEl.id.indexOf('nemico') === 0);
+
     // Scarto fra la posizione VERA (sullo schermo, dentro #battaglia-campo)
     // degli sprite e la loro ancora canonica — vedi commento sulle costanti
     // FOCUS_*. Catturato una volta sola all'inizio dell'animazione: gli
@@ -140,9 +152,23 @@ const AnimazioniEssentials = (function () {
     // all'attaccante, altrimenti (3=linea utente-bersaglio, non ancora
     // supportato con la trasformazione a linea reale; 4=schermo fisso)
     // resta la coordinata piatta, come già facevamo prima per tutti i casi.
+    // Quando specchia è vero, lo SCARTO locale dall'ancora (non la
+    // posizione finale!) va invertito sull'asse X prima di sommarlo alla
+    // posizione VERA dell'attaccante/bersaglio — altrimenti il verso del
+    // movimento resta quello autorale (utente a sinistra) anche quando
+    // l'utente reale è a destra, facendo viaggiare proiettili/balzi nel
+    // verso sbagliato (bug segnalato da Luca). Mai specchiare la posizione
+    // finale già corretta: sposterebbe l'effetto sul lato opposto a quello
+    // vero invece di limitarsi a invertirne il verso.
     function correggiFocus(x, y, focus) {
-      if (focus === 1) return { x: x + deltaTarget.x, y: y + deltaTarget.y };
-      if (focus === 2) return { x: x + deltaUser.x, y: y + deltaUser.y };
+      if (focus === 1) {
+        const localX = (x - FOCUS_TARGET_X * scalaX) * (specchia ? -1 : 1);
+        return { x: centroBersaglio ? centroBersaglio.x + localX : x + deltaTarget.x, y: y + deltaTarget.y };
+      }
+      if (focus === 2) {
+        const localX = (x - FOCUS_USER_X * scalaX) * (specchia ? -1 : 1);
+        return { x: centroAttaccante ? centroAttaccante.x + localX : x + deltaUser.x, y: y + deltaUser.y };
+      }
       return { x, y };
     }
 
@@ -182,7 +208,7 @@ const AnimazioniEssentials = (function () {
             // canonica, non serve ricalcolare il delta (si annullerebbe).
             const ancoraX = (cel.PATTERN === -1) ? FOCUS_USER_X : FOCUS_TARGET_X;
             const ancoraY = (cel.PATTERN === -1) ? FOCUS_USER_Y : FOCUS_TARGET_Y;
-            const offX = (cel.X - ancoraX) * scalaX;
+            const offX = (cel.X - ancoraX) * scalaX * (specchia ? -1 : 1);
             const offY = (cel.Y - ancoraY) * scalaY;
             // NON tocchiamo più l'opacità dello sprite vero (giocatore/nemico)
             // qui: molti frame dell'animazione non includono affatto questo
@@ -200,8 +226,8 @@ const AnimazioniEssentials = (function () {
           ctx.save();
           ctx.globalAlpha = Math.max(0, Math.min(1, cel.OPACITY / 255));
           ctx.translate(pos.x, pos.y);
-          ctx.rotate(-cel.ANGLE * Math.PI / 180);
-          ctx.scale((cel.ZOOMX / 100) * (cel.MIRROR ? -1 : 1) * scalaX, (cel.ZOOMY / 100) * scalaY);
+          ctx.rotate(-cel.ANGLE * Math.PI / 180 * (specchia ? -1 : 1));
+          ctx.scale((cel.ZOOMX / 100) * (cel.MIRROR ? -1 : 1) * (specchia ? -1 : 1) * scalaX, (cel.ZOOMY / 100) * scalaY);
           const sx = (cel.PATTERN % COLS) * CELL;
           const sy = Math.floor(cel.PATTERN / COLS) * CELL;
           ctx.drawImage(img, sx, sy, CELL, CELL, -CELL / 2, -CELL / 2, CELL, CELL);

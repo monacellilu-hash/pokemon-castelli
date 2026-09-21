@@ -1014,6 +1014,15 @@ html, body {
   display: none;
 }
 
+/* Dissolvenza in uscita a fine lotta (richiesta esplicita di Luca: "non
+   tornare subito istant alla schermata di gioco") — vedi
+   fineBattaglia/fineBattagliaDoppia in battle.js, che aggiungono questa
+   classe, aspettano 500ms, poi passano a .nascosto per davvero. */
+#schermata-battaglia.dissolvenza-uscita {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
 #battaglia-campo {
   flex: 1;
   position: relative;
@@ -1127,11 +1136,12 @@ html, body {
 }
 
 #zona-giocatore {
-  /* Spostato più in basso (era 80px) su richiesta esplicita di Luca: con
-     l'interfaccia comandi ridotta (~15%, vedi #battaglia-console) c'è più
-     spazio verticale libero — il proprio Pokémon/piattaforma lo occupano
-     invece di lasciarlo vuoto fra la scena e il pannello comandi. */
-  bottom: 40px;
+  /* Spostato più in basso in due giri (era 80px, poi 40px) su richiesta
+     esplicita di Luca: con l'interfaccia comandi ridotta (~15%, vedi
+     #battaglia-console) c'è più spazio verticale libero — il proprio
+     Pokémon/piattaforma lo occupano invece di lasciarlo vuoto fra la scena
+     e il pannello comandi. */
+  bottom: 20px;
   left: 25%;
   transform: translateX(-50%);
   width: 50%;
@@ -1200,10 +1210,11 @@ html, body {
   height: 84px;   /* databox_normal.png */
   background-image: url('sprites/databox_normal.png');
 }
-/* top spostato più in basso (era 192px, valore esatto di Essentials) su
-   richiesta esplicita di Luca: la barra HP deve "poggiare" vicino al bordo
-   in alto del pannello comandi invece di lasciare un vuoto sotto. */
-#info-giocatore { top: 230px; left: 268px; }
+/* top spostato più in basso in due giri (era 192px, valore esatto di
+   Essentials, poi 230px) su richiesta esplicita di Luca: la barra HP deve
+   "poggiare" vicino al bordo in alto del pannello comandi invece di
+   lasciare un vuoto sotto. */
+#info-giocatore { top: 245px; left: 268px; }
 
 .hp-etichetta { display: none; }
 
@@ -1313,7 +1324,7 @@ html, body {
 #levelup-box {
   position: absolute;
   z-index: 5;   /* sopra ai pannelli dati (4) */
-  top: 230px;
+  top: 245px;   /* segue #info-giocatore, spostato anche lui */
   left: 306px;
   width: 190px;
   background: #f8f8e8;

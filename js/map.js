@@ -4275,6 +4275,7 @@ const GameMap = (function () {
       return {
         outdoor: !eInterno && !eGrottaBuia,
         monteCavo: mappaCorrente === 'monte_cavo',
+        mappa: mappaCorrente,
       };
     }
 
@@ -10540,6 +10541,15 @@ const GameMap = (function () {
     });
   }
 
+  // Ricalcola quali NPC/allenatori vanno mostrati sulla mappa corrente
+  // (condizione/gate — vedi commento in _creaNpcStato) senza dover
+  // ricaricare l'intera mappa: serve per far sparire subito un NPC appena
+  // un flag cambia mentre il giocatore È GIÀ sulla mappa (es. il rivale nel
+  // laboratorio dopo la lotta).
+  function rigeneraNpcMappa() {
+    if (scena && scena._rigeneraNpc) scena._rigeneraNpc();
+  }
+
   // Se sei dentro un interno, questa funzione salva la posizione DENTRO
   // così com'è (non "ti sposta fuori"): quello che va salvato A PARTE è lo
   // stack di ritorno (vedi stackAttualeSalvabile), così l'uscita continua a
@@ -10765,7 +10775,7 @@ const GameMap = (function () {
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
-    emitTastoSceneNative, fadeOutIn,
+    emitTastoSceneNative, fadeOutIn, rigeneraNpcMappa,
   };
 
 })();

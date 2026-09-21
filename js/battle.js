@@ -2145,9 +2145,25 @@ const Battle = (function () {
     }
   }
 
+  // Dissolvenza in uscita (richiesta esplicita di Luca: "non tornare subito
+  // istant alla schermata di gioco, ci metterei mezzo secondo di
+  // dissolvenza"): invece di nascondere di colpo #schermata-battaglia,
+  // sfuma in opacità e solo DOPO la sfumatura la nasconde per davvero
+  // (display:none, vedi .dissolvenza-uscita in style.css). onFine() parte
+  // comunque subito, invariato: la logica di gioco (teletrasporti, dialoghi
+  // ecc.) non aspetta l'animazione, è solo un effetto visivo sopra.
+  function _dissolviBattaglia() {
+    const el = $('schermata-battaglia');
+    el.classList.add('dissolvenza-uscita');
+    setTimeout(() => {
+      el.classList.add('nascosto');
+      el.classList.remove('dissolvenza-uscita');
+    }, 500);
+  }
+
   function fineBattaglia(esito) {
     inCorso = false;
-    $('schermata-battaglia').classList.add('nascosto');
+    _dissolviBattaglia();
     if (onFine) onFine(esito);
   }
 
@@ -2414,7 +2430,7 @@ const Battle = (function () {
 
     // Mostriamo subito la schermata con un messaggio di caricamento
     nascondiMenu();
-    $('schermata-battaglia').classList.remove('nascosto');
+    $('schermata-battaglia').classList.remove('nascosto', 'dissolvenza-uscita');
     // Difesa: se la lotta precedente era in doppia (Battle.avviaDoppia), la
     // classe "doppia" riposiziona/ridimensiona TUTTI gli elementi del campo
     // (vedi style.css) — se restasse attaccata, una lotta singola dopo una
@@ -3072,8 +3088,16 @@ const Battle = (function () {
   function fineBattagliaDoppia(esito) {
     inCorso = false;
     modoDoppia = false;
-    $('schermata-battaglia').classList.add('nascosto');
-    $('schermata-battaglia').classList.remove('doppia');
+    // Stessa dissolvenza di fineBattaglia() (vedi lì): sfuma invece di
+    // sparire di colpo. La classe "doppia" (layout) si toglie insieme a
+    // "nascosto" a sfumatura conclusa, non subito, altrimenti il layout
+    // cambierebbe di scatto a metà dissolvenza.
+    const el = $('schermata-battaglia');
+    el.classList.add('dissolvenza-uscita');
+    setTimeout(() => {
+      el.classList.add('nascosto');
+      el.classList.remove('dissolvenza-uscita', 'doppia');
+    }, 500);
     const cb = doppiaOnFine;
     doppiaOnFine = null;
     doppiaAllenatori = [];
@@ -3160,7 +3184,7 @@ const Battle = (function () {
     });
 
     nascondiMenu();
-    $('schermata-battaglia').classList.remove('nascosto');
+    $('schermata-battaglia').classList.remove('nascosto', 'dissolvenza-uscita');
     $('schermata-battaglia').classList.add('doppia');
     impostaSfondoBattaglia(temaSfondo);
     $('battaglia-messaggio').textContent = 'Due allenatori ti sfidano insieme!';

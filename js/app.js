@@ -264,31 +264,53 @@ function avanzaTempo() {
 // ancora una zona desertica in gioco — quando ci sarà, basterà aggiungerla
 // alla lista "possibili" quando GameMap.contestoMeteo() segnala quella zona,
 // sullo stesso modello già usato qui per Monte Cavo/grandine.
+// Meteo PER MAPPA (richiesta esplicita di Luca): prima era un'unica
+// variabile globale che poteva cambiare ogni ~300 passi in media — con un
+// ritmo di cammino normale, sembrava cambiare ogni pochi minuti. Ora ogni
+// mappa ha il proprio stato (stato.meteoPerMappa[chiave]) e si tira un
+// nuovo meteo AL MASSIMO una volta al giorno per quella mappa (quando
+// cambia stato.tempo.giorno rispetto all'ultima volta), con "sole" più
+// probabile di "pioggia" (pesi, non più scelta a pari probabilità).
+const PESI_METEO        = [['sereno', 50], ['sole', 30], ['pioggia', 20]];
+const PESI_METEO_MONTECAVO = [['sereno', 40], ['sole', 25], ['pioggia', 20], ['grandine', 15]];
+
+function _estraiMeteoPesato(pesi) {
+  const totale = pesi.reduce((s, [, p]) => s + p, 0);
+  let r = Math.random() * totale;
+  for (const [tipo, peso] of pesi) {
+    if (r < peso) return tipo;
+    r -= peso;
+  }
+  return pesi[0][0];
+}
+
 function aggiornaMeteo() {
-  if (!stato.meteo) stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 };
   const ctx = (typeof GameMap !== 'undefined' && GameMap.contestoMeteo)
     ? GameMap.contestoMeteo() : { outdoor: false, monteCavo: false };
+  if (!ctx.outdoor) { stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 }; return; }   // interni: sempre sereno
 
-  if (stato.meteo.tipo !== 'sereno') {
-    if (stato.passi >= stato.meteo.scadeAlPasso) {
-      stato.meteo.tipo = 'sereno';
-      stato.meteo.scadeAlPasso = 0;
-      mostraToast('Il tempo torna sereno.', 3000);
-    }
-  } else if (ctx.outdoor) {
-    // ~1 possibilità su 300 passi che si scateni un nuovo evento meteo
-    if (Math.random() < 1 / 300) {
-      const possibili = ctx.monteCavo ? ['pioggia', 'sole', 'grandine'] : ['pioggia', 'sole'];
-      const scelto = possibili[Math.floor(Math.random() * possibili.length)];
-      const durata = 30 + Math.floor(Math.random() * 50); // 30-79 passi
-      stato.meteo = { tipo: scelto, scadeAlPasso: stato.passi + durata };
-      const msg = scelto === 'pioggia' ? '🌧️ Inizia a piovere.'
-                : scelto === 'sole' ? '☀️ Il sole splende forte.'
-                : '❄️ Comincia a grandinare.';
+  const chiaveMappa = ctx.mappa || null;
+  if (!chiaveMappa) return;
+
+  if (!stato.meteoPerMappa) stato.meteoPerMappa = {};
+  const giornoOggi = (stato.tempo && stato.tempo.giorno) || 1;
+  let voce = stato.meteoPerMappa[chiaveMappa];
+
+  if (!voce || voce.giorno !== giornoOggi) {
+    const nuovoTipo = _estraiMeteoPesato(ctx.monteCavo ? PESI_METEO_MONTECAVO : PESI_METEO);
+    const cambiato = voce && voce.tipo !== nuovoTipo;
+    voce = { tipo: nuovoTipo, giorno: giornoOggi };
+    stato.meteoPerMappa[chiaveMappa] = voce;
+    if (cambiato) {
+      const msg = nuovoTipo === 'pioggia' ? '🌧️ Oggi piove.'
+                : nuovoTipo === 'sole' ? '☀️ Oggi splende il sole.'
+                : nuovoTipo === 'grandine' ? '❄️ Oggi grandina.'
+                : '🌤️ Il tempo torna sereno.';
       mostraToast(msg, 4000);
     }
   }
 
+  stato.meteo = { tipo: voce.tipo, scadeAlPasso: Infinity };
   if (typeof GameMap !== 'undefined' && GameMap.aggiornaVeloMeteo) GameMap.aggiornaVeloMeteo();
 }
 
@@ -954,15 +976,22 @@ async function interagisciLaboratorio() {
           'Ahah! Te l\'avevo detto: il vantaggio di tipo non perdona!',
           'Allenati sul Percorso Tuscolana, poi riparliamone!'
         ]);
-        // Piccola cutscene di congedo (richiesta esplicita): dissolvenza a
-        // nero e ritorno — segna la fine dell'incontro prima di lasciare
-        // il giocatore libero di muoversi di nuovo nel laboratorio.
-        if (typeof GameMap !== 'undefined' && GameMap.fadeOutIn) await GameMap.fadeOutIn(500, 500, 400);
       }
       await mostraDialogo(PROFESSORE_NOME, [
         'Eheh, voi due diventerete grandi rivali, lo sento!',
         'Ora vai: segui la Via Tuscolana verso sud-est fino a FRASCATI e sfida la prima palestra. In bocca al lupo!'
       ]);
+      // Piccola cutscene di congedo (richiesta esplicita, sia in vittoria
+      // che in sconfitta): dissolvenza a nero e ritorno, poi il rivale
+      // sparisce per davvero dal laboratorio (era rimasto lì per sempre —
+      // bug segnalato: "il rivale post lotta non sparisce"). L'NPC "Rivale"
+      // nel .tmj/.tmx del lab ha condizione:"remoLabSparito" + gate:true
+      // (compare finché il flag è falso, sparisce quando diventa vero).
+      if (typeof GameMap !== 'undefined' && GameMap.fadeOutIn) await GameMap.fadeOutIn(500, 500, 400);
+      if (!stato.flags) stato.flags = {};
+      stato.flags.remoLabSparito = true;
+      if (typeof GameMap !== 'undefined' && GameMap.rigeneraNpcMappa) GameMap.rigeneraNpcMappa();
+      salvaPartita();
     }
   });
 }
@@ -4850,6 +4879,21 @@ function alPasso(nuovaPosizione) {
   stato.posizione = nuovaPosizione;
   stato.passi += 1;
   stato.passiDaCheck += 1;
+
+  // Veleno fuori dalla lotta (richiesta esplicita di Luca): 1 HP di danno
+  // ogni 5 passi, come nei giochi veri — solo fuori da una battaglia (lì
+  // ci pensa già battle.js coi suoi turni) e solo se la mappa lo consente
+  // (non durante un dialogo/cutscene che blocca i passi comunque).
+  if (stato.passi % 5 === 0 && !stato.incontroAttivo) {
+    let colpito = false;
+    (stato.squadra || []).forEach(p => {
+      if (p.hpAttuale > 0 && p.condizione && p.condizione.tipo === 'poison') {
+        p.hpAttuale = Math.max(0, p.hpAttuale - 1);
+        colpito = true;
+      }
+    });
+    if (colpito) mostraToast('☠️ Il veleno ha ferito un tuo Pokémon...', 1600);
+  }
 
   // F9.1: avanza il tempo di gioco (indipendente dal booster)
   avanzaTempo();
