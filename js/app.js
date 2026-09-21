@@ -3521,6 +3521,24 @@ const nascostoEl = (id) => {
   return !el || el.classList.contains('nascosto');
 };
 
+// Simula la pressione di un tasto vero (frecce/Invio/B) — serve a far
+// funzionare il D-pad/[A]/[B] a schermo (mobile) anche DENTRO le schermate
+// native (Squadra/Zaino/Box/Market/Pausa/Scheda…, tutte Phaser.Scene):
+// quelle ascoltano solo veri eventi keydown della tastiera, non sanno nulla
+// dei pulsanti touch. Un KeyboardEvent vero fa scattare esattamente gli
+// stessi handler già scritti in ognuna di quelle scene, senza doverli
+// duplicare una per una. keyCode/which vanno forzati con defineProperty
+// perché il costruttore KeyboardEvent li ignora (sono di sola lettura) —
+// Phaser li legge per riconoscere quale tasto è stato premuto.
+function simulaTastoGB(key, keyCode) {
+  const ev = new KeyboardEvent('keydown', { key, code: key, bubbles: true, cancelable: true });
+  try {
+    Object.defineProperty(ev, 'keyCode', { get: () => keyCode });
+    Object.defineProperty(ev, 'which',   { get: () => keyCode });
+  } catch (_) { /* browser molto vecchio: pazienza */ }
+  window.dispatchEvent(ev);
+}
+
 function premiA() {
   if (stato.incontroAttivo) {
     if (typeof Battle !== 'undefined' && Battle.confermaCursore) Battle.confermaCursore();
@@ -3530,7 +3548,12 @@ function premiA() {
   if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn1').click(); return; }
   if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
   if (!nascostoEl('pannello-menu')) return;   // si naviga col mouse/tocco diretto
-  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+  // Scena nativa aperta (Squadra/Zaino/Box/Market/Pausa/Scheda…): [A] a
+  // schermo = Invio vero, così il cursore della scena conferma da solo.
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) {
+    simulaTastoGB('Enter', 13);
+    return;
+  }
   if (typeof GameMap !== 'undefined' && GameMap.interagisciVicino) GameMap.interagisciVicino();
 }
 
@@ -3543,7 +3566,12 @@ function premiB() {
   if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn2').click(); return; }
   if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
   if (!nascostoEl('pannello-menu')) { chiudiMenu(); return; }
-  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
+  // Scena nativa aperta: [B] a schermo = tasto B vero (indietro/annulla,
+  // stesso ruolo del tasto fisico — ogni scena lo ascolta già da sola).
+  if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) {
+    simulaTastoGB('b', 66);
+    return;
+  }
 }
 
 function premiStart() {

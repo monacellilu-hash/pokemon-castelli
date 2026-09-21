@@ -7526,12 +7526,33 @@ const GameMap = (function () {
       // a muovere per davvero (con lo stesso ritardo gira-prima-poi-cammina e
       // la stessa durata passo/corsa/bici) ci pensa update(), esattamente
       // come per le frecce da tastiera — un solo punto che decide il movimento.
+      // ECCEZIONE: se è aperta una scena nativa (Squadra/Zaino/Box/Market/
+      // Pausa/Scheda…), il D-pad deve muoverne il cursore invece di spostare
+      // il personaggio (che è comunque in pausa) — quella scena ascolta solo
+      // veri tasti freccia, quindi qui simuliamo anche quelli (vedi
+      // simulaTastoGB in app.js), un tap = un passo di cursore.
       this.dpadDx = 0;
       this.dpadDy = 0;
+      const TASTO_DIR = {
+        'btn-su':       ['ArrowUp', 38],
+        'btn-giu':      ['ArrowDown', 40],
+        'btn-sinistra': ['ArrowLeft', 37],
+        'btn-destra':   ['ArrowRight', 39],
+      };
       const btn = (id, dx, dy) => {
         const el = document.getElementById(id);
         if (!el) return;
-        const start = () => { this.dpadDx = dx; this.dpadDy = dy; };
+        const start = () => {
+          this.dpadDx = dx; this.dpadDy = dy;
+          if (typeof stato !== 'undefined' && stato.incontroAttivo) {
+            // Battaglia: il D-pad muove il cursore fra i pulsanti (vedi
+            // Battle.spostaCursore, stesso sistema delle frecce da tastiera).
+            if (typeof Battle !== 'undefined' && Battle.spostaCursore) Battle.spostaCursore(dx, dy);
+          } else if (menuNativoAttivo() && typeof simulaTastoGB === 'function') {
+            const [key, keyCode] = TASTO_DIR[id];
+            simulaTastoGB(key, keyCode);
+          }
+        };
         const stop = () => {
           if (this.dpadDx === dx && this.dpadDy === dy) { this.dpadDx = 0; this.dpadDy = 0; }
         };
