@@ -175,11 +175,25 @@ const DATI_NPC = {
     azione: 'interagisciLaboratorio',
   },
 
-  'Rivale': {
-    sprite: 'RIVALE_1',   // il rivale ora è Brendan
+  // DUE rivali nel laboratorio (sess. 22 set 2026): destra = uomo/Blue,
+  // starter DEBOLE contro il tuo → sfidarlo imposta la modalità FACILE.
+  // Sinistra = donna/Red, starter FORTE contro il tuo → modalità DIFFICILE.
+  // dialogo:[] perché tutto il testo lo gestisce l'azione (spiegazione +
+  // doppia conferma Sì/No + lotta), non un semplice saluto fisso.
+  'rivale_debole': {
+    sprite: 'RIVALE_1',   // il rivale debole (Blue) è Brendan
     direzione: 'sud',
     movimento: 'fisso',
-    dialogo: ['Ehi! Non pensare di essere più forte di me!'],
+    dialogo: [],
+    azione: 'interagisciRivaleDebole',
+  },
+
+  'rivale_forte': {
+    sprite: 'Rivale_2',   // il rivale forte (Red) è May
+    direzione: 'sud',
+    movimento: 'fisso',
+    dialogo: [],
+    azione: 'interagisciRivaleForte',
   },
 
   'npc_joy': {

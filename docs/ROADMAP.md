@@ -4,6 +4,35 @@
 
 ---
 
+## Sessione 22 settembre 2026 — Due rivali nel laboratorio, difficoltà, nome del personaggio (MAI TESTATO dal vivo)
+
+- **Nome del personaggio**: dopo la scelta del genere, `chiediNome()` (js/app.js) apre un overlay con
+  un `<input>` di testo vero (tastiera nativa su mobile). Il nome (`stato.nomeGiocatore`) sostituisce
+  il placeholder "Rosso"/"Rossa" nel menu Start, nella Scheda Allenatore e nel campo OT della Sommario.
+- **Due rivali nel laboratorio** (richiesta esplicita di Luca): NPC Tiled `rivale_debole` (destra,
+  uomo, **Blue**, starter debole contro il tuo) e `rivale_forte` (sinistra, donna, **Red**, starter
+  forte contro il tuo) — oggetti 15/47 in `pokemon-castelli-laboratorio professore.tmj/.tmx`, sempre 3
+  generazioni diverse (tua + una a testa ai due rivali). Nomi in inglese come nei giochi originali
+  (corretti dopo un primo giro con "Remo"/"Blu", non voluto).
+- Dopo lo starter NON parte più la lotta automatica: al primo passo il Prof. Castagno spiega da solo
+  la scelta di difficoltà (`spiegaDifficoltaOak()`), ripetuta ogni volta che gli riparli finché non hai
+  scelto. Avvicinarsi a un rivale apre una doppia conferma Sì/No, poi la scelta si blocca per sempre e
+  parte la lotta (stessa cutscene di congedo di prima: dissolvenza + entrambi i rivali spariscono).
+- **Modalità FACILE**: squadre nemiche di TUTTO il gioco (non solo il rivale) a -2 livelli (minimo 2),
+  hook in `Battle.avvia()` letto da `stato.difficolta`. Nessuna riduzione in difficile o prima di scegliere.
+- Corretto un nome fisso "Remo" che sarebbe rimasto sbagliato con due rivali possibili: le rivincite
+  lungo il path (`RIVALE_TAPPE`) e l'incontro con linea di vista sul Percorso Tuscolana
+  (`rivale_tuscolo`, js/map.js) ora mostrano il nome di chi hai davvero scelto.
+- **Punti aperti, non toccati**: lo sprite del rivale resta sempre maschile (Brendan/RIVALE_1) nelle
+  mappe successive anche scegliendo Red (solo l'NPC del laboratorio ha già uno sprite femminile
+  dedicato, `Rivale_2`); l'identità del Campione della Lega (`REMO_LEGA`, sempre "Remo", un terzo
+  personaggio distinto dai due rivali) non è stata toccata — da decidere con Luca. Dettagli completi in
+  `docs/TODO.md` (voce 22 settembre 2026), inclusa la nota di Luca su palestra 7/8 da bloccare dietro
+  Sagra + Rifugio di Marino.
+- **Mai aperto nel browser in questa sessione**: solo `node --check` sui file .js. Luca deve testare lui.
+
+---
+
 ## Sessione 19 settembre 2026 — Sprite reale di Camilla + Pokémon al fianco dei capipalestra
 
 - **Primo sprite overworld "vero" di un personaggio** (prima erano tutti presi in prestito da

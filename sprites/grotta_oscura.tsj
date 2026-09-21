@@ -1,0 +1,15 @@
+{ "columns":23,
+ "image":"Tile_nuovi\/grotta_oscura.png",
+ "imageheight":1056,
+ "imagewidth":756,
+ "margin":0,
+ "name":"grotta_oscura",
+ "spacing":0,
+ "tilecount":759,
+ "tiledversion":"1.12.2",
+ "tileheight":32,
+ "tilewidth":32,
+ "transparentcolor":"#000000",
+ "type":"tileset",
+ "version":"1.10"
+}

@@ -1,5 +1,48 @@
 # TO-DO — Pokémon Castelli Romani
 
+> **22 settembre 2026 — Due rivali nel laboratorio + nome del personaggio (MAI TESTATO dal vivo)**:
+> scritto ma non ancora aperto nel browser (solo `node --check` sui file .js). Riassunto di cosa manca
+> ancora, e un promemoria a parte per Luca (vedi in fondo):
+>
+> **Fatto in questa sessione:**
+> - Dopo la scelta del genere, una nuova schermata con un vero `<input>` di testo chiede il nome del
+>   personaggio (`chiediNome()` in `js/app.js`, overlay `#overlay-nome` in `index.html`) — funziona da
+>   tastiera vera anche su mobile. Il nome scelto sostituisce il placeholder "Rosso"/"Rossa" ovunque
+>   compariva (menu Start, Scheda Allenatore, campo OT nella Sommario del Pokémon).
+> - Nel laboratorio ora ci sono DUE rivali (NPC Tiled `rivale_debole`/`rivale_forte`, oggetti 15 e 47 in
+>   `pokemon-castelli-laboratorio professore.tmj/.tmx`): a destra **Blue** (uomo, starter debole contro
+>   il tuo → modalità FACILE), a sinistra **Red** (donna, starter forte contro il tuo → modalità
+>   DIFFICILE), da due generazioni diverse tra loro e dalla tua (sempre 3 generazioni diverse in tutto).
+>   Nomi in inglese, come nei giochi originali (corretto dopo un primo giro con "Remo"/"Blu").
+> - Dopo aver scelto lo starter NON parte più nessuna lotta automatica: al primo passo il Prof.
+>   Castagno spiega da solo la scelta di difficoltà (`spiegaDifficoltaOak()`), e ripete la stessa
+>   spiegazione ogni volta che gli riparli finché non hai scelto (nessun limite).
+> - Avvicinandoti a uno dei due rivali parte una DOPPIA conferma Sì/No ("Confermi difficoltà
+>   FACILE/DIFFICILE?" poi "Difficoltà X, confermi?") prima che la scelta si blocchi per sempre e parta
+>   la vera lotta di benvenuto (stessa cutscene di congedo di prima: dissolvenza + entrambi i rivali
+>   spariscono dal laboratorio).
+> - Modalità FACILE = squadre nemiche **leggermente** più deboli in tutto il gioco (-2 livelli, minimo
+>   2), non un cambio ai level cap: hook in `Battle.avvia()` (`js/battle.js`), letto da
+>   `stato.difficolta`. Nessuna riduzione in modalità difficile o prima di aver scelto.
+> - Le rivincite del rivale lungo il path (`RIVALE_TAPPE`, più l'incontro con linea di vista sul
+>   Percorso Tuscolana, `rivale_tuscolo`) ora mostrano il nome giusto (Blue o Red) in base a chi hai
+>   davvero scelto, non più un nome fisso.
+>
+> **Cosa manca ancora / punti aperti (nessuno di questi è stato toccato in questa sessione):**
+> - **Sprite del rivale nelle mappe successive**: se scegli Red, tutte le rivincite lungo il path e le
+>   mappe già disegnate continuano a mostrare lo sprite maschile (Brendan/RIVALE_1) — solo l'NPC del
+>   laboratorio usa già uno sprite femminile dedicato (`Rivale_2`). Serve rivedere gli sprite piazzati
+>   nelle altre mappe (es. Percorso Tuscolana) per farli coerenti col genere scelto.
+> - **Identità del Campione della Lega**: CLAUDE.md e il codice (`REMO_LEGA`, nome "Remo") danno per
+>   scontato che il Campione finale sia sempre "Remo" (un TERZO personaggio, distinto dai due rivali del
+>   laboratorio), indipendentemente da chi hai sfidato all'inizio — non risolto, va deciso con Luca.
+> - Verifica dal vivo di tutto il flusso (mai aperto nel browser in questa sessione): scelta nome,
+>   comparsa dei due NPC, doppia conferma, lotta, sparizione, spiegazione ripetuta di Oak, riduzione
+>   livelli in modalità facile.
+>
+> **Nota di Luca, da tenere a mente per dopo (testuale):** blocca palestra 7 e 8 per sagra e rifugio
+> marino prima.
+>
 > **15 settembre 2026 — Osservatorio interno (rifugio segreto CoTrAL) completo**: 3 piani cablati con
 > porte a scomparsa (chiave + interruttore statua), 7 coppie di grunt in doppia con Camilla alleata,
 > 2 cutscene (invito a Genzano dopo l'8ª palestra + confronto/reclutamento all'Osservatorio). **Boss del

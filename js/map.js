@@ -6396,12 +6396,11 @@ const GameMap = (function () {
 
     // Ostacoli da MN: davanti a un masso/acqua si preme [A]. Se possiedi la MN
     // giusta lo superi (la casella diventa calpestabile), altrimenti un avviso.
-    // Nome mostrato nel messaggio "___ usa MN!" (sessione 6 agosto): il
-    // progetto non ha ancora un campo nome-personaggio vero e proprio, solo
-    // il genere scelto a inizio partita — uso Rosso/Rossa (stile FireRed,
-    // coerente con lo sprite 'player-red') come placeholder ragionevole.
-    // Se in futuro arriva un vero campo nome, va sostituito qui.
+    // Nome mostrato nel messaggio "___ usa MN!": se il giocatore ha scelto un
+    // nome (schermata dopo il genere) si usa quello, altrimenti Rosso/Rossa
+    // come placeholder (stile FireRed, coerente con lo sprite 'player-red').
     _nomeGiocatore() {
+      if (typeof stato !== 'undefined' && stato.nomeGiocatore) return stato.nomeGiocatore;
       return (typeof stato !== 'undefined' && stato.genere === 'F') ? 'Rossa' : 'Rosso';
     }
 
@@ -7182,7 +7181,8 @@ const GameMap = (function () {
       bloccaMovimento();
 
       const risolviAllenatore = (v) => {
-        const nomeLotta = v.dati.nome || (v.st.ev && v.st.ev.nome) || v.id;
+        const nomeLotta = (v.dati.rivale && typeof stato !== 'undefined' && stato.rivale && stato.rivale.nome) ||
+          v.dati.nome || (v.st.ev && v.st.ev.nome) || v.id;
         let squadra = v.dati.squadra;
         if (v.dati.rivale && v.st.ev && typeof costruisciSquadraRivale === 'function') {
           squadra = costruisciSquadraRivale(
@@ -7389,7 +7389,11 @@ const GameMap = (function () {
       stato.incontroAttivo = true;
       bloccaMovimento();
 
-      const nomeLotta = dati.nome || ev.nome || id;
+      // Rivale sulla mappa (es. "rivale_tuscolo"): il nome mostrato segue
+      // chi hai davvero scelto nel laboratorio (Blue o Red, sess. 22 set
+      // 2026) — dati.nome resta solo un fallback per salvataggi vecchi.
+      const nomeLotta = (dati.rivale && typeof stato !== 'undefined' && stato.rivale && stato.rivale.nome) ||
+        dati.nome || ev.nome || id;
       const dialogo = dati.dialogo_prima || 'Preparati a lottare!';
       // Rivale: squadra scalata in base alla "tappa" (n. incontro) con l'asso = starter
       let squadra = dati.squadra;
@@ -7749,8 +7753,9 @@ const GameMap = (function () {
       const femmina = typeof stato !== 'undefined' && stato.genere === 'F';
       // "Scheda Allenatore" in Essentials reale non è un'etichetta generica:
       // è il nome vero del giocatore (proc { next $player.name }).
+      const nomePg = (typeof stato !== 'undefined' && stato.nomeGiocatore) || (femmina ? 'Rossa' : 'Rosso');
       const voci = VOCI_MENU_START.map(v => v.chiave === 'carta'
-        ? { ...v, etichetta: femmina ? 'Rossa' : 'Rosso' } : v);
+        ? { ...v, etichetta: nomePg } : v);
       this._voci = voci;
 
       // Finestra-elenco ancorata in alto a destra, mappa viva e visibile
@@ -7868,7 +7873,7 @@ const GameMap = (function () {
       const femmina = typeof stato !== 'undefined' && stato.genere === 'F';
       layer.add(this.add.image(0, 0, femmina ? 'ui-card-f' : 'ui-card-m').setOrigin(0, 0));
 
-      const nome = femmina ? 'Rossa' : 'Rosso';
+      const nome = (typeof stato !== 'undefined' && stato.nomeGiocatore) || (femmina ? 'Rossa' : 'Rosso');
       const testoStile = { fontFamily: 'Arial', fontSize: '14px', color: '#484848', fontStyle: 'bold' };
 
       const riga = (etichetta, valore, y) => {
@@ -9019,7 +9024,8 @@ const GameMap = (function () {
       testo(238, 150, 'Tipo', base);
       testo(238, 182, 'OT', base);
       const femmina = typeof stato !== 'undefined' && stato.genere === 'F';
-      testo(435, 182, femmina ? 'Rossa' : 'Rosso', { ...val, origin: 0.5, color: femmina ? '#f83820' : '#1870d8' });
+      const nomeOt = (typeof stato !== 'undefined' && stato.nomeGiocatore) || (femmina ? 'Rossa' : 'Rosso');
+      testo(435, 182, nomeOt, { ...val, origin: 0.5, color: femmina ? '#f83820' : '#1870d8' });
       testo(238, 214, 'N. ID', base);
       testo(435, 214, '?????', { ...val, origin: 0.5 });
 

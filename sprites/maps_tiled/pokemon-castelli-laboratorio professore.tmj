@@ -2455,7 +2455,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "Rivale"
+       "value": "rivale_debole"
       },
       {
        "name": "type",
@@ -2478,6 +2478,41 @@
      "visible": true,
      "width": 0,
      "x": 408.271333333333,
+     "y": 172.840666666667
+    },
+    {
+     "height": 0,
+     "id": 47,
+     "name": "",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "rivale_forte"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      },
+      {
+       "name": "condizione",
+       "type": "string",
+       "value": "remoLabSparito"
+      },
+      {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 313.361,
      "y": 172.840666666667
     },
     {
@@ -2539,7 +2574,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 47,
+ "nextobjectid": 48,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -86,10 +86,17 @@ const STARTER_PER_GEN = {
 const GEN_NOMI = { 1: 'Generazione I — Kanto', 2: 'Generazione II — Johto', 3: 'Generazione III — Hoenn' };
 const LIVELLO_STARTER = 5;
 
-// IL RIVALE: sceglie (da una generazione QUALSIASI tra le tre) lo starter
-// del tipo FORTE contro il tuo: Erba→lui Fuoco, Fuoco→lui Acqua, Acqua→lui Erba.
-const RIVALE_NOME = 'Remo'; // come Romolo e Remo: il rivale "romano"!
+// DUE rivali nel laboratorio (richiesta esplicita di Luca, sess. 22 set
+// 2026): uno a destra (uomo, RIVALE_NOME, starter DEBOLE contro il tuo —
+// modalità FACILE se lo sfidi), uno a sinistra (donna, RIVALE_NOME_FORTE,
+// starter FORTE contro il tuo — modalità DIFFICILE). Nomi in inglese, come
+// nei giochi originali (Luca, sess. 22 set 2026): Blue a destra, Red a sinistra.
+const RIVALE_NOME = 'Blue';      // uomo, a destra, starter debole → modalità facile
+const RIVALE_NOME_FORTE = 'Red'; // donna, a sinistra, starter forte → modalità difficile
 const CONTRO_TIPO = { grass: 'fire', fire: 'water', water: 'grass' };
+// Inverso di CONTRO_TIPO: il tipo che IL TUO starter batte (Erba→lui Acqua,
+// Fuoco→lui Erba, Acqua→lui Fuoco) — usato per il rivale "debole" a destra.
+const DEBOLE_TIPO = { grass: 'water', fire: 'grass', water: 'fire' };
 
 // Vista iniziale della mappa
 const CENTRO_MAPPA = { lat: 41.76, lon: 12.69, zoom: 13 };

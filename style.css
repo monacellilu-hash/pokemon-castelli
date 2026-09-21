@@ -1953,6 +1953,32 @@ html, body {
   flex-wrap: wrap;
 }
 
+/* Input nome personaggio (#overlay-nome): vero <input>, tastiera nativa
+   su mobile — niente tastiera finta disegnata a mano. */
+#input-nome-pg {
+  display: block;
+  width: 100%;
+  max-width: 320px;
+  margin: 0 auto 16px;
+  padding: 12px 14px;
+  font-size: 18px;
+  text-align: center;
+  border-radius: 10px;
+  border: 2px solid #ffcb05;
+  background: #10131a;
+  color: #fff;
+  box-sizing: border-box;
+}
+#input-nome-pg:focus {
+  outline: none;
+  border-color: #fff;
+}
+#btn-conferma-nome {
+  display: block;
+  margin: 0 auto;
+  min-width: 160px;
+}
+
 .card-starter {
   background: rgba(255, 255, 255, 0.08);
   border: 3px solid #5a6377;

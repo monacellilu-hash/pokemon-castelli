@@ -2466,8 +2466,14 @@ const Battle = (function () {
       if (modalita === 'allenatore') {
         // Creiamo l'intera squadra nemica (dalla cache è quasi istantaneo)
         squadraNemica = [];
+        // Modalità FACILE (richiesta esplicita di Luca, sess. 22 set 2026:
+        // "leggermente più facili, niente di esagerato"): ogni allenatore del
+        // gioco, non solo il rivale, scende di 2 livelli (minimo 2). Niente
+        // riduzione in modalità difficile o prima che la difficoltà sia scelta.
+        const facile = statoGioco && statoGioco.difficolta === 'facile';
         for (const voce of datiAllenatore.squadra) {
-          squadraNemica.push(await creaIstanza(voce.id, voce.livello));
+          const livello = facile ? Math.max(2, voce.livello - 2) : voce.livello;
+          squadraNemica.push(await creaIstanza(voce.id, livello));
         }
         indiceNemico = 0;
         nemico = squadraNemica[0];

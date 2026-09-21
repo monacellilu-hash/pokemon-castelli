@@ -90,6 +90,17 @@
     </div>
   </div>
 
+  <!-- Nome del personaggio, subito dopo la scelta del genere (richiesta
+       esplicita di Luca): input di testo vero, funziona con la tastiera
+       del telefono su mobile. -->
+  <div id="overlay-nome" class="nascosto" role="dialog" aria-modal="true">
+    <div id="starter-card">
+      <h2>Come ti chiami?</h2>
+      <input type="text" id="input-nome-pg" maxlength="12" placeholder="Il tuo nome" autocomplete="off">
+      <button id="btn-conferma-nome" class="card-starter">Conferma</button>
+    </div>
+  </div>
+
   <!-- Scelta dello starter dal Professore -->
   <div id="overlay-starter" class="nascosto" role="dialog" aria-modal="true">
     <div id="starter-card">

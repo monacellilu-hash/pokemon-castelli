@@ -885,6 +885,13 @@ async function interagisciLaboratorio() {
   }
 
   if (stato.flags && stato.flags.starterScelto) {
+    // Finché non hai scelto con chi lottare (vedi spiegaDifficoltaOak), il
+    // Professore ripete SEMPRE la spiegazione della difficoltà — puoi
+    // tornare a parlargli quante volte vuoi (richiesta esplicita di Luca).
+    if (!stato.flags.difficoltaScelta) {
+      await spiegaDifficoltaOak();
+      return;
+    }
     await mostraDialogo(PROFESSORE_NOME, [
       'Oh, bentornato! Come procede l\'avventura?',
       'Ricorda: la prima palestra è a FRASCATI, in fondo alla Via Tuscolana. Il Capopalestra Vinicio usa Pokémon di tipo Erba.',
@@ -924,14 +931,24 @@ async function interagisciLaboratorio() {
   stato.flags.starterScelto   = true;
   stato.flags.pokedexRicevuto = true;
 
-  const tipoRivale = CONTRO_TIPO[scelto.tipo];
-  const genRivale = 1 + Math.floor(Math.random() * 3);
-  const starterRivale = STARTER_PER_GEN[genRivale].find(s => s.tipo === tipoRivale);
-  stato.rivale = {
-    nome: RIVALE_NOME,
-    idStarter: starterRivale.id,
-    nomeStarter: starterRivale.nome,
-    gen: genRivale,
+  // DUE rivali (richiesta esplicita di Luca, sess. 22 set 2026): uno a
+  // destra (uomo, Blue — starter DEBOLE contro il tuo → modalità FACILE se
+  // lo sfidi), uno a sinistra (donna, Red — starter FORTE contro il tuo →
+  // modalità DIFFICILE). Le due generazioni "avanzate" (quelle diverse
+  // dalla tua) vanno una a testa, così risultano sempre 3 Pokémon di 3
+  // generazioni diverse in totale. Niente più lotta automatica qui: il
+  // giocatore sceglierà lui chi sfidare (vedi spiegaDifficoltaOak/
+  // interagisciRivaleDebole/interagisciRivaleForte).
+  const generazioniRimanenti = [1, 2, 3].filter(g => g !== gen);
+  const genDebole = generazioniRimanenti[0];
+  const genForte  = generazioniRimanenti[1];
+  const tipoDebole = DEBOLE_TIPO[scelto.tipo];
+  const tipoForte  = CONTRO_TIPO[scelto.tipo];
+  const starterDebole = STARTER_PER_GEN[genDebole].find(s => s.tipo === tipoDebole);
+  const starterForte  = STARTER_PER_GEN[genForte].find(s => s.tipo === tipoForte);
+  stato.duoRivali = {
+    debole: { nome: RIVALE_NOME,       idStarter: starterDebole.id, nomeStarter: starterDebole.nome, gen: genDebole },
+    forte:  { nome: RIVALE_NOME_FORTE, idStarter: starterForte.id,  nomeStarter: starterForte.nome,  gen: genForte  },
   };
   salvaPartita();
   aggiornaHUD();
@@ -939,13 +956,74 @@ async function interagisciLaboratorio() {
   await mostraDialogo(PROFESSORE_NOME, [
     `Ottima scelta! ${starter.nome} e tu farete grandi cose insieme!`,
     'Prendi anche questo POKÉDEX: registra ogni Pokémon che incontri.',
-    'E queste ti serviranno: 10 POKÉ BALL e 5 POZIONI. Le trovi nello Zaino (menu ☰).'
+    'E queste ti serviranno: 10 POKÉ BALL e 5 POZIONI. Le trovi nello Zaino (menu ☰).',
+    'Aspetta, non andartene subito: ho ancora una cosa importante da dirti!'
   ]);
+  // Niente lotta qui: il Professore ti spiega la scelta della difficoltà
+  // al primo passo che farai (vedi il trigger in alPasso, app.js).
+}
 
-  await mostraDialogo(RIVALE_NOME, [
-    'Ehi, aspetta! Io sono Remo, il nipote del Professore!',
-    `Ho appena scelto anch'io il mio primo Pokémon: ${starterRivale.nomeStarter || starterRivale.nome}, da ${GEN_NOMI[genRivale]}!`,
-    `E guarda caso è di tipo ${TIPO_NOMI[tipoRivale]}… proprio il tipo forte contro il tuo ${starter.nome}! Che sfortuna, eh? 😏`,
+// Spiegazione della difficoltà, data dal Prof. Castagno (richiesta esplicita
+// di Luca): scatta da sola al primo passo dopo aver scelto lo starter, e si
+// ripete IDENTICA ogni volta che gli riparli finché non scegli un rivale —
+// "non c'è limite" a quante volte puoi farti rispiegare la cosa.
+async function spiegaDifficoltaOak() {
+  if (!stato.duoRivali) return;
+  const debole = stato.duoRivali.debole, forte = stato.duoRivali.forte;
+  const nomeMioStarter = (stato.squadra[0] && stato.squadra[0].nome) || 'il tuo Pokémon';
+  await mostraDialogo(PROFESSORE_NOME, [
+    'Ehi, aspetta un momento! C\'è una cosa importante che devi sapere.',
+    `Nel laboratorio trovi anche ${debole.nome} e ${forte.nome}: sono entrambi tuoi rivali, ma non sono la stessa sfida.`,
+    `${debole.nome}, a destra, ha uno starter debole contro ${nomeMioStarter}: se sfidi LUI, giocherai in modalità FACILE.`,
+    `${forte.nome}, a sinistra, ha invece uno starter forte contro ${nomeMioStarter}: se sfidi LEI, giocherai in modalità DIFFICILE.`,
+    'La difficoltà segue i level cap di ogni palestra: non potrai mai superare il livello dell\'asso del prossimo Capopalestra (o del Campione, alla Lega) — cambia solo quanto sono agguerriti gli allenatori che incontri.',
+    'ATTENZIONE: una volta scelto chi sfidare, la decisione sarà DEFINITIVA — non potrai più tornare indietro!',
+    'Prenditi tutto il tempo che vuoi: se vuoi che te lo rispieghi, basta che mi parli di nuovo.'
+  ]);
+}
+
+// Doppia conferma Sì/No (richiesta esplicita di Luca) prima di sfidare uno
+// dei due rivali: blocca per sempre la scelta di difficoltà e avvia la lotta.
+// chi: 'debole' (Blue, destra → FACILE) oppure 'forte' (Red, sinistra → DIFFICILE).
+async function _sceltaRivale(chi) {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+
+  if (!stato.duoRivali) {
+    const nomeFallback = chi === 'debole' ? RIVALE_NOME : RIVALE_NOME_FORTE;
+    await mostraDialogo(nomeFallback, ['Prima vai a scegliere il tuo Pokémon dal Professore!']);
+    return;
+  }
+
+  const dati = stato.duoRivali[chi];
+  const difficolta = chi === 'debole' ? 'facile' : 'difficile';
+  const etichettaDiff = chi === 'debole' ? 'FACILE' : 'DIFFICILE';
+
+  if (stato.flags.difficoltaScelta) {
+    // Non dovrebbe più capitare (l'NPC sparisce non appena la scelta è
+    // fatta), ma per sicurezza mostriamo solo un flavor-text innocuo.
+    await mostraDialogo(dati.nome, ['Ci vediamo lungo il cammino!']);
+    return;
+  }
+
+  const conf1 = await mostraScelta(`Confermi difficoltà ${etichettaDiff}?`, 'Sì', 'No');
+  if (conf1 !== 1) return;
+  const conf2 = await mostraScelta(`Difficoltà ${etichettaDiff}, confermi?`, 'Sì', 'No');
+  if (conf2 !== 1) return;
+
+  stato.difficolta = difficolta;
+  stato.flags.difficoltaScelta = true;
+  stato.rivale = { nome: dati.nome, idStarter: dati.idStarter, nomeStarter: dati.nomeStarter, gen: dati.gen };
+  salvaPartita();
+
+  const nomeMioStarter = (stato.squadra[0] && stato.squadra[0].nome) || 'il tuo Pokémon';
+  await mostraDialogo(dati.nome, [
+    chi === 'debole'
+      ? `Ehi, aspetta! Io sono ${dati.nome}, il nipote del Professore!`
+      : `Aspetta un attimo! Io sono ${dati.nome}, la nipote del Professore!`,
+    `Ho appena scelto anch'io il mio primo Pokémon: ${dati.nomeStarter}, da ${GEN_NOMI[dati.gen]}!`,
+    chi === 'debole'
+      ? `Il mio starter è debole contro ${nomeMioStarter}... ma non credere che sarà una passeggiata! 😏`
+      : `E guarda caso è di tipo forte contro ${nomeMioStarter}… che sfortuna, eh? 😏`,
     'Forza, lotta di benvenuto! Qui e ora!'
   ]);
 
@@ -954,10 +1032,10 @@ async function interagisciLaboratorio() {
 
   Battle.avvia({
     allenatore: {
-      nome: RIVALE_NOME,
-      squadra: [{ id: starterRivale.id, livello: LIVELLO_STARTER }],
+      nome: dati.nome,
+      squadra: [{ id: dati.idStarter, livello: LIVELLO_STARTER }],
       premioSoldi: 500,
-      dialogoSconfitta: 'Cosa?! Non è possibile! Avevo pure il vantaggio di tipo!',
+      dialogoSconfitta: 'Cosa?! Non è possibile!',
     },
     stato: stato,
     // Unico caso in tutto il gioco (richiesta esplicita di Luca): se perdi
@@ -967,13 +1045,13 @@ async function interagisciLaboratorio() {
     onFine: async (esito) => {
       terminaIncontro(esito);
       if (esito === 'vittoria') {
-        await mostraDialogo(RIVALE_NOME, [
+        await mostraDialogo(dati.nome, [
           'Uffa! Era solo il riscaldamento, chiaro?',
           'Ci rincontreremo lungo il path, e la prossima volta non andrà così!'
         ]);
       } else if (esito === 'sconfitta') {
-        await mostraDialogo(RIVALE_NOME, [
-          'Ahah! Te l\'avevo detto: il vantaggio di tipo non perdona!',
+        await mostraDialogo(dati.nome, [
+          'Ahah! Te l\'avevo detto!',
           'Allenati sul Percorso Tuscolana, poi riparliamone!'
         ]);
       }
@@ -982,19 +1060,21 @@ async function interagisciLaboratorio() {
         'Ora vai: segui la Via Tuscolana verso sud-est fino a FRASCATI e sfida la prima palestra. In bocca al lupo!'
       ]);
       // Piccola cutscene di congedo (richiesta esplicita, sia in vittoria
-      // che in sconfitta): dissolvenza a nero e ritorno, poi il rivale
-      // sparisce per davvero dal laboratorio (era rimasto lì per sempre —
-      // bug segnalato: "il rivale post lotta non sparisce"). L'NPC "Rivale"
-      // nel .tmj/.tmx del lab ha condizione:"remoLabSparito" + gate:true
-      // (compare finché il flag è falso, sparisce quando diventa vero).
+      // che in sconfitta): dissolvenza a nero e ritorno, poi ENTRAMBI i
+      // rivali spariscono per davvero dal laboratorio (bug storico: "il
+      // rivale post lotta non sparisce"). I due NPC nel .tmj/.tmx del lab
+      // condividono la stessa condizione:"remoLabSparito" + gate:true
+      // (compaiono finché il flag è falso, spariscono quando diventa vero).
       if (typeof GameMap !== 'undefined' && GameMap.fadeOutIn) await GameMap.fadeOutIn(500, 500, 400);
-      if (!stato.flags) stato.flags = {};
       stato.flags.remoLabSparito = true;
       if (typeof GameMap !== 'undefined' && GameMap.rigeneraNpcMappa) GameMap.rigeneraNpcMappa();
       salvaPartita();
     }
   });
 }
+
+async function interagisciRivaleDebole() { await _sceltaRivale('debole'); }
+async function interagisciRivaleForte()  { await _sceltaRivale('forte'); }
 
 /* ============================================================
    PALESTRE — sfida al Capopalestra
@@ -1036,20 +1116,25 @@ async function interagisciPalestra(idPalestra) {
   const tappa = RIVALE_TAPPE.find(t =>
     t.primaDiOrdine === palestra.ordine && !(stato.flags && stato.flags[t.flag]));
   if (tappa) {
+    // Il nome mostrato segue chi hai scelto di sfidare nel laboratorio
+    // (Blue o Red, sess. 22 set 2026): stato.rivale.nome è quello vero,
+    // RIVALE_NOME resta solo un fallback difensivo (partite vecchie/salvataggi
+    // creati prima di questa modifica, dove stato.rivale.nome non c'era ancora).
+    const nomeRivale = (stato.rivale && stato.rivale.nome) || RIVALE_NOME;
     const idBase = (stato.rivale && stato.rivale.idStarter) || 255;
     const squadraRemo = tappa.squadra.map(m => ({
       id: m.id === 'starter1' ? idBase + 1 : (m.id === 'starter2' ? idBase + 2 : m.id),
       livello: m.livello
     }));
 
-    await mostraDialogo(RIVALE_NOME, tappa.dialogoIntro);
+    await mostraDialogo(nomeRivale, tappa.dialogoIntro);
 
     stato.incontroAttivo = true;
     GameMap.bloccaMovimento();
 
     Battle.avvia({
       allenatore: {
-        nome: RIVALE_NOME,
+        nome: nomeRivale,
         squadra: squadraRemo,
         premioSoldi: tappa.premioSoldi,
         dialogoSconfitta: tappa.dialogoSconfittaRemo,
@@ -1061,9 +1146,9 @@ async function interagisciPalestra(idPalestra) {
           if (!stato.flags) stato.flags = {};
           stato.flags[tappa.flag] = true;
           salvaPartita();
-          await mostraDialogo(RIVALE_NOME, tappa.dialogoDopoVittoria);
+          await mostraDialogo(nomeRivale, tappa.dialogoDopoVittoria);
         } else if (esito === 'sconfitta') {
-          await mostraDialogo(RIVALE_NOME, tappa.dialogoDopoSconfitta);
+          await mostraDialogo(nomeRivale, tappa.dialogoDopoSconfitta);
         }
       }
     });
@@ -4895,6 +4980,16 @@ function alPasso(nuovaPosizione) {
     if (colpito) mostraToast('☠️ Il veleno ha ferito un tuo Pokémon...', 1600);
   }
 
+  // Spiegazione automatica della difficoltà (richiesta esplicita di Luca):
+  // scatta UNA VOLTA SOLA da sé, al primo passo dopo aver scelto lo starter
+  // nel laboratorio — da lì in poi si ripete solo se riparli col Professore
+  // (vedi spiegaDifficoltaOak/interagisciLaboratorio).
+  if (stato.duoRivali && !stato.flags.difficoltaScelta && !stato.flags.difficoltaSpiegataAuto &&
+      !dialogoInCorso && !stato.incontroAttivo) {
+    stato.flags.difficoltaSpiegataAuto = true;
+    spiegaDifficoltaOak();
+  }
+
   // F9.1: avanza il tempo di gioco (indipendente dal booster)
   avanzaTempo();
   controllaEventiTempo();
@@ -5129,6 +5224,31 @@ function scegliGenere() {
   });
 }
 
+// Nome del personaggio (richiesta esplicita di Luca, subito dopo il
+// genere): <input> vero, non una tastiera disegnata — su mobile apre da
+// sola la tastiera nativa del telefono. Invio o il pulsante confermano;
+// un nome vuoto ricade sul placeholder "Rosso"/"Rossa" (gestito da chi
+// legge stato.nomeGiocatore, non qui).
+function chiediNome() {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('overlay-nome');
+    const input = document.getElementById('input-nome-pg');
+    const btn = document.getElementById('btn-conferma-nome');
+    overlay.classList.remove('nascosto');
+    input.value = '';
+    setTimeout(() => input.focus(), 50);
+    const conferma = () => {
+      overlay.classList.add('nascosto');
+      btn.removeEventListener('click', conferma);
+      input.removeEventListener('keydown', suInvio);
+      resolve(input.value.trim().slice(0, 12));
+    };
+    function suInvio(e) { if (e.key === 'Enter') conferma(); }
+    btn.addEventListener('click', conferma);
+    input.addEventListener('keydown', suInvio);
+  });
+}
+
 // ── Avvio ────────────────────────────────────────────────────
 
 async function avvia() {
@@ -5136,6 +5256,11 @@ async function avvia() {
 
   if (!stato.genere) {
     stato.genere = await scegliGenere();
+    salvaPartita();
+  }
+
+  if (!stato.nomeGiocatore) {
+    stato.nomeGiocatore = await chiediNome();
     salvaPartita();
   }
 

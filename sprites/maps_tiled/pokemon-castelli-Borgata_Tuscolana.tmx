@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="79" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="10" nextobjectid="60">
- <editorsettings>
-  <export target="pokemon-castelli-Borgata_Tuscolana.tmj" format="json"/>
- </editorsettings>
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../Tiled/Gyms interior.tsx"/>
  <tileset firstgid="5169" source="../outside.tsx"/>
@@ -108,23 +105,23 @@
   <object id="3" x="619.757" y="553.414" width="875.704" height="78.3254"/>
   <object id="4" x="1380.25" y="31.359" width="56.497" height="523.881"/>
   <object id="5" x="1090.05" y="14.1243" width="333.501" height="64.2012"/>
-  <object id="7" x="1165.47" y="157.935" width="104.006" height="51.3609"/>
+  <object id="7" x="1158.14" y="148.935" width="111.339" height="60.3609"/>
   <object id="8" x="1233.52" y="225.988" width="37.2367" height="19.2603"/>
   <object id="9" x="1169.32" y="227.272" width="2.56805" height="17.9763"/>
   <object id="10" x="1098.7" y="240.112" width="61.6331" height="2.56805"/>
   <object id="11" x="1107.69" y="186.183" width="29.5325"/>
   <object id="12" x="1301.57" y="190.035" width="29.5325"/>
   <object id="13" x="1291.3" y="240.112" width="39.8047"/>
-  <object id="14" x="1197.57" y="374.935" width="73.1893" height="88.5976"/>
-  <object id="15" x="1096.13" y="382.639" width="92.4497" height="53.929"/>
-  <object id="16" x="1096.13" y="444.272" width="30.8166" height="20.5444"/>
+  <object id="14" x="1197.57" y="374.935" width="73.1893" height="99.5976"/>
+  <object id="15" x="1096.13" y="371.972" width="92.4497" height="64.5957"/>
+  <object id="16" x="1096.13" y="437.272" width="30.8166" height="42.5444"/>
   <object id="17" x="653.142" y="241.396" width="59.0651" height="11.5562"/>
   <object id="18" x="710.923" y="155.367" width="5.13609" height="91.1657"/>
   <object id="19" x="710.923" y="147.663" width="112.525" height="73.6331"/>
   <object id="20" x="780.26" y="232.284" width="109.142" height="14.2485"/>
   <object id="21" x="844.461" y="190.035" width="33.3846" height="1.28402"/>
   <object id="22" x="659.562" y="182.652" width="32.1006" height="8.66667"/>
-  <object id="23" x="680.106" y="354.39" width="148.947" height="86.0296"/>
+  <object id="23" x="680.106" y="344.057" width="148.947" height="96.3629"/>
   <object id="24" x="677.86" y="439.495" width="53.138" height="36.927"/>
   <object id="25" x="778.927" y="439.309" width="43.6568" height="30.8777"/>
   <object id="54" x="843.95" y="186.333" width="32.1006" height="8.66667"/>
@@ -164,7 +161,7 @@
    </properties>
    <point/>
   </object>
-  <object id="41" name="Porta_poke_center" x="738.961" y="448.84" width="24.1006" height="16.6194">
+  <object id="41" name="Porta_poke_center" x="740.628" y="450.173" width="24.1006" height="16.6194">
    <properties>
     <property name="arrivo_x" value="5"/>
     <property name="arrivo_y" value="8"/>
@@ -172,7 +169,7 @@
     <property name="type" value="porta"/>
    </properties>
   </object>
-  <object id="42" name="Porta_lab" x="1150.7" y="446.84" width="32.1006" height="35.9527">
+  <object id="42" name="Porta_lab" x="1152.03" y="455.84" width="31.1006" height="16.286">
    <properties>
     <property name="arrivo_x" value="12"/>
     <property name="arrivo_y" value="20"/>
