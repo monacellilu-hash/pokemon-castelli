@@ -151,7 +151,7 @@
    <properties>
     <property name="id" value="rivale_debole"/>
     <property name="type" value="npc"/>
-    <property name="condizione" value="remoLabSparito"/>
+    <property name="condizione" value="BlueLabSparito"/>
     <property name="gate" type="bool" value="true"/>
    </properties>
    <point/>
@@ -160,7 +160,7 @@
    <properties>
     <property name="id" value="rivale_forte"/>
     <property name="type" value="npc"/>
-    <property name="condizione" value="remoLabSparito"/>
+    <property name="condizione" value="RedLabSparito"/>
     <property name="gate" type="bool" value="true"/>
    </properties>
    <point/>

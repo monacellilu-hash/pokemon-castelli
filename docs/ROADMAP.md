@@ -4,6 +4,110 @@
 
 ---
 
+## Sessione 28 settembre 2026 (2) — Rivali in giro per il mondo, Donnie, blocco Sagra, Deoxys sospeso (MAI TESTATO dal vivo)
+
+- **Entrambi i rivali ora sfidabili in giro per il mondo**: Luca ha piazzato oggetti Tiled `RIVALE_UOMO`
+  (Blue)/`RIVALE_DONNA` (Red) su più mappe (Percorso 1, Tuscolo, Monte Porzio, Lago di Albano, Albano,
+  Ariccia), ognuno con una `tappa` propria — restano tutti e due sfidabili per tutta la partita, non
+  solo quello scelto come difficoltà nel laboratorio. Generalizzato il motore: nuova `rivaleDaSprite()`
+  (js/app.js) risolve quale dei due è, da `stato.duoRivali` (creato all'inizio, per entrambi);
+  `costruisciSquadraRivale()` accetta ora un rivale esplicito invece di leggere sempre `stato.rivale`;
+  `_avviaLottaTrainer`/`_avviaLottaTrainerDoppia` (js/map.js) usano il resolver per nome e squadra.
+  `ALIAS_SPRITE` traduce RIVALE_UOMO→RIVALE_1 (Brendan), RIVALE_DONNA→Rivale_2 (May). Aggiunte 5 nuove
+  voci in `dati/trainer.js` (rivale_percorso_1, rivale_monteporzio, "rivale_LAGO DI ALBANO",
+  rivale_ALBANO, rivale_ARICCIA_DONNA) + generalizzata `rivale_tuscolo` esistente (non più fissa su
+  "Remo"/RIVALE_1).
+- **1° Capopalestra rinominato Vinicio → Donnie**, con personalità aggiunta su richiesta di Luca: padre
+  con tradizione agricola, cresciuto tra pesche e vigne, ha allenato Pokémon Erba con quella terra
+  (assaggia pure le erbe che alleva), odia il Team GdF. Dialogo riscritto sia in `js/data.js`
+  (PALESTRE) sia in `dati/trainer.js` (voce viva collegata a Tiled).
+- **Blocco stradale della Sagra ad Ariccia**: i 3 grunt GdF che Luca aveva già piazzato (bare, solo
+  nome-promemoria) ora hanno `type:npc`, sprite, e `condizione:sagra_ariccia_finita`+`gate:true` — il
+  flag scatta da solo vincendo l'8ª... anzi la 7ª palestra (Ariccia stessa, in `_applicaEsitoTrainer`).
+  Il gioco non lo dice mai esplicitamente al giocatore.
+- **Osservatorio — seminato il dubbio sui leggendari-uccello**: estesi i dialoghi di due ricercatori
+  GIÀ esistenti (civili veri, mai CoTrAL) con l'idea che alcuni uccelli leggendari influenzino il meteo
+  e che Zapdos giri spesso intorno a Monte Porzio — puro foreshadowing, nessuna meccanica nuova.
+- **Due NPC nuovi** (Castel Gandolfo, vicino allo spawn da Percorso 5; Via dei Laghi, vicino
+  all'ingresso del Tunnel Roccioso) spiegano che Monte Porzio si raggiunge solo dal tunnel perché un
+  enorme Pokémon dorme sul Percorso 5 (lo Snorlax che Luca ha già riposizionato lì da solo — nessun
+  codice toccato per quello, il marker `addormentato`/`sveglia_con` è generico e funziona ovunque sia
+  piazzato). **Posizione scelta a tavolino vicino a un warp/spawn reale, MAI verificata a schermo: se
+  non torna sul sentiero, spostali tu in Tiled.**
+- **Abbazia di San Nilo**: verificato, già tutto a posto da prima — warp gated `medaglie >= 7`, Ginevra
+  già piazzata dentro `Interno_San_Nilo.tmj`. Nessuna modifica necessaria.
+- **Deoxys sospeso**: tolto il vero incontro dal Parcheggione di Grottaferrata (Luca farà un dungeon
+  sulla Luna a parte). Resta intatto il "gate NPC" (Responsabile ASI: controllo Campione della Lega +
+  dono della divisa da astronauta); al posto del lancio ora c'è un messaggio di attesa ("sonda non
+  ancora pronta"). Non esisteva nessun warp verso una mappa lunare da conservare: era tutto dialogo.
+- **4 `.tmx` rigenerati dai `.tmj`** che Luca aveva risalvato solo in JSON (Percorso_5, monteporzio,
+  percorso_3, via_dei_laghi), con `tiled.exe --export-map` dalla cartella vera (necessario: esportare
+  da una copia fuori `sprites/maps_tiled/` rompe i tileset a percorso relativo). Verificato ogni export
+  con un controllo automatico: stesso numero di oggetti, stessi indici locali dei tile (i numeri
+  assoluti possono cambiare se un `.tsx` referenziato ha un `tilecount` diverso da quando il `.tmj` è
+  stato salvato l'ultima volta — non è un errore, Tiled li ricalcola correttamente). Cluster rigenerati
+  di conseguenza.
+- **Osservazione per Luca, non risolta qui**: il layer "collisioni" di `Percorso_3.tmj` (quello grande
+  che hai appena aggiunto) ha ~70 id di oggetto duplicati al suo interno (es. l'id 12 esiste due volte:
+  un rettangolo `mont_base_bordo` E un oggetto oggetto-pozione `p3_pozione` mescolato nello stesso
+  layer). Probabilmente un incolla-multiplo in Tiled che non riassegna gli id. Non causa bug visibili
+  ora, ma se in futuro qualcosa dipendesse dall'id univoco di un oggetto lì dentro si romperebbe in
+  modo silenzioso — vale la pena ripulirlo quando hai un momento.
+
+---
+
+## Sessione 28 settembre 2026 — Cluster rigenerati, giorno/notte su tutto il mondo, mappatura incontri 1-386
+
+- **Cluster rigenerati** (`python strumenti/genera_clusters.py`) dopo le modifiche di Luca a Borgata
+  Tuscolana e Grottaferrata: `js/clusters.js` riscritto senza errori (nessun warning di allineamento,
+  solo l'avviso preesistente su "Filler Frascati1.tmx" non registrato).
+- **Giorno/notte esteso a TUTTO il mondo** (`js/map.js`, `_aggiornaVeloTempo`): tolto l'elenco scritto a
+  mano `MAPPE_CON_VELO_TEMPO` (si dimenticava sempre le mappe nuove) — ora il velo giorno/notte si
+  applica automaticamente a ogni mappa che non sia `interno:true` né un dungeon/grotta
+  (`tema:'cave'/'icecave'`), leggendo direttamente `MAPPE`. Nessuna mappa da elencare mai più a mano.
+- **`dati/mappatura_incontri_nuove.js` (NUOVO, sola progettazione, non collegato al motore)**: mappatura
+  completa delle 386 specie. Costruita leggendo i dati REALI di Essentials FRLG
+  (`Essentials FRLG/PBS/pokemon.txt`: tipo, catena evolutiva, livello naturale di evoluzione) incrociati
+  con le 40 zone GIÀ vive in `dati/incontri.js` (stesse chiavi/range di livello, nessuna zona inventata).
+  208 specie erano già coperte; 129 nuove proposte qui (evoluzione=rarità: rate 24/12/5 per
+  base/intermedio/finale, zona scelta per affinità di tipo + livello naturale, bilanciata tra le 40
+  zone); 22 leggendari+Snorlax restano EVENTO; le 9 specie delle 5 linee di fossili escluse (si ottengono
+  solo rianimando, non in natura — coerente con Cenciarels/Museo Navi); le 27 specie delle linee starter
+  escluse su richiesta esplicita di Luca (le posiziona lui); Scyther confinato alla Zona Safari (come
+  Chansey, già così). Indice di controllo 1-386 in fondo al file: 0 specie non assegnate. Il campo
+  `fascia` (giorno/notte/sempre) è già scritto per ogni voce ma **il motore non lo legge ancora** — da
+  aggiungere in `_tentaIncontro` (js/map.js) quando si deciderà di attivare il filtro. Da revisionare
+  a mano prima di copiare le voci dentro `dati/incontri.js` vero.
+
+---
+
+## Sessione 23 settembre 2026 — Museo delle Navi: cutscene del Capo GdF, Michela e Cenciarels (MAI TESTATA dal vivo)
+
+- **Nuova scena in `Museo_navi_2f`** (dati/cutscene.js `museo_navi_intro` + `museo_navi_sfida`): parte
+  entrando nel rettangolo "inizio cutscene" (spostato da Luca dal layer collisioni a `eventi`, ora
+  `trigger_cutscene` `quando:'entra'`, richiede `documentoVillaOttenuto`). Il Capo GdF (filler) parla con
+  Cenciarels e i due scienziati, ti nota ("!"), ti sfida ({ragazzino|ragazzina} da `stato.genere`), se ne
+  va con mezza schermata nera. Michela (`gdf_capo_museo`, ora Lv 41-44 = poco sopra il cap 40 della 5ª
+  palestra) ti raggiunge e lotta. Persa → teletrasporto normale e al ritorno riparte SOLO dalla sfida
+  (`museoIntroVista`). Vinta → Michela e i grunt svaniscono, gli scienziati ringraziano, mezza schermata
+  nera (ostaggi "liberati", `museoLiberato`), Cenciarels fa scegliere UN fossile (con conferma), poi la Poké
+  Ball (tile 948, invisibile fino a quel momento) compare sul dot "parola segreta".
+- **Password del Rifugio di Marino = 3 oggetti-chiave**: `password_1` (epilogo Rocca di Papa),
+  `password_2` (Poké Ball del Museo, alza `museo_nemi_password`; NON più data dalla vittoria su Michela),
+  `password_3` (vittoria su Ginevra, `oggettoChiaveVittoria` nel trainer). Il gate del Rifugio legge ancora i flag.
+- **Motore (generico)**: trigger cutscene a rettangolo con ripresa; passi `battaglia`, `scelta_oggetto`,
+  `rivela_oggetti`; segnaposto {m|f}/{nome} nei dialoghi; oggetti a terra con `condizione` (tile nascosto
+  finché falsa) e `chiave:true` + `flag_raccolta`. Vedi header di dati/cutscene.js.
+- Fossili: si usano i nomi del codice (Elice, Cupola, Ambra Antica, Artiglio, Radice); gli altri 4 restano
+  in `stato.fossiliDaCenciarels`. Non esiste ancora un sistema per rianimarli (previsto a Genzano):
+  Cenciarels legge `stato.flags.fossileRianimato` (da alzare lì) e `MISSIONI_CENCIARELS` (js/data.js) è vuoto.
+- Grunt del Museo abbassati a Lv 36-39 (erano 46-49, più forti di Michela). Sprite provvisori (filler):
+  Capo GdF = trainer_ROCKETBOSS, Cenciarels = `SPRITE_CENCIARELS` (dati/npc.js, un solo punto), scienziati.
+- Lab di Luca: i due rivali avevano lo stesso id "Rivale" nel .tmj → resi `rivale_debole`/`rivale_forte`,
+  e il codice ora alza anche i flag `BlueLabSparito`/`RedLabSparito` che Luca ha messo come condizioni.
+
+---
+
 ## Sessione 22 settembre 2026 — Due rivali nel laboratorio, difficoltà, nome del personaggio (MAI TESTATO dal vivo)
 
 - **Nome del personaggio**: dopo la scelta del genere, `chiediNome()` (js/app.js) apre un overlay con

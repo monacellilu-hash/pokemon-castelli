@@ -130,7 +130,7 @@ const PALESTRE = [
     medaglia: 'Medaglia Vigna',
     mtDonata: 'mt01',
     capopalestra: {
-      nome: 'Vinicio',
+      nome: 'Donnie',
       premioSoldi: 1400,  // ricompensa in Pokéyen alla sconfitta
       // L'asso (Roselia) è al livello del level cap pre-palestra: 14
       squadra: [
@@ -141,7 +141,9 @@ const PALESTRE = [
       ],
       dialogoIntro: [
         'Benvenuto a Villa Torlonia, giovane sfidante!',
-        'Sono Vinicio, Capopalestra di Frascati. I miei Pokémon Erba sono cresciuti tra i filari delle vigne, nutriti dal sole dei Castelli!',
+        'Sono Donnie, Capopalestra di Frascati. Mio padre coltiva vigne e pescheti qui da una vita: io ci sono cresciuto in mezzo, tra pesche e uva.',
+        'Ho allenato i miei Pokémon Erba con quella stessa terra — e sì, ogni tanto un\'erba l\'ho pure assaggiata, tanto per capire cosa mangiano.',
+        'Una cosa però non la digerisco: il Team GdF. Quei parassiti in giacca vogliono le nostre vigne per i loro traffici, e io non gliele do.',
         'Come un buon Frascati DOC, la mia squadra ha carattere. Vediamo se reggi il confronto!'
       ],
       dialogoSconfitta: 'Che lotta! Hai la stoffa di un vino d\'annata. La Medaglia Vigna è tua, te la sei meritata!'
@@ -162,9 +164,9 @@ const PALESTRE = [
       { id: 'greg-frasc-3', classe: 'Orticoltore', nome: 'Bruno',
         squadra: [{ id: 44, livello: 12 }, { id: 69, livello: 13 }],
         premioSoldi: 280,
-        dialogoIntro: ['Servo la palestra di Vinicio da tre stagioni. Vedrai, il Capopalestra ha radici più profonde delle mie!'],
+        dialogoIntro: ['Servo la palestra di Donnie da tre stagioni. Vedrai, il Capopalestra ha radici più profonde delle mie!'],
         dialogoSconfitta: 'La mia vigna ha bisogno di cure.',
-        dialogoDopo: ['Vinicio ti sta aspettando. In gamba!'] },
+        dialogoDopo: ['Donnie ti sta aspettando. In gamba!'] },
     ]
   },
   {
@@ -812,7 +814,7 @@ const ABITANTI = [
   { id: 'ab-frascati', comune: 'Frascati', lat: 41.8030, lon: 12.6785, battute: [
     { nome: 'Settimio il cantiniere', testo: "Sai qual è il segreto del Frascati DOC? L'uva. E un Oddish che tiene lontane le lumache. Genio mio." },
     { nome: 'Turista perso', testo: "Scusa, la Villa Aldobrandini? Cammino da un'ora e trovo solo Pidgey che ridono." },
-    { nome: 'Oste', testo: "Qui se beve bene e se lotta meglio. Vinicio? Quello te frega co' le piante, attento." },
+    { nome: 'Oste', testo: "Qui se beve bene e se lotta meglio. Donnie? Quello te frega co' le piante, attento." },
     { nome: "Ragazza con l'ombrellino", testo: "Dicono che di notte, alle fontane di Villa Aldobrandini, si vede 'na cosa rosa che svolazza. Sarà er vino, mah." },
     { nome: 'Vecchietto', testo: "Ai miei tempi se lottava co' le bocce, mica coi Pokémon. E se vinceva pure." },
   ]},
@@ -1292,7 +1294,7 @@ const ALLENATORI = [
     squadra: [{ id: 187, livello: 9 }, { id: 44, livello: 9 }], // Hoppip, Gloom
     dialogoIntro: ['Analizzare i vini e gli avversari: la stessa cosa. Già vedo i tuoi punti deboli!'],
     dialogoSconfitta: 'Analisi sbagliata.',
-    dialogoDopo: ['Il Frascati Cannellino è il più pregiato. Come Vinicio.']
+    dialogoDopo: ['Il Frascati Cannellino è il più pregiato. Come Donnie.']
   },
   {
     id: 'all-frasc-6', classe: 'Fattore', nome: 'Aurelio', zona: 'Vigne di Frascati',
@@ -1300,7 +1302,7 @@ const ALLENATORI = [
     squadra: [{ id: 69, livello: 9 }, { id: 187, livello: 10 }], // Bellsprout, Hoppip
     dialogoIntro: ['Gestisco questa tenuta per la famiglia Torlonia. E difendo il territorio!'],
     dialogoSconfitta: 'Il territorio è tuo.',
-    dialogoDopo: ['Vinicio ti aspetta alla Villa. Sei pronto per i suoi Pokémon Erba?']
+    dialogoDopo: ['Donnie ti aspetta alla Villa. Sei pronto per i suoi Pokémon Erba?']
   },
 
   // ── Boschi del Tuscolo — espansione DUNGEON GROSSO (Lv 9-12) ──
@@ -3005,7 +3007,7 @@ const OGGETTI = {
   //    "mossa" è lo slug PokéAPI usato da PokeAPI.getMossa() per scaricare i
   //    dati completi della mossa al momento dell'uso. ──
   mt01: { nome: 'MT01 — Foglielama', categoria: 'mt', mossa: 'razor-leaf', prezzo: 0, icona: '💿',
-               descrizione: 'Insegna Foglielama (Erba, potenza 55, alta percentuale di brutti colpi). Dono di Vinicio, Palestra di Frascati.' },
+               descrizione: 'Insegna Foglielama (Erba, potenza 55, alta percentuale di brutti colpi). Dono di Donnie, Palestra di Frascati.' },
   mt02: { nome: 'MT02 — Psiconda', categoria: 'mt', mossa: 'psybeam', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Psiconda (Psico, potenza 65, può confondere). Dono di Nilo, Palestra di Grottaferrata.' },
   mt03: { nome: 'MT03 — Idropulsar', categoria: 'mt', mossa: 'water-pulse', prezzo: 0, icona: '💿',
@@ -3330,7 +3332,33 @@ const LEVEL_CAP_INIZIALE = 14;
    OGGETTI CHIAVE — non consumabili, non acquistabili, cambiano la trama.
    Salvati in stato.inventario.chiave[id] = true.
    ---------------------------------------------------------- */
+// Missioni del Museo di Cenciarels (sess. 22 set 2026): struttura VUOTA, da
+// riempire (le definisce Luca). Forma di ogni missione:
+//   { id: 'nome_univoco', titolo: '...', descrizione: '...', ricompensa: 'fossile_...' }
+// Le ricompense sono i fossili rimasti in stato.fossiliDaCenciarels.
+const MISSIONI_CENCIARELS = [];
+
 const OGGETTI_CHIAVE = {
+  // Le 3 parti della password del Rifugio GdF di Marino (sess. 22 set 2026):
+  // password_1 = Rocca di Papa (lettera CoTrAL), password_2 = Museo delle Navi
+  // di Nemi (Poké Ball dopo Michela), password_3 = Abbazia di San Nilo (Ginevra).
+  // Gli oggetti sono il "documento" per il giocatore; il gate vero del Rifugio
+  // legge ancora i flag baso_tornato/museo_nemi_password/abbazia_password.
+  'password_1': {
+    nome: 'Password 1',
+    icona: '🔐',
+    descrizione: 'Prima parte della password del Rifugio GdF di Marino: il messaggio strappato al Team CoTrAL nel rifugio sotto Rocca di Papa.',
+  },
+  'password_2': {
+    nome: 'Password 2',
+    icona: '🔐',
+    descrizione: 'Seconda parte della password del Rifugio GdF di Marino: trovata al Museo delle Navi di Nemi, dopo aver sconfitto Michela.',
+  },
+  'password_3': {
+    nome: 'Password 3',
+    icona: '🔐',
+    descrizione: 'Terza e ultima parte della password del Rifugio GdF di Marino: ottenuta dalla luogotenente Ginevra nell\'Abbazia di San Nilo.',
+  },
   // Osservatorio CoTrAL (sess. 15 set 2026): bottino del luogotenente al 3F,
   // apre le porte "a scomparsa" sparse sui 3 piani (non quella comandata
   // dall'interruttore della statua al 2F, quella è indipendente).

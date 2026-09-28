@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="7">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="69">
  <tileset firstgid="1" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
  <tileset firstgid="991" source="../Mansion interior.tsj"/>
  <tileset firstgid="1223" source="../Museum interior.tsj"/>
@@ -101,13 +101,13 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,1221,0,0,0,1221,0,0,0,1221,0,0,0,1221,0,0,0,0,0,0,0,0,0,1221,0,0,0,
 0,0,0,1199,1200,1201,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1223,1233,1233,1233,1233,1233,1233,1233,1233,1233,1233,1233,1233,1233,1233,0,0,
 0,0,1219,1207,1208,1209,1211,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1224,1241,1241,1241,6277,6278,6279,6280,6281,6282,6283,6284,6285,1241,1241,0,0,
-0,0,0,1215,1216,1217,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,6255,6309,6310,6311,6312,6313,6314,6315,6316,6317,0,0,0,0,
+0,0,0,1215,1216,1217,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,7395,0,6255,6309,6310,6311,6312,6313,6314,6315,6316,6317,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,6287,6341,6342,6343,6344,6345,6346,6347,6348,6349,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,1325,6319,6373,6374,6375,6376,6377,6378,6379,6380,6381,0,1325,0,0,
 0,0,0,1256,1257,0,0,0,0,0,1272,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,1333,6351,6405,6406,6407,6408,6409,6410,6411,6412,6413,0,1333,0,0,
-0,0,0,1264,1265,0,0,0,0,0,1280,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,1341,1325,7395,0,0,0,0,0,0,0,0,1325,1341,0,0,
+0,0,0,1264,1265,0,0,0,0,0,1280,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,1341,1325,0,0,0,0,0,0,0,0,0,1325,1341,0,0,
 0,0,0,0,0,0,1327,1328,1329,1330,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,1333,1325,0,0,0,0,0,0,0,1325,1333,0,0,0,
-0,0,0,2366,0,0,1335,1336,1337,1338,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,1341,1333,1325,1325,0,0,0,1325,1325,1333,1341,0,0,0,
+0,0,0,2366,0,0,1335,1336,1337,1338,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,1341,1333,1325,1325,0,7395,0,1325,1325,1333,1341,0,0,0,
 0,0,0,2374,0,0,1343,1344,1345,1346,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,0,1341,1333,1333,0,0,0,1333,1333,1341,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,0,0,1341,1341,0,0,0,1341,1341,0,0,0,0,0,
 0,0,0,2366,0,0,0,0,0,0,2366,0,0,0,0,0,0,0,0,0,0,0,0,1371,0,0,0,0,0,2404,0,0,0,2404,0,0,0,0,0,0,
@@ -209,25 +209,14 @@
    </properties>
    <point/>
   </object>
-  <object id="4" name="ostaggio_museo_2" x="400" y="700">
+  <object id="4" name="ostaggio_museo_2" x="367.886" y="344.603">
    <properties>
     <property name="id" value="ostaggio_museo_2"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
   </object>
-  <object id="5" name="gdf_capo_museo" x="700" y="700">
-   <properties>
-    <property name="direzione" value="sud"/>
-    <property name="id" value="gdf_capo_museo"/>
-    <property name="speciale" type="bool" value="true"/>
-    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
-    <property name="type" value="trainer"/>
-    <property name="vista" type="int" value="5"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="6" name="oggetto_pepita" x="891.436" y="320.071">
+  <object id="6" name="oggetto_pepita" x="787.244" y="178.769">
    <properties>
     <property name="contenuto" value="pepita"/>
     <property name="id" value="oggetto_pepita"/>
@@ -236,5 +225,85 @@
    </properties>
    <point/>
   </object>
+  <object id="8" name="boss" x="976.985" y="343.265">
+   <point/>
+  </object>
+  <object id="9" name="Curatore Museo imprigionato - Cenciarels" x="1040.5" y="341.838">
+   <point/>
+  </object>
+  <object id="10" name="questo tile è invisibile fino a che non sconfiggi il luogotenente e tutti i grunt gdf spariscono... solo a quel punto compare e contiene la seconda password." x="1009.1" y="374.665">
+   <point/>
+  </object>
+  <object id="11" name="grunt" x="877.074" y="312.578">
+   <point/>
+  </object>
+  <object id="12" name="grunt" x="1132.56" y="344.692">
+   <point/>
+  </object>
+  <object id="13" name="Luogotenente" x="943.443" y="371.097">
+   <point/>
+  </object>
+  <object id="14" name="scenziato rapito" x="1089.74" y="353.97">
+   <point/>
+  </object>
+  <object id="15" name="scenziato rapito" x="910.616" y="301.873">
+   <point/>
+  </object>
+  <object id="16" name="parola segreta" x="1006.24" y="371.097">
+   <point/>
+  </object>
+  <object id="7" name="inizio cutscene" x="966.28" y="421.053" width="87.0651" height="24.9777"/>
+  <object id="17" name="inizio cutscene" x="966.28" y="421.053" width="87.0651" height="24.9777"/>
+  <object id="18" x="1.4273" y="-0.713649" width="26.405" height="1271.72"/>
+  <object id="19" x="41.3916" y="1172.52" width="11.4184" height="109.902"/>
+  <object id="20" x="37.8234" y="982.694" width="368.956" height="52.81"/>
+  <object id="21" x="162.712" y="894.202" width="90.6334" height="43.5326"/>
+  <object id="22" x="32.1142" y="773.595" width="414.63" height="84.2105"/>
+  <object id="23" x="418.912" y="645.138" width="20.6958" height="138.448"/>
+  <object id="24" x="418.912" y="221.231" width="23.5504" height="356.824"/>
+  <object id="25" x="29.9732" y="216.236" width="395.361" height="99.9108"/>
+  <object id="26" x="99.1971" y="119.893" width="91.347" height="45.6735"/>
+  <object id="27" x="32.8278" y="-0.713649" width="1239.61" height="58.5192"/>
+  <object id="28" x="454.594" y="50.669" width="17.8412" height="25.6913"/>
+  <object id="29" x="583.764" y="53.5236" width="14.273" height="17.8412"/>
+  <object id="30" x="708.653" y="48.5281" width="19.2685" height="27.1186"/>
+  <object id="31" x="832.828" y="52.81" width="22.1231" height="19.2685"/>
+  <object id="32" x="1159.68" y="56.3782" width="17.1276" height="22.8368"/>
+  <object id="33" x="1216.06" y="97.7698" width="57.0919" height="737.913"/>
+  <object id="34" x="1251.74" y="836.396" width="26.405" height="436.039"/>
+  <object id="35" x="37.8234" y="1183.94" width="1218.91" height="84.2105"/>
+  <object id="36" x="1221.05" y="1168.96" width="18.5549" height="17.1276"/>
+  <object id="37" x="999.822" y="1168.24" width="14.273" height="22.1231"/>
+  <object id="38" x="741.481" y="1174.67" width="44.9599" height="15.7003"/>
+  <object id="39" x="497.413" y="1172.52" width="33.5415" height="16.4139"/>
+  <object id="40" x="741.481" y="94.2016" width="18.5549" height="744.335"/>
+  <object id="41" x="762.177" y="95.6289" width="481.713" height="56.3782"/>
+  <object id="42" x="859.233" y="154.862" width="284.746" height="125.602"/>
+  <object id="43" x="1193.22" y="134.88" width="22.1231" height="158.43"/>
+  <object id="44" x="807.136" y="145.584" width="19.2685" height="150.58"/>
+  <object id="45" x="837.11" y="324.71" width="11.4184" height="24.9777"/>
+  <object id="46" x="869.938" y="360.393" width="5.70919" height="28.5459"/>
+  <object id="47" x="904.906" y="391.079" width="42.1053" height="29.9732"/>
+  <object id="48" x="1071.19" y="397.502" width="35.6824" height="24.9777"/>
+  <object id="49" x="1127.56" y="368.243" width="18.5549" height="24.9777"/>
+  <object id="50" x="1166.1" y="323.996" width="10.7047" height="37.8234"/>
+  <object id="51" x="1061.2" y="452.453" width="14.9866" height="75.6467"/>
+  <object id="52" x="938.448" y="452.453" width="13.5593" height="69.2239"/>
+  <object id="53" x="907.047" y="515.968" width="12.132" height="72.0785"/>
+  <object id="54" x="875.647" y="618.02" width="7.85013" height="6.42284"/>
+  <object id="55" x="837.823" y="644.425" width="12.132" height="13.5593"/>
+  <object id="56" x="866.369" y="675.112" width="18.5549" height="17.1276"/>
+  <object id="57" x="898.483" y="709.367" width="16.4139" height="77.074"/>
+  <object id="58" x="936.307" y="778.591" width="15.7003" height="62.8011"/>
+  <object id="59" x="1065.48" y="776.45" width="14.9866" height="59.9465"/>
+  <object id="60" x="1099.73" y="707.939" width="14.9866" height="69.2239"/>
+  <object id="61" x="1126.85" y="683.675" width="20.6958" height="14.9866"/>
+  <object id="62" x="1099.02" y="520.963" width="9.27743" height="72.7921"/>
+  <object id="63" x="1123.28" y="606.601" width="12.8457" height="19.2685"/>
+  <object id="64" x="1158.25" y="647.993" width="12.8457" height="14.273"/>
+  <object id="65" x="101.338" y="1165.39" width="11.4184" height="21.4095"/>
+  <object id="66" x="172.703" y="1173.24" width="12.8457" height="16.4139"/>
+  <object id="67" x="234.79" y="1173.24" width="14.273" height="12.132"/>
+  <object id="68" x="299.019" y="1173.95" width="14.273" height="14.273"/>
  </objectgroup>
 </map>

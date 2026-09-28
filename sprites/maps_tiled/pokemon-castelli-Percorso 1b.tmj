@@ -1986,6 +1986,49 @@
                  "width":0,
                  "x":948,
                  "y":880
+                }, 
+                {
+                 "height":32,
+                 "id":160,
+                 "name":"TBD",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"NORD"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"rivale_percorso_1"
+                        }, 
+                        {
+                         "name":"sprite",
+                         "type":"string",
+                         "value":"RIVALE_UOMO"
+                        }, 
+                        {
+                         "name":"tappa",
+                         "type":"int",
+                         "value":1
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"Rivale UOMO",
+                 "visible":true,
+                 "width":32,
+                 "x":989.333333333333,
+                 "y":641.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1994,7 +2037,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":160,
+ "nextobjectid":161,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

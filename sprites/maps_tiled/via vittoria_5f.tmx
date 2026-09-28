@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="9">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="11">
  <tileset firstgid="1" source="../Caves.tsj"/>
  <tileset firstgid="1593" source="../../outside.tsx"/>
  <layer id="1" name="ground" width="35" height="45">
@@ -108,12 +108,12 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,2408,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2408,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2408,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,2408,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -228,9 +228,9 @@
     <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="501" name="via_vittoria_12" x="350" y="800">
+  <object id="501" name="via_vittoria_12" x="236" y="413">
    <properties>
-    <property name="direzione" value="sud"/>
+    <property name="direzione" value="nord"/>
     <property name="id" value="via_vittoria_12"/>
     <property name="sprite" value="trainer_CUEBALL"/>
     <property name="type" value="trainer"/>
@@ -238,7 +238,7 @@
    </properties>
    <point/>
   </object>
-  <object id="502" name="rivale_via_vittoria" x="450" y="450">
+  <object id="502" name="rivale_via_vittoria" x="461" y="309.5">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="rivale_via_vittoria"/>
@@ -248,7 +248,7 @@
    </properties>
    <point/>
   </object>
-  <object id="503" name="rivale2_via_vittoria" x="500" y="250">
+  <object id="503" name="rivale2_via_vittoria" x="562.5" y="310">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="rivale2_via_vittoria"/>
@@ -264,5 +264,6 @@
     <property name="type" value="spawn"/>
    </properties>
   </object>
+  <object id="10" name="cutscene via vittoria" x="388" y="353" width="215" height="25"/>
  </objectgroup>
 </map>

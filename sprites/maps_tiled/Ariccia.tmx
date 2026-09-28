@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="70" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="108">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="70" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="113">
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../pokemon_emerald_exterior_32.tsj"/>
  <tileset firstgid="10089" source="../outside.tsx"/>
@@ -7,7 +7,6 @@
  <tileset firstgid="14241" source="../party.tsj"/>
  <tileset firstgid="14409" source="party3.tsj"/>
  <tileset firstgid="14457" source="../porchetta.tsj"/>
- 
  <layer id="1" name="ground" width="60" height="70">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,
@@ -548,17 +547,63 @@
   </object>
   <object id="106" name="ingresso_grotta_hooh" x="1700" y="700" width="32" height="32">
    <properties>
-    <property name="type" value="warp"/>
-    <property name="destinazione" value="grotta_ohoh"/>
-    <property name="spawn_id" value="da_ariccia"/>
     <property name="condizione" value="piuma_porchettari"/>
+    <property name="destinazione" value="grotta_ohoh"/>
     <property name="messaggio_gate" value="🔒 Qualcosa qui reagirebbe solo a un segno sacro... (serve la Piuma)"/>
+    <property name="spawn_id" value="da_ariccia"/>
+    <property name="type" value="warp"/>
    </properties>
   </object>
   <object id="107" name="da_grotta_hooh" x="1700" y="730" width="32" height="32">
    <properties>
-    <property name="type" value="spawn"/>
     <property name="id" value="da_grotta_hooh"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="108" name="grunt_sagra_1" x="234.667" y="1456.67">
+   <properties>
+    <property name="id" value="grunt_sagra_1"/>
+    <property name="type" value="npc"/>
+    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="direzione" value="est"/>
+    <property name="condizione" value="sagra_ariccia_finita"/>
+    <property name="gate" type="bool" value="true"/>
+    <property name="noTestBypass" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="110" name="grunt_sagra_2" x="236.333" y="1490.67">
+   <properties>
+    <property name="id" value="grunt_sagra_2"/>
+    <property name="type" value="npc"/>
+    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="direzione" value="est"/>
+    <property name="condizione" value="sagra_ariccia_finita"/>
+    <property name="gate" type="bool" value="true"/>
+    <property name="noTestBypass" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="111" name="grunt_sagra_3" x="236" y="1521.33">
+   <properties>
+    <property name="id" value="grunt_sagra_3"/>
+    <property name="type" value="npc"/>
+    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="direzione" value="est"/>
+    <property name="condizione" value="sagra_ariccia_finita"/>
+    <property name="gate" type="bool" value="true"/>
+    <property name="noTestBypass" type="bool" value="true"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="112" name="TBD" type="Rivale_DONNA" x="1153.33" y="476" width="32" height="32">
+   <properties>
+    <property name="direzione" value="SUD"/>
+    <property name="id" value="rivale_ARICCIA_DONNA"/>
+    <property name="sprite" value="RIVALE_DONNA"/>
+    <property name="tappa" type="int" value="5"/>
+    <property name="type" value="trainer"/>
+    <property name="vista" value="6"/>
    </properties>
   </object>
  </objectgroup>

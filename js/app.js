@@ -894,7 +894,7 @@ async function interagisciLaboratorio() {
     }
     await mostraDialogo(PROFESSORE_NOME, [
       'Oh, bentornato! Come procede l\'avventura?',
-      'Ricorda: la prima palestra è a FRASCATI, in fondo alla Via Tuscolana. Il Capopalestra Vinicio usa Pokémon di tipo Erba.',
+      'Ricorda: la prima palestra è a FRASCATI, in fondo alla Via Tuscolana. Il Capopalestra Donnie usa Pokémon di tipo Erba.',
       'E passa dai Centri Pokémon 🏥 per curare la squadra: sono gratuiti!'
     ]);
     return;
@@ -1067,6 +1067,8 @@ async function _sceltaRivale(chi) {
       // (compaiono finché il flag è falso, spariscono quando diventa vero).
       if (typeof GameMap !== 'undefined' && GameMap.fadeOutIn) await GameMap.fadeOutIn(500, 500, 400);
       stato.flags.remoLabSparito = true;
+      stato.flags.BlueLabSparito = true;   // i due NPC del lab (Tiled) leggono un flag ciascuno: spariscono entrambi
+      stato.flags.RedLabSparito = true;
       if (typeof GameMap !== 'undefined' && GameMap.rigeneraNpcMappa) GameMap.rigeneraNpcMappa();
       salvaPartita();
     }
@@ -1591,15 +1593,19 @@ async function interagisciGianlucaCotralRocca() {
   }
 }
 
+// Ostaggi del Museo delle Navi: dialogo "prigioniero" finché la scena del
+// Capo GdF non è finita, poi "liberato" (flag museoLiberato, vedi
+// dati/cutscene.js 'museo_navi_sfida').
 async function interagisciOstaggioMuseo1() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const nome = 'Custode del Museo';
-  if (stato.flags && stato.flags.museo_nemi_password) {
+  if (stato.flags && stato.flags.museoLiberato) {
     await mostraDialogo(nome, ['Grazie per averci liberati! Speriamo che il Team GdF non torni più qui.']);
     return;
   }
   await mostraDialogo(nome, [
     'Non muoverti! Quei tizi ci minacciano da quando siamo entrati stamattina...',
+    'Il GdF ci ha rapiti per mettere le mani sulle due pietre. Se non ci sbrighiamo, le rubano!',
     'Il loro capo è di sopra. Ti prego, fai qualcosa!',
   ]);
 }
@@ -1607,14 +1613,50 @@ async function interagisciOstaggioMuseo1() {
 async function interagisciOstaggioMuseo2() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const nome = 'Visitatore spaventato';
-  if (stato.flags && stato.flags.museo_nemi_password) {
+  if (stato.flags && stato.flags.museoLiberato) {
     await mostraDialogo(nome, ['Sono ancora scosso, ma sto bene. Grazie di cuore.']);
     return;
   }
   await mostraDialogo(nome, [
     'Siamo bloccati qui dentro, hanno preso in ostaggio pure il custode al piano di sotto!',
-    'Non ci hanno fatto niente... per ora.',
+    'Vogliono le due pietre del museo: se non ti sbrighi a fermarli, le portano via.',
   ]);
+}
+
+// Vale true quando il giocatore ha rianimato un fossile. Il sistema di
+// rianimazione non esiste ancora (previsto a Genzano): quando ci sarà, basta
+// alzare stato.flags.fossileRianimato lì — Cenciarels lo legge già da qui.
+function fossileRianimato() {
+  return !!(stato.flags && stato.flags.fossileRianimato);
+}
+
+// Cenciarels, curatrice del Museo delle Navi (versione "liberata"): riceve il
+// giocatore dopo la scena del Capo GdF. Le missioni vere (MISSIONI_CENCIARELS,
+// js/data.js) sono ancora vuote: le definisce Luca.
+async function interagisciCenciarels() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Cenciarels';
+  if (!stato.flags) stato.flags = {};
+  if (!stato.flags.cenciarelsMissioniSbloccate) {
+    if (!fossileRianimato()) {
+      await mostraDialogo(nome, [
+        'Torna da me quando sarai riuscito a rianimare il fossile.',
+        'Solo allora potrò affidarti le missioni del museo.',
+      ]);
+      return;
+    }
+    stato.flags.cenciarelsMissioniSbloccate = true;
+    salvaPartita();
+    await mostraDialogo(nome, [
+      'Ce l\'hai fatta a rianimarlo! Splendido.',
+      'Ora posso affidarti le missioni del museo: in cambio ti darò gli altri fossili.',
+    ]);
+  }
+  if (typeof MISSIONI_CENCIARELS === 'undefined' || !MISSIONI_CENCIARELS.length) {
+    await mostraDialogo(nome, ['Le missioni non sono ancora pronte: sto ancora catalogando i reperti. Torna più avanti!']);
+    return;
+  }
+  // Le missioni vere si collegano qui quando saranno definite.
 }
 
 async function interagisciScienziatoLab1() {
@@ -1811,7 +1853,7 @@ function donaTaglioFrascati() {
   if (!stato.medaglie.includes('frascati')) {
     mostraDialogo(nome, [
       'Vedo che giri tra le vigne... ma prima dimostra il tuo valore!',
-      'Batti Vinicio alla Palestra, poi ti insegno un trucco di noi vignaroli.'
+      'Batti Donnie alla Palestra, poi ti insegno un trucco di noi vignaroli.'
     ]);
     return;
   }
@@ -1819,7 +1861,7 @@ function donaTaglioFrascati() {
   salvaPartita();
   aggiornaHUD();
   mostraDialogo(nome, [
-    'Bravo! Hai battuto Vinicio, eh? Te lo dicevo che ce la facevi.',
+    'Bravo! Hai battuto Donnie, eh? Te lo dicevo che ce la facevi.',
     'Tieni, questa è la MN Taglio.',
     'Fatti strada tra le vigne de li Castelli, figliuolo!'
   ]);
@@ -2713,6 +2755,22 @@ function estraiTeamRemo() {
   return estraiTeamSuperquattro({ ...REMO_LEGA, coreId });
 }
 
+// Risolve quale dei due rivali (Blue/Red, sess. 22 set 2026) corrisponde a uno
+// sprite "RIVALE_UOMO"/"RIVALE_DONNA" piazzato su una mappa (sess. 28 set
+// 2026): ENTRAMBI restano sfidabili in giro per il mondo per tutta la
+// partita, non solo quello scelto nel laboratorio come difficoltà — vedi
+// stato.duoRivali (creato all'inizio, prima ancora di scegliere chi
+// affrontare). Fallback su stato.rivale per compatibilità con salvataggi/
+// piazzamenti precedenti a questo sistema (dove esisteva solo un rivale).
+function rivaleDaSprite(spriteProp) {
+  const chi = String(spriteProp || '').toUpperCase();
+  if (stato.duoRivali) {
+    if (chi === 'RIVALE_UOMO') return stato.duoRivali.debole;
+    if (chi === 'RIVALE_DONNA') return stato.duoRivali.forte;
+  }
+  return stato.rivale || (stato.duoRivali && (stato.duoRivali.debole || stato.duoRivali.forte)) || null;
+}
+
 // Squadra del Rivale per gli incontri sulla mappa, scalata per "tappa" (n. di
 // incontro: 1 = primo, 2 = secondo, …). L'ASSO è sempre lo starter che ha scelto
 // (che si evolve con le tappe); i livelli salgono con la tappa.
@@ -2720,11 +2778,14 @@ function estraiTeamRemo() {
 // standard della tappa (14/26/38/50/62/74) quando serve un incontro "fuori scala"
 // pur mantenendo lo stadio evolutivo/comprimari di quella tappa (es. Monte Porzio,
 // richiesta esplicita: asso lv 32 invece del lv 38 che darebbe la tappa 3).
-function costruisciSquadraRivale(tappa, assoLivelloOverride) {
+// rivaleRif (opzionale): il rivale giusto (vedi rivaleDaSprite) — se assente
+// ripiega su stato.rivale, come prima di questa sessione.
+function costruisciSquadraRivale(tappa, assoLivelloOverride, rivaleRif) {
   tappa = Math.max(1, Math.min(6, parseInt(tappa, 10) || 1));
   const aceLv = (assoLivelloOverride > 0) ? assoLivelloOverride : (2 + tappa * 12);  // 14, 26, 38, 50, 62, 74
   const lv = (g) => Math.max(5, aceLv - g);
-  const base = (stato.rivale && stato.rivale.idStarter) || 1;
+  const rif = rivaleRif || stato.rivale;
+  const base = (rif && rif.idStarter) || 1;
   // Stadio evolutivo dell'asso (starter) in base alla tappa
   let ace;
   if (tappa <= 1) ace = base;                                          // base
@@ -3128,35 +3189,16 @@ async function interagisciParcheggione() {
   const haDivisa = stato.inventario && stato.inventario.chiave && stato.inventario.chiave['divisa-astronauta'];
 
   if (haDivisa) {
-    await mostraDialogo('🚀 ASI — Finestra di lancio aperta', [
-      'Il responsabile ti consegna il casco.',
-      '"La sonda parte tra dieci minuti. Destinazione: superficie lunare."',
-      '"Abbiamo rilevato una presenza aliena dopo l\'ultima eclissi. Un Pokémon cosmico."',
-      '"Buona fortuna, astronauta."',
+    // Deoxys tolto da qui per ora (richiesta esplicita di Luca, sess. 28 set
+    // 2026): arriverà con un dungeon vero sulla Luna, ancora da disegnare.
+    // Restano SOLO il gate NPC (Responsabile ASI, controllo Campione + dono
+    // della divisa, sopra) e questo punto d'attesa — nessun warp verso una
+    // mappa lunare esiste ancora, quindi niente lancio reale finché non c'è.
+    await mostraDialogo('🚀 Parcheggione di Grottaferrata', [
+      'Il responsabile controlla un tablet, preoccupato.',
+      '"La sonda non è ancora pronta per il lancio: problemi con la strumentazione."',
+      '"Torna più avanti, astronauta. Ti avviseremo noi quando la finestra di lancio sarà aperta."',
     ]);
-
-    await mostraDialogo('🌕 Superficie Lunare', [
-      'La sonda atterra in silenzio sulla polvere grigia.',
-      'Il cielo è nero. La Terra brilla all\'orizzonte come un marmo blu.',
-      'Davanti a te, una forma che cambia. Cristalli. Luce rossa. Un volto alieno.',
-      'DEOXYS — giunto dai confini del cosmo su un meteorite.',
-      'Ti fissa attraverso il casco. Ha visitato i Castelli prima di te.',
-    ]);
-
-    triggeraLeggendario(
-      386, 60, 'Deoxys',
-      {
-        nome: '🌕 Luna',
-        righe: [
-          'Sulla polvere lunare, una forma aliena pulsa di luce.',
-          'Si trasforma: attacco... difesa... velocità...',
-          'DEOXYS — Pokémon DNA originario dello spazio esterno!',
-        ]
-      },
-      () => {
-        mostraToast('🌕 Sei tornato sulla Terra. Nessuno ci crederà mai.', 7000);
-      }
-    );
     return;
   }
 

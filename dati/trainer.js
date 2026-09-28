@@ -202,7 +202,7 @@ const DATI_TRAINER = {
   },
 
   /* ── PALESTRA DI FRASCATI (tipo Erba, 1ª città — squadre da PALESTRE['frascati']) ──
-     3 gregari + Capopalestra Vinicio. Il leader assegna la Medaglia Vigna
+     3 gregari + Capopalestra Donnie. Il leader assegna la Medaglia Vigna
      (campo palestraId, gestito in map.js → vinciPalestraTiled). */
 
   'gregario 1 palestra frascati': {
@@ -227,14 +227,14 @@ const DATI_TRAINER = {
     sprite: 'trainer_POKEMONBREEDER', ritratto: 'POKEMONBREEDER', vista: 15,
     classe: 'Orticoltore', nome: 'Bruno',
     squadra: [{ id: 44, livello: 12 }, { id: 69, livello: 13 }],
-    dialogo_prima: 'Servo la palestra di Vinicio da tre stagioni. Il Capopalestra ha radici profonde!',
+    dialogo_prima: 'Servo la palestra di Donnie da tre stagioni. Il Capopalestra ha radici profonde!',
     dialogo_dopo: 'La mia vigna ha bisogno di cure.',
     premio: 280,
   },
 
   'gym_leader_palestra frascati': {
     sprite: 'Primapalestra_capopalestra', ritratto: 'LEADER_Erika', vista: 0,
-    classe: 'Capopalestra', nome: 'Vinicio',
+    classe: 'Capopalestra', nome: 'Donnie',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 43,  livello: 11 },  // Oddish
@@ -242,7 +242,7 @@ const DATI_TRAINER = {
       { id: 44,  livello: 13 },  // Gloom
       { id: 315, livello: 14 },  // Roselia (l'asso)
     ],
-    dialogo_prima: 'Sono Vinicio, Capopalestra di Frascati. I miei Pokémon Erba sono cresciuti tra i filari delle vigne. Come un buon Frascati DOC, hanno carattere: vediamo se reggi il confronto!',
+    dialogo_prima: 'Sono Donnie, Capopalestra di Frascati. Cresciuto tra le pesche e le vigne di mio padre, ho allenato questi Pokémon Erba con le mie mani — e qualche erba l\'ho pure assaggiata. Odio solo una cosa quanto le gelate tardive: il Team GdF. Vediamo se reggi il confronto!',
     dialogo_dopo: 'Che lotta! Hai la stoffa di un vino d\'annata. La Medaglia Vigna è tua, te la sei meritata!',
     premio: 1400,
     palestraId: 'frascati',   // → assegna la Medaglia Vigna e alza il level cap
@@ -1266,11 +1266,16 @@ const DATI_TRAINER = {
   /* ── TEAM GdF — Museo delle Navi di Nemi (2 piani, sessione 12 agosto) ──
      3 grunt + Michela, secondo dei 3 luogotenenti GdF (sess. 8 set 2026 —
      vedi docs/STORIA_COMPLETA.md): sconfiggerla dà la 2ª parte della
-     password del Rifugio GdF di Marino (flagVittoria 'museo_nemi_password'). */
+     password del Rifugio GdF di Marino. RIVISTO il 22 set 2026: Michela si
+     sfida DENTRO la cutscene del Museo (dati/cutscene.js, 'museo_navi_intro'/
+     'museo_navi_sfida'), livelli poco sopra il cap della 5ª palestra (40, Rocca
+     di Papa, quando si ottiene Forza). La password (flag museo_nemi_password +
+     oggetto 'password_2') NON arriva più dalla vittoria: la dà la Poké Ball che
+     compare a fine scena. */
   'gdf_grunt_museo_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 46 }, { id: 89, livello: 47 }],
+    squadra: [{ id: 24, livello: 36 }, { id: 89, livello: 37 }],
     dialogo_prima: 'Il museo è chiuso al pubblico. Motivi de sicurezza, capisci?',
     dialogo_dopo: 'Vabbè... ma il Capo è ancora di sopra.',
     premio: 1840,
@@ -1278,7 +1283,7 @@ const DATI_TRAINER = {
   'gdf_grunt_museo_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 110, livello: 47 }, { id: 42, livello: 48 }],
+    squadra: [{ id: 110, livello: 37 }, { id: 42, livello: 38 }],
     dialogo_prima: 'Nun te distraeva, e nun te distraere pure tu!',
     dialogo_dopo: 'Fatte sotto pure col Capo, allora, se sei così tosto.',
     premio: 1880,
@@ -1286,7 +1291,7 @@ const DATI_TRAINER = {
   'gdf_grunt_museo_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 20, livello: 48 }, { id: 24, livello: 49 }],
+    squadra: [{ id: 20, livello: 38 }, { id: 24, livello: 39 }],
     dialogo_prima: 'Er Capo nun vuole ospiti. Levate!',
     dialogo_dopo: 'Mo\' te tocca er Capo. Buona fortuna, ne avrai bisogno.',
     premio: 1920,
@@ -1295,14 +1300,14 @@ const DATI_TRAINER = {
     sprite: 'Luogotenente_GdF_2', ritratto: 'Luogotenente_GdF_2',
     classe: 'Luogotenente GdF', nome: 'Michela',
     squadra: [
-      { id: 130, livello: 48 },  // Gyarados
-      { id: 24,  livello: 49 },
-      { id: 195, livello: 50 },  // Quagsire
+      { id: 24,  livello: 41 },  // Arbok
+      { id: 195, livello: 42 },  // Quagsire
+      { id: 130, livello: 44 },  // Gyarados (l'asso, ultimo)
     ],
     dialogo_prima: 'Fernando mi ha avvisato in tempo. Sono Michela, e questo museo resta sotto il nostro controllo.',
-    dialogo_dopo: 'Tié... la seconda parte della password del rifugio. Tanto er piano è già avanti.',
-    premio: 3400,
-    flagVittoria: 'museo_nemi_password',
+    dialogo_dopo: 'Tsk... hai vinto. Ma er piano è già avanti.',
+    premio: 2400,
+    flagVittoria: 'museoLuogotenenteSconfitto',
   },
 
   /* ── TEAM GdF — Interno dell'Abbazia di San Nilo (Grottaferrata, sess. 8
@@ -1362,6 +1367,7 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Tié... la terza e ultima parte della password. Ora il Rifugio è tutto vostro, se ci arrivate.',
     premio: 3600,
     flagVittoria: 'abbazia_password',
+    oggettoChiaveVittoria: 'password_3',   // l'oggetto-chiave della 3ª parte (vedi OGGETTI_CHIAVE)
   },
 
   /* ── TEAM GdF — Rifugio di Marino (dungeon 4 piani: 1F + 2F_A/B/C) ──
@@ -1654,20 +1660,98 @@ const DATI_TRAINER = {
     premio: 0,
   },
 
-  /* ── RIVALE REMO (Tuscolo) — trainer visibile con linea visiva ──
+  /* ── RIVALI IN GIRO PER IL MONDO (sess. 28 set 2026) ── Luca ha piazzato
+     ENTRAMBI i rivali (Blue/uomo, Red/donna) su più mappe lungo il path, ognuno
+     con la propria sequenza di "tappa" (1=primo incontro, 2=secondo, …) —
+     restano tutti e due sfidabili per tutta la partita, non solo quello scelto
+     come difficoltà nel laboratorio. Niente `sprite`/`nome`/`classe` fissi qui:
+     arrivano da soli dall'oggetto Tiled (ev.props.sprite = "RIVALE_UOMO"/
+     "RIVALE_DONNA", tradotto in RIVALE_1/Rivale_2 da ALIAS_SPRITE) e vengono
+     risolti a runtime da rivaleDaSprite() (js/app.js) — vedi _avviaLottaTrainer
+     in js/map.js. `rivale:true` fa costruire la squadra da costruisciSquadraRivale
+     in base alla `tappa` letta dall'oggetto Tiled; `squadra` qui sotto è solo il
+     fallback se un oggetto viene piazzato senza quella proprietà. */
+  'rivale_percorso_1': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_percorso_1_battuto',
+    dialogo_prima: 'Ehi, fermo lì! Pensavi di lasciarmi indietro così facilmente?',
+    dialogo_dopo: 'Uffa! Va bene, va bene… ci riprovo più avanti.',
+    squadra: [
+      { id: 16, livello: 12 },   // Pidgey
+    ],
+    premio: 500,
+  },
+
+  'rivale_monteporzio': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_monteporzio_battuto',
+    dialogo_prima: 'Ti stavo aspettando qui a Monte Porzio. Vediamo se hai imparato qualcosa lungo la strada!',
+    dialogo_dopo: 'Bah. Va bene così, ma non pensare sia finita qui.',
+    squadra: [
+      { id: 17, livello: 26 },
+      { id: 261, livello: 26 },
+    ],
+    premio: 1100,
+  },
+
+  "rivale_LAGO DI ALBANO": {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_lago_albano_battuto',
+    dialogo_prima: 'Che vista, eh? Peccato che tra un attimo penserai solo a difenderti.',
+    dialogo_dopo: 'Il lago ti ha ammorbidito il cervello? Ci risentiamo.',
+    squadra: [
+      { id: 17, livello: 38 },
+      { id: 262, livello: 38 },
+      { id: 64,  livello: 38 },
+    ],
+    premio: 1400,
+  },
+
+  'rivale_ALBANO': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_albano_battuto',
+    dialogo_prima: 'Albano, eh? Bel posto per un\'altra batosta.',
+    dialogo_dopo: 'Cresci in fretta, lo ammetto. Ma io pure.',
+    squadra: [
+      { id: 17, livello: 38 },
+      { id: 262, livello: 38 },
+      { id: 64,  livello: 38 },
+    ],
+    premio: 1400,
+  },
+
+  'rivale_ARICCIA_DONNA': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_ariccia_battuto',
+    dialogo_prima: 'Con la Sagra in corso nessuno mi guarda due volte… tranne te, a quanto pare.',
+    dialogo_dopo: 'Vai pure. Ma a Colonna non sarò così clemente.',
+    squadra: [
+      { id: 18,  livello: 62 },
+      { id: 262, livello: 62 },
+      { id: 65,  livello: 62 },
+      { id: 282, livello: 61 },
+    ],
+    premio: 1700,
+  },
+
+  /* ── RIVALE (Tuscolo) — trainer visibile con linea visiva ──
      In Tiled: oggetto type "trainer" id "rivale_tuscolo" (oppure "trigger_rivale",
      che il motore converte). Con "vista" scatta appena incroci il suo sguardo. */
   'rivale_tuscolo': {
-    sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
-    classe: 'Rivale', nome: 'Remo',
+    vista: 5,
     rivale: true,               // squadra dinamica per "tappa" (l'asso è lo starter)
     flagVittoria: 'rivale_tuscolo_battuto',
+    dialogo_prima: 'Eh, ti ho beccato! Pensavi di attraversare il MIO Tuscolo senza salutarmi? Forza, fammi vedere quanto vali!',
     squadra: [                  // fallback se manca la prop "tappa"
       { id: 16,  livello: 12 },   // Pidgey
       { id: 261, livello: 12 },   // Poochyena
       { id: 19,  livello: 14 },   // Rattata
     ],
-    dialogo_prima: 'Eh, ti ho beccato! Pensavi di attraversare il MIO Tuscolo senza salutarmi? Forza, fammi vedere quanto vali!',
     dialogo_dopo: 'Ma daiii! Possibile?! …Vabbè, ci rivediamo più avanti. E sarò più forte!',
     premio: 1000,
   },

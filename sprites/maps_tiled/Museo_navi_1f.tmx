@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="10">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="68">
  <tileset firstgid="1" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
  <tileset firstgid="991" source="../Mansion interior.tsj"/>
  <tileset firstgid="1223" source="../Museum interior.tsj"/>
@@ -182,6 +182,64 @@
  </layer>
  <objectgroup id="5" name="collisioni">
   <object id="2" x="480.5" y="607.5" width="301.5" height="177.5"/>
+  <object id="10" x="6.04588" y="6.90958" width="19.0013" height="1273.09"/>
+  <object id="11" x="38.8664" y="322.159" width="50.9582" height="909.474"/>
+  <object id="12" x="102.78" y="126.1" width="48.3671" height="46.6397"/>
+  <object id="13" x="31.0931" y="9.50067" width="1231.63" height="50.0945"/>
+  <object id="14" x="798.057" y="54.413" width="57.004" height="51.8219"/>
+  <object id="15" x="384.345" y="37.139" width="60.4588" height="69.0958"/>
+  <object id="16" x="172.74" y="43.1849" width="5.18219" height="44.0486"/>
+  <object id="17" x="41.4575" y="35.4116" width="14.6829" height="44.9123"/>
+  <object id="18" x="235.789" y="42.3212" width="16.4103" height="40.5938"/>
+  <object id="19" x="1002.75" y="27.6383" width="13.8192" height="54.413"/>
+  <object id="20" x="1058.03" y="37.139" width="18.1377" height="50.0945"/>
+  <object id="21" x="1030.39" y="196.923" width="50.9582" height="44.9123"/>
+  <object id="22" x="1210.04" y="137.328" width="46.6397" height="56.1404"/>
+  <object id="23" x="1229.04" y="225.425" width="12.0918" height="20.7287"/>
+  <object id="24" x="1100.35" y="323.887" width="9.50067" height="30.2294"/>
+  <object id="25" x="1096.03" y="418.03" width="12.0918" height="31.9568"/>
+  <object id="26" x="1101.21" y="508.718" width="1.7274" height="36.2753"/>
+  <object id="27" x="1093.44" y="610.634" width="15.5466" height="28.502"/>
+  <object id="28" x="1095.17" y="720.324" width="25.0472" height="25.9109"/>
+  <object id="29" x="1096.9" y="797.193" width="10.3644" height="54.413"/>
+  <object id="30" x="1195.36" y="806.694" width="13.8192" height="44.9123"/>
+  <object id="31" x="1191.9" y="713.414" width="12.0918" height="49.2308"/>
+  <object id="32" x="1197.09" y="615.816" width="15.5466" height="44.9123"/>
+  <object id="33" x="1194.49" y="515.628" width="6.90958" height="42.3212"/>
+  <object id="34" x="1188.45" y="418.893" width="17.274" height="50.9582"/>
+  <object id="35" x="1194.49" y="329.933" width="16.4103" height="50.0945"/>
+  <object id="36" x="1219.54" y="55.2767" width="12.9555" height="31.9568"/>
+  <object id="37" x="1254.95" y="6.90958" width="21.5924" height="1269.64"/>
+  <object id="38" x="1028.66" y="1105.53" width="120.918" height="55.2767"/>
+  <object id="39" x="1058.03" y="950.067" width="115.735" height="50.9582"/>
+  <object id="40" x="738.462" y="984.615" width="119.19" height="48.3671"/>
+  <object id="41" x="740.189" y="1173.77" width="118.327" height="47.5034"/>
+  <object id="42" x="681.457" y="1127.99" width="23.3198" height="46.6397"/>
+  <object id="43" x="680.594" y="1229.04" width="22.4561" height="31.0931"/>
+  <object id="44" x="558.812" y="1223.86" width="12.9555" height="52.6856"/>
+  <object id="45" x="548.448" y="1129.72" width="21.5924" height="47.5034"/>
+  <object id="46" x="228.88" y="1094.3" width="48.3671" height="45.776"/>
+  <object id="47" x="170.148" y="994.98" width="21.5924" height="243.563"/>
+  <object id="48" x="194.332" y="1190.18" width="247.881" height="50.0945"/>
+  <object id="49" x="418.893" y="995.843" width="25.9109" height="195.196"/>
+  <object id="50" x="354.98" y="987.206" width="74.278" height="63.0499"/>
+  <object id="51" x="188.286" y="996.707" width="96.7341" height="47.5034"/>
+  <object id="52" x="198.65" y="798.057" width="846.424" height="55.2767"/>
+  <object id="53" x="1031.26" y="291.066" width="17.274" height="538.084"/>
+  <object id="54" x="198.65" y="293.657" width="22.4561" height="250.472"/>
+  <object id="55" x="201.242" y="635.682" width="13.8192" height="209.879"/>
+  <object id="56" x="483.671" y="602.861" width="295.385" height="177.058"/>
+  <object id="57" x="994.116" y="646.91" width="26.7746" height="66.5047"/>
+  <object id="58" x="994.116" y="487.989" width="36.2753" height="67.3684"/>
+  <object id="59" x="202.969" y="285.02" width="841.242" height="57.8677"/>
+  <object id="60" x="681.457" y="318.704" width="47.5034" height="44.0486"/>
+  <object id="61" x="856.788" y="323.023" width="67.3684" height="38.0027"/>
+  <object id="62" x="288.475" y="366.208" width="125.236" height="57.004"/>
+  <object id="63" x="222.834" y="468.988" width="128.691" height="50.9582"/>
+  <object id="64" x="320.432" y="628.772" width="62.1862" height="54.413"/>
+  <object id="65" x="963.023" y="432.713" width="62.1862" height="16.4103"/>
+  <object id="66" x="959.568" y="373.981" width="65.641" height="11.2281"/>
+  <object id="67" x="961.296" y="427.53" width="77.7328" height="15.5466"/>
  </objectgroup>
  <objectgroup id="6" name="eventi">
   <object id="3" name="spawn" x="619.082" y="1245.87">
@@ -199,7 +257,7 @@
    </properties>
    <point/>
   </object>
-  <object id="5" name="scale_su" x="999.109" y="423.023">
+  <object id="5" name="scale_su" x="974.062" y="416.977">
    <properties>
     <property name="destinazione" value="museo_navi_2f"/>
     <property name="spawn_id" value="scale_giu"/>
@@ -223,8 +281,11 @@
   </object>
   <object id="8" name="gdf_grunt_museo_1" x="250" y="700">
    <properties>
+    <property name="condizione" value="museoGdfSparito"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grunt_museo_1"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="4"/>
@@ -233,8 +294,11 @@
   </object>
   <object id="9" name="gdf_grunt_museo_2" x="900" y="700">
    <properties>
+    <property name="condizione" value="museoGdfSparito"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grunt_museo_2"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="4"/>

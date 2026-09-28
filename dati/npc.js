@@ -11,6 +11,9 @@
              c'è). Per farla ripetere ogni volta: cutsceneUnaTantum: false
 */
 
+// Sprite (provvisorio) di Cenciarels, curatrice del Museo delle Navi: cambia SOLO qui.
+const SPRITE_CENCIARELS = 'Scenziato_donna';
+
 const DATI_NPC = {
 
   /* ── Rocca di Papa (5ª città — Palestra Lotta, Baso) ──
@@ -26,7 +29,7 @@ const DATI_NPC = {
   },
 
   // Museo delle Navi di Nemi — 2 ostaggi del Team GdF (sessione 12 agosto).
-  // Dialogo diverso prima/dopo la sconfitta del capo (stato.flags.museo_nemi_password).
+  // Dialogo diverso prima/dopo la sconfitta del capo (stato.flags.museoLiberato).
   'ostaggio_museo_1': {
     sprite: 'scienziato', nome: 'Custode del Museo',
     direzione: 'sud', movimento: 'fisso',
@@ -36,6 +39,54 @@ const DATI_NPC = {
     sprite: 'scienziato', nome: 'Visitatore spaventato',
     direzione: 'nord', movimento: 'fisso',
     azione: 'interagisciOstaggioMuseo2',
+  },
+
+  /* ── Museo delle Navi di Nemi, 2F — scena del Capo GdF (22 set 2026, vedi
+     dati/cutscene.js 'museo_navi_intro'). I personaggi della scena sono NPC
+     Tiled (layer eventi di Museo_navi_2f) con gate sui flag della scena.
+     Ostaggi: due versioni per personaggio, "prigioniero" (sparisce a
+     museoLiberato) e "liberato" (compare a museoLiberato). Sprite provvisori
+     (filler): li cambia Luca — Cenciarels in UN solo punto, qui sotto. ── */
+  'museo_boss': {
+    sprite: 'trainer_ROCKETBOSS', nome: 'Capo GdF',   // filler: sprite definitivo da decidere
+    direzione: 'est', movimento: 'fisso', dialogo: [],
+  },
+  'museo_luogotenente': {
+    sprite: 'Luogotenente_GdF_2', nome: 'Michela',
+    direzione: 'nord', movimento: 'fisso', dialogo: [],
+  },
+  'museo_grunt_a': { sprite: 'GDF_GRUNT_SPRITE', nome: 'Recluta GdF', direzione: 'sud', movimento: 'fisso', dialogo: [] },
+  'museo_grunt_b': { sprite: 'GDF_GRUNT_SPRITE', nome: 'Recluta GdF', direzione: 'sud', movimento: 'fisso', dialogo: [] },
+
+  'museo_cenciarels_prigioniera': {
+    sprite: SPRITE_CENCIARELS, nome: 'Cenciarels',
+    direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Sono la curatrice del museo... mi costringono a collaborare.', 'Vi prego, fermateli prima che portino via le pietre!'],
+  },
+  'museo_cenciarels': {
+    sprite: SPRITE_CENCIARELS, nome: 'Cenciarels',
+    direzione: 'sud', movimento: 'fisso', dialogo: [],
+    azione: 'interagisciCenciarels',
+  },
+  'museo_scienziato_1_prig': {
+    sprite: 'trainer_LEADER_Sabrina', nome: 'Scienziata rapita',
+    direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Ci hanno rapiti per avere le due pietre!', 'Se non vi sbrigate, le rubano davvero!'],
+  },
+  'museo_scienziato_1_lib': {
+    sprite: 'trainer_LEADER_Sabrina', nome: 'Scienziata',
+    direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ancora non ci credo, siamo liberi.', 'Le pietre però sono in pericolo. Sto cercando di capire cosa possiamo fare.'],
+  },
+  'museo_scienziato_2_prig': {
+    sprite: 'NPC 12', nome: 'Scienziato rapito',
+    direzione: 'est', movimento: 'fisso',
+    dialogo: ['Il GdF ci tiene qui per le pietre... hanno detto che le porteranno via.', 'Ti prego, non farli scappare!'],
+  },
+  'museo_scienziato_2_lib': {
+    sprite: 'NPC 12', nome: 'Scienziato',
+    direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Grazie a te siamo salvi.', 'Se Cenciarels ti ha dato un fossile, trattalo bene: sono reperti rarissimi.'],
   },
 
   // Laboratorio del Prof. Castagno (Borgata Tuscolana) — 2 assistenti,
@@ -227,7 +278,7 @@ const DATI_NPC = {
   },
   'fra_sud_npc4': {
     sprite: 'NPC 04', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['La palestra di Frascati è del tipo Erba. Vinicio non perdona!'],
+    dialogo: ['La palestra di Frascati è del tipo Erba. Donnie non perdona!'],
   },
 
   /* ── Frascati Centro ── */
@@ -256,7 +307,7 @@ const DATI_NPC = {
   },
   'fra_est_npc2': {
     sprite: 'NPC 18', direzione: 'nord', movimento: 'fisso',
-    dialogo: ['A est si va verso Grottaferrata. Ma prima conviene battere Vinicio.'],
+    dialogo: ['A est si va verso Grottaferrata. Ma prima conviene battere Donnie.'],
   },
   'fra_est_npc3': {
     sprite: 'NPC 19', direzione: 'est', movimento: 'fisso',
@@ -840,6 +891,50 @@ const DATI_NPC = {
     dialogo: ["Hai sentito? Dicono che stanotte i Porchettari cercano uno sfidante vero. Io nun me ce butterei, eh."],
   },
 
+  // NPC "chiacchiera" a Castel Gandolfo e Via dei Laghi (sess. 28 set 2026,
+  // richiesta esplicita di Luca): spiegano perché Monte Porzio si raggiunge
+  // solo passando dal Tunnel Roccioso — un enorme Pokémon addormentato
+  // blocca la strada diretta (il nuovo Snorlax che Luca ha spostato sul
+  // Percorso 5). Posizionati vicino a punti di passaggio reali (lo spawn che
+  // arriva dal Percorso 5 a Castel Gandolfo, l'ingresso del Tunnel Roccioso
+  // a Via dei Laghi) — posizione da verificare/aggiustare in Tiled se non
+  // torna esattamente sul sentiero.
+  'npc_gigante_dormiente_gandolfo': {
+    sprite: 'NPC 05', nome: 'Viandante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Se stai andando a Monte Porzio, scordati la strada diretta.',
+      'C\'è un Pokémon enorme addormentato in mezzo al Percorso 5: nessuno riesce a smuoverlo, russa che sembra un tuono.',
+      'Devi passare dal Tunnel Roccioso, oltre Via dei Laghi. Più lungo, ma almeno ci si passa.',
+    ],
+  },
+  'npc_gigante_dormiente_laghi': {
+    sprite: 'NPC 11', nome: 'Escursionista', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Il Tunnel Roccioso, proprio qui davanti, è l\'unica strada rimasta per Monte Porzio.',
+      'Quella sul Percorso 5 è bloccata da un colosso che dorme della grossa: nessuno ha il coraggio di svegliarlo.',
+      'Dicono che serva qualcosa di speciale per farlo alzare. Io intanto vado di qua.',
+    ],
+  },
+
+  // Blocco stradale del Team GdF verso Genzano (sess. 28 set 2026, richiesta
+  // esplicita di Luca): tre grunt in fila bloccano il passaggio "per la Sagra
+  // della Porchetta" — la scusa vera è guadagnare tempo. Spariscono da soli
+  // (gate:true, condizione:sagra_ariccia_finita) appena vinci l'8ª... anzi la
+  // 7ª palestra (Ariccia stessa): il gioco non lo dice mai esplicitamente,
+  // il giocatore lo scopre solo continuando ad avanzare.
+  'grunt_sagra_1': {
+    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Alt! Nessuno passa: prima la Sagra della Porchetta, poi tutto il resto.'],
+  },
+  'grunt_sagra_2': {
+    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Hai sentito il collega? La porchetta viene prima di tutto. Levate!'],
+  },
+  'grunt_sagra_3': {
+    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Genzano può aspettare. Qui si mangia.'],
+  },
+
   /* ── Zona Safari — ingresso a pagamento (world Castelli_lasthree) ──
      npc_ingresso_safari fa pagare il biglietto (pagaIngressoSafari, app.js) e
      setta stato.flags.safari_pagato; guardia_safari (gate:true su Tiled,
@@ -1022,10 +1117,22 @@ const DATI_NPC = {
   // in tutto sui 3 piani, uno per ogni grunt in cui "si trasformano". Ora
   // liberi di girare (movimento:'random', bocciate le coppie ferme in
   // scatola) — stesso raggio dell'oggetto Tiled gemello.
-  'osservatorio_ricercatore_1f_a': { sprite: 'NPC 02', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Stiamo analizzando le anomalie di temperatura di quest\'anno. Dati interessanti, devo dire.'] },
+  // I due ricercatori sotto NON sono CoTrAL (a differenza di quasi tutti gli
+  // altri qui dentro): civili veri, mai coinvolti nel complotto — servono a
+  // seminare il dubbio sui leggendari-uccello e il meteo (richiesta esplicita
+  // di Luca, sess. 28 set 2026: "iniziamo a mettere il dubbio").
+  'osservatorio_ricercatore_1f_a': { sprite: 'NPC 02', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: [
+    'Stiamo analizzando le anomalie di temperatura di quest\'anno. Dati interessanti, devo dire.',
+    'Sa una cosa strana? Studiando i leggendari abbiamo capito che alcuni uccelli influenzano il meteo. Zapdos, per dirne uno, si aggira spesso qui intorno a Monte Porzio.',
+    'Se qualcuno riuscisse a "convincerlo" a restare... potrebbe pilotare il tempo a piacimento. Per fortuna è solo teoria, eh.',
+  ] },
   'osservatorio_ricercatore_1f_b': { sprite: 'NPC 08', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Abbiamo installato nuovi sensori pluviometrici. Presto sapremo di più.'] },
   'osservatorio_ricercatore_1f_c': { sprite: 'NPC 12', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Il direttore è molto impegnato ultimamente. Riunioni su riunioni.'] },
-  'osservatorio_ricercatore_2f_a': { sprite: 'NPC 15', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Il secondo piano è dedicato all\'analisi dei dati satellitari.'] },
+  'osservatorio_ricercatore_2f_a': { sprite: 'NPC 15', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: [
+    'Il secondo piano è dedicato all\'analisi dei dati satellitari.',
+    'Tra noi ricercatori è quasi una leggenda: certi uccelli leggendari — mica solo Zapdos — sembrano legati a pioggia, sole e temporali.',
+    'Chissà chi, prima o poi, ci proverà davvero a sfruttarlo. Sarebbe una follia. Ma anche un\'occasione enorme.',
+  ] },
   'osservatorio_ricercatore_2f_b': { sprite: 'NPC 19', nome: 'Ricercatore', direzione: 'sud', movimento: 'random', dialogo: ['Quelle statue? Un regalo del direttore. Un po\' stravagante, lo ammetto.'] },
   'osservatorio_ricercatore_3f_a': { sprite: 'NPC 25', nome: 'Ricercatrice', direzione: 'sud', movimento: 'random', dialogo: ['Quassù teniamo gli strumenti più sensibili. Non tocchi nulla, per favore.'] },
   'osservatorio_ricercatore_luogotenente': { sprite: 'NPC 28', nome: 'Direttrice', direzione: 'sud', movimento: 'random', dialogo: ['Sono la responsabile di questo piano. Se ha domande sul clima, chieda pure pubblicazioni ufficiali.'] },

@@ -6,11 +6,11 @@
  <tileset firstgid="1789" source="../Waterfall bottomLava.tsj"/>
  <tileset firstgid="1793" source="../Waterfall crestLava.tsj"/>
  <tileset firstgid="1797" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
- <tileset firstgid="2769" source="../Interior_general_32.tsj"/>
- <tileset firstgid="4777" source="../Dungeon floor.tsj"/>
- <tileset firstgid="4781" source="../Dungeon wall.tsj"/>
- <tileset firstgid="4785" source="../Factory interior.tsj"/>
- <tileset firstgid="5009" source="../../outside.tsx"/>
+ <tileset firstgid="2787" source="../Interior_general_32.tsj"/>
+ <tileset firstgid="4795" source="../Dungeon floor.tsj"/>
+ <tileset firstgid="4799" source="../Dungeon wall.tsj"/>
+ <tileset firstgid="4803" source="../Factory interior.tsj"/>
+ <tileset firstgid="5027" source="../../outside.tsx"/>
  <layer id="1" name="ground" width="55" height="100">
   <data encoding="csv">
 491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,
@@ -145,7 +145,7 @@
 339,339,339,339,339,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,1689,1690,1690,1690,1690,1690,1690,1691,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,367,368,0,0,0,0,0,0,0,0,0,0,0,0,0,339,1689,1690,1690,1690,1690,1690,1690,1691,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,375,376,0,0,0,0,0,0,0,0,0,0,399,0,0,339,1689,1690,1691,329,483,483,483,483,483,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,337,337,337,337,
-339,339,339,339,339,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,1689,1690,1691,337,5957,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,337,337,337,337,
+339,339,339,339,339,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,1689,1690,1691,337,5975,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,337,337,337,337,
 339,339,339,339,345,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,347,1793,1793,1793,345,346,346,346,346,346,346,346,346,346,346,346,346,346,364,346,346,346,346,346,337,337,337,337,337,
 339,339,339,345,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,347,1785,1785,1785,345,346,347,491,491,491,491,491,491,491,491,491,491,491,491,345,346,346,346,346,337,337,337,337,337,
 339,339,345,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,347,1785,1785,1785,345,346,346,364,364,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,337,337,337,337,337,
@@ -158,11 +158,11 @@
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,366,0,0,339,0,0,0,0,0,0,339,1689,1690,1691,337,329,483,483,483,483,483,483,483,483,483,483,483,483,483,331,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,483,483,483,483,483,483,331,339,1689,1690,1691,337,337,329,483,483,483,483,483,483,483,483,483,483,483,331,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,329,483,483,483,483,483,483,483,483,483,331,339,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,5957,0,0,0,0,367,368,0,339,339,339,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,5975,0,0,0,0,367,368,0,339,339,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,375,376,0,339,339,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,337,0,337,3969,3970,3971,3969,3970,3971,0,0,0,0,0,0,0,0,4047,0,0,339,339,1689,1690,1691,337,337,337,337,0,329,483,483,483,483,483,331,0,339,339,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,337,0,337,3977,3978,3979,3977,3978,3979,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,329,483,483,483,331,339,0,339,339,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,337,0,337,3985,3986,3987,3985,3986,3987,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,337,337,338,339,339,339,0,339,339,339,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,337,0,337,3987,3988,3989,3987,3988,3989,0,0,0,0,0,0,0,0,4065,0,0,339,339,1689,1690,1691,337,337,337,337,0,329,483,483,483,483,483,331,0,339,339,339,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,337,0,337,3995,3996,3997,3995,3996,3997,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,329,483,483,483,331,339,0,339,339,339,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,337,0,337,4003,4004,4005,4003,4004,4005,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,337,337,338,339,339,339,0,339,339,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,337,345,346,347,339,339,0,339,339,339,339,0,0,382,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,337,345,348,349,350,347,339,0,339,339,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,1689,1690,1691,337,337,337,337,0,345,346,356,357,358,346,347,0,339,339,339,339,0,0,0,337,337,337,337,337,
@@ -173,7 +173,7 @@
 339,339,339,339,339,337,0,345,346,346,346,364,346,346,346,346,346,346,346,346,346,346,346,346,346,347,339,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,382,0,0,337,337,337,337,337,
 339,339,339,339,339,345,346,364,346,346,346,346,346,346,346,346,346,346,346,346,346,346,346,364,346,346,347,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,0,0,0,0,0,0,0,0,0,1641,1642,1643,0,382,5957,0,0,0,0,0,0,0,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,0,0,0,0,0,0,0,0,0,1641,1642,1643,0,382,5975,0,0,0,0,0,0,0,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,0,0,0,1689,1690,1691,0,382,0,0,0,0,0,0,0,0,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,367,368,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,0,0,0,1689,1690,1691,0,382,0,0,0,0,0,0,0,0,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,375,376,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,329,330,331,0,1689,1690,1691,0,382,0,0,0,0,0,0,0,0,1689,1690,1691,337,337,337,337,0,0,0,0,0,0,0,0,0,339,339,339,339,0,0,0,337,337,337,337,337,
@@ -198,7 +198,7 @@
 339,339,339,339,339,0,0,0,0,0,0,337,338,339,1689,1690,1691,0,0,382,0,0,0,0,0,382,0,1689,1690,1691,337,337,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,337,338,339,1689,1690,1691,0,0,382,382,0,0,0,382,382,0,1689,1690,1691,337,337,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,329,330,331,0,0,337,338,339,1689,1690,1691,0,0,0,382,382,382,382,382,0,0,1689,1690,1691,337,337,0,0,0,0,0,0,0,0,0,0,0,0,0,339,339,0,0,0,337,337,337,337,337,
-339,339,339,339,339,0,337,338,339,0,5957,337,338,339,1689,1690,1691,0,0,0,0,0,0,0,0,0,0,1689,1690,1691,337,345,346,346,346,346,346,346,346,346,346,346,364,346,346,347,339,0,0,0,337,337,337,337,337,
+339,339,339,339,339,0,337,338,339,0,5975,337,338,339,1689,1690,1691,0,0,0,0,0,0,0,0,0,0,1689,1690,1691,337,345,346,346,346,346,346,346,346,346,346,346,364,346,346,347,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,345,346,347,0,0,337,338,339,1689,1690,1691,0,0,0,0,0,0,0,0,0,0,1689,1690,1691,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,337,338,339,1689,1690,1691,0,0,0,0,0,0,0,0,0,0,1689,1690,1691,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,0,0,0,337,337,337,337,337,
 339,339,339,339,339,0,0,0,0,0,0,337,338,339,1689,1690,1690,1642,1642,1642,1642,1642,1642,1642,1642,1642,1642,1690,1690,1691,337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,339,0,382,0,337,337,337,337,337,
@@ -233,7 +233,7 @@
 0,0,0,0,335,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5957,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5975,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -254,18 +254,18 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,4193,4194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,4201,4202,4203,4179,4180,4179,4180,0,0,0,0,4179,4180,4179,4180,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,4209,4210,4211,4187,4188,4187,4188,0,0,0,0,4187,4188,4187,4188,4193,4194,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4201,4202,4203,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4209,4210,4211,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,4211,4212,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,4219,4220,4221,4197,4198,4197,4198,0,0,0,0,4197,4198,4197,4198,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,4227,4228,4229,4205,4206,4205,4206,0,0,0,0,4205,4206,4205,4206,4211,4212,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4219,4220,4221,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4227,4228,4229,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,4309,4310,4311,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,4317,4318,4319,4047,0,0,0,0,0,0,0,0,0,0,0,4084,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,4325,4326,4327,0,0,0,0,0,0,0,0,0,0,0,0,4092,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4309,4310,4311,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4317,4318,4319,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4325,4326,4327,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,329,330,331,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4327,4328,4329,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4335,4336,4337,4065,0,0,0,0,0,0,0,0,0,0,0,4102,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,4343,4344,4345,0,0,0,0,0,0,0,0,0,0,0,0,4110,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4327,4328,4329,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4335,4336,4337,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4343,4344,4345,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,329,330,331,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,337,338,339,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,345,346,347,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -799,157 +799,157 @@
  <objectgroup id="5" name="eventi">
   <object id="478" name="gdf_grotta_vulcano_1f_1" x="274" y="2904">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="nord"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_1"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="8"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="479" name="gdf_grotta_vulcano_1f_2" x="1300.67" y="2265.33">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_2"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="480" name="gdf_grotta_vulcano_1f_3" x="1427.33" y="2650">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_3"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="481" name="gdf_grotta_vulcano_1f_4" x="655.333" y="2261.33">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_4"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="482" name="gdf_grotta_vulcano_1f_5" x="1175.33" y="2459.33">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_5"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="483" name="gdf_grotta_vulcano_1f_6" x="243.333" y="2676">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_6"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="8"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="484" name="gdf_grotta_vulcano_1f_7" x="626.667" y="822.667">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_7"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="485" name="gdf_grotta_vulcano_1f_8" x="756" y="273.333">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_8"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="486" name="gdf_grotta_vulcano_1f_9" x="784.667" y="730">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_9"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="487" name="gdf_grotta_vulcano_1f_10" x="1516.67" y="1078">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_10"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="488" name="gdf_grotta_vulcano_1f_11" x="1364" y="312">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_11"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="5"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
   <object id="489" name="gdf_grotta_vulcano_1f_12" x="660" y="411.333">
    <properties>
+    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
     <property name="direzione" value="sud"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="gdf_grotta_vulcano_1f_12"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="trainer"/>
     <property name="vista" type="int" value="6"/>
-    <property name="gate" type="bool" value="true"/>
-    <property name="condizione" value="gdf_boss_grotta_vulcano_sconfitto"/>
-    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -964,12 +964,11 @@
   </object>
   <object id="491" name="warp_grotta_vulcano_2f_a" x="182" y="3002">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_2f"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="spawn_2f_a"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>
@@ -982,12 +981,11 @@
   </object>
   <object id="493" name="warp_grotta_vulcano_2f_b" x="527.333" y="1240.33">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_2f_b"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="spawn_2f_b"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>
@@ -1000,12 +998,11 @@
   </object>
   <object id="495" name="warp_grotta_vulcano_2f_c" x="496.333" y="1139.33">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_2f_c"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="spawn_2f_c"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>
@@ -1018,12 +1015,11 @@
   </object>
   <object id="497" name="warp_grotta_vulcano_3f_a" x="1233.67" y="1546.67">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_3f_a"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="da_grotta_vulcano_3f_a"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>
@@ -1096,12 +1092,11 @@
   </object>
   <object id="520" name="warp_grotta_vulcano_3f_b" x="239.5" y="3064.92">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_3f_b"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="da_grotta_vulcano_3f_b"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>
@@ -1114,12 +1109,11 @@
   </object>
   <object id="522" name="warp_grotta_vulcano_3f_c" x="694" y="2418.12">
    <properties>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="destinazione" value="grotta_vulcano_3f_c"/>
+    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
     <property name="spawn_id" value="da_grotta_vulcano_1f_g"/>
     <property name="type" value="warp"/>
-   
-    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
-    <property name="messaggio_gate" value="🔒 Troppi GdF di guardia qui dentro: meglio non rischiare da solo, per ora."/>
    </properties>
    <point/>
   </object>

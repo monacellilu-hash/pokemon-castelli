@@ -1685,6 +1685,7 @@ const GameMap = (function () {
   let muroNordTiles    = null;
   let mapW = 0, mapH = 0, tileSize = 32;
   let layerObjects     = [];
+  let tilePokeballNascosti = {};   // 'tx,ty' -> {layer, index}: serve a rimetterli (oggetti a comparsa)
   // Animazione acqua (tileset "Sea", autotile a 8 fotogrammi): ogni cella
   // registrata viene fatta scorrere tra i fotogrammi disegnati nel PNG,
   // bordi/angoli inclusi (vedi _animaAcqua). Formula fotogramma → id locale:
@@ -1735,6 +1736,11 @@ const GameMap = (function () {
   // Alias per nomi sprite usati nelle mappe ma senza file dedicato: li mappiamo
   // su sprite già esistenti (sostituibili quando ci sarà l'arte definitiva).
   const ALIAS_SPRITE = {
+    // Rivali piazzati in giro per il mondo (sess. 28 set 2026): Luca usa lo
+    // sprite generico per genere sull'oggetto Tiled, il motore lo traduce
+    // sullo sprite vero — Blue (uomo) è ancora Brendan, Red (donna) è May.
+    'RIVALE_UOMO': 'RIVALE_1',
+    'RIVALE_DONNA': 'Rivale_2',
     'ARQUEOLOGA': 'trainer_RUINMANIAC',   // archeologo delle rovine
     'NPC_31': 'NPC 23', 'NPC_32': 'NPC 24', 'NPC_33': 'NPC 25',
     'NPC_34': 'NPC 26', 'NPC_35': 'NPC 27', 'NPC_36': 'NPC 28', 'NPC_37': 'NPC 29',
@@ -3637,6 +3643,7 @@ const GameMap = (function () {
         try { obj.layer.tilemap.destroy(); } catch (_) {}
       }
       layerObjects = [];
+      tilePokeballNascosti = {};
       acquaAnimTiles = [];
       for (const s of npcSprites) {
         try { s.destroy(); } catch (_) {}
@@ -4064,13 +4071,12 @@ const GameMap = (function () {
       return null;
     }
 
-    // ── Velo giorno/notte (sessione 3 agosto) ──────────────────────────
-    // Fasce/colori/opacità decisi dall'utente. TEST INIZIALE: attivo solo
-    // sulle mappe in MAPPE_CON_VELO_TEMPO qui sotto — toglierlo (o aggiungere
-    // chiavi) per estendere ad altre mappe esterne una volta confermato che
-    // il risultato in gioco piace. Gli interni (interno:true in MAPPE) restano
-    // sempre illuminati; le grotte (grotta:true, da flaggare quando servirà)
-    // restano sempre buie a prescindere dall'ora.
+    // ── Velo giorno/notte (sessione 3 agosto, esteso a tutto il mondo il 28
+    // settembre 2026) ──────────────────────────────────────────────────
+    // Fasce/colori/opacità decisi dall'utente. Attivo su OGNI mappa che non
+    // sia un interno (interno:true in MAPPE) né un dungeon/grotta
+    // (tema:'cave'/'icecave') — automatico, non serve più elencare le mappe
+    // a mano: ogni mappa esterna nuova lo prende da sola.
     _fasciaVisiva(minuti) {
       if (minuti >= 300 && minuti < 420)  return 'alba';      // 05:00–07:00
       if (minuti >= 420 && minuti < 1080) return 'giorno';    // 07:00–18:00
@@ -4079,25 +4085,6 @@ const GameMap = (function () {
     }
 
     _aggiornaVeloTempo() {
-      const MAPPE_CON_VELO_TEMPO = [
-        'frascati_centro',
-        // World Castelli_lakes (sessione 5 agosto): confermato dopo il test su
-        // Frascati, esteso a tutte le mappe del lago.
-        'marino', 'lago_albano', 'interno_lago', 'lago_nemi',
-        'via_dei_laghi', 'percorso_4', 'castel_gandolfo', 'percorso_5',
-        // Esteso a TUTTE le mappe esterne (sessione 6 agosto, richiesta utente):
-        // ogni mappa non 'interno:true' in MAPPE prende il velo giorno/notte.
-        'borgata_tuscolana', 'percorso_tuscolana', 'percorso_1b',
-        'frascati_sud', 'frascati_est', 'frascati_ovest', 'frascati_nord',
-        'percorso_2', 'percorso_3', 'percorso_7', 'percorso_7b',
-        'monteporzio', 'osservatorio', 'percorso_montano_v1', 'rocca_di_papa',
-        'albano', 'percorso_8', 'zona_safari', 'percorso_9', 'ariccia',
-        'tuscolo_ingresso', 'tuscolo_interno', 'tuscolo_rovine', 'boschetto_segreto',
-        'grottaferrata',
-        // NOTA: tuscolo_profondo, antro_regice/regirock/registeel e
-        // tunnel_roccioso_1f..4f NON vanno qui — sono grotte (tema 'cave'/
-        // 'icecave'), escluse in automatico più sotto (sempre giorno).
-      ];
       const VELO_FASCE = {
         alba:     { colore: 0xffb066, opacita: 0.10 }, // molto più leggera/vacua
         giorno:   { colore: 0x000000, opacita: 0 },
@@ -4126,8 +4113,12 @@ const GameMap = (function () {
       // agosto — il contrario di quanto assunto prima con 'grotta', che
       // infatti non è mai stato impostato da nessuna mappa).
       const eGrottaSempreGiorno = def && (def.tema === 'cave' || def.tema === 'icecave');
-      if (!def || def.interno || eGrottaSempreGiorno || !MAPPE_CON_VELO_TEMPO.includes(mappaCorrente)) {
-        scelta = VELO_FASCE.giorno; // niente velo: interno, grotta, o mappa non nella lista test
+      // Giorno/notte su TUTTE le mappe del mondo tranne interni e dungeon/grotte
+      // (richiesta esplicita di Luca, sess. 28 set 2026): niente più elenco
+      // scritto a mano da tenere aggiornato ogni volta che nasce una mappa
+      // nuova — basta che la mappa NON sia 'interno:true' e non sia una grotta.
+      if (!def || def.interno || eGrottaSempreGiorno) {
+        scelta = VELO_FASCE.giorno; // niente velo: interno o grotta
       } else if (def.grotta) {
         scelta = VELO_FASCE.notte; // riservato a un futuro uso diverso da 'tema cave' (oggi inutilizzato)
       } else {
@@ -4457,6 +4448,7 @@ const GameMap = (function () {
         // Porta a scomparsa già aperta: è ormai solo pavimento, niente più
         // da interagire lì (non deve restare "premibile" per sempre).
         if (ev.tipo === 'porta_scomparsa' && this._portaScomparsaApertaEv(ev)) continue;
+        if ((ev.tipo === 'oggetto' || ev.tipo === 'object') && !this._oggettoVisibile(ev)) continue;
         const interagibile =
           ev.tipo === 'cartello' || ev.tipo === 'cartel' || ev.tipo === 'pc' ||
           ev.tipo === 'oggetto'  || ev.tipo === 'object' ||
@@ -4763,6 +4755,29 @@ const GameMap = (function () {
         // Normalizza il nome (es. "caramella rara" → "caramellarara") per farlo
         // combaciare con le chiavi reali in OGGETTI/zaino.
         let contenuto = ev.props.contenuto || 'pozione';
+        // Oggetto-CHIAVE (es. le password del Rifugio GdF): va in
+        // stato.inventario.chiave e può alzare un flag alla raccolta
+        // (proprietà flag_raccolta), poi sparisce come ogni oggetto raccolto.
+        if (ev.props.chiave === true || ev.props.chiave === 'true') {
+          if (typeof stato === 'undefined') return;
+          if (!stato.inventario) stato.inventario = { chiave: {} };
+          if (!stato.inventario.chiave) stato.inventario.chiave = {};
+          stato.inventario.chiave[contenuto] = true;
+          if (ev.props.flag_raccolta) {
+            if (!stato.flags) stato.flags = {};
+            stato.flags[ev.props.flag_raccolta] = true;
+          }
+          if (!stato.oggettiRaccolti) stato.oggettiRaccolti = [];
+          stato.oggettiRaccolti.push(idUnivoco);
+          this._nascondiTileOggetto(ev);
+          this._controllaPasswordRifugio();
+          const defChiave = (typeof OGGETTI_CHIAVE !== 'undefined' && OGGETTI_CHIAVE[contenuto]) || null;
+          if (typeof mostraToast === 'function')
+            mostraToast(`${defChiave ? defChiave.icona : '🔑'} Hai ottenuto: ${defChiave ? defChiave.nome : contenuto}!`, 3500);
+          if (typeof aggiornaHUD === 'function') aggiornaHUD();
+          if (typeof salvaPartita === 'function') salvaPartita();
+          return;
+        }
         const norm = String(contenuto).toLowerCase().replace(/\s+/g, '');
         if (typeof OGGETTI !== 'undefined' && OGGETTI[norm]) contenuto = norm;
         const qta = parseInt(ev.props['quantità'] || ev.props.quantita || '1', 10);
@@ -4791,7 +4806,10 @@ const GameMap = (function () {
       bloccaMovimento();
       try {
         for (const passo of passi) {
-          await this._eseguiPassoCutscena(passo);
+          // Un passo può restituire 'interrompi' (es. lotta persa): la scena
+          // si ferma lì, senza eseguire i passi successivi.
+          const esito = await this._eseguiPassoCutscena(passo);
+          if (esito === 'interrompi') break;
         }
       } catch (err) {
         console.error('[Cutscene] errore durante', cutsceneId, err);
@@ -4855,10 +4873,33 @@ const GameMap = (function () {
     _eseguiPassoCutscena(passo) {
       switch (passo.tipo) {
         case 'dialogo': {
-          const righe = Array.isArray(passo.testo) ? passo.testo : [passo.testo];
+          // Segnaposto nel testo: {maschile|femminile} sceglie in base al
+          // genere del giocatore (es. "ragazzino|ragazzina"), {nome} è il
+          // nome del personaggio scelto a inizio partita.
+          const genereF = typeof stato !== 'undefined' && stato.genere === 'F';
+          const nomePg = (typeof stato !== 'undefined' && stato.nomeGiocatore) || (genereF ? 'Rossa' : 'Rosso');
+          const risolvi = (t) => String(t)
+            .replace(/\{([^|{}]*)\|([^|{}]*)\}/g, (_m, a, b) => (genereF ? b : a))
+            .replace(/\{nome\}/g, nomePg);
+          const righe = (Array.isArray(passo.testo) ? passo.testo : [passo.testo]).map(risolvi);
           if (typeof mostraDialogo !== 'function') return Promise.resolve();
           return mostraDialogo(passo.nome || '', righe);
         }
+        // Lotta contro un trainer di DATI_TRAINER dentro la cutscene. Vinta: i
+        // flag/ricompense del trainer scattano come sempre e la scena continua.
+        // Persa: comportamento normale del gioco (teletrasporto al Centro
+        // Pokémon) e la scena si interrompe qui ('interrompi').
+        case 'battaglia':
+          return this._cutscenaBattaglia(passo.trainer);
+        // Menu di scelta di UN oggetto tra più opzioni (con conferma Sì/No).
+        // Vedi _cutscenaSceltaOggetto per le proprietà del passo.
+        case 'scelta_oggetto':
+          return this._cutscenaSceltaOggetto(passo);
+        // Rivela gli oggetti a terra (tipo 'oggetto') la cui `condizione` è
+        // appena diventata vera (es. la Poké Ball che compare a fine scena).
+        case 'rivela_oggetti':
+          this._rivelaOggettiCondizionati();
+          return Promise.resolve();
         case 'aspetta':
           return new Promise(r => setTimeout(r, passo.ms || 500));
         case 'flag':
@@ -5000,6 +5041,87 @@ const GameMap = (function () {
       const st = npcStato.find(s => s.id === chi);
       if (st) { st.dir = direzione; this._setNpcFrame(st.sprite, direzione, false); }
       return Promise.resolve();
+    }
+
+    // Passo 'battaglia' (vedi _eseguiPassoCutscena): lotta col trainer
+    // DATI_TRAINER[trainerId]. Vinta -> applica flag/ricompense e prosegue;
+    // persa -> 'interrompi' (il teletrasporto lo fa già la battaglia).
+    _cutscenaBattaglia(trainerId) {
+      const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[trainerId] : null;
+      if (!dati) { console.warn('[Cutscene] trainer sconosciuto:', trainerId); return Promise.resolve(); }
+      return new Promise(resolve => {
+        stato.incontroAttivo = true;
+        Battle.avvia({
+          allenatore: {
+            nome: dati.nome || trainerId,
+            squadra: dati.squadra,
+            dialogoSconfitta: dati.dialogo_dopo || '',
+            premioSoldi: dati.premio || 100,
+          },
+          stato,
+          onFine: (esito) => {
+            stato.incontroAttivo = false;
+            if (esito === 'vittoria') {
+              this._applicaEsitoTrainer(trainerId, dati, null);
+              resolve();
+            } else {
+              resolve('interrompi');
+            }
+          },
+        });
+      });
+    }
+
+    // Passo 'scelta_oggetto': menu con più oggetti (chiavi di OGGETTI), se ne
+    // sceglie UNO e va confermato con Sì/No ("Annulla" non vale: si deve
+    // scegliere). Proprietà del passo: messaggio, opzioni:[chiavi],
+    // salva_scelta:'nomeCampo' (in stato: la chiave scelta),
+    // salva_restanti:'nomeCampo' (in stato: le chiavi NON scelte, da dare
+    // più avanti). L'oggetto scelto finisce nello zaino.
+    async _cutscenaSceltaOggetto(passo) {
+      const chiavi = (passo.opzioni || []).filter(k => typeof OGGETTI !== 'undefined' && OGGETTI[k]);
+      if (!chiavi.length || typeof mostraSceltaLista !== 'function' || typeof mostraScelta !== 'function') return;
+      const nomi = chiavi.map(k => `${OGGETTI[k].icona || ''} ${OGGETTI[k].nome}`.trim());
+      let scelto = null;
+      while (!scelto) {
+        const i = await mostraSceltaLista(passo.messaggio || 'Scegli un oggetto:', nomi);
+        if (i < 0) continue;
+        const conf = await mostraScelta(`Sei sicuro? ${OGGETTI[chiavi[i]].nome}`, 'Sì', 'No');
+        if (conf === 1) scelto = chiavi[i];
+      }
+      if (!stato.zaino[scelto]) stato.zaino[scelto] = 0;
+      stato.zaino[scelto] += 1;
+      if (passo.salva_scelta) stato[passo.salva_scelta] = scelto;
+      if (passo.salva_restanti) stato[passo.salva_restanti] = chiavi.filter(k => k !== scelto);
+      if (typeof mostraToast === 'function') mostraToast(`Hai ricevuto: ${OGGETTI[scelto].nome}!`, 3000);
+      if (typeof aggiornaHUD === 'function') aggiornaHUD();
+      if (typeof salvaPartita === 'function') salvaPartita();
+    }
+
+    // Trigger "a rettangolo" per cutscene (oggetto Tiled trigger_cutscene con
+    // quando:'entra'): parte quando il giocatore ENTRA nel rettangolo.
+    // Proprietà: cutscene_id, condizione (opzionale), flag_fine (se questo
+    // flag è vero la scena è finita e non riparte più). Scena "riprendibile":
+    // con flag_ripresa + cutscene_id_ripresa, se il flag_ripresa è vero parte
+    // la cutscene di ripresa (es. dopo una sconfitta, senza rifare l'intro).
+    _checkTriggerCutsceneEntra() {
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'trigger_cutscene' || ev.props.quando !== 'entra') continue;
+        if (!(ev.w > 0 && ev.h > 0)) continue;
+        const cond = ev.props.condizione || ev.props.richiede;
+        if (cond && !verificaCondizione(cond).ok) continue;
+        if (ev.props.flag_fine && stato.flags && stato.flags[ev.props.flag_fine]) continue;
+        const dentro = posTile.tx >= ev.tx0 && posTile.tx <= ev.tx1 && posTile.ty >= ev.ty0 && posTile.ty <= ev.ty1;
+        if (!dentro) continue;
+        const ripresa = ev.props.flag_ripresa && stato.flags && stato.flags[ev.props.flag_ripresa];
+        const id = (ripresa && ev.props.cutscene_id_ripresa) || ev.props.cutscene_id;
+        if (!id) continue;
+        this._giocaCutscene(id).then(() => {
+          if (typeof salvaPartita === 'function') salvaPartita();
+        });
+        return;
+      }
     }
 
     // Direzione cardinale (nord/sud/est/ovest) dalla casella (tx0,ty0) verso
@@ -6240,6 +6362,7 @@ const GameMap = (function () {
 
       stato.flags.cotral_rocca_finale = true;
       stato.flags.baso_tornato = true;
+      await this._eseguiPassoCutscena({ tipo: 'oggetto', contenuto: 'password_1', chiave: true });
       this._controllaPasswordRifugio();
 
       // Schermo nero prima di far sparire Baso e Gianluca (stesso
@@ -6619,6 +6742,7 @@ const GameMap = (function () {
         const atteso = TILE_ID_POKEBALL - (o.lo || 0);
         const tile = o.layer.getTileAtWorldXY(worldX, worldY, true);
         if (tile && tile.index === atteso) {
+          tilePokeballNascosti[tx + ',' + ty] = { layer: o.layer, index: atteso };
           o.layer.removeTileAtWorldXY(worldX, worldY, true);
         }
       }
@@ -6640,12 +6764,45 @@ const GameMap = (function () {
     // oggetti già raccolti in partite precedenti (senza questo, ricaricando
     // la mappa il tile tornerebbe visibile pur avendo già l'oggetto in zaino).
     _ripristinaOggettiRaccolti() {
-      if (typeof stato === 'undefined' || !stato.oggettiRaccolti) return;
+      if (typeof stato === 'undefined') return;
       for (const ev of eventiMappa) {
         if (ev.tipo !== 'oggetto' && ev.tipo !== 'object') continue;
         const mappaEv = ev._mappaChiave || mappaCorrente;
         const idUnivoco = `${mappaEv}:${ev.tx},${ev.ty}`;
-        if (stato.oggettiRaccolti.includes(idUnivoco)) this._nascondiTileOggetto(ev);
+        const raccolto = stato.oggettiRaccolti && stato.oggettiRaccolti.includes(idUnivoco);
+        // Oggetto "a comparsa": con una `condizione` non ancora vera il tile
+        // resta invisibile (e non interagibile, vedi _eventoInCasella).
+        if (raccolto || !this._oggettoVisibile(ev)) this._nascondiTileOggetto(ev);
+      }
+    }
+
+    // true se l'oggetto a terra è già "in gioco": senza `condizione` sempre,
+    // altrimenti solo quando la condizione (un flag) è vera.
+    _oggettoVisibile(ev) {
+      const cond = ev.props && (ev.props.condizione || ev.props.richiede);
+      if (!cond) return true;
+      return verificaCondizione(cond).ok;
+    }
+
+    // Rimette il tile dell'oggetto (nascosto al caricamento) quando la sua
+    // condizione diventa vera a scena in corso, se non è già stato raccolto.
+    _rivelaOggettiCondizionati() {
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'oggetto' && ev.tipo !== 'object') continue;
+        if (!ev.props || !(ev.props.condizione || ev.props.richiede)) continue;
+        if (!this._oggettoVisibile(ev)) continue;
+        const mappaEv = ev._mappaChiave || mappaCorrente;
+        if (stato.oggettiRaccolti && stato.oggettiRaccolti.includes(`${mappaEv}:${ev.tx},${ev.ty}`)) continue;
+        const celle = [];
+        if (ev.w > 0 && ev.h > 0) {
+          for (let ty = ev.ty0; ty <= ev.ty1; ty++) for (let tx = ev.tx0; tx <= ev.tx1; tx++) celle.push([tx, ty]);
+        } else celle.push([ev.tx, ev.ty]);
+        for (const [tx, ty] of celle) {
+          const rec = tilePokeballNascosti[tx + ',' + ty];
+          if (!rec) continue;
+          rec.layer.putTileAtWorldXY(rec.index, tx * tileSize + tileSize / 2, ty * tileSize + tileSize / 2);
+          delete tilePokeballNascosti[tx + ',' + ty];
+        }
       }
     }
 
@@ -6707,6 +6864,7 @@ const GameMap = (function () {
       this._checkCamillaInvitoTrigger();
       this._checkOsservatorioConfrontoTrigger();
       this._checkTriggerProssimita();
+      this._checkTriggerCutsceneEntra();
     }
 
     // I 3 cani leggendari al Lago di Nemi (Raikou/Entei/Suicune, piazzati
@@ -7181,12 +7339,14 @@ const GameMap = (function () {
       bloccaMovimento();
 
       const risolviAllenatore = (v) => {
-        const nomeLotta = (v.dati.rivale && typeof stato !== 'undefined' && stato.rivale && stato.rivale.nome) ||
+        const rivaleGiusto = v.dati.rivale && v.st.ev && typeof rivaleDaSprite === 'function'
+          ? rivaleDaSprite(v.st.ev.props.sprite) : null;
+        const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) ||
           v.dati.nome || (v.st.ev && v.st.ev.nome) || v.id;
         let squadra = v.dati.squadra;
         if (v.dati.rivale && v.st.ev && typeof costruisciSquadraRivale === 'function') {
           squadra = costruisciSquadraRivale(
-            v.st.ev.props.tappa || 1, parseInt(v.st.ev.props.asso_livello, 10) || null);
+            v.st.ev.props.tappa || 1, parseInt(v.st.ev.props.asso_livello, 10) || null, rivaleGiusto);
         }
         return {
           nome: nomeLotta, squadra,
@@ -7292,6 +7452,15 @@ const GameMap = (function () {
           if (!stato.flags) stato.flags = {};
           stato.flags.camilla_pronta_uscita = true;
         }
+        // Ariccia è la 7ª palestra: appena la vinci, la Sagra della Porchetta
+        // "finisce" (richiesta esplicita di Luca) — i grunt GdF che bloccano
+        // la strada verso Genzano per finta ("la porchetta viene prima di
+        // tutto") si tolgono di mezzo. Il gioco non lo dice mai esplicitamente
+        // al giocatore: lo capisce solo continuando ad avanzare.
+        if (dati.palestraId === 'ariccia') {
+          if (!stato.flags) stato.flags = {};
+          stato.flags.sagra_ariccia_finita = true;
+        }
         if (typeof salvaPartita === 'function') salvaPartita();
         return true;
       }
@@ -7299,6 +7468,14 @@ const GameMap = (function () {
       if (dati.flagVittoria) {
         if (!stato.flags) stato.flags = {};
         stato.flags[dati.flagVittoria] = true;
+        // Oggetto-chiave in premio alla vittoria (es. password_3 di Ginevra).
+        if (dati.oggettoChiaveVittoria && typeof OGGETTI_CHIAVE !== 'undefined' && OGGETTI_CHIAVE[dati.oggettoChiaveVittoria]) {
+          if (!stato.inventario) stato.inventario = { chiave: {} };
+          if (!stato.inventario.chiave) stato.inventario.chiave = {};
+          stato.inventario.chiave[dati.oggettoChiaveVittoria] = true;
+          const defOgg = OGGETTI_CHIAVE[dati.oggettoChiaveVittoria];
+          if (typeof mostraToast === 'function') mostraToast(`${defOgg.icona || '🔑'} Hai ottenuto: ${defOgg.nome}!`, 3500);
+        }
         // Le 2 delle 3 parti password del Rifugio GdF di Marino passano da
         // qui (Michela → museo_nemi_password, Ginevra → abbazia_password,
         // sess. 8 set 2026): dopo ognuna, controlla se ora ci sono tutte e 3.
@@ -7389,16 +7566,19 @@ const GameMap = (function () {
       stato.incontroAttivo = true;
       bloccaMovimento();
 
-      // Rivale sulla mappa (es. "rivale_tuscolo"): il nome mostrato segue
-      // chi hai davvero scelto nel laboratorio (Blue o Red, sess. 22 set
-      // 2026) — dati.nome resta solo un fallback per salvataggi vecchi.
-      const nomeLotta = (dati.rivale && typeof stato !== 'undefined' && stato.rivale && stato.rivale.nome) ||
-        dati.nome || ev.nome || id;
+      // Rivale sulla mappa (es. "rivale_tuscolo"): sess. 28 set 2026, Luca ha
+      // piazzato ENTRAMBI i rivali in giro per il mondo (sprite Tiled
+      // "RIVALE_UOMO"/"RIVALE_DONNA") — restano tutti e due sfidabili per
+      // tutta la partita, non solo quello scelto come difficoltà nel
+      // laboratorio. rivaleDaSprite (js/app.js) risolve quale dei due è
+      // questo, leggendo stato.duoRivali; ripiega su stato.rivale se manca.
+      const rivaleGiusto = dati.rivale && typeof rivaleDaSprite === 'function' ? rivaleDaSprite(ev.props.sprite) : null;
+      const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) || dati.nome || ev.nome || id;
       const dialogo = dati.dialogo_prima || 'Preparati a lottare!';
       // Rivale: squadra scalata in base alla "tappa" (n. incontro) con l'asso = starter
       let squadra = dati.squadra;
       if (dati.rivale && typeof costruisciSquadraRivale === 'function') {
-        squadra = costruisciSquadraRivale(ev.props.tappa || 1, parseInt(ev.props.asso_livello, 10) || null);
+        squadra = costruisciSquadraRivale(ev.props.tappa || 1, parseInt(ev.props.asso_livello, 10) || null, rivaleGiusto);
       }
       // Lega di Colonna: Superquattro/Campione pescano dal pool vero (5
       // casuali + core più forte per ultimo), non usano "squadra" statico —

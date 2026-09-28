@@ -1760,6 +1760,49 @@
                  "width":32,
                  "x":1104.62666666667,
                  "y":1382.497
+                }, 
+                {
+                 "height":32,
+                 "id":103,
+                 "name":"TBD",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"NORD"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"rivale_LAGO DI ALBANO"
+                        }, 
+                        {
+                         "name":"sprite",
+                         "type":"string",
+                         "value":"RIVALE_DONNA"
+                        }, 
+                        {
+                         "name":"tappa",
+                         "type":"int",
+                         "value":4
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"Rivale DONNA",
+                 "visible":true,
+                 "width":32,
+                 "x":1005.33333333333,
+                 "y":742.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1768,7 +1811,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":103,
+ "nextobjectid":104,
  "orientation":"orthogonal",
  "properties":[
         {

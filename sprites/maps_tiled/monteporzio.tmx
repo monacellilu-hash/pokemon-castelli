@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="54" height="72" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="186">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="54" height="72" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="187">
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../../Emerald_Outside.tsx"/>
  <tileset firstgid="9265" source="../outside.tsx"/>
  <tileset firstgid="13281" source="../fiori_rossi_animati_v2.tsj"/>
- 
- 
  <layer id="1" name="ground" width="54" height="72">
   <data encoding="csv">
 9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,9267,
@@ -355,7 +353,7 @@
   <object id="140" x="823" y="1176" width="4" height="26"/>
   <object id="141" x="819" y="1301" width="4" height="26"/>
   <object id="142" x="821" y="1427" width="4" height="26"/>
-  <object id="148" x="1258" y="617.333333333333" width="13.3333333333333" height="14"/>
+  <object id="148" x="1258" y="617.333" width="13.3333" height="14"/>
   <object id="154" x="301" y="1530" width="461" height="23"/>
   <object id="155" x="965" y="1568" width="724" height="187"/>
   <object id="156" x="1037" y="1734" width="8" height="96"/>
@@ -381,8 +379,8 @@
   <object id="182" x="377" y="917" width="104" height="105"/>
   <object id="183" x="828" y="496" width="102" height="80"/>
  </objectgroup>
- <objectgroup id="6" name="eventi">
-  <object id="2" name="gate_npc" type="npc" x="1220.8367071525" y="617.408906882591" width="27" height="26">
+ <objectgroup color="#ff0000" id="6" name="eventi">
+  <object id="2" name="gate_npc" type="npc" x="1220.84" y="617.409" width="27" height="26">
    <properties>
     <property name="condizione" value="medaglie&gt;=4"/>
     <property name="direzione" value="sud"/>
@@ -392,7 +390,7 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="3" name="trainer" type="trainer" x="482.470985155196" y="995.789473684211" width="26" height="22">
+  <object id="3" name="trainer" type="trainer" x="482.471" y="995.789" width="26" height="22">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="trainer monteporzio 1"/>
@@ -403,7 +401,7 @@
     <property name="vista" type="int" value="3"/>
    </properties>
   </object>
-  <object id="5" name="trainer" type="trainer" x="1345.17004048583" y="868.075573549258" width="23" height="24">
+  <object id="5" name="trainer" type="trainer" x="1345.17" y="868.076" width="23" height="24">
    <properties>
     <property name="direzione" value="ovest"/>
     <property name="id" value="trainer monteporzio 2"/>
@@ -414,13 +412,7 @@
     <property name="vista" type="int" value="7"/>
    </properties>
   </object>
-  <object id="6" name="trigger_rivale" type="trigger_rivale" x="933.952091767881" y="900.06342780027" width="23" height="24.5">
-   <properties>
-    <property name="tappa" type="int" value="4"/>
-    <property name="type" value="trigger_rivale"/>
-   </properties>
-  </object>
-  <object id="14" name="npc" type="npc" x="581.93657219973" y="618.620782726046" width="22" height="22.5">
+  <object id="14" name="npc" type="npc" x="581.937" y="618.621" width="22" height="22.5">
    <properties>
     <property name="dialogo" value="&quot;Ciao so Cesare, pizza o pangocciolo?&quot;"/>
     <property name="direzione" value="nord"/>
@@ -429,7 +421,7 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="15" name="npc" type="npc" x="718.929824561404" y="1136.83400809717" width="32" height="32">
+  <object id="15" name="npc" type="npc" x="718.93" y="1136.83" width="32" height="32">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="monteporzio_npc2"/>
@@ -439,7 +431,7 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="16" name="npc" type="npc" x="515.520917678813" y="1249.74628879892" width="32" height="32">
+  <object id="16" name="npc" type="npc" x="515.521" y="1249.75" width="32" height="32">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="monteporzio_npc3"/>
@@ -457,71 +449,71 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="21" name="warp" type="warp" x="464.704453441295" y="1864.18286099865" width="64" height="9">
+  <object id="21" name="warp" type="warp" x="464.704" y="1864.18" width="64" height="9">
    <properties>
     <property name="destinazione" value="percorso_5"/>
     <property name="spawn_id" value="da_monteporzio"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="27" name="warp" type="warp" x="419.418353576248" y="643.666666666667" width="22.5" height="17.5">
+  <object id="27" name="warp" type="warp" x="419.418" y="643.667" width="22.5" height="17.5">
    <properties>
     <property name="destinazione" value="palestra_monteporzio_interno"/>
     <property name="spawn_id" value="entrata_principale"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="28" name="warp" type="warp" x="1186.87314439946" y="1341.86099865047" width="22.1538461538462" height="32">
+  <object id="28" name="warp" type="warp" x="1186.87" y="1341.86" width="22.1538" height="32">
    <properties>
     <property name="destinazione" value="pokecenter_monteporzio"/>
     <property name="spawn_id" value="da_monteporzio"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="29" name="warp" type="warp" x="417.352226720648" y="1314.10391363023" width="24.7611336032389" height="25">
+  <object id="29" name="warp" type="warp" x="417.352" y="1314.1" width="24.7611" height="25">
    <properties>
     <property name="destinazione" value="mart_monteporzio"/>
     <property name="spawn_id" value="da_monteporzio"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="34" name="spawn" type="spawn" x="479.333333333333" y="1801" width="32" height="21">
+  <object id="34" name="spawn" type="spawn" x="479.333" y="1801" width="32" height="21">
    <properties>
     <property name="id" value="da_percorso_5"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="36" name="spawn" type="spawn" x="417.503373819164" y="1346.74224021592" width="23.3333333333333" height="24">
+  <object id="36" name="spawn" type="spawn" x="417.503" y="1346.74" width="23.3333" height="24">
    <properties>
     <property name="id" value="da pokemarket monteporzio"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="37" name="cartello" type="cartello" x="901.704453441295" y="1445.68286099865" width="23.3333333333334" height="18.6666666666666">
+  <object id="37" name="cartello" type="cartello" x="901.704" y="1445.68" width="23.3333" height="18.6667">
    <properties>
     <property name="testo" value="← Percorso 4 — Marino"/>
     <property name="type" value="cartello"/>
    </properties>
   </object>
-  <object id="40" name="cartello" type="cartello" x="358" y="674" width="20" height="17.3333333333333">
+  <object id="40" name="cartello" type="cartello" x="358" y="674" width="20" height="17.3333">
    <properties>
     <property name="testo" value="→ Palestra di Monteporzio"/>
     <property name="type" value="cartello"/>
    </properties>
   </object>
-  <object id="52" name="cartello" type="cartello" x="1289" y="645.333333333333" width="17.3333333333333" height="19.3333333333334">
+  <object id="52" name="cartello" type="cartello" x="1289" y="645.333" width="17.3333" height="19.3333">
    <properties>
     <property name="testo" value="Osservatoio -- Qui si studiano eventi climatici"/>
     <property name="type" value="cartello"/>
    </properties>
   </object>
-  <object id="93" name="spawn" type="spawn" x="1187.33335" y="1385.33333333333" width="17.3333" height="16">
+  <object id="93" name="spawn" type="spawn" x="1187.33" y="1385.33" width="17.3333" height="16">
    <properties>
     <property name="id" value="da pokecenter monteporzio"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="94" name="spawn" type="spawn" x="420.33335" y="666.5" width="19.3333" height="17">
+  <object id="94" name="spawn" type="spawn" x="420.333" y="666.5" width="19.3333" height="17">
    <properties>
     <property name="id" value="da palestra monteporzio"/>
     <property name="type" value="spawn"/>
@@ -548,7 +540,7 @@
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="143" name="cartello" type="cartello" x="836.33335" y="647.33335" width="17.3333" height="19.3333">
+  <object id="143" name="cartello" type="cartello" x="836.333" y="647.333" width="17.3333" height="19.3333">
    <properties>
     <property name="testo" value="Via Vittoria"/>
     <property name="type" value="cartello"/>
@@ -564,20 +556,20 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="145" name="warp" type="warp" x="869.666666666667" y="581.928473333333" width="18.6666666666666" height="17.3333333333334">
+  <object id="145" name="warp" type="warp" x="869.667" y="581.928" width="18.6667" height="17.3333">
    <properties>
     <property name="destinazione" value="Via Vittoria"/>
     <property name="spawn_id" value="da_monteporzio"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="146" name="spawn" type="spawn" x="870.427" y="601.738193333333" width="21.3333" height="19">
+  <object id="146" name="spawn" type="spawn" x="870.427" y="601.738" width="21.3333" height="19">
    <properties>
     <property name="id" value="da Via Vittoria"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="151" name="erba_alta" type="erba_alta" x="117.333333333333" y="287.333333333333" width="192" height="192">
+  <object id="151" name="erba_alta" type="erba_alta" x="117.333" y="287.333" width="192" height="192">
    <properties>
     <property name="id" value="incontri monteporzio"/>
     <property name="type" value="erba_alta"/>
@@ -594,6 +586,16 @@
    <properties>
     <property name="id" value="da_tunnel_roccioso"/>
     <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="186" name="TBD" type="Rivale DONNA" x="929.333" y="960" width="32" height="32">
+   <properties>
+    <property name="direzione" value="SUD"/>
+    <property name="id" value="rivale_monteporzio"/>
+    <property name="sprite" value="RIVALE_DONNA"/>
+    <property name="tappa" type="int" value="3"/>
+    <property name="type" value="trainer"/>
+    <property name="vista" value="6"/>
    </properties>
   </object>
  </objectgroup>

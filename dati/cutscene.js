@@ -41,6 +41,26 @@
        Come sopra ma per un oggetto-CHIAVE (OGGETTI_CHIAVE in js/data.js,
        es. quelli che svegliano un leggendario "addormentato" — vedi
        ev.props.addormentato/sveglia_con su un marcatore 'leggendario').
+   - { tipo: 'battaglia', trainer: 'id_in_DATI_TRAINER' }
+       Lotta col trainer indicato. Vinta: flag/ricompense del trainer scattano
+       e la scena prosegue. Persa: la scena si INTERROMPE (il teletrasporto al
+       Centro Pokémon lo fa la battaglia). Un passo può restituire 'interrompi'.
+   - { tipo: 'scelta_oggetto', messaggio, opzioni: ['chiave_OGGETTI', ...],
+       salva_scelta: 'campo', salva_restanti: 'campo' }
+       Menu per scegliere UN oggetto (con conferma Sì/No). Va nello zaino; in
+       stato[salva_scelta] la chiave scelta, in stato[salva_restanti] le altre.
+   - { tipo: 'rivela_oggetti' }
+       Fa comparire gli oggetti a terra (type 'oggetto') con una `condizione`
+       appena diventata vera (tile Poké Ball nascosto fino a quel momento).
+   - { tipo: 'fade_out'/'fade_in', ms } e { tipo: 'rigenera_npc' }: schermo nero
+       e rilettura di gate/condizioni degli NPC (vedi museo_navi_sfida).
+   - Nei testi dei dialoghi: {maschile|femminile} sceglie in base al genere del
+       giocatore ("{ragazzino|ragazzina}"), {nome} è il nome del personaggio.
+
+   Trigger a RETTANGOLO (trigger_cutscene con quando:'entra'): parte quando il
+   giocatore entra nel rettangolo. Proprietà: cutscene_id, condizione,
+   flag_fine (se vero la scena non riparte più), e per le scene "riprendibili"
+   flag_ripresa + cutscene_id_ripresa (se il flag è vero parte quella di ripresa).
 
    Chi la fa partire (tre modi):
    1) Un NPC in Tiled con proprietà `cutscene: '<id>'` invece di `azione`/
@@ -215,3 +235,132 @@ const CUTSCENE = {
   ],
 
 };
+
+/* ── Museo delle Navi di Nemi, 2F — il Capo GdF, Michela e Cenciarels
+   (22 set 2026). Parte da sola quando entri nel rettangolo "inizio cutscene"
+   (trigger_cutscene quando:'entra' in Museo_navi_2f.tmj, serve aver ottenuto
+   il documento di Castel Gandolfo: flag documentoVillaOttenuto).
+
+   Due pezzi:
+   - 'museo_navi_sfida': Michela ti raggiunge, parla e parte la lotta. Se
+     PERDI, la scena si interrompe (teletrasporto normale al Centro Pokémon) e
+     al ritorno riparte SOLO da qui (flag museoIntroVista), senza rifare
+     l'intro. Se VINCI, prosegue fino alla fine.
+   - 'museo_navi_intro': dialogo iniziale + il Capo che se ne va, poi la sfida.
+
+   FLAG della scena: museoBossVia (il Capo è sparito), museoIntroVista (intro
+   fatta), museoGdfSparito (Michela + grunt spariti), museoLiberato (ostaggi
+   passano alla versione "liberato"), cenciarelsFossileDato, museoPokeballVisibile
+   (la Poké Ball con la password 2 compare), museoSceneCompleta (fine: non riparte).
+   Il flag museo_nemi_password (2ª password del Rifugio di Marino) lo alza la
+   RACCOLTA della Poké Ball, non la vittoria. */
+CUTSCENE['museo_navi_sfida'] = [
+  { tipo: 'muovi_npc_verso_giocatore', npc: 'museo_luogotenente', maxPassi: 30 },
+  { tipo: 'guarda_reciproco', npc: 'museo_luogotenente' },
+  { tipo: 'dialogo', nome: 'Michela', testo: [
+    'Il Capo se n\'è andato, ma il museo resta nostro. Sono Michela, e da qui non si passa.',
+    'Fernando mi aveva avvisata che qualcuno stava ficcando il naso. Vediamo se sei bravo quanto fai credere!',
+  ] },
+  { tipo: 'battaglia', trainer: 'gdf_capo_museo' },
+
+  // ── Solo se hai VINTO (con una sconfitta la scena si è già interrotta) ──
+  { tipo: 'dialogo', nome: 'Michela', testo: [
+    'Ah ah ah! Ti sei dato tanto da fare... ma era solo per farti perdere tempo e coprire la fuga.',
+    'Ormai non ci fermerete più.',
+  ] },
+  // Michela e i grunt svaniscono nello stesso istante.
+  { tipo: 'nascondi_npc', npc: 'museo_luogotenente' },
+  { tipo: 'nascondi_npc', npc: 'museo_grunt_a' },
+  { tipo: 'nascondi_npc', npc: 'museo_grunt_b' },
+  { tipo: 'nascondi_npc', npc: 'gdf_grunt_museo_3' },   // anche il grunt "di ronda" del 2F (e quelli del 1F, via gate)
+  { tipo: 'flag', nome: 'museoGdfSparito', valore: true },
+  { tipo: 'aspetta', ms: 700 },
+  { tipo: 'guarda', npc: 'museo_scienziato_1_prig', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_scienziato_2_prig', direzione: 'sud' },
+  { tipo: 'dialogo', nome: 'Scienziata rapita', testo: [
+    'Grazie... grazie per averci liberati!',
+    'Purtroppo non abbiamo fatto in tempo a nascondere le pietre, e non so come faremo adesso...',
+  ] },
+  { tipo: 'dialogo', nome: 'Scienziato rapito', testo: [
+    'Aiutaci, ti prego! Quelle pietre non devono finire nelle mani sbagliate.',
+  ] },
+
+  // Mezza schermata nera: gli ostaggi passano alla versione "liberato".
+  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'flag', nome: 'museoLiberato', valore: true },
+  { tipo: 'rigenera_npc' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 500 },
+
+  { tipo: 'dialogo', nome: 'Cenciarels', testo: [
+    'Non so come ringraziarti. Ero costretta a obbedire, e il museo era ormai alla loro mercé.',
+    'Da curatrice ho un tesoro da offrirti: un fossile. Scegli, è il minimo per ringraziarti.',
+  ] },
+  { tipo: 'scelta_oggetto',
+    messaggio: 'Cenciarels ti offre un fossile. Quale scegli?',
+    opzioni: ['fossile_elice', 'fossile_cupola', 'ambra_antica', 'fossile_artiglio', 'fossile_radice'],
+    salva_scelta: 'fossileScelto',
+    salva_restanti: 'fossiliDaCenciarels' },
+  { tipo: 'dialogo', nome: 'Cenciarels', testo: [
+    'Una buona scelta. Quando sarai riuscito a rianimarlo, torna da me.',
+    'Ho delle missioni per il museo: in cambio ti darò gli altri fossili.',
+  ] },
+  { tipo: 'flag', nome: 'cenciarelsFossileDato', valore: true },
+
+  // La Poké Ball con la 2ª password compare sul "dot" dove stava il Capo.
+  { tipo: 'flag', nome: 'museoPokeballVisibile', valore: true },
+  { tipo: 'rivela_oggetti' },
+  { tipo: 'aspetta', ms: 500 },
+  { tipo: 'dialogo', nome: '', testo: [
+    'Qualcosa luccica sul pavimento, proprio dove stava il Capo GdF. Deve averla lasciata cadere durante la fuga...',
+  ] },
+  { tipo: 'flag', nome: 'museoSceneCompleta', valore: true },
+];
+
+CUTSCENE['museo_navi_intro'] = [
+  { tipo: 'aspetta', ms: 400 },
+  { tipo: 'dialogo', nome: 'Capo GdF', testo: [
+    'Ce l\'abbiamo fatta. Le due pietre sono nostre.',
+    'Dal Lago di Nemi a tutti i Castelli: ormai niente potrà fermarci.',
+  ] },
+  { tipo: 'dialogo', nome: 'Cenciarels', testo: [
+    'Vi ho dato quello che volevate... ora lasciate stare la gente del museo. Non hanno nessuna colpa.',
+  ] },
+  { tipo: 'dialogo', nome: 'Scienziata rapita', testo: [
+    'Ci avete tenuti qui tutta la notte... vi prego, lasciateci andare!',
+  ] },
+  { tipo: 'dialogo', nome: 'Scienziato rapito', testo: [
+    'Quelle pietre sono pericolose! Non avete idea di cosa possono risvegliare!',
+  ] },
+  { tipo: 'dialogo', nome: 'Capo GdF', testo: [
+    'Silenzio, voi. Le domande le faccio io.',
+  ] },
+
+  // Si accorgono di te: "!" e tutti si girano verso sud.
+  { tipo: 'esclamativo', npc: 'museo_boss', durata: 700 },
+  { tipo: 'guarda', npc: 'museo_boss', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_luogotenente', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_grunt_a', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_grunt_b', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_cenciarels_prigioniera', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_scienziato_1_prig', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'museo_scienziato_2_prig', direzione: 'sud' },
+  { tipo: 'aspetta', ms: 300 },
+
+  { tipo: 'dialogo', nome: 'Capo GdF', testo: [
+    'E tu chi saresti? Una gita scolastica da Castel Gandolfo? Torna a casa, {ragazzino|ragazzina}.',
+    'Non ci fermerai. Non ce la farai mai!',
+    'Michela, ci pensi tu. È solo {un ragazzino|una ragazzina}, non ce la farà mai a sconfiggerci.',
+  ] },
+
+  // Il Capo se ne va: mezza schermata nera e sparisce.
+  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'nascondi_npc', npc: 'museo_boss' },
+  { tipo: 'flag', nome: 'museoBossVia', valore: true },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 500 },
+  { tipo: 'flag', nome: 'museoIntroVista', valore: true },
+
+  // ...e poi Michela ti raggiunge (stesso pezzo che riparte dopo una sconfitta).
+  ...CUTSCENE['museo_navi_sfida'],
+];
