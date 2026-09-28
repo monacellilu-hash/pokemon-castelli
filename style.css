@@ -1928,7 +1928,7 @@ html, body {
   display: none;
 }
 
-#starter-card {
+#starter-card, #nome-card {
   background: #1a2940;
   border: 3px solid #ffcb05;
   border-radius: 16px;
@@ -1940,7 +1940,7 @@ html, body {
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6);
 }
 
-#starter-card h2 {
+#starter-card h2, #nome-card h2 {
   color: #ffcb05;
   margin: 0 0 18px;
   font-size: 22px;
@@ -1951,6 +1951,25 @@ html, body {
   gap: 14px;
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* Overlay nome personaggio: mancava la regola base (position/z-index),
+   quindi restava nel flusso normale della pagina invece che sopra al
+   canvas del gioco — su mobile il tocco arrivava al canvas sotto,
+   l'input non prendeva mai il focus e la tastiera non usciva (bug
+   segnalato da Luca). Stessa regola di #overlay-genere/#overlay-starter. */
+#overlay-nome {
+  position: absolute;
+  inset: 0;
+  z-index: 1950;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#overlay-nome.nascosto {
+  display: none;
 }
 
 /* Input nome personaggio (#overlay-nome): vero <input>, tastiera nativa
