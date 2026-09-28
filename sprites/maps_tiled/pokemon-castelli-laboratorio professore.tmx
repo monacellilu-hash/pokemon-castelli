@@ -135,7 +135,7 @@
    </properties>
    <point/>
   </object>
-  <object id="7" name="prof_castagno" x="360.816" y="151.401">
+  <object id="7" name="prof_castagno" x="392.816" y="111.734">
    <properties>
     <property name="id" value="prof_castagno"/>
     <property name="type" value="npc"/>
@@ -147,21 +147,13 @@
     <property name="type" value="uscita"/>
    </properties>
   </object>
-  <object id="15" x="408.271" y="172.841">
+  <object id="15" x="468.938" y="151.507">
    <properties>
+    <property name="condizione" value="BlueLabSparito"/>
+    <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="id" value="rivale_debole"/>
     <property name="type" value="npc"/>
-    <property name="condizione" value="BlueLabSparito"/>
-    <property name="gate" type="bool" value="true"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="47" x="313.361" y="172.841">
-   <properties>
-    <property name="id" value="rivale_forte"/>
-    <property name="type" value="npc"/>
-    <property name="condizione" value="RedLabSparito"/>
-    <property name="gate" type="bool" value="true"/>
    </properties>
    <point/>
   </object>
@@ -175,6 +167,16 @@
   <object id="46" name="scienziato_lab_2" x="550" y="560">
    <properties>
     <property name="id" value="scienziato_lab_2"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="47" x="333" y="149.667">
+   <properties>
+    <property name="condizione" value="RedLabSparito"/>
+    <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
+    <property name="id" value="rivale_forte"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
