@@ -2015,16 +2015,29 @@ const Battle = (function () {
     const nomi = elenco.map((m, i) => i === 0 ? `${m.nomeIt} (NUOVA)` : m.nomeIt);
     const descrizioni = elenco.map(_descrizioneMossa);
 
-    const scelta = await mostraSceltaLista(
-      `Quale mossa deve dimenticare ${ist.nome}?`, nomi, descrizioni
-    );
-    if (scelta <= 0) {
-      // Annulla, oppure ha "scelto" la mossa nuova stessa (indice 0): in
-      // entrambi i casi non cambia nulla, la mossa nuova non si impara.
-      await di(`${ist.nome} non ha imparato ${nuova.nomeIt}.`, true);
-      return;
+    // Richiesta esplicita di Luca (sess. 29 set 2026): dopo aver scelto la
+    // mossa da eliminare, chiedere una conferma esplicita prima di applicare
+    // davvero la sostituzione — se risponde "No" si torna alla lista invece
+    // di annullare tutto, così un tocco sbagliato non fa perdere l'occasione
+    // di imparare la mossa nuova.
+    let idxDaSostituire = -1;
+    while (idxDaSostituire < 0) {
+      const scelta = await mostraSceltaLista(
+        `Quale mossa deve dimenticare ${ist.nome}?`, nomi, descrizioni
+      );
+      if (scelta <= 0) {
+        // Annulla, oppure ha "scelto" la mossa nuova stessa (indice 0): in
+        // entrambi i casi non cambia nulla, la mossa nuova non si impara.
+        await di(`${ist.nome} non ha imparato ${nuova.nomeIt}.`, true);
+        return;
+      }
+      const candidata = ist.mosse[scelta - 1];   // -1 perché "nuova" occupa la posizione 0 nell'elenco mostrato
+      const confermaScelta = await mostraScelta(
+        `Dimenticare ${candidata.nomeIt || candidata.nome} per imparare ${nuova.nomeIt}?`, 'Sì', 'No'
+      );
+      if (confermaScelta === 1) idxDaSostituire = scelta - 1;
+      // altrimenti torna in cima al while e riapre la lista
     }
-    const idxDaSostituire = scelta - 1;   // -1 perché "nuova" occupa la posizione 0 nell'elenco mostrato
     const vecchia = ist.mosse[idxDaSostituire];
     ist.mosse[idxDaSostituire] = nuovaConPp;
     await di(`Uno, due e... via! ${ist.nome} ha dimenticato ${vecchia.nomeIt || vecchia.nome} e ha imparato ${nuova.nomeIt}!`, true);
