@@ -15,3 +15,22 @@ Script di riferimento (per la coreografia, non incluso come file qui):
                                  il bersaglio, usato anche da Idrocannone,
                                  Raggio Segnale ecc. — stesso movimento,
                                  riutilizzabile per altre mosse in futuro)
+
+--- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
+Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
+pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
+grafica del motore Pokémon Essentials FRLG (cartella locale
+"Essentials FRLG/Graphics/Battle animations"). Il bug della "Ball sempre
+aperta" segnalato da Luca non era nelle immagini ma nel codice JS: ogni
+fotogramma di questi fogli è alto il DOPPIO della sua larghezza (fonte vera,
+letta dallo script reale estratto del motore:
+strumenti/scripts_estratti/0193_Battle_Scene_BaseAnimation.rb,
+Battle::Scene::Animation::BallAnimationMixin#addBallSprite/#createBallTumbling
+/#ballSetOpen), mentre js/battle.js usava un riquadro quadrato (larghezza =
+altezza), ritagliando solo la metà superiore di ogni fotogramma — si vedeva
+ingrandita solo la calotta rossa. Corretto in js/battle.js: il riquadro della
+Ball ora è largo `dim` e alto `dim*2`. Inoltre il foglio "_open" ha UNA SOLA
+immagine (non due fotogrammi alternati come si assumeva prima): il codice ora
+si limita a sostituire il foglio, con un piccolo schiacciamento prima (come
+ballOpenUp in Essentials) invece di inventare un secondo fotogramma
+inesistente.

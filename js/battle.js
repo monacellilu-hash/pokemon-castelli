@@ -871,6 +871,41 @@ const Battle = (function () {
     return img ? img.replace(/\.png$/i, '') : 'POKEBALL';
   }
 
+  // Lancio ad arco della Ball prima che si apra (sess. 29 set 2026, fonte
+  // vera: src/pokeball.c, SpriteCB_PlayerMonSendOut_1/2 — nel gioco vero la
+  // Ball vola dal lanciatore fino alla posizione finale con una parabola,
+  // non compare già ferma sul posto come faceva prima qui. Non replica la
+  // matematica in virgola fissa della console (usa TranslateAnimHorizontalArc,
+  // molto specifica del GBA), ma la stessa forma: arco su e giù, rotazione
+  // durante il volo, atterraggio sul punto dove poi si apre.
+  async function _lancioArcoBall(ball, cx, cy, lato) {
+    // Punto di partenza: dal basso a sinistra per il proprio Pokémon (come
+    // se il lancio venisse da chi gioca, in basso fuori campo), dall'alto a
+    // destra per un nemico/allenatore (l'avversario è sempre lì) — stessa
+    // logica di "chi lancia sta da un lato" del gioco vero.
+    const partenza = lato === 'nemico'
+      ? { x: cx + 90, y: cy - 120 }
+      : { x: cx - 90, y: cy + 110 };
+    const DURATA_MS = durataFx(420);
+    const ALTEZZA_ARCO = 70; // px in spazio locale 512×384
+    await new Promise(resolve => {
+      const inizio = performance.now();
+      function passo(ora) {
+        const frac = Math.min(1, (ora - inizio) / DURATA_MS);
+        const x = partenza.x + (cx - partenza.x) * frac;
+        const yLineare = partenza.y + (cy - partenza.y) * frac;
+        const arco = ALTEZZA_ARCO * 4 * frac * (1 - frac); // parabola: 0 agli estremi, massima a metà
+        ball.style.left = x + 'px';
+        ball.style.top = (yLineare - arco) + 'px';
+        ball.style.transform = `translate(-50%, -50%) rotate(${frac * 620}deg)`;
+        if (frac >= 1) { resolve(); return; }
+        requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    });
+    ball.style.transform = 'translate(-50%, -50%)';
+  }
+
   // Mandata in campo: il Pokémon esce dalla Ball (chiusa → flash d'apertura)
   // e poi "cresce" dalla Ball fino alla sua dimensione normale. `lato` è
   // 'nemico' o 'giocatore'. Per gli incontri selvatici il nemico non ha una
@@ -889,24 +924,57 @@ const Battle = (function () {
 
     const mostraBall = lato === 'giocatore' || modalita === 'allenatore';
     if (mostraBall) {
-      const dim = lato === 'nemico' ? 60 : 74;
+      // Ogni frame del foglio Ball è alto il DOPPIO della sua larghezza —
+      // fonte vera: Battle::Scene::Animation::BallAnimationMixin#addBallSprite
+      // (Essentials, strumenti/scripts_estratti/0193_Battle_Scene_BaseAnimation.rb):
+      // "2* because each frame is twice as tall as it is wide". Sess. 30 set
+      // 2026: prima l'elemento aveva altezza = larghezza (riquadro quadrato),
+      // che quindi ritagliava solo la metà superiore di ogni frame — si vedeva
+      // ingrandita solo la calotta rossa, come segnalato da Luca.
+      // -12% (sess. 30 set 2026: Luca la trovava più grossa del Pokémon)
+      const dim = Math.round((lato === 'nemico' ? 60 : 74) * 0.88);
+      const dimH = dim * 2;
       const ball = document.createElement('div');
       ball.className = 'ball-fx';
       ball.style.width = dim + 'px';
-      ball.style.height = dim + 'px';
+      ball.style.height = dimH + 'px';
       ball.style.left = cx + 'px';
       ball.style.top = cy + 'px';
-      ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_POKEBALL_open.png')}')`;
-      ball.style.backgroundSize = `${dim}px ${dim * 2}px`;
+      // Foglio di rotazione (8 frame, tutte pose di Ball chiusa che gira).
+      ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_POKEBALL.png')}')`;
+      ball.style.backgroundSize = `${dim * 8}px ${dimH}px`;
       ball.style.backgroundPosition = '0 0'; // frame chiusa
       campo.appendChild(ball);
 
-      // Piccola scossa prima di aprirsi (come in Essentials: Ball tremolante
-      // sul punto d'arrivo prima del flash), poi frame d'apertura.
+      // Rotazione della Ball mentre vola (stessi 8 frame usati dal lancio di
+      // cattura, vedi animaLancioBall).
+      let frameEntrata = 0;
+      const timerRotazioneEntrata = setInterval(() => {
+        frameEntrata = (frameEntrata + 1) % 8;
+        ball.style.backgroundPosition = `-${frameEntrata * dim}px 0`;
+      }, durataFx(55));
+
+      // Volo ad arco fino al punto d'arrivo (fonte vera, vedi
+      // _lancioArcoBall) — PRIMA di tremolare/aprirsi, che restano identici a prima.
+      await _lancioArcoBall(ball, cx, cy, lato);
+      clearInterval(timerRotazioneEntrata);
+      ball.style.backgroundPosition = '0 0'; // ferma su una posa chiusa
+
+      // Scossa prima di aprirsi. Il foglio "_open" contiene UNA SOLA immagine
+      // (fonte vera: numFrames = 2*larghezza/altezza = 1, dato che è già alta
+      // il doppio della sua larghezza) — non c'è un secondo frame da mostrare,
+      // si sostituisce solo il foglio, con un piccolo schiacciamento prima
+      // (come ballOpenUp in Essentials: squish poi unsquish).
       ball.classList.add('ball-scossa');
       await new Promise(r => setTimeout(r, durataFx(380)));
       ball.classList.remove('ball-scossa');
-      ball.style.backgroundPosition = `0 -${dim}px`; // flash d'apertura
+      ball.style.transition = `transform ${durataFx(90)}ms ease-out`;
+      ball.style.transform = 'translate(-50%, -50%) scaleX(1.25) scaleY(0.8)';
+      await new Promise(r => setTimeout(r, durataFx(90)));
+      ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_POKEBALL_open.png')}')`;
+      ball.style.backgroundSize = `${dim}px ${dimH}px`;
+      ball.style.backgroundPosition = '0 0'; // unica immagine del foglio "aperta"
+      ball.style.transform = 'translate(-50%, -50%)';
       await new Promise(r => setTimeout(r, durataFx(120)));
 
       // Il Pokémon inizia a "crescere" mentre la Ball sparisce in dissolvenza
@@ -948,15 +1016,23 @@ const Battle = (function () {
     const a  = { x: (rA.left - rC.left) / s + (rA.width / s) * 0.5,  y: (rA.top - rC.top) / s + (rA.height / s) * 0.55 };
 
     const nome = nomeFileBall(chiaveBall);
-    const dim = 42;
+    // -12% (sess. 30 set 2026: Luca la trovava più grossa del Pokémon)
+    const dim = Math.round(42 * 0.88);
+    // Ogni frame è alto il doppio della sua larghezza (fonte vera: vedi nota
+    // sess. 30 set 2026 in animaEntrataPokemon) — left/top restano il CENTRO
+    // della Ball (transform), non l'angolo, altrimenti raddoppiare l'altezza
+    // sposta il centro visivo verso il basso.
+    const dimH = dim * 2;
     const ball = document.createElement('div');
     ball.className = 'ball-fx';
+    ball.dataset.nomeBall = nome; // serve dopo ad animaCatturaFallita per tornare al foglio "_open" giusto
     ball.style.width = dim + 'px';
-    ball.style.height = dim + 'px';
+    ball.style.height = dimH + 'px';
     ball.style.left = da.x + 'px';
     ball.style.top = da.y + 'px';
+    ball.style.transform = 'translate(-50%, -50%)';
     ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_' + nome + '.png')}')`;
-    ball.style.backgroundSize = `${dim * 8}px ${dim * 2}px`;
+    ball.style.backgroundSize = `${dim * 8}px ${dimH}px`;
     campo.appendChild(ball);
 
     // Rotazione dei fotogrammi mentre vola (indipendente dal volo stesso)
@@ -991,10 +1067,16 @@ const Battle = (function () {
     aEl.style.opacity = '0';
     aEl.style.transform = 'scale(0.15)';
 
+    // Il foglio "_open" contiene UNA SOLA immagine (numFrames = 2*larghezza/
+    // altezza = 1, fonte vera Essentials), non 2 frame: si sostituisce il
+    // foglio e basta, niente backgroundPosition da spostare.
     ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_' + nome + '_open.png')}')`;
-    ball.style.backgroundSize = `${dim}px ${dim * 2}px`;
-    ball.style.backgroundPosition = `0 -${dim}px`; // flash d'apertura
+    ball.style.backgroundSize = `${dim}px ${dimH}px`;
+    ball.style.backgroundPosition = '0 0'; // flash d'apertura
     await new Promise(r => setTimeout(r, durataFx(220)));
+    // Richiusa: per la posa chiusa si torna al foglio normale di rotazione.
+    ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_' + nome + '.png')}')`;
+    ball.style.backgroundSize = `${dim * 8}px ${dimH}px`;
     ball.style.backgroundPosition = '0 0'; // richiusa
     await new Promise(r => setTimeout(r, durataFx(160)));
 
@@ -1021,7 +1103,13 @@ const Battle = (function () {
   // Cattura fallita: la Ball si riapre (flash) e il nemico "riappare" al centro.
   async function animaCatturaFallita(ball) {
     const aEl = $('nemico-sprite');
-    ball.style.backgroundPosition = `0 -${ball.clientWidth}px`; // frame apertura (sheet _open è dim x dim*2)
+    // La Ball ora è ferma sul foglio normale (richiusa, vedi animaLancioBall):
+    // per il lampo di riapertura serve tornare al foglio "_open".
+    const dim = ball.clientWidth;
+    const nome = ball.dataset.nomeBall || 'POKEBALL';
+    ball.style.backgroundImage = `url('${encodeURI(CARTELLA_BALL_FX + 'ball_' + nome + '_open.png')}')`;
+    ball.style.backgroundSize = `${dim}px ${dim * 2}px`;
+    ball.style.backgroundPosition = '0 0'; // il foglio "_open" ha una sola immagine
     await new Promise(r => setTimeout(r, durataFx(180)));
     ball.remove();
     aEl.style.transition = `opacity ${durataFx(220)}ms ease-out, transform ${durataFx(220)}ms ease-out`;
