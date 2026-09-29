@@ -249,7 +249,7 @@ const DATI_TRAINER = {
   },
 
   /* ── PALESTRA DI GROTTAFERRATA (tipo Psico, 2ª città — Abbazia di San Nilo) ──
-     4 gregari + Capopalestra Nilo. Squadre/dialoghi da PALESTRE['grottaferrata'].
+     4 gregari + Capopalestra Igino. Squadre/dialoghi da PALESTRE['grottaferrata'].
      Il leader assegna la Medaglia Icona e alza il level cap a 21. */
 
   'gregario 1 palestra grottaferrata': {
@@ -283,14 +283,14 @@ const DATI_TRAINER = {
     sprite: 'trainer_PSYCHIC_M', ritratto: 'PSYCHIC_M', vista: 8,
     classe: 'Allievo', nome: 'Dario',
     squadra: [{ id: 64, livello: 18 }, { id: 325, livello: 19 }],
-    dialogo_prima: 'Sono l\'allievo avanzato di Nilo. Prima di parlare col maestro, rispondi a me!',
+    dialogo_prima: 'Sono l\'allievo avanzato di Igino. Prima di parlare col maestro, rispondi a me!',
     dialogo_dopo: 'Il maestro avrà da ridire.',
     premio: 400,
   },
 
   'gym_leader_palestra grottaferrata': {
     sprite: 'Nilo_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
-    classe: 'Capopalestra', nome: 'Nilo',
+    classe: 'Capopalestra', nome: 'Igino',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 177, livello: 17 },  // Natu
@@ -299,7 +299,7 @@ const DATI_TRAINER = {
       { id: 97,  livello: 20 },  // Hypno
       { id: 326, livello: 21 },  // Grumpig (l'asso)
     ],
-    dialogo_prima: 'Benvenuto all\'Abbazia di San Nilo, pellegrino. Sono Nilo: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente. I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!',
+    dialogo_prima: 'Benvenuto all\'Abbazia di San Nilo, pellegrino. Sono Igino: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente. I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!',
     dialogo_dopo: 'La tua mente è limpida come l\'acqua della Marana. La Medaglia Icona è tua.',
     premio: 2100,
     palestraId: 'grottaferrata',   // → assegna la Medaglia Icona e alza il level cap a 21

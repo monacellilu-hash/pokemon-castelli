@@ -8302,6 +8302,7 @@ const GameMap = (function () {
       this._voci = [
         { chiave: 'velocitaTesto', etichetta: 'Velocità testo' },
         { chiave: 'animazioniBattaglia', etichetta: 'Animazioni battaglia' },
+        { chiave: 'expCondivisa', etichetta: 'Esperienza condivisa' },
       ];
       this._cursore = 0;
       const y0 = CH * 0.35;
@@ -10430,8 +10431,8 @@ const GameMap = (function () {
         return t;
       };
 
-      bottone('💾 Salva partita', '#5be18a', () => {
-        const ok = salvaPartitaOra();
+      bottone('💾 Salva partita', '#5be18a', async () => {
+        const ok = await salvaPartitaOra();
         if (typeof mostraToast === 'function') mostraToast(ok ? '💾 Partita salvata!' : '⚠️ Errore nel salvataggio.');
       });
 

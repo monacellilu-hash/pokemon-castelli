@@ -4,6 +4,55 @@
 
 ---
 
+## Sessione 29 settembre 2026 — Lista di bug/feature di Luca: fix mobile, cifratura, EXP condivisa
+
+Lista di 12 punti mandata da Luca prima di allontanarsi dalla scrivania. Fatto quanto segue,
+il resto è spiegato in dettaglio in chat (alcuni punti non riproducibili, altri troppo grandi
+per questa sessione):
+
+- **Level-up impallato su mobile**: `#levelup-box` (riquadro statistiche) non aveva NESSUN modo
+  di essere confermato su mobile — il tasto [A] a schermo è sempre coperto da
+  `#schermata-battaglia` (z-index più alto, stesso tipo di bug della schermata nome di ieri) e il
+  riquadro non aveva un listener di click come invece ha già ogni messaggio normale. Ora il
+  riquadro stesso fa da "tocca per andare avanti".
+- **Gate a nord di Borgata Tuscolana**: 5 NPC nel varco tra i due edifici in cima al paese (sotto
+  il cartello "Percorso 1 - Frascati"), gate su `starterScelto` — impossibile lasciare la città
+  prima di scegliere lo starter dal Professore.
+- **Grottaferrata → Nilo rinominato Igino** (Luca aveva scritto "Lino", quasi certamente refuso di
+  "Nilo": rinominato SOLO il personaggio, non il luogo "Abbazia di San Nilo" che è un nome reale).
+- **Palestra di Grottaferrata, warp uscita/entrata**: il warp di uscita puntava a `frascati` invece
+  che a `grottaferrata` (con `spawn_id`/`id` che non si agganciavano a nessuno spawn reale) — probabile
+  copia-incolla da un template. Corretto: ora esce sullo spawn giusto proprio davanti alla palestra.
+- **Salvataggio cifrato** (AES-GCM via Web Crypto, nessuna libreria esterna): prima era JSON in
+  chiaro in localStorage, modificabile al volo dai DevTools. I salvataggi vecchi restano leggibili
+  (migrazione automatica al prossimo salvataggio). Limite onesto spiegato nel commento del codice:
+  non è vera segretezza (il codice sorgente, quindi anche la chiave, resta leggibile da chi apre i
+  DevTools) ma impedisce la modifica casuale/veloce, che era il problema reale lamentato.
+- **Esperienza Condivisa diventata un'opzione**: prima sempre attiva silenziosamente, ora proposta
+  una volta con Sì/No proprio alla scelta della difficoltà nel laboratorio, e sempre
+  attivabile/disattivabile dal menu Opzioni (nuova voce). Default: disattivata finché non si sceglie.
+- **Boschetto Segreto — gate NPC**: analisi completa con la griglia di collisione reale (non a
+  occhio): il guardiano è un singolo NPC in un campo aperto di ~10 caselle, nessun muro lo affianca
+  — aggirabile a piedi. Il contenuto vero (Il Solitario/Celebi) resta comunque protetto a parte
+  (la sua stessa `condizione` lo nasconde finché non è post-Lega), quindi non si "ruba" nulla
+  passando oltre, ma il blocco visivo non è reale. NON toccato: servirebbe vedere la mappa com'è
+  disegnata per chiudere il varco senza rischiare di rompere altro — da fare insieme a Luca.
+- **Trainer "a vista" che non si sfidano più tornando indietro**: letto a fondo `_controllaTrainerVista`
+  e tutto il bookkeeping di `trainerBattuti`/`stato.allenatoriBattuti` — la logica sembra corretta
+  (rilettura fresca della linea di vista a ogni passo, nessun flag "già visto" permanente per un
+  trainer MAI battuto). Non riprodotto: serve sapere QUALE allenatore/mappa esatta per trovare la
+  causa reale invece di modificare alla cieca.
+- **Livelli allenatori "troppo forti" a Grottaferrata**: controllati i grunt GdF fuori dall'Abbazia
+  (Lv 18-21, coerenti col cap 21 della palestra) e i trainer di Percorso 3 (Lv 9-14): nessuno dei
+  due gruppi è a livello 30. Non trovato il gruppo che Luca descrive — potrebbe ricordare un numero
+  sbagliato o riferirsi a un punto diverso: serve il nome esatto del trainer per sistemarlo.
+- **NON fatto in questa sessione** (troppo grandi per il tempo disponibile, spiegati in chat):
+  eliminazione mosse alla 5ª mossa imparata (nuova UI scheda Pokémon), Pokémon che spariscono
+  durante le lotte (analisi + opzioni proposte, nessuna causa confermata), caricamento mappe lento
+  e qualità delle animazioni di battaglia (ragionamento scritto, nessuna implementazione).
+
+---
+
 ## Sessione 28 settembre 2026 (2) — Rivali in giro per il mondo, Donnie, blocco Sagra, Deoxys sospeso (MAI TESTATO dal vivo)
 
 - **Entrambi i rivali ora sfidabili in giro per il mondo**: Luca ha piazzato oggetti Tiled `RIVALE_UOMO`

@@ -1824,6 +1824,13 @@ const Battle = (function () {
   async function mostraSchermataLevelUp(ist, vecchie, nuove) {
     const box = $('levelup-box');
     if (!box) return;
+    // Su mobile il tasto [A] a schermo è SEMPRE coperto da #schermata-battaglia
+    // (z-index inferiore: gli altri avanzamenti funzionano solo perché si tocca
+    // direttamente il bottone/messaggio, mai il tasto A nascosto) — ma questo
+    // riquadro non aveva nessun target toccabile, quindi su mobile il gioco
+    // restava bloccato qui per sempre (bug segnalato da Luca). Il riquadro
+    // stesso ora fa da bottone "avanti", stesso trattamento del messaggio.
+    box.onclick = () => confermaCursore();
     const titolo = $('levelup-titolo');
     if (titolo) titolo.textContent = `${ist.nome} · statistiche`;
     const RIGHE = { hp: 'lv-hp', atk: 'lv-atk', def: 'lv-def', spa: 'lv-spa', spd: 'lv-spd', vel: 'lv-vel' };
@@ -2069,17 +2076,20 @@ const Battle = (function () {
     if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
     await assegnaExp(mio, exp);
 
-    // EXP condivisa con il resto della squadra (richiesta esplicita di
-    // Luca, come lo "Scambio Esperienza" sempre attivo dei giochi veri):
-    // chi ha sferrato il colpo decisivo ("mio") guadagna il pieno, gli
-    // altri in squadra il 55% (nella forbice "40/50% in meno" richiesta),
-    // in sordina — assegnaExp(..., silenzioso=true) non mostra il
-    // messaggio "guadagna X Punti Esperienza" né la barra/il riquadro
-    // statistiche, ma il "sale al livello" resta sempre visibile.
-    const expCondivisa = Math.max(1, Math.floor(exp * 0.55));
-    for (const compagno of statoGioco.squadra) {
-      if (compagno === mio || compagno.hpAttuale <= 0) continue;
-      await assegnaExp(compagno, expCondivisa, true);
+    // EXP condivisa con il resto della squadra (sess. 29 set 2026: diventata
+    // un'opzione, proposta la prima volta insieme alla scelta della
+    // difficoltà — vedi _sceltaRivale in app.js — e sempre disattivabile
+    // dal menu Opzioni). Chi ha sferrato il colpo decisivo ("mio") guadagna
+    // il pieno, gli altri in squadra il 55%, in sordina —
+    // assegnaExp(..., silenzioso=true) non mostra il messaggio "guadagna X
+    // Punti Esperienza" né la barra/il riquadro statistiche, ma il "sale al
+    // livello" resta sempre visibile.
+    if (statoGioco.opzioni && statoGioco.opzioni.expCondivisa) {
+      const expCondivisa = Math.max(1, Math.floor(exp * 0.55));
+      for (const compagno of statoGioco.squadra) {
+        if (compagno === mio || compagno.hpAttuale <= 0) continue;
+        await assegnaExp(compagno, expCondivisa, true);
+      }
     }
 
     // L'allenatore manda in campo il prossimo Pokémon, se ne ha ancora

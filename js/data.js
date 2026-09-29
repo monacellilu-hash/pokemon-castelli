@@ -181,7 +181,7 @@ const PALESTRE = [
     medaglia: 'Medaglia Icona',
     mtDonata: 'mt02',
     capopalestra: {
-      nome: 'Nilo',
+      nome: 'Igino',
       premioSoldi: 2100,
       squadra: [
         { id: 177, livello: 17 },  // Natu
@@ -192,7 +192,7 @@ const PALESTRE = [
       ],
       dialogoIntro: [
         'Benvenuto all\'Abbazia di San Nilo, pellegrino.',
-        'Sono Nilo: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente.',
+        'Sono Igino: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente.',
         'I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!'
       ],
       dialogoSconfitta: 'La tua mente è limpida come l\'acqua della Marana. La Medaglia Icona è tua.'
@@ -219,9 +219,9 @@ const PALESTRE = [
       { id: 'greg-grott-4', classe: 'Allievo', nome: 'Dario',
         squadra: [{ id: 64, livello: 18 }, { id: 325, livello: 19 }],
         premioSoldi: 400,
-        dialogoIntro: ['Sono l\'allievo avanzato di Nilo. Prima di parlare col maestro, rispondi a me!'],
+        dialogoIntro: ['Sono l\'allievo avanzato di Igino. Prima di parlare col maestro, rispondi a me!'],
         dialogoSconfitta: 'Il maestro avrà da ridire.',
-        dialogoDopo: ['Nilo è dentro. Buona fortuna, ne avrai bisogno.'] },
+        dialogoDopo: ['Igino è dentro. Buona fortuna, ne avrai bisogno.'] },
     ]
   },
   {
@@ -3009,7 +3009,7 @@ const OGGETTI = {
   mt01: { nome: 'MT01 — Foglielama', categoria: 'mt', mossa: 'razor-leaf', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Foglielama (Erba, potenza 55, alta percentuale di brutti colpi). Dono di Donnie, Palestra di Frascati.' },
   mt02: { nome: 'MT02 — Psiconda', categoria: 'mt', mossa: 'psybeam', prezzo: 0, icona: '💿',
-               descrizione: 'Insegna Psiconda (Psico, potenza 65, può confondere). Dono di Nilo, Palestra di Grottaferrata.' },
+               descrizione: 'Insegna Psiconda (Psico, potenza 65, può confondere). Dono di Igino, Palestra di Grottaferrata.' },
   mt03: { nome: 'MT03 — Idropulsar', categoria: 'mt', mossa: 'water-pulse', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Idropulsar (Acqua, potenza 60, può confondere). Dono di Moro, Palestra di Marino.' },
   mt04: { nome: 'MT04 — Fulmine', categoria: 'mt', mossa: 'thunderbolt', prezzo: 0, icona: '💿',

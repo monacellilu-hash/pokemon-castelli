@@ -9,6 +9,59 @@ const CHIAVE_SALVATAGGIO  = 'pkc_salvataggio';
 const PASSI_PER_CHECK     = 10;   // ogni quanti passi si fa il check incontro
 const MINUTI_PER_PASSO    = 1;    // minuti di gioco per ogni passo
 
+/* ----------------------------------------------------------
+   CIFRATURA DEL SALVATAGGIO (richiesta esplicita di Luca: "altrimenti
+   hackerabili"). Prima il salvataggio era JSON in chiaro in localStorage:
+   bastava aprire i DevTools per leggerlo e modificarlo al volo (soldi,
+   medaglie, oggetti…). Ora è cifrato con AES-GCM (Web Crypto, nativo del
+   browser, nessuna libreria esterna).
+   ATTENZIONE ai limiti onesti di questo approccio: è un gioco che gira
+   SOLO nel browser del giocatore — il codice sorgente (quindi anche la
+   chiave qui sotto) è comunque leggibile da chiunque apra i DevTools e
+   guardi questo file. Non è una vera segretezza crittografica (impossibile
+   lato client puro, senza un server), ma impedisce la modifica CASUALE e
+   veloce del salvataggio (copia-incolla di un valore in localStorage) —
+   che è il problema reale per un gioco offline come questo. Se un giorno
+   servirà davvero "inviolabile", serve un server che tenga la chiave.
+   I salvataggi vecchi (JSON in chiaro) restano leggibili: caricaPartita()
+   riconosce il prefisso "ENC1:" e, se assente, tratta il testo come JSON
+   in chiaro (migrazione automatica, una tantum: il prossimo salvataggio
+   sarà già cifrato). */
+const _SALVATAGGIO_PASSPHRASE = 'CastelliRomani-Salvataggio-v1';
+let _chiaveSalvataggioCache = null;
+
+async function _derivaChiaveSalvataggio() {
+  if (_chiaveSalvataggioCache) return _chiaveSalvataggioCache;
+  const hash = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(_SALVATAGGIO_PASSPHRASE));
+  _chiaveSalvataggioCache = await crypto.subtle.importKey('raw', hash, 'AES-GCM', false, ['encrypt', 'decrypt']);
+  return _chiaveSalvataggioCache;
+}
+
+function _bytesABase64(bytes) {
+  let bin = '';
+  bytes.forEach(b => { bin += String.fromCharCode(b); });
+  return btoa(bin);
+}
+function _base64ABytes(b64) {
+  return Uint8Array.from(atob(b64), c => c.charCodeAt(0));
+}
+
+async function _criptaSalvataggio(testoChiaro) {
+  const key = await _derivaChiaveSalvataggio();
+  const iv = crypto.getRandomValues(new Uint8Array(12));
+  const cifrato = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, key, new TextEncoder().encode(testoChiaro));
+  return 'ENC1:' + _bytesABase64(iv) + ':' + _bytesABase64(new Uint8Array(cifrato));
+}
+
+async function _decriptaSalvataggio(testoCifrato) {
+  const parti = testoCifrato.split(':');
+  const iv = _base64ABytes(parti[1]);
+  const dati = _base64ABytes(parti[2]);
+  const key = await _derivaChiaveSalvataggio();
+  const chiaro = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, key, dati);
+  return new TextDecoder().decode(chiaro);
+}
+
 // F14: il gioco gira sulle mappe Tiled. Tutto ciò che è legato alla MAPPA
 // (incontri, allenatori, oggetti, eventi) è gestito da map.js a tile.
 // Con questo flag il vecchio motore a coordinate lat/lon (OSM) resta spento.
@@ -101,14 +154,15 @@ function salvaPartita() {
   // Intenzionalmente vuota — vedi salvaPartitaOra().
 }
 
-function salvaPartitaOra() {
+async function salvaPartitaOra() {
   try {
     if (typeof GameMap !== 'undefined' && GameMap.posizioneAttualeSalvabile) {
       const p = GameMap.posizioneAttualeSalvabile();
       if (p) stato.mappaSalvata = p;
       if (GameMap.stackAttualeSalvabile) stato.mappaStackSalvata = GameMap.stackAttualeSalvabile();
     }
-    localStorage.setItem(CHIAVE_SALVATAGGIO, JSON.stringify(stato));
+    const cifrato = await _criptaSalvataggio(JSON.stringify(stato));
+    localStorage.setItem(CHIAVE_SALVATAGGIO, cifrato);
     return true;
   } catch (e) {
     console.warn('[Salvataggio] Impossibile salvare:', e.message);
@@ -116,10 +170,11 @@ function salvaPartitaOra() {
   }
 }
 
-function caricaPartita() {
+async function caricaPartita() {
   try {
-    const testo = localStorage.getItem(CHIAVE_SALVATAGGIO);
-    if (testo) {
+    const grezzo = localStorage.getItem(CHIAVE_SALVATAGGIO);
+    if (grezzo) {
+      const testo = grezzo.startsWith('ENC1:') ? await _decriptaSalvataggio(grezzo) : grezzo;
       const salvato = JSON.parse(testo);
       stato = { ...stato, ...salvato };
       // Migrazione retro-compatibile: vecchi salvataggi senza "tempo"
@@ -176,6 +231,7 @@ function caricaPartita() {
       if (!stato.opzioni || typeof stato.opzioni !== 'object') stato.opzioni = {};
       if (stato.opzioni.velocitaTesto === undefined) stato.opzioni.velocitaTesto = 'normale';
       if (stato.opzioni.animazioniBattaglia === undefined) stato.opzioni.animazioniBattaglia = true;
+      if (stato.opzioni.expCondivisa === undefined) stato.opzioni.expCondivisa = false;
       if (stato.flags.sagra                  === undefined) stato.flags.sagra                  = false;
       if (stato.flags.lugiaScena             === undefined) stato.flags.lugiaScena             = false;
       if (stato.flags.cotralAricciaDebellata === undefined) stato.flags.cotralAricciaDebellata = false;
@@ -1013,6 +1069,17 @@ async function _sceltaRivale(chi) {
   stato.difficolta = difficolta;
   stato.flags.difficoltaScelta = true;
   stato.rivale = { nome: dati.nome, idStarter: dati.idStarter, nomeStarter: dati.nomeStarter, gen: dati.gen };
+
+  // Esperienza condivisa (sess. 29 set 2026, richiesta esplicita di Luca):
+  // proposta una volta, proprio qui insieme alla scelta della difficoltà,
+  // come funzione IN PIÙ se la si vuole — mai obbligatoria. Resta comunque
+  // sempre attivabile/disattivabile in seguito dal menu Opzioni.
+  const scambioExp = await mostraScelta(
+    'Prima di partire: vuoi attivare l\'Esperienza Condivisa? I Pokémon in squadra guadagnano un po\' di EXP anche senza scendere in campo (il 55% di quella normale). Puoi cambiare idea quando vuoi dal menu Opzioni.',
+    'Sì, attivala', 'No, grazie'
+  );
+  stato.opzioni = stato.opzioni || {};
+  stato.opzioni.expCondivisa = (scambioExp === 1);
   salvaPartita();
 
   const nomeMioStarter = (stato.squadra[0] && stato.squadra[0].nome) || 'il tuo Pokémon';
@@ -4776,8 +4843,8 @@ function renderSalva(contenuto) {
       `<button id="btn-nuova-partita" class="pericolo">🗑 Nuova partita (cancella tutto)</button>` +
     `</div>`;
 
-  document.getElementById('btn-salva-ora').addEventListener('click', () => {
-    const ok = salvaPartitaOra();
+  document.getElementById('btn-salva-ora').addEventListener('click', async () => {
+    const ok = await salvaPartitaOra();
     mostraToast(ok ? '💾 Partita salvata!' : '⚠️ Errore nel salvataggio.');
   });
 
@@ -4928,14 +4995,17 @@ function esportaSalvataggio() {
 
 function importaSalvataggio(file) {
   const lettore = new FileReader();
-  lettore.onload = () => {
+  lettore.onload = async () => {
     try {
       const dati = JSON.parse(lettore.result);
       if (!dati || typeof dati !== 'object' || !dati.posizione || !Array.isArray(dati.squadra)) {
         mostraToast('⚠️ File non valido: non sembra un salvataggio di questo gioco.');
         return;
       }
-      localStorage.setItem(CHIAVE_SALVATAGGIO, JSON.stringify(dati));
+      // Il file esportato resta JSON in chiaro (comodo da leggere/backuppare),
+      // ma una volta importato torna a essere cifrato come ogni salvataggio.
+      const cifrato = await _criptaSalvataggio(JSON.stringify(dati));
+      localStorage.setItem(CHIAVE_SALVATAGGIO, cifrato);
       location.reload();
     } catch (e) {
       mostraToast('⚠️ File non leggibile: deve essere un JSON esportato dal gioco.');
@@ -5294,7 +5364,7 @@ function chiediNome() {
 // ── Avvio ────────────────────────────────────────────────────
 
 async function avvia() {
-  caricaPartita();
+  await caricaPartita();
 
   if (!stato.genere) {
     stato.genere = await scegliGenere();

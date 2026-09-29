@@ -218,6 +218,22 @@ const DATI_NPC = {
     dialogo: ['Casa del nipote del professore. Dicono sia abusiva, non entrerei fossi in te'],
   },
 
+  // Gate a nord di Borgata Tuscolana (sess. 29 set 2026, richiesta esplicita
+  // di Luca): 5 NPC in fila nel varco tra i due edifici, sotto il cartello
+  // "Percorso 1 - Frascati" — impediscono di lasciare la città prima di aver
+  // scelto lo starter dal Professore. Spariscono da soli (gate:true,
+  // condizione:starterScelto) appena lo scegli.
+  'gate_borgata_nord_1': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Aspetta! Non puoi andartene senza un Pokémon al tuo fianco.', 'Vai prima dal Professor Castagno, nel laboratorio qui in paese.'] },
+  'gate_borgata_nord_2': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['I Castelli sono pericolosi per chi viaggia da solo, senza un Pokémon!'] },
+  'gate_borgata_nord_3': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il laboratorio è qui in paese: il Professore ti aspetta.'] },
+  'gate_borgata_nord_4': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Torna indietro: prima lo starter, poi il viaggio!'] },
+  'gate_borgata_nord_5': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Nessuno passa di qui senza un Pokémon al fianco.'] },
+
   'prof_castagno': {
     sprite: 'Nuovo_professor_oak',   // sprite dedicato (prima era uno swap sul vecchio "npc Rivale")
     direzione: 'sud',
@@ -612,7 +628,7 @@ const DATI_NPC = {
     direzione: 'est',
     movimento: 'random',
     dialogo: [
-      'Nilo, il Capopalestra, medita all\'alba. Non sottovalutarlo: la sua mente è affilata.',
+      'Igino, il Capopalestra, medita all\'alba. Non sottovalutarlo: la sua mente è affilata.',
       'Contro gli Psico, porta Pokémon Buio o Coleottero, se sei furbo.',
     ],
   },
@@ -647,7 +663,7 @@ const DATI_NPC = {
     movimento: 'fisso',
     dialogo: [
       'Pace a te, pellegrino. Questa è l\'Abbazia di San Nilo.',
-      'La quiete della mente è la vera forza. Nilo te lo mostrerà.',
+      'La quiete della mente è la vera forza. Igino te lo mostrerà.',
     ],
   },
   // Porta dell'Abbazia presidiata dal Team GdF: BLOCCO che sparisce con 7 Medaglie

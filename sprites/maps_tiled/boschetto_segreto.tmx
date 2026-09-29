@@ -265,10 +265,10 @@
     <property name="vista" type="int" value="5"/>
    </properties>
   </object>
-  <object id="6" name="gate_npc" type="npc" x="351.439" y="638.877" width="32" height="32">
+  <object id="6" name="gate_npc" type="npc" x="351.439" y="674.877" width="32" height="32">
    <properties>
     <property name="condizione" value="post_lega"/>
-    <property name="direzione" value="sud"/>
+    <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="bosch_guardiano"/>
     <property name="sprite" value="NPC_GUARDIA"/>
@@ -306,7 +306,7 @@
   </object>
   <object id="11" name="bosch_fullrestore" type="oggetto" x="833.684" y="987.509" width="32" height="32">
    <properties>
-    <property name="contenuto" value="fullrestore"/>
+    <property name="contenuto" value="curatotale"/>
     <property name="id" value="bosch_fullrestore"/>
     <property name="quantita" type="int" value="1"/>
     <property name="type" value="oggetto"/>
@@ -314,7 +314,7 @@
   </object>
   <object id="12" name="bosch_rarecandy" type="oggetto" x="767.857" y="482.246" width="32" height="32">
    <properties>
-    <property name="contenuto" value="caramella_rara"/>
+    <property name="contenuto" value="rarecandy"/>
     <property name="id" value="bosch_rarecandy"/>
     <property name="quantita" type="int" value="1"/>
     <property name="type" value="oggetto"/>
