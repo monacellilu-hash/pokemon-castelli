@@ -1,0 +1,17 @@
+Grafica ripresa dal codice sorgente decompilato di Pokémon Smeraldo
+(progetto pubblico pret/pokeemerald, https://github.com/pret/pokeemerald),
+usato qui come materiale di riferimento per un progetto personale/non
+commerciale (vedi CLAUDE.md — vincoli legali).
+
+small_ember.png — graphics/battle_anims/sprites/small_ember.png
+  Foglio sprite reale usato in originale da Lanciafiamme (e da altre mosse
+  Fuoco). Ripulito dal colore di trasparenza (indice palette 0) in fase di
+  conversione, contenuto grafico invariato.
+
+Script di riferimento (per la coreografia, non incluso come file qui):
+  data/battle_anim_scripts.s -> Move_FLAMETHROWER, FlamethrowerCreateFlames
+  src/battle_anim_water.c    -> gFlamethrowerFlameSpriteTemplate,
+                                 AnimToTargetInSinWave (moto a "onda" verso
+                                 il bersaglio, usato anche da Idrocannone,
+                                 Raggio Segnale ecc. — stesso movimento,
+                                 riutilizzabile per altre mosse in futuro)

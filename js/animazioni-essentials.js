@@ -239,9 +239,139 @@ const AnimazioniEssentials = (function () {
     });
   }
 
-  function haAnimazione(nomeMossa) {
-    return !!trovaAnimazione(nomeMossa);
+  /* ══════════════════════════════════════════════════════════════
+     ANIMAZIONI "ROM" — prototipo (sess. 29 set 2026, richiesta di Luca).
+     A differenza di quelle sopra (fotogrammi pre-calcolati cel per cel,
+     estratti da Essentials, un fan-remake) queste riproducono il VERO
+     script di gioco di Pokémon Smeraldo, letto dalla decompilazione
+     pubblica pret/pokeemerald (github.com/pret/pokeemerald,
+     data/battle_anim_scripts.s + src/battle_anim_water.c): le particelle
+     vengono create una per una nel tempo, ognuna con un movimento
+     calcolato al volo invece che un fotogramma fisso — stessa grafica vera
+     (sprites/animazioni_mosse_rom/, ripulita solo dal colore di
+     trasparenza) e stessa coreografia (stesso numero di particelle, stessa
+     durata, stesso verso). Non è un'emulazione ciclo-esatta della console
+     (la matematica in virgola fissa del GBA qui è rifatta con Math.sin),
+     ma segue lo stesso script riga per riga.
+     Se Luca approva il risultato, questo diventa il modello per portare
+     altre mosse dallo stesso tipo di fonte (AnimToTargetInSinWave, il moto
+     "a onda verso il bersaglio" usato qui, è lo STESSO usato in originale
+     anche da Idrocannone/Raggio Segnale/Fanghiglia — nessun lavoro sprecato).
+     ══════════════════════════════════════════════════════════════ */
+  const CARTELLA_ROM = 'sprites/animazioni_mosse_rom/';
+  const cacheImmaginiRom = {};
+  function caricaImmagineRom(nomeFile) {
+    if (cacheImmaginiRom[nomeFile]) return cacheImmaginiRom[nomeFile];
+    const img = new Image();
+    img.src = CARTELLA_ROM + nomeFile;
+    const p = new Promise(res => { img.onload = res; img.onerror = res; });
+    cacheImmaginiRom[nomeFile] = { img, pronta: p };
+    return cacheImmaginiRom[nomeFile];
   }
 
-  return { gioca, haAnimazione };
+  // Un singolo "ember" di Lanciafiamme: parte dall'attaccante, viaggia in
+  // linea retta verso il bersaglio in 500ms (30 fotogrammi GBA a 60fps,
+  // esattamente come in originale), con un'oscillazione a onda perpendicolare
+  // al percorso (AnimToTargetInSinWave) e un ciclo di 3 fotogrammi (righe
+  // 1/2/3 del foglio, 32px ciascuna — le stesse usate in originale, tile
+  // 16/32/48) che cambia ogni 2 fotogrammi GBA (~33ms), proprio come lì.
+  function _emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, ampiezzaSegno, ritardoMs) {
+    return new Promise(resolve => {
+      const DURATA_MS = 500;
+      const FRAME_MS = 33; // 2 fotogrammi GBA a 60fps
+      const RIGHE = [32, 64, 96]; // pixel Y nel foglio (tile 16/32/48 * 8px)
+      const AMPIEZZA_PX = 16 * ampiezzaSegno; // onda perpendicolare, in coordinate canoniche 512x384
+      const inizio = performance.now() + ritardoMs;
+      function passo(ora) {
+        const t = ora - inizio;
+        if (t < 0) { requestAnimationFrame(passo); return; }
+        const frac = Math.min(1, t / DURATA_MS);
+        if (frac >= 1) { resolve(); return; }
+        const rigaIdx = Math.floor(t / FRAME_MS) % RIGHE.length;
+        const sy = RIGHE[rigaIdx];
+
+        // Posizione lungo la linea attaccante→bersaglio, più l'onda perpendicolare
+        const dx = arrivo.x - partenza.x, dy = arrivo.y - partenza.y;
+        const len = Math.hypot(dx, dy) || 1;
+        const perpX = -dy / len, perpY = dx / len;
+        const onda = Math.sin(Math.PI * frac) * AMPIEZZA_PX; // una sola "gobba", su o giù
+        const px = partenza.x + dx * frac + perpX * onda * scalaX;
+        const py = partenza.y + dy * frac + perpY * onda * scalaY;
+
+        ctx.save();
+        ctx.translate(px, py);
+        ctx.scale(scalaX, scalaY);
+        ctx.drawImage(img, 0, sy, 32, 32, -16, -16, 32, 32);
+        ctx.restore();
+        requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    });
+  }
+
+  async function _giocaFlamethrowerRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_ember.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+
+    const campoRect = canvas.getBoundingClientRect();
+    function centro(el) {
+      const r = el.getBoundingClientRect();
+      return { x: (r.left + r.width / 2) - campoRect.left, y: (r.top + r.height / 2) - campoRect.top };
+    }
+    const partenza = centro(attaccanteEl);
+    const arrivo = centro(bersaglioEl);
+
+    // Scuotimento leggero dell'attaccante (rincorsa), poi del bersaglio a
+    // metà animazione (colpito) — stesso ordine dello script originale
+    // (AnimTask_ShakeMon attaccante subito, bersaglio dopo 3 fiamme).
+    function scuoti(el, ampiezza, durataMs) {
+      if (!el) return;
+      const inizio = performance.now();
+      const originale = el.style.transform;
+      (function passo(ora) {
+        const t = ora - inizio;
+        if (t >= durataMs) { el.style.transform = originale; return; }
+        const dx = (Math.random() * 2 - 1) * ampiezza;
+        el.style.transform = `${originale} translateX(${dx}px)`;
+        requestAnimationFrame(passo);
+      })(performance.now());
+    }
+    scuoti(attaccanteEl, 2, 260);
+    setTimeout(() => scuoti(bersaglioEl, 3, 380), 260);
+
+    // 11 coppie di embers (come FlamethrowerCreateFlames × 11 nello script
+    // originale), ognuna sfasata di poco, alternando l'onda su/giù.
+    const attese = [];
+    for (let i = 0; i < 11; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 66));
+      attese.push(_emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, -segno, i * 66 + 33));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  const ANIMAZIONI_ROM = { FLAMETHROWER: _giocaFlamethrowerRom };
+
+  function trovaAnimazioneRom(nomeMossa) {
+    return ANIMAZIONI_ROM[chiaveMossa(nomeMossa)] || null;
+  }
+
+  function haAnimazione(nomeMossa) {
+    return !!trovaAnimazioneRom(nomeMossa) || !!trovaAnimazione(nomeMossa);
+  }
+
+  // gioca() esistente rinominato internamente; il nuovo gioca() prova prima
+  // la versione ROM (se questa mossa ce l'ha), altrimenti quella Essentials.
+  const giocaEssentials = gioca;
+  async function giocaConPriorita(nomeMossa, attaccanteEl, bersaglioEl) {
+    const rom = trovaAnimazioneRom(nomeMossa);
+    if (rom) { await rom(attaccanteEl, bersaglioEl); return; }
+    await giocaEssentials(nomeMossa, attaccanteEl, bersaglioEl);
+  }
+
+  return { gioca: giocaConPriorita, haAnimazione };
 })();

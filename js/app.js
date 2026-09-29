@@ -96,7 +96,7 @@ let stato = {
   allenatoriBattuti: [],    // id degli allenatori di percorso già sconfitti (F9)
   levelCap:          LEVEL_CAP_INIZIALE,
   medaglie:          [],    // id delle palestre battute
-  velocita:          1,     // booster di velocità: 1, 2, 3 o 5
+  velocita:          1,     // booster di velocità in battaglia: 1, 2 o 3
   rivale:            null,
   legCatturati:      [],    // F11: ID dei leggendari catturati (permanente)
   legCooldown:       null,  // F11: { id, zonaId } — impedisce il re-trigger immediato
@@ -4925,14 +4925,18 @@ async function inizializzaSquadraTest() {
     const pkm = await Battle.creaIstanza(id, 100);
     if (pkm) {
       pkm.hpAttuale = pkm.hpMax; // HP pieni
-      // Arcanine (id 59): forza Flamethrower in squadra per testare
-      // l'animazione mossa appena allineata a Essentials (sessione allineamento F14).
+      // Arcanine (id 59): forza Flamethrower su TUTTE le mosse per testare
+      // le animazioni (sess. 29 set 2026: prima la mettevo solo in mosse[0],
+      // ma se il fetch falliva o l'array aveva un'altra forma restava con
+      // Rogodenti/le mosse di livello e Luca non se ne accorgeva finché non
+      // provava — meglio un Arcanine "monotematico" ma sicuro al 100%).
       if (id === 59) {
         try {
           const fiammate = await PokeAPI.getMossa('flamethrower');
-          pkm.mosse[0] = { ...fiammate, pp: fiammate.ppMax };
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fiammate, pp: fiammate.ppMax }));
         } catch (e) {
           console.warn('[Squadra test] Impossibile insegnare Flamethrower ad Arcanine:', e.message);
+          mostraToast('⚠️ Flamethrower non insegnato ad Arcanine (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
       stato.squadra.push(pkm);
@@ -5424,7 +5428,11 @@ async function avvia() {
   document.querySelectorAll('#menu-tabs .tab').forEach(tab =>
     tab.addEventListener('click', () => mostraSezioneMenu(tab.dataset.sezione)));
 
-  const VELOCITA_CICLO = [1, 2, 3, 5];
+  // Massimo x3 (richiesta esplicita di Luca, sess. 29 set 2026: prima
+  // arrivava a x5). Tocca SOLO i tempi dei messaggi/animazioni in battaglia
+  // (vedi js/battle.js, statoGioco.velocita) — il movimento sulla mappa e i
+  // dialoghi fuori dalle lotte non lo leggono affatto, restano invariati.
+  const VELOCITA_CICLO = [1, 2, 3];
   const btnVelocita = document.getElementById('btn-velocita');
   function aggiornaEtichettaVelocita() {
     btnVelocita.textContent = `⏩ x${stato.velocita}`;

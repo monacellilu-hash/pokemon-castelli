@@ -75,7 +75,6 @@ const DATI_INCONTRI = {
       { id: 265, min: 2, max: 5, rate: 16 },   // Wurmple (Gen3)
       { id: 276, min: 3, max: 6, rate: 14 },   // Taillow (Gen3)
       { id: 263, min: 3, max: 5, rate: 14 },   // Zigzagoon (Gen3)
-      { id: 4,   min: 5, max: 6, rate: 3 },    // Charmander (starter rarissimo)
     ],
   },
 
@@ -100,7 +99,6 @@ const DATI_INCONTRI = {
       { id: 265, min: 8,  max: 10, rate: 16 },  // Wurmple (Gen3)
       { id: 290, min: 8,  max: 10, rate: 14 },  // Nincada (Gen3)
       { id: 283, min: 9,  max: 11, rate: 12 },  // Surskit (Gen3)
-      { id: 252, min: 9,  max: 11, rate: 3 },   // Treecko (starter rarissimo)
       // Celebi: gestito a parte (logica speciale 3% post-Solitario).
     ],
   },
@@ -119,7 +117,6 @@ const DATI_INCONTRI = {
       { id: 191, min: 5, max: 7, rate: 16 },   // Sunkern (Gen2)
       { id: 285, min: 5, max: 8, rate: 16 },   // Shroomish (Gen3)
       { id: 315, min: 6, max: 8, rate: 10 },   // Roselia (Gen3, rara)
-      { id: 1,   min: 6, max: 8, rate: 3 },    // Bulbasaur (starter rarissimo)
     ],
   },
 
@@ -137,7 +134,6 @@ const DATI_INCONTRI = {
       { id: 261, min: 10, max: 12, rate: 15 },  // Poochyena (Gen3)
       { id: 263, min: 9,  max: 11, rate: 15 },  // Zigzagoon (Gen3)
       { id: 273, min: 11, max: 13, rate: 10 },  // Seedot (Gen3)
-      { id: 1,   min: 11, max: 13, rate: 3 },   // Bulbasaur (starter rarissimo)
     ],
   },
 
@@ -159,7 +155,6 @@ const DATI_INCONTRI = {
       { id: 339, min: 27, max: 32, rate: 14 },  // Barboach
       { id: 118, min: 27, max: 32, rate: 12 },  // Goldeen
       { id: 130, min: 30, max: 35, rate: 6 },   // Gyarados (raro, forte)
-      { id: 7,   min: 28, max: 32, rate: 3 },   // Squirtle (starter rarissimo)
     ],
   },
 
@@ -179,7 +174,6 @@ const DATI_INCONTRI = {
       { id: 278, min: 11, max: 15, rate: 15 },  // Wingull (Gen3)
       { id: 283, min: 12, max: 16, rate: 10 },  // Surskit (Gen3)
       { id: 54,  min: 12, max: 16, rate: 12 },  // Psyduck
-      { id: 158, min: 12, max: 15, rate: 3 },   // Totodile (starter rarissimo)
     ],
   },
 
@@ -199,7 +193,6 @@ const DATI_INCONTRI = {
       { id: 309, min: 13, max: 17, rate: 15 },  // Electrike (Gen3)
       { id: 311, min: 14, max: 18, rate: 10 },  // Plusle (Gen3)
       { id: 312, min: 14, max: 18, rate: 10 },  // Minun (Gen3)
-      { id: 155, min: 14, max: 17, rate: 3 },   // Cyndaquil (starter rarissimo)
     ],
   },
 
@@ -218,7 +211,6 @@ const DATI_INCONTRI = {
       { id: 188, min: 14, max: 17, rate: 12 },  // Skiploom (Gen2, evoluto)
       { id: 44,  min: 14, max: 17, rate: 10 },  // Gloom (evoluto)
       { id: 214, min: 14, max: 17, rate: 5 },   // Heracross (raro, tra i filari)
-      { id: 152, min: 13, max: 16, rate: 3 },   // Chikorita (starter rarissimo)
     ],
   },
 
@@ -236,7 +228,6 @@ const DATI_INCONTRI = {
       { id: 183, min: 12, max: 16, rate: 18 },  // Marill (Gen2)
       { id: 270, min: 12, max: 16, rate: 18 },  // Lotad (Gen3)
       { id: 90,  min: 14, max: 18, rate: 12 },  // Shellder
-      { id: 7,   min: 15, max: 18, rate: 3 },   // Squirtle (starter rarissimo)
     ],
   },
 
@@ -271,10 +262,8 @@ const DATI_INCONTRI = {
       { id: 116, min: 19, max: 24, rate: 20 },  // Horsea
       { id: 170, min: 18, max: 23, rate: 20 },  // Chinchou (Gen2)
       { id: 194, min: 20, max: 25, rate: 18 },  // Wooper (Gen2)
-      { id: 258, min: 20, max: 25, rate: 12 },  // Mudkip (Gen3, raro)
       { id: 318, min: 24, max: 28, rate: 10 },  // Carvanha (Gen3)
       { id: 130, min: 25, max: 28, rate: 5 },   // Gyarados (raro, forte)
-      { id: 7,   min: 21, max: 25, rate: 3 },   // Squirtle (starter rarissimo)
     ],
   },
 
@@ -291,7 +280,6 @@ const DATI_INCONTRI = {
       { id: 222, min: 17, max: 21, rate: 12 },  // Corsola (Gen2)
       { id: 170, min: 18, max: 22, rate: 12 },  // Chinchou (Gen2)
       { id: 318, min: 19, max: 23, rate: 8 },   // Carvanha (Gen3, raro)
-      { id: 258, min: 18, max: 22, rate: 3 },   // Mudkip (starter rarissimo)
     ],
   },
 

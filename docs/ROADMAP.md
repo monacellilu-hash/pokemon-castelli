@@ -4,6 +4,34 @@
 
 ---
 
+## Sessione 29 settembre 2026 (4) — Prima animazione da ROM vera (Lanciafiamme), starter tolti dall'erba alta
+
+- **Lanciafiamme ricreato dalla fonte vera** (non più Essentials): scaricati script e grafica reali di
+  Pokémon Smeraldo dalla decompilazione pubblica pret/pokeemerald (github.com/pret/pokeemerald) —
+  `data/battle_anim_scripts.s` (Move_FLAMETHROWER, 11 raffiche di 2 embers) e
+  `src/battle_anim_water.c` (AnimToTargetInSinWave: linea retta verso il bersaglio + onda
+  perpendicolare — STESSO movimento usato in originale anche da Idrocannone/Raggio Segnale/Fanghiglia,
+  riusabile). Grafica vera in `sprites/animazioni_mosse_rom/small_ember.png` (ripulita solo dal colore
+  di trasparenza). Nuovo "livello" `ANIMAZIONI_ROM` in js/animazioni-essentials.js: se una mossa ce
+  l'ha ha priorità sul vecchio sistema Essentials, altrimenti si ricade su quello come prima.
+  **Confermato funzionante da Luca** (test su Arcanine, modalità test — vedi sotto). Prossimo passo:
+  altre mosse con lo stesso procedimento, poi Poké Ball (lancio/cattura), sfondi e posizioni sprite.
+- **Fix squadra TEST**: Arcanine doveva già avere Lanciafiamme forzato (sessione precedente), ma lo
+  scriveva solo in mosse[0] — se il fetch falliva restava con le mosse normali (Rogodenti compreso) e
+  non si vedeva finché non si provava. Ora forzato su tutte e 4 le mosse, con avviso a schermo se il
+  fetch fallisce invece di fallire in silenzio.
+- **Velocità battaglia**: tetto massimo abbassato da x5 a x3 (richiesta esplicita). Confermato che tocca
+  solo i tempi di messaggi/animazioni in battaglia, mai il movimento sulla mappa o i dialoghi fuori dalle lotte.
+- **I 9 starter tolti dall'erba alta**: erano già nella tabella incontri live (`dati/incontri.js`) da
+  prima di questa sessione, mai stati esclusi — trovato da Luca ("ho trovato Charmander nell'erba
+  alta"). Rimosse tutte e 12 le voci (Bulbasaur/Charmander/Squirtle/Chikorita/Cyndaquil/Totodile/
+  Treecko/Torchic/Mudkip) dalle rispettive zone: li posiziona lui a mano, come deciso in precedenza.
+- **Nota**: il muro attorno al guardiano del Boschetto Segreto (sessione precedente) risulta sparito
+  dal file — probabile riapertura/resalvataggio di Tiled con una copia non aggiornata, non una mia
+  modifica. Da rifare se Luca conferma di volerlo ancora.
+
+---
+
 ## Sessione 29 settembre 2026 (3) — Follower su Pokémon esausto, audit stati/meteo su Bulbapedia
 
 - **Follower**: mostrava sempre `stato.squadra[0]`, anche se esausto dopo una lotta. Ora segue il
