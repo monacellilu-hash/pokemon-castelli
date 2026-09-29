@@ -796,7 +796,11 @@ function mostraScelta(messaggio, testo1, testo2) {
    della finestra di sistema, navigabile anche da tastiera.
    ============================================================ */
 
-function mostraSceltaLista(messaggio, opzioni) {
+// descrizioni (opzionale, array parallelo a opzioni): se presente, mostra a
+// sinistra un pannello con la descrizione dell'opzione sotto cursore —
+// richiesto per la schermata "dimentica una mossa" (sess. 29 set 2026),
+// riusabile per qualunque altra lista che abbia senso descrivere.
+function mostraSceltaLista(messaggio, opzioni, descrizioni) {
   return new Promise(resolve => {
     let overlay = document.getElementById('overlay-scelta-lista');
     if (!overlay) {
@@ -807,16 +811,24 @@ function mostraSceltaLista(messaggio, opzioni) {
         'display:flex;align-items:center;justify-content:center;';
       document.body.appendChild(overlay);
     }
+    const conDescrizione = Array.isArray(descrizioni);
     overlay.innerHTML = `
       <div style="background:linear-gradient(180deg,#3858a8,#0c1840);
                   border:2px solid #f0f4ff;border-radius:2px;
-                  padding:16px;max-width:420px;width:90%;text-align:center;color:#f0f4ff;">
+                  padding:16px;max-width:${conDescrizione ? 640 : 420}px;width:90%;text-align:center;color:#f0f4ff;">
         <p style="margin:0 0 14px;font-size:14px;line-height:1.5;
                   font-family:Arial,sans-serif;">${messaggio}</p>
-        <div id="scelta-lista-righe" style="display:flex;flex-direction:column;
-                  max-height:50vh;overflow-y:auto;"></div>
+        <div style="display:flex;gap:14px;text-align:left;">
+          ${conDescrizione ? `<div id="scelta-lista-descrizione" style="flex:1;min-width:0;
+                      background:rgba(0,0,0,.25);border:1px solid #4a5a8a;border-radius:4px;
+                      padding:10px;font-family:Arial,sans-serif;font-size:12px;line-height:1.6;
+                      white-space:pre-line;"></div>` : ''}
+          <div id="scelta-lista-righe" style="${conDescrizione ? 'flex:1;min-width:0;' : 'width:100%;'}
+                      display:flex;flex-direction:column;max-height:50vh;overflow-y:auto;"></div>
+        </div>
       </div>`;
     const cont = overlay.querySelector('#scelta-lista-righe');
+    const descBox = overlay.querySelector('#scelta-lista-descrizione');
     const tutte = [...opzioni, 'Annulla'];
     const righe = tutte.map((testo, i) => {
       const riga = document.createElement('div');
@@ -824,6 +836,7 @@ function mostraSceltaLista(messaggio, opzioni) {
         "font-family:'Press Start 2P',monospace;color:#f0f4ff;";
       riga.innerHTML = `<span class="scelta-lista-cursore">&nbsp;&nbsp;</span>${testo}`;
       riga.onclick = () => scegli(i);
+      riga.onmouseenter = () => { if (conDescrizione) { cursore = i; aggiornaCursore(); } };
       cont.appendChild(riga);
       return riga;
     });
@@ -836,6 +849,7 @@ function mostraSceltaLista(messaggio, opzioni) {
         r.querySelector('.scelta-lista-cursore').textContent = sel ? '▶ ' : '  ';
       });
       righe[cursore].scrollIntoView({ block: 'nearest' });
+      if (descBox) descBox.textContent = (cursore < descrizioni.length) ? (descrizioni[cursore] || '') : '';
     }
     function scegli(i) {
       overlay.style.display = 'none';

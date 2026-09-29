@@ -20,6 +20,108 @@ const Battle = (function () {
   // Scorciatoia per prendere un elemento della pagina
   function $(id) { return document.getElementById(id); }
 
+  /* ----------------------------------------------------------
+     CACHE LOCALE + RETRY per gli sprite di battaglia (sess. 29 set 2026,
+     bug segnalato da Luca: "i Pokémon spariscono ogni tanto"). Gli sprite
+     sono <img> puntati a URL remoti di PokéAPI: se la rete ha un intoppo,
+     o quel servizio gratuito rallenta/non risponde, l'immagine resta vuota
+     e sembra che il Pokémon sia sparito. Due contromisure, entrambe senza
+     bisogno di far scaricare nulla al giocatore:
+     (a) ogni sprite scaricato una volta finisce in IndexedDB (persistente
+         nel browser, sopravvive a chiusure/ricariche): dalla seconda volta
+         in poi si legge da lì, zero rete;
+     (b) se lo scarico fallisce o impiega più di 4 secondi, si ritenta
+         fino a 3 volte prima di ripiegare sull'assegnazione diretta del
+         browser (comportamento di prima, sempre meglio di niente).
+     Se IndexedDB non è disponibile (privacy mode molto restrittiva ecc.)
+     si salta silenziosamente la cache e resta solo il retry. ---------- */
+  const _CACHE_SPRITE_DB    = 'pkc-sprite-cache';
+  const _CACHE_SPRITE_STORE = 'immagini';
+  let _cacheSpriteDbPromise = null;
+
+  function _apriCacheSprite() {
+    if (_cacheSpriteDbPromise) return _cacheSpriteDbPromise;
+    _cacheSpriteDbPromise = new Promise(resolve => {
+      if (!('indexedDB' in window)) { resolve(null); return; }
+      let richiesta;
+      try { richiesta = indexedDB.open(_CACHE_SPRITE_DB, 1); }
+      catch (e) { resolve(null); return; }
+      richiesta.onupgradeneeded = () => { richiesta.result.createObjectStore(_CACHE_SPRITE_STORE); };
+      richiesta.onsuccess = () => resolve(richiesta.result);
+      richiesta.onerror = () => resolve(null);
+    });
+    return _cacheSpriteDbPromise;
+  }
+
+  async function _leggiSpriteDaCache(url) {
+    const db = await _apriCacheSprite();
+    if (!db) return null;
+    return new Promise(resolve => {
+      try {
+        const tx = db.transaction(_CACHE_SPRITE_STORE, 'readonly');
+        const richiesta = tx.objectStore(_CACHE_SPRITE_STORE).get(url);
+        richiesta.onsuccess = () => resolve(richiesta.result || null);
+        richiesta.onerror = () => resolve(null);
+      } catch (e) { resolve(null); }
+    });
+  }
+
+  async function _scriviSpriteInCache(url, blob) {
+    const db = await _apriCacheSprite();
+    if (!db) return;
+    try {
+      const tx = db.transaction(_CACHE_SPRITE_STORE, 'readwrite');
+      tx.objectStore(_CACHE_SPRITE_STORE).put(blob, url);
+    } catch (e) { /* cache piena/non disponibile: non deve mai bloccare la lotta */ }
+  }
+
+  // Imposta lo sprite di un <img> di battaglia con cache locale + retry.
+  // url vuoto = svuota l'elemento (stesso comportamento di sempre, resta
+  // sincrono: niente da scaricare o cercare in cache).
+  function impostaSpriteConCache(elId, url) {
+    const el = $(elId);
+    if (!el) return;
+    if (!url) { el.src = ''; return; }
+    const mioUrl = url; // richiesta più recente per QUESTO elemento (vedi sotto)
+    el.dataset.spriteUrl = mioUrl;
+
+    const TENTATIVI = 3, TIMEOUT_MS = 4000;
+    (async () => {
+      // Se nel frattempo qualcun altro ha richiesto un altro sprite per lo
+      // stesso <img> (cambio Pokémon rapido), questa risposta è superata:
+      // non sovrascrivere con uno sprite vecchio arrivato in ritardo.
+      const ancoraValido = () => el.dataset.spriteUrl === mioUrl;
+
+      const cache = await _leggiSpriteDaCache(mioUrl).catch(() => null);
+      if (cache) {
+        if (ancoraValido()) el.src = URL.createObjectURL(cache);
+        return;
+      }
+
+      for (let tentativo = 1; tentativo <= TENTATIVI; tentativo++) {
+        if (!ancoraValido()) return;
+        try {
+          const risposta = await Promise.race([
+            fetch(mioUrl),
+            new Promise((_, rej) => setTimeout(() => rej(new Error('timeout sprite')), TIMEOUT_MS)),
+          ]);
+          if (!risposta.ok) throw new Error('http ' + risposta.status);
+          const blob = await risposta.blob();
+          _scriviSpriteInCache(mioUrl, blob);   // in background, non blocca
+          if (ancoraValido()) el.src = URL.createObjectURL(blob);
+          return;
+        } catch (e) {
+          if (tentativo === TENTATIVI && ancoraValido()) {
+            // Ultimo tentativo: ripiega sull'assegnazione diretta nativa del
+            // browser (magari ha già una sua cache HTTP che qui non vediamo)
+            // invece di lasciare lo sprite vuoto per sempre.
+            el.src = mioUrl;
+          }
+        }
+      }
+    })();
+  }
+
   // ---- Stato interno della battaglia ----
   let mio = null;          // il Pokémon del giocatore in campo
   let nemico = null;       // il Pokémon avversario in campo
@@ -592,8 +694,8 @@ const Battle = (function () {
   // Non nascondere invece nei casi senza animazione d'ingresso (es. evoluzione).
   function aggiornaSprite(nascondiSubito) {
     if (modoDoppia) { aggiornaSpriteDoppia(); return; }
-    $('nemico-sprite').src = nemico.sprite.fronte || '';
-    $('giocatore-sprite').src = mio.sprite.retro || mio.sprite.fronte || '';
+    impostaSpriteConCache('nemico-sprite', nemico.sprite.fronte || '');
+    impostaSpriteConCache('giocatore-sprite', mio.sprite.retro || mio.sprite.fronte || '');
     applicaOffsetSpecie($('nemico-sprite'), nemico.id, 'front');
     applicaOffsetSpecie($('giocatore-sprite'), mio.id, mio.sprite.retro ? 'back' : 'front');
     if (nascondiSubito) {
@@ -1865,9 +1967,63 @@ const Battle = (function () {
         ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
         await di(`${ist.nome} impara ${dettagli.nomeIt}!`, true);   // richiede [A], niente auto-avanti
       } else {
-        await di(`${ist.nome} vorrebbe imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`, true);
+        // 4 mosse già conosciute: stesso flusso dei giochi veri — prima si
+        // chiede se sostituirne una, poi (se sì) si apre la lista delle 5
+        // mosse (le 4 conosciute + quella nuova) con cursore e descrizione
+        // a sinistra (sess. 29 set 2026, richiesta esplicita di Luca).
+        await di(`${ist.nome} vuole imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`, true);
+        await sostituisciMossaConScelta(ist, dettagli);
       }
     }
+  }
+
+  // Formatta la "scheda" di una mossa per il pannello descrizione a
+  // sinistra della lista (stessi dati mostrati nella Sommario dei giochi
+  // veri: tipo, categoria, potenza, precisione, PP — niente testo Pokédex
+  // per le mosse, PokeAPI non lo fornisce come per i Pokémon/abilità).
+  function _descrizioneMossa(m) {
+    const tipoIt = (typeof TIPO_NOMI !== 'undefined' && TIPO_NOMI[m.tipo]) || m.tipo;
+    const classeIt = { physical: 'Fisica', special: 'Speciale', status: 'Stato' }[m.classe] || m.classe;
+    const potenza = m.potenza != null ? m.potenza : '—';
+    const precisione = m.precisione != null ? m.precisione + '%' : '—';
+    return `Tipo: ${tipoIt}\nCategoria: ${classeIt}\nPotenza: ${potenza}\nPrecisione: ${precisione}\nPP: ${m.ppMax}/${m.ppMax}`;
+  }
+
+  // Sostituzione di una mossa quando il Pokémon ne conosce già 4 (sess. 29
+  // set 2026): stesso flusso dei giochi veri — prima Sì/No, poi (se sì) la
+  // lista delle 5 mosse (le 4 conosciute + la nuova) con cursore e
+  // descrizione a sinistra; scegliendo la nuova non cambia nulla (è già
+  // "in cima" alla lista, per coerenza con la Sommario reale che la mostra
+  // per prima), scegliendo "Annulla" la mossa nuova non si impara, esattamente
+  // come nei giochi originali.
+  async function sostituisciMossaConScelta(ist, nuova) {
+    if (typeof mostraScelta !== 'function' || typeof mostraSceltaLista !== 'function') return;
+    const conferma = await mostraScelta(
+      `Vuoi che ${ist.nome} dimentichi una mossa per imparare ${nuova.nomeIt}?`, 'Sì', 'No'
+    );
+    if (conferma !== 1) {
+      await di(`${ist.nome} non ha imparato ${nuova.nomeIt}.`, true);
+      return;
+    }
+
+    const nuovaConPp = { ...nuova, pp: nuova.ppMax };
+    const elenco = [nuovaConPp, ...ist.mosse];   // la nuova per prima, come nella Sommario reale
+    const nomi = elenco.map((m, i) => i === 0 ? `${m.nomeIt} (NUOVA)` : m.nomeIt);
+    const descrizioni = elenco.map(_descrizioneMossa);
+
+    const scelta = await mostraSceltaLista(
+      `Quale mossa deve dimenticare ${ist.nome}?`, nomi, descrizioni
+    );
+    if (scelta <= 0) {
+      // Annulla, oppure ha "scelto" la mossa nuova stessa (indice 0): in
+      // entrambi i casi non cambia nulla, la mossa nuova non si impara.
+      await di(`${ist.nome} non ha imparato ${nuova.nomeIt}.`, true);
+      return;
+    }
+    const idxDaSostituire = scelta - 1;   // -1 perché "nuova" occupa la posizione 0 nell'elenco mostrato
+    const vecchia = ist.mosse[idxDaSostituire];
+    ist.mosse[idxDaSostituire] = nuovaConPp;
+    await di(`Uno, due e... via! ${ist.nome} ha dimenticato ${vecchia.nomeIt || vecchia.nome} e ha imparato ${nuova.nomeIt}!`, true);
   }
 
   // Evoluzione per livello (F6): se la specie si evolve a questo
@@ -2560,14 +2716,14 @@ const Battle = (function () {
       const suf = i === 0 ? '' : '-2';
       const n = doppiaNemiciAttivi[i];
       if (n) {
-        $('nemico-sprite' + suf).src = n.sprite.fronte || '';
+        impostaSpriteConCache('nemico-sprite' + suf, n.sprite.fronte || '');
         applicaOffsetSpecie($('nemico-sprite' + suf), n.id, 'front');
       } else {
         $('nemico-sprite' + suf).src = '';
       }
       const m = doppiaMieiAttivi[i];
       if (m) {
-        $('giocatore-sprite' + suf).src = m.sprite.retro || m.sprite.fronte || '';
+        impostaSpriteConCache('giocatore-sprite' + suf, m.sprite.retro || m.sprite.fronte || '');
         applicaOffsetSpecie($('giocatore-sprite' + suf), m.id, m.sprite.retro ? 'back' : 'front');
       } else {
         $('giocatore-sprite' + suf).src = '';

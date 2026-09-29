@@ -1807,6 +1807,62 @@ const DATI_TRAINER = {
     premio: 480,
   },
 
+  /* ── PERCORSO 2 — Via Frascati → Grottaferrata, Lv 7-11 (sess. 29 set 2026) ──
+     6 allenatori GIÀ piazzati su Tiled (percorso_2.tmj, id "all-fg-1".."all-fg-6")
+     ma SENZA nessuna voce qui: DATI_TRAINER[id] tornava undefined e
+     _avviaLottaTrainer li saltava in silenzio — presenti sulla mappa ma
+     impossibili da sfidare. Dati/dialoghi recuperati dal vecchio elenco
+     lat/lon in js/data.js (RIVALE_TAPPE ecc., pre-Tiled, mai più letto dal
+     motore) e riportati qui in formato vero. */
+  'all-fg-1': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 4,
+    classe: 'Escursionista', nome: 'Graziella',
+    squadra: [{ id: 16, livello: 7 }, { id: 19, livello: 8 }],
+    dialogo_prima: 'Scendo da Frascati a Grottaferrata a piedi ogni giorno. Tu fai lo stesso? Allora sfida!',
+    dialogo_dopo: 'Sentiero libero.',
+    premio: 380,
+  },
+  'all-fg-2': {
+    sprite: 'trainer_LASS', ritratto: 'LASS', vista: 5,
+    classe: 'Raccoglitrice', nome: 'Iva',
+    squadra: [{ id: 43, livello: 8 }, { id: 187, livello: 8 }],
+    dialogo_prima: 'Raccolgo olive e castagne su questa collina. E alleno Pokémon Erba tra un raccolto e l\'altro!',
+    dialogo_dopo: 'Raccolta magra.',
+    premio: 400,
+  },
+  'all-fg-3': {
+    sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 15,
+    classe: 'Paesaggista', nome: 'Erminio',
+    squadra: [{ id: 163, livello: 9 }, { id: 69, livello: 9 }],
+    dialogo_prima: 'Dipingo i paesaggi dei Castelli. Questo tratto è bellissimo. Tu invece sei un ostacolo!',
+    dialogo_dopo: 'Aggiunto alla tela come vincitore.',
+    premio: 420,
+  },
+  'all-fg-4': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    classe: 'Ciclista', nome: 'Pia',
+    squadra: [{ id: 163, livello: 10 }, { id: 16, livello: 10 }],
+    dialogo_prima: 'Scendo in bici! Non frenare, sfida!',
+    dialogo_dopo: 'Frenata d\'emergenza.',
+    premio: 440,
+  },
+  'all-fg-5': {
+    sprite: 'trainer_LASS', ritratto: 'LASS', vista: 4,
+    classe: 'Contadina', nome: 'Assuntina',
+    squadra: [{ id: 43, livello: 10 }, { id: 44, livello: 11 }],
+    dialogo_prima: 'Coltivo questo terreno da una vita. E alleno Pokémon Erba come coltivo: con amore e forza!',
+    dialogo_dopo: 'Il campo cede.',
+    premio: 460,
+  },
+  'all-fg-6': {
+    sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 5,
+    classe: 'Turista con mappa', nome: 'Rudolf',
+    squadra: [{ id: 161, livello: 11 }, { id: 263, livello: 11 }],
+    dialogo_prima: 'Sto cercando l\'Abbazia di San Nilo sulla mappa. Mentre aspetto ti sfido!',
+    dialogo_dopo: 'Almeno ho trovato un\'altra cosa.',
+    premio: 480,
+  },
+
   /* ── PERCORSO 3 — campagna verso il lago (Grottaferrata → Marino), Lv 9-14 ──
      8 allenatori sul tracciato + 2 nella zona laterale sbloccabile con MN Forza
      (all-gm-extra-1/2). Squadre e livelli da PROMPT_CLAUDE_CODE_aggiornamenti (Mod 2A). */

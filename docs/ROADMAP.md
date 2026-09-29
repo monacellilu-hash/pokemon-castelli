@@ -4,6 +4,36 @@
 
 ---
 
+## Sessione 29 settembre 2026 (2) — Sostituzione mosse, cache sprite battaglia, fix Percorso 2, gate Boschetto
+
+- **Sostituzione mosse alla 4ª già conosciuta** (`sostituisciMossaConScelta` in js/battle.js): stesso
+  flusso dei giochi veri — Sì/No, poi lista delle 5 mosse (le 4 conosciute + la nuova, con la nuova in
+  cima) con cursore e pannello descrizione (tipo/categoria/potenza/precisione/PP) a sinistra, riusando
+  e potenziando `mostraSceltaLista` (js/app.js) con un 3° parametro opzionale `descrizioni` — retrocompatibile,
+  tutti gli altri usi esistenti (Riapprendi Mosse) restano identici. Annullare o riselezionare la mossa
+  nuova stessa = non si impara nulla, come negli originali.
+- **Cache locale + retry per gli sprite di battaglia** (`impostaSpriteConCache` in js/battle.js): gli
+  sprite sono `<img>` puntati a URL remoti di PokéAPI, mai scaricati in locale — un intoppo di rete li
+  lasciava vuoti ("i Pokémon spariscono"). Ora: 1) ogni sprite scaricato finisce in IndexedDB, dalla
+  seconda volta zero rete; 2) se il download fallisce o supera 4s si ritenta fino a 3 volte prima di
+  ripiegare sull'assegnazione diretta di prima. Applicato a tutti e 4 i punti che assegnano un URL vero
+  (singola + doppia). Se IndexedDB non è disponibile si salta la cache in silenzio, resta solo il retry.
+- **Percorso 2 (Via Frascati-Grottaferrata): 6 allenatori invisibili al motore** — `all-fg-1..6` erano
+  piazzati su Tiled ma SENZA nessuna voce in `dati/trainer.js`: `DATI_TRAINER[id]` tornava `undefined`
+  e venivano saltati in silenzio, presenti sulla mappa ma impossibili da sfidare. Recuperati da un
+  vecchio elenco lat/lon in js/data.js (pre-Tiled, mai più letto dal motore) e riportati in formato
+  vero, Lv 7-11. Non erano al livello 30 come pensava Luca, ma erano davvero rotti.
+- **Boschetto Segreto — chiusa la scappatoia più diretta**: con la griglia di collisione vera (non a
+  occhio) il guardiano risultava un NPC solo in un campo aperto di ~10 caselle. Aggiunti due muri
+  invisibili che affiancano il guardiano su entrambi i lati (righe 20-22, colonne 8-9 e 11-18),
+  lasciando aperta solo la sua casella — chi prova ad aggirarlo direttamente ora sbatte contro un
+  muro. **Non è una chiusura topologicamente completa**: il campo è aperto anche più a est (colonne
+  22-26 circa) e un giro largo resta possibile senza vedere la mappa disegnata per sigillarlo del
+  tutto — comunque il contenuto vero (Il Solitario/Celebi) resta protetto a parte dalla propria
+  condizione, quindi nessun contenuto post-Lega si sblocca in anticipo passando di lì.
+
+---
+
 ## Sessione 29 settembre 2026 — Lista di bug/feature di Luca: fix mobile, cifratura, EXP condivisa
 
 Lista di 12 punti mandata da Luca prima di allontanarsi dalla scrivania. Fatto quanto segue,
