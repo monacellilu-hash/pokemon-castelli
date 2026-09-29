@@ -3355,7 +3355,14 @@ const GameMap = (function () {
         if (followerSprite) followerSprite.setVisible(false);
         return;
       }
-      const capofila = stato.squadra[0];
+      // Il Follower mostra il primo Pokémon della squadra CHE PUÒ ANCORA
+      // COMBATTERE (richiesta esplicita di Luca, sess. 29 set 2026): se il
+      // capofila è esausto dopo una lotta, deve seguirti il primo non
+      // esausto in ordine di squadra, non restare sempre e solo squadra[0].
+      // Se sono TUTTI esausti (raro: di norma si viene già teletrasportati
+      // al Centro Pokémon prima), si ripiega comunque su squadra[0] — meglio
+      // mostrare qualcosa che nascondere il Follower senza motivo.
+      const capofila = stato.squadra.find(p => p && !p.uovo && p.hpAttuale > 0) || stato.squadra[0];
       if (!capofila || capofila.uovo) {   // niente follower per un Uovo in squadra
         followerSpecieId = null;
         followerSprite.setVisible(false);
@@ -10691,6 +10698,13 @@ const GameMap = (function () {
   function sbloccaMovimento() {
     bloccato = false;
     if (scena) scena._aggiornaEventoVicino();
+    // Punto centrale unico chiamato a fine di OGNI lotta (selvatico E
+    // allenatore, sess. 29 set 2026): aggiorna il Follower se il capofila è
+    // rimasto esausto — economico, _aggiornaFollowerSpecie() non fa nulla
+    // se la specie da mostrare non è cambiata. Molto più robusto che
+    // aggiungere la stessa chiamata a mano in ognuno dei tanti onFine delle
+    // lotte allenatore sparsi in questo file.
+    if (scena && scena._aggiornaFollowerSpecie) scena._aggiornaFollowerSpecie();
   }
 
   function posizioneGiocatore() { return { ...posLatLon }; }

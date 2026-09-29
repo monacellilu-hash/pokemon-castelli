@@ -4,6 +4,28 @@
 
 ---
 
+## Sessione 29 settembre 2026 (3) — Follower su Pokémon esausto, audit stati/meteo su Bulbapedia
+
+- **Follower**: mostrava sempre `stato.squadra[0]`, anche se esausto dopo una lotta. Ora segue il
+  primo Pokémon della squadra CHE PUÒ ANCORA COMBATTERE (`_aggiornaFollowerSpecie` in js/map.js).
+  Aggiunta anche la chiamata di aggiornamento mancante in `sbloccaMovimento()` (punto centrale di
+  fine-lotta): prima veniva chiamata solo dopo gli incontri selvatici (`terminaIncontro`), MAI dopo
+  una lotta allenatore (i tanti `onFine` sparsi in map.js non la richiamavano).
+- **Audit stati alterati/meteo su Bulbapedia** (richiesta esplicita di Luca, 3ª generazione): trovato
+  **un bug reale** — la paralisi riduceva la Velocità al 50%, ma nella 3ª gen (e fino alla 6ª) va al
+  **25%**: il taglio a metà è una regola introdotta solo dalla 7ª generazione. Corretto. Tutto il
+  resto controllato è già giusto: scottatura e veleno 1/8 HP max a fine turno (scottatura dimezza
+  anche l'Attacco nelle mosse fisiche, già implementato), tempesta di sabbia/grandine 1/16 HP max con
+  le immunità di tipo corrette (Roccia/Terra/Acciaio per la sabbia, Ghiaccio per la grandine),
+  congelamento 20% di probabilità di scongelarsi a turno, paralisi 25% di probabilità di restare
+  bloccati, sole/pioggia senza alcun danno (solo le mosse Fuoco/Acqua). **Non implementato**: il
+  veleno tossico (Tossina) oggi si comporta come il veleno normale, 1/8 fisso — nei giochi veri
+  parte da 1/16 e cresce di 1/16 ad ogni turno (1/16, 2/16, 3/16…), azzerandosi se il Pokémon viene
+  cambiato. Non è un bug segnalato esplicitamente, solo notato durante la ricerca: dimmi se vuoi che
+  lo implementi come stato separato.
+
+---
+
 ## Sessione 29 settembre 2026 (2) — Sostituzione mosse, cache sprite battaglia, fix Percorso 2, gate Boschetto
 
 - **Sostituzione mosse alla 4ª già conosciuta** (`sostituisciMossaConScelta` in js/battle.js): stesso

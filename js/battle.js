@@ -1778,10 +1778,14 @@ const Battle = (function () {
     return sceglieMossaCasuale(nemico);
   }
 
-  // Velocità effettiva (sbalzi + dimezzamento da paralisi), per l'ordine dei turni
+  // Velocità effettiva (sbalzi + riduzione da paralisi), per l'ordine dei turni.
+  // Verificato su Bulbapedia (sess. 29 set 2026, richiesta esplicita di Luca):
+  // nella 3ª generazione (e fino alla 6ª) la paralisi porta la Velocità al
+  // 25% di quella normale, non al 50% — quel taglio a metà è la regola
+  // introdotta solo dalla 7ª generazione in poi, qui era sbagliato.
   function velocitaEffettiva(ist) {
     let v = statEffettiva(ist, ist.velocita, 'speed');
-    if (ist.condizione && ist.condizione.tipo === 'paralysis') v *= 0.5;
+    if (ist.condizione && ist.condizione.tipo === 'paralysis') v *= 0.25;
     return v;
   }
 
