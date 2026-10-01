@@ -85,6 +85,11 @@ ciascuna di queste mosse nel gioco originale non è stata verificata una
 per una (impossibile in tempi ragionevoli per 350+ mosse) — è un riuso
 onesto per tipo, non un porting 1:1 come le prime 9 mosse sopra.
 
+orbs.png — graphics/battle_anims/sprites/orbs.png (ANIM_TAG_ORBS)
+  Usato da Assorbimento/Megassorbimento/Giga Prosciugo e simili: UNICA
+  direzione invertita fra tutte le mosse qui — viaggia dal bersaglio
+  verso l'attaccante (energia drenata), non il contrario.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

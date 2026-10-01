@@ -599,6 +599,28 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Assorbimento/Megassorbimento (Move_ABSORB/Move_MEGA_DRAIN): le orbite
+  // nel gioco vero viaggiano AL CONTRARIO rispetto a tutte le mosse sopra —
+  // dal bersaglio verso l'attaccante (energia che viene drenata), non il
+  // contrario. Riusa _particellaOndaVersoTarget scambiando semplicemente
+  // partenza/arrivo. Grafica vera orbs.png (ANIM_TAG_ORBS).
+  async function _giocaAssorbimentoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('orbs.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 500, ampiezzaPx: 10 };
+
+    _scuotiSpriteRom(bersaglioEl, 2, 300);
+    const attese = [];
+    for (let i = 0; i < 5; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      // partenza/arrivo invertiti: dal bersaglio verso l'attaccante.
+      attese.push(_particellaOndaVersoTarget(ctx, img, arrivo, partenza, scalaX, scalaY, segno, i * 90, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -643,6 +665,9 @@ const AnimazioniEssentials = (function () {
     THUNDERSHOCK: _giocaFulmineRom, THUNDERBOLT: _giocaFulmineRom, THUNDER: _giocaFulmineRom,
     SPARK: _giocaFulmineRom, DISCHARGE: _giocaFulmineRom, SHOCKWAVE: _giocaFulmineRom,
     ELECTROBALL: _giocaFulmineRom, CHARGEBEAM: _giocaFulmineRom, ZAPCANNON: _giocaFulmineRom,
+
+    ABSORB: _giocaAssorbimentoRom, MEGADRAIN: _giocaAssorbimentoRom, GIGADRAIN: _giocaAssorbimentoRom,
+    DREAMEATER: _giocaAssorbimentoRom, LEECHLIFE: _giocaAssorbimentoRom, LEECHSEED: _giocaAssorbimentoRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
