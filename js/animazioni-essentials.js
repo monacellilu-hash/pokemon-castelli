@@ -392,6 +392,15 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
+  // Esplosione/Autodistruzione: grande esplosione sul bersaglio (e un po'
+  // su se stessi) — grafica vera explosion.png (4 fotogrammi, stessa
+  // tecnica a crescita di taglio/vite).
+  async function _giocaEsplosioneRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('explosion.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32, 64, 96]);
+  }
+
   // Frustata/Viticci (Vine Whip, Costrizione...): vite che cresce verso il
   // bersaglio, 5 fotogrammi — grafica vera vine.png, stessa tecnica del
   // taglio ma con un fotogramma in più.
@@ -1026,6 +1035,9 @@ const AnimazioniEssentials = (function () {
     SLAM: _giocaPugnoRom, DOUBLEEDGE: _giocaPugnoRom, TAKEDOWN: _giocaPugnoRom,
     SMELLINGSALTS: _giocaPugnoRom, DIZZYPUNCH: _giocaPugnoRom,
     HYPERFANG: _giocaCornoRom, CRUSHCLAW: _giocaCornoRom,
+
+    EXPLOSION: _giocaEsplosioneRom, SELFDESTRUCT: _giocaEsplosioneRom,
+    MISTYEXPLOSION: _giocaEsplosioneRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
