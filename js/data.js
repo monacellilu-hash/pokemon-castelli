@@ -3255,7 +3255,7 @@ const POKE_MARKET = [
 
   // Venditore speciale del Market di Marino (NPC dedicato, oggetti evo rari)
   { id: 'mk-marino-speciale', comune: 'Marino', lat: 41.7700, lon: 12.6653,
-    merce: ['pietra_fuoco', 'patroclo'] },
+    merce: ['pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_foglia', 'pietra_luna', 'pietra_sole', 'patroclo'] },
 
   { id: 'mk-castel-gandolfo', comune: 'Castel Gandolfo', lat: 41.7476, lon: 12.6500,
     merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'repellente'] },
