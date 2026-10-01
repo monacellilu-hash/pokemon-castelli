@@ -995,67 +995,88 @@ async function interagisciLaboratorio() {
     return;
   }
 
-  await mostraDialogo(PROFESSORE_NOME, [
-    'Benvenuto nel mio laboratorio! Io sono il Prof. Castagno, studio i Pokémon dei Castelli Romani.',
-    'Questo mondo è pieno di Pokémon selvatici: vivono nei prati, nei boschi, nei laghi vulcanici… ovunque!',
-    'Per il tuo viaggio verso le 8 palestre dei Castelli ti serve un compagno fidato.',
-    'Ho con me gli starter di TRE generazioni: Kanto, Johto e Hoenn. Scegli prima la generazione, poi il Pokémon. Scegli con il cuore!'
-  ]);
-
-  if (!stato.flags) stato.flags = {};
-  const gen = await scegliGenerazione();
-  const scelto = await scegliStarter(gen);
-  if (!scelto) {
-    mostraToast('⚠️ Errore di connessione: riprova a entrare nel laboratorio.');
-    return;
-  }
-
-  let starter;
+  // Sess. 1 ott 2026 (bug reale: capitava di ricevere DUE starter): la
+  // schermata di scelta genere/starter (overlay-starter) non è un dialogo
+  // normale (mostraDialogo), quindi non teneva bloccato il movimento da
+  // sola — mostraDialogo sblocca il movimento appena chiude l'intro, PRIMA
+  // che la scelta vera e propria inizi. In quella finestra si poteva
+  // ripremere [A] vicino al Professore e far partire una seconda scelta in
+  // parallelo (stato.flags.starterScelto è ancora false finché non finisce
+  // la prima). Ora il movimento resta bloccato per TUTTA la sequenza, più
+  // un lucchetto esplicito di sicurezza.
+  if (interagisciLaboratorio._inCorso) return;
+  interagisciLaboratorio._inCorso = true;
+  GameMap.bloccaMovimento();
   try {
-    starter = await Battle.creaIstanza(scelto.id, LIVELLO_STARTER);
-    segnaPokedex(starter.id, starter.nome, starter.sprite && starter.sprite.fronte, true);
-  } catch (err) {
-    console.error('[Lab] Errore nel creare lo starter:', err);
-    mostraToast('⚠️ Errore di connessione: riprova a entrare nel laboratorio.');
-    return;
+    await mostraDialogo(PROFESSORE_NOME, [
+      'Benvenuto nel mio laboratorio! Io sono il Prof. Castagno, studio i Pokémon dei Castelli Romani.',
+      'Questo mondo è pieno di Pokémon selvatici: vivono nei prati, nei boschi, nei laghi vulcanici… ovunque!',
+      'Per il tuo viaggio verso le 8 palestre dei Castelli ti serve un compagno fidato.',
+      'Ho con me gli starter di TRE generazioni: Kanto, Johto e Hoenn. Scegli prima la generazione, poi il Pokémon. Scegli con il cuore!'
+    ]);
+    // mostraDialogo SBLOCCA il movimento da sola appena chiude (per ogni
+    // altro dialogo normale va bene) — qui va ri-bloccato subito, altrimenti
+    // si riapre esattamente la finestra del bug (vedi commento sopra).
+    GameMap.bloccaMovimento();
+
+    if (!stato.flags) stato.flags = {};
+    const gen = await scegliGenerazione();
+    const scelto = await scegliStarter(gen);
+    if (!scelto) {
+      mostraToast('⚠️ Errore di connessione: riprova a entrare nel laboratorio.');
+      return;
+    }
+
+    let starter;
+    try {
+      starter = await Battle.creaIstanza(scelto.id, LIVELLO_STARTER);
+      segnaPokedex(starter.id, starter.nome, starter.sprite && starter.sprite.fronte, true);
+    } catch (err) {
+      console.error('[Lab] Errore nel creare lo starter:', err);
+      mostraToast('⚠️ Errore di connessione: riprova a entrare nel laboratorio.');
+      return;
+    }
+
+    stato.squadra.push(starter);
+    stato.zaino.pokeball = (stato.zaino.pokeball || 0) + 10;
+    stato.zaino.pozione  = (stato.zaino.pozione  || 0) + 5;
+    stato.flags.starterScelto   = true;
+    stato.flags.pokedexRicevuto = true;
+
+    // DUE rivali (richiesta esplicita di Luca, sess. 22 set 2026): uno a
+    // destra (uomo, Blue — starter DEBOLE contro il tuo → modalità FACILE se
+    // lo sfidi), uno a sinistra (donna, Red — starter FORTE contro il tuo →
+    // modalità DIFFICILE). Le due generazioni "avanzate" (quelle diverse
+    // dalla tua) vanno una a testa, così risultano sempre 3 Pokémon di 3
+    // generazioni diverse in totale. Niente più lotta automatica qui: il
+    // giocatore sceglierà lui chi sfidare (vedi spiegaDifficoltaOak/
+    // interagisciRivaleDebole/interagisciRivaleForte).
+    const generazioniRimanenti = [1, 2, 3].filter(g => g !== gen);
+    const genDebole = generazioniRimanenti[0];
+    const genForte  = generazioniRimanenti[1];
+    const tipoDebole = DEBOLE_TIPO[scelto.tipo];
+    const tipoForte  = CONTRO_TIPO[scelto.tipo];
+    const starterDebole = STARTER_PER_GEN[genDebole].find(s => s.tipo === tipoDebole);
+    const starterForte  = STARTER_PER_GEN[genForte].find(s => s.tipo === tipoForte);
+    stato.duoRivali = {
+      debole: { nome: RIVALE_NOME,       idStarter: starterDebole.id, nomeStarter: starterDebole.nome, gen: genDebole },
+      forte:  { nome: RIVALE_NOME_FORTE, idStarter: starterForte.id,  nomeStarter: starterForte.nome,  gen: genForte  },
+    };
+    salvaPartita();
+    aggiornaHUD();
+
+    await mostraDialogo(PROFESSORE_NOME, [
+      `Ottima scelta! ${starter.nome} e tu farete grandi cose insieme!`,
+      'Prendi anche questo POKÉDEX: registra ogni Pokémon che incontri.',
+      'E queste ti serviranno: 10 POKÉ BALL e 5 POZIONI. Le trovi nello Zaino (menu ☰).',
+      'Aspetta, non andartene subito: ho ancora una cosa importante da dirti!'
+    ]);
+    // Niente lotta qui: il Professore ti spiega la scelta della difficoltà
+    // al primo passo che farai (vedi il trigger in alPasso, app.js).
+  } finally {
+    interagisciLaboratorio._inCorso = false;
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   }
-
-  stato.squadra.push(starter);
-  stato.zaino.pokeball = (stato.zaino.pokeball || 0) + 10;
-  stato.zaino.pozione  = (stato.zaino.pozione  || 0) + 5;
-  stato.flags.starterScelto   = true;
-  stato.flags.pokedexRicevuto = true;
-
-  // DUE rivali (richiesta esplicita di Luca, sess. 22 set 2026): uno a
-  // destra (uomo, Blue — starter DEBOLE contro il tuo → modalità FACILE se
-  // lo sfidi), uno a sinistra (donna, Red — starter FORTE contro il tuo →
-  // modalità DIFFICILE). Le due generazioni "avanzate" (quelle diverse
-  // dalla tua) vanno una a testa, così risultano sempre 3 Pokémon di 3
-  // generazioni diverse in totale. Niente più lotta automatica qui: il
-  // giocatore sceglierà lui chi sfidare (vedi spiegaDifficoltaOak/
-  // interagisciRivaleDebole/interagisciRivaleForte).
-  const generazioniRimanenti = [1, 2, 3].filter(g => g !== gen);
-  const genDebole = generazioniRimanenti[0];
-  const genForte  = generazioniRimanenti[1];
-  const tipoDebole = DEBOLE_TIPO[scelto.tipo];
-  const tipoForte  = CONTRO_TIPO[scelto.tipo];
-  const starterDebole = STARTER_PER_GEN[genDebole].find(s => s.tipo === tipoDebole);
-  const starterForte  = STARTER_PER_GEN[genForte].find(s => s.tipo === tipoForte);
-  stato.duoRivali = {
-    debole: { nome: RIVALE_NOME,       idStarter: starterDebole.id, nomeStarter: starterDebole.nome, gen: genDebole },
-    forte:  { nome: RIVALE_NOME_FORTE, idStarter: starterForte.id,  nomeStarter: starterForte.nome,  gen: genForte  },
-  };
-  salvaPartita();
-  aggiornaHUD();
-
-  await mostraDialogo(PROFESSORE_NOME, [
-    `Ottima scelta! ${starter.nome} e tu farete grandi cose insieme!`,
-    'Prendi anche questo POKÉDEX: registra ogni Pokémon che incontri.',
-    'E queste ti serviranno: 10 POKÉ BALL e 5 POZIONI. Le trovi nello Zaino (menu ☰).',
-    'Aspetta, non andartene subito: ho ancora una cosa importante da dirti!'
-  ]);
-  // Niente lotta qui: il Professore ti spiega la scelta della difficoltà
-  // al primo passo che farai (vedi il trigger in alPasso, app.js).
 }
 
 // Spiegazione della difficoltà, data dal Prof. Castagno (richiesta esplicita

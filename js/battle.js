@@ -937,8 +937,8 @@ const Battle = (function () {
       // 2026: prima l'elemento aveva altezza = larghezza (riquadro quadrato),
       // che quindi ritagliava solo la metà superiore di ogni frame — si vedeva
       // ingrandita solo la calotta rossa, come segnalato da Luca.
-      // -12% (sess. 30 set 2026: Luca la trovava più grossa del Pokémon)
-      const dim = Math.round((lato === 'nemico' ? 60 : 74) * 0.88);
+      // -12% (sess. 30 set) poi un altro -10% (sess. 1 ott): 0.88*0.90=0.792
+      const dim = Math.round((lato === 'nemico' ? 60 : 74) * 0.792);
       const dimH = dim * 2;
       const ball = document.createElement('div');
       ball.className = 'ball-fx';
@@ -1022,8 +1022,8 @@ const Battle = (function () {
     const a  = { x: (rA.left - rC.left) / s + (rA.width / s) * 0.5,  y: (rA.top - rC.top) / s + (rA.height / s) * 0.55 };
 
     const nome = nomeFileBall(chiaveBall);
-    // -12% (sess. 30 set 2026: Luca la trovava più grossa del Pokémon)
-    const dim = Math.round(42 * 0.88);
+    // -12% (sess. 30 set) poi un altro -10% (sess. 1 ott): 0.88*0.90=0.792
+    const dim = Math.round(42 * 0.792);
     // Ogni frame è alto il doppio della sua larghezza (fonte vera: vedi nota
     // sess. 30 set 2026 in animaEntrataPokemon) — left/top restano il CENTRO
     // della Ball (transform), non l'angolo, altrimenti raddoppiare l'altezza
@@ -2697,7 +2697,16 @@ const Battle = (function () {
       spriteGiocatore.style.height = (160 * scala) + 'px';
     }
     if (piattaformaNemico) {
-      const w = 256 * scala, h = 128 * scala;
+      // Sess. 1 ott 2026 (bug reale segnalato da Luca: "battleback di
+      // dimensioni strane"): i file *_base1.png NON sono tutti 256×128 come
+      // si assumeva qui — verificato sui file veri: champion/elite1-4 sono
+      // 256×64 (metà altezza), tutti gli altri temi 256×128. Forzare un
+      // riquadro 256×128 fisso con background-size:contain per TUTTI
+      // rimpiccioliva la piattaforma della Lega (letterboxed nel riquadro
+      // troppo alto). Altezza vera per tema, invece di una costante unica.
+      const ALTEZZA_BASE1_DIMEZZATA = ['champion', 'elite1', 'elite2', 'elite3', 'elite4'];
+      const h128 = ALTEZZA_BASE1_DIMEZZATA.includes(tema) ? 64 : 128;
+      const w = 256 * scala, h = h128 * scala;
       piattaformaNemico.style.background = 'none';
       piattaformaNemico.style.backgroundImage = `url('${cartella}${tema}_base1.png')`;
       piattaformaNemico.style.backgroundSize = 'contain';

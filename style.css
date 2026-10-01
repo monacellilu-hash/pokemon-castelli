@@ -1153,10 +1153,23 @@ html, body {
 
 /* Dimensioni reali impostate in JS da impostaSfondoBattaglia() (proporzionali
    alla larghezza attuale di #battaglia-schermo rispetto ai 512px nativi, come
-   già si fa per le piattaforme) — qui restano solo le proprietà comuni. */
+   già si fa per le piattaforme) — qui restano solo le proprietà comuni.
+   Sess. 1 ott 2026 (bug reale segnalato da Luca: "dimensioni strane, alcuni
+   grandi alcuni piccoli"): questi sono tag <img>, e mancava del tutto una
+   regola object-fit — il default del browser è "fill", che STIRA
+   l'immagine per riempire esattamente il riquadro width/height impostato
+   da JS. Gli sprite di PokéAPI non sono tutti perfettamente quadrati (le
+   dimensioni native variano leggermente da specie a specie), quindi
+   venivano deformati in modo diverso per ciascuno. object-fit:contain
+   mantiene le proporzioni native di ogni sprite dentro il riquadro fisso
+   (nessuna deformazione, solo ridimensionato uniformemente) — anche lo
+   slot "-2" della doppia, che prima non aveva questa regola per niente. */
 #nemico-sprite,
-#giocatore-sprite {
+#nemico-sprite-2,
+#giocatore-sprite,
+#giocatore-sprite-2 {
   image-rendering: pixelated;
+  object-fit: contain;
 }
 
 /* Dimensioni reali impostate da impostaSfondoBattaglia() in battle.js
