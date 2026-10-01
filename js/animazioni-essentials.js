@@ -412,6 +412,27 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [16, 48, 80, 112], 16);
   }
 
+  // Scudi/barriere su se stessi (Protezione, Barriera Luce, Riflesso,
+  // Salvaguardia...): anello protettivo sotto il Pokémon — grafica vera
+  // guard_ring.png (64×32, un frame, non quadrato: funzione dedicata
+  // invece di _giocaTaglioRom che assume fotogrammi quadrati).
+  async function _giocaScudoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('guard_ring.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.75);
+    ctx.save();
+    ctx.translate(centro.x, centro.y);
+    ctx.scale(scalaX, scalaY);
+    ctx.drawImage(img, -32, -16, 64, 32);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 300));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Cura su se stessi (Rilassamento, Riposo, Sole Mattutino...):
   // scintillio verde su chi la usa — grafica vera green_star.png
   // (4 fotogrammi, 16×16).
@@ -1106,6 +1127,10 @@ const AnimazioniEssentials = (function () {
     THUNDERWAVE: _giocaFulmineRom, STUNSPORE: _giocaFulmineRom,
     SLEEPPOWDER: _giocaSuonoRom, HYPNOSIS: _giocaSuonoRom, SPORE: _giocaSuonoRom,
     WILLOWISP: _giocaEmberRom, GLARE: _giocaBuioRom, CONFUSERAY: _giocaPsywaveRom,
+
+    PROTECT: _giocaScudoRom, DETECT: _giocaScudoRom, LIGHTSCREEN: _giocaScudoRom,
+    REFLECT: _giocaScudoRom, SAFEGUARD: _giocaScudoRom, ENDURE: _giocaScudoRom,
+    SPIKYSHIELD: _giocaScudoRom, BARRIER: _giocaScudoRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {

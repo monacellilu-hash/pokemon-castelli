@@ -166,6 +166,11 @@ heal_sparkle.png — graphics/battle_anims/sprites/green_star.png (4
   Mattutino, Sintesi, Latte Caldo, Appollaio, Scarico, Desiderio, Chiaro
   di Luna.
 
+guard_ring.png — graphics/battle_anims/sprites/guard_ring.png (64×32, un
+  frame non quadrato). Scudi su se stessi: Protezione, Individuazione,
+  Barriera Luce, Riflesso, Salvaguardia, Resistenza, Spike Shield,
+  Barriera.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
