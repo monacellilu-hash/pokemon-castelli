@@ -2731,21 +2731,27 @@ const DATI_TRAINER = {
      documentazione 5 agosto: 2 allenatori generici "di passaggio", livelli
      provvisori intorno al cap di Monte Porzio (34). Posizione sulla mappa
      ancora da sistemare (Luca sposta gli oggetti Tiled). ── */
+  // all-p11-1/2/3/5: lato VICINO a Grottaferrata, prima del cancello_medaglia
+  // — tarati come se fossero tra la 1ª e la 2ª palestra (richiesta esplicita
+  // di Luca, 1 ott 2026: la scorciatoia verso Rocca di Papa è percorribile
+  // presto, questi 4 allenatori quindi NON possono essere al livello di
+  // Monte Porzio). all-p11-4/6 restano invece al livello "vero" (oltre il
+  // cancello, lato Rocca di Papa) — vedi sotto.
   'all-p11-1': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Escursionista', nome: 'Aldo',
-    squadra: [ { id: 74, livello: 30 }, { id: 66, livello: 31 } ],
+    squadra: [ { id: 74, livello: 13 }, { id: 66, livello: 14 } ],
     dialogo_prima: 'Sto sentiero porta su, verso Rocca di Papa. Occhio ar fiato!',
     dialogo_dopo: 'Eh, mo\' me sò stancato pure de perde\'.',
-    premio: 620,
+    premio: 540,
   },
   'all-p11-2': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Scalatore', nome: 'Nazzareno',
-    squadra: [ { id: 95, livello: 33 }, { id: 75, livello: 34 } ],
+    squadra: [ { id: 95, livello: 13 }, { id: 75, livello: 14 } ],
     dialogo_prima: 'Sti Pokémon de roccia so\' cresciuti tra sti sassi, mica pe\' gioco!',
     dialogo_dopo: 'Duri come er Monte Cavo, ma stavolta hai vinto tu.',
-    premio: 680,
+    premio: 560,
   },
   // all-p11-3..6: erano 4 copie duplicate dello stesso trainer 'all-p11-2'
   // piazzate da Luca in Tiled (stesso id, mai risolto nel motore) — rinominate
@@ -2753,11 +2759,13 @@ const DATI_TRAINER = {
   'all-p11-3': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
     classe: 'Campeggiatore', nome: 'Ottaviano',
-    squadra: [ { id: 231, livello: 31 }, { id: 111, livello: 32 } ],
+    squadra: [ { id: 231, livello: 13 }, { id: 111, livello: 14 } ],
     dialogo_prima: 'Sto campeggiando qui da giorni. Vediamo se i miei Pokémon sono arrugginiti.',
     dialogo_dopo: 'Bella lotta, torno alla tenda.',
-    premio: 630,
+    premio: 550,
   },
+  // all-p11-4: lato LONTANO (oltre il cancello_medaglia, verso Rocca di
+  // Papa) — resta al livello di Monte Porzio, invariato.
   'all-p11-4': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Escursionista', nome: 'Girolamo',
@@ -2769,18 +2777,23 @@ const DATI_TRAINER = {
   'all-p11-5': {
     sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 5,
     classe: 'Escursionista', nome: 'Genoveffa',
-    squadra: [ { id: 187, livello: 32 }, { id: 209, livello: 33 } ],
+    squadra: [ { id: 187, livello: 13 }, { id: 209, livello: 14 } ],
     dialogo_prima: 'Facevo un picnic tranquillo... ma una sfida non si rifiuta mai!',
     dialogo_dopo: 'Che peccato, si era freddato pure il panino.',
-    premio: 640,
+    premio: 540,
   },
+  // all-p11-6: era l'ultimo hiker "Learco" prima di Rocca di Papa — diventa
+  // il grunt CoTrAL di guardia al cancello (richiesta esplicita di Luca,
+  // 1 ott 2026: coerente con la trama, è la stessa zona dove Baso insegue
+  // il Team CoTrAL — vedi docs/CUTSCENE-ROCCA-PAPA-MONTECAVO.md). Squadra e
+  // livello (Monte Porzio) invariati, solo identità/sprite/dialoghi cambiati.
   'all-p11-6': {
-    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
-    classe: 'Scalatore', nome: 'Learco',
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
     squadra: [ { id: 95, livello: 34 }, { id: 111, livello: 35 } ],
-    dialogo_prima: 'Ultima prova prima di Rocca di Papa: io.',
-    dialogo_dopo: 'Vai pure, la palestra di Baso ti aspetta.',
-    premio: 690,
+    dialogo_prima: 'Zona sotto controllo CoTrAL. Ultima prova prima di Rocca di Papa: io.',
+    dialogo_dopo: 'Bah... passa pure, tanto il capo lo sa già che sei qui.',
+    premio: 1400,
   },
 
   /* ── Team CoTrAL — grunt fuori dal covo (collegamento_Cotral.tmx), sessione

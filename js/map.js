@@ -3263,6 +3263,14 @@ const GameMap = (function () {
     // rivolto a sud, un passo a destra dell'allenatore. Chiamata sempre
     // insieme a _creaLeggendari() (stessa vita: creata a ogni caricamento
     // mappa/_rigeneraNpc, distrutta con gli altri npcSprites).
+    // Sess. 1 ott 2026: usava il foglio follower (_caricaTexFollower), ma
+    // quel pacchetto ha molto spazio vuoto intorno al personaggio dentro
+    // ogni riquadro 64×64 — con lo scaling a cornice fissa il Pokémon
+    // risultava minuscolo accanto al capopalestra (segnalato da Luca,
+    // screenshot "donnie bug.png"). Stesso ripiego già usato e collaudato in
+    // _creaLeggendari: fronte di battaglia PokéAPI (ritagliato al pixel,
+    // niente spazio vuoto), scala calcolata sulla dimensione reale
+    // dell'immagine — identica tecnica usata per lo sprite di Donnie stesso.
     async _creaCompagniPokemon() {
       if (typeof PokeAPI === 'undefined' || typeof DATI_TRAINER === 'undefined') return;
       for (const st of npcStato) {
@@ -3271,21 +3279,30 @@ const GameMap = (function () {
         if (!dati || !dati.pokemonFianco || !dati.squadra || !dati.squadra.length) continue;
         const asso = dati.squadra[dati.squadra.length - 1];
 
-        let nomeSpecie = null;
-        try { const pkm = await PokeAPI.getPokemon(asso.id); nomeSpecie = pkm && pkm.nome; }
+        let url = null;
+        try { const pkm = await PokeAPI.getPokemon(asso.id); url = pkm && pkm.sprite && pkm.sprite.fronte; }
         catch (e) { /* offline o non in cache: niente compagno stavolta */ }
-        if (!nomeSpecie) continue;
+        if (!url) continue;
 
-        const texKey = await this._caricaTexFollower(nomeSpecie);
-        if (!texKey) continue;
+        const texKey = 'compagno-' + asso.id;
+        if (!this.textures.exists(texKey)) {
+          await new Promise((ok) => {
+            this.load.image(texKey, url);
+            this.load.once('complete', ok);
+            this.load.once('loaderror', ok);
+            this.load.start();
+          });
+        }
+        if (!this.textures.exists(texKey)) continue;
 
         const offsetTx = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dx) ?? 1;
         const offsetTy = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dy) ?? 0;
         const px = (st.tx + offsetTx) * tileSize + tileSize / 2;
         const py = (st.ty + offsetTy + 1) * tileSize;
-        const spr = this.add.sprite(px, py, texKey, 1).setOrigin(0.5, 1).setDepth(20);   // frame 1 = sud, fermo
-        const frameW = this.textures.get(texKey).get(0).width || 64;
-        spr.setScale((tileSize * 1.4) / frameW);
+        const spr = this.add.image(px, py, texKey).setOrigin(0.5, 1).setDepth(20);
+        const img = this.textures.get(texKey).getSourceImage();
+        const dim = Math.max(img.width || 96, img.height || 96);
+        spr.setScale((tileSize * 1.7) / dim);
         npcSprites.push(spr);
       }
     }
