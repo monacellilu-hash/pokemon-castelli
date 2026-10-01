@@ -524,7 +524,7 @@
    "objects": [
     {
      "id": 1,
-     "name": "npc_lavaridge_house_1_3",
+     "name": "npc_lavaridge_house_1_6",
      "type": "",
      "point": true,
      "x": 80,
@@ -542,7 +542,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "npc_lavaridge_house_1_3"
+       "value": "npc_lavaridge_house_1_6"
       },
       {
        "name": "nota_origine",
@@ -553,7 +553,7 @@
     },
     {
      "id": 2,
-     "name": "npc_lavaridge_house_2_3",
+     "name": "npc_lavaridge_house_2_6",
      "type": "",
      "point": true,
      "x": 208,
@@ -571,7 +571,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "npc_lavaridge_house_2_3"
+       "value": "npc_lavaridge_house_2_6"
       },
       {
        "name": "nota_origine",
@@ -582,7 +582,7 @@
     },
     {
      "id": 3,
-     "name": "npc_lavaridge_house_3_3",
+     "name": "npc_lavaridge_house_3_6",
      "type": "",
      "point": true,
      "x": 272,
@@ -600,7 +600,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "npc_lavaridge_house_3_3"
+       "value": "npc_lavaridge_house_3_6"
       },
       {
        "name": "nota_origine",
@@ -611,7 +611,7 @@
     },
     {
      "id": 4,
-     "name": "uscita_1_3",
+     "name": "uscita_1_6",
      "type": "",
      "x": 96,
      "y": 224,
@@ -634,7 +634,7 @@
     },
     {
      "id": 5,
-     "name": "uscita_2_3",
+     "name": "uscita_2_6",
      "type": "",
      "x": 128,
      "y": 224,

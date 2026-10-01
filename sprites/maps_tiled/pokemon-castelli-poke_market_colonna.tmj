@@ -1,6 +1,6 @@
 {
  "compressionlevel": -1,
- "height": 12,
+ "height": 13,
  "infinite": false,
  "layers": [
   {
@@ -184,9 +184,24 @@
     17363,
     17361,
     17362,
-    17363
+    17363,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    8129,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0
    ],
-   "height": 12,
+   "height": 13,
    "id": 1,
    "name": "ground",
    "opacity": 1,
@@ -354,6 +369,21 @@
     0,
     0,
     0,
+    17349,
+    17349,
+    17349,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     17332,
     17333,
     17334,
@@ -379,7 +409,7 @@
     0,
     0
    ],
-   "height": 12,
+   "height": 13,
    "id": 2,
    "name": "deco_sotto",
    "opacity": 1,
@@ -570,9 +600,24 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
    ],
-   "height": 12,
+   "height": 13,
    "id": 3,
    "name": "edifici",
    "opacity": 1,
@@ -763,9 +808,24 @@
     0,
     0,
     0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
     0
    ],
-   "height": 12,
+   "height": 13,
    "id": 4,
    "name": "sopra_testa",
    "opacity": 1,
@@ -805,7 +865,7 @@
      "y": 183
     },
     {
-     "height": 66.5,
+     "height": 23.5,
      "id": 43,
      "name": "",
      "opacity": 1,
@@ -814,7 +874,7 @@
      "visible": true,
      "width": 184,
      "x": 2.5,
-     "y": 316
+     "y": 359
     },
     {
      "height": 102.5,
@@ -824,24 +884,24 @@
      "rotation": 0,
      "type": "",
      "visible": true,
-     "width": 167,
-     "x": 318,
+     "width": 60.5,
+     "x": 424.5,
      "y": 250.5
     },
     {
-     "height": 160,
+     "height": 94.75,
      "id": 45,
      "name": "",
      "opacity": 1,
      "rotation": 0,
      "type": "",
      "visible": true,
-     "width": 225.5,
-     "x": 254,
-     "y": 26
+     "width": 50.25,
+     "x": 297.25,
+     "y": 91.25
     },
     {
-     "height": 94,
+     "height": 55.25,
      "id": 46,
      "name": "",
      "opacity": 1,
@@ -851,6 +911,114 @@
      "width": 324.5,
      "x": 157,
      "y": 1.5
+    },
+    {
+     "height": 96,
+     "id": 47,
+     "name": "bancone_market",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 96,
+     "x": 64,
+     "y": 96
+    },
+    {
+     "height": 86.5,
+     "id": 51,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 50.25,
+     "x": 422.125,
+     "y": 97.375
+    },
+    {
+     "height": 94.75,
+     "id": 52,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 50.25,
+     "x": 327.875,
+     "y": 254.875
+    },
+    {
+     "height": 42.5,
+     "id": 53,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.75,
+     "x": 160.875,
+     "y": 48.375
+    },
+    {
+     "height": 42.5,
+     "id": 55,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 227.5,
+     "x": 258.125,
+     "y": 34.75
+    },
+    {
+     "height": 42.5,
+     "id": 56,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.75,
+     "x": 357.375,
+     "y": 49
+    },
+    {
+     "height": 42.5,
+     "id": 57,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.75,
+     "x": 165.625,
+     "y": 344
+    },
+    {
+     "height": 42.5,
+     "id": 58,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.75,
+     "x": 71.125,
+     "y": 342.25
+    },
+    {
+     "height": 42.5,
+     "id": 59,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.75,
+     "x": 71.125,
+     "y": 342.25
     }
    ],
    "opacity": 1,
@@ -878,7 +1046,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "pokemon market venditore colonna"
+       "value": "pokemon market venditore"
       },
       {
        "name": "type",
@@ -890,12 +1058,12 @@
      "type": "npc",
      "visible": true,
      "width": 16.5,
-     "x": 167,
-     "y": 165.5
+     "x": 107.254684116373,
+     "y": 133.7004048583
     },
     {
      "height": 17,
-     "id": 51,
+     "id": 61,
      "name": "npc",
      "opacity": 1,
      "properties": [
@@ -907,7 +1075,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "erborista colonna"
+       "value": "dentro il market cliente"
       },
       {
        "name": "type",
@@ -919,37 +1087,66 @@
      "type": "npc",
      "visible": true,
      "width": 16.5,
-     "x": 220,
-     "y": 200
+     "x": 77.5,
+     "y": 252
     },
     {
-     "height": 22,
-     "id": 48,
-     "name": "warp",
+     "height": 17,
+     "id": 62,
+     "name": "npc",
      "opacity": 1,
      "properties": [
       {
-       "name": "destinazione",
+       "name": "direzione",
        "type": "string",
-       "value": "colonna_2"
+       "value": "sud"
       },
       {
-       "name": "spawn_id",
+       "name": "id",
        "type": "string",
-       "value": "da pokemarket colonna"
+       "value": "dentro il market cliente"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "warp"
+       "value": "npc"
       }
      ],
      "rotation": 0,
-     "type": "warp",
+     "type": "npc",
      "visible": true,
-     "width": 22,
-     "x": 218,
-     "y": 360.576
+     "width": 16.5,
+     "x": 368.5,
+     "y": 128.25
+    },
+    {
+     "height": 17,
+     "id": 63,
+     "name": "npc",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "dentro il market cliente"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "npc",
+     "visible": true,
+     "width": 16.5,
+     "x": 397.5,
+     "y": 207.5
     },
     {
      "height": 22,
@@ -977,8 +1174,37 @@
      "type": "warp",
      "visible": true,
      "width": 22,
-     "x": 240,
-     "y": 360.576
+     "x": 233,
+     "y": 391.326
+    },
+    {
+     "height": 22,
+     "id": 49,
+     "name": "warp",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "colonna_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da pokemarket colonna"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "warp",
+     "visible": true,
+     "width": 22,
+     "x": 233,
+     "y": 391.326
     },
     {
      "height": 32,
@@ -1001,8 +1227,8 @@
      "type": "spawn",
      "visible": true,
      "width": 32,
-     "x": 222.576,
-     "y": 324.424
+     "x": 223.076,
+     "y": 354.924
     }
    ],
    "opacity": 1,
@@ -1013,7 +1239,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 52,
+ "nextobjectid": 64,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
