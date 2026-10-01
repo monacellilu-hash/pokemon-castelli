@@ -433,6 +433,24 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Sabbia/polvere accecante (Attacco Sabbia, Fumogeno, Flash...):
+  // manciate di sabbia verso il bersaglio — grafica vera mud_sand_0.png +
+  // la sua palette reale mud_sand.pal (8×8).
+  async function _giocaSabbiaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('sand.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 8, frameH: 8, righeY: [0], frameMs: 9999, durataMs: 280, ampiezzaPx: 10 };
+
+    const attese = [];
+    for (let i = 0; i < 5; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 50, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Cura su se stessi (Rilassamento, Riposo, Sole Mattutino...):
   // scintillio verde su chi la usa — grafica vera green_star.png
   // (4 fotogrammi, 16×16).
@@ -1131,6 +1149,9 @@ const AnimazioniEssentials = (function () {
     PROTECT: _giocaScudoRom, DETECT: _giocaScudoRom, LIGHTSCREEN: _giocaScudoRom,
     REFLECT: _giocaScudoRom, SAFEGUARD: _giocaScudoRom, ENDURE: _giocaScudoRom,
     SPIKYSHIELD: _giocaScudoRom, BARRIER: _giocaScudoRom,
+
+    SANDATTACK: _giocaSabbiaRom, SMOKESCREEN: _giocaSabbiaRom, FLASH: _giocaSabbiaRom,
+    MUDSPORT: _giocaSabbiaRom, KINESIS: _giocaSabbiaRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {

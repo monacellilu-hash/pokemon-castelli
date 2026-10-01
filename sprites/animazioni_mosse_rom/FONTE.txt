@@ -171,6 +171,9 @@ guard_ring.png — graphics/battle_anims/sprites/guard_ring.png (64×32, un
   Barriera Luce, Riflesso, Salvaguardia, Resistenza, Spike Shield,
   Barriera.
 
+sand.png — mud_sand_0.png + la vera palette mud_sand.pal (8×8). Attacco
+  Sabbia, Fumogeno, Flash, Fango, Telecinesi.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
