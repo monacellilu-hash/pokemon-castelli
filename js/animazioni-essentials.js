@@ -767,6 +767,41 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Pulsodark e mosse Buio a proiettile: sfera scura — grafica vera
+  // black_ball.png (8×8, un frame).
+  async function _giocaBuioRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('black_ball.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 8, frameH: 8, righeY: [0], frameMs: 9999, durataMs: 380, ampiezzaPx: 8 };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 180);
+    const attese = [];
+    for (let i = 0; i < 5; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 60, opts));
+    }
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 2, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Mosse Lotta a proiettile (Focus Blast, Sfera Aurea, ecc.): energia
+  // concentrata a forma di pugno — grafica vera red_fist.png (32×32).
+  async function _giocaLottaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('red_fist.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 400, ampiezzaPx: 0 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 220);
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 280);
+    await new Promise(r => setTimeout(r, 280));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -838,6 +873,10 @@ const AnimazioniEssentials = (function () {
 
     DRAGONBREATH: _giocaDragoRom, DRAGONPULSE: _giocaDragoRom, DRAGONRAGE: _giocaDragoRom,
     TWISTER: _giocaDragoRom,
+
+    DARKPULSE: _giocaBuioRom, SNARL: _giocaBuioRom, NIGHTDAZE: _giocaBuioRom,
+
+    FOCUSBLAST: _giocaLottaRom, AURASPHERE: _giocaLottaRom, VACUUMWAVE: _giocaLottaRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
