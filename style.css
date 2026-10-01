@@ -1139,7 +1139,13 @@ html, body {
 }
 
 #zona-giocatore {
-  top: 50%;
+  /* Sess. 1 ott 2026 (foto di Luca, PC): il 50% "da manuale" lasciava un
+     vuoto enorme fino al riquadro comandi — la nostra interfaccia riserva
+     meno spazio in basso di quanta ne riservi il vero schermo GBA (mai
+     1:1 per via del layout diverso), quindi la percentuale autentica non
+     si traduce 1:1 qui. Misurato sulla foto il vuoto reale da colmare:
+     spostato a 78% (solo questo valore, nemico invariato). */
+  top: 78%;
   left: 30%;
   transform: translate(-50%, -50%);
   width: 50%;
