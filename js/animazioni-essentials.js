@@ -344,6 +344,54 @@ const AnimazioniEssentials = (function () {
     return { x: (r.left + r.width * fx) - campoRect.left, y: (r.top + r.height * fy) - campoRect.top };
   }
 
+  // Categoria NUOVA: TAGLIO — una sciabolata disegnata DIRETTAMENTE sul
+  // bersaglio (cresce in 4 fotogrammi), non un proiettile che viaggia
+  // dall'attaccante. Usata dal gioco vero per Taglio/Lacerazione/Attacco
+  // d'Ali e simili (cut.png/slash.png, entrambi 4 fotogrammi verticali).
+  async function _giocaTaglioRom(img, attaccanteEl, bersaglioEl) {
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+
+    _scuotiSpriteRom(attaccanteEl, 1, 150);
+    await new Promise(resolve => {
+      let frame = 0;
+      const righeY = [0, 32, 64, 96];
+      const inizio = performance.now();
+      const frameMs = 55;
+      function passo(ora) {
+        const t = ora - inizio;
+        frame = Math.min(righeY.length - 1, Math.floor(t / frameMs));
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(centro.x, centro.y);
+        ctx.scale(scalaX, scalaY);
+        ctx.drawImage(img, 0, righeY[frame], 32, 32, -16, -16, 32, 32);
+        ctx.restore();
+        if (t >= frameMs * righeY.length) { resolve(); return; }
+        requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    });
+    _scuotiSpriteRom(bersaglioEl, 3, 220);
+    await new Promise(r => setTimeout(r, 220));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  async function _giocaCutRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('cut.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
+  }
+
+  async function _giocaSlashRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('slash.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
+  }
+
   // Prepara canvas/scala/centri comuni a tutte le animazioni "a onda" (ogni
   // mossa poi lancia le sue particelle con _particellaOndaVersoTarget).
   async function _preparaAnimOnda(attaccanteEl, bersaglioEl) {
@@ -877,6 +925,12 @@ const AnimazioniEssentials = (function () {
     DARKPULSE: _giocaBuioRom, SNARL: _giocaBuioRom, NIGHTDAZE: _giocaBuioRom,
 
     FOCUSBLAST: _giocaLottaRom, AURASPHERE: _giocaLottaRom, VACUUMWAVE: _giocaLottaRom,
+
+    // Categoria TAGLIO (overlay sul bersaglio, non un proiettile).
+    CUT: _giocaCutRom,
+    SLASH: _giocaSlashRom, NIGHTSLASH: _giocaSlashRom, XSCISSOR: _giocaSlashRom,
+    LEAFBLADE: _giocaSlashRom, AERIALACE: _giocaSlashRom, FURYCUTTER: _giocaSlashRom,
+    CROSSPOISON: _giocaSlashRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
