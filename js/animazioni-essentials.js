@@ -657,6 +657,22 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Lanciarocce e mosse Roccia simili: macigno lanciato verso il
+  // bersaglio — grafica vera rocks.png (primo fotogramma dei 6, già
+  // un'immagine completa 32×32).
+  async function _giocaRocciaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('rock.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 420, ampiezzaPx: 0 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 200);
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 280);
+    await new Promise(r => setTimeout(r, 280));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -710,6 +726,9 @@ const AnimazioniEssentials = (function () {
 
     ICEBEAM: _giocaGhiaccioRom, BLIZZARD: _giocaGhiaccioRom, ICYWIND: _giocaGhiaccioRom,
     POWDERSNOW: _giocaGhiaccioRom, AURORABEAM: _giocaGhiaccioRom, FROSTBREATH: _giocaGhiaccioRom,
+
+    ROCKTHROW: _giocaRocciaRom, ROCKSLIDE: _giocaRocciaRom, ROCKBLAST: _giocaRocciaRom,
+    POWERGEM: _giocaRocciaRom, ANCIENTPOWER: _giocaRocciaRom, ROCKTOMB: _giocaRocciaRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
