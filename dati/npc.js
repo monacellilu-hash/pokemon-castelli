@@ -268,11 +268,14 @@ const DATI_NPC = {
     azione: 'interagisciRivaleForte',
   },
 
+  // Niente "dialogo" qui: interagisciCentroTiled() mostra già il suo saluto
+  // completo (benvenuto + cura). Con dialogo+azione insieme, _interagisci
+  // li metteva in sequenza mostrando il benvenuto DUE VOLTE (segnalato da
+  // Luca, 1 ott 2026).
   'npc_joy': {
     sprite: 'npc joy', nome: 'Infermiera Joy',
     direzione: 'sud',
     movimento: 'fisso',
-    dialogo: ['Benvenuto al Centro Pokémon!', 'Vuoi che curi i tuoi Pokémon?'],
     azione: 'interagisciCentroTiled',
   },
 

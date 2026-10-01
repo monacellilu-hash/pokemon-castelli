@@ -952,10 +952,39 @@ const GameMap = (function () {
     'ts-wfall-lava':      'sprites/Tile_nuovi/Waterfalllava.png',
     'ts-wfall-bot-lava':  'sprites/Tile_nuovi/Waterfall bottomLava.png',
     'ts-wfall-crest-lava': 'sprites/Tile_nuovi/Waterfall crestLava.png',
+    // Tileset "embedded" delle mappe convertite da pret/pokeemerald (sess. 1
+    // ott 2026: PROVA_lavaridge_house/mart/pokecenter, casa2/3/4, casarivale,
+    // casamia, casa_sul_lago, negozio_di_bici) — tutti generati dallo stesso
+    // script, 32×32, 16 colonne. Ogni nuova conversione futura con questa
+    // stessa tecnica va aggiunta qui allo stesso modo (nome = "<basename>_tileset").
+    'ts-lavaridge-house':    'sprites/PROVA_lavaridge_house_tileset.png',
+    'ts-lavaridge-mart':     'sprites/PROVA_lavaridge_mart_tileset.png',
+    'ts-pokecenter-1f':      'sprites/PROVA_pokecenter_1f_tileset.png',
+    'ts-casa2':              'sprites/casa2_tileset.png',
+    'ts-casa3':              'sprites/casa3_tileset.png',
+    'ts-casa4':              'sprites/casa4_tileset.png',
+    'ts-casa-sul-lago':      'sprites/casa_sul_lago_tileset.png',
+    'ts-casamia-1f':         'sprites/casamia_1f_tileset.png',
+    'ts-casamia-2f':         'sprites/casamia_2f_tileset.png',
+    'ts-casarivale-1f':      'sprites/casarivale_1f_tileset.png',
+    'ts-casarivale-2f':      'sprites/casarivale_2f_tileset.png',
+    'ts-negozio-bici':       'sprites/negozio_di_bici_tileset.png',
   };
   Object.assign(TILESET_META, {
     'sub':        { key: 'ts-sub',        tw: 32, th: 32, cols: 4  },
     'Underwater': { key: 'ts-underwater', tw: 32, th: 32, cols: 8  },
+    'PROVA_lavaridge_house_tileset': { key: 'ts-lavaridge-house', tw: 32, th: 32, cols: 16 },
+    'PROVA_lavaridge_mart_tileset':  { key: 'ts-lavaridge-mart',  tw: 32, th: 32, cols: 16 },
+    'PROVA_pokecenter_1f_tileset':   { key: 'ts-pokecenter-1f',   tw: 32, th: 32, cols: 16 },
+    'casa2_tileset':                 { key: 'ts-casa2',           tw: 32, th: 32, cols: 16 },
+    'casa3_tileset':                 { key: 'ts-casa3',           tw: 32, th: 32, cols: 16 },
+    'casa4_tileset':                 { key: 'ts-casa4',           tw: 32, th: 32, cols: 16 },
+    'casa_sul_lago_tileset':         { key: 'ts-casa-sul-lago',   tw: 32, th: 32, cols: 16 },
+    'casamia_1f_tileset':            { key: 'ts-casamia-1f',      tw: 32, th: 32, cols: 16 },
+    'casamia_2f_tileset':            { key: 'ts-casamia-2f',      tw: 32, th: 32, cols: 16 },
+    'casarivale_1f_tileset':         { key: 'ts-casarivale-1f',   tw: 32, th: 32, cols: 16 },
+    'casarivale_2f_tileset':         { key: 'ts-casarivale-2f',   tw: 32, th: 32, cols: 16 },
+    'negozio_di_bici_tileset':       { key: 'ts-negozio-bici',    tw: 32, th: 32, cols: 16 },
   });
 
   /* ══════════════════════════════════════════════════════════
@@ -994,8 +1023,14 @@ const GameMap = (function () {
   function parseTilesets(tmj) {
     const result = [];
     for (let i = 0; i < tmj.tilesets.length; i++) {
-      const ts   = tmj.tilesets[i];
-      const name = nomeTs(ts.source || '');
+      const ts = tmj.tilesets[i];
+      // Tileset "embedded" (immagine diretta nel .tmj, niente "source" verso un
+      // .tsx esterno — es. le mappe convertite da pret/pokeemerald): il nome
+      // viene dal campo "name" del tileset stesso, non dal file .tsx che non
+      // esiste. Serve comunque una entry in TILESET_META/TILESET_IMMAGINI
+      // (stessa convenzione di tutti gli altri tileset) perché le immagini
+      // si caricano tutte insieme nel preload() della scena, non al volo.
+      const name = ts.source ? nomeTs(ts.source) : ts.name;
       const meta = TILESET_META[name];
       if (!meta) { console.warn('[TMJ] Tileset sconosciuto:', name); continue; }
       const nextGid = (i + 1 < tmj.tilesets.length) ? tmj.tilesets[i + 1].firstgid : Infinity;
@@ -1200,16 +1235,15 @@ const GameMap = (function () {
     }
 
     // Casella senza NESSUN tile sul layer "ground" (gid 0) = automaticamente
-    // solida — SOLO per le mappe che lo dichiarano esplicitamente
-    // (MAPPE[chiave].bloccaVuoti, letto da MAPPA_META qui sotto), non per
-    // tutte: verificato che diverse mappe già in gioco (es. la palestra di
-    // Monte Porzio: 449 caselle su 784) hanno grandi aree senza tile ma SENZA
-    // un rettangolo di collisione a coprirle, quindi oggi sono calpestabili
-    // — probabilmente intenzionale o comunque già collaudato. Renderlo
-    // universale le avrebbe rotte silenziosamente. Richiesta di Luca (sess.
-    // 8 set 2026, "come per le mappe della lega"): applicata per ora solo ai
-    // dungeon nuovi che la usano davvero — vedi bloccaVuoti in MAPPE.
-    if (tmj.__bloccaVuoti) {
+    // solida, SEMPRE, per tutte le mappe (regola universale richiesta
+    // esplicitamente da Luca, 1 ott 2026: "se non c'è tile = collisione,
+    // stop" — sostituisce il vecchio flag opt-in bloccaVuoti, che restava
+    // comunque letto/assegnato più sotto ma non cambia più nulla qui).
+    // ATTENZIONE: questo rende solide le grandi aree vuote già note in
+    // mappe esistenti che prima erano calpestabili senza un tile sotto
+    // (es. la palestra di Monte Porzio, ~449/784 caselle vuote) — Luca è
+    // stato avvisato esplicitamente, non è una svista silenziosa.
+    {
       const groundLayer = tmj.layers.find(l => l.name === 'ground' && l.type === 'tilelayer');
       if (groundLayer && groundLayer.data) {
         for (let ty = 0; ty < h; ty++) {
