@@ -9342,7 +9342,7 @@ const GameMap = (function () {
       if (info) {
         testo(362, 282, info.nomeIt, val);
         const descTxt = this.add.text(224, 310, info.descrizione, {
-          fontFamily: 'Arial', fontSize: '11px', color: '#606060', wordWrap: { width: 282 },
+          fontFamily: 'Arial', fontSize: '12px', color: '#484848', fontStyle: 'bold', wordWrap: { width: 282 },
         }).setOrigin(0, 0);
         this._layer.add(descTxt);
       } else {
