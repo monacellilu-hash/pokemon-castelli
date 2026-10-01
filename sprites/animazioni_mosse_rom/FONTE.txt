@@ -156,6 +156,11 @@ sound_waves.png — graphics/battle_anims/sprites/metal_sound_waves.png
   Scarica Rumorosa, Botto Sonico, Ululato, Ringhio, Ninnananna, Ipnoshock,
   Russare.
 
+focus_energy.png — graphics/battle_anims/sprites/focus_energy.png (8
+  fotogrammi, 4 usati). Potenziamenti su SE STESSI (non sul bersaglio):
+  Focus Energy, Spada Danza, Rafforza, Affila, Ululato, Medita, Bulk Up,
+  Calma Mente, Danza Drago, Forza Cosmica.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

@@ -348,8 +348,9 @@ const AnimazioniEssentials = (function () {
   // bersaglio (cresce in 4 fotogrammi), non un proiettile che viaggia
   // dall'attaccante. Usata dal gioco vero per Taglio/Lacerazione/Attacco
   // d'Ali e simili (cut.png/slash.png, entrambi 4 fotogrammi verticali).
-  async function _giocaTaglioRom(img, attaccanteEl, bersaglioEl, righeY) {
+  async function _giocaTaglioRom(img, attaccanteEl, bersaglioEl, righeY, dimFrame) {
     righeY = righeY || [0, 32, 64, 96];
+    const d = dimFrame || 32; // lato del fotogramma quadrato (32 di default, cut/slash/vine/artigli/esplosione)
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
     const scalaX = w / ESS_W, scalaY = h / ESS_H;
@@ -368,7 +369,7 @@ const AnimazioniEssentials = (function () {
         ctx.save();
         ctx.translate(centro.x, centro.y);
         ctx.scale(scalaX, scalaY);
-        ctx.drawImage(img, 0, righeY[frame], 32, 32, -16, -16, 32, 32);
+        ctx.drawImage(img, 0, righeY[frame], d, d, -d / 2, -d / 2, d, d);
         ctx.restore();
         if (t >= frameMs * righeY.length) { resolve(); return; }
         requestAnimationFrame(passo);
@@ -398,6 +399,17 @@ const AnimazioniEssentials = (function () {
     const { img, pronta } = caricaImmagineRom('sound_waves.png');
     await pronta;
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32]);
+  }
+
+  // Potenziamenti su se stessi (Focus Energy, Spada Danza, Rafforza...):
+  // scintilla verticale SU CHI USA LA MOSSA, non sul bersaglio — grafica
+  // vera focus_energy.png (8 fotogrammi, qui ne usiamo 4 significativi).
+  // Riusa _giocaTaglioRom passando lo stesso elemento come "attaccante" e
+  // "bersaglio": l'overlay finisce su chi la usa, non sull'avversario.
+  async function _giocaPotenziamentoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('focus_energy.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [16, 48, 80, 112], 16);
   }
 
   // Artigliate (Graffio, Artiglio di Metallo, Artiglio di Drago...): 5
@@ -1065,6 +1077,12 @@ const AnimazioniEssentials = (function () {
     SONICBOOM: _giocaSuonoRom, UPROAR: _giocaSuonoRom, ROAR: _giocaSuonoRom,
     GROWL: _giocaSuonoRom, SING: _giocaSuonoRom, SUPERSONIC: _giocaSuonoRom,
     SNORE: _giocaSuonoRom,
+
+    FOCUSENERGY: _giocaPotenziamentoRom, SWORDSDANCE: _giocaPotenziamentoRom,
+    HARDEN: _giocaPotenziamentoRom, SHARPEN: _giocaPotenziamentoRom,
+    HOWL: _giocaPotenziamentoRom, MEDITATE: _giocaPotenziamentoRom,
+    BULKUP: _giocaPotenziamentoRom, CALMMIND: _giocaPotenziamentoRom,
+    DRAGONDANCE: _giocaPotenziamentoRom, COSMICPOWER: _giocaPotenziamentoRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
