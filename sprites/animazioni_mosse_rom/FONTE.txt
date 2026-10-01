@@ -54,6 +54,12 @@ Incendio (Ember): riusa small_ember.png (nessun file nuovo). Movimento
   Script: data/battle_anim_scripts.s -> Move_EMBER
   Sorgente: src/battle_anim_fire.c   -> gEmberSpriteTemplate
 
+small_bubbles.png — graphics/battle_anims/sprites/small_bubbles.png
+  Foglio reale (16×40, più fotogrammi: bolla/goccia/schizzi). Usato qui
+  solo il frame 0 (bolla grande) per il lancio di Idrogetto.
+  Script:  data/battle_anim_scripts.s -> Move_WATER_GUN
+  Sorgente: src/battle_anim_water.c   -> gWaterGunProjectileSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

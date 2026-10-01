@@ -516,6 +516,25 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Idrogetto (Move_WATER_GUN, src/battle_anim_scripts.s): UNA bolla
+  // lanciata dritta verso il bersaglio (AnimThrowProjectile — un lancio
+  // semplice, non l'onda di Idrocannone), poi gocce che schizzano
+  // all'impatto. Grafica vera small_bubbles.png (ripulita dalla
+  // trasparenza): frame 0 (y=0-16) la bolla grande usata per il lancio.
+  async function _giocaWaterGunRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_bubbles.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 340, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    // Gocce di schizzo all'impatto (3 nello script originale): tremore sul
+    // bersaglio al posto delle gocce vere, stessa semplificazione di Incendio.
+    _scuotiSpriteRom(bersaglioEl, 2, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -523,6 +542,7 @@ const AnimazioniEssentials = (function () {
     SIGNALBEAM: _giocaSignalBeamRom,
     PSYWAVE: _giocaPsywaveRom,
     EMBER: _giocaEmberRom,
+    WATERGUN: _giocaWaterGunRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
