@@ -392,6 +392,14 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
+  // Artigliate (Graffio, Artiglio di Metallo, Artiglio di Drago...): 5
+  // fotogrammi di un graffio che cresce — grafica vera claw_slash.png.
+  async function _giocaArtigliRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('claw_slash.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32, 64, 96, 128]);
+  }
+
   // Esplosione/Autodistruzione: grande esplosione sul bersaglio (e un po'
   // su se stessi) — grafica vera explosion.png (4 fotogrammi, stessa
   // tecnica a crescita di taglio/vite).
@@ -1038,7 +1046,12 @@ const AnimazioniEssentials = (function () {
 
     EXPLOSION: _giocaEsplosioneRom, SELFDESTRUCT: _giocaEsplosioneRom,
     MISTYEXPLOSION: _giocaEsplosioneRom,
+
+    SCRATCH: _giocaArtigliRom, METALCLAW: _giocaArtigliRom, DRAGONCLAW: _giocaArtigliRom,
+    VISEGRIP: _giocaArtigliRom, FURYSWIPES: _giocaArtigliRom,
   };
+  // CRUSHCLAW si adatta meglio alle artigliate che al corno (assegnata sopra).
+  ANIMAZIONI_ROM.CRUSHCLAW = _giocaArtigliRom;
 
   function trovaAnimazioneRom(nomeMossa) {
     return ANIMAZIONI_ROM[chiaveMossa(nomeMossa)] || null;

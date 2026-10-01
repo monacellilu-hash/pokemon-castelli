@@ -147,6 +147,10 @@ Riuso categoria impatto (punch_impact.png/horn_hit.png) per mosse da
 explosion.png — graphics/battle_anims/sprites/explosion.png (4 fotogrammi).
   Esplosione, Autodistruzione.
 
+claw_slash.png — graphics/battle_anims/sprites/claw_slash.png (5
+  fotogrammi). Graffio, Artiglio di Metallo, Artiglio di Drago,
+  Morsa, Furia Inarrestabile, Chela Franti.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
