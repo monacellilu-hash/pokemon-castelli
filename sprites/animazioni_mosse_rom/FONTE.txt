@@ -48,6 +48,12 @@ blue_ring.png — graphics/battle_anims/sprites/ring.png RICOLORATO con la
   Script:  data/battle_anim_scripts.s -> Move_PSYWAVE, PsywaveRings
   Sorgente: src/battle_anim_water.c   -> gPsywaveRingSpriteTemplate
 
+Incendio (Ember): riusa small_ember.png (nessun file nuovo). Movimento
+  lineare invece dell'onda di Lanciafiamme (fonte vera:
+  TranslateAnimSpriteToTargetMonLocation, non AnimToTargetInSinWave).
+  Script: data/battle_anim_scripts.s -> Move_EMBER
+  Sorgente: src/battle_anim_fire.c   -> gEmberSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

@@ -382,6 +382,38 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Incendio (Move_EMBER, src/battle_anim_scripts.s): riusa LA STESSA
+  // grafica di Lanciafiamme (small_ember.png, gEmberSpriteTemplate — stesso
+  // tileTag ANIM_TAG_SMALL_EMBER) ma movimento diverso: callback
+  // TranslateAnimSpriteToTargetMonLocation (lineare, NESSUNA onda) invece
+  // di AnimToTargetInSinWave — 3 fiammelle dritte verso il bersaglio con un
+  // piccolo ventaglio verticale fisso (-16/0/16 nello script), non
+  // oscillante. ampiezzaPx:0 nel nostro sistema disattiva l'onda, quindi
+  // riusa _particellaOndaVersoTarget senza bisogno di una nuova funzione —
+  // il ventaglio verticale si ottiene spostando il punto di arrivo.
+  async function _giocaEmberRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_ember.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [32], frameMs: 9999, durataMs: 260, ampiezzaPx: 0 };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 180);
+
+    const scartoY = [-10, 0, 10];
+    const attese = [];
+    scartoY.forEach((dy, i) => {
+      const arrivoScarto = { x: arrivo.x, y: arrivo.y + dy };
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivoScarto, scalaX, scalaY, 1, i * 70, opts));
+    });
+    await Promise.all(attese);
+    // Vampata d'impatto (EmberFireHit × 3 nello script originale): un
+    // piccolo tremore sul bersaglio al posto delle 3 fiammelle extra che
+    // "scoppiano" lì — stessa semplificazione già usata per le altre mosse.
+    _scuotiSpriteRom(bersaglioEl, 3, 220);
+    await new Promise(r => setTimeout(r, 220));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Idrocannone (Move_HYDRO_PUMP, src/battle_anim_scripts.s): stesso
   // movimento a onda di Lanciafiamme (gHydroPumpOrbSpriteTemplate usa anche
   // lui AnimToTargetInSinWave), grafica vera water_orb.png (16×16, 4
@@ -490,6 +522,7 @@ const AnimazioniEssentials = (function () {
     MUDSHOT: _giocaMudShotRom,
     SIGNALBEAM: _giocaSignalBeamRom,
     PSYWAVE: _giocaPsywaveRom,
+    EMBER: _giocaEmberRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
