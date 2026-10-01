@@ -1233,6 +1233,12 @@ const AnimazioniEssentials = (function () {
 
     FEATHERDANCE: _giocaPiumaRom, DEFOG: _giocaPiumaRom, TAILWIND: _giocaPiumaRom,
     AGILITY: _giocaPiumaRom,
+
+    // Ultimo riuso (nessuna grafica nuova): mosse evasive/di schermaglia
+    // che si adattano bene alle categorie già costruite.
+    SUBSTITUTE: _giocaScudoRom, MINIMIZE: _giocaPiumaRom, DOUBLETEAM: _giocaPiumaRom,
+    TAUNT: _giocaSguardoRom, ENCORE: _giocaSguardoRom, DISABLE: _giocaSguardoRom,
+    TORMENT: _giocaSguardoRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
