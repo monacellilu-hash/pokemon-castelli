@@ -433,6 +433,15 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Mosse di sguardo/fascino (Attrazione, Occhio di Falco, Sguardo
+  // Cupo...): scintillio sul bersaglio — grafica vera eye_sparkle.png
+  // (4 fotogrammi, 16×16).
+  async function _giocaSguardoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('sparkle.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 16, 32, 48], 16);
+  }
+
   // Trappole da campo (Punte, Punte Velenose, Levitoroccia...): punte che
   // crescono ai piedi del bersaglio — grafica vera ice_spikes.png (4
   // fotogrammi, 8×16, non quadrati: funzione dedicata).
@@ -1187,6 +1196,10 @@ const AnimazioniEssentials = (function () {
     MUDSPORT: _giocaSabbiaRom, KINESIS: _giocaSabbiaRom,
 
     SPIKES: _giocaPunteRom, TOXICSPIKES: _giocaPunteRom, STEALTHROCK: _giocaPunteRom,
+
+    ATTRACT: _giocaSguardoRom, LOCKON: _giocaSguardoRom, MEANLOOK: _giocaSguardoRom,
+    SWEETSCENT: _giocaSguardoRom, CAPTIVATE: _giocaSguardoRom, CHARM: _giocaSguardoRom,
+    FORESIGHT: _giocaSguardoRom, ODORSLEUTH: _giocaSguardoRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
