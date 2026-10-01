@@ -392,6 +392,33 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
+  // Categoria IMPATTO (Mega Pugno/Martelpugno/Calci e simili): singolo
+  // lampo di impatto sul bersaglio, UN SOLO fotogramma (punch_impact.png,
+  // 32×32) — niente proiettile, l'attaccante si avvicina (lunge, come
+  // già fa il modello fisico generico) e il lampo compare al contatto.
+  async function _giocaPugnoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('punch_impact.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+
+    // (lungeAttaccante vive nel modulo Battle, non qui: lo scuotimento
+    // dell'attaccante basta a dare il senso del colpo in arrivo).
+    _scuotiSpriteRom(attaccanteEl, 2, 180);
+    await new Promise(r => setTimeout(r, 180));
+    ctx.save();
+    ctx.translate(centro.x, centro.y);
+    ctx.scale(scalaX, scalaY);
+    ctx.drawImage(img, -16, -16, 32, 32);
+    ctx.restore();
+    _scuotiSpriteRom(bersaglioEl, 3, 200);
+    await new Promise(r => setTimeout(r, 200));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Prepara canvas/scala/centri comuni a tutte le animazioni "a onda" (ogni
   // mossa poi lancia le sue particelle con _particellaOndaVersoTarget).
   async function _preparaAnimOnda(attaccanteEl, bersaglioEl) {
@@ -931,6 +958,12 @@ const AnimazioniEssentials = (function () {
     SLASH: _giocaSlashRom, NIGHTSLASH: _giocaSlashRom, XSCISSOR: _giocaSlashRom,
     LEAFBLADE: _giocaSlashRom, AERIALACE: _giocaSlashRom, FURYCUTTER: _giocaSlashRom,
     CROSSPOISON: _giocaSlashRom,
+
+    // Categoria IMPATTO (overlay sul bersaglio, un solo lampo).
+    MEGAPUNCH: _giocaPugnoRom, FIREPUNCH: _giocaPugnoRom, ICEPUNCH: _giocaPugnoRom,
+    THUNDERPUNCH: _giocaPugnoRom, DYNAMICPUNCH: _giocaPugnoRom, MEGAKICK: _giocaPugnoRom,
+    MACHPUNCH: _giocaPugnoRom, BULLETPUNCH: _giocaPugnoRom, DRAINPUNCH: _giocaPugnoRom,
+    FOCUSPUNCH: _giocaPugnoRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
