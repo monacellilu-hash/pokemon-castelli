@@ -1097,6 +1097,15 @@ const AnimazioniEssentials = (function () {
     MORNINGSUN: _giocaCuraRom, SYNTHESIS: _giocaCuraRom, MILKDRINK: _giocaCuraRom,
     ROOST: _giocaCuraRom, SLACKOFF: _giocaCuraRom, WISH: _giocaCuraRom,
     MOONLIGHT: _giocaCuraRom,
+
+    // Mosse che infliggono stato (overlay sul bersaglio, riuso di grafiche
+    // già verificate per lo stesso tipo/elemento: Tossina/Velenopolvere
+    // riusano la bolla di veleno, Tuononda/Scintilla elettrica le onde
+    // elettriche, Ipnosi/Soporifero... riusano l'onda sonora).
+    TOXIC: _giocaSludgeRom, POISONPOWDER: _giocaSludgeRom,
+    THUNDERWAVE: _giocaFulmineRom, STUNSPORE: _giocaFulmineRom,
+    SLEEPPOWDER: _giocaSuonoRom, HYPNOSIS: _giocaSuonoRom, SPORE: _giocaSuonoRom,
+    WILLOWISP: _giocaEmberRom, GLARE: _giocaBuioRom, CONFUSERAY: _giocaPsywaveRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
