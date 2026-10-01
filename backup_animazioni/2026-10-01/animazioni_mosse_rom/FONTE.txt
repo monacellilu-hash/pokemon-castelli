@@ -1,0 +1,42 @@
+Grafica ripresa dal codice sorgente decompilato di Pokémon Smeraldo
+(progetto pubblico pret/pokeemerald, https://github.com/pret/pokeemerald),
+usato qui come materiale di riferimento per un progetto personale/non
+commerciale (vedi CLAUDE.md — vincoli legali).
+
+small_ember.png — graphics/battle_anims/sprites/small_ember.png
+  Foglio sprite reale usato in originale da Lanciafiamme (e da altre mosse
+  Fuoco). Ripulito dal colore di trasparenza (indice palette 0) in fase di
+  conversione, contenuto grafico invariato.
+
+Script di riferimento (per la coreografia, non incluso come file qui):
+  data/battle_anim_scripts.s -> Move_FLAMETHROWER, FlamethrowerCreateFlames
+  src/battle_anim_water.c    -> gFlamethrowerFlameSpriteTemplate,
+                                 AnimToTargetInSinWave (moto a "onda" verso
+                                 il bersaglio, usato anche da Idrocannone,
+                                 Raggio Segnale ecc. — stesso movimento,
+                                 riutilizzabile per altre mosse in futuro)
+
+water_orb.png — graphics/battle_anims/sprites/water_orb.png (pret/pokeemerald)
+  Foglio sprite reale usato in originale da Idrocannone. Stessa pulizia del
+  colore di trasparenza (indice palette 0) di small_ember.png.
+  Script:  data/battle_anim_scripts.s -> Move_HYDRO_PUMP
+  Sorgente: src/battle_anim_water.c   -> gHydroPumpOrbSpriteTemplate
+
+--- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
+Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
+pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
+grafica del motore Pokémon Essentials FRLG (cartella locale
+"Essentials FRLG/Graphics/Battle animations"). Il bug della "Ball sempre
+aperta" segnalato da Luca non era nelle immagini ma nel codice JS: ogni
+fotogramma di questi fogli è alto il DOPPIO della sua larghezza (fonte vera,
+letta dallo script reale estratto del motore:
+strumenti/scripts_estratti/0193_Battle_Scene_BaseAnimation.rb,
+Battle::Scene::Animation::BallAnimationMixin#addBallSprite/#createBallTumbling
+/#ballSetOpen), mentre js/battle.js usava un riquadro quadrato (larghezza =
+altezza), ritagliando solo la metà superiore di ogni fotogramma — si vedeva
+ingrandita solo la calotta rossa. Corretto in js/battle.js: il riquadro della
+Ball ora è largo `dim` e alto `dim*2`. Inoltre il foglio "_open" ha UNA SOLA
+immagine (non due fotogrammi alternati come si assumeva prima): il codice ora
+si limita a sostituire il foglio, con un piccolo schiacciamento prima (come
+ballOpenUp in Essentials) invece di inventare un secondo fotogramma
+inesistente.

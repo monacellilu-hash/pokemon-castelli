@@ -1,0 +1,18 @@
+Backup del 1 ottobre 2026 — stato delle animazioni/combattimento PRIMA di
+continuare con altre mosse (richiesta esplicita di Luca: "voglio che ci sia
+un backup" nel caso serva ripristinare).
+
+Cosa contiene:
+- animazioni-essentials.js — motore animazioni mosse (Essentials + ROM)
+- battle.js                — combattimento (include lancio Ball, sprite, piattaforme)
+- style.css                — stili battaglia (sprite, Ball, tasti touch)
+- animazioni_mosse_rom/    — grafiche reali da pokeemerald (Lanciafiamme, Idrocannone) + FONTE.txt
+
+Corrisponde al commit 435d218 (tag git "backup-animazioni-2026-10-01").
+
+Come ripristinare questo stato, se serve:
+  git checkout backup-animazioni-2026-10-01 -- js/animazioni-essentials.js js/battle.js style.css
+oppure, per ripristinare TUTTO il progetto a quel momento:
+  git checkout backup-animazioni-2026-10-01
+
+(Chiedi a Claude di farlo quando serve, non serve farlo a mano.)
