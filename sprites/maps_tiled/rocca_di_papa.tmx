@@ -450,7 +450,7 @@
   <object id="53" name="rocca_npc2_1" x="717.661" y="1432.21">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Da giorni non si vede più Gianluca alla funivia... non è da lui sparire così."/>
     <property name="direzione" value="est"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_1"/>
@@ -466,7 +466,7 @@
     <property name="type" value="cartello"/>
    </properties>
   </object>
-  <object id="71" name="gdf_grunt_grotta_vulcano_1" x="434" y="1080.67">
+  <object id="71" name="gdf_grunt_grotta_vulcano_1" x="440" y="1080.67">
    <properties>
     <property name="direzione" value="ovest"/>
     <property name="id" value="gdf_grunt_grotta_vulcano_1"/>
@@ -476,9 +476,9 @@
    </properties>
    <point/>
   </object>
-  <object id="72" name="gdf_gate_grotta_vulcano" x="405.167" y="758.5">
+  <object id="72" name="gdf_gate_grotta_vulcano" x="402.167" y="1077.5">
    <properties>
-    <property name="condizione" value="gdf_sconfitto"/>
+    <property name="condizione" value="pietra_zaffiro_ottenuta"/>
     <property name="direzione" value="sud"/>
     <property name="gate" value="true"/>
     <property name="id" value="gdf_gate_grotta_vulcano"/>
@@ -513,7 +513,7 @@
   <object id="90" name="rocca_npc2_2" x="754.667" y="1430.67">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Dicono che Baso stia chiuso in palestra ad allenare come un matto. Chissà cosa je passa per la testa."/>
     <property name="direzione" value="nord"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_2"/>
@@ -526,7 +526,7 @@
   <object id="91" name="rocca_npc2_3" x="714.667" y="1328">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Speriamo che a Gianluca non je sia successo niente de brutto, era sempre lì a salutà tutti."/>
     <property name="direzione" value="est"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_3"/>
@@ -539,7 +539,7 @@
   <object id="92" name="rocca_npc2_4" x="688.667" y="1368.67">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Mo' pure la funivia s'è fermata. Prima o poi qualcuno dovrà annà a vedè che succede lassù."/>
     <property name="direzione" value="est"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_4"/>
@@ -552,7 +552,7 @@
   <object id="93" name="rocca_npc2_5" x="681.333" y="1404">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Baso non è più lo stesso da quando Gianluca non se fa vedè. Due amici per la pelle, quei due."/>
     <property name="direzione" value="est"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_5"/>
@@ -565,7 +565,7 @@
   <object id="94" name="rocca_npc2_6" x="765.333" y="1301.33">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Ce sta un'aria strana su a Monte Cavo ultimamente. Io non ce salirei, se fossi in te."/>
     <property name="direzione" value="sud"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_6"/>
@@ -578,7 +578,7 @@
   <object id="95" name="rocca_npc2_7" x="854" y="1314">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Mia nonna dice che quando il vento cambia così, è segno che sta a succede qualcosa lassù."/>
     <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_7"/>
@@ -591,7 +591,7 @@
   <object id="96" name="rocca_npc2_8" x="896.667" y="1326">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Speriamo bene, dai. Gianluca è uno tosto, se la caverà."/>
     <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_8"/>
@@ -604,7 +604,7 @@
   <object id="97" name="rocca_npc2_9" x="810" y="1307.33">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Se vedi Baso, diglielo che semo tutti in pensiero. Pure se lui fa finta de gnente."/>
     <property name="direzione" value="sud"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_9"/>
@@ -617,7 +617,7 @@
   <object id="100" name="rocca_npc2_10" x="880" y="1432.67">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Qui a Rocca de Papa semo gente de montagna, mica ce spaventamo facile. Ma stavolta..."/>
     <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_10"/>
@@ -630,7 +630,7 @@
   <object id="101" name="rocca_npc2_11" x="938" y="1369.33">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Chi se la sente de annà a vedè che succede sulla funivia? Io no, ve lo dico subito."/>
     <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_11"/>
@@ -643,7 +643,7 @@
   <object id="102" name="rocca_npc2_12" x="947.333" y="1328.67">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."/>
+    <property name="dialogo" value="Appena torna Gianluca je faccio er discorso der secolo, state a vedè."/>
     <property name="direzione" value="ovest"/>
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="rocca_npc2_12"/>
@@ -653,7 +653,7 @@
    </properties>
    <point/>
   </object>
-  <object id="103" name="gate_gianluca_casa" type="npc" x="786" y="844.667" width="32" height="32">
+  <object id="103" name="gate_gianluca_casa" type="npc" x="785.667" y="883" width="32" height="32">
    <properties>
     <property name="condizione" value="baso_tornato"/>
     <property name="direzione" value="sud"/>
@@ -677,7 +677,7 @@
    </properties>
    <point/>
   </object>
-  <object id="105" name="gate_palestra_baso" type="npc" x="815.4" y="1170" width="32" height="32">
+  <object id="105" name="gate_palestra_baso" type="npc" x="806.733" y="1161.33" width="26.3333" height="16.3333">
    <properties>
     <property name="condizione" value="baso_tornato"/>
     <property name="direzione" value="nord"/>
@@ -703,7 +703,7 @@
   <object id="107" name="rocca_villico_liberato_2" type="npc" x="880" y="1380" width="32" height="32">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Hai salvato Gianluca, sei un grande!"/>
+    <property name="dialogo" value="Mo' la funivia riparte, grazie a te!"/>
     <property name="direzione" value="sud"/>
     <property name="id" value="rocca_villico_liberato_2"/>
     <property name="movimento" value="random"/>
@@ -746,7 +746,7 @@
   <object id="113" name="rocca_villico_liberato_3" type="npc" x="714" y="1328" width="32" height="32">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Hai salvato Gianluca, sei un grande!"/>
+    <property name="dialogo" value="Baso te deve un favore grosso, fidete."/>
     <property name="direzione" value="sud"/>
     <property name="id" value="rocca_villico_liberato_3"/>
     <property name="movimento" value="random"/>
@@ -757,7 +757,7 @@
   <object id="114" name="rocca_villico_liberato_4" type="npc" x="854" y="1314" width="32" height="32">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Hai salvato Gianluca, sei un grande!"/>
+    <property name="dialogo" value="Meno male che c'eri tu, eh!"/>
     <property name="direzione" value="sud"/>
     <property name="id" value="rocca_villico_liberato_4"/>
     <property name="movimento" value="random"/>
@@ -768,7 +768,7 @@
   <object id="115" name="rocca_villico_liberato_5" type="npc" x="808" y="1462" width="32" height="32">
    <properties>
     <property name="condizione" value="baso_tornato"/>
-    <property name="dialogo" value="Hai salvato Gianluca, sei un grande!"/>
+    <property name="dialogo" value="Qui a Rocca de Papa nun te scordamo mica, sai?"/>
     <property name="direzione" value="sud"/>
     <property name="id" value="rocca_villico_liberato_5"/>
     <property name="movimento" value="random"/>

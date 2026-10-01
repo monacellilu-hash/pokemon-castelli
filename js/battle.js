@@ -134,6 +134,12 @@ const Battle = (function () {
   // Modalità allenatore (F7): squadra nemica multipla, niente cattura né fuga
   let modalita = 'selvatico';     // 'selvatico' oppure 'allenatore'
   let datiAllenatore = null;      // { nome, squadra, dialogoSconfitta }
+  // Scorte di cura dell'allenatore (sess. 1 ott 2026, richiesta di Luca: i
+  // capipalestra devono potersi curare in lotta, non solo attaccare). Copia
+  // mutabile per QUESTA battaglia (si scala a ogni uso), presa da
+  // datiAllenatore.oggettiCura = [{chiave, quantita}] — null se il trainer
+  // non ne ha (comportamento di default invariato per tutti gli altri).
+  let scorteCuraNemico = null;
   let squadraNemica = [];         // istanze dei Pokémon dell'allenatore
   let indiceNemico = 0;           // quale Pokémon nemico è in campo
   let fuggireImpossibile = false; // F11: true per i leggendari (fuga bloccata)
@@ -1866,6 +1872,43 @@ const Battle = (function () {
     return sceglieMossaCasuale(nemico);
   }
 
+  // Sceglie, fra le scorte rimaste, l'oggetto più adatto a coprire "mancanti"
+  // HP: il più economico che basta da solo se c'è, altrimenti il più potente
+  // disponibile (meglio di niente) — non spreca una Pozione Massima per 5 HP.
+  function _scegliOggettoCuraNemico(mancanti) {
+    let bastaDaSolo = null, megliOpzioneParziale = null;
+    for (const voce of scorteCuraNemico) {
+      if (voce.quantita <= 0) continue;
+      const og = OGGETTI[voce.chiave];
+      if (!og || !og.cura) continue;
+      if (og.cura >= mancanti) {
+        if (!bastaDaSolo || og.cura < bastaDaSolo.og.cura) bastaDaSolo = { voce, og };
+      } else if (!megliOpzioneParziale || og.cura > megliOpzioneParziale.og.cura) {
+        megliOpzioneParziale = { voce, og };
+      }
+    }
+    return bastaDaSolo || megliOpzioneParziale;
+  }
+
+  // IA di cura dell'allenatore (sess. 1 ott 2026, richiesta di Luca: i
+  // capipalestra devono potersi curare, non solo attaccare — prima
+  // rendeva le palestre troppo facili). Si cura quando è sotto metà vita
+  // E ha ancora scorte: consuma il turno (niente attacco quello stesso
+  // giro), come nel gioco vero. Ritorna true se si è curato.
+  async function _provaCuraNemico() {
+    if (!scorteCuraNemico || !nemico || nemico.hpAttuale <= 0) return false;
+    const mancanti = nemico.hpMax - nemico.hpAttuale;
+    if (mancanti <= 0) return false;
+    if (nemico.hpAttuale / nemico.hpMax > 0.5) return false;
+    const scelta = _scegliOggettoCuraNemico(mancanti);
+    if (!scelta) return false;
+    scelta.voce.quantita -= 1;
+    nemico.hpAttuale = Math.min(nemico.hpMax, nemico.hpAttuale + scelta.og.cura);
+    aggiornaPannelli();
+    await di(`${etichettaNemico()} usa ${scelta.og.nome} su ${nemico.nome}!`);
+    return true;
+  }
+
   // Velocità effettiva (sbalzi + riduzione da paralisi), per l'ordine dei turni.
   // Verificato su Bulbapedia (sess. 29 set 2026, richiesta esplicita di Luca):
   // nella 3ª generazione (e fino alla 6ª) la paralisi porta la Velocità al
@@ -1878,10 +1921,13 @@ const Battle = (function () {
   }
 
   // Solo il nemico agisce (dopo che il giocatore usa un oggetto, cambia Pokémon
-  // o fallisce la fuga): attacca, poi scattano i danni da stato.
+  // o fallisce la fuga): attacca, poi scattano i danni da stato. Prima prova
+  // a curarsi (consuma il turno, niente attacco quel giro se lo fa).
   async function turnoNemicoEFine() {
-    await eseguiTurno(nemico, mio, scegliMossaNemico(), etichettaNemico(), mio.nome);
-    if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
+    if (!(await _provaCuraNemico())) {
+      await eseguiTurno(nemico, mio, scegliMossaNemico(), etichettaNemico(), mio.nome);
+      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
+    }
     await fineTurnoStati();
     if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
@@ -1889,9 +1935,23 @@ const Battle = (function () {
   }
 
   // Turno completo: l'ordine è deciso prima dalla PRIORITÀ della mossa,
-  // poi (a parità) dalla velocità effettiva.
+  // poi (a parità) dalla velocità effettiva. Se il nemico decide di
+  // curarsi (vedi _provaCuraNemico), quello è il suo intero turno: come nel
+  // gioco vero, gli oggetti vanno "prima" di qualunque mossa — il giocatore
+  // attacca comunque, il nemico no.
   async function turnoCompleto(mossaMia) {
     nascondiMenu();
+
+    if (await _provaCuraNemico()) {
+      await eseguiTurno(mio, nemico, mossaMia, mio.nome, etichettaNemico());
+      if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
+      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
+      await fineTurnoStati();
+      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
+      if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
+      mostraMenuPrincipale();
+      return;
+    }
 
     const mossaNemico = scegliMossaNemico();
     const prioMia = mossaMia.priorita || 0;
@@ -2672,6 +2732,9 @@ const Battle = (function () {
     onFine = opzioni.onFine || null;
     modalita = opzioni.allenatore ? 'allenatore' : 'selvatico';
     datiAllenatore = opzioni.allenatore || null;
+    scorteCuraNemico = (datiAllenatore && Array.isArray(datiAllenatore.oggettiCura))
+      ? datiAllenatore.oggettiCura.map(o => ({ chiave: o.chiave, quantita: o.quantita }))
+      : null;
     fuggireImpossibile = opzioni.fuggireImpossibile || false;
     // Richiesta esplicita di Luca: la primissima lotta col rivale nel
     // laboratorio è l'UNICO caso in tutto il gioco in cui una sconfitta non

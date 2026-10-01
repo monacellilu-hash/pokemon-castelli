@@ -109,11 +109,16 @@ const DATI_NPC = {
     dialogo: ["Maschio delle Faete, Monte Cavo… i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokémon."],
   },
   // Gate GdF davanti alla Grotta del Vulcano (Atto 6, STORIA_COMPLETA): sparisce
-  // quando stato.flags.gdf_sconfitto è true (Atto 7, Pietra Rossa/Blu dall'Abbazia).
-  // Finché è visibile, il varco resta bloccato dal trainer 'gdf_grunt_grotta_vulcano_1'.
+  // Sess. 1 ott 2026: la condizione sull'oggetto Tiled puntava a 'gdf_sconfitto',
+  // un flag MAI impostato da nessuna parte (residuo della vecchia narrativa
+  // pre-riscrittura dell'8 settembre) — il gate restava bloccato per sempre.
+  // Corretto in 'pietra_zaffiro_ottenuta' (Atto 7 di STORIA_COMPLETA.md: si
+  // sblocca quando ottieni la Pietra Zaffiro da Giovanni al Rifugio di
+  // Marino — NON quando sconfiggi il grunt qui, che resta liberamente
+  // battibile ma non apre nulla da solo, vedi "Prima visita" in quel file).
   'gdf_gate_grotta_vulcano': {
     sprite: 'GDF_GRUNT_SPRITE', direzione: 'ovest', movimento: 'fisso',
-    dialogo: ['Fermo lì. Nessuno entra nella Grotta finché il Comandante non ha finito.'],
+    dialogo: ['Fermo lì. I piani interni restano sigillati finché il Comandante non viene fermato per davvero.'],
   },
   // Infiltrato dentro la Grotta del Vulcano (grotta_vulcano_1f.tmj, sess. 7
   // set 2026): travestito da grunt GdF per non farsi scoprire (stesso sprite
@@ -675,6 +680,20 @@ const DATI_NPC = {
     dialogo: [
       'Ehi, tu! Qui non si entra. Ordini del Comandante.',
       'L\'Abbazia è... chiusa per "manutenzione". Torna quando sarai qualcuno — diciamo, con sette Medaglie.',
+    ],
+  },
+  // Sess. 1 ott 2026: prima aveva lo stesso id/dialogo di gdf_porta_abbazia
+  // (copia-incolla in Tiled) — era lo stesso identico sbarramento su due
+  // mappe diverse. Separato con id e battute proprie: questo è il cancello
+  // del "parcheggione" di Grottaferrata (base di lancio, arruolamento
+  // astronauti post-Lega, vedi CLAUDE.md — Deoxys).
+  'guardia_parcheggione': {
+    sprite: 'GDF_GRUNT_SPRITE',
+    direzione: 'sud',
+    movimento: 'fisso',
+    dialogo: [
+      'Area riservata. Accesso solo al personale della base di lancio.',
+      'Le selezioni per il programma spaziale sono chiuse a chi non ha ancora vinto la Lega Pokémon. Mi spiace.',
     ],
   },
 

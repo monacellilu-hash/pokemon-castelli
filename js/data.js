@@ -3239,11 +3239,13 @@ const POKE_MARKET = [
   { id: 'mk-borgata', comune: 'Borgata Tuscolana', lat: 41.8418, lon: 12.6150,
     merce: ['pokeball', 'pozione'] },
 
+  // Sess. 1 ott 2026: aggiunte le cure di stato singole + repellente base,
+  // su richiesta di Luca (prima mancavano del tutto nelle prime 2 città).
   { id: 'mk-frascati', comune: 'Frascati', lat: 41.8066, lon: 12.6826,
-    merce: ['pokeball', 'pozione', 'superpozione'] },
+    merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente'] },
 
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7858, lon: 12.6668,
-    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antiparalisi'] },
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente'] },
 
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7873, lon: 12.6700,
     merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'pietra_luna'] },

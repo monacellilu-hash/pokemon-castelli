@@ -4,6 +4,34 @@
 
 ---
 
+## Sessione 30 settembre 2026 — Fix vero della Ball "sempre aperta", committato
+
+- **Bug risolto (committo f9d020a)**: Luca segnalava che sia il lancio d'entrata in campo sia il lancio
+  di cattura mostravano sempre la Ball "aperta". Causa reale trovata leggendo lo script originale del
+  motore Essentials FRLG già estratto nel progetto (`strumenti/scripts_estratti/
+  0193_Battle_Scene_BaseAnimation.rb`, `BallAnimationMixin#addBallSprite`/`#createBallTumbling`/
+  `#ballSetOpen`): ogni fotogramma dei fogli `ball_*.png` è alto il DOPPIO della sua larghezza (rettangolo
+  verticale, non quadrato). Il riquadro DOM in js/battle.js era invece quadrato (`width = height = dim`),
+  quindi ritagliava sempre e solo la metà superiore di ogni fotogramma — si vedeva ingrandita solo la
+  calotta rossa. Corretto: riquadro `dim` di larghezza × `dim*2` di altezza, ball centrata via
+  `transform: translate(-50%,-50%)`. Verificato che TUTTI i 25 tipi di Ball nella cartella seguono le
+  stesse proporzioni 256×64/8 frame (fix valido per tutte, non solo Poké Ball base).
+- **Secondo errore trovato**: il foglio `ball_*_open.png` non ha 2 frame (chiuso/aperto) come si
+  assumeva, ne ha **una sola** immagine (lo dice lo stesso script originale: `numFrames = 2*larghezza/
+  altezza = 1`). Ora il codice sostituisce solo il foglio (con un piccolo schiacciamento prima, come
+  `ballOpenUp` in Essentials) invece di inventare un secondo fotogramma che non esiste.
+- **Dimensione**: Ball rimpicciolita del 12% su richiesta di Luca (sembrava più grossa del Pokémon).
+- **Confermato funzionante da Luca**. Tutto tracciato in `sprites/animazioni_mosse_rom/FONTE.txt`
+  (nota separata sulle Ball, per non confonderle con le fonti pokeemerald delle mosse).
+- **Ancora in sospeso, NON committato** (mai testato dal vivo, `js/animazioni-essentials.js` +
+  `js/app.js` + `sprites/animazioni_mosse_rom/water_orb.png`): Idrocannone ricreato da fonte vera
+  (pokeemerald, stesso procedimento di Lanciafiamme) + squadra test Gyarados con Idrocannone forzato
+  su tutte e 4 le mosse. Su richiesta di Luca si riprende da qui: altre mosse (attenzione agli effetti,
+  es. **Nitrocarica aumenta la velocità di chi la usa, non dell'avversario** — controllare bene ogni
+  mossa prima di implementarne gli effetti), poi sfondi/posizioni sprite, poi Service Worker.
+
+---
+
 ## Sessione 29 settembre 2026 (4) — Prima animazione da ROM vera (Lanciafiamme), starter tolti dall'erba alta
 
 - **Lanciafiamme ricreato dalla fonte vera** (non più Essentials): scaricati script e grafica reali di

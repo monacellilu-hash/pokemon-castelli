@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="35" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="22" nextobjectid="142">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="35" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="22" nextobjectid="147">
  <tileset firstgid="1" source="../outside.tsx"/>
  <tileset firstgid="4017" source="../../outside.tsx"/>
  <layer id="1" name="ground" width="40" height="35">
@@ -173,15 +173,15 @@
   <object id="44" x="857.642" y="162.828" width="34.8029" height="292.096"/>
   <object id="45" x="862.614" y="413.906" width="380.346" height="44.7466"/>
   <object id="46" x="1214.37" y="67.1198" width="31.074" height="375.374"/>
-  <object id="47" x="1049.06" y="706.001" width="134.24" height="121.81"/>
+  <object id="47" x="1060.15" y="710.365" width="122.24" height="76.7192"/>
   <object id="53" x="546.43" y="1077.05" width="26.2888" height="22.5599"/>
   <object id="54" x="707.244" y="1072.05" width="37.2888" height="33.5599"/>
-  <object id="58" x="894.931" y="686.735" width="37.2888" height="33.5599"/>
-  <object id="59" x="893.688" y="781.2" width="37.2888" height="33.5599"/>
-  <object id="60" x="894.931" y="879.394" width="37.2888" height="33.5599"/>
+  <object id="58" x="907.931" y="694.735" width="14.6221" height="16.8932"/>
+  <object id="59" x="898.688" y="788.534" width="25.9555" height="21.2266"/>
+  <object id="60" x="899.931" y="887.727" width="24.6221" height="21.8932"/>
   <object id="61" x="894.931" y="976.345" width="37.2888" height="33.5599"/>
   <object id="62" x="896.174" y="1072.05" width="37.2888" height="33.5599"/>
-  <object id="63" x="1088.83" y="866.343" width="191.416" height="254.807"/>
+  <object id="63" x="1088.83" y="884.343" width="191.416" height="236.807"/>
   <object id="65" x="919.79" y="980.695" width="166.557" height="130.511"/>
   <object id="66" x="733.346" y="660.012" width="157.856" height="452.437"/>
   <object id="67" x="349.272" y="815.382" width="162.828" height="298.31"/>
@@ -229,6 +229,8 @@
   <object id="139" x="894.333" y="168.667" width="221.333" height="147.667"/>
   <object id="140" x="895.667" y="302.333" width="79" height="47"/>
   <object id="141" x="1028.33" y="308" width="90.6667" height="44.3333"/>
+  <object id="143" x="1062.52" y="753.459" width="26.6036" height="72.5374"/>
+  <object id="144" x="1122.7" y="756.822" width="56.24" height="72.5374"/>
  </objectgroup>
  <objectgroup color="#ff0000" id="6" name="eventi">
   <object id="20" name="npc" type="npc" x="480" y="544" width="32" height="32">
@@ -279,7 +281,7 @@
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="81" name="pokemarket_frascati" type="warp" x="1091.48" y="800.625" width="32" height="32">
+  <object id="81" name="pokemarket_frascati" type="warp" x="1091.11" y="807.897" width="23.2727" height="21.2727">
    <properties>
     <property name="destinazione" value="pokemon market frascati"/>
     <property name="spawn_id" value="da_frascati_centro"/>
@@ -310,6 +312,18 @@
     <property name="type" value="cartello"/>
    </properties>
    <point/>
+  </object>
+  <object id="142" name="spawn_palestra_frascati" type="spawn" x="988" y="360.75" width="32" height="16.5">
+   <properties>
+    <property name="id" value="da_palestra_frascati"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="146" name="spawn_pokemarket_frascati" type="spawn" x="1091" y="840" width="32" height="32">
+   <properties>
+    <property name="id" value="da_pokemarket_frascati"/>
+    <property name="type" value="spawn"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="21" name="luci">
@@ -517,15 +531,21 @@
     <property name="type" value="luce"/>
    </properties>
   </object>
-  <object id="126" x="162.5" y="832" width="28" height="33">
+  <object id="126" x="161.167" y="832.667" width="28" height="33">
    <properties>
     <property name="colore" value="#ffd27f"/>
     <property name="type" value="luce"/>
    </properties>
   </object>
-  <object id="142" name="spawn_palestra_frascati" type="spawn" x="988" y="360.75" width="32" height="16.5">
+  <object id="138" name="spawn" type="spawn" x="990.333" y="359.417" width="32" height="16.5">
    <properties>
     <property name="id" value="da_palestra_frascati"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="145" name="spawn" type="spawn" x="1089" y="827.75" width="32" height="16.5">
+   <properties>
+    <property name="id" value="da_pokemarket_frascati"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>

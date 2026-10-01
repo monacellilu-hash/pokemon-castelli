@@ -16,6 +16,28 @@ const PokeAPI = (function () {
   const ID_MAX = 386; // limite rigoroso: Gen 1–3 (scelta di design, vedi CLAUDE.md)
   const PREFISSO_CACHE = "pkc_cache_"; // prefisso delle chiavi in localStorage
 
+  // Sess. 1 ott 2026 (richiesta di Luca): le sprite di battaglia continuavano
+  // a sparire anche fuori dall'incognito. Causa reale: getPokemon() faceva
+  // UN SOLO tentativo di fetch — se falliva per un blip di rete, lo sprite
+  // restava vuoto per sempre (il retry a livello immagine in js/battle.js,
+  // impostaSpriteConCache, non può aiutare: senza l'URL non c'è nulla da
+  // riprovare). fetchConRetry ritenta fino a 3 volte con una breve pausa
+  // crescente prima di arrendersi davvero.
+  async function fetchConRetry(url, tentativi = 3) {
+    let ultimoErrore;
+    for (let i = 1; i <= tentativi; i++) {
+      try {
+        const risposta = await fetch(url);
+        if (!risposta.ok) throw new Error(`HTTP ${risposta.status} per ${url}`);
+        return risposta;
+      } catch (e) {
+        ultimoErrore = e;
+        if (i < tentativi) await new Promise(r => setTimeout(r, 400 * i));
+      }
+    }
+    throw ultimoErrore;
+  }
+
   // ---- Funzioni di cache (localStorage) ----
 
   // Legge un valore dalla cache. Restituisce null se non c'è.
@@ -77,7 +99,7 @@ const PokeAPI = (function () {
   // "medio" di PokéAPI) se il fetch fallisce.
   async function fetchCatchRate(id) {
     try {
-      const risposta = await fetch(`${BASE_URL}/pokemon-species/${id}`);
+      const risposta = await fetchConRetry(`${BASE_URL}/pokemon-species/${id}`);
       if (!risposta.ok) return 45;
       const specie = await risposta.json();
       return (typeof specie.capture_rate === 'number') ? specie.capture_rate : 45;
@@ -133,7 +155,7 @@ const PokeAPI = (function () {
 
     // 2) Non in cache: fetch dall'API (+ tasso di cattura dalla specie)
     console.log(`[PokeAPI] Pokémon #${id} non in cache: lo scarico dall'API...`);
-    const risposta = await fetch(`${BASE_URL}/pokemon/${id}`);
+    const risposta = await fetchConRetry(`${BASE_URL}/pokemon/${id}`);
     if (!risposta.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${risposta.status} per il Pokémon #${id}`);
     }
@@ -209,7 +231,7 @@ const PokeAPI = (function () {
 
     // 2) Fetch dall'API
     const indirizzo = url || `${BASE_URL}/move/${nome}`;
-    const risposta = await fetch(indirizzo);
+    const risposta = await fetchConRetry(indirizzo);
     if (!risposta.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${risposta.status} per la mossa "${nome}"`);
     }
@@ -250,7 +272,7 @@ const PokeAPI = (function () {
     const inCache = leggiCache("abilita_" + nome);
     if (inCache) return inCache;
 
-    const risposta = await fetch(`${BASE_URL}/ability/${nome}`);
+    const risposta = await fetchConRetry(`${BASE_URL}/ability/${nome}`);
     if (!risposta.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${risposta.status} per l'abilità "${nome}"`);
     }
@@ -280,14 +302,14 @@ const PokeAPI = (function () {
     if (inCache) return inCache;
 
     // 2) Specie → URL della catena evolutiva
-    const rispostaSpecie = await fetch(`${BASE_URL}/pokemon-species/${id}`);
+    const rispostaSpecie = await fetchConRetry(`${BASE_URL}/pokemon-species/${id}`);
     if (!rispostaSpecie.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${rispostaSpecie.status} per la specie #${id}`);
     }
     const specie = await rispostaSpecie.json();
 
     // 3) Catena evolutiva completa
-    const rispostaCatena = await fetch(specie.evolution_chain.url);
+    const rispostaCatena = await fetchConRetry(specie.evolution_chain.url);
     if (!rispostaCatena.ok) {
       throw new Error(`[PokeAPI] Errore HTTP ${rispostaCatena.status} per la catena evolutiva di #${id}`);
     }

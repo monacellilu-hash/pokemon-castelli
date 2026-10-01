@@ -4,7 +4,7 @@
     {
      "export":
         {
-         "format":"json",
+         "format":"tmx",
          "target":"rocca_di_papa.tmj"
         }
     },
@@ -1433,7 +1433,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Da giorni non si vede più Gianluca alla funivia... non è da lui sparire così."
                         }, 
                         {
                          "name":"direzione",
@@ -1531,7 +1531,7 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":434,
+                 "x":440,
                  "y":1080.66666666667
                 }, 
                 {
@@ -1544,7 +1544,7 @@
                         {
                          "name":"condizione",
                          "type":"string",
-                         "value":"gdf_sconfitto"
+                         "value":"pietra_zaffiro_ottenuta"
                         }, 
                         {
                          "name":"direzione",
@@ -1575,8 +1575,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":405.166666666667,
-                 "y":758.5
+                 "x":402.166666666667,
+                 "y":1077.5
                 }, 
                 {
                  "height":0,
@@ -1683,7 +1683,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Dicono che Baso stia chiuso in palestra ad allenare come un matto. Chissà cosa je passa per la testa."
                         }, 
                         {
                          "name":"direzione",
@@ -1737,7 +1737,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Speriamo che a Gianluca non je sia successo niente de brutto, era sempre lì a salutà tutti."
                         }, 
                         {
                          "name":"direzione",
@@ -1791,7 +1791,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Mo' pure la funivia s'è fermata. Prima o poi qualcuno dovrà annà a vedè che succede lassù."
                         }, 
                         {
                          "name":"direzione",
@@ -1845,7 +1845,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Baso non è più lo stesso da quando Gianluca non se fa vedè. Due amici per la pelle, quei due."
                         }, 
                         {
                          "name":"direzione",
@@ -1899,7 +1899,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Ce sta un'aria strana su a Monte Cavo ultimamente. Io non ce salirei, se fossi in te."
                         }, 
                         {
                          "name":"direzione",
@@ -1953,7 +1953,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Mia nonna dice che quando il vento cambia così, è segno che sta a succede qualcosa lassù."
                         }, 
                         {
                          "name":"direzione",
@@ -2007,7 +2007,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Speriamo bene, dai. Gianluca è uno tosto, se la caverà."
                         }, 
                         {
                          "name":"direzione",
@@ -2061,7 +2061,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Se vedi Baso, diglielo che semo tutti in pensiero. Pure se lui fa finta de gnente."
                         }, 
                         {
                          "name":"direzione",
@@ -2115,7 +2115,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Qui a Rocca de Papa semo gente de montagna, mica ce spaventamo facile. Ma stavolta..."
                         }, 
                         {
                          "name":"direzione",
@@ -2169,7 +2169,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Chi se la sente de annà a vedè che succede sulla funivia? Io no, ve lo dico subito."
                         }, 
                         {
                          "name":"direzione",
@@ -2223,7 +2223,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Maschio delle Faete, Monte Cavo... i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokemon."
+                         "value":"Appena torna Gianluca je faccio er discorso der secolo, state a vedè."
                         }, 
                         {
                          "name":"direzione",
@@ -2313,8 +2313,8 @@
                  "type":"npc",
                  "visible":true,
                  "width":32,
-                 "x":786,
-                 "y":844.666666666667
+                 "x":785.666666666667,
+                 "y":883
                 }, 
                 {
                  "height":32,
@@ -2361,7 +2361,7 @@
                  "y":880.666666666667
                 }, 
                 {
-                 "height":32,
+                 "height":16.3333333333333,
                  "id":105,
                  "name":"gate_palestra_baso",
                  "opacity":1,
@@ -2409,9 +2409,9 @@
                  "rotation":0,
                  "type":"npc",
                  "visible":true,
-                 "width":32,
-                 "x":815.4,
-                 "y":1170
+                 "width":26.3333333333334,
+                 "x":806.733333333333,
+                 "y":1161.33333333333
                 }, 
                 {
                  "height":32,
@@ -2475,7 +2475,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Hai salvato Gianluca, sei un grande!"
+                         "value":"Mo' la funivia riparte, grazie a te!"
                         }, 
                         {
                          "name":"direzione",
@@ -2648,7 +2648,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Hai salvato Gianluca, sei un grande!"
+                         "value":"Baso te deve un favore grosso, fidete."
                         }, 
                         {
                          "name":"direzione",
@@ -2696,7 +2696,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Hai salvato Gianluca, sei un grande!"
+                         "value":"Meno male che c'eri tu, eh!"
                         }, 
                         {
                          "name":"direzione",
@@ -2744,7 +2744,7 @@
                         {
                          "name":"dialogo",
                          "type":"string",
-                         "value":"Hai salvato Gianluca, sei un grande!"
+                         "value":"Qui a Rocca de Papa nun te scordamo mica, sai?"
                         }, 
                         {
                          "name":"direzione",

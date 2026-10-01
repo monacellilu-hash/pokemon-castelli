@@ -89,10 +89,13 @@ html, body {
 /* ------------------------------------------------------------
    D-Pad
    ------------------------------------------------------------ */
+/* Sess. 1 ott 2026 (richiesta di Luca): D-pad spostato a SINISTRA (prima a
+   destra, A/B a destra — invertito), tasti più "opachi grigi trasparenti"
+   che non coprono la vista invece del riquadro blu scuro pieno di prima. */
 #dpad {
   position: absolute;
   bottom: 20px;
-  right: 20px;
+  left: 20px;
   z-index: 1000;
   display: grid;
   grid-template-columns: 56px 56px 56px;
@@ -107,20 +110,21 @@ html, body {
 
 .dpad-btn {
   font-size: 22px;
-  background: rgba(20, 30, 50, 0.85);
-  color: #ffcb05;
-  border: 2px solid #ffcb05;
+  background: rgba(120, 120, 120, 0.3);
+  color: rgba(255, 255, 255, 0.65);
+  border: 2px solid rgba(200, 200, 200, 0.35);
   border-radius: 10px;
   cursor: pointer;
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 .dpad-btn:active {
-  background: #ffcb05;
+  background: rgba(255, 203, 5, 0.55);
   color: #1a2940;
+  border-color: #ffcb05;
 }
 
 /* ------------------------------------------------------------
@@ -2132,19 +2136,19 @@ html, body {
    quando c'è davvero qualcosa vicino (eventoVicino, vedi js/map.js),
    altrimenti il click non ha effetto.
    ------------------------------------------------------------ */
-/* Tasti [A]/[B] stile Game Boy: cerchietti in basso a sinistra, speculari
-   al D-pad che sta in basso a destra (richiesta esplicita di Luca: la
-   croce direzionale resta dov'è, A/B/Select/Start compaiono SOLO su
-   mobile/touch — su PC restano i tasti fisici A/B/Shift/Invio). */
+/* Tasti [A]/[B] stile Game Boy: cerchietti in basso a DESTRA, speculari al
+   D-pad che ora sta in basso a sinistra (sess. 1 ott 2026, richiesta di
+   Luca: invertiti rispetto a prima). Più trasparenti/opachi grigi invece
+   del riquadro blu scuro pieno, per non coprire la vista di gioco. */
 .tasto-gb {
   position: fixed;
   z-index: 500;
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: rgba(26, 41, 64, 0.85);
-  color: var(--giallo-poke);
-  border: 2px solid var(--giallo-poke);
+  background: rgba(120, 120, 120, 0.3);
+  color: rgba(255, 255, 255, 0.7);
+  border: 2px solid rgba(200, 200, 200, 0.35);
   font-family: var(--font-gba);
   font-size: 14px;
   cursor: pointer;
@@ -2154,22 +2158,23 @@ html, body {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  touch-action: manipulation;
+  touch-action: none;
 }
 
 .tasto-gb:active {
-  background: var(--giallo-poke);
+  background: rgba(255, 203, 5, 0.55);
   color: #1a2940;
+  border-color: var(--giallo-poke);
 }
 
 #btn-interagisci {
   bottom: 84px;
-  left: 78px;
+  right: 78px;
 }
 
 #btn-b {
   bottom: 24px;
-  left: 24px;
+  right: 24px;
 }
 
 #tasti-select-start {

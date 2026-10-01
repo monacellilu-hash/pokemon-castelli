@@ -1464,13 +1464,13 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"all-bosco-3"
-                        }, 
+                         "value":"all-bosco-19"
+                        },
                         {
                          "name":"sprite",
                          "type":"string",
                          "value":"BUGCATCHER"
-                        }, 
+                        },
                         {
                          "name":"type",
                          "type":"string",

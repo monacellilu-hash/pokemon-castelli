@@ -236,12 +236,17 @@ const DATI_TRAINER = {
     sprite: 'Primapalestra_capopalestra', ritratto: 'LEADER_Erika', vista: 0,
     classe: 'Capopalestra', nome: 'Donnie',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 (prima 4, troppo facile per
+    // essere la prima palestra) + scorta di cura (richiesta di Luca).
     squadra: [
+      { id: 69,  livello: 9 },   // Bellsprout
+      { id: 187, livello: 10 },  // Hoppip
       { id: 43,  livello: 11 },  // Oddish
       { id: 285, livello: 12 },  // Shroomish
       { id: 44,  livello: 13 },  // Gloom
       { id: 315, livello: 14 },  // Roselia (l'asso)
     ],
+    oggettiCura: [{ chiave: 'pozione', quantita: 3 }],
     dialogo_prima: 'Sono Donnie, Capopalestra di Frascati. Cresciuto tra le pesche e le vigne di mio padre, ho allenato questi Pokémon Erba con le mie mani — e qualche erba l\'ho pure assaggiata. Odio solo una cosa quanto le gelate tardive: il Team GdF. Vediamo se reggi il confronto!',
     dialogo_dopo: 'Che lotta! Hai la stoffa di un vino d\'annata. La Medaglia Vigna è tua, te la sei meritata!',
     premio: 1400,
@@ -292,13 +297,16 @@ const DATI_TRAINER = {
     sprite: 'Nilo_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
     classe: 'Capopalestra', nome: 'Igino',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
+      { id: 63,  livello: 16 },  // Abra
       { id: 177, livello: 17 },  // Natu
       { id: 325, livello: 18 },  // Spoink
       { id: 64,  livello: 19 },  // Kadabra
       { id: 97,  livello: 20 },  // Hypno
       { id: 326, livello: 21 },  // Grumpig (l'asso)
     ],
+    oggettiCura: [{ chiave: 'pozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'Benvenuto all\'Abbazia di San Nilo, pellegrino. Sono Igino: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente. I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!',
     dialogo_dopo: 'La tua mente è limpida come l\'acqua della Marana. La Medaglia Icona è tua.',
     premio: 2100,
@@ -410,13 +418,16 @@ const DATI_TRAINER = {
     sprite: 'Er_biretta_Capopalestra', ritratto: 'LEADER_Surge', vista: 0,
     classe: 'Capopalestra', nome: 'Stella',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
+      { id: 125, livello: 30 },  // Electabuzz
       { id: 26,  livello: 31 },  // Raichu
       { id: 101, livello: 32 },  // Electrode
       { id: 82,  livello: 32 },  // Magneton
       { id: 310, livello: 33 },  // Manectric
       { id: 181, livello: 34 },  // Ampharos (l'asso)
     ],
+    oggettiCura: [{ chiave: 'superpozione', quantita: 2 }, { chiave: 'iperpozione', quantita: 1 }],
     dialogo_prima: 'Ciao! Sono Stella, astronoma dell\'Osservatorio di Monte Porzio. Ogni notte studio le stelle… e i miei Pokémon Elettro generano l\'energia dei telescopi! Preparati: la mia squadra colpisce alla velocità della luce!',
     dialogo_dopo: 'Brilli più di una supernova! La Medaglia Stella è tua: portala in alto!',
     premio: 3400,
@@ -807,13 +818,16 @@ const DATI_TRAINER = {
     sprite: 'trainer_ELITEFOUR_Bruno', ritratto: 'ELITEFOUR_Bruno', vista: 0,
     classe: 'Capopalestra', nome: 'Baso',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
+      { id: 297, livello: 35 },  // Hariyama
       { id: 107, livello: 36 },  // Hitmonchan
       { id: 106, livello: 37 },  // Hitmonlee
       { id: 286, livello: 38 },  // Breloom
       { id: 308, livello: 39 },  // Medicham
       { id: 68,  livello: 40 },  // Machamp (l'asso)
     ],
+    oggettiCura: [{ chiave: 'iperpozione', quantita: 2 }],
     dialogo_prima: 'Fermo lì! Sono Baso di Rocca di Papa, e qui ci si allena scalando la pietra viva del Vulcano Laziale! Il Monte Cavo ci guarda: i miei Pokémon hanno i pugni duri come il peperino su cui mi alleno. Spero che tu non sia di quelli che si sgretolano al primo colpo!',
     dialogo_dopo: 'Mi hai frantumato le certezze! Sei duro come il peperino. Prendi la Medaglia Pigna!',
     premio: 4000,
@@ -894,13 +908,16 @@ const DATI_TRAINER = {
     sprite: 'Giorgia_capopalestra', ritratto: 'LEADER_Brock', vista: 0,
     classe: 'Capopalestra', nome: 'Giorgia',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
+      { id: 299, livello: 41 },  // Nosepass
       { id: 28,  livello: 42 },  // Sandslash
       { id: 305, livello: 43 },  // Lairon
       { id: 76,  livello: 44 },  // Golem
       { id: 112, livello: 45 },  // Rhydon
       { id: 306, livello: 46 },  // Aggron (l'asso)
     ],
+    oggettiCura: [{ chiave: 'iperpozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'ALT! Chi entra nei Castra Albana deve dimostrare il proprio valore! Sono Giorgia: queste mura sono di pietra viva da duemila anni, e la mia palestra ne custodisce la durezza. Niente trucchi, niente scuse: solo pietra contro pietra. AVE!',
     dialogo_dopo: 'Per Giove! Sei duro come queste mura. La Medaglia Scudo è tua, ad maiora!',
     premio: 4600,
@@ -911,13 +928,16 @@ const DATI_TRAINER = {
     sprite: 'marino_capopalestra', ritratto: 'LEADER_Misty', vista: 0,
     classe: 'Capopalestra', nome: 'Moro',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
+      { id: 61,  livello: 24 },  // Poliwhirl
       { id: 279, livello: 25 },  // Pelipper
       { id: 119, livello: 26 },  // Seaking
       { id: 195, livello: 26 },  // Quagsire
       { id: 184, livello: 27 },  // Azumarill
       { id: 130, livello: 28 },  // Gyarados (l'asso)
     ],
+    oggettiCura: [{ chiave: 'superpozione', quantita: 2 }],
     dialogo_prima: 'Ehilà! Sono Moro, come i Quattro Mori della nostra fontana! Lo sai che alla Sagra dell\'Uva la fontana versa vino invece dell\'acqua? Ma per i miei Pokémon solo acqua di sorgente, eh! Vediamo se sai navigare in acque agitate!',
     dialogo_dopo: 'Mi hai travolto come una piena! Quest\'anno alla Sagra la fontana verserà in tuo onore. Ecco la Medaglia Fontana!',
     premio: 2800,
@@ -1015,6 +1035,7 @@ const DATI_TRAINER = {
       { id: 359, livello: 51 },  // Absol
       { id: 229, livello: 52 },  // Houndoom (l'asso)
     ],
+    oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Ombretta. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
     dialogo_dopo: 'Hai acceso una luce nel mio buio… La Medaglia Fraschetta è tua. Ora brindiamo, va\'!',
     premio: 5200,
@@ -1119,6 +1140,7 @@ const DATI_TRAINER = {
       { id: 136, livello: 57 },  // Flareon
       { id: 59,  livello: 58 },  // Arcanine (l'asso)
     ],
+    oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Benvenuto a Genzano, dove ogni giugno la via si copre di petali per l\'Infiorata! Sono Camilla, l\'ultima Capopalestra dei Castelli. Sotto questi fiori scorre il calore del vulcano laziale: senza quel fuoco, l\'Infiorata non fiorirebbe così bella. I miei Pokémon di tipo Fuoco sono la stessa fiamma che nutre i miei fiori. Sei l\'ultimo quadro della mia Infiorata: vediamo di che colori sei fatto!',
     dialogo_dopo: 'Splendido… un capolavoro degno dell\'Infiorata! La Medaglia Lava è tua: ora la Via Vittoria e la Lega di Colonna ti aspettano!',
     premio: 5800,
@@ -1600,6 +1622,17 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Le rovine ti riconoscono.',
     premio: 740,
   },
+  // Sess. 1 ott 2026: era piazzato su Tiled (tuscolo_interno_1.tmj) con lo
+  // stesso id di 'all-bosco-3' per errore — battendo uno si marcavano come
+  // battuti entrambi. Separato con id proprio, tenuta la battuta che Luca
+  // aveva già scritto in Tiled (proprietà "dialogo", mai letta per i trainer).
+  'all-bosco-19': {
+    classe: 'Coleotterista', nome: 'Learco',
+    squadra: [{ id: 13, livello: 10 }, { id: 48, livello: 11 }],
+    dialogo_prima: '"Sono arrivato prima io, i Barbecue sono miei!"',
+    dialogo_dopo: 'Il barbecue te lo sei guadagnato.',
+    premio: 620,
+  },
 
   /* ── BOSCHETTO SEGRETO (post-Lega) — allenatori FORTI (Lv 58-62) ── */
   'all-boschetto-1': {
@@ -1681,6 +1714,21 @@ const DATI_TRAINER = {
       { id: 16, livello: 12 },   // Pidgey
     ],
     premio: 500,
+  },
+
+  // Sess. 1 ott 2026: prima qui c'era un oggetto trigger_rivale rotto (senza
+  // "id" proprio, puntava di default al rivale di fine gioco Tuscolo, livello
+  // 60, alla 2ª palestra) — Luca l'aveva cancellato. Ricreato con dati propri.
+  'rivale_grottaferrata': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_grottaferrata_battuto',
+    dialogo_prima: 'Ti stavo aspettando all\'Abbazia. Vediamo se la prima Medaglia ti ha dato alla testa!',
+    dialogo_dopo: 'Mh. Fortuna che ci sono altre palestre per rifarmi.',
+    squadra: [
+      { id: 16, livello: 20 },
+    ],
+    premio: 700,
   },
 
   'rivale_monteporzio': {

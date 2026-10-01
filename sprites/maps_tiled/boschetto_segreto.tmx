@@ -265,7 +265,7 @@
     <property name="vista" type="int" value="5"/>
    </properties>
   </object>
-  <object id="6" name="gate_npc" type="npc" x="351.439" y="674.877" width="32" height="32">
+  <object id="6" name="gate_npc" type="npc" x="388.106" y="679.544" width="32" height="32">
    <properties>
     <property name="condizione" value="post_lega"/>
     <property name="direzione" value="ovest"/>
@@ -328,7 +328,7 @@
     <property name="type" value="oggetto"/>
    </properties>
   </object>
-  <object id="15" name="cartello" type="cartello" x="292.491" y="608.561" width="32" height="32">
+  <object id="15" name="cartello" type="cartello" x="296.491" y="613.561" width="32" height="32">
    <properties>
     <property name="testo" value="I Pokémon qui sono più rari e più forti."/>
     <property name="type" value="cartello"/>

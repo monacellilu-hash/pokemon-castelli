@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="136">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="139">
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../../Emerald_Outside.tsx"/>
  <tileset firstgid="9265" source="../outside.tsx"/>
@@ -233,11 +233,11 @@
   <object id="61" x="304" y="1143.33" width="136" height="70"/>
   <object id="62" x="387.333" y="1178.67" width="50.6667" height="96"/>
   <object id="63" x="516" y="1174.67" width="112" height="94.6667"/>
-  <object id="64" x="1010.67" y="995.333" width="102" height="338.667"/>
-  <object id="65" x="1318.67" y="994" width="96" height="256.589"/>
+  <object id="64" x="1010.67" y="1091.33" width="102" height="242.667"/>
+  <object id="65" x="1318.67" y="1094.67" width="74.6667" height="155.923"/>
   <object id="66" x="1284.67" y="1092.67" width="18.6667" height="15.3333"/>
   <object id="67" x="1251.33" y="1126" width="20" height="12"/>
-  <object id="68" x="1126" y="1097.33" width="14.6667" height="12"/>
+  <object id="68" x="1126" y="1097.33" width="22" height="12"/>
   <object id="69" x="1136" y="916.667" width="10.6667" height="53.3333"/>
   <object id="70" x="1251.33" y="920" width="11.3333" height="48"/>
   <object id="83" x="806" y="312" width="82" height="160"/>
@@ -279,9 +279,11 @@
   <object id="130" x="4" y="269" width="197" height="515"/>
   <object id="131" x="189" y="161" width="15" height="142"/>
   <object id="135" x="1370.83" y="64.3333" width="51" height="88"/>
+  <object id="136" x="1017" y="997.333" width="102" height="48.667"/>
+  <object id="137" x="1319" y="1002.33" width="76.6667" height="40.667"/>
  </objectgroup>
  <objectgroup color="#ff0000" id="6" name="eventi">
-  <object id="2" name="gate_npc" type="npc" x="1342.96" y="221.901" width="26.5406" height="23.5076">
+  <object id="2" name="gate_npc" type="npc" x="1346.96" y="223.901" width="26.5406" height="23.5076">
    <properties>
     <property name="condizione" value="medaglie&gt;=7"/>
     <property name="direzione" value="sud"/>
@@ -324,11 +326,14 @@
     <property name="vista" type="int" value="7"/>
    </properties>
   </object>
-  <object id="6" name="trigger_rivale" type="trigger_rivale" x="806.119" y="1215.73" width="32" height="32">
+  <object id="138" name="TBD" type="Rivale UOMO" x="806.119" y="1215.73" width="32" height="32">
    <properties>
-    <property name="orientamento" value="est"/>
-    <property name="tappa" type="int" value="3"/>
-    <property name="type" value="trigger_rivale"/>
+    <property name="direzione" value="est"/>
+    <property name="id" value="rivale_grottaferrata"/>
+    <property name="sprite" value="RIVALE_UOMO"/>
+    <property name="tappa" type="int" value="2"/>
+    <property name="type" value="trainer"/>
+    <property name="vista" value="6"/>
    </properties>
   </object>
   <object id="11" name="cartello" type="cartello" x="1258.89" y="872.023" width="13.3333" height="18">
@@ -400,18 +405,11 @@
   </object>
   <object id="26" name="warp" type="warp" x="1325.17" y="132.076" width="44" height="26">
    <properties>
+    <property name="condizione" value="medaglie &gt;= 7"/>
     <property name="destinazione" value="abbazia_interno"/>
+    <property name="messaggio_gate" value="🔒 L'Abbazia è sorvegliata: nessuno entra senza aver dimostrato il proprio valore in tutte le palestre dei Castelli."/>
     <property name="spawn_id" value="da_grottaferrata_entrata"/>
     <property name="type" value="warp"/>
-    <property name="condizione" value="medaglie &gt;= 7"/>
-    <property name="messaggio_gate" value="🔒 L'Abbazia è sorvegliata: nessuno entra senza aver dimostrato il proprio valore in tutte le palestre dei Castelli."/>
-   </properties>
-  </object>
-  <object id="95" name="spawn" x="1325" y="175">
-   <point/>
-   <properties>
-    <property name="id" value="da_abbazia_interno"/>
-    <property name="type" value="spawn"/>
    </properties>
   </object>
   <object id="27" name="warp" type="warp" x="895.085" y="440" width="32" height="32">
@@ -455,7 +453,7 @@
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="37" name="cartello" type="cartello" x="903.863" y="803.358" width="23.3333" height="18.6667" rotation="271.19">
+  <object id="37" name="cartello" type="cartello" x="904.132" y="790.405" width="10.3777" height="16.397" rotation="271.19">
    <properties>
     <property name="testo" value="← Percorso 3 — Marino"/>
     <property name="type" value="cartello"/>
@@ -485,12 +483,12 @@
     <property name="type" value="cartello"/>
    </properties>
   </object>
-  <object id="53" name="gate_npc" type="npc" x="1151" y="1114" width="32" height="32">
+  <object id="53" name="gate_npc" type="npc" x="1157" y="1123.33" width="24" height="22">
    <properties>
-    <property name="condizione" value="medaglie&gt;=7"/>
+    <property name="condizione" value="lega"/>
     <property name="direzione" value="sud"/>
     <property name="gate" type="bool" value="true"/>
-    <property name="id" value="gdf_porta_abbazia"/>
+    <property name="id" value="guardia_parcheggione"/>
     <property name="sprite" value="GDF_GRUNT_SPRITE"/>
     <property name="type" value="npc"/>
    </properties>
@@ -506,6 +504,13 @@
     <property name="id" value="da palestra grottaferrata"/>
     <property name="type" value="spawn"/>
    </properties>
+  </object>
+  <object id="95" name="spawn" x="1345" y="191">
+   <properties>
+    <property name="id" value="da_abbazia_interno"/>
+    <property name="type" value="spawn"/>
+   </properties>
+   <point/>
   </object>
  </objectgroup>
 </map>

@@ -373,7 +373,7 @@
                  "y":1174.66666666667
                 }, 
                 {
-                 "height":338.666666666667,
+                 "height":242.666666666667,
                  "id":64,
                  "name":"",
                  "opacity":1,
@@ -382,19 +382,19 @@
                  "visible":true,
                  "width":102,
                  "x":1010.66666666667,
-                 "y":995.333333333333
+                 "y":1091.33333333333
                 }, 
                 {
-                 "height":256.589354742789,
+                 "height":155.922688076122,
                  "id":65,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":96,
+                 "width":74.6666666666667,
                  "x":1318.66666666667,
-                 "y":994
+                 "y":1094.66666666667
                 }, 
                 {
                  "height":15.3333333333334,
@@ -428,7 +428,7 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":14.6666666666666,
+                 "width":21.9999999999998,
                  "x":1126,
                  "y":1097.33333333333
                 }, 
@@ -924,6 +924,30 @@
                  "width":51,
                  "x":1370.83333333333,
                  "y":64.3333333333333
+                }, 
+                {
+                 "height":48.6669999999999,
+                 "id":136,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":102,
+                 "x":1017,
+                 "y":997.333166666667
+                }, 
+                {
+                 "height":40.6669999999999,
+                 "id":137,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":76.6666666666667,
+                 "x":1319,
+                 "y":1002.33316666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1123,35 +1147,50 @@
                  "width":32,
                  "x":1441.17004048583,
                  "y":479.075573549258
-                }, 
+                },
                 {
                  "height":32,
-                 "id":6,
-                 "name":"trigger_rivale",
+                 "id":138,
+                 "name":"TBD",
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"orientamento",
+                         "name":"direzione",
                          "type":"string",
                          "value":"est"
-                        }, 
+                        },
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"rivale_grottaferrata"
+                        },
+                        {
+                         "name":"sprite",
+                         "type":"string",
+                         "value":"RIVALE_UOMO"
+                        },
                         {
                          "name":"tappa",
                          "type":"int",
-                         "value":3
-                        }, 
+                         "value":2
+                        },
                         {
                          "name":"type",
                          "type":"string",
-                         "value":"trigger_rivale"
+                         "value":"trainer"
+                        },
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
                         }],
                  "rotation":0,
-                 "type":"trigger_rivale",
+                 "type":"Rivale UOMO",
                  "visible":true,
                  "width":32,
                  "x":806.118758434548,
                  "y":1215.73009446694
-                }, 
+                },
                 {
                  "height":18,
                  "id":11,
@@ -1748,7 +1787,7 @@
                  "y":870.333333333333
                 }, 
                 {
-                 "height":32,
+                 "height":22,
                  "id":53,
                  "name":"gate_npc",
                  "opacity":1,
@@ -1756,23 +1795,23 @@
                         {
                          "name":"condizione",
                          "type":"string",
-                         "value":"medaglie>=7"
-                        }, 
+                         "value":"lega"
+                        },
                         {
                          "name":"direzione",
                          "type":"string",
                          "value":"sud"
-                        }, 
+                        },
                         {
                          "name":"gate",
                          "type":"bool",
                          "value":true
-                        }, 
+                        },
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_porta_abbazia"
-                        }, 
+                         "value":"guardia_parcheggione"
+                        },
                         {
                          "name":"sprite",
                          "type":"string",
@@ -1786,9 +1825,9 @@
                  "rotation":0,
                  "type":"npc",
                  "visible":true,
-                 "width":32,
-                 "x":1151,
-                 "y":1114
+                 "width":24,
+                 "x":1157,
+                 "y":1123.33333333333
                 }, 
                 {
                  "height":28,
@@ -1867,7 +1906,7 @@
          "y":0
         }],
  "nextlayerid":21,
- "nextobjectid":136,
+ "nextobjectid":139,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

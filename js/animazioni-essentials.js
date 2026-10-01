@@ -269,28 +269,26 @@ const AnimazioniEssentials = (function () {
     return cacheImmaginiRom[nomeFile];
   }
 
-  // Un singolo "ember" di Lanciafiamme: parte dall'attaccante, viaggia in
-  // linea retta verso il bersaglio in 500ms (30 fotogrammi GBA a 60fps,
-  // esattamente come in originale), con un'oscillazione a onda perpendicolare
-  // al percorso (AnimToTargetInSinWave) e un ciclo di 3 fotogrammi (righe
-  // 1/2/3 del foglio, 32px ciascuna — le stesse usate in originale, tile
-  // 16/32/48) che cambia ogni 2 fotogrammi GBA (~33ms), proprio come lì.
-  function _emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, ampiezzaSegno, ritardoMs) {
+  // Movimento generico "AnimToTargetInSinWave" (src/battle_anim_water.c):
+  // usato in originale non solo da Lanciafiamme ma anche da Idrocannone,
+  // Raggio Segnale, Fanghiglia — una particella parte dall'attaccante,
+  // viaggia in linea retta verso il bersaglio in `durataMs`, con
+  // un'oscillazione a onda perpendicolare al percorso, ciclando tra le
+  // `righeY` del foglio ogni `frameMs`. opts: { frameW, frameH, righeY,
+  // frameMs, durataMs, ampiezzaPx }.
+  function _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, ampiezzaSegno, ritardoMs, opts) {
+    const { frameW, frameH, righeY, frameMs, durataMs, ampiezzaPx } = opts;
     return new Promise(resolve => {
-      const DURATA_MS = 500;
-      const FRAME_MS = 33; // 2 fotogrammi GBA a 60fps
-      const RIGHE = [32, 64, 96]; // pixel Y nel foglio (tile 16/32/48 * 8px)
-      const AMPIEZZA_PX = 16 * ampiezzaSegno; // onda perpendicolare, in coordinate canoniche 512x384
+      const AMPIEZZA_PX = ampiezzaPx * ampiezzaSegno;
       const inizio = performance.now() + ritardoMs;
       function passo(ora) {
         const t = ora - inizio;
         if (t < 0) { requestAnimationFrame(passo); return; }
-        const frac = Math.min(1, t / DURATA_MS);
+        const frac = Math.min(1, t / durataMs);
         if (frac >= 1) { resolve(); return; }
-        const rigaIdx = Math.floor(t / FRAME_MS) % RIGHE.length;
-        const sy = RIGHE[rigaIdx];
+        const rigaIdx = Math.floor(t / frameMs) % righeY.length;
+        const sy = righeY[rigaIdx];
 
-        // Posizione lungo la linea attaccante→bersaglio, più l'onda perpendicolare
         const dx = arrivo.x - partenza.x, dy = arrivo.y - partenza.y;
         const len = Math.hypot(dx, dy) || 1;
         const perpX = -dy / len, perpY = dx / len;
@@ -301,7 +299,7 @@ const AnimazioniEssentials = (function () {
         ctx.save();
         ctx.translate(px, py);
         ctx.scale(scalaX, scalaY);
-        ctx.drawImage(img, 0, sy, 32, 32, -16, -16, 32, 32);
+        ctx.drawImage(img, 0, sy, frameW, frameH, -frameW / 2, -frameH / 2, frameW, frameH);
         ctx.restore();
         requestAnimationFrame(passo);
       }
@@ -309,52 +307,106 @@ const AnimazioniEssentials = (function () {
     });
   }
 
-  async function _giocaFlamethrowerRom(attaccanteEl, bersaglioEl) {
-    const { img, pronta } = caricaImmagineRom('small_ember.png');
-    await pronta;
+  // Scuotimento leggero di uno sprite reale (attaccante/bersaglio) per
+  // `durataMs`, poi torna alla trasformazione originale — stesso
+  // AnimTask_ShakeMon usato in originale da tante mosse.
+  function _scuotiSpriteRom(el, ampiezza, durataMs) {
+    if (!el) return;
+    const inizio = performance.now();
+    const originale = el.style.transform;
+    (function passo(ora) {
+      const t = ora - inizio;
+      if (t >= durataMs) { el.style.transform = originale; return; }
+      const dx = (Math.random() * 2 - 1) * ampiezza;
+      el.style.transform = `${originale} translateX(${dx}px)`;
+      requestAnimationFrame(passo);
+    })(performance.now());
+  }
+
+  // Sess. 1 ott 2026: NON il centro geometrico dello sprite (fx=fy=0.5) —
+  // confrontato con la fonte vera (GetBattlerSpriteCoord, src/battle_anim_
+  // mons.c di pokeemerald), il punto di aggancio non è mai il centro
+  // dell'immagine ma un punto calibrato (dipende da specie/dimensione).
+  // Qui si riusa la stessa convenzione già validata nel gioco per il lancio
+  // della Ball (vedi animaLancioBall in js/battle.js): attaccante ancorato
+  // più in alto (0.55, 0.35 — zona "bocca", da dove parte l'effetto),
+  // bersaglio leggermente sotto il centro (0.5, 0.55 — compensa il bordo
+  // trasparente che quasi tutti gli sprite hanno in alto). Prima qui si
+  // usava il centro puro, diverso dal resto del gioco: le mosse "sembravano
+  // strane" perché partivano/arrivavano in un punto diverso da dove in
+  // realtà appare il Pokémon (segnalato da Luca).
+  function _centroElRom(el, campoRect, fx, fy) {
+    const r = el.getBoundingClientRect();
+    return { x: (r.left + r.width * fx) - campoRect.left, y: (r.top + r.height * fy) - campoRect.top };
+  }
+
+  // Prepara canvas/scala/centri comuni a tutte le animazioni "a onda" (ogni
+  // mossa poi lancia le sue particelle con _particellaOndaVersoTarget).
+  async function _preparaAnimOnda(attaccanteEl, bersaglioEl) {
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
     const scalaX = w / ESS_W, scalaY = h / ESS_H;
-
     const campoRect = canvas.getBoundingClientRect();
-    function centro(el) {
-      const r = el.getBoundingClientRect();
-      return { x: (r.left + r.width / 2) - campoRect.left, y: (r.top + r.height / 2) - campoRect.top };
-    }
-    const partenza = centro(attaccanteEl);
-    const arrivo = centro(bersaglioEl);
+    return {
+      scalaX, scalaY,
+      partenza: _centroElRom(attaccanteEl, campoRect, 0.55, 0.35),
+      arrivo: _centroElRom(bersaglioEl, campoRect, 0.5, 0.55),
+    };
+  }
+
+  async function _giocaFlamethrowerRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_ember.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [32, 64, 96], frameMs: 33, durataMs: 500, ampiezzaPx: 16 };
 
     // Scuotimento leggero dell'attaccante (rincorsa), poi del bersaglio a
     // metà animazione (colpito) — stesso ordine dello script originale
     // (AnimTask_ShakeMon attaccante subito, bersaglio dopo 3 fiamme).
-    function scuoti(el, ampiezza, durataMs) {
-      if (!el) return;
-      const inizio = performance.now();
-      const originale = el.style.transform;
-      (function passo(ora) {
-        const t = ora - inizio;
-        if (t >= durataMs) { el.style.transform = originale; return; }
-        const dx = (Math.random() * 2 - 1) * ampiezza;
-        el.style.transform = `${originale} translateX(${dx}px)`;
-        requestAnimationFrame(passo);
-      })(performance.now());
-    }
-    scuoti(attaccanteEl, 2, 260);
-    setTimeout(() => scuoti(bersaglioEl, 3, 380), 260);
+    _scuotiSpriteRom(attaccanteEl, 2, 260);
+    setTimeout(() => _scuotiSpriteRom(bersaglioEl, 3, 380), 260);
 
     // 11 coppie di embers (come FlamethrowerCreateFlames × 11 nello script
     // originale), ognuna sfasata di poco, alternando l'onda su/giù.
     const attese = [];
     for (let i = 0; i < 11; i++) {
       const segno = (i % 2 === 0) ? 1 : -1;
-      attese.push(_emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 66));
-      attese.push(_emberFlamethrower(ctx, img, partenza, arrivo, scalaX, scalaY, -segno, i * 66 + 33));
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 66, opts));
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, -segno, i * 66 + 33, opts));
     }
     await Promise.all(attese);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  const ANIMAZIONI_ROM = { FLAMETHROWER: _giocaFlamethrowerRom };
+  // Idrocannone (Move_HYDRO_PUMP, src/battle_anim_scripts.s): stesso
+  // movimento a onda di Lanciafiamme (gHydroPumpOrbSpriteTemplate usa anche
+  // lui AnimToTargetInSinWave), grafica vera water_orb.png (16×16, 4
+  // fotogrammi). Nello script HydroPumpBeams lancia 2 orbite per volta
+  // (un'onda su, una giù, "createsprite ... 0 16" / "... 0 -16") ripetuto
+  // 11 volte come Lanciafiamme, con qualche "hit splat" in più che qui
+  // semplifichiamo nello scuotimento del bersaglio (non ricreato a parte).
+  async function _giocaHydroPumpRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('water_orb.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0, 16, 32, 48], frameMs: 50, durataMs: 550, ampiezzaPx: 14 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 260);
+    setTimeout(() => _scuotiSpriteRom(bersaglioEl, 3, 400), 260);
+
+    const attese = [];
+    for (let i = 0; i < 11; i++) {
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, i * 60, opts));
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, -1, i * 60, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  const ANIMAZIONI_ROM = {
+    FLAMETHROWER: _giocaFlamethrowerRom,
+    HYDROPUMP: _giocaHydroPumpRom,
+  };
 
   function trovaAnimazioneRom(nomeMossa) {
     return ANIMAZIONI_ROM[chiaveMossa(nomeMossa)] || null;

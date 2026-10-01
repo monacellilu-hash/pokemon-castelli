@@ -320,15 +320,28 @@ function avanzaTempo() {
 // ancora una zona desertica in gioco — quando ci sarà, basterà aggiungerla
 // alla lista "possibili" quando GameMap.contestoMeteo() segnala quella zona,
 // sullo stesso modello già usato qui per Monte Cavo/grandine.
-// Meteo PER MAPPA (richiesta esplicita di Luca): prima era un'unica
-// variabile globale che poteva cambiare ogni ~300 passi in media — con un
-// ritmo di cammino normale, sembrava cambiare ogni pochi minuti. Ora ogni
-// mappa ha il proprio stato (stato.meteoPerMappa[chiave]) e si tira un
-// nuovo meteo AL MASSIMO una volta al giorno per quella mappa (quando
-// cambia stato.tempo.giorno rispetto all'ultima volta), con "sole" più
-// probabile di "pioggia" (pesi, non più scelta a pari probabilità).
-const PESI_METEO        = [['sereno', 50], ['sole', 30], ['pioggia', 20]];
-const PESI_METEO_MONTECAVO = [['sereno', 40], ['sole', 25], ['pioggia', 20], ['grandine', 15]];
+// Meteo PER CLUSTER (richiesta esplicita di Luca, sess. 1 ott 2026): prima
+// era per singola mappa, così poteva piovere su Percorso 1 e splendere il
+// sole un passo dopo a Borgata Tuscolana, anche se sono la stessa zona
+// "incollata" — ora condividono lo stesso stato (stato.meteoPerMappa[chiave],
+// chiave = cluster se c'è, altrimenti la mappa singola). Ogni fase meteo ha
+// una durata in ore (DURATA_METEO_MIN sotto): pioggia/grandine più brevi,
+// sereno/sole più lunghe — non più "tutto il giorno uguale" né un ri-tiro
+// a ogni passo. "Sole" resta più probabile di "pioggia" (pesi).
+// Sess. 1 ott 2026: pioggia ancora meno probabile (era già sotto "sole", ora
+// abbassata ulteriormente su richiesta di Luca) + ogni fase meteo dura solo
+// qualche ora invece di tutto il giorno intero (vedi DURATA_METEO_MIN sotto).
+const PESI_METEO        = [['sereno', 55], ['sole', 30], ['pioggia', 15]];
+const PESI_METEO_MONTECAVO = [['sereno', 45], ['sole', 25], ['pioggia', 15], ['grandine', 15]];
+// Durata in minuti di gioco di una fase meteo: pioggia/grandine più brevi
+// (1.5-4 ore, "non può diluviare tutto il giorno"), sereno/sole più lunghe
+// (4-9 ore) così il cielo non cambia in continuazione.
+const DURATA_METEO_MIN = {
+  pioggia:  { min: 90,  max: 240 },
+  grandine: { min: 90,  max: 240 },
+  sereno:   { min: 240, max: 540 },
+  sole:     { min: 240, max: 540 },
+};
 
 function _estraiMeteoPesato(pesi) {
   const totale = pesi.reduce((s, [, p]) => s + p, 0);
@@ -340,27 +353,39 @@ function _estraiMeteoPesato(pesi) {
   return pesi[0][0];
 }
 
+// Minuto assoluto (indipendente dal giorno) per confrontare scadenze meteo
+// che possono attraversare la mezzanotte.
+function _minutoAssoluto() {
+  const g = (stato.tempo && stato.tempo.giorno) || 1;
+  const m = (stato.tempo && stato.tempo.minuti) || 0;
+  return g * 1440 + m;
+}
+
 function aggiornaMeteo() {
   const ctx = (typeof GameMap !== 'undefined' && GameMap.contestoMeteo)
     ? GameMap.contestoMeteo() : { outdoor: false, monteCavo: false };
   if (!ctx.outdoor) { stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 }; return; }   // interni: sempre sereno
 
-  const chiaveMappa = ctx.mappa || null;
-  if (!chiaveMappa) return;
+  // Chiave per CLUSTER (zone "incollate" come Percorso 1/Borgata Tuscolana
+  // condividono lo stesso meteo), non più per singola mappa — vedi
+  // _contestoMeteo() in js/map.js.
+  const chiaveMeteo = ctx.chiaveMeteo || ctx.mappa || null;
+  if (!chiaveMeteo) return;
 
   if (!stato.meteoPerMappa) stato.meteoPerMappa = {};
-  const giornoOggi = (stato.tempo && stato.tempo.giorno) || 1;
-  let voce = stato.meteoPerMappa[chiaveMappa];
+  const oraAssoluta = _minutoAssoluto();
+  let voce = stato.meteoPerMappa[chiaveMeteo];
 
-  if (!voce || voce.giorno !== giornoOggi) {
+  if (!voce || oraAssoluta >= voce.scadeMinuto) {
     const nuovoTipo = _estraiMeteoPesato(ctx.monteCavo ? PESI_METEO_MONTECAVO : PESI_METEO);
     const cambiato = voce && voce.tipo !== nuovoTipo;
-    voce = { tipo: nuovoTipo, giorno: giornoOggi };
-    stato.meteoPerMappa[chiaveMappa] = voce;
+    const d = DURATA_METEO_MIN[nuovoTipo];
+    voce = { tipo: nuovoTipo, scadeMinuto: oraAssoluta + d.min + Math.random() * (d.max - d.min) };
+    stato.meteoPerMappa[chiaveMeteo] = voce;
     if (cambiato) {
-      const msg = nuovoTipo === 'pioggia' ? '🌧️ Oggi piove.'
-                : nuovoTipo === 'sole' ? '☀️ Oggi splende il sole.'
-                : nuovoTipo === 'grandine' ? '❄️ Oggi grandina.'
+      const msg = nuovoTipo === 'pioggia' ? '🌧️ Inizia a piovere.'
+                : nuovoTipo === 'sole' ? '☀️ Il cielo si schiarisce, splende il sole.'
+                : nuovoTipo === 'grandine' ? '❄️ Inizia a grandinare.'
                 : '🌤️ Il tempo torna sereno.';
       mostraToast(msg, 4000);
     }
@@ -2330,21 +2355,27 @@ function renderMarket(contenuto) {
 }
 
 // Acquista un'unità dell'oggetto e aggiorna il portafoglio
-function compraOggetto(chiave) {
+// `qta` (sess. 1 ott 2026, richiesta di Luca): prima si comprava un oggetto
+// alla volta, ora MarketScene mostra un contatore (frecce su/giù) e passa
+// qui la quantità scelta in un colpo solo.
+function compraOggetto(chiave, qta) {
   const oggetto = OGGETTI[chiave];
   if (!oggetto || oggetto.prezzo === undefined) return;
+  qta = Math.max(1, parseInt(qta, 10) || 1);
+  const costo = oggetto.prezzo * qta;
 
-  if ((stato.soldi || 0) < oggetto.prezzo) {
+  if ((stato.soldi || 0) < costo) {
     mostraToast('💸 Non hai abbastanza Pokéyen!');
     return;
   }
 
-  stato.soldi -= oggetto.prezzo;
-  stato.zaino[chiave] = (stato.zaino[chiave] || 0) + 1;
+  stato.soldi -= costo;
+  stato.zaino[chiave] = (stato.zaino[chiave] || 0) + qta;
   salvaPartita();
   aggiornaHUD();
-  mostraToast(`🛒 Hai comprato ${oggetto.nome}! (–₽${oggetto.prezzo})`);
-  mostraSezioneMenu('market'); // ridisegna per aggiornare saldo e "ne hai"
+  const messaggioQta = qta > 1 ? `${oggetto.nome} ×${qta}` : oggetto.nome;
+  mostraToast(`🛒 Hai comprato ${messaggioQta}! (–₽${costo.toLocaleString('it-IT')})`);
+  if (typeof mostraSezioneMenu === 'function') mostraSezioneMenu('market'); // ridisegna il vecchio pannello DOM, se ancora attivo
 }
 
 /* ============================================================
@@ -4939,6 +4970,17 @@ async function inizializzaSquadraTest() {
           mostraToast('⚠️ Flamethrower non insegnato ad Arcanine (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
+      // Gyarados (id 130): stesso trattamento con Idrocannone, per testare
+      // la seconda animazione "a onda" da fonte vera (sess. 29 set 2026).
+      if (id === 130) {
+        try {
+          const idro = await PokeAPI.getMossa('hydro-pump');
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...idro, pp: idro.ppMax }));
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Idrocannone a Gyarados:', e.message);
+          mostraToast('⚠️ Idrocannone non insegnato a Gyarados (errore di rete): riprova a preparare la squadra test.', 6000);
+        }
+      }
       stato.squadra.push(pkm);
     }
   }
@@ -4989,11 +5031,13 @@ async function inizializzaSquadraTest() {
   // Prova inequivocabile che il fix è attivo: mostra le mosse vere di
   // Arcanine appena create, senza dover aprire altri menu per controllare.
   const arcanineTest = stato.squadra.find(p => p.id === 59);
+  const gyaradosTest = stato.squadra.find(p => p.id === 130);
   const mosseArcanine = arcanineTest ? arcanineTest.mosse.map(m => m.nomeIt || m.nome).join(', ') : 'non trovato!';
+  const mosseGyarados = gyaradosTest ? gyaradosTest.mosse.map(m => m.nomeIt || m.nome).join(', ') : 'non trovato!';
   mostraToast(
     '🧪 Squadra TEST pronta! Lv.100, tutte le MN, Braciere+Piuma. ' +
     'Pratoni del Vivaro → Lugia · Ponte Ariccia alba+sagra → Ho-Oh! ' +
-    `Mosse Arcanine: ${mosseArcanine}`,
+    `Mosse Arcanine: ${mosseArcanine} · Mosse Gyarados: ${mosseGyarados}`,
     12000
   );
   mostraSezioneMenu('squadra');

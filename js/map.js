@@ -1155,6 +1155,25 @@ const GameMap = (function () {
       }
     }
 
+    // Poké Ball a terra (tile locale 948, tileset outside.tsx/outside_pallet.tsx
+    // — vedi TILE_ID_POKEBALL più sotto): è un oggetto raccoglibile VERO, deve
+    // essere "materiale" finché non viene raccolto (non ci si cammina sopra),
+    // segnalato da Luca sess. 1 ott 2026. _nascondiTilePokeball toglie questo
+    // blocco quando l'oggetto viene effettivamente raccolto.
+    for (const t of (tmj.tilesets || [])) {
+      const src = String(t.source || '').toLowerCase().replace(/\\/g, '/');
+      if (!src.endsWith('outside.tsx') && !src.endsWith('outside_pallet.tsx')) continue;
+      const gidBall = t.firstgid + 948;
+      for (const layer of tmj.layers) {
+        if (layer.type !== 'tilelayer' || !layer.data) continue;
+        for (let ty = 0; ty < h; ty++) {
+          for (let tx = 0; tx < w; tx++) {
+            if (layer.data[ty * w + tx] === gidBall) grid[ty][tx] = 1;
+          }
+        }
+      }
+    }
+
     // Casella senza NESSUN tile sul layer "ground" (gid 0) = automaticamente
     // solida — SOLO per le mappe che lo dichiarano esplicitamente
     // (MAPPE[chiave].bloccaVuoti, letto da MAPPA_META qui sotto), non per
@@ -3268,11 +3287,17 @@ const GameMap = (function () {
 
       const texKey = 'npc-' + spriteFile.replace(/\s+/g, '_');
       if (this.textures.exists(texKey)) return texKey;
+      // Sess. 1 ott 2026: BIKER e CUEBALL hanno il personaggio più largo del
+      // solito (moto/stecca) — i loro fogli sono 192px invece dei soliti
+      // 128px (griglia 4×48 invece di 4×32). Tagliarli sempre a 32px li
+      // affettava a metà, la moto sforava nel tile accanto (segnalato da Luca).
+      const SPRITE_LARGHI = /^trainer_(BIKER|CUEBALL)$/i;
+      const frameW = SPRITE_LARGHI.test(spriteFile) ? 48 : 32;
       for (const nomeFile of candidati) {
         try {
           await new Promise((ok, ko) => {
             this.load.spritesheet(texKey, NPC_SPRITE_DIR + nomeFile + '.png',
-              { frameWidth: 32, frameHeight: 48 });
+              { frameWidth: frameW, frameHeight: 48 });
             this.load.once('complete', ok);
             this.load.once('loaderror', ko);
             this.load.start();
@@ -4274,6 +4299,12 @@ const GameMap = (function () {
         outdoor: !eInterno && !eGrottaBuia,
         monteCavo: mappaCorrente === 'monte_cavo',
         mappa: mappaCorrente,
+        // Sess. 1 ott 2026: le mappe dello stesso cluster sono la STESSA zona
+        // "incollata" visivamente (es. Percorso 1 e Borgata Tuscolana) — il
+        // meteo va condiviso tra tutte, non tirato a parte per ciascuna
+        // (altrimenti pioveva di qua e c'era il sole a un passo di distanza).
+        // Fallback alla chiave mappa se non fa parte di nessun cluster.
+        chiaveMeteo: trovaCluster(mappaCorrente) || mappaCorrente,
       };
     }
 
@@ -5064,6 +5095,7 @@ const GameMap = (function () {
             squadra: dati.squadra,
             dialogoSconfitta: dati.dialogo_dopo || '',
             premioSoldi: dati.premio || 100,
+            oggettiCura: dati.oggettiCura || null,
           },
           stato,
           onFine: (esito) => {
@@ -6452,6 +6484,7 @@ const GameMap = (function () {
             allenatore: {
               nome: dati.nome, squadra: dati.squadra,
               dialogoSconfitta: dati.dialogo_dopo || '', premioSoldi: dati.premio || 0,
+              oggettiCura: dati.oggettiCura || null,
             },
             stato,
             onFine: (esito) => {
@@ -6508,6 +6541,7 @@ const GameMap = (function () {
             allenatore: {
               nome: dati.nome, squadra: dati.squadra,
               dialogoSconfitta: dati.dialogo_dopo || '', premioSoldi: dati.premio || 0,
+              oggettiCura: dati.oggettiCura || null,
             },
             stato,
             onFine: (esito) => {
@@ -6751,6 +6785,9 @@ const GameMap = (function () {
         if (tile && tile.index === atteso) {
           tilePokeballNascosti[tx + ',' + ty] = { layer: o.layer, index: atteso };
           o.layer.removeTileAtWorldXY(worldX, worldY, true);
+          // La Ball a terra è "materiale" finché non viene raccolta (vedi
+          // buildCollGrid, blocco "outside.tsx"/948): raccolta, la libera.
+          if (collGrid && collGrid[ty]) collGrid[ty][tx] = 0;
         }
       }
     }
@@ -7605,6 +7642,7 @@ const GameMap = (function () {
             squadra: squadra,
             dialogoSconfitta: dati.dialogo_dopo || '',
             premioSoldi: dati.premio || 100,
+            oggettiCura: dati.oggettiCura || null,
           },
           stato,
           onFine: (esito) => {
@@ -7683,6 +7721,7 @@ const GameMap = (function () {
           squadra: squadraScalata,
           dialogoSconfitta: dati.dialogo_dopo || '',
           premioSoldi: Math.round((dati.premio || 100) / 2),
+          oggettiCura: dati.oggettiCura || null,
         },
         stato,
         onFine: (esito) => {
@@ -7743,38 +7782,58 @@ const GameMap = (function () {
       // il personaggio (che è comunque in pausa) — quella scena ascolta solo
       // i propri eventi Phaser keydown-UP/DOWN/…, quindi qui li emettiamo
       // direttamente (emitTastoSceneNative), un tap = un passo di cursore.
+      //
+      // Sess. 1 ott 2026 (richiesta di Luca): "analogico" — se stai già
+      // tenendo premuto e il dito SCIVOLA su un altro tasto senza staccarsi,
+      // la direzione cambia subito, senza dover sollevare e ripremere. Si
+      // traccia un solo pointerId "attivo"; ogni tasto reagisce sia a
+      // pointerdown (primo tocco) sia a pointerenter (il dito è arrivato
+      // qui scivolando, con lo STESSO pointerId già attivo).
       this.dpadDx = 0;
       this.dpadDy = 0;
+      let dpadPointerId = null;
       const TASTO_DIR = {
         'btn-su':       'keydown-UP',
         'btn-giu':      'keydown-DOWN',
         'btn-sinistra': 'keydown-LEFT',
         'btn-destra':   'keydown-RIGHT',
       };
+      const attiva = (id, dx, dy) => {
+        this.dpadDx = dx; this.dpadDy = dy;
+        if (typeof stato !== 'undefined' && stato.incontroAttivo) {
+          // Battaglia: il D-pad muove il cursore fra i pulsanti (vedi
+          // Battle.spostaCursore, stesso sistema delle frecce da tastiera).
+          if (typeof Battle !== 'undefined' && Battle.spostaCursore) Battle.spostaCursore(dx, dy);
+        } else if (menuNativoAttivo()) {
+          emitTastoSceneNative(TASTO_DIR[id]);
+        }
+      };
+      const rilascia = () => {
+        dpadPointerId = null;
+        this.dpadDx = 0; this.dpadDy = 0;
+      };
       const btn = (id, dx, dy) => {
         const el = document.getElementById(id);
         if (!el) return;
-        const start = () => {
-          this.dpadDx = dx; this.dpadDy = dy;
-          if (typeof stato !== 'undefined' && stato.incontroAttivo) {
-            // Battaglia: il D-pad muove il cursore fra i pulsanti (vedi
-            // Battle.spostaCursore, stesso sistema delle frecce da tastiera).
-            if (typeof Battle !== 'undefined' && Battle.spostaCursore) Battle.spostaCursore(dx, dy);
-          } else if (menuNativoAttivo()) {
-            emitTastoSceneNative(TASTO_DIR[id]);
-          }
-        };
-        const stop = () => {
-          if (this.dpadDx === dx && this.dpadDy === dy) { this.dpadDx = 0; this.dpadDy = 0; }
-        };
-        el.addEventListener('pointerdown', start);
-        el.addEventListener('pointerup',   stop);
-        el.addEventListener('pointerleave', stop);
+        el.addEventListener('pointerdown', (e) => {
+          dpadPointerId = e.pointerId;
+          attiva(id, dx, dy);
+        });
+        el.addEventListener('pointerenter', (e) => {
+          if (dpadPointerId !== null && e.pointerId === dpadPointerId) attiva(id, dx, dy);
+        });
+        el.addEventListener('pointerup', (e) => {
+          if (e.pointerId === dpadPointerId) rilascia();
+        });
       };
       btn('btn-su',        0, -1);
       btn('btn-giu',       0,  1);
       btn('btn-sinistra', -1,  0);
       btn('btn-destra',    1,  0);
+      // Rete di sicurezza: se il dito si stacca FUORI da tutti i tasti
+      // (o il gesto viene annullato dal sistema), rilascia comunque.
+      window.addEventListener('pointerup', (e) => { if (e.pointerId === dpadPointerId) rilascia(); });
+      window.addEventListener('pointercancel', (e) => { if (e.pointerId === dpadPointerId) rilascia(); });
     }
   }
 
@@ -9692,6 +9751,11 @@ const GameMap = (function () {
 
       this._merce = market.merce.map(chiave => OGGETTI[chiave] ? { chiave, oggetto: OGGETTI[chiave] } : null).filter(Boolean);
       this._cursore = 0;
+      // Contatore quantità (sess. 1 ott 2026, richiesta di Luca): "Compra"
+      // non acquista subito un pezzo solo, apre un contatore (↑ aumenta,
+      // ↓ diminuisce) sulla riga selezionata; un secondo [A]/clic conferma.
+      this._modoQuantita = false;
+      this._quantita = 1;
       let daCaricare = 0;
       this._merce.forEach(({ oggetto }) => {
         if (!oggetto.img) return;
@@ -9701,21 +9765,28 @@ const GameMap = (function () {
       if (daCaricare > 0) { this.load.once('complete', () => this._disegnaLista()); this.load.start(); }
       else this._disegnaLista();
 
-      // Cursore a tastiera: ↑/↓ scelgono l'oggetto, A/Invio compra —
-      // richiesta di Luca: un cursore vero anche qui, non solo il mouse.
-      this.input.keyboard.on('keydown-UP', () => this._muoviCursore(-1));
-      this.input.keyboard.on('keydown-DOWN', () => this._muoviCursore(1));
-      const conferma = () => {
-        const v = this._merce[this._cursore];
-        if (!v) return;
-        if ((stato.soldi || 0) < v.oggetto.prezzo) return;
-        compraOggetto(v.chiave);
-        this.scene.restart();
-      };
+      // Cursore a tastiera: ↑/↓ scelgono l'oggetto (o la quantità, se il
+      // contatore è aperto), A/Invio apre il contatore e poi conferma.
+      this.input.keyboard.on('keydown-UP', () => {
+        if (this._modoQuantita) this._cambiaQuantita(1);
+        else this._muoviCursore(-1);
+      });
+      this.input.keyboard.on('keydown-DOWN', () => {
+        if (this._modoQuantita) this._cambiaQuantita(-1);
+        else this._muoviCursore(1);
+      });
+      const conferma = () => this._confermaOAttivaQuantita();
       this.input.keyboard.on('keydown-ENTER', conferma);
       this.input.keyboard.on('keydown-SPACE', conferma);
 
       this._collegaUscita();
+    }
+
+    // Massimo pezzi acquistabili in un colpo: quanti te ne puoi permettere,
+    // comunque non più di 99 (come le Ball nella squadra/zaino).
+    _quantitaMassima(oggetto) {
+      const perPortafoglio = oggetto.prezzo > 0 ? Math.floor((stato.soldi || 0) / oggetto.prezzo) : 99;
+      return Math.max(1, Math.min(99, perPortafoglio));
     }
 
     _muoviCursore(delta) {
@@ -9724,8 +9795,43 @@ const GameMap = (function () {
       this._disegnaLista();
     }
 
+    _cambiaQuantita(delta) {
+      const v = this._merce[this._cursore];
+      if (!v) return;
+      const max = this._quantitaMassima(v.oggetto);
+      this._quantita = Phaser.Math.Clamp(this._quantita + delta, 1, max);
+      this._disegnaLista();
+    }
+
+    // Primo [A]/clic su "Compra": apre il contatore quantità (parte da 1).
+    // Secondo [A]/clic (contatore già aperto sulla stessa riga): acquista
+    // davvero quella quantità e richiude il contatore.
+    _confermaOAttivaQuantita() {
+      const v = this._merce[this._cursore];
+      if (!v) return;
+      if ((stato.soldi || 0) < v.oggetto.prezzo) return;
+      if (!this._modoQuantita) {
+        this._modoQuantita = true;
+        this._quantita = 1;
+        this._disegnaLista();
+        return;
+      }
+      compraOggetto(v.chiave, this._quantita);
+      this._modoQuantita = false;
+      this._quantita = 1;
+      this.scene.restart();
+    }
+
     _collegaUscita() {
       const uscire = () => {
+        // Col contatore quantità aperto, B/ESC annulla SOLO quello (non
+        // esce dal Market) — altrimenti un tocco di troppo ti ributta fuori.
+        if (this._modoQuantita) {
+          this._modoQuantita = false;
+          this._quantita = 1;
+          this._disegnaLista();
+          return;
+        }
         this.scene.stop();
         marketTiledForzato = null;
         if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene();
@@ -9762,11 +9868,51 @@ const GameMap = (function () {
         this._elementiLista.push(this.add.text(95, y + 4, oggetto.descrizione || '', {
           fontFamily: 'Arial', fontSize: '10px', color: '#aaa', wordWrap: { width: CW - 280 },
         }).setOrigin(0, 0.5).setDepth(3));
-        this._elementiLista.push(this.add.text(95, y + 20, `Ne hai: ${posseduti}`, {
-          fontFamily: 'Arial', fontSize: '10px', color: '#888',
-        }).setOrigin(0, 0.5).setDepth(3));
+        const inQuantita = conCursore && this._modoQuantita;
+        if (!inQuantita) {
+          this._elementiLista.push(this.add.text(95, y + 20, `Ne hai: ${posseduti}`, {
+            fontFamily: 'Arial', fontSize: '10px', color: '#888',
+          }).setOrigin(0, 0.5).setDepth(3));
+        }
 
         const troppoCaro = (stato.soldi || 0) < oggetto.prezzo;
+
+        // Riga col contatore quantità aperto: frecce −/+ cliccabili, numero
+        // al centro, "Conferma" al posto di "Compra" (richiesta di Luca:
+        // comprare più di un pezzo alla volta invece che uno per uno).
+        if (inQuantita) {
+          const max = this._quantitaMassima(oggetto);
+          const btnMeno = this.add.text(CW - 150, y, '−', {
+            fontFamily: 'Arial', fontSize: '18px', color: this._quantita > 1 ? '#ffcb05' : '#555',
+            backgroundColor: '#28304a', padding: { x: 10, y: 2 },
+          }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+          btnMeno.on('pointerdown', () => this._cambiaQuantita(-1));
+          this._elementiLista.push(btnMeno);
+
+          this._elementiLista.push(this.add.text(CW - 115, y, String(this._quantita), {
+            fontFamily: 'Arial', fontSize: '15px', color: '#fff', fontStyle: 'bold',
+          }).setOrigin(0.5).setDepth(3));
+
+          const btnPiu = this.add.text(CW - 80, y, '+', {
+            fontFamily: 'Arial', fontSize: '18px', color: this._quantita < max ? '#ffcb05' : '#555',
+            backgroundColor: '#28304a', padding: { x: 10, y: 2 },
+          }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+          btnPiu.on('pointerdown', () => this._cambiaQuantita(1));
+          this._elementiLista.push(btnPiu);
+
+          const btnConferma = this.add.text(CW - 30, y, '✓', {
+            fontFamily: 'Arial', fontSize: '18px', color: '#4caf50',
+            backgroundColor: '#28304a', padding: { x: 10, y: 4 },
+          }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+          btnConferma.on('pointerdown', () => this._confermaOAttivaQuantita());
+          this._elementiLista.push(btnConferma);
+
+          this._elementiLista.push(this.add.text(95, y + 20, `Ne hai: ${posseduti}   ·   Totale: ₽ ${(oggetto.prezzo * this._quantita).toLocaleString('it-IT')}`, {
+            fontFamily: 'Arial', fontSize: '10px', color: '#ffcb05',
+          }).setOrigin(0, 0.5).setDepth(3));
+          return;
+        }
+
         const btn = this.add.text(CW - 90, y, 'Compra', {
           fontFamily: 'Arial', fontSize: '13px',
           color: troppoCaro ? '#666' : '#ffcb05',
@@ -9775,8 +9921,8 @@ const GameMap = (function () {
         if (!troppoCaro) {
           btn.setInteractive({ useHandCursor: true });
           btn.on('pointerdown', () => {
-            compraOggetto(chiave);
-            this.scene.restart();
+            this._cursore = i;
+            this._confermaOAttivaQuantita();
           });
         }
         this._elementiLista.push(btn);
@@ -10668,6 +10814,14 @@ const GameMap = (function () {
         antialias: false,
         roundPixels: true,
       },
+      // Sess. 1 ott 2026 (segnalato da Luca): senza questo, un trascinamento
+      // che parte sul canvas (es. riordino Pokémon in PartyScene) si
+      // interrompe appena il dito scivola sopra un tasto D-pad/A/B — sono
+      // elementi DOM sopra il canvas, e Phaser di default ascolta i gesti
+      // SOLO sul canvas, quindi perde il tracciamento del puntatore non
+      // appena esce da quell'area. windowEvents fa ascoltare anche alla
+      // window, così il gesto resta tracciato ovunque vada il dito.
+      input: { windowEvents: true },
       banner: false,
       // Non mette in pausa il game loop quando la tab passa in background/è
       // nascosta — di norma è comodo per il giocatore vero (che ha sempre la

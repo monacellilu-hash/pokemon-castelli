@@ -3,7 +3,7 @@
     {
      "export":
         {
-         "format":"json",
+         "format":"tmx",
          "target":"pokemon-castelli-Percorso 1.tmj"
         }
     },
@@ -205,16 +205,16 @@
          "name":"collisioni",
          "objects":[
                 {
-                 "height":1455.38,
+                 "height":1336.71333333333,
                  "id":1,
                  "name":"",
                  "opacity":1,
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":88.3744,
+                 "width":80.3744,
                  "x":391.83065,
-                 "y":7.83065
+                 "y":25.1639833333333
                 }, 
                 {
                  "height":0,
@@ -710,6 +710,18 @@
                  "width":36.9159,
                  "x":574.208716666667,
                  "y":979.223666666667
+                }, 
+                {
+                 "height":13.3333333333333,
+                 "id":64,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":18.6666666666666,
+                 "x":934.666666666667,
+                 "y":1608
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1032,7 +1044,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":64,
+ "nextobjectid":67,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

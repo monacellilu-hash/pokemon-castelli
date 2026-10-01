@@ -16,6 +16,12 @@ Script di riferimento (per la coreografia, non incluso come file qui):
                                  Raggio Segnale ecc. — stesso movimento,
                                  riutilizzabile per altre mosse in futuro)
 
+water_orb.png — graphics/battle_anims/sprites/water_orb.png (pret/pokeemerald)
+  Foglio sprite reale usato in originale da Idrocannone. Stessa pulizia del
+  colore di trasparenza (indice palette 0) di small_ember.png.
+  Script:  data/battle_anim_scripts.s -> Move_HYDRO_PUMP
+  Sorgente: src/battle_anim_water.c   -> gHydroPumpOrbSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
