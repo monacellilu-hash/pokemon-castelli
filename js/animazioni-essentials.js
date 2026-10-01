@@ -894,6 +894,34 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Ossonite/Osso Boomerang/Raffica d'Ossa: osso lanciato verso il
+  // bersaglio — grafica vera bone.png (32×32, un frame).
+  async function _giocaOssoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('bone.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 380, ampiezzaPx: 14 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Trio Attacco (Tri Attack): triangolo rosso/blu/giallo — grafica vera
+  // tri_attack_triangle.png (64×64, un frame, già l'immagine iconica).
+  async function _giocaTrioRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('tri_attack.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 64, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 420, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -987,6 +1015,17 @@ const AnimazioniEssentials = (function () {
 
     VINEWHIP: _giocaViticciRom, POWERWHIP: _giocaViticciRom, WRAP: _giocaViticciRom,
     BIND: _giocaViticciRom, CONSTRICT: _giocaViticciRom,
+
+    BONECLUB: _giocaOssoRom, BONEMERANG: _giocaOssoRom, BONERUSH: _giocaOssoRom,
+
+    TRIATTACK: _giocaTrioRom,
+
+    // Riuso della categoria impatto per altre mosse da contatto senza
+    // grafica dedicata nel gioco vero (lampo generico al contatto).
+    HEADBUTT: _giocaPugnoRom, STOMP: _giocaPugnoRom, BODYSLAM: _giocaPugnoRom,
+    SLAM: _giocaPugnoRom, DOUBLEEDGE: _giocaPugnoRom, TAKEDOWN: _giocaPugnoRom,
+    SMELLINGSALTS: _giocaPugnoRom, DIZZYPUNCH: _giocaPugnoRom,
+    HYPERFANG: _giocaCornoRom, CRUSHCLAW: _giocaCornoRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {

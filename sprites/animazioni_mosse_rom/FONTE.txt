@@ -135,6 +135,15 @@ horn_hit.png — graphics/battle_anims/sprites/horn_hit.png (32×32, un
 vine.png — graphics/battle_anims/sprites/vine.png (5 fotogrammi, vite che
   cresce). Frustata, Megaframza, Avvolgibotta, Legatutto, Costrizione.
 
+bone.png — graphics/battle_anims/sprites/bone.png (32×32). Ossonite,
+  Osso Boomerang, Raffica d'Ossa.
+tri_attack.png — tri_attack_triangle.png (64×64, immagine iconica
+  completa). Trio Attacco.
+Riuso categoria impatto (punch_impact.png/horn_hit.png) per mosse da
+  contatto senza grafica dedicata nel gioco vero: Testata, Pestone,
+  Schianto, Colpo di Corpo, Doppio Fendente, Spinta, Smelling Salts,
+  Pugno Confuso (pugno) / Hyperzanna, Chela Franti (corno).
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
