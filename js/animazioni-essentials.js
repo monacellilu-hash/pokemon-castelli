@@ -732,6 +732,41 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Attacco Veloce/Scambio di Stelle (Swift): stella gialla verso il
+  // bersaglio — grafica vera yellow_star.png (32×32, un frame, non manca
+  // mai: colpisce sempre a prescindere dall'accuratezza nel gioco vero).
+  async function _giocaStellaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('yellow_star.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 360, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 2, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Dragosoffio e mosse Drago a proiettile: soffio dorato — grafica vera
+  // breath.png (4 fotogrammi).
+  async function _giocaDragoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('breath.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0, 16, 32, 48], frameMs: 40, durataMs: 400, ampiezzaPx: 10 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 220);
+    const attese = [];
+    for (let i = 0; i < 4; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 70, opts));
+    }
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 3, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -798,6 +833,11 @@ const AnimazioniEssentials = (function () {
 
     AIRSLASH: _giocaVolanteRom, AIRCUTTER: _giocaVolanteRom, GUST: _giocaVolanteRom,
     HURRICANE: _giocaVolanteRom,
+
+    SWIFT: _giocaStellaRom,
+
+    DRAGONBREATH: _giocaDragoRom, DRAGONPULSE: _giocaDragoRom, DRAGONRAGE: _giocaDragoRom,
+    TWISTER: _giocaDragoRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
