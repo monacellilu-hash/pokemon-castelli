@@ -132,6 +132,9 @@ horn_hit.png — graphics/battle_anims/sprites/horn_hit.png (32×32, un
   corno/becco/zanna (Cornonite, Beccata, Perforabecco, Attacco Furia,
   Spilloscuro).
 
+vine.png — graphics/battle_anims/sprites/vine.png (5 fotogrammi, vite che
+  cresce). Frustata, Megaframza, Avvolgibotta, Legatutto, Costrizione.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

@@ -348,7 +348,8 @@ const AnimazioniEssentials = (function () {
   // bersaglio (cresce in 4 fotogrammi), non un proiettile che viaggia
   // dall'attaccante. Usata dal gioco vero per Taglio/Lacerazione/Attacco
   // d'Ali e simili (cut.png/slash.png, entrambi 4 fotogrammi verticali).
-  async function _giocaTaglioRom(img, attaccanteEl, bersaglioEl) {
+  async function _giocaTaglioRom(img, attaccanteEl, bersaglioEl, righeY) {
+    righeY = righeY || [0, 32, 64, 96];
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
     const scalaX = w / ESS_W, scalaY = h / ESS_H;
@@ -358,7 +359,6 @@ const AnimazioniEssentials = (function () {
     _scuotiSpriteRom(attaccanteEl, 1, 150);
     await new Promise(resolve => {
       let frame = 0;
-      const righeY = [0, 32, 64, 96];
       const inizio = performance.now();
       const frameMs = 55;
       function passo(ora) {
@@ -390,6 +390,15 @@ const AnimazioniEssentials = (function () {
     const { img, pronta } = caricaImmagineRom('slash.png');
     await pronta;
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
+  }
+
+  // Frustata/Viticci (Vine Whip, Costrizione...): vite che cresce verso il
+  // bersaglio, 5 fotogrammi — grafica vera vine.png, stessa tecnica del
+  // taglio ma con un fotogramma in più.
+  async function _giocaViticciRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('vine.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32, 64, 96, 128]);
   }
 
   // Categoria IMPATTO (Mega Pugno/Martelpugno/Calci/Cornata e simili):
@@ -975,6 +984,9 @@ const AnimazioniEssentials = (function () {
 
     HORNATTACK: _giocaCornoRom, HORNDRILL: _giocaCornoRom, PECK: _giocaCornoRom,
     DRILLPECK: _giocaCornoRom, FURYATTACK: _giocaCornoRom, TWINEEDLE: _giocaCornoRom,
+
+    VINEWHIP: _giocaViticciRom, POWERWHIP: _giocaViticciRom, WRAP: _giocaViticciRom,
+    BIND: _giocaViticciRom, CONSTRICT: _giocaViticciRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
