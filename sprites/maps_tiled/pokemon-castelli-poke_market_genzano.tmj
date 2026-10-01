@@ -1058,8 +1058,8 @@
      "type": "npc",
      "visible": true,
      "width": 16.5,
-     "x": 107.254684116373,
-     "y": 133.7004048583
+     "x": 112,
+     "y": 192
     },
     {
      "height": 17,
@@ -1075,7 +1075,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "dentro il market cliente"
+       "value": "dentro il market cliente 1"
       },
       {
        "name": "type",
@@ -1104,7 +1104,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "dentro il market cliente"
+       "value": "dentro il market cliente 2"
       },
       {
        "name": "type",
@@ -1133,7 +1133,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "dentro il market cliente"
+       "value": "dentro il market cliente 3"
       },
       {
        "name": "type",

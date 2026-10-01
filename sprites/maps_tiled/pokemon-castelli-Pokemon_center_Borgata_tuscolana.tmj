@@ -748,18 +748,6 @@
     },
     {
      "height": 32,
-     "id": 1036,
-     "name": "",
-     "opacity": 1,
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 32,
-     "x": 224,
-     "y": 96
-    },
-    {
-     "height": 32,
      "id": 1037,
      "name": "",
      "opacity": 1,

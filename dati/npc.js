@@ -422,9 +422,17 @@ const DATI_NPC = {
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */
-  'dentro il market cliente': {
+  'dentro il market cliente 1': {
     sprite: 'NPC 18', nome: 'Cliente', direzione: 'sud', movimento: 'random',
-    dialogo: ['Sto decidendo cosa comprare, dammi un minuto!'],
+    dialogo: ['Le nuove Poké Ball sono formidabili, dovresti provarle!'],
+  },
+  'dentro il market cliente 2': {
+    sprite: 'NPC 06', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Quelle pozioni ti salvano contro i trainer più forti.'],
+  },
+  'dentro il market cliente 3': {
+    sprite: 'NPC 13', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Gli status vanno sempre curati, procurati l\'oggetto giusto!'],
   },
 
   /* ── Market di Grottaferrata (mappa dedicata, sessione 8 agosto — prima
