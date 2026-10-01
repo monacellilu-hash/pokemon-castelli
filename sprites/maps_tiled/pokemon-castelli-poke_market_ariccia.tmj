@@ -1046,7 +1046,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "pokemon market venditore"
+       "value": "pokemon market venditore ariccia"
       },
       {
        "name": "type",
@@ -1162,7 +1162,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "pokemon market venditore di pietre evolutive"
+       "value": "venditore speciale ariccia"
       },
       {
        "name": "type",

@@ -400,6 +400,14 @@ const DATI_NPC = {
     azione: 'apriMarketFrascati',
   },
 
+  /* ── Cliente generico dentro i Poké Market: id condiviso identico in
+     ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
+     una sola voce basta per tutte le istanze. ── */
+  'dentro il market cliente': {
+    sprite: 'NPC 18', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Sto decidendo cosa comprare, dammi un minuto!'],
+  },
+
   /* ── Market di Grottaferrata (mappa dedicata, sessione 8 agosto — prima
      riusava il file/venditore di Frascati) ── */
   'pokemon market venditore grottaferrata': {
