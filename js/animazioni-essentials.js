@@ -698,6 +698,40 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Mosse Acciaio a proiettile (Forza Bruta, Colpo Specchio, ecc.): sfera
+  // metallica lucida — grafica vera metal_ball.png (16×16, un frame).
+  async function _giocaAcciaioRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('metal_ball.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 380, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Mosse Volante a proiettile (Prodigivento, Air Cutter, ecc.): lame
+  // d'aria a mezzaluna — grafica vera air_slash.png (3 fotogrammi).
+  async function _giocaVolanteRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('air_slash.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0, 16, 32], frameMs: 45, durataMs: 360, ampiezzaPx: 10 };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 180);
+    const attese = [];
+    for (let i = 0; i < 4; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 65, opts));
+    }
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 2, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -758,6 +792,12 @@ const AnimazioniEssentials = (function () {
     MAGICALLEAF: _giocaFoglieRom, ENERGYBALL: _giocaFoglieRom, LEAFSTORM: _giocaFoglieRom,
     SEEDBOMB: _giocaFoglieRom, GRASSKNOT: _giocaFoglieRom, RAZORLEAF: _giocaFoglieRom,
     LEAFTORNADO: _giocaFoglieRom,
+
+    FLASHCANNON: _giocaAcciaioRom, MIRRORSHOT: _giocaAcciaioRom, MAGNETBOMB: _giocaAcciaioRom,
+    GYROBALL: _giocaAcciaioRom, MIRRORCOAT: _giocaAcciaioRom,
+
+    AIRSLASH: _giocaVolanteRom, AIRCUTTER: _giocaVolanteRom, GUST: _giocaVolanteRom,
+    HURRICANE: _giocaVolanteRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
