@@ -151,6 +151,11 @@ claw_slash.png — graphics/battle_anims/sprites/claw_slash.png (5
   fotogrammi). Graffio, Artiglio di Metallo, Artiglio di Drago,
   Morsa, Furia Inarrestabile, Chela Franti.
 
+sound_waves.png — graphics/battle_anims/sprites/metal_sound_waves.png
+  (2 fotogrammi). Mosse sonore: Urlo, Rombo, Rumorsuono, Metal Suono,
+  Scarica Rumorosa, Botto Sonico, Ululato, Ringhio, Ninnananna, Ipnoshock,
+  Russare.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

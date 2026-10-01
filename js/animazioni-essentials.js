@@ -392,6 +392,14 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
+  // Mosse sonore (Urlo, Rombo, Rumorsuono, Metal Suono...): anelli
+  // d'onda sonora sul bersaglio — grafica vera sound_waves.png (2 frame).
+  async function _giocaSuonoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('sound_waves.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32]);
+  }
+
   // Artigliate (Graffio, Artiglio di Metallo, Artiglio di Drago...): 5
   // fotogrammi di un graffio che cresce — grafica vera claw_slash.png.
   async function _giocaArtigliRom(attaccanteEl, bersaglioEl) {
@@ -1052,6 +1060,12 @@ const AnimazioniEssentials = (function () {
   };
   // CRUSHCLAW si adatta meglio alle artigliate che al corno (assegnata sopra).
   ANIMAZIONI_ROM.CRUSHCLAW = _giocaArtigliRom;
+  Object.assign(ANIMAZIONI_ROM, {
+    SCREECH: _giocaSuonoRom, METALSOUND: _giocaSuonoRom, HYPERVOICE: _giocaSuonoRom,
+    SONICBOOM: _giocaSuonoRom, UPROAR: _giocaSuonoRom, ROAR: _giocaSuonoRom,
+    GROWL: _giocaSuonoRom, SING: _giocaSuonoRom, SUPERSONIC: _giocaSuonoRom,
+    SNORE: _giocaSuonoRom,
+  });
 
   function trovaAnimazioneRom(nomeMossa) {
     return ANIMAZIONI_ROM[chiaveMossa(nomeMossa)] || null;
