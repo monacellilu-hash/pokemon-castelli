@@ -46,6 +46,7 @@ const GameMap = (function () {
       // ora sostituita dall'export proprio di Borgata Tuscolana).
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_Borgata_tuscolana.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8418, lonFissa: 12.6145,
     },
     // ── Frascati (nuove mappe a warp) ──
@@ -221,11 +222,13 @@ const GameMap = (function () {
     'pokecenter_monteporzio': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_monteporzio.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8180, lonFissa: 12.7170,
     },
     'mart_monteporzio': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_monteporzio.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8180, lonFissa: 12.7170,
     },
     // ── Osservatorio INAF (Monte Porzio) — prima comparsa Team CoTrAL, evento Zapdos ──
@@ -352,11 +355,13 @@ const GameMap = (function () {
     'pokecenter_colonna': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_frascati.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8144, lonFissa: 12.7607,
     },
     'mart_colonna': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_colonna.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8144, lonFissa: 12.7607,
     },
     // 1f/2f/3f/5f registrate qui (sess. 5 set 2026): i file .tmj esistevano
@@ -439,11 +444,13 @@ const GameMap = (function () {
     'pokecenter_rocca_di_papa': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_rocca_di_papa.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7608, lonFissa: 12.7096,
     },
     'mart_rocca_di_papa': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_rocca_di_papa.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7608, lonFissa: 12.7096,
     },
     // ── Albano Laziale (6ª città — Palestra Roccia, Capopalestra Giorgia, cap 46) ──
@@ -532,32 +539,38 @@ const GameMap = (function () {
     'pokecenter_genzano': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_genzano.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7057, lonFissa: 12.6864,
     },
     'mart_genzano': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_genzano.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7057, lonFissa: 12.6864,
     },
     // ── Centro Pokémon e Market dedicati di Ariccia (sessione 6 agosto) ──
     'pokecenter_ariccia': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_ariccia.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7196, lonFissa: 12.6752,
     },
     'mart_ariccia': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_ariccia.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7196, lonFissa: 12.6752,
     },
     'pokecenter_albano': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_albano.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7295, lonFissa: 12.6588,
     },
     'mart_albano': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_albano.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7295, lonFissa: 12.6588,
     },
     // ── Interno palestra Albano (Giorgia) — chiave = destinazione esatta
@@ -573,33 +586,39 @@ const GameMap = (function () {
     'interno_pokecenter': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_frascati.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7725, lonFissa: 12.6560,
     },
     'interno_market': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke market.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7725, lonFissa: 12.6560,
     },
     // ── Centro Pokémon e Market dedicati di Marino (non più il file di Frascati) ──
     'pokecenter_marino': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_marino.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7700, lonFissa: 12.6653,
     },
     'mart_marino': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_marino.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7700, lonFissa: 12.6653,
     },
     // ── Centro Pokémon e Market dedicati di Castel Gandolfo ──
     'pokecenter_castel_gandolfo': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_castel_gandolfo.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7476, lonFissa: 12.6500,
     },
     'mart_castel_gandolfo': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_castel_gandolfo.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7476, lonFissa: 12.6500,
     },
     'tuscolo_ingresso': {
@@ -651,11 +670,13 @@ const GameMap = (function () {
     'pokemon_market_frascati': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke market.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8066, lonFissa: 12.6826,
     },
     'pokecenter_frascati': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_frascati.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.8090, lonFissa: 12.6772,
     },
     // ── Grottaferrata (2ª città — Abbazia di San Nilo, palestra Psico) ──
@@ -683,11 +704,13 @@ const GameMap = (function () {
     'pokecenter_grottaferrata': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_grottaferrata.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7858, lonFissa: 12.6668,
     },
     'mart_grottaferrata': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke_market_grottaferrata.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7858, lonFissa: 12.6668,
     },
     // ── Percorso 11 — biforcazione Grottaferrata → Rocca di Papa (world
@@ -725,11 +748,13 @@ const GameMap = (function () {
     'pokecenter_interno': {
       file: 'sprites/maps_tiled/pokemon-castelli-Pokemon_center_frascati.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7858, lonFissa: 12.6668,
     },
     'mart_interno': {
       file: 'sprites/maps_tiled/pokemon-castelli-poke market.tmj',
       interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7858, lonFissa: 12.6668,
     },
   };

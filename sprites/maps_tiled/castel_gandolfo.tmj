@@ -16120,7 +16120,7 @@
       {
        "name": "destinazione",
        "type": "string",
-       "value": "interno_pokecenter"
+       "value": "pokecenter_castel_gandolfo"
       },
       {
        "name": "note",
@@ -16144,7 +16144,7 @@
       {
        "name": "destinazione",
        "type": "string",
-       "value": "interno_market"
+       "value": "mart_castel_gandolfo"
       },
       {
        "name": "note",
