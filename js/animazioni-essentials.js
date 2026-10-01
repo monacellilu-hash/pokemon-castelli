@@ -621,6 +621,42 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Palla Ombra (Move_SHADOW_BALL) e mosse Spettro simili: sfera scura
+  // lanciata dritta — grafica vera shadow_ball.png (32×32, un solo
+  // fotogramma, già un'immagine completa).
+  async function _giocaPallaOmbraRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('shadow_ball.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 400, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Raggio di Ghiaccio e mosse Ghiaccio simili: cristalli lanciati verso il
+  // bersaglio — grafica vera ice_crystals_0.png + la palette reale
+  // ice_crystals.pal (stessa tecnica delle altre mosse ricolorate).
+  async function _giocaGhiaccioRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('ice_crystals.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 300, ampiezzaPx: 0 };
+
+    const scartoY = [-10, 0, 10];
+    const attese = [];
+    scartoY.forEach((dy, i) => {
+      const arrivoScarto = { x: arrivo.x, y: arrivo.y + dy };
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivoScarto, scalaX, scalaY, 1, i * 80, opts));
+    });
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 2, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -668,6 +704,12 @@ const AnimazioniEssentials = (function () {
 
     ABSORB: _giocaAssorbimentoRom, MEGADRAIN: _giocaAssorbimentoRom, GIGADRAIN: _giocaAssorbimentoRom,
     DREAMEATER: _giocaAssorbimentoRom, LEECHLIFE: _giocaAssorbimentoRom, LEECHSEED: _giocaAssorbimentoRom,
+
+    SHADOWBALL: _giocaPallaOmbraRom, OMINOUSWIND: _giocaPallaOmbraRom, NIGHTSHADE: _giocaPallaOmbraRom,
+    HEX: _giocaPallaOmbraRom,
+
+    ICEBEAM: _giocaGhiaccioRom, BLIZZARD: _giocaGhiaccioRom, ICYWIND: _giocaGhiaccioRom,
+    POWDERSNOW: _giocaGhiaccioRom, AURORABEAM: _giocaGhiaccioRom, FROSTBREATH: _giocaGhiaccioRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
