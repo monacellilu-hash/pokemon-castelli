@@ -433,6 +433,39 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Trappole da campo (Punte, Punte Velenose, Levitoroccia...): punte che
+  // crescono ai piedi del bersaglio — grafica vera ice_spikes.png (4
+  // fotogrammi, 8×16, non quadrati: funzione dedicata).
+  async function _giocaPunteRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('spikes.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.85);
+    const righeY = [0, 16, 32, 48];
+    await new Promise(resolve => {
+      const inizio = performance.now();
+      const frameMs = 90;
+      function passo(ora) {
+        const t = ora - inizio;
+        const frame = Math.min(righeY.length - 1, Math.floor(t / frameMs));
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(centro.x, centro.y);
+        ctx.scale(scalaX, scalaY);
+        ctx.drawImage(img, 0, righeY[frame], 8, 16, -4, -16, 8, 16);
+        ctx.restore();
+        if (t >= frameMs * righeY.length) { resolve(); return; }
+        requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    });
+    await new Promise(r => setTimeout(r, 150));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Sabbia/polvere accecante (Attacco Sabbia, Fumogeno, Flash...):
   // manciate di sabbia verso il bersaglio — grafica vera mud_sand_0.png +
   // la sua palette reale mud_sand.pal (8×8).
@@ -1152,6 +1185,8 @@ const AnimazioniEssentials = (function () {
 
     SANDATTACK: _giocaSabbiaRom, SMOKESCREEN: _giocaSabbiaRom, FLASH: _giocaSabbiaRom,
     MUDSPORT: _giocaSabbiaRom, KINESIS: _giocaSabbiaRom,
+
+    SPIKES: _giocaPunteRom, TOXICSPIKES: _giocaPunteRom, STEALTHROCK: _giocaPunteRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
