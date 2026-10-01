@@ -127,6 +127,11 @@ punch_impact.png — graphics/battle_anims/sprites/punch_impact.png (32×32,
   un frame). Categoria IMPATTO: lampo singolo sul bersaglio per
   Mega Pugno, Pugnofuoco, Pugnogelo, Tuonopugno, Megacalcio e simili.
 
+horn_hit.png — graphics/battle_anims/sprites/horn_hit.png (32×32, un
+  frame). Stessa categoria IMPATTO di punch_impact.png, per mosse a
+  corno/becco/zanna (Cornonite, Beccata, Perforabecco, Attacco Furia,
+  Spilloscuro).
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

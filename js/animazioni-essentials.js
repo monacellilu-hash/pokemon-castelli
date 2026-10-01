@@ -392,12 +392,12 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
-  // Categoria IMPATTO (Mega Pugno/Martelpugno/Calci e simili): singolo
-  // lampo di impatto sul bersaglio, UN SOLO fotogramma (punch_impact.png,
-  // 32×32) — niente proiettile, l'attaccante si avvicina (lunge, come
-  // già fa il modello fisico generico) e il lampo compare al contatto.
-  async function _giocaPugnoRom(attaccanteEl, bersaglioEl) {
-    const { img, pronta } = caricaImmagineRom('punch_impact.png');
+  // Categoria IMPATTO (Mega Pugno/Martelpugno/Calci/Cornata e simili):
+  // singolo lampo di impatto sul bersaglio, UN SOLO fotogramma — niente
+  // proiettile, l'attaccante si scuote (colpo in arrivo) e il lampo
+  // compare al contatto. Generica: riusata per più grafiche reali.
+  async function _giocaImpattoRom(nomeFile, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom(nomeFile);
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
@@ -417,6 +417,14 @@ const AnimazioniEssentials = (function () {
     _scuotiSpriteRom(bersaglioEl, 3, 200);
     await new Promise(r => setTimeout(r, 200));
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  async function _giocaPugnoRom(attaccanteEl, bersaglioEl) {
+    await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl);
+  }
+  // Mosse a corno/zanna (Cornonite, Attacco Zanna...): grafica vera
+  // horn_hit.png, stessa logica del pugno.
+  async function _giocaCornoRom(attaccanteEl, bersaglioEl) {
+    await _giocaImpattoRom('horn_hit.png', attaccanteEl, bersaglioEl);
   }
 
   // Prepara canvas/scala/centri comuni a tutte le animazioni "a onda" (ogni
@@ -964,6 +972,9 @@ const AnimazioniEssentials = (function () {
     THUNDERPUNCH: _giocaPugnoRom, DYNAMICPUNCH: _giocaPugnoRom, MEGAKICK: _giocaPugnoRom,
     MACHPUNCH: _giocaPugnoRom, BULLETPUNCH: _giocaPugnoRom, DRAINPUNCH: _giocaPugnoRom,
     FOCUSPUNCH: _giocaPugnoRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
+
+    HORNATTACK: _giocaCornoRom, HORNDRILL: _giocaCornoRom, PECK: _giocaCornoRom,
+    DRILLPECK: _giocaCornoRom, FURYATTACK: _giocaCornoRom, TWINEEDLE: _giocaCornoRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
