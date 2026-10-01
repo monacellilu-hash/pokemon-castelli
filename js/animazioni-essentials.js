@@ -433,6 +433,14 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Mosse a piume (Giravento, Scaccianebbia, Rifugio...): piuma bianca
+  // che fluttua su chi la usa — grafica vera white_feather.png (2 frame).
+  async function _giocaPiumaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('feather.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [0, 32]);
+  }
+
   // Ragnatele (Sparo Ragna, Ragnatela, Rete Vischiosa...): filo sul
   // bersaglio — grafica vera string.png (64×32, un frame non quadrato).
   async function _giocaRagnatelaRom(attaccanteEl, bersaglioEl) {
@@ -1222,6 +1230,9 @@ const AnimazioniEssentials = (function () {
     FORESIGHT: _giocaSguardoRom, ODORSLEUTH: _giocaSguardoRom,
 
     STRINGSHOT: _giocaRagnatelaRom, SPIDERWEB: _giocaRagnatelaRom, STICKYWEB: _giocaRagnatelaRom,
+
+    FEATHERDANCE: _giocaPiumaRom, DEFOG: _giocaPiumaRom, TAILWIND: _giocaPiumaRom,
+    AGILITY: _giocaPiumaRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
