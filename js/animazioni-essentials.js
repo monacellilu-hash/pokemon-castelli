@@ -535,6 +535,44 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Melma (Move_SLUDGE, src/battle_anim_scripts.s): una bolla di veleno
+  // lanciata dritta verso il bersaglio — grafica vera poison_bubble.png
+  // (3 fotogrammi: bolla/goccia/scoppio, ripulita dalla trasparenza).
+  async function _giocaSludgeRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('poison_bubble.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 360, ampiezzaPx: 0 };
+
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 2, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Acido (Move_ACID, src/battle_anim_scripts.s): 3 bolle di veleno dritte
+  // verso il bersaglio con ventaglio verticale fisso (0/24/-24 nello
+  // script), stessa grafica vera di Melma (poison_bubble.png) ma callback
+  // diversa (AnimAcidPoisonBubble invece di AnimSludgeProjectile) — qui
+  // semplificata con lo stesso schema a 3 colpi già usato per Incendio.
+  async function _giocaAcidRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('poison_bubble.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 300, ampiezzaPx: 0 };
+
+    const scartoY = [0, 10, -10];
+    const attese = [];
+    scartoY.forEach((dy, i) => {
+      const arrivoScarto = { x: arrivo.x, y: arrivo.y + dy };
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivoScarto, scalaX, scalaY, 1, i * 90, opts));
+    });
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 2, 240);
+    await new Promise(r => setTimeout(r, 240));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -543,6 +581,8 @@ const AnimazioniEssentials = (function () {
     PSYWAVE: _giocaPsywaveRom,
     EMBER: _giocaEmberRom,
     WATERGUN: _giocaWaterGunRom,
+    SLUDGE: _giocaSludgeRom,
+    ACID: _giocaAcidRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {

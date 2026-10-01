@@ -60,6 +60,14 @@ small_bubbles.png — graphics/battle_anims/sprites/small_bubbles.png
   Script:  data/battle_anim_scripts.s -> Move_WATER_GUN
   Sorgente: src/battle_anim_water.c   -> gWaterGunProjectileSpriteTemplate
 
+poison_bubble.png — graphics/battle_anims/sprites/poison_bubble.png
+  Foglio reale (3 fotogrammi: bolla/goccia/scoppio), usato da Melma (un
+  lancio) e Acido (3 lanci con ventaglio verticale fisso) — stessa
+  grafica vera in originale per entrambe le mosse (ANIM_TAG_POISON_BUBBLE).
+  Script:  data/battle_anim_scripts.s -> Move_SLUDGE, Move_ACID
+  Sorgente: src/battle_anim_poison.c  -> gSludgeProjectileSpriteTemplate,
+                                          gAcidPoisonBubbleSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
