@@ -40,6 +40,14 @@ glowy_green_orb.png — STESSA forma di glowy_red_orb.png, ricolorata con la
   Sorgente: src/battle_anim_water.c   -> gSignalBeamRedOrbSpriteTemplate,
                                           gSignalBeamGreenOrbSpriteTemplate
 
+blue_ring.png — graphics/battle_anims/sprites/ring.png RICOLORATO con la
+  vera palette graphics/battle_anims/sprites/blue_ring.pal (JASC-PAL).
+  Nel gioco originale Fluttuonda (Psywave) riusa la stessa forma del
+  foglio "ring" generico, solo con palette diversa — stessa tecnica qui.
+  3 fotogrammi (anello che cresce), non un semplice tinting.
+  Script:  data/battle_anim_scripts.s -> Move_PSYWAVE, PsywaveRings
+  Sorgente: src/battle_anim_water.c   -> gPsywaveRingSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

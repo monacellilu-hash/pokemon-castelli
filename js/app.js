@@ -5046,6 +5046,17 @@ async function inizializzaSquadraTest() {
           mostraToast('⚠️ Raggio Segnale non insegnato a Snorlax (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
+      // Blissey (id 242): Fluttuonda, 3ª animazione ROM aggiunta oggi.
+      if (id === 242) {
+        try {
+          const fluttuonda = await PokeAPI.getMossa('psywave');
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fluttuonda, pp: fluttuonda.ppMax }));
+          console.log('[Squadra test] Fluttuonda insegnata a Blissey:', pkm.mosse);
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Fluttuonda a Blissey:', e.message);
+          mostraToast('⚠️ Fluttuonda non insegnata a Blissey (errore di rete): riprova a preparare la squadra test.', 6000);
+        }
+      }
       stato.squadra.push(pkm);
     }
   }

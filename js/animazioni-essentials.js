@@ -459,11 +459,37 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Fluttuonda (Move_PSYWAVE, src/battle_anim_scripts.s): anelli blu che
+  // crescono avvicinandosi al bersaglio — grafica vera blue_ring.png (ring.png
+  // ricolorato con la palette reale blue_ring.pal, stessa tecnica di
+  // mud_orb/glowy_green_orb: 3 fotogrammi, ognuno un anello più grande,
+  // non un semplice tinting). Nello script originale le 6 "call
+  // PsywaveRings" vanno tutte nella STESSA direzione (offset sempre +16,
+  // come Fanghiglia), non alternata.
+  async function _giocaPsywaveRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('blue_ring.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0, 16, 32], frameMs: 70, durataMs: 500, ampiezzaPx: 8 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 260);
+    setTimeout(() => _scuotiSpriteRom(bersaglioEl, 3, 380), 260);
+
+    const attese = [];
+    for (let i = 0; i < 10; i++) {
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, i * 60, opts));
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, i * 60 + 30, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
     MUDSHOT: _giocaMudShotRom,
     SIGNALBEAM: _giocaSignalBeamRom,
+    PSYWAVE: _giocaPsywaveRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
