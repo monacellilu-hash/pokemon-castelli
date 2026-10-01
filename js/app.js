@@ -3805,17 +3805,23 @@ function premiA() {
   const sceltaEl = document.getElementById('overlay-scelta');
   if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn1').click(); return; }
   if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
-  if (!nascostoEl('pannello-menu')) return;   // si naviga col mouse/tocco diretto
   // Scena nativa aperta (Squadra/Zaino/Box/Market/Pausa/Scheda…): [A] a
   // schermo manda "keydown-ENTER" DIRETTAMENTE al KeyboardPlugin della
   // scena (GameMap.emitTastoSceneNative) — non un KeyboardEvent sintetico
   // nel DOM: su alcuni browser mobile forzare il keyCode via defineProperty
   // non è affidabile per tutti i tasti (bug reale: [B] funzionava così,
   // Invio no — risolto passando a questo meccanismo per entrambi).
+  // Sess. 1 ott 2026 (bug segnalato da Luca: [A] non confermava, es. per
+  // aprire le info di un Pokémon in Squadra, serviva il tocco): QUESTO
+  // controllo andava prima di quello su #pannello-menu, non dopo — se il
+  // vecchio pannello DOM restava visibile per qualunque motivo (stato
+  // bloccato), [A] si fermava qui sempre e solo il mouse/tocco funzionava.
+  // La scena nativa, quando aperta, vince sempre sul pannello legacy.
   if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) {
     if (GameMap.emitTastoSceneNative) GameMap.emitTastoSceneNative('keydown-ENTER');
     return;
   }
+  if (!nascostoEl('pannello-menu')) return;   // si naviga col mouse/tocco diretto
   if (typeof GameMap !== 'undefined' && GameMap.interagisciVicino) GameMap.interagisciVicino();
 }
 
@@ -3827,13 +3833,14 @@ function premiB() {
   const sceltaEl = document.getElementById('overlay-scelta');
   if (sceltaEl && sceltaEl.style.display === 'flex') { document.getElementById('scelta-btn2').click(); return; }
   if (!nascostoEl('overlay-dialogo')) { document.getElementById('dialogo-avanti').click(); return; }
-  if (!nascostoEl('pannello-menu')) { chiudiMenu(); return; }
   // Scena nativa aperta: [B] a schermo = "keydown-B" diretto (indietro/
-  // annulla, stesso meccanismo di premiA sopra).
+  // annulla, stesso meccanismo di premiA sopra — stessa inversione di
+  // priorità rispetto a #pannello-menu, sess. 1 ott 2026).
   if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) {
     if (GameMap.emitTastoSceneNative) GameMap.emitTastoSceneNative('keydown-B');
     return;
   }
+  if (!nascostoEl('pannello-menu')) { chiudiMenu(); return; }
 }
 
 function premiStart() {
@@ -4916,12 +4923,25 @@ function renderSalva(contenuto) {
   }
   document.getElementById('btn-esporta').addEventListener('click', esportaSalvataggio);
   document.getElementById('btn-importa').addEventListener('click', () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = '.json,application/json';
-    input.addEventListener('change', () => {
-      if (input.files && input.files[0]) importaSalvataggio(input.files[0]);
-    });
+    // Sess. 1 ott 2026 (bug segnalato da Luca: "importa salvataggio" non
+    // caricava): l'input veniva creato e cliccato SENZA mai essere
+    // aggiunto al DOM — su molti browser mobile un <input type=file>
+    // "staccato" non apre il selettore file in modo affidabile, e anche
+    // quando lo apre il "change" può non scattare mai. Ora resta nel DOM
+    // (nascosto) e viene riusato, come qualunque altro input reale.
+    let input = document.getElementById('input-importa-salvataggio');
+    if (!input) {
+      input = document.createElement('input');
+      input.type = 'file';
+      input.id = 'input-importa-salvataggio';
+      input.accept = '.json,application/json';
+      input.style.display = 'none';
+      document.body.appendChild(input);
+      input.addEventListener('change', () => {
+        if (input.files && input.files[0]) importaSalvataggio(input.files[0]);
+        input.value = ''; // permette di reimportare lo STESSO file una seconda volta
+      });
+    }
     input.click();
   });
   document.getElementById('btn-nuova-partita').addEventListener('click', () => {

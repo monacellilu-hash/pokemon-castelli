@@ -272,15 +272,22 @@ const AnimazioniEssentials = (function () {
   // Movimento generico "AnimToTargetInSinWave" (src/battle_anim_water.c):
   // usato in originale non solo da Lanciafiamme ma anche da Idrocannone,
   // Raggio Segnale, Fanghiglia — una particella parte dall'attaccante,
-  // viaggia in linea retta verso il bersaglio in `durataMs`, con
-  // un'oscillazione a onda perpendicolare al percorso, ciclando tra le
-  // `righeY` del foglio ogni `frameMs`. opts: { frameW, frameH, righeY,
+  // viaggia in linea retta verso il bersaglio in `durataMs`, ciclando tra
+  // le `righeY` del foglio ogni `frameMs`. opts: { frameW, frameH, righeY,
   // frameMs, durataMs, ampiezzaPx }.
+  // Sess. 1 ott 2026 (richiesta di Luca: "il direzionamento è strano",
+  // ricontrollata la fonte): nel codice vero l'oscillazione è SEMPRE
+  // verticale sullo schermo — `sprite->y2 += Sin(...)`, mai perpendicolare
+  // al percorso. Prima qui l'onda ruotava con la direzione attaccante→
+  // bersaglio: sembrava sbagliata ogni volta che è il nemico ad attaccare
+  // (percorso invertito rispetto al giocatore). Corretto per matchare la
+  // fonte esattamente: solo su/giù, mai di lato.
   function _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, ampiezzaSegno, ritardoMs, opts) {
     const { frameW, frameH, righeY, frameMs, durataMs, ampiezzaPx } = opts;
     return new Promise(resolve => {
       const AMPIEZZA_PX = ampiezzaPx * ampiezzaSegno;
       const inizio = performance.now() + ritardoMs;
+      const dx = arrivo.x - partenza.x, dy = arrivo.y - partenza.y;
       function passo(ora) {
         const t = ora - inizio;
         if (t < 0) { requestAnimationFrame(passo); return; }
@@ -289,12 +296,9 @@ const AnimazioniEssentials = (function () {
         const rigaIdx = Math.floor(t / frameMs) % righeY.length;
         const sy = righeY[rigaIdx];
 
-        const dx = arrivo.x - partenza.x, dy = arrivo.y - partenza.y;
-        const len = Math.hypot(dx, dy) || 1;
-        const perpX = -dy / len, perpY = dx / len;
         const onda = Math.sin(Math.PI * frac) * AMPIEZZA_PX; // una sola "gobba", su o giù
-        const px = partenza.x + dx * frac + perpX * onda * scalaX;
-        const py = partenza.y + dy * frac + perpY * onda * scalaY;
+        const px = partenza.x + dx * frac;
+        const py = partenza.y + dy * frac + onda * scalaY;
 
         ctx.save();
         ctx.translate(px, py);
