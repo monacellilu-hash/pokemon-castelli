@@ -1236,8 +1236,25 @@ const GameMap = (function () {
             idsPuls.every(id => stato.flags['pulsante_' + id]);
           cancelloBloccato = !attivo;
         }
-        if (calpestabile || ostacoloMn || cartelloRett || decoSolida || cancelloBloccato) {
-          const val = (ostacoloMn || cartelloRett || decoSolida || cancelloBloccato) ? 1 : 0;
+        // Cancello a medaglie (scorciatoie non lineari, es. Grottaferrata→
+        // Percorso 11 verso Rocca di Papa): solido finché non hai TUTTE le
+        // medaglie elencate in "richiede" (lista separata da virgole, id
+        // PALESTRE — es. "marino,monte-porzio"). Serve a non far incontrare
+        // allenatori tarati per il cap di arrivo (qui cap 34) a chi ci passa
+        // appena dopo la 1ª palestra sfruttando un percorso alternativo
+        // (segnalato da Luca, 1 ott 2026).
+        let cancelloMedaglia = false;
+        if (tipo === 'cancello_medaglia') {
+          const props = {};
+          if (obj.properties) obj.properties.forEach(p => { props[p.name] = p.value; });
+          const idsMed = String(props.richiede || '')
+            .split(',').map(s => s.trim()).filter(Boolean);
+          const haTutte = idsMed.length > 0 && typeof stato !== 'undefined' && stato.medaglie &&
+            idsMed.every(id => stato.medaglie.includes(id));
+          cancelloMedaglia = !haTutte;
+        }
+        if (calpestabile || ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia) {
+          const val = (ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia) ? 1 : 0;
           if (obj.width > 0 && obj.height > 0) {
             segnaRett(obj, val);
           } else {
