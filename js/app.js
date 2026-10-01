@@ -5030,16 +5030,20 @@ async function inizializzaSquadraTest() {
         try {
           const fanghiglia = await PokeAPI.getMossa('mud-shot');
           pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fanghiglia, pp: fanghiglia.ppMax }));
+          console.log('[Squadra test] Fanghiglia insegnata a Lapras:', pkm.mosse);
         } catch (e) {
           console.warn('[Squadra test] Impossibile insegnare Fanghiglia a Lapras:', e.message);
+          mostraToast('⚠️ Fanghiglia non insegnata a Lapras (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
       if (id === 143) {
         try {
           const segnale = await PokeAPI.getMossa('signal-beam');
           pkm.mosse = [0, 1, 2, 3].map(() => ({ ...segnale, pp: segnale.ppMax }));
+          console.log('[Squadra test] Raggio Segnale insegnato a Snorlax:', pkm.mosse);
         } catch (e) {
           console.warn('[Squadra test] Impossibile insegnare Raggio Segnale a Snorlax:', e.message);
+          mostraToast('⚠️ Raggio Segnale non insegnato a Snorlax (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
       stato.squadra.push(pkm);
