@@ -99,6 +99,9 @@ ice_crystals.png — ice_crystals_0.png + la vera palette ice_crystals.pal.
 rock.png — graphics/battle_anims/sprites/rocks.png (primo dei 6 fotogrammi,
   32×32). Lanciarocce e mosse Roccia simili.
 
+leaf.png — graphics/battle_anims/sprites/leaf.png (9 fotogrammi, foglia che
+  ruota). Mosse Erba a proiettile (Palla Energia, Foglia Magica, ecc.).
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

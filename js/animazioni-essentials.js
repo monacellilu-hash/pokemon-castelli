@@ -673,6 +673,31 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Mosse Erba a proiettile (Palla Energia, Foglia Magica, ecc.): foglie
+  // che ruotano verso il bersaglio — grafica vera leaf.png (9 fotogrammi,
+  // la foglia che gira, usata ciclicamente come le altre mosse ad onda).
+  async function _giocaFoglieRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('leaf.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = {
+      frameW: 16, frameH: 16,
+      righeY: [0, 16, 32, 48, 64, 80, 96, 112, 128],
+      frameMs: 28, durataMs: 380, ampiezzaPx: 12,
+    };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 180);
+    const attese = [];
+    for (let i = 0; i < 4; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 70, opts));
+    }
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 2, 260);
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -729,6 +754,10 @@ const AnimazioniEssentials = (function () {
 
     ROCKTHROW: _giocaRocciaRom, ROCKSLIDE: _giocaRocciaRom, ROCKBLAST: _giocaRocciaRom,
     POWERGEM: _giocaRocciaRom, ANCIENTPOWER: _giocaRocciaRom, ROCKTOMB: _giocaRocciaRom,
+
+    MAGICALLEAF: _giocaFoglieRom, ENERGYBALL: _giocaFoglieRom, LEAFSTORM: _giocaFoglieRom,
+    SEEDBOMB: _giocaFoglieRom, GRASSKNOT: _giocaFoglieRom, RAZORLEAF: _giocaFoglieRom,
+    LEAFTORNADO: _giocaFoglieRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
