@@ -68,6 +68,23 @@ poison_bubble.png — graphics/battle_anims/sprites/poison_bubble.png
   Sorgente: src/battle_anim_poison.c  -> gSludgeProjectileSpriteTemplate,
                                           gAcidPoisonBubbleSpriteTemplate
 
+spark.png — graphics/battle_anims/sprites/spark_0.png RICOLORATO con la
+  vera palette graphics/battle_anims/sprites/spark.pal. Fulmine verticale
+  usato dalle mosse Elettro (AnimTask_ElectricBolt nel gioco originale) —
+  categoria diversa dalle altre: cade dall'alto sul bersaglio invece di
+  partire dall'attaccante.
+
+--- Nota sess. 1 ott 2026: riuso scalato per ~45 mosse in più ---
+Su richiesta esplicita di Luca ("fanne una 50ina"), le funzioni sopra sono
+state riusate per ALTRE mosse reali dello stesso tipo/categoria (es. tutte
+le mosse Fuoco semplici su _giocaEmberRom, tutte le Veleno su Sludge/Acid,
+tutte le Elettro sul fulmine verticale, ecc.) — leggi la lista completa in
+js/animazioni-essentials.js vicino a "const ANIMAZIONI_ROM". La GRAFICA
+resta sempre quella vera (mai inventata), ma la coreografia esatta di
+ciascuna di queste mosse nel gioco originale non è stata verificata una
+per una (impossibile in tempi ragionevoli per 350+ mosse) — è un riuso
+onesto per tipo, non un porting 1:1 come le prime 9 mosse sopra.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

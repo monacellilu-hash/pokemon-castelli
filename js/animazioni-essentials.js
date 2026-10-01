@@ -573,6 +573,32 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Fulmine verticale (AnimTask_ElectricBolt, usato da Tuonoshock/Fulmine/
+  // Tuono/ecc. nel gioco vero): categoria NUOVA — non un proiettile
+  // orizzontale attaccante→bersaglio come tutte le mosse sopra, ma un
+  // fulmine che cade dall'alto SUL bersaglio. Grafica vera spark.png
+  // (ottenuta da spark_0.png + la palette reale spark.pal — stessa tecnica
+  // delle altre). Riusa _particellaOndaVersoTarget semplicemente mettendo
+  // "partenza" sopra il bersaglio invece che sull'attaccante: la funzione
+  // è generica, non sa (né le importa) da dove parte il segmento.
+  async function _giocaFulmineRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('spark.png');
+    await pronta;
+    const { scalaX, scalaY, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const partenzaAlto = { x: arrivo.x, y: arrivo.y - 90 };
+    const opts = { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 150);
+    const attese = [];
+    for (let i = 0; i < 3; i++) {
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenzaAlto, arrivo, scalaX, scalaY, 1, i * 180, opts));
+    }
+    await Promise.all(attese);
+    _scuotiSpriteRom(bersaglioEl, 3, 220);
+    await new Promise(r => setTimeout(r, 220));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
@@ -583,6 +609,40 @@ const AnimazioniEssentials = (function () {
     WATERGUN: _giocaWaterGunRom,
     SLUDGE: _giocaSludgeRom,
     ACID: _giocaAcidRom,
+
+    // Sess. 1 ott 2026 ("fanne una 50ina", richiesta esplicita di Luca):
+    // stesso schema per ALTRE mosse reali dello STESSO tipo, che nel gioco
+    // originale condividono grafiche molto simili (bolla/proiettile
+    // colorato dal tipo) — riuso le funzioni già verificate sopra invece
+    // di ricercare da zero lo script unico di ognuna (impossibile in tempi
+    // ragionevoli per 350+ mosse): la grafica resta SEMPRE quella vera,
+    // cambia solo quale mossa la richiama. Dove il gioco vero ha una
+    // coreografia diversa ma non radicalmente diversa (stesso tipo di
+    // proiettile semplice), questa è un'approssimazione onesta, non un
+    // placeholder a caso.
+    FIREBLAST: _giocaEmberRom, LAVAPLUME: _giocaEmberRom, FLAMEBURST: _giocaEmberRom,
+    HEATWAVE: _giocaEmberRom, OVERHEAT: _giocaEmberRom, INCINERATE: _giocaEmberRom,
+    FIRESPIN: _giocaEmberRom, ERUPTION: _giocaEmberRom, MYSTICALFIRE: _giocaEmberRom,
+
+    BUBBLE: _giocaWaterGunRom, BUBBLEBEAM: _giocaWaterGunRom, WATERPULSE: _giocaWaterGunRom,
+    BRINE: _giocaWaterGunRom, MUDDYWATER: _giocaWaterGunRom, WHIRLPOOL: _giocaWaterGunRom,
+    OCTAZOOKA: _giocaWaterGunRom,
+
+    SLUDGEBOMB: _giocaSludgeRom, SMOG: _giocaSludgeRom, GUNKSHOT: _giocaSludgeRom,
+    ACIDSPRAY: _giocaAcidRom, POISONSTING: _giocaAcidRom, POISONGAS: _giocaSludgeRom,
+
+    PSYBEAM: _giocaPsywaveRom, PSYCHIC: _giocaPsywaveRom, EXTRASENSORY: _giocaPsywaveRom,
+    FUTURESIGHT: _giocaPsywaveRom, PSYCHOCUT: _giocaPsywaveRom, CONFUSION: _giocaPsywaveRom,
+    STOREDPOWER: _giocaPsywaveRom,
+
+    MUDBOMB: _giocaMudShotRom, MUDSLAP: _giocaMudShotRom, EARTHPOWER: _giocaMudShotRom,
+    SANDTOMB: _giocaMudShotRom,
+
+    SILVERWIND: _giocaSignalBeamRom, STRUGGLEBUG: _giocaSignalBeamRom,
+
+    THUNDERSHOCK: _giocaFulmineRom, THUNDERBOLT: _giocaFulmineRom, THUNDER: _giocaFulmineRom,
+    SPARK: _giocaFulmineRom, DISCHARGE: _giocaFulmineRom, SHOCKWAVE: _giocaFulmineRom,
+    ELECTROBALL: _giocaFulmineRom, CHARGEBEAM: _giocaFulmineRom, ZAPCANNON: _giocaFulmineRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
