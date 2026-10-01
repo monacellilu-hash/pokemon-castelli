@@ -5022,6 +5022,26 @@ async function inizializzaSquadraTest() {
           mostraToast('⚠️ Idrocannone non insegnato a Gyarados (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
+      // Lapras (id 131)/Snorlax (id 143): stesso trattamento per testare
+      // Fanghiglia e Raggio Segnale, le 2 animazioni ROM aggiunte dopo
+      // Lanciafiamme/Idrocannone (sess. 1 ott 2026) — tipo non in tema
+      // (sono solo per il test, non è la squadra "vera").
+      if (id === 131) {
+        try {
+          const fanghiglia = await PokeAPI.getMossa('mud-shot');
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fanghiglia, pp: fanghiglia.ppMax }));
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Fanghiglia a Lapras:', e.message);
+        }
+      }
+      if (id === 143) {
+        try {
+          const segnale = await PokeAPI.getMossa('signal-beam');
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...segnale, pp: segnale.ppMax }));
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Raggio Segnale a Snorlax:', e.message);
+        }
+      }
       stato.squadra.push(pkm);
     }
   }

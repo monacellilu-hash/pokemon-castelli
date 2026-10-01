@@ -22,6 +22,24 @@ water_orb.png — graphics/battle_anims/sprites/water_orb.png (pret/pokeemerald)
   Script:  data/battle_anim_scripts.s -> Move_HYDRO_PUMP
   Sorgente: src/battle_anim_water.c   -> gHydroPumpOrbSpriteTemplate
 
+mud_orb.png — graphics/battle_anims/sprites/water_orb.png RICOLORATO con la
+  vera palette graphics/battle_anims/sprites/brown_orb.pal (JASC-PAL, 16
+  colori). Nel gioco originale Fanghiglia (Mud Shot) riusa la STESSA forma
+  del foglio dell'acqua, solo con palette diversa — stessa tecnica qui:
+  applicata la palette reale ai pixel, non un tinting approssimato.
+  Script:  data/battle_anim_scripts.s -> Move_MUD_SHOT, MudShotOrbs
+  Sorgente: src/battle_anim_water.c   -> gMudShotOrbSpriteTemplate
+
+glowy_red_orb.png — graphics/battle_anims/sprites/glowy_red_orb.png
+  Foglio reale (8×8, un solo fotogramma) usato in originale da Raggio
+  Segnale (orbita rossa). Ripulito dal colore di trasparenza (indice 0).
+glowy_green_orb.png — STESSA forma di glowy_red_orb.png, ricolorata con la
+  vera palette graphics/battle_anims/sprites/glowy_green_orb.pal (il gioco
+  originale fa lo stesso: un solo disegno, due palette per le due orbite).
+  Script:  data/battle_anim_scripts.s -> Move_SIGNAL_BEAM, SignalBeamOrbs
+  Sorgente: src/battle_anim_water.c   -> gSignalBeamRedOrbSpriteTemplate,
+                                          gSignalBeamGreenOrbSpriteTemplate
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

@@ -407,9 +407,63 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Fanghiglia (Move_MUD_SHOT, src/battle_anim_scripts.s): stesso
+  // movimento a onda, grafica vera mud_orb.png (16×16, 4 fotogrammi — da
+  // water_orb.png ricolorato con la palette reale brown_orb.pal, la stessa
+  // tecnica usata dal gioco originale: stessa forma, palette diversa).
+  // Differenza reale dallo script: le 2 orbite di ogni "MudShotOrbs" vanno
+  // nella STESSA direzione (stesso segno, sfasate di poco), non una su e
+  // una giù come Lanciafiamme/Idrocannone.
+  async function _giocaMudShotRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('mud_orb.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 16, frameH: 16, righeY: [0, 16, 32, 48], frameMs: 50, durataMs: 480, ampiezzaPx: 10 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 240);
+    setTimeout(() => _scuotiSpriteRom(bersaglioEl, 3, 360), 240);
+
+    const attese = [];
+    for (let i = 0; i < 11; i++) {
+      const segno = (i % 2 === 0) ? 1 : -1;   // alterna tra una raffica e l'altra, non dentro la coppia
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 55, opts));
+      attese.push(_particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, segno, i * 55 + 28, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Raggio Segnale (Move_SIGNAL_BEAM, src/battle_anim_scripts.s): DUE
+  // orbite distinte lanciate insieme (rossa + verde, "SignalBeamOrbs"),
+  // non lo stesso sprite riusato — grafiche vere glowy_red_orb.png e
+  // glowy_green_orb.png (8×8, un solo fotogramma statico: niente
+  // animazione interna nello script originale, righeY:[0] la mantiene
+  // ferma). Stesso movimento a onda, le due orbite vanno in direzioni
+  // opposte come nella coppia di Lanciafiamme.
+  async function _giocaSignalBeamRom(attaccanteEl, bersaglioEl) {
+    const rosso = caricaImmagineRom('glowy_red_orb.png');
+    const verde = caricaImmagineRom('glowy_green_orb.png');
+    await Promise.all([rosso.pronta, verde.pronta]);
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 8, frameH: 8, righeY: [0], frameMs: 9999, durataMs: 420, ampiezzaPx: 12 };
+
+    _scuotiSpriteRom(attaccanteEl, 2, 220);
+    setTimeout(() => _scuotiSpriteRom(bersaglioEl, 3, 340), 220);
+
+    const attese = [];
+    for (let i = 0; i < 11; i++) {
+      attese.push(_particellaOndaVersoTarget(ctx, rosso.img, partenza, arrivo, scalaX, scalaY, 1, i * 50, opts));
+      attese.push(_particellaOndaVersoTarget(ctx, verde.img, partenza, arrivo, scalaX, scalaY, -1, i * 50, opts));
+    }
+    await Promise.all(attese);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   const ANIMAZIONI_ROM = {
     FLAMETHROWER: _giocaFlamethrowerRom,
     HYDROPUMP: _giocaHydroPumpRom,
+    MUDSHOT: _giocaMudShotRom,
+    SIGNALBEAM: _giocaSignalBeamRom,
   };
 
   function trovaAnimazioneRom(nomeMossa) {
