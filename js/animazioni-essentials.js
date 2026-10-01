@@ -433,6 +433,26 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Ragnatele (Sparo Ragna, Ragnatela, Rete Vischiosa...): filo sul
+  // bersaglio — grafica vera string.png (64×32, un frame non quadrato).
+  async function _giocaRagnatelaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('string.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    _scuotiSpriteRom(bersaglioEl, 2, 220);
+    ctx.save();
+    ctx.translate(centro.x, centro.y);
+    ctx.scale(scalaX, scalaY);
+    ctx.drawImage(img, -32, -16, 64, 32);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Mosse di sguardo/fascino (Attrazione, Occhio di Falco, Sguardo
   // Cupo...): scintillio sul bersaglio — grafica vera eye_sparkle.png
   // (4 fotogrammi, 16×16).
@@ -1200,6 +1220,8 @@ const AnimazioniEssentials = (function () {
     ATTRACT: _giocaSguardoRom, LOCKON: _giocaSguardoRom, MEANLOOK: _giocaSguardoRom,
     SWEETSCENT: _giocaSguardoRom, CAPTIVATE: _giocaSguardoRom, CHARM: _giocaSguardoRom,
     FORESIGHT: _giocaSguardoRom, ODORSLEUTH: _giocaSguardoRom,
+
+    STRINGSHOT: _giocaRagnatelaRom, SPIDERWEB: _giocaRagnatelaRom, STICKYWEB: _giocaRagnatelaRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {

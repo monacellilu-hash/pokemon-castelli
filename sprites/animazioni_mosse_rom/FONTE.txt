@@ -181,6 +181,9 @@ sparkle.png — graphics/battle_anims/sprites/eye_sparkle.png (4 fotogrammi,
   16×16). Attrazione, Occhio di Falco, Sguardo Cupo, Fragranza, Blandisci,
   Fascino, Previsione, Odora Pista.
 
+string.png — graphics/battle_anims/sprites/string.png (64×32, un frame).
+  Sparo Ragna, Ragnatela, Rete Vischiosa.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria
