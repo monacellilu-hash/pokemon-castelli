@@ -24,7 +24,7 @@ const DATI_NPC = {
      trigger niente di speciale, subito dopo racconta il rapimento e dona la
      MN Forza (una tantum), dopo ancora resta un dialogo di attesa. ── */
   'rocca_npc1': {
-    sprite: 'NPC 60', direzione: 'nord', movimento: 'fisso',
+    sprite: 'NPC 60', nome: 'Escursionista', direzione: 'nord', movimento: 'fisso',
     azione: 'interagisciRoccaNpc1',
   },
 
@@ -105,7 +105,7 @@ const DATI_NPC = {
     ],
   },
   'rocca_npc2': {
-    sprite: 'NPC 61', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 61', nome: 'Romolo', direzione: 'ovest', movimento: 'fisso',
     dialogo: ["Maschio delle Faete, Monte Cavo… i due giganti. Da ragazzo ci salivo a piedi. Mo' ce mando il Pokémon."],
   },
   // Gate GdF davanti alla Grotta del Vulcano (Atto 6, STORIA_COMPLETA): sparisce
@@ -117,7 +117,7 @@ const DATI_NPC = {
   // Marino — NON quando sconfiggi il grunt qui, che resta liberamente
   // battibile ma non apre nulla da solo, vedi "Prima visita" in quel file).
   'gdf_gate_grotta_vulcano': {
-    sprite: 'GDF_GRUNT_SPRITE', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Settimia', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Fermo lì. I piani interni restano sigillati finché il Comandante non viene fermato per davvero.'],
   },
   // Infiltrato dentro la Grotta del Vulcano (grotta_vulcano_1f.tmj, sess. 7
@@ -126,7 +126,7 @@ const DATI_NPC = {
   // poi, ogni volta che gli riparli, cura la squadra come un Centro Pokémon
   // improvvisato — vedi curaSquadraGrottaVulcano() in js/app.js.
   'gdf_infiltrato_grotta_vulcano': {
-    sprite: 'GDF_GRUNT_SPRITE', direzione: 'sud', movimento: 'fisso',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Recluta GdF', direzione: 'sud', movimento: 'fisso',
     azione: 'curaSquadraGrottaVulcano',
   },
   // Scienziato tenuto prigioniero dal GdF (3° piano, sess. 8 set 2026):
@@ -155,26 +155,26 @@ const DATI_NPC = {
   // Gate palestra Rocca di Papa: sparisce quando stato.flags.baso_tornato è
   // vero (sessione 8 agosto, cutscene "Baso è via").
   'gate_palestra_baso': {
-    sprite: 'NPC 09', direzione: 'nord', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Celso', direzione: 'nord', movimento: 'fisso',
     dialogo: ['Baso non c\'è, non vedi che sta succedendo?'],
   },
   // Gate davanti a casa di Gianluca (operatore funivia, rapito dal CoTrAL):
   // stessa condizione, stesso momento in cui sparisce il gate della palestra.
   'gate_gianluca_casa': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Fiorella', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Qui non c\'è più nessuno per far funzionare questo aggeggio.'],
   },
   // Gianluca, liberato: appare SOLO quando stato.flags.baso_tornato è vero
   // (stessa condizione del gate). Primo dialogo una tantum, poi ripetibile
   // con scelta Sì/No per salire a Monte Cavo (interagisciGianluca, app.js).
   'gianluca_liberato': {
-    sprite: 'NPC 26', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 26', nome: 'Gianluca', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciGianluca',
   },
 
   // Faustino il funicolarista: dona la MN Volo (richiede 6 Medaglie, vedi DONATORI_MN).
   'faustino_funivia': {
-    sprite: 'trainer_HIKER', direzione: 'sud', movimento: 'fisso',
+    sprite: 'trainer_HIKER', nome: 'Faustino', direzione: 'sud', movimento: 'fisso',
     dialogo: [],
     azione: 'interagisciDonatoreVolo',
   },
@@ -182,19 +182,19 @@ const DATI_NPC = {
   // Nonna Assunta: dona la MN Surf dopo la vittoria sulla palestra di Monte Porzio
   // (vedi DONATORI_MN in data.js, id 'mn-surf'). Piazzata al Lago di Albano.
   'mn-surf': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Nonna Assunta', direzione: 'sud', movimento: 'fisso',
     dialogo: [],
     azione: 'interagisciDonatoreSurf',
   },
 
   /* ── Lago di Albano — spiaggia ── */
   'lago_albano_npc1': {
-    sprite: 'Nuotatore_spiaggia_fuori_acqua', direzione: 'sud', movimento: 'random',
+    sprite: 'Nuotatore_spiaggia_fuori_acqua', nome: 'Dante', direzione: 'sud', movimento: 'random',
     dialogo: ["D'estate qui è pieno de gente. La domenica non trovi manco un asciugamano libero!"],
   },
   // Vive in una casa sul lago (l'utente costruirà l'interno più avanti).
   'lago_albano_npc2': {
-    sprite: 'NPC 18', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 18', nome: 'Pierina', direzione: 'ovest', movimento: 'fisso',
     dialogo: ["Abito qui sul lago da sempre, in quella casetta. La sera, quando è tutto calmo, senti dei rumori strani venì dall'acqua…"],
   },
 
@@ -203,21 +203,21 @@ const DATI_NPC = {
   // Tiled (movimento/direzione invariati, NON toccare il .tmx/.tmj per questo
   // test), la cutscene lo raggiunge camminando dalla sua posizione reale.
   'pallet_oldman': {
-    sprite: 'NPC 01',
+    sprite: 'NPC 01', nome: 'Osvaldo',
     direzione: 'sud',
     movimento: 'random',
     dialogo: ['AO NAMOOOO. IL VINO DELI CASTELLIIIII'],
   },
 
   'pallet_girl': {
-    sprite: 'npc girl',
+    sprite: 'npc girl', nome: 'Italia',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: ['Preso il pokemon si? guarda che qua ti rubano tutto'],
   },
 
   'pallet_man': {
-    sprite: 'NPC 02',
+    sprite: 'NPC 02', nome: 'Alcide',
     direzione: 'ovest',
     movimento: 'fisso',
     dialogo: ['Casa del nipote del professore. Dicono sia abusiva, non entrerei fossi in te'],
@@ -228,19 +228,19 @@ const DATI_NPC = {
   // "Percorso 1 - Frascati" — impediscono di lasciare la città prima di aver
   // scelto lo starter dal Professore. Spariscono da soli (gate:true,
   // condizione:starterScelto) appena lo scegli.
-  'gate_borgata_nord_1': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+  'gate_borgata_nord_1': { sprite: 'NPC 03', nome: 'Palmira', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Aspetta! Non puoi andartene senza un Pokémon al tuo fianco.', 'Vai prima dal Professor Castagno, nel laboratorio qui in paese.'] },
-  'gate_borgata_nord_2': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+  'gate_borgata_nord_2': { sprite: 'NPC 03', nome: 'Ezio', direzione: 'sud', movimento: 'fisso',
     dialogo: ['I Castelli sono pericolosi per chi viaggia da solo, senza un Pokémon!'] },
-  'gate_borgata_nord_3': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+  'gate_borgata_nord_3': { sprite: 'NPC 03', nome: 'Iole', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Il laboratorio è qui in paese: il Professore ti aspetta.'] },
-  'gate_borgata_nord_4': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+  'gate_borgata_nord_4': { sprite: 'NPC 03', nome: 'Oreste', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Torna indietro: prima lo starter, poi il viaggio!'] },
-  'gate_borgata_nord_5': { sprite: 'NPC 03', direzione: 'sud', movimento: 'fisso',
+  'gate_borgata_nord_5': { sprite: 'NPC 03', nome: 'Zaira', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Nessuno passa di qui senza un Pokémon al fianco.'] },
 
   'prof_castagno': {
-    sprite: 'Nuovo_professor_oak',   // sprite dedicato (prima era uno swap sul vecchio "npc Rivale")
+    sprite: 'Nuovo_professor_oak', nome: 'Prof. Castagno',   // sprite dedicato (prima era uno swap sul vecchio "npc Rivale")
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -253,7 +253,7 @@ const DATI_NPC = {
   // dialogo:[] perché tutto il testo lo gestisce l'azione (spiegazione +
   // doppia conferma Sì/No + lotta), non un semplice saluto fisso.
   'rivale_debole': {
-    sprite: 'RIVALE_1',   // il rivale debole (Blue) è Brendan
+    sprite: 'RIVALE_1', nome: 'Remo',   // il rivale debole (Blue) è Brendan
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -261,7 +261,7 @@ const DATI_NPC = {
   },
 
   'rivale_forte': {
-    sprite: 'Rivale_2',   // il rivale forte (Red) è May
+    sprite: 'Rivale_2', nome: 'Remo',   // il rivale forte (Red) è May
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -269,7 +269,7 @@ const DATI_NPC = {
   },
 
   'npc_joy': {
-    sprite: 'npc joy',
+    sprite: 'npc joy', nome: 'Infermiera Joy',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: ['Benvenuto al Centro Pokémon!', 'Vuoi che curi i tuoi Pokémon?'],
@@ -285,117 +285,117 @@ const DATI_NPC = {
 
   /* ── Frascati Sud ── */
   'fra_sud_npc1': {
-    sprite: 'NPC 01', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 01', nome: 'Anselmo', direzione: 'sud', movimento: 'random',
     dialogo: ['Benvenuto a Frascati! Qui se cerchi le vigne sei nel posto giusto.'],
   },
   'fra_sud_npc2': {
-    sprite: 'NPC 02', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 02', nome: 'Nerina', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['L\'ospedale è laggiù. Ma per i Pokémon meglio il Centro!'],
   },
   'fra_sud_npc3': {
-    sprite: 'NPC 03', direzione: 'est', movimento: 'random',
+    sprite: 'NPC 03', nome: 'Ampelio', direzione: 'est', movimento: 'random',
     dialogo: ['Dicono che in cima alla collina, alla Villa, ci sia qualcosa di speciale...',
               'Ma i cancelli sono sempre chiusi.'],
   },
   'fra_sud_npc4': {
-    sprite: 'NPC 04', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 04', nome: 'Teodolinda', direzione: 'sud', movimento: 'fisso',
     dialogo: ['La palestra di Frascati è del tipo Erba. Donnie non perdona!'],
   },
 
   /* ── Frascati Centro ── */
   'fra_centro_npc1': {
-    sprite: 'NPC 05', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 05', nome: 'Libero', direzione: 'sud', movimento: 'fisso',
     dialogo: ['La fontana di Piazza San Rocco è bellissima, vero?'],
   },
   'fra_centro_npc2': {
-    sprite: 'NPC 06', direzione: 'nord', movimento: 'fisso',
+    sprite: 'NPC 06', nome: 'Argia', direzione: 'nord', movimento: 'fisso',
     dialogo: ['Un buon allenatore passa sempre dal Market prima di un viaggio.'],
   },
   'fra_centro_npc3': {
-    sprite: 'NPC 07', direzione: 'est', movimento: 'random',
+    sprite: 'NPC 07', nome: 'Fra\' Potatore', direzione: 'est', movimento: 'random',
     dialogo: ['Il vino dei Castelli è famoso in tutto il mondo!'],
     azione: 'donaTaglioFrascati',   // dà la MN Taglio dopo la palestra
   },
   'fra_centro_npc4': {
-    sprite: 'NPC 08', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 08', nome: 'Attilio', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Hai già visitato la Villa Aldobrandini? Si dice apra solo ai Campioni...'],
   },
 
   /* ── Frascati Est (verso Villa Torlonia e il Percorso 2) ── */
   'fra_est_npc1': {
-    sprite: 'NPC 17', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 17', nome: 'Diomira', direzione: 'sud', movimento: 'random',
     dialogo: ['Villa Torlonia è qui vicino: è lì che si trova la Palestra di Frascati!'],
   },
   'fra_est_npc2': {
-    sprite: 'NPC 18', direzione: 'nord', movimento: 'fisso',
+    sprite: 'NPC 18', nome: 'Ilario', direzione: 'nord', movimento: 'fisso',
     dialogo: ['A est si va verso Grottaferrata. Ma prima conviene battere Donnie.'],
   },
   'fra_est_npc3': {
-    sprite: 'NPC 19', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 19', nome: 'Bruna', direzione: 'est', movimento: 'fisso',
     dialogo: ['I Pokémon Erba sono forti contro Acqua e Terra, ma occhio al Fuoco!'],
   },
   'fra_est_npc4': {
-    sprite: 'NPC 20', direzione: 'ovest', movimento: 'random',
+    sprite: 'NPC 20', nome: 'Primo', direzione: 'ovest', movimento: 'random',
     dialogo: ['Riposati al Centro Pokémon prima di sfidare la Palestra.'],
   },
 
   /* ── Frascati Nord (verso i Boschi del Tuscolo) ── */
   'fra_nord_npc1': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Adalgisa', direzione: 'sud', movimento: 'fisso',
     dialogo: ['I Boschi del Tuscolo, a nord, sono pieni di Pokémon. Vacci preparato!'],
   },
   'fra_nord_npc2': {
-    sprite: 'NPC 10', direzione: 'ovest', movimento: 'random',
+    sprite: 'NPC 10', nome: 'Ottone', direzione: 'ovest', movimento: 'random',
     dialogo: ['Dicono che tra le rovine antiche si nasconda un Pokémon misterioso...'],
   },
   'fra_nord_npc3': {
-    sprite: 'NPC 11', direzione: 'nord', movimento: 'fisso',
+    sprite: 'NPC 11', nome: 'Everardo', direzione: 'nord', movimento: 'fisso',
     dialogo: ['Questa è la parte alta di Frascati. Che aria fresca!'],
   },
   'fra_nord_npc4': {
-    sprite: 'NPC 12', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 12', nome: 'Serafino', direzione: 'est', movimento: 'fisso',
     dialogo: ['Un Antidoto fa sempre comodo nei boschi: i Pokémon velenosi non mancano.'],
   },
 
   /* ── Frascati Ovest (Piazza San Rocco) ── */
   'fra_ovest_npc1': {
-    sprite: 'NPC 13', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 13', nome: 'Elvira', direzione: 'est', movimento: 'fisso',
     dialogo: ['Benvenuto in Piazza San Rocco, il cuore storico di Frascati.'],
   },
   'fra_ovest_npc2': {
-    sprite: 'NPC 14', direzione: 'nord', movimento: 'random',
+    sprite: 'NPC 14', nome: 'Amleto', direzione: 'nord', movimento: 'random',
     dialogo: ['Quella fontana è bellissima... ma a volte sembra quasi viva.'],
   },
   'fra_ovest_npc3': {
-    sprite: 'NPC 15', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 15', nome: 'Corinna', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Mio nonno racconta storie strane su questa piazza. Leggende, dice lui.'],
   },
   'fra_ovest_npc4': {
-    sprite: 'NPC 16', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 16', nome: 'Baldovino', direzione: 'sud', movimento: 'random',
     dialogo: ['Un buon allenatore conosce i tipi dei Pokémon a memoria!'],
   },
 
   /* ── Tuscolo Ingresso (verso i Boschi del Tuscolo) ── */
   'tusc_ing_npc1': {
-    sprite: 'NPC 27', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 27', nome: 'Fosca', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Oltre questi alberi iniziano i Boschi del Tuscolo. Tieni gli occhi aperti!'],
   },
   'tusc_ing_npc2': {
-    sprite: 'NPC 28', direzione: 'nord', movimento: 'random',
+    sprite: 'NPC 28', nome: 'Egidio', direzione: 'nord', movimento: 'random',
     dialogo: ['Gli allenatori qui ti sfidano appena ti vedono: non passano oltre!'],
   },
   'tusc_ing_npc3': {
-    sprite: 'NPC 29', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 29', nome: 'Clorinda', direzione: 'est', movimento: 'fisso',
     dialogo: ['Dicono che tra le antiche rovine del Tuscolo si nasconda qualcosa di raro...'],
   },
   'tusc_ing_npc4': {
-    sprite: 'NPC 26', direzione: 'ovest', movimento: 'fisso',  // NPC 30 non esiste: uso NPC 26
+    sprite: 'NPC 26', nome: 'Fabrizio', direzione: 'ovest', movimento: 'fisso',  // NPC 30 non esiste: uso NPC 26
     dialogo: ['Con la MN Taglio puoi farti strada tra gli alberi. L\'hai presa a Frascati?'],
   },
 
   /* ── Venditore del Poké Market di Frascati ── */
   'pokemon market venditore': {
-    sprite: 'NPC 21', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 21', nome: 'Commesso', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Benvenuto al Poké Market! Cosa ti serve?'],
     azione: 'apriMarketFrascati',
   },
@@ -411,19 +411,19 @@ const DATI_NPC = {
   /* ── Avventori di contorno nei Centri Pokémon (solo due chiacchiere,
      nessuna azione) — sessione 8 agosto, "variare" i Pokécenter. ── */
   'npc_pokecenter_grottaferrata_1': {
-    sprite: 'NPC 17', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 17', nome: 'Dorotea', direzione: 'sud', movimento: 'random',
     dialogo: ["L'Abbazia di San Nilo è proprio lì fuori. Ci ho lasciato il mio Abra in custodia, per dire."],
   },
   'npc_pokecenter_marino_1': {
-    sprite: 'NPC 12', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 12', nome: 'Clodoveo', direzione: 'sud', movimento: 'random',
     dialogo: ['Ho fatto surf tutto il giorno sul lago. I miei Pokémon acqua sono distrutti quanto me.'],
   },
   'npc_pokecenter_rocca_di_papa_1': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 09', nome: 'Isolina', direzione: 'sud', movimento: 'random',
     dialogo: ["Qui l'aria di montagna fa bene, ma i miei Pokémon Roccia non hanno mai freddo comunque."],
   },
   'npc_pokecenter_genzano_1': {
-    sprite: 'NPC 14', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 14', nome: 'Baldassarre', direzione: 'sud', movimento: 'random',
     dialogo: ["Sei arrivato apposta per l'Infiorata? È lo spettacolo dell'anno, qui a Genzano."],
   },
 
@@ -442,7 +442,7 @@ const DATI_NPC = {
   /* ── Marino: Snorlax addormentato + guardia con parola d'ordine (sess. 37).
      Posizioni segnaposto nel .tmj, l'utente le sposta dove preferisce. ── */
   'npc_flauto_marino': {
-    sprite: 'NPC 09', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Il Suonatore', direzione: 'est', movimento: 'fisso',
     azione: 'donaFlautoMarino',
   },
   'npc_password_marino': {
@@ -502,7 +502,7 @@ const DATI_NPC = {
      parte) — blocca il passaggio, nessuna condizione: rimuoverlo/aggiungere
      una condizione quando Percorso 12 sarà davvero pronto. ── */
   'npc_gate_percorso_12': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Venanzia', direzione: 'sud', movimento: 'fisso',
     dialogo: ['🚧 Lavori in corso, non si passa! Prova a tornare più avanti.'],
   },
 
@@ -552,7 +552,7 @@ const DATI_NPC = {
   // Guardiano: blocca il sentiero finché non hai completato la Lega (gate nel TMJ).
   // Compare SOLO finché la condizione "post_lega" è falsa (lo gestisce map.js).
   'bosch_guardiano': {
-    sprite: 'NPC_GUARDIA', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC_GUARDIA', nome: 'Filiberto', direzione: 'sud', movimento: 'fisso',
     dialogo: [
       'Ehi, aspetta.',
       'Questo sentiero porta a qualcuno che non incontra chiunque.',
@@ -577,7 +577,7 @@ const DATI_NPC = {
 
   /* ── Percorso 2 (castagneti collinari) ── */
   'p2_npc1': {
-    sprite: 'NPC 21',
+    sprite: 'NPC 21', nome: 'Ortensia',
     direzione: 'sud',
     movimento: 'random',
     dialogo: [
@@ -586,7 +586,7 @@ const DATI_NPC = {
     ],
   },
   'p2_npc2': {
-    sprite: 'NPC 22',
+    sprite: 'NPC 22', nome: 'Gaudenzio',
     direzione: 'ovest',
     movimento: 'fisso',
     dialogo: [
@@ -599,7 +599,7 @@ const DATI_NPC = {
      Sprite NPC_65/66/67 non ancora in sprites/: il motore assegna un filler
      stabile per id finché non aggiungi i file. */
   'p3_npc1': {
-    sprite: 'NPC_65',
+    sprite: 'NPC_65', nome: 'Armida',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [
@@ -608,7 +608,7 @@ const DATI_NPC = {
     ],
   },
   'p3_npc2': {
-    sprite: 'NPC_66',
+    sprite: 'NPC_66', nome: 'Teofilo',
     direzione: 'nord',
     movimento: 'random',
     dialogo: [
@@ -617,7 +617,7 @@ const DATI_NPC = {
     ],
   },
   'p3_npc3': {
-    sprite: 'NPC_67',
+    sprite: 'NPC_67', nome: 'Rosalba',
     direzione: 'ovest',
     movimento: 'fisso',
     dialogo: [
@@ -629,7 +629,7 @@ const DATI_NPC = {
   /* ── Grottaferrata (Abbazia di San Nilo) ──
      grotta_npc1 ha già il dialogo inline nel .tmj. Qui gli altri. */
   'grotta_npc2': {
-    sprite: 'NPC_51',
+    sprite: 'NPC_51', nome: 'Giacinto',
     direzione: 'est',
     movimento: 'random',
     dialogo: [
@@ -638,7 +638,7 @@ const DATI_NPC = {
     ],
   },
   'grotta_npc3': {
-    sprite: 'NPC_52',
+    sprite: 'NPC_52', nome: 'Eufemia',
     direzione: 'est',
     movimento: 'fisso',
     dialogo: [
@@ -646,7 +646,7 @@ const DATI_NPC = {
     ],
   },
   'grotta_npc4': {
-    sprite: 'NPC_53',
+    sprite: 'NPC_53', nome: 'Celestino',
     direzione: 'sud',
     movimento: 'random',
     dialogo: [
@@ -654,7 +654,7 @@ const DATI_NPC = {
     ],
   },
   'parcheggio_npc5': {
-    sprite: 'NPC_54',
+    sprite: 'NPC_54', nome: 'Marianna',
     direzione: 'ovest',
     movimento: 'fisso',
     dialogo: [
@@ -663,7 +663,7 @@ const DATI_NPC = {
     ],
   },
   'monaco_abbazia': {
-    sprite: 'NPC_MONACO',
+    sprite: 'NPC_MONACO', nome: 'Terzilio',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [
@@ -674,7 +674,7 @@ const DATI_NPC = {
   // Porta dell'Abbazia presidiata dal Team GdF: BLOCCO che sparisce con 7 Medaglie
   // (gate + condizione "medaglie>=7"). Finché è lì, sbarra l'ingresso all'Abbazia.
   'gdf_porta_abbazia': {
-    sprite: 'GDF_GRUNT_SPRITE',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Gelsomina',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [
@@ -688,7 +688,7 @@ const DATI_NPC = {
   // del "parcheggione" di Grottaferrata (base di lancio, arruolamento
   // astronauti post-Lega, vedi CLAUDE.md — Deoxys).
   'guardia_parcheggione': {
-    sprite: 'GDF_GRUNT_SPRITE',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Benvenuto',
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [
@@ -704,7 +704,7 @@ const DATI_NPC = {
      quindi appare solo a condizione vera). Blocca l'accesso finché non si
      costruisce/risolve la scena del furto delle Orb (Atto 4). */
   'gdf_gate_nemi': {
-    sprite: 'GDF_GRUNT_SPRITE',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Assuntina',
     direzione: 'nord',
     movimento: 'fisso',
     dialogo: [
@@ -715,7 +715,7 @@ const DATI_NPC = {
 
   /* ── Castel Gandolfo (angolo nord-est, davanti alla Villa Pontificia occupata dal GdF) ── */
   'cg_villa_custode': {
-    sprite: 'NPC 07',
+    sprite: 'NPC 07', nome: 'Romualdo',
     direzione: 'nord',
     movimento: 'fisso',
     dialogo: [
@@ -799,19 +799,19 @@ const DATI_NPC = {
     azione: 'interagisciRiapprendiMosse',
   },
   'albano_npc3': {
-    sprite: 'NPC 07', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 07', nome: 'Perpetua', direzione: 'sud', movimento: 'random',
     dialogo: ['Albano Laziale, Palestra Roccia! Giorgia non fa sconti a nessuno.'],
   },
   'albano_npc4': {
-    sprite: 'NPC 21', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 21', nome: 'Clemente', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Il Lago Albano è proprio qui vicino. Con la MN Surf ce fai il giro completo.'],
   },
   'albano_npc5': {
-    sprite: 'NPC 09', direzione: 'est', movimento: 'random',
+    sprite: 'NPC 09', nome: 'Addolorata', direzione: 'est', movimento: 'random',
     dialogo: ["Medaglia Scudo, la chiamano. Giorgia l'ha vinta a suon di pietra contro pietra."],
   },
   'albano_npc6': {
-    sprite: 'NPC 17', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 17', nome: 'Policarpo', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Da qui se parte verso Ariccia. Dicono che pure lì c\'è \'na palestra tosta.'],
   },
 
@@ -819,14 +819,14 @@ const DATI_NPC = {
      Piuma Iridescente di Ho-Oh (STORIA_COMPLETA, catena post-lega). Solo
      dialogo per ora, nessuna meccanica attiva. ── */
   'porchettaro_p8_1': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Concetta', direzione: 'sud', movimento: 'fisso',
     dialogo: [
       'Ariccia? Ah, la Sagra della Porchetta! Quest\'anno se dice che sarà \'na cosa grossa...',
       'Pare che pure quelli der CoTrAL se so\' fatti vedè da quelle parti. Boh, io penso solo a la porchetta.',
     ],
   },
   'porchettaro_p8_2': {
-    sprite: 'NPC 11', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 11', nome: 'Romeo', direzione: 'ovest', movimento: 'fisso',
     dialogo: [
       'Se vai ad Ariccia, cerca Adriano: fa la porchetta più bona de tutto er Lazio.',
       'Dicono che sa cose strane... roba vista sur Ponte, all\'alba. Ma io nun me impiccio.',
@@ -838,23 +838,23 @@ const DATI_NPC = {
      (4 grunt CoTrAL → Piuma Iridescente, STORIA_COMPLETA): per ora solo
      dialogo, la meccanica dei grunt/quest arriverà con F10/F11. ── */
   'ariccia_npc1': {
-    sprite: 'NPC 07', direzione: 'sud', movimento: 'random',
+    sprite: 'NPC 07', nome: 'Letizia', direzione: 'sud', movimento: 'random',
     dialogo: ["Ariccia è famosa pe' le fraschette e la porchetta! Ma occhio a Ombretta, la capopalestra: i su' Pokémon Buio non se vedono arrivà."],
   },
   'ariccia_npc2': {
-    sprite: 'NPC 21', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 21', nome: 'Raniero', direzione: 'est', movimento: 'fisso',
     dialogo: ['Er Ponte de Ariccia è \'na meraviglia, lo vedi da ogni angolo della città. Dicono pure che de notte è meglio non passacce...'],
   },
   'ariccia_npc3': {
-    sprite: 'NPC 17', direzione: 'ovest', movimento: 'random',
+    sprite: 'NPC 17', nome: 'Pasqualina', direzione: 'ovest', movimento: 'random',
     dialogo: ["Medaglia Fraschetta, se chiama. Buffo, no? Ma i lottatori de tipo Buio nun so' mica da ride."],
   },
   'ariccia_npc4': {
-    sprite: 'NPC 09', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Severino', direzione: 'sud', movimento: 'fisso',
     dialogo: ["Ho visto certi tipi strani girà co' furgoni CoTrAL dalle parti der locale d'Adriano. A me nun me piace pe' niente."],
   },
   'ariccia_npc5': {
-    sprite: 'NPC 18', direzione: 'nord', movimento: 'random',
+    sprite: 'NPC 18', nome: 'Imelda', direzione: 'nord', movimento: 'random',
     dialogo: ['Da piccolo mi dicevano che sur Ponte, all\'alba, se po\' vedè \'na cosa che brilla. Leggende, dice mi padre.'],
   },
   'adriano_porchettaro': {
@@ -866,15 +866,15 @@ const DATI_NPC = {
     ],
   },
   'porchettaro_ar_1': {
-    sprite: 'NPC 26', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 26', nome: 'Costantino', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Preparativi pe\' la Sagra! Quest\'anno ce sarà \'na sorpresa, dice Adriano.'],
   },
   'porchettaro_ar_2': {
-    sprite: 'NPC 27', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 27', nome: 'Rosaria', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Se sconfiggi quei tipacci der CoTrAL che infastidiscono Adriano, quello se ricorda de te, fidete.'],
   },
   'porchettaro_ar_3': {
-    sprite: 'NPC 28', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 28', nome: 'Calisto', direzione: 'est', movimento: 'fisso',
     dialogo: ['All\'Infiorata de Genzano c\'hanno i fiori, qui ad Ariccia c\'avemo la porchetta! Ognuno cor su\' vanto.'],
   },
 
@@ -918,11 +918,11 @@ const DATI_NPC = {
     azione: 'avviaLatiosLatiasScena',
   },
   'ariccia_sagra_1': {
-    sprite: 'NPC 08', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 08', nome: 'Agnese', direzione: 'ovest', movimento: 'fisso',
     dialogo: ["Stasera se beve e se magna fino a spaccà! Vieni pe' la Sagra, nun te ne pentirai!"],
   },
   'ariccia_sagra_2': {
-    sprite: 'NPC 13', direzione: 'est', movimento: 'fisso',
+    sprite: 'NPC 13', nome: 'Evaristo', direzione: 'est', movimento: 'fisso',
     dialogo: ["Hai sentito? Dicono che stanotte i Porchettari cercano uno sfidante vero. Io nun me ce butterei, eh."],
   },
 
@@ -958,15 +958,15 @@ const DATI_NPC = {
   // 7ª palestra (Ariccia stessa): il gioco non lo dice mai esplicitamente,
   // il giocatore lo scopre solo continuando ad avanzare.
   'grunt_sagra_1': {
-    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Marcellina', direzione: 'est', movimento: 'fisso',
     dialogo: ['Alt! Nessuno passa: prima la Sagra della Porchetta, poi tutto il resto.'],
   },
   'grunt_sagra_2': {
-    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Aristide', direzione: 'est', movimento: 'fisso',
     dialogo: ['Hai sentito il collega? La porchetta viene prima di tutto. Levate!'],
   },
   'grunt_sagra_3': {
-    sprite: 'GDF_GRUNT_SPRITE', direzione: 'est', movimento: 'fisso',
+    sprite: 'GDF_GRUNT_SPRITE', nome: 'Veronica', direzione: 'est', movimento: 'fisso',
     dialogo: ['Genzano può aspettare. Qui si mangia.'],
   },
 
@@ -1020,15 +1020,15 @@ const DATI_NPC = {
   // Grunt decorativi (solo scenografia, "tutta la gente è lì" — richiesta di
   // Luca): spariscono insieme al resto quando la cutscene finisce.
   'cotral_grunt_deco_1': {
-    sprite: 'COTRAL_GRUNT_SPRITE', direzione: 'sud', movimento: 'fisso',
+    sprite: 'COTRAL_GRUNT_SPRITE', nome: 'Olimpio', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non hai visto niente.'],
   },
   'cotral_grunt_deco_2': {
-    sprite: 'COTRAL_GRUNT_SPRITE', direzione: 'sud', movimento: 'fisso',
+    sprite: 'COTRAL_GRUNT_SPRITE', nome: 'Desolina', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non hai visto niente.'],
   },
   'cotral_grunt_deco_3': {
-    sprite: 'COTRAL_GRUNT_SPRITE', direzione: 'sud', movimento: 'fisso',
+    sprite: 'COTRAL_GRUNT_SPRITE', nome: 'Erminio', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non hai visto niente.'],
   },
   // Visibile fin dall'inizio (ostaggio, parte della scenografia della
@@ -1050,12 +1050,12 @@ const DATI_NPC = {
   // noTestBypass: sono gate "mondani", non fanno parte di una scena da
   // testare — MODALITA_TEST li salta come tutti gli altri gate semplici.
   'gate_colonna_calcio_1': {
-    sprite: 'NPC 15', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 15', nome: 'Candida', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Non si passa: il Colle Sant\'Andrea è bloccato per la partita di calcio!', 'Torna dopo aver finito la Lega, magari le cose si saranno calmate.'],
     gate: true, condizione: 'legaCompletata',
   },
   'gate_colonna_calcio_2': {
-    sprite: 'NPC 16', direzione: 'ovest', movimento: 'fisso',
+    sprite: 'NPC 16', nome: 'Venceslao', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Anche da qui è bloccato, eh! Il Colle Sant\'Andrea è tutto occupato per la partita.', 'Prova a tornare quando avrai finito con la Lega.'],
     gate: true, condizione: 'legaCompletata',
   },
