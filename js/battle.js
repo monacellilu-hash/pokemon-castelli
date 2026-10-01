@@ -1495,6 +1495,30 @@ const Battle = (function () {
   // Esegue una singola mossa di "att" contro "dif".
   // Gestisce PP, precisione, danno+efficacia (offensive), stati ed
   // effetti statistici (mosse di stato pure e secondari delle offensive).
+  // Quante volte colpisce una mossa multi-colpo (Doppio Calcio, Attacco
+  // Furia, Spilloscuro, Barrage, Graffio Furia, Schiaffeggio, Osso
+  // Boomerang, Lancia Spine, Rafficaneve, Scarica Proiettili…). Fonte dati:
+  // PokéAPI meta.min_hits/max_hits (riduciMossa in pokeapi.js). Mosse a
+  // colpo fisso (min===max, es. Doppio Calcio sempre 2) restituiscono quel
+  // numero; quelle "2-5" (Attacco Furia ecc.) usano la distribuzione VERA
+  // delle gen. 3-4 (verificata su Bulbapedia): 2 e 3 colpi 37,5% ciascuno,
+  // 4 e 5 colpi 12,5% ciascuno — non equiprobabile.
+  function _numeroColpi(mossa) {
+    const min = mossa.minColpi, max = mossa.maxColpi;
+    if (!min || !max || max <= 1) return 1;
+    if (min === max) return min;
+    if (min === 2 && max === 5) {
+      const r = Math.random() * 100;
+      if (r < 37.5) return 2;
+      if (r < 75)   return 3;
+      if (r < 87.5) return 4;
+      return 5;
+    }
+    // Intervallo diverso da "2-5" (non previsto fra le mosse reali ≤386,
+    // ma per sicurezza): distribuzione uniforme nell'intervallo dichiarato.
+    return min + Math.floor(Math.random() * (max - min + 1));
+  }
+
   async function eseguiMossa(att, dif, mossa, etichettaAtt, etichettaDif, giaCaricata, opzioni) {
     opzioni = opzioni || {};
     // "silenzioso" = seconda (o successiva) risoluzione di una mossa ad area
@@ -1506,26 +1530,41 @@ const Battle = (function () {
     }
 
     // Il colpo a vuoto si controlla PRIMA dell'animazione: se manca, niente
-    // effetto visivo, solo il messaggio (richiesta esplicita utente).
+    // effetto visivo, solo il messaggio (richiesta esplicita utente). Per le
+    // mosse multi-colpo la precisione si controlla UNA sola volta per tutta
+    // la sequenza (fonte: Bulbapedia — "even if the move has decreased
+    // accuracy, it will not miss on any of the hits after the first"): se
+    // il primo colpo va a segno, tutti i successivi vanno a segno di sicuro,
+    // cambia solo quanti sono.
     if (!colpisce(att, dif, mossa)) {
       await di('...ma il colpo è andato a vuoto!');
       return;
     }
 
-    await animaMossa(att, dif, mossa);
+    const numColpi = _numeroColpi(mossa);
+    let colpiAndati = 0;
+    let ultimoEff = 1;
+    let ultimoDanno = 0;
 
-    // MOD 6B: se il bersaglio si è protetto (Protezione/Individuazione), niente effetto
-    if (dif.protetto) {
-      await di(`${etichettaDif} si protegge dal colpo!`);
-      return;
-    }
+    for (let colpo = 1; colpo <= numColpi; colpo++) {
+      if (dif.hpAttuale <= 0) break;
 
-    // --- MOSSA OFFENSIVA (ha potenza) ---
-    if (mossa.potenza && mossa.potenza > 0) {
+      await animaMossa(att, dif, mossa);
+
+      // MOD 6B: se il bersaglio si è protetto (Protezione/Individuazione),
+      // niente effetto — blocca anche i colpi successivi della sequenza.
+      if (dif.protetto) {
+        await di(`${etichettaDif} si protegge dal colpo!`);
+        break;
+      }
+
+      // --- MOSSA OFFENSIVA (ha potenza) ---
+      if (!(mossa.potenza && mossa.potenza > 0)) break; // mossa di stato: niente ciclo, esce subito
+
       let { danno, eff, critico } = calcolaDanno(att, dif, mossa);
       if (eff === 0) {
         await di(`Non ha alcun effetto su ${etichettaDif}!`);
-        return;
+        break;
       }
       // Mossa ad area che colpisce più bersagli nello stesso turno: danno
       // ridotto (regola Essentials per le mosse "all-opponents"/"both-opponents").
@@ -1547,17 +1586,22 @@ const Battle = (function () {
         }
       }
       dif.hpAttuale = sopravvive ? 1 : Math.max(0, dif.hpAttuale - danno);
+      colpiAndati += 1;
+      ultimoEff = eff;
+      ultimoDanno = danno;
       lampeggia(dif);
       aggiornaPannelli();
-      if (eff > 1) await di('È superefficace!');
-      else if (eff < 1) await di('Non è molto efficace...');
+      // Efficacia mostrata una volta sola per sequenza multi-colpo (come il
+      // gioco vero: "Colpito N volte!" + efficacia, non ripetuta a ogni colpo).
+      if (numColpi === 1) {
+        if (eff > 1) await di('È superefficace!');
+        else if (eff < 1) await di('Non è molto efficace...');
+      }
 
-      // Drenaggio/contraccolpo (mossa.drain, % del danno INFLITTO, da
-      // PokéAPI meta.drain): positivo = l'attaccante recupera HP
-      // (Assorbimento, Giga Prosciugo…), negativo = l'attaccante si fa male
-      // da solo (Doppia Sfida, Testata…). Si applica sempre, anche se il
-      // bersaglio va KO dal colpo (il contraccolpo colpisce comunque chi
-      // attacca — punto 4, sess. 16 set 2026: "alcune ti levano o ridanno vita").
+      // Drenaggio/contraccolpo per-colpo (Assorbimento/Giga Prosciugo/
+      // Doppia Sfida…): nessuna mossa multi-colpo reale (≤386) ha drain,
+      // ma se mai capitasse si applica a ogni colpo andato a segno, non
+      // solo alla fine — coerente con come agiscono gli altri effetti qui.
       if (mossa.drain && danno > 0) {
         const variazione = Math.max(1, Math.round(danno * Math.abs(mossa.drain) / 100));
         if (mossa.drain > 0) {
@@ -1577,10 +1621,28 @@ const Battle = (function () {
           await di(`${etichettaAtt} subisce il contraccolpo!`);
         }
       }
+      if (att.hpAttuale <= 0) break; // contraccolpo/autodistruzione nel mezzo della sequenza
+    }
 
-      if (dif.hpAttuale <= 0) return; // KO: niente effetti secondari
+    if (numColpi > 1 && colpiAndati > 0) {
+      await di(`Colpito ${colpiAndati} volt${colpiAndati === 1 ? 'a' : 'e'}!`);
+      if (ultimoEff > 1) await di('È superefficace!');
+      else if (ultimoEff < 1 && ultimoEff > 0) await di('Non è molto efficace...');
+    }
 
-      // Effetto di stato secondario (es. 30% di paralisi)
+    // Era una mossa OFFENSIVA (ha potenza): qualunque sia stato l'esito del
+    // ciclo sopra (colpita/protetta/senza effetto/KO), qui finisce — non
+    // deve MAI cadere nella sezione "mossa di stato" sotto (bug reale
+    // evitato: prima bastava controllare "colpiAndati>0", ma una mossa
+    // offensiva protetta al primo colpo ha colpiAndati=0 e sarebbe potuta
+    // scivolare lì sotto, applicando stato/statistiche anche da protetta).
+    if (mossa.potenza && mossa.potenza > 0) {
+      if (dif.hpAttuale <= 0 || colpiAndati === 0) return; // KO, protetta o senza effetto: niente effetti secondari
+
+      // Effetto di stato secondario (es. 30% di paralisi): controllato una
+      // volta sola dopo tutta la sequenza, non per ogni colpo (coerente col
+      // gioco vero — es. Spilloscuro controlla l'avvelenamento una volta,
+      // dopo entrambi i colpi, non due volte).
       if (mossa.statoEffetto && STATI[mossa.statoEffetto] && !dif.condizione &&
           mossa.statoProbabilita > 0 && Math.random() * 100 < mossa.statoProbabilita) {
         await applicaStato(dif, mossa.statoEffetto, etichettaDif);
@@ -2715,7 +2777,10 @@ const Battle = (function () {
       piattaformaNemico.style.transform = '';
       piattaformaNemico.style.width = w + 'px';
       piattaformaNemico.style.height = h + 'px';
-      piattaformaNemico.style.marginTop = (-(DIM_NEMICO * scala) * 0.85) + 'px';
+      // Sess. 1 ott 2026: il Pokémon nemico "fluttuava" di poco sopra il
+      // centro della piattaforma (segnalato da Luca, PC e mobile) — nudge
+      // minimo (0.85→0.89) per avvicinare la base dello sprite al centro.
+      piattaformaNemico.style.marginTop = (-(DIM_NEMICO * scala) * 0.89) + 'px';
     }
     if (piattaformaGiocatore) {
       const w = 256 * scala, h = 64 * scala;

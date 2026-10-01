@@ -215,7 +215,14 @@ const PokeAPI = (function () {
       drain: meta.drain || 0,
       // Cura del %HP massimo per le mosse di stato pure (Rilassamento,
       // Riposo, Morso di Luna…). 0 = nessuna cura.
-      healing: meta.healing || 0
+      healing: meta.healing || 0,
+      // Mosse multi-colpo (Doppio Calcio, Attacco Furia, Osso Boomerang,
+      // Spilloscuro…): numero minimo/massimo di colpi in un turno, da
+      // PokéAPI meta.min_hits/max_hits. null per le mosse normali (1
+      // colpo) — vedi _numeroColpi in js/battle.js, sess. 1 ott 2026
+      // (richiesta di Luca: queste mosse colpivano una volta sola).
+      minColpi: meta.min_hits || null,
+      maxColpi: meta.max_hits || null
     };
   }
 
@@ -223,11 +230,15 @@ const PokeAPI = (function () {
   // (es. "tackle") oppure direttamente l'URL fornito da getPokemon.
   // Esempio d'uso:  const m = await PokeAPI.getMossa("tackle");
   async function getMossa(nome, url) {
-    // 1) Cache (se "vecchia", cioè senza i campi priorita/nomeEn/drain/healing
-    //    aggiunti nel tempo, la ignoriamo e riscarichiamo: la cache si aggiorna da sola)
+    // 1) Cache (se "vecchia", cioè senza i campi priorita/nomeEn/drain/healing/
+    //    minColpi aggiunti nel tempo, la ignoriamo e riscarichiamo: la cache
+    //    si aggiorna da sola — altrimenti una mossa già scaricata PRIMA di
+    //    un nuovo campo (es. minColpi, sess. 1 ott 2026) resterebbe per
+    //    sempre senza, perché la cache non scade mai da sola).
     const inCache = leggiCache("mossa_" + nome);
     if (inCache && inCache.priorita !== undefined && inCache.nomeEn !== undefined &&
-        inCache.drain !== undefined && inCache.healing !== undefined) return inCache;
+        inCache.drain !== undefined && inCache.healing !== undefined &&
+        inCache.minColpi !== undefined) return inCache;
 
     // 2) Fetch dall'API
     const indirizzo = url || `${BASE_URL}/move/${nome}`;
