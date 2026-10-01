@@ -1241,19 +1241,50 @@ const AnimazioniEssentials = (function () {
     TORMENT: _giocaSguardoRom,
   });
 
-  function trovaAnimazioneRom(nomeMossa) {
-    return ANIMAZIONI_ROM[chiaveMossa(nomeMossa)] || null;
+  // Sess. 1 ott 2026 ("ultimo sforzo per coprirle tutte", richiesta di
+  // Luca): invece di continuare a elencare mosse una per una all'infinito
+  // (ce ne sono 350+), ogni mossa che ha potenza ma NON è nell'elenco
+  // esplicito sopra ora riusa comunque la grafica vera del SUO tipo —
+  // nessuna mossa offensiva resta più sul vecchio proiettile colorato
+  // generico. Le mosse di stato pure senza voce esplicita restano invece
+  // sul sistema Essentials (già le gestisce con messaggi/effetti propri).
+  const TIPO_FALLBACK = {
+    fire: _giocaEmberRom, water: _giocaWaterGunRom, poison: _giocaSludgeRom,
+    psychic: _giocaPsywaveRom, ground: _giocaMudShotRom, bug: _giocaSignalBeamRom,
+    electric: _giocaFulmineRom, ghost: _giocaPallaOmbraRom, ice: _giocaGhiaccioRom,
+    rock: _giocaRocciaRom, grass: _giocaFoglieRom, steel: _giocaAcciaioRom,
+    flying: _giocaVolanteRom, dragon: _giocaDragoRom, dark: _giocaBuioRom,
+    fighting: _giocaLottaRom, normal: _giocaStellaRom, fairy: _giocaSguardoRom,
+  };
+
+  // Accetta sia una stringa (solo nome, retro-compatibile) sia l'oggetto
+  // mossa completo (nome/tipo/classe/potenza) per poter usare il fallback.
+  // Distinzione importante: una mossa FISICA senza voce esplicita non deve
+  // "lanciare" un proiettile colorato dal tipo (nel gioco vero il contatto
+  // fisico non funziona così) — va sull'impatto generico. Solo le mosse
+  // SPECIALI senza voce esplicita usano il proiettile vero del loro tipo.
+  function trovaAnimazioneRom(mossa) {
+    const nomeMossa = (typeof mossa === 'string') ? mossa : (mossa && mossa.nome);
+    const specifica = ANIMAZIONI_ROM[chiaveMossa(nomeMossa)];
+    if (specifica) return specifica;
+    if (mossa && typeof mossa === 'object' && mossa.potenza > 0) {
+      if (mossa.classe === 'physical') return _giocaPugnoRom;
+      if (mossa.tipo) return TIPO_FALLBACK[mossa.tipo] || null;
+    }
+    return null;
   }
 
-  function haAnimazione(nomeMossa) {
-    return !!trovaAnimazioneRom(nomeMossa) || !!trovaAnimazione(nomeMossa);
+  function haAnimazione(mossa) {
+    const nomeMossa = (typeof mossa === 'string') ? mossa : (mossa && mossa.nome);
+    return !!trovaAnimazioneRom(mossa) || !!trovaAnimazione(nomeMossa);
   }
 
   // gioca() esistente rinominato internamente; il nuovo gioca() prova prima
-  // la versione ROM (se questa mossa ce l'ha), altrimenti quella Essentials.
+  // la versione ROM (specifica o per tipo), altrimenti quella Essentials.
   const giocaEssentials = gioca;
-  async function giocaConPriorita(nomeMossa, attaccanteEl, bersaglioEl) {
-    const rom = trovaAnimazioneRom(nomeMossa);
+  async function giocaConPriorita(mossa, attaccanteEl, bersaglioEl) {
+    const nomeMossa = (typeof mossa === 'string') ? mossa : (mossa && mossa.nome);
+    const rom = trovaAnimazioneRom(mossa);
     if (rom) { await rom(attaccanteEl, bersaglioEl); return; }
     await giocaEssentials(nomeMossa, attaccanteEl, bersaglioEl);
   }

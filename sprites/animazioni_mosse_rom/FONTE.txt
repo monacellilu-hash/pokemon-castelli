@@ -187,6 +187,23 @@ string.png — graphics/battle_anims/sprites/string.png (64×32, un frame).
 feather.png — graphics/battle_anims/sprites/white_feather.png (2
   fotogrammi). Giravento, Scaccianebbia, Vento in Poppa, Agilità.
 
+--- Sess. 1 ott 2026: copertura completa (TIPO_FALLBACK) ---
+233 mosse hanno una voce esplicita (vedi sopra), ma ce ne sono 350+ in
+totale — elencarle tutte una per una non è più proseguibile in tempi
+ragionevoli. Aggiunto un fallback automatico per TIPO in
+js/animazioni-essentials.js: ogni mossa con potenza che NON ha una voce
+esplicita ora usa comunque una delle grafiche vere già verificate sopra,
+scelta in base al suo tipo PokéAPI (fuoco→small_ember, acqua→water_orb/
+bubbles, veleno→poison_bubble, ecc.) — le mosse FISICHE senza voce
+esplicita usano l'impatto generico (punch_impact.png) invece di un
+proiettile (nel gioco vero il contatto fisico non lancia nulla), le
+SPECIALI usano il proiettile vero del loro tipo. Le mosse di stato pure
+senza voce esplicita restano sul sistema Essentials (dati/
+animazioni_mosse_essentials.js), che le copre già tutte con animazioni
+proprie. Risultato: NESSUNA mossa offensiva nel gioco usa più il vecchio
+pallino colorato generico — o ha una coreografia specifica verificata, o
+usa comunque grafica vera del gioco originale scelta per tipo/categoria.
+
 --- Nota separata: Ball di lancio/cattura (sess. 30 set 2026) ---
 Le grafiche delle Ball (sprites/Battle animations/ball_*.png) NON vengono da
 pokeemerald: sono già nel progetto da prima, riprese dalla vera libreria

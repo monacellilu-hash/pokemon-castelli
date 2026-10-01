@@ -1213,8 +1213,8 @@ const Battle = (function () {
       return;
     }
 
-    if (typeof AnimazioniEssentials !== 'undefined' && AnimazioniEssentials.haAnimazione(mossa.nome)) {
-      await AnimazioniEssentials.gioca(mossa.nome, elementoSprite(att), elementoSprite(bersaglioReale));
+    if (typeof AnimazioniEssentials !== 'undefined' && AnimazioniEssentials.haAnimazione(mossa)) {
+      await AnimazioniEssentials.gioca(mossa, elementoSprite(att), elementoSprite(bersaglioReale));
       tremaSprite(bersaglioReale);
       return;
     }
