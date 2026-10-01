@@ -412,6 +412,15 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [16, 48, 80, 112], 16);
   }
 
+  // Cura su se stessi (Rilassamento, Riposo, Sole Mattutino...):
+  // scintillio verde su chi la usa — grafica vera green_star.png
+  // (4 fotogrammi, 16×16).
+  async function _giocaCuraRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('heal_sparkle.png');
+    await pronta;
+    await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [0, 16, 32, 48], 16);
+  }
+
   // Artigliate (Graffio, Artiglio di Metallo, Artiglio di Drago...): 5
   // fotogrammi di un graffio che cresce — grafica vera claw_slash.png.
   async function _giocaArtigliRom(attaccanteEl, bersaglioEl) {
@@ -1083,6 +1092,11 @@ const AnimazioniEssentials = (function () {
     HOWL: _giocaPotenziamentoRom, MEDITATE: _giocaPotenziamentoRom,
     BULKUP: _giocaPotenziamentoRom, CALMMIND: _giocaPotenziamentoRom,
     DRAGONDANCE: _giocaPotenziamentoRom, COSMICPOWER: _giocaPotenziamentoRom,
+
+    RECOVER: _giocaCuraRom, SOFTBOILED: _giocaCuraRom, REST: _giocaCuraRom,
+    MORNINGSUN: _giocaCuraRom, SYNTHESIS: _giocaCuraRom, MILKDRINK: _giocaCuraRom,
+    ROOST: _giocaCuraRom, SLACKOFF: _giocaCuraRom, WISH: _giocaCuraRom,
+    MOONLIGHT: _giocaCuraRom,
   });
 
   function trovaAnimazioneRom(nomeMossa) {
