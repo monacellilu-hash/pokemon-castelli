@@ -1120,34 +1120,28 @@ html, body {
 }
 #battaglia-meteo.nascosto { display: none; }
 
-/* Posizioni ESATTE di Pokémon Essentials FRLG reale (0187_Battle_Scene.rb):
-   FOE_BASE_X/Y = SCREEN_WIDTH-128, (SCREEN_HEIGHT*3/4)-112 = 384,176 → 75%,
-   45.8%. PLAYER_BASE_X/Y = 128, SCREEN_HEIGHT-80 = 128,304 → 25% da
-   sinistra, 80px (=384-304) dal basso. Il commento originale del sorgente
-   specifica il SIGNIFICATO di questi punti, non solo il numero: per il
-   nemico è "centre MIDDLE" (centro esatto dello sprite), per il giocatore
-   "centre BOTTOM" (centro in basso) — NON sono entrambi angoli in alto a
-   sinistra. Trattarli come "top" per entrambi (primo tentativo) piazzava
-   lo sprite nemico troppo in basso, a cavallo del pannello dati del
-   giocatore. transform:translate(-50%,-50%) per il nemico centra davvero
-   sul punto (384,176); il giocatore resta ancorato dal basso (bottom, che
-   è già "centre bottom" per definizione). */
+/* Sess. 1 ott 2026: posizioni ESATTE del gioco vero Pokémon Smeraldo
+   (pret/pokeemerald, src/battle_anim_mons.c, tabella sBattlerCoords[0]
+   lotta singola, schermo nativo GBA 240×160) — sostituiscono
+   l'approssimazione presa da Essentials FRLG (un motore fan-made ispirato
+   ma non identico). Valori reali: nemico (176,40) → 73,3%/25% dall'alto;
+   giocatore (72,80) → 30%/50% (CENTRO VERTICALE dello schermo, non vicino
+   al bordo basso) — entrambi punti di centro sprite (transform
+   translate(-50%,-50%) su entrambi, stessa convenzione per i due lati).
+   Sostituisce l'ancoraggio dal basso di prima: le richieste precedenti di
+   spostare il giocatore più in basso erano per compensare lo spazio vuoto
+   di un'approssimazione sbagliata, non la posizione autentica. */
 #zona-nemico {
-  top: 45.8%;
-  left: 75%;
+  top: 25%;
+  left: 73.3%;
   transform: translate(-50%, -50%);
   width: 50%;
 }
 
 #zona-giocatore {
-  /* Spostato più in basso in due giri (era 80px, poi 40px) su richiesta
-     esplicita di Luca: con l'interfaccia comandi ridotta (~15%, vedi
-     #battaglia-console) c'è più spazio verticale libero — il proprio
-     Pokémon/piattaforma lo occupano invece di lasciarlo vuoto fra la scena
-     e il pannello comandi. */
-  bottom: 20px;
-  left: 25%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: 30%;
+  transform: translate(-50%, -50%);
   width: 50%;
 }
 
@@ -1400,7 +1394,11 @@ html, body {
    nemici affiancati in alto, alleati affiancati in basso — invece dell'unico
    nemico/alleato centrato della lotta singola. */
 #schermata-battaglia.doppia #zona-nemico    { top: 3%; left: 36%; }
-#schermata-battaglia.doppia #zona-giocatore { bottom: 1%; left: 20%; }
+/* Sess. 1 ott 2026: #zona-giocatore (base, lotta singola) ora usa
+   transform:translate(-50%,-50%) per la posizione autentica da pokeemerald
+   — qui in doppia serve ancora SOLO l'orizzontale (bottom-anchored come
+   prima), altrimenti erediterebbe anche il -50% verticale non voluto. */
+#schermata-battaglia.doppia #zona-giocatore { bottom: 1%; left: 20%; transform: translateX(-50%); }
 
 #schermata-battaglia.doppia #zona-nemico-2:not(.nascosto),
 #schermata-battaglia.doppia #zona-giocatore-2:not(.nascosto) {
