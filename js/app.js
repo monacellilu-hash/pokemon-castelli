@@ -140,6 +140,7 @@ let stato = {
   gauntletPalestra: {},
   // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati + passi insieme + uovo pronto da ritirare
   pensione: { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false },
+  pokedex:  {}, // { [id]: { visto, catturato, nome, spriteFronte } } — registro Pokédex
 };
 
 // ── Salvataggio / caricamento ────────────────────────────────
