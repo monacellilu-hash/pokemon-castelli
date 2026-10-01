@@ -5076,11 +5076,21 @@ function esportaSalvataggio() {
 }
 
 function importaSalvataggio(file) {
+  mostraToast('📥 Importazione in corso…', 1500);
   const lettore = new FileReader();
+  // Sess. 1 ott 2026: prima non c'era NESSUN gestore per onerror/onabort —
+  // se la lettura del file falliva (rara ma possibile su mobile), non
+  // succedeva letteralmente nulla, nessun messaggio, nessun indizio.
+  lettore.onerror = () => {
+    console.error('[importaSalvataggio] FileReader error:', lettore.error);
+    mostraToast('⚠️ Impossibile leggere il file (errore di lettura).');
+  };
+  lettore.onabort = () => mostraToast('⚠️ Lettura del file interrotta.');
   lettore.onload = async () => {
     try {
       const dati = JSON.parse(lettore.result);
       if (!dati || typeof dati !== 'object' || !dati.posizione || !Array.isArray(dati.squadra)) {
+        console.warn('[importaSalvataggio] Validazione fallita, dati:', dati);
         mostraToast('⚠️ File non valido: non sembra un salvataggio di questo gioco.');
         return;
       }
@@ -5088,8 +5098,18 @@ function importaSalvataggio(file) {
       // ma una volta importato torna a essere cifrato come ogni salvataggio.
       const cifrato = await _criptaSalvataggio(JSON.stringify(dati));
       localStorage.setItem(CHIAVE_SALVATAGGIO, cifrato);
+      // Verifica di rilettura PRIMA di ricaricare: se per qualunque motivo
+      // la scrittura in localStorage non ha "preso" (quota piena, modalità
+      // privata con storage limitato…), l'utente lo sa SUBITO invece di
+      // vedere un reload che silenziosamente riparte da una partita vuota.
+      if (localStorage.getItem(CHIAVE_SALVATAGGIO) !== cifrato) {
+        mostraToast('⚠️ Il salvataggio non è stato scritto (spazio esaurito o modalità privata?).');
+        return;
+      }
+      console.log('[importaSalvataggio] Scritto in localStorage, ricarico…');
       location.reload();
     } catch (e) {
+      console.error('[importaSalvataggio] Errore:', e);
       mostraToast('⚠️ File non leggibile: deve essere un JSON esportato dal gioco.');
     }
   };

@@ -7818,6 +7818,15 @@ const GameMap = (function () {
         el.addEventListener('pointerdown', (e) => {
           dpadPointerId = e.pointerId;
           attiva(id, dx, dy);
+          // Sess. 1 ott 2026 (bug reale trovato: il trascinamento "smooth"
+          // non cambiava mai direzione): sui touch il browser dà per
+          // default la "cattura implicita" del puntatore al tasto su cui è
+          // iniziato il tocco — finché non viene rilasciata esplicitamente,
+          // TUTTI gli eventi (compreso pointerenter sugli altri tasti)
+          // continuano ad arrivare solo qui, anche se il dito scivola
+          // fisicamente su un altro tasto. Rilasciandola, il normale
+          // hit-test torna attivo e pointerenter scatta sul tasto giusto.
+          try { el.releasePointerCapture(e.pointerId); } catch (err) { /* non supportato: ignora */ }
         });
         el.addEventListener('pointerenter', (e) => {
           if (dpadPointerId !== null && e.pointerId === dpadPointerId) attiva(id, dx, dy);
@@ -10618,12 +10627,25 @@ const GameMap = (function () {
       bottone('📤 Esporta salvataggio (file JSON)', '#f0f0f0', () => esportaSalvataggio());
 
       bottone('📥 Importa salvataggio da file', '#f0f0f0', () => {
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = '.json,application/json';
-        input.addEventListener('change', () => {
-          if (input.files && input.files[0]) importaSalvataggio(input.files[0]);
-        });
+        // Sess. 1 ott 2026: stesso bug di js/app.js (input MAI aggiunto al
+        // DOM prima di cliccarlo — su mobile il selettore file spesso non
+        // si apre/non scatena "change" in modo affidabile). Questa è la
+        // copia nativa (SalvaScene), quella usata davvero in partita —
+        // l'altra (js/app.js, pannello legacy) era già stata corretta ma
+        // NON era quella che Luca stava effettivamente testando.
+        let input = document.getElementById('input-importa-salvataggio');
+        if (!input) {
+          input = document.createElement('input');
+          input.type = 'file';
+          input.id = 'input-importa-salvataggio';
+          input.accept = '.json,application/json';
+          input.style.display = 'none';
+          document.body.appendChild(input);
+          input.addEventListener('change', () => {
+            if (input.files && input.files[0]) importaSalvataggio(input.files[0]);
+            input.value = '';
+          });
+        }
         input.click();
       });
 
