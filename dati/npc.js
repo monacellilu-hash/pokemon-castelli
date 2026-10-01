@@ -283,6 +283,25 @@ const DATI_NPC = {
     azione: 'interagisciMercanteScambi',
   },
 
+  /* ── Stampino Centro Pokémon (tutte le città, sess. 1 ott 2026): id
+     condivisi per gli elementi sempre identici dello stampino. ── */
+  'npc_cantiere_scale_pokecenter': {
+    sprite: 'NPC 15', nome: 'Operaio', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il piano di sopra è ancora in ristrutturazione, torna più avanti!'],
+  },
+  'pokecenter cliente 1': {
+    sprite: 'NPC 02', nome: 'Visitatrice', direzione: 'sud', movimento: 'random',
+    dialogo: ['Sto aspettando che curino il mio Pokémon.'],
+  },
+  'pokecenter cliente 2': {
+    sprite: 'NPC 03', nome: 'Visitatore', direzione: 'sud', movimento: 'random',
+    dialogo: ['Qui al Centro Pokémon ci si riposa sempre bene.'],
+  },
+  'pokecenter cliente 3': {
+    sprite: 'NPC 04', nome: 'Visitatrice', direzione: 'sud', movimento: 'random',
+    dialogo: ['Di passaggio anche tu? Buon viaggio per i Castelli!'],
+  },
+
   /* ── Frascati Sud ── */
   'fra_sud_npc1': {
     sprite: 'NPC 01', nome: 'Anselmo', direzione: 'sud', movimento: 'random',
