@@ -147,7 +147,7 @@
     0
    ],
    "height": 10,
-   "id": 1,
+   "id": 6,
    "name": "ground",
    "opacity": 1,
    "type": "tilelayer",
@@ -300,7 +300,7 @@
     0
    ],
    "height": 10,
-   "id": 2,
+   "id": 7,
    "name": "deco_sotto",
    "opacity": 1,
    "type": "tilelayer",
@@ -453,8 +453,8 @@
     0
    ],
    "height": 10,
-   "id": 5,
-   "name": "sopra_testa",
+   "id": 8,
+   "name": "edifici",
    "opacity": 1,
    "type": "tilelayer",
    "visible": true,
@@ -1276,17 +1276,17 @@
  "tileheight": 32,
  "tilesets": [
   {
+   "columns": 16,
    "firstgid": 1,
    "image": "../PROVA_pokecenter_1f_tileset.png",
-   "imagewidth": 512,
    "imageheight": 352,
-   "columns": 16,
-   "tilecount": 164,
-   "tilewidth": 32,
-   "tileheight": 32,
-   "name": "PROVA_pokecenter_1f_tileset",
+   "imagewidth": 512,
    "margin": 0,
-   "spacing": 0
+   "name": "PROVA_pokecenter_1f_tileset",
+   "spacing": 0,
+   "tilecount": 176,
+   "tileheight": 32,
+   "tilewidth": 32
   }
  ],
  "tilewidth": 32,
