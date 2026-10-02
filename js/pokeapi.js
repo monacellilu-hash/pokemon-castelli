@@ -202,6 +202,13 @@ const PokeAPI = (function () {
       // --- Campi per gli effetti in battaglia (F: motore mosse) ---
       priorita: dati.priority || 0,    // >0 = colpisce prima (Attacco Rapido ecc.)
       bersaglio: dati.target ? dati.target.name : "selected-pokemon", // "user" = se stesso
+      // Categoria PokéAPI dell'effetto (es. "damage+raise" = Nitrocarica/
+      // Pugno Aumento: danneggia l'AVVERSARIO ma il cambio statistica è
+      // SEMPRE sull'utente, anche se "bersaglio" sopra dice "selected-pokemon"
+      // — "bersaglio" lì descrive solo il danno, non il cambiStat. Letto in
+      // battle.js/applicaCambiStat per decidere a chi va il cambio statistica
+      // (bug segnalato da Luca: Nitrocarica alzava la Velocità del nemico).
+      categoria: meta.category ? meta.category.name : null,
       // Effetto di stato inflitto (paralysis, sleep, poison, burn, freeze, confusion…)
       statoEffetto: (meta.ailment && meta.ailment.name && meta.ailment.name !== "none")
         ? meta.ailment.name : null,
@@ -238,7 +245,7 @@ const PokeAPI = (function () {
     const inCache = leggiCache("mossa_" + nome);
     if (inCache && inCache.priorita !== undefined && inCache.nomeEn !== undefined &&
         inCache.drain !== undefined && inCache.healing !== undefined &&
-        inCache.minColpi !== undefined) return inCache;
+        inCache.minColpi !== undefined && inCache.categoria !== undefined) return inCache;
 
     // 2) Fetch dall'API
     const indirizzo = url || `${BASE_URL}/move/${nome}`;

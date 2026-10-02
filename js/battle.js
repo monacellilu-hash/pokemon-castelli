@@ -1458,8 +1458,14 @@ const Battle = (function () {
 
   // Applica i cambi di statistica al bersaglio giusto (se stesso o avversario)
   async function applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif) {
-    // Le mosse con bersaglio "user" modificano CHI le usa (Crescita, Danza Spada…)
-    const versoSe = (mossa.bersaglio === 'user' || mossa.bersaglio === 'users-field');
+    // Le mosse con bersaglio "user" modificano CHI le usa (Crescita, Danza Spada…).
+    // Le mosse "damage+raise" (Nitrocarica, Pugno Aumento, Testasasso…)
+    // danneggiano l'AVVERSARIO (bersaglio="selected-pokemon" su PokéAPI) ma il
+    // cambio statistica è SEMPRE sull'utente — "bersaglio" lì descrive solo
+    // il danno, non il cambiStat. Senza questo controllo Nitrocarica alzava
+    // la Velocità del NEMICO invece che la propria (bug segnalato da Luca).
+    const versoSe = (mossa.bersaglio === 'user' || mossa.bersaglio === 'users-field' ||
+                     mossa.categoria === 'damage+raise');
     const obiettivo = versoSe ? att : dif;
     const etich = versoSe ? etichettaAtt : etichettaDif;
 
