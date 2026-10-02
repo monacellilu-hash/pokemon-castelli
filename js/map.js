@@ -2225,6 +2225,19 @@ const GameMap = (function () {
     create() {
       scena = this;
 
+      // Pulizia difensiva (segnalato da Luca, 2 ott 2026: il follower
+      // "sdoppiato" fino a 13 copie identiche lasciate indietro sull'erba).
+      // followerSprite è una variabile di modulo che prima non veniva MAI
+      // resettata né distrutta da nessuna parte: se questa create() gira di
+      // nuovo (scena ricreata) con un riferimento vecchio ancora valorizzato,
+      // "if (!followerSprite)" in _posizionaFollower lo considerava "già
+      // esistente" e non ne creava uno nuovo per la scena corrente, mentre
+      // lo sprite della scena precedente poteva restare visibile. Si
+      // riparte sempre da zero qui.
+      if (followerSprite) { try { followerSprite.destroy(); } catch (_) {} }
+      followerSprite = null;
+      followerSpecieId = null;
+
       // Il ciclo di camminata (4 frame) deve completarsi nel tempo di DUE
       // passi, non uno: come nell'originale Essentials (Game_Character.rb,
       // pattern_update_speed — "two frames are shown per movement across one
