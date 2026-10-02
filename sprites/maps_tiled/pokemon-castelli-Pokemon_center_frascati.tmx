@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="57">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="57">
  <tileset firstgid="1" name="PROVA_pokecenter_1f_tileset" tilewidth="32" tileheight="32" tilecount="176" columns="16">
   <image source="../PROVA_pokecenter_1f_tileset.png" width="512" height="352"/>
  </tileset>
@@ -14,20 +14,34 @@
 125,127,85,85,85,129,131,133,135,85,83,137,139,97,
 141,143,85,85,85,145,147,149,151,85,81,153,155,97,
 157,85,85,85,85,85,159,161,85,85,85,81,83,163,
-0,0,0,0,0,0,1,1,0,0,0,0,0,0
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="deco_sotto" width="14" height="10">
+ <layer id="5" name="deco_sotto" width="14" height="10">
   <data encoding="csv">
-2,4,6,8,10,10,10,12,14,10,16,18,20,22,
-24,26,28,30,32,34,36,38,40,42,44,46,48,50,
-52,54,56,58,60,62,64,0,68,70,72,74,76,78,
-80,82,84,86,88,90,90,0,90,94,96,86,86,98,
-80,86,86,86,100,102,104,106,108,110,112,86,86,98,
+0,0,6,8,10,10,10,0,0,10,16,0,0,0,
+24,0,0,0,0,0,0,0,0,0,44,0,0,50,
+52,0,0,0,0,0,0,66,0,0,0,74,76,78,
+80,0,0,86,0,0,0,0,0,0,96,86,86,98,
+80,86,86,86,0,102,104,106,108,110,112,86,86,98,
 114,116,86,86,86,118,120,122,124,86,86,86,86,98,
-126,128,86,86,86,130,132,134,136,86,84,138,140,98,
-142,144,86,86,86,146,148,150,152,86,82,154,156,98,
-158,86,86,86,86,86,160,162,86,86,86,82,84,164,
+0,128,86,86,86,130,132,134,136,86,0,0,0,98,
+0,144,86,86,86,146,148,150,152,86,0,0,0,98,
+158,86,86,86,86,86,0,0,86,86,86,0,0,164,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="edifici" width="14" height="10">
+  <data encoding="csv">
+2,4,0,0,0,0,0,12,14,0,0,18,20,22,
+0,26,28,30,32,34,36,38,40,42,0,46,48,0,
+0,54,56,58,60,62,64,0,68,70,72,0,0,0,
+0,82,84,0,88,90,90,92,90,94,0,0,0,0,
+0,0,0,0,100,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+126,0,0,0,0,0,0,0,0,0,84,138,140,0,
+142,0,0,0,0,0,0,0,0,0,82,154,156,0,
+0,0,0,0,0,0,160,162,0,0,0,82,84,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
@@ -79,14 +93,14 @@
   <object id="1045" x="416" y="256" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="4" name="eventi">
-  <object id="1" name="npc_joy" x="240.039" y="85.844">
+  <object id="1" name="npc_joy" x="239.789" y="83.3458">
    <properties>
     <property name="id" value="npc_joy"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
   </object>
-  <object id="54" name="pc_box" x="336.39" y="68.2999">
+  <object id="54" name="pc_box" x="336.39" y="65.8017">
    <properties>
     <property name="id" value="pc_box"/>
     <property name="type" value="pc"/>
@@ -120,7 +134,7 @@
    </properties>
    <point/>
   </object>
-  <object id="3" name="pokecenter cliente 2" x="43.7759" y="111.512">
+  <object id="3" name="pokecenter cliente 2" x="80" y="128">
    <properties>
     <property name="id" value="pokecenter cliente 2"/>
     <property name="nota_origine" value="OBJ_EVENT_GFX_EXPERT_M"/>
@@ -138,7 +152,7 @@
   </object>
   <object id="55" name="spawn" x="206.685" y="255.643" width="32" height="32">
    <properties>
-    <property name="id" value="da_borgata_tuscolana"/>
+    <property name="id" value="da_frascati_centro"/>
     <property name="type" value="spawn"/>
    </properties>
   </object>

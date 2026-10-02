@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="73">
+ <tileset firstgid="1" name="casa2_tileset" tilewidth="32" tileheight="32" tilecount="112" columns="16">
+  <image source="../casa2_tileset.png" width="512" height="224"/>
+ </tileset>
+ <tileset firstgid="113" source="../../outside.tsx"/>
+ <layer id="1" name="ground" width="17" height="10">
+  <data encoding="csv">
+1,3,5,1,1,7,1,9,1,11,13,1,1,7,7,1,1,
+15,17,19,21,21,23,21,25,21,27,29,21,21,23,23,21,21,
+31,33,35,37,37,37,37,37,37,39,29,37,37,41,43,37,37,
+45,47,47,47,47,47,47,47,47,47,29,45,49,51,53,55,47,
+45,47,57,59,61,55,47,47,47,47,29,45,47,63,65,65,65,
+45,49,67,69,71,47,47,47,47,47,73,45,47,75,77,77,77,
+45,47,47,47,47,47,47,47,47,47,79,45,47,81,83,85,87,
+45,47,47,47,47,47,47,47,47,47,89,91,47,93,95,97,99,
+45,47,47,47,47,101,103,47,47,47,47,47,47,47,47,47,47,
+0,0,0,0,0,113,113,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="2" name="edifici" width="17" height="10">
+  <data encoding="csv">
+2,4,6,2,2,8,2,10,2,12,14,2,2,8,8,2,2,
+16,18,20,22,22,24,22,26,22,28,30,22,22,24,24,22,22,
+32,34,36,38,38,38,38,38,38,40,30,38,38,42,44,38,38,
+46,48,48,48,48,48,48,48,48,48,30,46,50,52,54,56,48,
+46,48,58,60,62,56,48,48,48,48,30,46,48,64,66,66,66,
+46,50,68,70,72,48,48,48,48,48,74,46,48,76,78,78,78,
+46,48,48,48,48,48,48,48,48,48,80,46,48,82,84,86,88,
+46,48,48,48,48,48,48,48,48,48,90,92,48,94,96,98,100,
+46,48,48,48,48,102,104,48,48,48,48,48,48,48,48,48,48,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="3" name="collisioni">
+  <object id="1000" x="0" y="0" width="32" height="32"/>
+  <object id="1001" x="32" y="0" width="32" height="32"/>
+  <object id="1002" x="64" y="0" width="32" height="32"/>
+  <object id="1003" x="96" y="0" width="32" height="32"/>
+  <object id="1004" x="128" y="0" width="32" height="32"/>
+  <object id="1005" x="160" y="0" width="32" height="32"/>
+  <object id="1006" x="192" y="0" width="32" height="32"/>
+  <object id="1007" x="224" y="0" width="32" height="32"/>
+  <object id="1008" x="256" y="0" width="32" height="32"/>
+  <object id="1009" x="288" y="0" width="32" height="32"/>
+  <object id="1010" x="320" y="0" width="32" height="32"/>
+  <object id="1011" x="352" y="0" width="32" height="32"/>
+  <object id="1012" x="384" y="0" width="32" height="32"/>
+  <object id="1013" x="416" y="0" width="32" height="32"/>
+  <object id="1014" x="448" y="0" width="32" height="32"/>
+  <object id="1015" x="480" y="0" width="32" height="32"/>
+  <object id="1016" x="512" y="0" width="32" height="32"/>
+  <object id="1017" x="0" y="32" width="32" height="32"/>
+  <object id="1018" x="32" y="32" width="32" height="32"/>
+  <object id="1019" x="64" y="32" width="32" height="32"/>
+  <object id="1020" x="96" y="32" width="32" height="32"/>
+  <object id="1021" x="128" y="32" width="32" height="32"/>
+  <object id="1022" x="160" y="32" width="32" height="32"/>
+  <object id="1023" x="192" y="32" width="32" height="32"/>
+  <object id="1024" x="224" y="32" width="32" height="32"/>
+  <object id="1025" x="256" y="32" width="32" height="32"/>
+  <object id="1026" x="288" y="32" width="32" height="32"/>
+  <object id="1027" x="320" y="32" width="32" height="32"/>
+  <object id="1028" x="352" y="32" width="32" height="32"/>
+  <object id="1029" x="384" y="32" width="32" height="32"/>
+  <object id="1030" x="416" y="32" width="32" height="32"/>
+  <object id="1031" x="448" y="32" width="32" height="32"/>
+  <object id="1032" x="480" y="32" width="32" height="32"/>
+  <object id="1033" x="512" y="32" width="32" height="32"/>
+  <object id="1034" x="320" y="64" width="32" height="32"/>
+  <object id="1035" x="416" y="64" width="32" height="32"/>
+  <object id="1036" x="448" y="64" width="32" height="32"/>
+  <object id="1037" x="320" y="96" width="32" height="32"/>
+  <object id="1038" x="416" y="96" width="32" height="32"/>
+  <object id="1039" x="448" y="96" width="32" height="32"/>
+  <object id="1040" x="64" y="128" width="32" height="32"/>
+  <object id="1041" x="96" y="128" width="32" height="32"/>
+  <object id="1042" x="128" y="128" width="32" height="32"/>
+  <object id="1043" x="320" y="128" width="32" height="32"/>
+  <object id="1044" x="64" y="160" width="32" height="32"/>
+  <object id="1045" x="96" y="160" width="32" height="32"/>
+  <object id="1046" x="128" y="160" width="32" height="32"/>
+  <object id="1047" x="320" y="160" width="32" height="32"/>
+  <object id="1048" x="416" y="160" width="32" height="32"/>
+  <object id="1049" x="448" y="160" width="32" height="32"/>
+  <object id="1050" x="480" y="160" width="32" height="32"/>
+  <object id="1051" x="512" y="160" width="32" height="32"/>
+  <object id="1052" x="320" y="192" width="32" height="32"/>
+  <object id="1053" x="416" y="192" width="32" height="32"/>
+  <object id="1054" x="448" y="192" width="32" height="32"/>
+  <object id="1055" x="480" y="192" width="32" height="32"/>
+  <object id="1056" x="512" y="192" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="4" name="eventi">
+  <object id="1" name="npc_casa2_1" x="144" y="224">
+   <properties>
+    <property name="id" value="npc_casa2_1"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_GIRL_2"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" name="npc_casa2_2" x="48" y="192">
+   <properties>
+    <property name="id" value="npc_casa2_2"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_WOMAN_2"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="5" name="npc_casa2_5" x="176" y="96">
+   <properties>
+    <property name="id" value="npc_casa2_5"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_TWIN"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="6" name="npc_casa2_6" x="464" y="256">
+   <properties>
+    <property name="id" value="npc_casa2_6"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_LITTLE_BOY"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="7" name="npc_casa2_7" x="400" y="128">
+   <properties>
+    <property name="id" value="npc_casa2_7"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_SCHOOL_KID_M"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="71" name="warp" x="161.709" y="297.645" width="60.5816" height="19.636">
+   <properties>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="72" name="spawn" x="177.331" y="269.385" width="32" height="11.4469">
+   <properties>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="12" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="41">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="13" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="41">
  <tileset firstgid="1" source="../Tiled/Interior general.tsx"/>
  <tileset firstgid="8033" source="../professor Castagno.tsx"/>
  <tileset firstgid="8129" source="../../outside.tsx"/>
  <tileset firstgid="12145" source="../Tiled/Gyms interior.tsx"/>
  <tileset firstgid="13297" source="../outside.tsx"/>
- <layer id="1" name="ground" width="15" height="12">
+ <layer id="1" name="ground" width="15" height="13">
   <data encoding="csv">
 12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
 12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
@@ -18,10 +18,11 @@
 12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
 12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
 12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
-12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483
+12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,12483,
+0,0,0,0,0,0,0,8129,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="deco_sotto" width="15" height="12">
+ <layer id="2" name="deco_sotto" width="15" height="13">
   <data encoding="csv">
 12457,12458,12459,12459,12459,12460,12459,12459,12459,12460,12459,12459,12459,12460,12463,
 12465,12466,12467,12467,12467,12468,12467,12467,12467,12468,12467,12467,12467,12468,12465,
@@ -34,10 +35,11 @@
 12465,12482,13304,13304,12479,0,12493,12493,12493,0,0,13304,13304,0,12465,
 12473,12490,13312,13312,0,0,0,12493,0,0,0,13312,13312,0,12473,
 12481,12490,13304,13304,0,0,0,12493,0,0,0,13304,13304,0,12481,
-12489,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485
+12489,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,12485,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="3" name="edifici" width="15" height="12">
+ <layer id="3" name="edifici" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,12717,12718,12719,0,0,0,0,0,0,
@@ -50,10 +52,11 @@
 0,12464,0,0,0,0,0,0,0,0,0,0,0,12464,0,
 0,12472,0,0,0,13279,0,0,0,13279,0,0,0,12472,0,
 0,12480,0,0,0,13287,0,0,0,13287,0,0,0,12480,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="4" name="sopra_testa" width="15" height="12">
+ <layer id="4" name="sopra_testa" width="15" height="13">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -66,7 +69,8 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,12147,12148,12149,0,0,0,0,0,0
+0,0,0,0,0,0,12147,12148,12149,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
  <objectgroup id="5" name="collisioni">
@@ -108,7 +112,7 @@
    </properties>
    <point/>
   </object>
-  <object id="23" x="239.5" y="82">
+  <object id="23" x="239" y="83.5">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="gym_leader_palestra frascati"/>
@@ -116,14 +120,14 @@
    </properties>
    <point/>
   </object>
-  <object id="24" name="warp" type="warp" x="207" y="374.42" width="67" height="9">
+  <object id="24" name="warp" type="warp" x="226.042" y="386.087" width="27.4167" height="9">
    <properties>
     <property name="destinazione" value="frascati_centro"/>
     <property name="spawn_id" value="da_palestra_frascati"/>
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="28" name="spawn" type="spawn" x="222.658" y="352.08" width="32" height="16.5">
+  <object id="28" name="spawn" type="spawn" x="228.283" y="357.413" width="24" height="15">
    <properties>
     <property name="id" value="da_frascati centro"/>
     <property name="type" value="spawn"/>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="57">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="14" height="10" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="57">
  <tileset firstgid="1" name="PROVA_pokecenter_1f_tileset" tilewidth="32" tileheight="32" tilecount="176" columns="16">
-  <image source="../PROVA_pokecenter_1f_tileset.png" width="512" height="352"/>
+  <image source="PROVA_pokecenter_1f_tileset.png" width="512" height="352"/>
  </tileset>
  <layer id="1" name="ground" width="14" height="10">
   <data encoding="csv">
@@ -17,12 +17,12 @@
 0,0,0,0,0,0,1,1,0,0,0,0,0,0
 </data>
  </layer>
- <layer id="2" name="deco_sotto" width="14" height="10">
+ <layer id="2" name="sopra_testa" width="14" height="10">
   <data encoding="csv">
 2,4,6,8,10,10,10,12,14,10,16,18,20,22,
 24,26,28,30,32,34,36,38,40,42,44,46,48,50,
-52,54,56,58,60,62,64,0,68,70,72,74,76,78,
-80,82,84,86,88,90,90,0,90,94,96,86,86,98,
+52,54,56,58,60,62,64,66,68,70,72,74,76,78,
+80,82,84,86,88,90,90,92,90,94,96,86,86,98,
 80,86,86,86,100,102,104,106,108,110,112,86,86,98,
 114,116,86,86,86,118,120,122,124,86,86,86,86,98,
 126,128,86,86,86,130,132,134,136,86,84,138,140,98,
@@ -68,6 +68,7 @@
   <object id="1033" x="128" y="96" width="32" height="32"/>
   <object id="1034" x="160" y="96" width="32" height="32"/>
   <object id="1035" x="192" y="96" width="32" height="32"/>
+  <object id="1036" x="224" y="96" width="32" height="32"/>
   <object id="1037" x="256" y="96" width="32" height="32"/>
   <object id="1038" x="288" y="96" width="32" height="32"/>
   <object id="1039" x="0" y="192" width="32" height="32"/>
@@ -79,26 +80,36 @@
   <object id="1045" x="416" y="256" width="32" height="32"/>
  </objectgroup>
  <objectgroup id="4" name="eventi">
-  <object id="1" name="npc_joy" x="240.039" y="85.844">
+  <object id="1" name="INFERMIERA PER CURARE I POKEMON" x="239.789" y="83.3458">
    <properties>
-    <property name="id" value="npc_joy"/>
+    <property name="id" value="npc_PROVA_pokecenter_1f_1"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
   </object>
-  <object id="54" name="pc_box" x="336.39" y="68.2999">
+  <object id="2" name="npc_PROVA_pokecenter_1f_2" x="336" y="224">
    <properties>
-    <property name="id" value="pc_box"/>
-    <property name="type" value="pc"/>
+    <property name="id" value="npc_PROVA_pokecenter_1f_2"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_GIRL_3"/>
+    <property name="type" value="npc"/>
    </properties>
    <point/>
   </object>
-  <object id="7" name="npc_cantiere_scale" x="69.1189" y="198.538" width="17.6586" height="22.0876">
+  <object id="3" name="npc_PROVA_pokecenter_1f_3" x="80" y="128">
    <properties>
-    <property name="id" value="npc_cantiere_scale_pokecenter"/>
-    <property name="nota_origine" value="placeholder davanti alle scale per il 2F, zona in costruzione (richiesta di Luca, 1 ott 2026)"/>
+    <property name="id" value="npc_PROVA_pokecenter_1f_3"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_EXPERT_M"/>
     <property name="type" value="npc"/>
    </properties>
+   <point/>
+  </object>
+  <object id="4" name="npc_PROVA_pokecenter_1f_4" x="413.401" y="118.988">
+   <properties>
+    <property name="id" value="npc_PROVA_pokecenter_1f_4"/>
+    <property name="nota_origine" value="OBJ_EVENT_GFX_WOMAN_2"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
   </object>
   <object id="5" name="uscita_1" x="223.789" y="288.69" width="32" height="32">
    <properties>
@@ -108,38 +119,26 @@
   </object>
   <object id="6" name="uscita_2" x="191.789" y="288.69" width="32" height="32">
    <properties>
-    <property name="nota_origine" value="verso MAP_FALLARBOR_TOWN (da ricollegare a una tua mappa)"/>
+    <property name="nota_origine" value=")"/>
     <property name="type" value="uscita"/>
    </properties>
   </object>
-  <object id="2" name="pokecenter cliente 1" x="336" y="224">
+  <object id="7" name="npc_cantiere_scale" x="69.1189" y="198.538" width="17.6586" height="22.0876">
    <properties>
-    <property name="id" value="pokecenter cliente 1"/>
-    <property name="nota_origine" value="OBJ_EVENT_GFX_GIRL_3"/>
+    <property name="id" value="npc_cantiere_scale_pokecenter"/>
+    <property name="nota_origine" value="placeholder davanti alle scale per il 2F, zona in costruzione (richiesta di Luca, 1 ott 2026)"/>
     <property name="type" value="npc"/>
    </properties>
-   <point/>
   </object>
-  <object id="3" name="pokecenter cliente 2" x="43.7759" y="111.512">
+  <object id="54" x="336.39" y="65.8017">
    <properties>
-    <property name="id" value="pokecenter cliente 2"/>
-    <property name="nota_origine" value="OBJ_EVENT_GFX_EXPERT_M"/>
-    <property name="type" value="npc"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="4" name="pokecenter cliente 3" x="413.401" y="118.988">
-   <properties>
-    <property name="id" value="pokecenter cliente 3"/>
-    <property name="nota_origine" value="OBJ_EVENT_GFX_WOMAN_2"/>
-    <property name="type" value="npc"/>
+    <property name="id" value="box pokemon, interagisci con il pc"/>
    </properties>
    <point/>
   </object>
   <object id="55" name="spawn" x="206.685" y="255.643" width="32" height="32">
    <properties>
-    <property name="id" value="da_borgata_tuscolana"/>
-    <property name="type" value="spawn"/>
+    <property name="type" value="SPAWN"/>
    </properties>
   </object>
  </objectgroup>

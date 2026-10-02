@@ -1465,12 +1465,12 @@
                          "name":"id",
                          "type":"string",
                          "value":"all-bosco-19"
-                        },
+                        }, 
                         {
                          "name":"sprite",
                          "type":"string",
                          "value":"BUGCATCHER"
-                        },
+                        }, 
                         {
                          "name":"type",
                          "type":"string",
@@ -1793,7 +1793,7 @@
                         {
                          "name":"direzione",
                          "type":"string",
-                         "value":"NORD"
+                         "value":"sud"
                         }, 
                         {
                          "name":"id",
