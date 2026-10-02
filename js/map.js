@@ -136,6 +136,15 @@ const GameMap = (function () {
       interno: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
+    // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
+    // Lago di Albano, registrata da Luca ma mai aggiunta qui — il warp
+    // risultava "Zona non ancora disponibile".
+    'casa_sul_lago': {
+      file: 'sprites/maps_tiled/casa_sul_lago.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.7420, lonFissa: 12.6580,
+    },
     // ── Castel Gandolfo (4ª città area lago, vista Villa Pontificia) ──
     'castel_gandolfo': {
       file: 'sprites/maps_tiled/castel_gandolfo.tmj',
