@@ -910,12 +910,22 @@ const DONATORI_MN = [
     lat: 41.7420, lon: 12.6580,
     palestraRichiesta: 'monte-porzio',   // si sblocca sconfiggendo la palestra di Monte Porzio
     medaglieMin: 4,   // fallback documentativo, la vera condizione è palestraRichiesta
+    // Sess. 2 ott 2026 (richiesta di Luca): Nonna Assunta si è spostata
+    // dentro la casa sul lago, custodita dal nipote (trainer forte,
+    // id 'npc_casa_sul_lago_1' in dati/trainer.js) — finché non lo batti
+    // non ti fa nemmeno avvicinare alla nonna per il discorso della MN.
+    trainerRichiesto: 'npc_casa_sul_lago_1',
     dialogoPrima: [
       'Fijo, quella canna vale più de te. Ma prima fatti le ossa.',
       'Torna quando avrai battuto la palestra de Monte Porzio, e t\'imparo a nuotà.'
     ],
+    // Mostrato quando la palestra è già fatta ma il nipote non è ancora battuto.
+    dialogoPrimaNipote: [
+      'Fijo mio nipote te vole mette alla prova prima. È protettivo, embè!',
+      'Battilo e po\' torna da me, che t\'imparo a nuotà coi Pokémon.'
+    ],
     dialogoDono: [
-      'Bravo regazzino, m\'hai dato \'na mano! Come promesso, t\'imparo a nuotà coi Pokémon.',
+      'Bravo regazzino, hai pure convinto mio nipote! Come promesso, t\'imparo a nuotà coi Pokémon.',
       'Tieni la MN SURF!',
       'Mo\' puoi solcà il Lago Albano e il Lago di Nemi. Ma occhio a quello che dorme là sotto…'
     ],

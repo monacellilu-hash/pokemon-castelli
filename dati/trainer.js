@@ -456,6 +456,17 @@ const DATI_TRAINER = {
 
   /* ── LAGO DI ALBANO — spiaggia (6 allenatori, sprite da spiaggia) ──
      Piazzati al centro della mappa: l'utente li sposterà lungo la riva. */
+  // Il nipote di Nonna Assunta (dentro casa_sul_lago): la custodisce, va
+  // battuto prima che lei dia la MN Surf (DONATORI_MN 'mn-surf',
+  // trainerRichiesto, vedi js/data.js) - richiesta di Luca, 2 ott 2026.
+  'npc_casa_sul_lago_1': {
+    sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
+    classe: 'Pescatore', nome: 'Learco',
+    squadra: [{ id: 55, livello: 32 }, { id: 195, livello: 33 }],
+    dialogo_prima: 'Mia nonna non la disturbi finché non dimostri di saperci fare coi Pokémon!',
+    dialogo_dopo: 'Vabbè, dai. Vai pure da nonna, te la sei guadagnata.',
+    premio: 660,
+  },
   'all-lago-1': {
     sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 6,
     classe: 'Pescatore', nome: 'Nino',

@@ -179,8 +179,10 @@ const DATI_NPC = {
     azione: 'interagisciDonatoreVolo',
   },
 
-  // Nonna Assunta: dona la MN Surf dopo la vittoria sulla palestra di Monte Porzio
-  // (vedi DONATORI_MN in data.js, id 'mn-surf'). Piazzata al Lago di Albano.
+  // Nonna Assunta: dona la MN Surf dopo la vittoria sulla palestra di Monte
+  // Porzio E dopo aver battuto suo nipote (trainerRichiesto, vedi
+  // DONATORI_MN in data.js, id 'mn-surf'). Sess. 2 ott 2026: spostata
+  // dentro casa_sul_lago (prima era all'aperto al Lago di Albano).
   'mn-surf': {
     sprite: 'NPC 09', nome: 'Nonna Assunta', direzione: 'sud', movimento: 'fisso',
     dialogo: [],

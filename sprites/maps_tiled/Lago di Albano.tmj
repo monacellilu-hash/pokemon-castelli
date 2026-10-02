@@ -11047,46 +11047,6 @@
     },
     {
      "height": 0,
-     "id": 77,
-     "name": "nonna_assunta_surf",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "azione",
-       "type": "string",
-       "value": "interagisciDonatoreSurf"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
-      },
-      {
-       "name": "id",
-       "type": "string",
-       "value": "mn-surf"
-      },
-      {
-       "name": "sprite",
-       "type": "string",
-       "value": "NPC 09"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      }
-     ],
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 1349.70580296896,
-     "y": 976.145748987854
-    },
-    {
-     "height": 0,
      "id": 78,
      "name": "Nino",
      "opacity": 1,

@@ -2479,11 +2479,20 @@ async function _interagisciDonatoreTiled(idDonatore) {
     await mostraDialogo(d.nome, d.dialogoDopo);
     return;
   }
-  const pronto = d.palestraRichiesta
+  const medagliaOk = d.palestraRichiesta
     ? stato.medaglie.includes(d.palestraRichiesta)
     : stato.medaglie.length >= d.medaglieMin;
-  if (!pronto) {
+  if (!medagliaOk) {
     await mostraDialogo(d.nome, d.dialogoPrima);
+    return;
+  }
+  // Donatore "custodito" da un allenatore (es. Nonna Assunta/il nipote,
+  // MN Surf): medaglia giusta ma trainer non ancora battuto -> dialogo
+  // dedicato, niente MN.
+  const trainerOk = !d.trainerRichiesto ||
+    (stato.allenatoriBattuti && stato.allenatoriBattuti.includes(d.trainerRichiesto));
+  if (!trainerOk) {
+    await mostraDialogo(d.nome, d.dialogoPrimaNipote || d.dialogoPrima);
     return;
   }
 

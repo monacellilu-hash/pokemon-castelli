@@ -740,19 +740,29 @@
     {
      "height": 0,
      "id": 2,
-     "name": "npc_casa_sul_lago_2",
+     "name": "nonna_assunta_surf",
      "opacity": 1,
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "azione",
        "type": "string",
-       "value": "npc_casa_sul_lago_2"
+       "value": "interagisciDonatoreSurf"
       },
       {
-       "name": "nota_origine",
+       "name": "direzione",
        "type": "string",
-       "value": "OBJ_EVENT_GFX_GENTLEMAN"
+       "value": "sud"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "mn-surf"
+      },
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "NPC 09"
       },
       {
        "name": "type",
