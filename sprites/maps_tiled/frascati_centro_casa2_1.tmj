@@ -1234,7 +1234,7 @@
       {
        "name": "destinazione",
        "type": "string",
-       "value": "frascati_centro"
+       "value": "frascati_est"
       },
       {
        "name": "spawn_id",
