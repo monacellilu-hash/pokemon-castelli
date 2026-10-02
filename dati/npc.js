@@ -39,24 +39,15 @@ const DATI_NPC = {
       'Certo, sanno impennare coi motorini meglio che fare i compiti… ma simpatici!',
     ],
   },
+  // I due fratelli (i rivali veri) NON abitano più qui: stanno dal
+  // professore (richiesta di Luca, 2 ott 2026) — tolti da questa casa.
   'npc_casarivale_1f_mamma': {
     sprite: 'NPC 06', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['I miei due? Sempre a litigare, ma guai a chi li tocca — sono inseparabili.'],
+    dialogo: ['Qui non si impara a scuola.', 'Un bambino deve uscire e provvedere da solo, prima o poi.'],
   },
   'npc_casarivale_1f_papa': {
     sprite: 'NPC 05', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Fratello e sorella, nati a un anno di distanza. Si allenano sempre insieme.'],
-  },
-  // I due fratelli di casa: npc_casarivale_1f_7 (sprite RIVAL_BRENDAN della
-  // conversione originale) e npc_casarivale_1f_6 — nomi provvisori, Luca
-  // deciderà i nomi veri più avanti.
-  'npc_casarivale_1f_7': {
-    sprite: 'RIVALE_1', nome: 'Fratello', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Oggi niente allenamento, sto riposando. Ma presto ti sfido di nuovo!'],
-  },
-  'npc_casarivale_1f_6': {
-    sprite: 'NPC 03', nome: 'Sorella', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Mio fratello perde sempre tempo. Io mi alleno sul serio!'],
+    dialogo: ['I nostri due sono dal professore, a imparare sul serio.', 'Meglio il mondo vero di un libro.'],
   },
 
   /* ── Rocca di Papa (5ª città — Palestra Lotta, Baso) ──

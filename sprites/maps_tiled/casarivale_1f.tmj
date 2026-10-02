@@ -864,66 +864,6 @@
      "y": 193.325675548442
     },
     {
-     "height": 0,
-     "id": 6,
-     "name": "npc_casarivale_1f_6",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casarivale_1f_6"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_NINJA_BOY"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      }
-     ],
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 48,
-     "y": 192
-    },
-    {
-     "height": 0,
-     "id": 7,
-     "name": "npc_casarivale_1f_7",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casarivale_1f_7"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_RIVAL_BRENDAN_NORMAL"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      }
-     ],
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 272,
-     "y": 288
-    },
-    {
      "height": 32,
      "id": 8,
      "name": "warp",
