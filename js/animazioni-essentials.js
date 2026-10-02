@@ -369,7 +369,17 @@ const AnimazioniEssentials = (function () {
         ctx.save();
         ctx.translate(centro.x, centro.y);
         ctx.scale(scalaX, scalaY);
-        ctx.drawImage(img, 0, righeY[frame], d, d, -d / 2, -d / 2, d, d);
+        // Se l'immagine è "broken" (404/non caricata: caricaImmagineRom
+        // risolve comunque, vedi commento lì) drawImage lancia un'eccezione
+        // QUI DENTRO, in un callback requestAnimationFrame — un throw non
+        // catturato salta il resolve() sotto, e la Promise non si risolve
+        // mai: la mossa blocca il gioco per sempre (bug reale trovato con
+        // Rafforzatore/_giocaPotenziamentoRom, 2 ott 2026). Con prova/cattura
+        // qui, un'immagine mancante al massimo salta l'animazione invece di
+        // bloccare tutto.
+        try {
+          ctx.drawImage(img, 0, righeY[frame], d, d, -d / 2, -d / 2, d, d);
+        } catch (e) { /* immagine non disponibile: niente disegno, si continua */ }
         ctx.restore();
         if (t >= frameMs * righeY.length) { resolve(); return; }
         requestAnimationFrame(passo);
@@ -407,7 +417,17 @@ const AnimazioniEssentials = (function () {
   // Riusa _giocaTaglioRom passando lo stesso elemento come "attaccante" e
   // "bersaglio": l'overlay finisce su chi la usa, non sull'avversario.
   async function _giocaPotenziamentoRom(attaccanteEl, bersaglioEl) {
-    const { img, pronta } = caricaImmagineRom('focus_energy.png');
+    // Era 'focus_energy.png' (file mai esistito - il nome vero su disco è
+    // heal_sparkle.png): l'immagine 404-ava, caricaImmagineRom risolve lo
+    // stesso (onerror -> resolve), MA poi ctx.drawImage() su un'immagine
+    // "broken" lancia un'eccezione dentro il callback requestAnimationFrame
+    // di _giocaTaglioRom — un throw lì non viene mai catturato e salta il
+    // resolve(), quindi la Promise non si risolve MAI: la mossa si blocca
+    // per sempre a schermo. Bug reale, segnalato da Luca ("Rafforzatore di
+    // Metapod blocca il gioco") - colpiva tutte le mosse di questa categoria
+    // (Rafforzatore/Focus Energy/Danza Spada/Ringhio/Meditazione/Potenziamento/
+    // Forza Bruta/Danza Drago/Forza Cosmica), non solo Rafforzatore.
+    const { img, pronta } = caricaImmagineRom('heal_sparkle.png');
     await pronta;
     await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [16, 48, 80, 112], 16);
   }
