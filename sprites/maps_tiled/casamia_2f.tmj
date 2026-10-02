@@ -1,39 +1,9 @@
 {
  "compressionlevel": -1,
- "width": 9,
  "height": 8,
- "tilewidth": 32,
- "tileheight": 32,
  "infinite": false,
- "orientation": "orthogonal",
- "renderorder": "right-down",
- "type": "map",
- "version": "1.10",
- "tiledversion": "1.11.0",
- "nextlayerid": 4,
- "nextobjectid": 24,
- "tilesets": [
-  {
-   "firstgid": 1,
-   "image": "../casamia_2f_tileset.png",
-   "imagewidth": 512,
-   "imageheight": 192,
-   "columns": 16,
-   "tilecount": 88,
-   "tilewidth": 32,
-   "tileheight": 32,
-   "name": "casamia_2f_tileset",
-   "margin": 0,
-   "spacing": 0
-  }
- ],
  "layers": [
   {
-   "id": 1,
-   "name": "ground",
-   "type": "tilelayer",
-   "width": 9,
-   "height": 8,
    "data": [
     1,
     3,
@@ -108,17 +78,17 @@
     57,
     57
    ],
+   "height": 8,
+   "id": 1,
+   "name": "ground",
    "opacity": 1,
+   "type": "tilelayer",
    "visible": true,
+   "width": 9,
    "x": 0,
    "y": 0
   },
   {
-   "id": 5,
-   "name": "deco_sotto",
-   "type": "tilelayer",
-   "width": 9,
-   "height": 8,
    "data": [
     2,
     4,
@@ -193,17 +163,17 @@
     58,
     58
    ],
+   "height": 8,
+   "id": 5,
+   "name": "deco_sotto",
    "opacity": 1,
+   "type": "tilelayer",
    "visible": true,
+   "width": 9,
    "x": 0,
    "y": 0
   },
   {
-   "id": 2,
-   "name": "sopra_testa",
-   "type": "tilelayer",
-   "width": 9,
-   "height": 8,
    "data": [
     0,
     0,
@@ -278,322 +248,256 @@
     0,
     0
    ],
+   "height": 8,
+   "id": 2,
+   "name": "edifici",
    "opacity": 1,
+   "type": "tilelayer",
+   "visible": true,
+   "width": 9,
+   "x": 0,
+   "y": 0
+  },
+  {
+   "draworder": "topdown",
+   "id": 3,
+   "name": "collisioni",
+   "objects": [
+    {
+     "height": 32,
+     "id": 1000,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 0,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1001,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 32,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1002,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 64,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1003,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 96,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1004,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 128,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1005,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 160,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1006,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 192,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1007,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 224,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1008,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 256,
+     "y": 0
+    },
+    {
+     "height": 32,
+     "id": 1009,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 0,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1010,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 64,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1011,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 96,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1012,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 128,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1013,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 160,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1014,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 192,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1015,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 224,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1016,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 256,
+     "y": 32
+    },
+    {
+     "height": 32,
+     "id": 1017,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 224,
+     "y": 160
+    }
+   ],
+   "opacity": 1,
+   "type": "objectgroup",
    "visible": true,
    "x": 0,
    "y": 0
   },
   {
-   "id": 3,
-   "name": "collisioni",
-   "type": "objectgroup",
-   "opacity": 1,
-   "visible": true,
-   "x": 0,
-   "y": 0,
-   "objects": [
-    {
-     "id": 1000,
-     "name": "",
-     "type": "",
-     "x": 0,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1001,
-     "name": "",
-     "type": "",
-     "x": 32,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1002,
-     "name": "",
-     "type": "",
-     "x": 64,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1003,
-     "name": "",
-     "type": "",
-     "x": 96,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1004,
-     "name": "",
-     "type": "",
-     "x": 128,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1005,
-     "name": "",
-     "type": "",
-     "x": 160,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1006,
-     "name": "",
-     "type": "",
-     "x": 192,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1007,
-     "name": "",
-     "type": "",
-     "x": 224,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1008,
-     "name": "",
-     "type": "",
-     "x": 256,
-     "y": 0,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1009,
-     "name": "",
-     "type": "",
-     "x": 0,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1010,
-     "name": "",
-     "type": "",
-     "x": 64,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1011,
-     "name": "",
-     "type": "",
-     "x": 96,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1012,
-     "name": "",
-     "type": "",
-     "x": 128,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1013,
-     "name": "",
-     "type": "",
-     "x": 160,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1014,
-     "name": "",
-     "type": "",
-     "x": 192,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1015,
-     "name": "",
-     "type": "",
-     "x": 224,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1016,
-     "name": "",
-     "type": "",
-     "x": 256,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    },
-    {
-     "id": 1017,
-     "name": "",
-     "type": "",
-     "x": 224,
-     "y": 160,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": []
-    }
-   ]
-  },
-  {
+   "draworder": "topdown",
    "id": 4,
    "name": "eventi",
-   "type": "objectgroup",
-   "opacity": 1,
-   "visible": true,
-   "x": 0,
-   "y": 0,
    "objects": [
     {
-     "id": 1,
-     "name": "npc_casamia_2f_1",
-     "type": "",
-     "point": true,
-     "x": 48,
-     "y": 64,
-     "width": 0,
      "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      },
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casamia_2f_1"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_RIVAL_MAY_NORMAL"
-      }
-     ]
-    },
-    {
-     "id": 2,
-     "name": "npc_casamia_2f_14",
-     "type": "",
-     "point": true,
-     "x": 48,
-     "y": 64,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      },
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casamia_2f_14"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_MOM"
-      }
-     ]
-    },
-    {
      "id": 3,
      "name": "npc_casamia_2f_15",
-     "type": "",
+     "opacity": 1,
      "point": true,
-     "x": 112,
-     "y": 160,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
      "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      },
       {
        "name": "id",
        "type": "string",
@@ -603,26 +507,27 @@
        "name": "nota_origine",
        "type": "string",
        "value": "OBJ_EVENT_GFX_PICHU_DOLL"
-      }
-     ]
-    },
-    {
-     "id": 4,
-     "name": "npc_casamia_2f_16",
-     "type": "",
-     "point": true,
-     "x": 176,
-     "y": 160,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
        "value": "npc"
-      },
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 112,
+     "y": 160
+    },
+    {
+     "height": 0,
+     "id": 4,
+     "name": "npc_casamia_2f_16",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -632,33 +537,109 @@
        "name": "nota_origine",
        "type": "string",
        "value": "OBJ_EVENT_GFX_ITEM_BALL"
-      }
-     ]
-    },
-    {
-     "id": 5,
-     "name": "uscita_1",
-     "type": "",
-     "x": 32,
-     "y": 32,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "uscita"
-      },
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 176,
+     "y": 160
+    },
+    {
+     "height": 32,
+     "id": 5,
+     "name": "uscita_1",
+     "opacity": 1,
+     "properties": [
       {
        "name": "nota_origine",
        "type": "string",
        "value": "verso MAP_LITTLEROOT_TOWN_MAYS_HOUSE_1F (da ricollegare a una tua mappa)"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "casamia_1f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_casamia_2f"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 32,
+     "x": 32,
+     "y": 32
+    },
+    {
+     "id": 6,
+     "name": "spawn da casamia 1f",
+     "type": "",
+     "x": 32,
+     "y": 56,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_casamia_1f"
       }
      ]
     }
-   ]
+   ],
+   "opacity": 1,
+   "type": "objectgroup",
+   "visible": true,
+   "x": 0,
+   "y": 0
   }
- ]
+ ],
+ "nextlayerid": 4,
+ "nextobjectid": 24,
+ "orientation": "orthogonal",
+ "renderorder": "right-down",
+ "tiledversion": "1.12.2",
+ "tileheight": 32,
+ "tilesets": [
+  {
+   "columns": 16,
+   "firstgid": 1,
+   "image": "../casamia_2f_tileset.png",
+   "imageheight": 192,
+   "imagewidth": 512,
+   "margin": 0,
+   "name": "casamia_2f_tileset",
+   "spacing": 0,
+   "tilecount": 96,
+   "tileheight": 32,
+   "tilewidth": 32
+  }
+ ],
+ "tilewidth": 32,
+ "type": "map",
+ "version": "1.10",
+ "width": 9
 }

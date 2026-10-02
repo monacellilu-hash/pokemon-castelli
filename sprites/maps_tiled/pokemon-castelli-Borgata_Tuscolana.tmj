@@ -6963,8 +6963,8 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 750,
-     "y": 271.333
+     "x": 944.596381062546,
+     "y": 280.454705362307
     },
     {
      "height": 0,
@@ -6974,14 +6974,9 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "gate_borgata_nord_1"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
+       "value": "starterScelto"
       },
       {
        "name": "direzione",
@@ -6989,19 +6984,24 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
-       "type": "string",
-       "value": "starterScelto"
-      },
-      {
        "name": "gate",
        "type": "bool",
        "value": true
       },
       {
+       "name": "id",
+       "type": "string",
+       "value": "gate_borgata_nord_1"
+      },
+      {
        "name": "noTestBypass",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
       }
      ],
      "rotation": 0,
@@ -7019,14 +7019,9 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "gate_borgata_nord_2"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
+       "value": "starterScelto"
       },
       {
        "name": "direzione",
@@ -7034,19 +7029,24 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
-       "type": "string",
-       "value": "starterScelto"
-      },
-      {
        "name": "gate",
        "type": "bool",
        "value": true
       },
       {
+       "name": "id",
+       "type": "string",
+       "value": "gate_borgata_nord_2"
+      },
+      {
        "name": "noTestBypass",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
       }
      ],
      "rotation": 0,
@@ -7064,14 +7064,9 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "gate_borgata_nord_3"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
+       "value": "starterScelto"
       },
       {
        "name": "direzione",
@@ -7079,19 +7074,24 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
-       "type": "string",
-       "value": "starterScelto"
-      },
-      {
        "name": "gate",
        "type": "bool",
        "value": true
       },
       {
+       "name": "id",
+       "type": "string",
+       "value": "gate_borgata_nord_3"
+      },
+      {
        "name": "noTestBypass",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
       }
      ],
      "rotation": 0,
@@ -7109,14 +7109,9 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "gate_borgata_nord_4"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
+       "value": "starterScelto"
       },
       {
        "name": "direzione",
@@ -7124,19 +7119,24 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
-       "type": "string",
-       "value": "starterScelto"
-      },
-      {
        "name": "gate",
        "type": "bool",
        "value": true
       },
       {
+       "name": "id",
+       "type": "string",
+       "value": "gate_borgata_nord_4"
+      },
+      {
        "name": "noTestBypass",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
       }
      ],
      "rotation": 0,
@@ -7154,14 +7154,9 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "gate_borgata_nord_5"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
+       "value": "starterScelto"
       },
       {
        "name": "direzione",
@@ -7169,19 +7164,24 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
-       "type": "string",
-       "value": "starterScelto"
-      },
-      {
        "name": "gate",
        "type": "bool",
        "value": true
       },
       {
+       "name": "id",
+       "type": "string",
+       "value": "gate_borgata_nord_5"
+      },
+      {
        "name": "noTestBypass",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
       }
      ],
      "rotation": 0,
@@ -7190,6 +7190,112 @@
      "width": 0,
      "x": 1088,
      "y": 48
+    },
+    {
+     "height": 15.2028422705114,
+     "id": 65,
+     "name": "",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_casamia_1f"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 13.9866148888706,
+     "x": 745.547384945881,
+     "y": 256.623977526233
+    },
+    {
+     "height": 15.8109559613319,
+     "id": 66,
+     "name": "warp per casa mia",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "casamia_1f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_borgata_tuscolana"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 15.2028422705115,
+     "x": 745.547384945881,
+     "y": 222.569610840288
+    },
+    {
+     "height": 15.2028,
+     "id": 67,
+     "name": "",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_casarivale_1f"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 13.9866,
+     "x": 1195.24748044287,
+     "y": 261.79278169049
+    },
+    {
+     "height": 15.811,
+     "id": 68,
+     "name": "warp per casa rivale",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "casarivale_1f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_borgata_tuscolana"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 15.2028,
+     "x": 1195.24748044287,
+     "y": 227.73878169049
     }
    ],
    "opacity": 1,
@@ -7200,7 +7306,7 @@
   }
  ],
  "nextlayerid": 10,
- "nextobjectid": 65,
+ "nextobjectid": 69,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

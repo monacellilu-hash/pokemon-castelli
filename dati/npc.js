@@ -16,6 +16,49 @@ const SPRITE_CENCIARELS = 'Scenziato_donna';
 
 const DATI_NPC = {
 
+  /* ── Casa del giocatore e casa del/della rivale, Borgata Tuscolana
+     (sess. 2 ott 2026, richiesta di Luca) ── */
+  'npc_casamia_1f_1': {
+    sprite: 'NPC 02', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Ci siamo trasferiti qui a Via Gasperina da poco, ricordi?',
+      'È comoda vicino alla metro, e sta a metà strada tra il mio lavoro e quello di papà.',
+    ],
+  },
+  'npc_casamia_1f_5': {
+    sprite: 'NPC 01', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Allora, ti piace il quartiere nuovo?',
+      'Io dico di sì: tranquillo, ma non troppo. Giusto compromesso!',
+    ],
+  },
+  'npc_casamia_1f_4': {
+    sprite: 'NPC 04', nome: 'Vicina', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Vedrai che ti piacerà qui, ci sono un sacco di ragazzini gentili in giro.',
+      'Certo, sanno impennare coi motorini meglio che fare i compiti… ma simpatici!',
+    ],
+  },
+  'npc_casarivale_1f_mamma': {
+    sprite: 'NPC 06', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['I miei due? Sempre a litigare, ma guai a chi li tocca — sono inseparabili.'],
+  },
+  'npc_casarivale_1f_papa': {
+    sprite: 'NPC 05', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Fratello e sorella, nati a un anno di distanza. Si allenano sempre insieme.'],
+  },
+  // I due fratelli di casa: npc_casarivale_1f_7 (sprite RIVAL_BRENDAN della
+  // conversione originale) e npc_casarivale_1f_6 — nomi provvisori, Luca
+  // deciderà i nomi veri più avanti.
+  'npc_casarivale_1f_7': {
+    sprite: 'RIVALE_1', nome: 'Fratello', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Oggi niente allenamento, sto riposando. Ma presto ti sfido di nuovo!'],
+  },
+  'npc_casarivale_1f_6': {
+    sprite: 'NPC 03', nome: 'Sorella', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Mio fratello perde sempre tempo. Io mi alleno sul serio!'],
+  },
+
   /* ── Rocca di Papa (5ª città — Palestra Lotta, Baso) ──
      rocca_npc1: riferimento della cutscene "Baso è via" (sessione 8 agosto).
      Prima parte (npc1 nota il giocatore e lo raggiunge) è in

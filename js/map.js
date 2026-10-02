@@ -49,6 +49,32 @@ const GameMap = (function () {
       bloccaVuoti: true,
       latFissa: 41.8418, lonFissa: 12.6145,
     },
+    // Casa del giocatore e casa del/della rivale a Borgata Tuscolana (sess.
+    // 2 ott 2026): collegate da Luca ma mai registrate qui.
+    'casamia_1f': {
+      file: 'sprites/maps_tiled/casamia_1f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8420, lonFissa: 12.6150,
+    },
+    'casamia_2f': {
+      file: 'sprites/maps_tiled/casamia_2f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8420, lonFissa: 12.6150,
+    },
+    'casarivale_1f': {
+      file: 'sprites/maps_tiled/casarivale_1f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8420, lonFissa: 12.6150,
+    },
+    'casarivale_2f': {
+      file: 'sprites/maps_tiled/casarivale_2f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8420, lonFissa: 12.6150,
+    },
     // ── Frascati (nuove mappe a warp) ──
     'frascati_sud': {
       file: 'sprites/maps_tiled/frascati_sud.tmj',
