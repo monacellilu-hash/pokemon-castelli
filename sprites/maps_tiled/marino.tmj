@@ -21997,6 +21997,636 @@
      "width": 32,
      "x": 852.667,
      "y": 850.667
+    },
+    {
+     "id": 418,
+     "name": "warp_marino_casapiccola_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casapiccola_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casapiccola_1"
+      }
+     ]
+    },
+    {
+     "id": 419,
+     "name": "spawn_marino_casapiccola_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casapiccola_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casapiccola_1"
+      }
+     ]
+    },
+    {
+     "id": 420,
+     "name": "warp_marino_casapiccola_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 32,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casapiccola_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casapiccola_2"
+      }
+     ]
+    },
+    {
+     "id": 421,
+     "name": "spawn_marino_casapiccola_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 32,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casapiccola_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casapiccola_2"
+      }
+     ]
+    },
+    {
+     "id": 422,
+     "name": "warp_marino_casa2_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa2_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa2_1"
+      }
+     ]
+    },
+    {
+     "id": 423,
+     "name": "spawn_marino_casa2_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa2_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa2_1"
+      }
+     ]
+    },
+    {
+     "id": 424,
+     "name": "warp_marino_casa2_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 96,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa2_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa2_2"
+      }
+     ]
+    },
+    {
+     "id": 425,
+     "name": "spawn_marino_casa2_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 96,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa2_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa2_2"
+      }
+     ]
+    },
+    {
+     "id": 426,
+     "name": "warp_marino_casa2_3",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa2_3"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa2_3"
+      }
+     ]
+    },
+    {
+     "id": 427,
+     "name": "spawn_marino_casa2_3",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa2_3"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa2_3"
+      }
+     ]
+    },
+    {
+     "id": 428,
+     "name": "warp_marino_casa3_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 160,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa3_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa3_1"
+      }
+     ]
+    },
+    {
+     "id": 429,
+     "name": "spawn_marino_casa3_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 160,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa3_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa3_1"
+      }
+     ]
+    },
+    {
+     "id": 430,
+     "name": "warp_marino_casa3_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa3_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa3_2"
+      }
+     ]
+    },
+    {
+     "id": 431,
+     "name": "spawn_marino_casa3_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa3_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa3_2"
+      }
+     ]
+    },
+    {
+     "id": 432,
+     "name": "warp_marino_casa3_3",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 224,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa3_3"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa3_3"
+      }
+     ]
+    },
+    {
+     "id": 433,
+     "name": "spawn_marino_casa3_3",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 224,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa3_3"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa3_3"
+      }
+     ]
+    },
+    {
+     "id": 434,
+     "name": "warp_marino_casa4_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa4_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa4_1"
+      }
+     ]
+    },
+    {
+     "id": 435,
+     "name": "spawn_marino_casa4_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa4_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa4_1"
+      }
+     ]
+    },
+    {
+     "id": 436,
+     "name": "warp_marino_casa4_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "marino_casa4_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di marino_casa4_2"
+      }
+     ]
+    },
+    {
+     "id": 437,
+     "name": "spawn_marino_casa4_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_marino_casa4_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da marino_casa4_2"
+      }
+     ]
     }
    ],
    "opacity": 1,

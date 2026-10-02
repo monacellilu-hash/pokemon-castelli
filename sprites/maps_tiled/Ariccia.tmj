@@ -18695,6 +18695,321 @@
      "width": 32,
      "x": 1153.33333333333,
      "y": 476
+    },
+    {
+     "id": 113,
+     "name": "warp_ariccia_casapiccola_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "ariccia_casapiccola_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di ariccia_casapiccola_1"
+      }
+     ]
+    },
+    {
+     "id": 114,
+     "name": "spawn_ariccia_casapiccola_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_ariccia_casapiccola_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da ariccia_casapiccola_1"
+      }
+     ]
+    },
+    {
+     "id": 115,
+     "name": "warp_ariccia_casapiccola_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 32,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "ariccia_casapiccola_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di ariccia_casapiccola_2"
+      }
+     ]
+    },
+    {
+     "id": 116,
+     "name": "spawn_ariccia_casapiccola_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 32,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_ariccia_casapiccola_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da ariccia_casapiccola_2"
+      }
+     ]
+    },
+    {
+     "id": 117,
+     "name": "warp_ariccia_casapiccola_3",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "ariccia_casapiccola_3"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di ariccia_casapiccola_3"
+      }
+     ]
+    },
+    {
+     "id": 118,
+     "name": "spawn_ariccia_casapiccola_3",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_ariccia_casapiccola_3"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da ariccia_casapiccola_3"
+      }
+     ]
+    },
+    {
+     "id": 119,
+     "name": "warp_ariccia_casa3_1",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 96,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "ariccia_casa3_1"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di ariccia_casa3_1"
+      }
+     ]
+    },
+    {
+     "id": 120,
+     "name": "spawn_ariccia_casa3_1",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 96,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_ariccia_casa3_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da ariccia_casa3_1"
+      }
+     ]
+    },
+    {
+     "id": 121,
+     "name": "warp_ariccia_casa3_2",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "ariccia_casa3_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di ariccia_casa3_2"
+      }
+     ]
+    },
+    {
+     "id": 122,
+     "name": "spawn_ariccia_casa3_2",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_ariccia_casa3_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da ariccia_casa3_2"
+      }
+     ]
     }
    ],
    "opacity": 1,
