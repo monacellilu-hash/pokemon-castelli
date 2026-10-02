@@ -834,36 +834,6 @@
    "name": "eventi",
    "objects": [
     {
-     "height": 0,
-     "id": 3,
-     "name": "npc_casarivale_1f_3",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casarivale_1f_3"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_VIGOROTH_FACING_AWAY"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      }
-     ],
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 173.330571509274,
-     "y": 193.325675548442
-    },
-    {
      "height": 32,
      "id": 8,
      "name": "warp",

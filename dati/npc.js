@@ -18,35 +18,29 @@ const DATI_NPC = {
 
   /* ── Casa del giocatore e casa del/della rivale, Borgata Tuscolana
      (sess. 2 ott 2026, richiesta di Luca) ── */
+  // npc_casamia_1f_1 era "Mamma" (sess. 2 ott): Luca ha chiesto di
+  // trasformarla in "Sorella" e aggiungere una vera Mamma a parte (sprite
+  // Leader Misty) — vedi npc_casamia_1f_mamma sotto.
   'npc_casamia_1f_1': {
-    sprite: 'NPC 02', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
-    dialogo: [
-      'Ci siamo trasferiti qui a Via Gasperina da poco, ricordi?',
-      'È comoda vicino alla metro, e sta a metà strada tra il mio lavoro e quello di papà.',
-    ],
+    sprite: 'NPC 02', nome: 'Sorella', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ci siamo trasferiti qui a Via Gasperina da poco, lo sai no?', 'È comoda vicino alla metro.'],
+  },
+  'npc_casamia_1f_mamma': {
+    sprite: 'trainer_LEADER_Misty', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Allora, ti piace il quartiere nuovo?'],
   },
   'npc_casamia_1f_5': {
-    sprite: 'NPC 01', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
-    dialogo: [
-      'Allora, ti piace il quartiere nuovo?',
-      'Io dico di sì: tranquillo, ma non troppo. Giusto compromesso!',
-    ],
-  },
-  'npc_casamia_1f_4': {
-    sprite: 'NPC 04', nome: 'Vicina', direzione: 'sud', movimento: 'fisso',
-    dialogo: [
-      'Vedrai che ti piacerà qui, ci sono un sacco di ragazzini gentili in giro.',
-      'Certo, sanno impennare coi motorini meglio che fare i compiti… ma simpatici!',
-    ],
+    sprite: 'trainer_LEADER_Koga', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Io dico che va bene qui: tranquillo, ma non troppo. Giusto compromesso!'],
   },
   // I due fratelli (i rivali veri) NON abitano più qui: stanno dal
   // professore (richiesta di Luca, 2 ott 2026) — tolti da questa casa.
   'npc_casarivale_1f_mamma': {
-    sprite: 'NPC 06', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
+    sprite: 'trainer_PSYCHIC_F', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Qui non si impara a scuola.', 'Un bambino deve uscire e provvedere da solo, prima o poi.'],
   },
   'npc_casarivale_1f_papa': {
-    sprite: 'NPC 05', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
+    sprite: 'trainer_SAILOR', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
     dialogo: ['I nostri due sono dal professore, a imparare sul serio.', 'Meglio il mondo vero di un libro.'],
   },
 

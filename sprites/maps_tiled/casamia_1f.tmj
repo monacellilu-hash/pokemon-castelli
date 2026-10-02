@@ -865,36 +865,6 @@
     },
     {
      "height": 0,
-     "id": 4,
-     "name": "npc_casamia_1f_4",
-     "opacity": 1,
-     "point": true,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "npc_casamia_1f_4"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_WOMAN_4"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "npc"
-      }
-     ],
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 179.699839939742,
-     "y": 243.074663402693
-    },
-    {
-     "height": 0,
      "id": 5,
      "name": "npc_casamia_1f_5",
      "opacity": 1,
@@ -1048,6 +1018,30 @@
      "width": 17,
      "x": 55,
      "y": 259.5
+    },
+    {
+     "id": 50,
+     "name": "npc_casamia_1f_mamma",
+     "type": "",
+     "x": 179.699839939742,
+     "y": 243.074663402693,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "npc_casamia_1f_mamma"
+      }
+     ]
     }
    ],
    "opacity": 1,
