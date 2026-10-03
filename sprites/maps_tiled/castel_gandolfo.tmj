@@ -16456,8 +16456,8 @@
      "type": "spawn",
      "visible": true,
      "width": 32,
-     "x": 93.557,
-     "y": 803.019
+     "x": 188.223666666667,
+     "y": 701.685666666667
     },
     {
      "height": 32,
@@ -16734,6 +16734,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "npc_gigante_dormiente_gandolfo"
@@ -16742,41 +16747,31 @@
        "name": "type",
        "type": "string",
        "value": "npc"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 94,
-     "y": 771
+     "x": 496.666666666667,
+     "y": 720.333333333333
     },
     {
+     "height": 0,
      "id": 67,
      "name": "warp_castel_gandolfo_casa2_1",
-     "type": "",
+     "opacity": 1,
      "point": true,
-     "x": 0,
-     "y": 0,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
      "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
-      },
       {
        "name": "destinazione",
        "type": "string",
        "value": "castel_gandolfo_casa2_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_1"
       },
       {
        "name": "spawn_id",
@@ -16784,29 +16779,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_1"
-      }
-     ]
-    },
-    {
-     "id": 68,
-     "name": "spawn_castel_gandolfo_casa2_1",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 0,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 832,
+     "y": 0
+    },
+    {
+     "height": 0,
+     "id": 68,
+     "name": "spawn_castel_gandolfo_casa2_1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -16816,30 +16807,36 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da castel_gandolfo_casa2_1"
-      }
-     ]
-    },
-    {
-     "id": 69,
-     "name": "warp_castel_gandolfo_casa2_2",
-     "type": "",
-     "point": true,
-     "x": 0,
-     "y": 32,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "warp"
-      },
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 864,
+     "y": 0
+    },
+    {
+     "height": 0,
+     "id": 69,
+     "name": "warp_castel_gandolfo_casa2_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "destinazione",
        "type": "string",
        "value": "castel_gandolfo_casa2_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_2"
       },
       {
        "name": "spawn_id",
@@ -16847,29 +16844,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_2"
-      }
-     ]
-    },
-    {
-     "id": 70,
-     "name": "spawn_castel_gandolfo_casa2_2",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 32,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 832,
+     "y": 32
+    },
+    {
+     "height": 0,
+     "id": 70,
+     "name": "spawn_castel_gandolfo_casa2_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -16879,30 +16872,36 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da castel_gandolfo_casa2_2"
-      }
-     ]
-    },
-    {
-     "id": 71,
-     "name": "warp_castel_gandolfo_casa2_3",
-     "type": "",
-     "point": true,
-     "x": 0,
-     "y": 64,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "warp"
-      },
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 864,
+     "y": 32
+    },
+    {
+     "height": 0,
+     "id": 71,
+     "name": "warp_castel_gandolfo_casa2_3",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "destinazione",
        "type": "string",
        "value": "castel_gandolfo_casa2_3"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_3"
       },
       {
        "name": "spawn_id",
@@ -16910,29 +16909,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa2_3"
-      }
-     ]
-    },
-    {
-     "id": 72,
-     "name": "spawn_castel_gandolfo_casa2_3",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 64,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 832,
+     "y": 64
+    },
+    {
+     "height": 0,
+     "id": 72,
+     "name": "spawn_castel_gandolfo_casa2_3",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -16942,30 +16937,36 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da castel_gandolfo_casa2_3"
-      }
-     ]
-    },
-    {
-     "id": 73,
-     "name": "warp_castel_gandolfo_casa4_1",
-     "type": "",
-     "point": true,
-     "x": 0,
-     "y": 96,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "warp"
-      },
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 864,
+     "y": 64
+    },
+    {
+     "height": 0,
+     "id": 73,
+     "name": "warp_castel_gandolfo_casa4_1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "destinazione",
        "type": "string",
        "value": "castel_gandolfo_casa4_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa4_1"
       },
       {
        "name": "spawn_id",
@@ -16973,29 +16974,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di castel_gandolfo_casa4_1"
-      }
-     ]
-    },
-    {
-     "id": 74,
-     "name": "spawn_castel_gandolfo_casa4_1",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 96,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 832,
+     "y": 96
+    },
+    {
+     "height": 0,
+     "id": 74,
+     "name": "spawn_castel_gandolfo_casa4_1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -17005,8 +17002,19 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da castel_gandolfo_casa4_1"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 864,
+     "y": 96
     }
    ],
    "opacity": 1,

@@ -10074,7 +10074,7 @@
      "y": 258
     },
     {
-     "height": 55.3333333333333,
+     "height": 74.6666666666666,
      "id": 55,
      "name": "",
      "opacity": 1,
@@ -10098,7 +10098,7 @@
      "y": 309.333333333333
     },
     {
-     "height": 102.666666666667,
+     "height": 75.666666666667,
      "id": 57,
      "name": "",
      "opacity": 1,
@@ -10170,7 +10170,7 @@
      "y": 1178.66666666667
     },
     {
-     "height": 94.6666666666666,
+     "height": 65.6666666666665,
      "id": 63,
      "name": "",
      "opacity": 1,
@@ -10573,9 +10573,9 @@
      "rotation": 0,
      "type": "",
      "visible": true,
-     "width": 476,
-     "x": 6,
-     "y": 11
+     "width": 318,
+     "x": -1,
+     "y": 4.5
     },
     {
      "height": 88,
@@ -10681,8 +10681,8 @@
      "rotation": 0,
      "type": "",
      "visible": true,
-     "width": 476,
-     "x": 614,
+     "width": 413.333333333333,
+     "x": 676.666666666667,
      "y": 8.5
     },
     {
@@ -10756,6 +10756,114 @@
      "width": 76.6666666666667,
      "x": 1319,
      "y": 1002.33316666667
+    },
+    {
+     "height": 51.6667,
+     "id": 139,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 57,
+     "x": 575,
+     "y": 1226.16665
+    },
+    {
+     "height": 51.6667,
+     "id": 140,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 27,
+     "x": 516.5,
+     "y": 1225.16665
+    },
+    {
+     "height": 74.6667,
+     "id": 141,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 53,
+     "x": 511,
+     "y": 311.16665
+    },
+    {
+     "height": 74.6667,
+     "id": 142,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 25,
+     "x": 448.5,
+     "y": 304.66665
+    },
+    {
+     "height": 105,
+     "id": 143,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 148,
+     "x": 332,
+     "y": 23
+    },
+    {
+     "height": 105,
+     "id": 144,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 88,
+     "x": 385,
+     "y": 49
+    },
+    {
+     "height": 72,
+     "id": 145,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 22,
+     "x": 326,
+     "y": 89
+    },
+    {
+     "height": 103,
+     "id": 146,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 317.333,
+     "x": 613.3335,
+     "y": 17.5
+    },
+    {
+     "height": 103,
+     "id": 147,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 23.3330000000001,
+     "x": 614.000166666666,
+     "y": 54.5
     }
    ],
    "opacity": 1,
@@ -11099,8 +11207,8 @@
      "type": "npc",
      "visible": true,
      "width": 32,
-     "x": 514.93657219973,
-     "y": 388.620782726046
+     "x": 682.93657219973,
+     "y": 937.620782726046
     },
     {
      "height": 32,
@@ -11420,35 +11528,6 @@
     },
     {
      "height": 32,
-     "id": 31,
-     "name": "warp",
-     "opacity": 1,
-     "properties": [
-      {
-       "name": "destinazione",
-       "type": "string",
-       "value": "casa_grotta_2_interno"
-      },
-      {
-       "name": "spawn_id",
-       "type": "string",
-       "value": "entrata"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
-      }
-     ],
-     "rotation": 0,
-     "type": "warp",
-     "visible": true,
-     "width": 32,
-     "x": 542.696356275304,
-     "y": 1237.05533063428
-    },
-    {
-     "height": 32,
      "id": 32,
      "name": "warp",
      "opacity": 1,
@@ -11738,26 +11817,21 @@
      "y": 191
     },
     {
+     "height": 0,
      "id": 139,
      "name": "warp_grottaferrata_casa3_1",
-     "type": "",
+     "opacity": 1,
      "point": true,
-     "x": 0,
-     "y": 0,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
      "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
-      },
       {
        "name": "destinazione",
        "type": "string",
        "value": "grottaferrata_casa3_1"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di grottaferrata_casa3_1"
       },
       {
        "name": "spawn_id",
@@ -11765,29 +11839,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di grottaferrata_casa3_1"
-      }
-     ]
-    },
-    {
-     "id": 140,
-     "name": "spawn_grottaferrata_casa3_1",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 0,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 655.333333333333,
+     "y": 147.333333333333
+    },
+    {
+     "height": 0,
+     "id": 140,
+     "name": "spawn_grottaferrata_casa3_1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -11797,123 +11867,62 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da grottaferrata_casa3_1"
-      }
-     ]
-    },
-    {
-     "id": 141,
-     "name": "warp_grottaferrata_casa3_2",
-     "type": "",
-     "point": true,
-     "x": 0,
-     "y": 32,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
       },
-      {
-       "name": "destinazione",
-       "type": "string",
-       "value": "grottaferrata_casa3_2"
-      },
-      {
-       "name": "spawn_id",
-       "type": "string",
-       "value": "da_citta"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di grottaferrata_casa3_2"
-      }
-     ]
-    },
-    {
-     "id": 142,
-     "name": "spawn_grottaferrata_casa3_2",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 32,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
       {
        "name": "type",
        "type": "string",
        "value": "spawn"
-      },
-      {
-       "name": "id",
-       "type": "string",
-       "value": "da_grottaferrata_casa3_2"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - uscita da grottaferrata_casa3_2"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 656.666666666667,
+     "y": 176
     },
     {
+     "height": 0,
      "id": 143,
      "name": "warp_grottaferrata_casa4_1",
-     "type": "",
+     "opacity": 1,
      "point": true,
-     "x": 0,
-     "y": 64,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
      "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
-      },
       {
        "name": "destinazione",
        "type": "string",
        "value": "grottaferrata_casa4_1"
       },
       {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di grottaferrata_casa4_1"
+      },
+      {
        "name": "spawn_id",
        "type": "string",
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di grottaferrata_casa4_1"
-      }
-     ]
-    },
-    {
-     "id": 144,
-     "name": "spawn_grottaferrata_casa4_1",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 64,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 416,
+     "y": 416
+    },
+    {
+     "height": 0,
+     "id": 144,
+     "name": "spawn_grottaferrata_casa4_1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -11923,30 +11932,36 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da grottaferrata_casa4_1"
-      }
-     ]
-    },
-    {
-     "id": 145,
-     "name": "warp_grottaferrata_casa4_2",
-     "type": "",
-     "point": true,
-     "x": 0,
-     "y": 96,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "warp"
-      },
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 416,
+     "y": 448
+    },
+    {
+     "height": 0,
+     "id": 145,
+     "name": "warp_grottaferrata_casa4_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "destinazione",
        "type": "string",
        "value": "grottaferrata_casa4_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di grottaferrata_casa4_2"
       },
       {
        "name": "spawn_id",
@@ -11954,29 +11969,25 @@
        "value": "da_citta"
       },
       {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "placeholder, da riposizionare - porta di grottaferrata_casa4_2"
-      }
-     ]
-    },
-    {
-     "id": 146,
-     "name": "spawn_grottaferrata_casa4_2",
-     "type": "",
-     "point": true,
-     "x": 32,
-     "y": 96,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
        "name": "type",
        "type": "string",
-       "value": "spawn"
-      },
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 480,
+     "y": 0
+    },
+    {
+     "height": 0,
+     "id": 146,
+     "name": "spawn_grottaferrata_casa4_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
       {
        "name": "id",
        "type": "string",
@@ -11986,8 +11997,84 @@
        "name": "nota_origine",
        "type": "string",
        "value": "placeholder, da riposizionare - uscita da grottaferrata_casa4_2"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 512,
+     "y": 0
+    },
+    {
+     "height": 0,
+     "id": 148,
+     "name": "warp_grottaferrata_casa3_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "grottaferrata_casa3_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - porta di grottaferrata_casa3_2"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 366.5,
+     "y": 147
+    },
+    {
+     "height": 0,
+     "id": 149,
+     "name": "spawn_grottaferrata_casa3_2",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_grottaferrata_casa3_2"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - uscita da grottaferrata_casa3_2"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 368,
+     "y": 175.5
     }
    ],
    "opacity": 1,
@@ -11998,7 +12085,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 139,
+ "nextobjectid": 150,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
