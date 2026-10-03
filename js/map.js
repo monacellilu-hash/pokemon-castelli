@@ -1475,21 +1475,28 @@ const GameMap = (function () {
       }
     }
 
-    // Casella senza NESSUN tile sul layer "ground" (gid 0) = automaticamente
+    // Casella senza NESSUN tile su NESSUNO dei layer tile = automaticamente
     // solida, SEMPRE, per tutte le mappe (regola universale richiesta
     // esplicitamente da Luca, 1 ott 2026: "se non c'è tile = collisione,
-    // stop" — sostituisce il vecchio flag opt-in bloccaVuoti, che restava
-    // comunque letto/assegnato più sotto ma non cambia più nulla qui).
+    // stop" — sostituisce il vecchio flag opt-in bloccaVuoti).
+    // Controllava SOLO "ground" fino al 3 ott 2026: su Percorso 2 (e
+    // probabilmente altre mappe) il pavimento in alcuni punti è disegnato su
+    // "deco_sotto"/"edifici" mentre "ground" lì resta vuoto — risultato: muri
+    // invisibili, niente da vedere in Tiled ma bloccati in gioco (segnalato
+    // da Luca). Ora una cella è solida solo se TUTTI i layer tile sono vuoti
+    // lì, non solo "ground".
     // ATTENZIONE: questo rende solide le grandi aree vuote già note in
     // mappe esistenti che prima erano calpestabili senza un tile sotto
     // (es. la palestra di Monte Porzio, ~449/784 caselle vuote) — Luca è
     // stato avvisato esplicitamente, non è una svista silenziosa.
     {
-      const groundLayer = tmj.layers.find(l => l.name === 'ground' && l.type === 'tilelayer');
-      if (groundLayer && groundLayer.data) {
+      const tileLayers = tmj.layers.filter(l => l.type === 'tilelayer' && l.data);
+      if (tileLayers.length > 0) {
         for (let ty = 0; ty < h; ty++) {
           for (let tx = 0; tx < w; tx++) {
-            if (!groundLayer.data[ty * w + tx]) grid[ty][tx] = 1;
+            const idx = ty * w + tx;
+            const vuotaOvunque = tileLayers.every(l => !l.data[idx]);
+            if (vuotaOvunque) grid[ty][tx] = 1;
           }
         }
       }
