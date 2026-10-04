@@ -1133,6 +1133,15 @@ const GameMap = (function () {
   // Numero di fette effettivamente caricate per ogni tileset diviso (nome → N).
   const splitParts = {};
 
+  // Cache-busting per le immagini tileset (segnalato da Luca, 4 ott 2026:
+  // su mobile le mappe/tileset corretti sembravano "non funzionare mai" —
+  // Phaser carica queste immagini senza nessuna protezione dalla cache del
+  // browser. Aggiunta una query string ?v=... a ogni URL: cambiandola si
+  // forza il ricaricamento di TUTTI i tileset al prossimo commit, anche se
+  // il telefono ne aveva già una versione vecchia salvata. Da alzare a
+  // mano quando serve essere sicuri che un test veda i file freschi.
+  const CACHE_BUST = 'v=20261004';
+
   const TILESET_IMMAGINI = {
     // Questi 5 puntavano dentro "Essentials FRLG/" (cartella SOLO locale,
     // esclusa da git — vedi .gitignore): funzionavano su localhost ma
@@ -2159,7 +2168,7 @@ const GameMap = (function () {
 
     preload() {
       for (const [key, path] of Object.entries(TILESET_IMMAGINI)) {
-        this.load.image(key, path);
+        this.load.image(key, path + (path.includes('?') ? '&' : '?') + CACHE_BUST);
       }
       // Sprite del giocatore: base (player-red/player-girl-red) + varianti per
       // Corsa (tasto dedicato), Bicicletta e Surf (32×48, stessa griglia) e
@@ -2464,7 +2473,14 @@ const GameMap = (function () {
     // Carica UNA mappa (comportamento originale, invariato): mapW/mapH/collGrid/
     // eventiMappa descrivono solo quella mappa, in coordinate locali.
     async _caricaMappaSingola(chiave, def, arrivoX, arrivoY, spawnId, sourceKey) {
-      const resp = await fetch(def.file);
+      // cache:'no-store' (segnalato da Luca, 4 ott 2026: su mobile le
+      // correzioni alle mappe sembravano "non funzionare mai" - sospetto
+      // concreto, mai controllato prima: fetch() qui non aveva NESSUNA
+      // protezione dalla cache del browser, quindi poteva benissimo
+      // ricaricare sempre la versione vecchia di un .tmj già corretto su
+      // GitHub). Il file è piccolo (JSON), costa pochissimo riscaricarlo
+      // sempre fresco invece di rischiare di testare dati vecchi.
+      const resp = await fetch(def.file, { cache: 'no-store' });
       const tmj  = await resp.json();
 
       mapW      = tmj.width;
@@ -2607,7 +2623,7 @@ const GameMap = (function () {
       // Fetch di tutti i .tmj del cluster in parallelo.
       const tmjPerChiave = {};
       await Promise.all(chiavi.map(async k => {
-        const resp = await fetch(MAPPE[k].file);
+        const resp = await fetch(MAPPE[k].file, { cache: 'no-store' });  // vedi nota in _caricaMappaSingola
         tmjPerChiave[k] = await resp.json();
       }));
 
