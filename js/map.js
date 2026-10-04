@@ -589,10 +589,10 @@ const GameMap = (function () {
     },
     // ── Case 5-8 (ex ThreeIsland_House2/3/4/5 di FireRed, 5 ott 2026): come
     // casadoppia_luxury, Luca decide ancora dove piazzarle. ──
-    'casa5': { file: 'sprites/maps_tiled/casa5.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'casa6': { file: 'sprites/maps_tiled/casa6.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'casa7': { file: 'sprites/maps_tiled/casa7.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'casa8': { file: 'sprites/maps_tiled/casa8.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'casa5': { file: 'sprites/maps_tiled/casa5.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'casa6': { file: 'sprites/maps_tiled/casa6.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'casa7': { file: 'sprites/maps_tiled/casa7.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'casa8': { file: 'sprites/maps_tiled/casa8.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
     // ── Percorso Monte Porzio 1-3 (ex Route21_North/South/Route23 di
     // FireRed, 5 ott 2026): coordinate placeholder vicine a Monte Porzio,
     // Luca le posiziona/collega lui. Niente warp funzionanti ancora — le
@@ -606,20 +606,48 @@ const GameMap = (function () {
     // (l'ascensore originale era un meccanismo a menu non replicabile, si usa
     // solo la scala). Trainer su 3F e Roof, venditori 2F-5F. Luca decide
     // ancora in quale città piazzare l'ingresso. ──
-    'celadon_dept_1f':   { file: 'sprites/maps_tiled/celadon_dept_1f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_dept_2f':   { file: 'sprites/maps_tiled/celadon_dept_2f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_dept_3f':   { file: 'sprites/maps_tiled/celadon_dept_3f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_dept_4f':   { file: 'sprites/maps_tiled/celadon_dept_4f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_dept_5f':   { file: 'sprites/maps_tiled/celadon_dept_5f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_dept_roof': { file: 'sprites/maps_tiled/celadon_dept_roof.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_1f':   { file: 'sprites/maps_tiled/celadon_dept_1f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'celadon_dept_2f':   { file: 'sprites/maps_tiled/celadon_dept_2f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'celadon_dept_3f':   { file: 'sprites/maps_tiled/celadon_dept_3f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'celadon_dept_4f':   { file: 'sprites/maps_tiled/celadon_dept_4f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'celadon_dept_5f':   { file: 'sprites/maps_tiled/celadon_dept_5f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
+    'celadon_dept_roof': { file: 'sprites/maps_tiled/celadon_dept_roof.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7196, lonFissa: 12.6752 },
     // ── Condominio (ex CeladonCity_Condominiums di FireRed, 5 ott 2026): 5
     // piani (1F-3F+Roof+RoofRoom) collegati con scale dirette, solo NPC
     // random (nessun trainer/venditore). Luca decide ancora la città. ──
-    'celadon_condominio_1f':       { file: 'sprites/maps_tiled/celadon_condominio_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_condominio_2f':       { file: 'sprites/maps_tiled/celadon_condominio_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_condominio_3f':       { file: 'sprites/maps_tiled/celadon_condominio_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_condominio_roof':     { file: 'sprites/maps_tiled/celadon_condominio_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
-    'celadon_condominio_roofroom': { file: 'sprites/maps_tiled/celadon_condominio_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_condominio_1f':       { file: 'sprites/maps_tiled/celadon_condominio_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'celadon_condominio_2f':       { file: 'sprites/maps_tiled/celadon_condominio_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'celadon_condominio_3f':       { file: 'sprites/maps_tiled/celadon_condominio_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'celadon_condominio_roof':     { file: 'sprites/maps_tiled/celadon_condominio_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'celadon_condominio_roofroom': { file: 'sprites/maps_tiled/celadon_condominio_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    // ── Case popolate in Genzano e Albano (ex ThreeIsland/SaffronCity di
+    // FireRed, sess. 5 ott 2026, batch_case2.py): tileset condiviso coi
+    // template casa5/6/7/8/casadoppia_luxury, già registrati. ──
+    'genzano_casa7_1': { file: 'sprites/maps_tiled/genzano_casa7_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7057, lonFissa: 12.6864 },
+    'genzano_casa8_1': { file: 'sprites/maps_tiled/genzano_casa8_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7057, lonFissa: 12.6864 },
+    'albano_casadoppia_luxury_1': { file: 'sprites/maps_tiled/albano_casadoppia_luxury_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casadoppia_luxury_2': { file: 'sprites/maps_tiled/albano_casadoppia_luxury_2.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa7_1': { file: 'sprites/maps_tiled/albano_casa7_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa7_2': { file: 'sprites/maps_tiled/albano_casa7_2.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa7_3': { file: 'sprites/maps_tiled/albano_casa7_3.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa5_1': { file: 'sprites/maps_tiled/albano_casa5_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa5_2': { file: 'sprites/maps_tiled/albano_casa5_2.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa5_3': { file: 'sprites/maps_tiled/albano_casa5_3.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa6_1': { file: 'sprites/maps_tiled/albano_casa6_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa6_2': { file: 'sprites/maps_tiled/albano_casa6_2.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_casa6_3': { file: 'sprites/maps_tiled/albano_casa6_3.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    // ── Condominio × 2 in Albano (clonato da celadon_condominio_*, sess. 5
+    // ott 2026): stesso edificio, due istanze con NPC distinti. ──
+    'albano_condominio_a_1f':       { file: 'sprites/maps_tiled/albano_condominio_a_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_a_2f':       { file: 'sprites/maps_tiled/albano_condominio_a_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_a_3f':       { file: 'sprites/maps_tiled/albano_condominio_a_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_a_roof':     { file: 'sprites/maps_tiled/albano_condominio_a_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_a_roofroom': { file: 'sprites/maps_tiled/albano_condominio_a_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_b_1f':       { file: 'sprites/maps_tiled/albano_condominio_b_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_b_2f':       { file: 'sprites/maps_tiled/albano_condominio_b_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_b_3f':       { file: 'sprites/maps_tiled/albano_condominio_b_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_b_roof':     { file: 'sprites/maps_tiled/albano_condominio_b_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    'albano_condominio_b_roofroom': { file: 'sprites/maps_tiled/albano_condominio_b_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     // ── Centro Allevamento di Nemi (ex Route117_PokemonDayCare di Smeraldo,
     // 5 ott 2026): solo la mappa+NPC, la meccanica di allevamento/uova NON è
     // ancora implementata (fuori scope di questa sessione) — vedi dialogo
@@ -10969,7 +10997,7 @@ const GameMap = (function () {
 
     async _scegli(idx) {
       const oggetto = OGGETTI[this._chiave];
-      if (oggetto.categoria === 'pietra') {
+      if (oggetto.categoria === 'pietra' || oggetto.categoria === 'scambio') {
         // Vedi commento in testa alla classe: usciamo dal menu nativo PRIMA,
         // poi lasciamo che usaOggettoSu segua il suo flusso originale
         // (chiudiMenu DOM, che a quel punto non ha più nulla da chiudere, +

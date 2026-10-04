@@ -2999,19 +2999,33 @@ const OGGETTI = {
   pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 9500, icona: '☀️',
                descrizione: 'Fa evolvere Gloom→Bellossom e Sunkern→Sunflora.' },
 
-  // ── OGGETTI PER EVOLUZIONE DA SCAMBIO (categoria 'evo': si consegnano al mercante scambi) ──
-  rivestimetallo:    { nome: 'Rivestimetallo',    categoria: 'evo', prezzo: 3000, icona: '🛡️',
-               descrizione: 'Da scambiare col mercante: Onix→Steelix, Scyther→Scizor.' },
-  patroclo:          { nome: 'Patroclo',          categoria: 'evo', prezzo: 3000, icona: '👑',
-               descrizione: 'Da scambiare col mercante: Poliwhirl→Politoed, Slowpoke→Slowking.' },
-  squamadragone:     { nome: 'Squamadragone',     categoria: 'evo', prezzo: 3000, icona: '🐉',
-               descrizione: 'Da scambiare col mercante: Seadra→Kingdra.' },
-  dente_oscuro:      { nome: 'Dente Oscuro',      categoria: 'evo', prezzo: 3000, icona: '🦷',
-               descrizione: 'Da scambiare col mercante: Clamperl→Huntail.' },
-  conchigliamutante: { nome: 'Conchigliamutante', categoria: 'evo', prezzo: 3500, icona: '🐚',
-               descrizione: 'Da scambiare col mercante: Clamperl→Gorebyss.' },
-  upgrade:           { nome: 'Upgrade',           categoria: 'evo', prezzo: 3500, icona: '💾',
-               descrizione: 'Da scambiare col mercante: Porygon→Porygon2.' },
+  // ── OGGETTI DA TENERE PER EVOLUZIONE DA SCAMBIO (categoria 'held': il
+  // Pokémon deve TENERLI — Zaino→Oggetti — prima di poter evolvere tramite
+  // il Mercante degli Scambi O la Pietra Scambio, esattamente come nei
+  // giochi originali. Convertiti da 'evo' a 'held' il 5 ott 2026 su
+  // richiesta esplicita di Luca — prima si consegnavano direttamente dallo
+  // zaino, ora vanno equipaggiati al Pokémon.) ──
+  rivestimetallo:    { nome: 'Rivestimetallo',    categoria: 'held', prezzo: 3000, icona: '🛡️',
+               descrizione: 'Da tenere per evolvere con uno scambio: Onix→Steelix, Scyther→Scizor.' },
+  patroclo:          { nome: 'Patroclo',          categoria: 'held', prezzo: 3000, icona: '👑',
+               descrizione: 'Da tenere per evolvere con uno scambio: Poliwhirl→Politoed, Slowpoke→Slowking.' },
+  squamadragone:     { nome: 'Squamadragone',     categoria: 'held', prezzo: 3000, icona: '🐉',
+               descrizione: 'Da tenere per evolvere con uno scambio: Seadra→Kingdra.' },
+  dente_oscuro:      { nome: 'Dente Oscuro',      categoria: 'held', prezzo: 3000, icona: '🦷',
+               descrizione: 'Da tenere per evolvere con uno scambio: Clamperl→Huntail.' },
+  conchigliamutante: { nome: 'Conchigliamutante', categoria: 'held', prezzo: 3500, icona: '🐚',
+               descrizione: 'Da tenere per evolvere con uno scambio: Clamperl→Gorebyss.' },
+  upgrade:           { nome: 'Upgrade',           categoria: 'held', prezzo: 3500, icona: '💾',
+               descrizione: 'Da tenere per evolvere con uno scambio: Porygon→Porygon2.' },
+
+  // ── PIETRA SCAMBIO (categoria 'scambio', richiesta esplicita di Luca, 5
+  // ott 2026): sostituisce il bisogno di un vero scambio con un altro
+  // giocatore. Per Kadabra/Machoke/Graveler/Haunter basta usarla. Per
+  // Steelix/Scizor/Kingdra/Politoed/Slowking/Huntail/Gorebyss/Porygon2 il
+  // Pokémon deve PRIMA tenere l'oggetto giusto (vedi sopra), POI si usa la
+  // pietra — vedi usaOggettoSu() in app.js, categoria 'scambio'. ──
+  pietra_scambio: { nome: 'Pietra Scambio', categoria: 'scambio', prezzo: 10000, icona: '🔄',
+               descrizione: 'Fa evolvere un Pokémon che normalmente evolverebbe solo con uno scambio. Se serve anche un oggetto da tenere, il Pokémon deve già tenerlo.' },
 
   // ── MT (categoria 'mt': si usano su un Pokémon per insegnargli una mossa,
   //    si consumano all'uso — stile Gen 1-3, non riutilizzabili). Il campo
@@ -3344,11 +3358,12 @@ const POKE_MARKET = [
   { id: 'mk-dept-3f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['iperpozione', 'revitalizzante', 'elisir', 'repellente', 'massimorepellente'] },
   { id: 'mk-dept-4f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
-    merce: ['pietra_foglia', 'pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_luna'] },
+    merce: ['pietra_foglia', 'pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_luna',
+            'rivestimetallo', 'patroclo', 'squamadragone', 'dente_oscuro', 'conchigliamutante', 'upgrade'] },
   { id: 'mk-dept-5f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['ultraball', 'maxpozione', 'elisir', 'revitalizzante'] },
   { id: 'mk-dept-5f-rari', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
-    merce: ['rimasugli', 'amomoneta', 'carbonella', 'magnete'] },
+    merce: ['rimasugli', 'amomoneta', 'carbonella', 'magnete', 'pietra_scambio'] },
 
   // Erborista di Colonna (stesso negozio, secondo NPC — venditore speciale):
   // le 4 erbe medicinali di FireRed/LeafGreen (Essentials FRLG).

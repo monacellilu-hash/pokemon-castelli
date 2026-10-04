@@ -533,7 +533,7 @@ const DATI_NPC = {
   },
   'npc_dept_random_4': {
     sprite: 'NPC 10', nome: 'Cliente', direzione: 'sud', movimento: 'random',
-    dialogo: ['Ho sentito che al 5° piano vendono roba davvero rara.'],
+    dialogo: ['Dopo lo shopping vado dritto alla Zona Safari, qui vicino.'],
   },
   'npc_dept_random_5': {
     sprite: 'NPC 13', nome: 'Cliente', direzione: 'sud', movimento: 'random',
@@ -549,7 +549,7 @@ const DATI_NPC = {
   },
   'npc_dept_random_8': {
     sprite: 'NPC 12', nome: 'Cliente', direzione: 'sud', movimento: 'random',
-    dialogo: ['Sono salito fin qui solo per il reparto oggetti rari.'],
+    dialogo: ['Ho comprato le Safari Ball proprio qui, per andare nella Zona Safari.'],
   },
   'npc_dept_random_9': {
     sprite: 'NPC 14', nome: 'Cliente', direzione: 'sud', movimento: 'random',
@@ -614,6 +614,268 @@ const DATI_NPC = {
   'npc_nemi_daycare_nonna': {
     sprite: 'npc joy', nome: 'Nonna dell\'Asilo', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Qui un giorno potrai lasciarmi due Pokémon affinché facciano amicizia... ma per ora sto solo sistemando il recinto!'],
+  },
+
+  /* -- NPC delle case Genzano/Albano estratte da FireRed (sess. 5 ott
+     2026, batch_case2.py): un abitante per casa, chiacchiere locali. -- */
+  'npc_genzano_casa7_1_1': {
+    sprite: 'NPC 09', nome: 'Amedeo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ai miei tempi i Pokemon si allevavano con pazienza, mica con le app.'],
+  },
+  'npc_genzano_casa7_1_2': {
+    sprite: 'NPC 03', nome: 'Dino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Da grande voglio fare il Capopalestra!'],
+  },
+  'npc_genzano_casa8_1_1': {
+    sprite: 'NPC 04', nome: 'Rosina', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il mio gatto non va d accordo coi Pokemon di casa, che muso!'],
+  },
+  'npc_albano_casadoppia_luxury_1_1': {
+    sprite: 'NPC 05', nome: 'Samanta', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Mi sono iscritta al Fan Club, ci vediamo li di sicuro!'],
+  },
+  'npc_albano_casadoppia_luxury_1_2': {
+    sprite: 'NPC 04', nome: 'Marietto', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il mio gatto non va d accordo coi Pokemon di casa, che muso!'],
+  },
+  'npc_albano_casadoppia_luxury_1_3': {
+    sprite: 'NPC 06', nome: 'Il Barone', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Mi sono allenato tutta l estate, provami se vuoi!'],
+  },
+  'npc_albano_casadoppia_luxury_1_4': {
+    sprite: 'NPC 07', nome: 'Signora Pina', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Questa casa l ho fatta costruire io, bella eh?'],
+  },
+  'npc_albano_casadoppia_luxury_1_5': {
+    sprite: 'NPC 08', nome: 'Er Metallaro', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui ad Albano si mangia bene, provate le fraschette!'],
+  },
+  'npc_albano_casadoppia_luxury_1_6': {
+    sprite: 'NPC 10', nome: 'Donatella', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['La musica e i Pokemon di Roccia, una combinazione vincente.'],
+  },
+  'npc_albano_casadoppia_luxury_1_7': {
+    sprite: 'NPC 11', nome: 'Maestro Nazzareno', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Appena posso mi faccio un giro alla Zona Safari.'],
+  },
+  'npc_albano_casadoppia_luxury_1_8': {
+    sprite: 'NPC 12', nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['L allenamento non finisce mai, manco in casa.'],
+  },
+  'npc_albano_casadoppia_luxury_1_9': {
+    sprite: 'NPC 14', nome: 'Vicino di casa', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Se cerchi la Zona Safari, sta poco piu in la.'],
+  },
+  'npc_albano_casadoppia_luxury_1_10': {
+    sprite: 'NPC 14', nome: 'Jessica', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Se cerchi la Zona Safari, sta poco piu in la.'],
+  },
+  'npc_albano_casadoppia_luxury_2_1': {
+    sprite: 'NPC 05', nome: 'Carmelina', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Hai gia visto la Zona Safari? Dicono sia pazzesca.'],
+  },
+  'npc_albano_casadoppia_luxury_2_2': {
+    sprite: 'NPC 04', nome: 'Sandrino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Giochiamo a nascondino dietro quella siepe, vieni pure tu!'],
+  },
+  'npc_albano_casadoppia_luxury_2_3': {
+    sprite: 'NPC 06', nome: 'Don Learco', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Mi sono allenato tutta l estate, provami se vuoi!'],
+  },
+  'npc_albano_casadoppia_luxury_2_4': {
+    sprite: 'NPC 07', nome: 'Signora Elsa', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il comfort prima di tutto, caro il mio allenatore.'],
+  },
+  'npc_albano_casadoppia_luxury_2_5': {
+    sprite: 'NPC 08', nome: 'Robbo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui ad Albano si mangia bene, provate le fraschette!'],
+  },
+  'npc_albano_casadoppia_luxury_2_6': {
+    sprite: 'NPC 10', nome: 'Fiorella', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['La musica e i Pokemon di Roccia, una combinazione vincente.'],
+  },
+  'npc_albano_casadoppia_luxury_2_7': {
+    sprite: 'NPC 11', nome: 'Sensei Learco', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Appena posso mi faccio un giro alla Zona Safari.'],
+  },
+  'npc_albano_casadoppia_luxury_2_8': {
+    sprite: 'NPC 12', nome: 'Curiosone', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['L allenamento non finisce mai, manco in casa.'],
+  },
+  'npc_albano_casadoppia_luxury_2_9': {
+    sprite: 'NPC 14', nome: 'Fortunato', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Se cerchi la Zona Safari, sta poco piu in la.'],
+  },
+  'npc_albano_casadoppia_luxury_2_10': {
+    sprite: 'NPC 14', nome: 'Toto', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Se cerchi la Zona Safari, sta poco piu in la.'],
+  },
+  'npc_albano_casa7_1_1': {
+    sprite: 'NPC 09', nome: 'Remigio', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ai miei tempi i Pokemon si allevavano con pazienza, mica con le app.'],
+  },
+  'npc_albano_casa7_1_2': {
+    sprite: 'NPC 03', nome: 'Peppino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Da grande voglio fare il Capopalestra!'],
+  },
+  'npc_albano_casa7_2_1': {
+    sprite: 'NPC 09', nome: 'Sid', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui si vive bene, tranquillo e con una bella vista.'],
+  },
+  'npc_albano_casa7_2_2': {
+    sprite: 'NPC 03', nome: 'Sor Augusto', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Hai visto quanti turisti per la sagra?'],
+  },
+  'npc_albano_casa7_3_1': {
+    sprite: 'NPC 09', nome: 'Sor Italo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ai miei tempi i Pokemon si allevavano con pazienza, mica con le app.'],
+  },
+  'npc_albano_casa7_3_2': {
+    sprite: 'NPC 03', nome: 'Sor Learco', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Hai visto quanti turisti per la sagra?'],
+  },
+  'npc_albano_casa5_1_1': {
+    sprite: 'NPC 10', nome: 'Graziella', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho visto gente partire per la Zona Safari stamattina presto.'],
+  },
+  'npc_albano_casa5_1_2': {
+    sprite: 'NPC 13', nome: 'Lucilla', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['La Zona Safari attira gente da tutto il Lazio.'],
+  },
+  'npc_albano_casa5_2_1': {
+    sprite: 'NPC 10', nome: 'Morena', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['La musica e i Pokemon di Roccia, una combinazione vincente.'],
+  },
+  'npc_albano_casa5_2_2': {
+    sprite: 'NPC 13', nome: 'Lallo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['La Zona Safari attira gente da tutto il Lazio.'],
+  },
+  'npc_albano_casa5_3_1': {
+    sprite: 'NPC 10', nome: 'Cavalier Osvaldo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho visto gente partire per la Zona Safari stamattina presto.'],
+  },
+  'npc_albano_casa5_3_2': {
+    sprite: 'NPC 13', nome: 'Signora Iole', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Albano e cresciuta tanto dall anno scorso.'],
+  },
+  'npc_albano_casa6_1_1': {
+    sprite: 'NPC 11', nome: 'Maestro Attilio', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Appena posso mi faccio un giro alla Zona Safari.'],
+  },
+  'npc_albano_casa6_2_1': {
+    sprite: 'NPC 11', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Questa casa luxury e proprio bella, vero?'],
+  },
+  'npc_albano_casa6_3_1': {
+    sprite: 'NPC 11', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Questa casa luxury e proprio bella, vero?'],
+  },
+
+  /* -- NPC del Condominio x2 di Albano (clone di celadon_condominio,
+     sess. 5 ott 2026): parlano della Zona Safari come richiesto. -- */
+  'npc_albano_condominio_a_random_1': {
+    sprite: 'NPC 03', nome: 'Ferdinando', direzione: 'sud', movimento: 'random',
+    dialogo: ['Da quassu si vede benissimo il cancello della Zona Safari.'],
+  },
+  'npc_albano_condominio_a_random_2': {
+    sprite: 'NPC 04', nome: 'Wanda', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho sentito dire che nella Zona Safari ci sono Pokemon introvabili altrove.'],
+  },
+  'npc_albano_condominio_a_random_3': {
+    sprite: 'NPC 05', nome: 'Learco', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il mio vicino lavora come guida alla Zona Safari, un lavoro fantastico.'],
+  },
+  'npc_albano_condominio_a_random_4': {
+    sprite: 'NPC 06', nome: 'Palmira', direzione: 'sud', movimento: 'random',
+    dialogo: ['La sera si vedono le luci della Zona Safari da questa finestra.'],
+  },
+  'npc_albano_condominio_a_random_5': {
+    sprite: 'NPC 07', nome: 'Osvaldo', direzione: 'sud', movimento: 'random',
+    dialogo: ['Dicono che per entrare nella Zona Safari servano palline speciali.'],
+  },
+  'npc_albano_condominio_a_random_6': {
+    sprite: 'NPC 08', nome: 'Ines', direzione: 'sud', movimento: 'random',
+    dialogo: ['Albano e tranquilla, a parte il viavai per la Zona Safari.'],
+  },
+  'npc_albano_condominio_a_random_7': {
+    sprite: 'NPC 09', nome: 'Dario', direzione: 'sud', movimento: 'random',
+    dialogo: ['Da quassu si vede benissimo il cancello della Zona Safari.'],
+  },
+  'npc_albano_condominio_a_random_8': {
+    sprite: 'NPC 10', nome: 'Concetta', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho sentito dire che nella Zona Safari ci sono Pokemon introvabili altrove.'],
+  },
+  'npc_albano_condominio_a_random_9': {
+    sprite: 'NPC 11', nome: 'Aldo', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il mio vicino lavora come guida alla Zona Safari, un lavoro fantastico.'],
+  },
+  'npc_albano_condominio_a_random_10': {
+    sprite: 'NPC 12', nome: 'Pierina', direzione: 'sud', movimento: 'random',
+    dialogo: ['La sera si vedono le luci della Zona Safari da questa finestra.'],
+  },
+  'npc_albano_condominio_a_random_11': {
+    sprite: 'NPC 13', nome: 'Bruno', direzione: 'sud', movimento: 'random',
+    dialogo: ['Dicono che per entrare nella Zona Safari servano palline speciali.'],
+  },
+  'npc_albano_condominio_a_random_12': {
+    sprite: 'NPC 14', nome: 'Adele', direzione: 'sud', movimento: 'random',
+    dialogo: ['Albano e tranquilla, a parte il viavai per la Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_13': {
+    sprite: 'NPC 03', nome: 'Enzo', direzione: 'sud', movimento: 'random',
+    dialogo: ['Anche da questo palazzo si arriva a piedi alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_14': {
+    sprite: 'NPC 04', nome: 'Lina', direzione: 'sud', movimento: 'random',
+    dialogo: ['I turisti passano sempre di qui per andare alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_15': {
+    sprite: 'NPC 05', nome: 'Attilio', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho provato la Zona Safari la settimana scorsa, fantastica esperienza.'],
+  },
+  'npc_albano_condominio_b_random_16': {
+    sprite: 'NPC 06', nome: 'Rina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Qui in condominio parliamo spesso di chi ha preso i Pokemon piu rari alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_17': {
+    sprite: 'NPC 07', nome: 'Mario', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il custode dice che presto apriranno una nuova area della Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_18': {
+    sprite: 'NPC 08', nome: 'Ada', direzione: 'sud', movimento: 'random',
+    dialogo: ['Vivere qui vicino alla Zona Safari ha i suoi vantaggi.'],
+  },
+  'npc_albano_condominio_b_random_19': {
+    sprite: 'NPC 09', nome: 'Sergio', direzione: 'sud', movimento: 'random',
+    dialogo: ['Anche da questo palazzo si arriva a piedi alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_20': {
+    sprite: 'NPC 10', nome: 'Ida', direzione: 'sud', movimento: 'random',
+    dialogo: ['I turisti passano sempre di qui per andare alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_21': {
+    sprite: 'NPC 11', nome: 'Franco', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho provato la Zona Safari la settimana scorsa, fantastica esperienza.'],
+  },
+  'npc_albano_condominio_b_random_22': {
+    sprite: 'NPC 12', nome: 'Elvira', direzione: 'sud', movimento: 'random',
+    dialogo: ['Qui in condominio parliamo spesso di chi ha preso i Pokemon piu rari alla Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_23': {
+    sprite: 'NPC 13', nome: 'Guido', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il custode dice che presto apriranno una nuova area della Zona Safari.'],
+  },
+  'npc_albano_condominio_b_random_24': {
+    sprite: 'NPC 14', nome: 'Maria', direzione: 'sud', movimento: 'random',
+    dialogo: ['Vivere qui vicino alla Zona Safari ha i suoi vantaggi.'],
+  },
+
+  /* -- Scienziato del Laboratorio Rianimazione Fossili di Genzano (sess. 5
+     ott 2026): consegna un fossile + 5000, aspetta un giorno, il Pokemon
+     arriva direttamente nel Box. Vedi interagisciRianimaFossiliGenzano. -- */
+  'npc_rianima_fossili_genzano': {
+    sprite: 'scienziato', nome: 'Scienziato', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciRianimaFossiliGenzano',
   },
 
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in

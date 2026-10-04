@@ -2748,10 +2748,12 @@ const DATI_TRAINER = {
   // presto, questi 4 allenatori quindi NON possono essere al livello di
   // Monte Porzio). all-p11-4/6 restano invece al livello "vero" (oltre il
   // cancello, lato Rocca di Papa) — vedi sotto.
+  // Livelli alzati al tier "tra 1ª e 2ª palestra" (cap14-21) su richiesta
+  // esplicita di Luca (5 ott 2026): erano rimasti al tier cap14 (pre-1ª).
   'all-p11-1': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Escursionista', nome: 'Aldo',
-    squadra: [ { id: 74, livello: 13 }, { id: 66, livello: 14 } ],
+    squadra: [ { id: 74, livello: 17 }, { id: 66, livello: 18 } ],
     dialogo_prima: 'Sto sentiero porta su, verso Rocca di Papa. Occhio ar fiato!',
     dialogo_dopo: 'Eh, mo\' me sò stancato pure de perde\'.',
     premio: 540,
@@ -2759,7 +2761,7 @@ const DATI_TRAINER = {
   'all-p11-2': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Scalatore', nome: 'Nazzareno',
-    squadra: [ { id: 95, livello: 13 }, { id: 75, livello: 14 } ],
+    squadra: [ { id: 95, livello: 17 }, { id: 75, livello: 18 } ],
     dialogo_prima: 'Sti Pokémon de roccia so\' cresciuti tra sti sassi, mica pe\' gioco!',
     dialogo_dopo: 'Duri come er Monte Cavo, ma stavolta hai vinto tu.',
     premio: 560,
@@ -2770,17 +2772,18 @@ const DATI_TRAINER = {
   'all-p11-3': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
     classe: 'Campeggiatore', nome: 'Ottaviano',
-    squadra: [ { id: 231, livello: 13 }, { id: 111, livello: 14 } ],
+    squadra: [ { id: 231, livello: 18 }, { id: 111, livello: 19 } ],
     dialogo_prima: 'Sto campeggiando qui da giorni. Vediamo se i miei Pokémon sono arrugginiti.',
     dialogo_dopo: 'Bella lotta, torno alla tenda.',
     premio: 550,
   },
   // all-p11-4: lato LONTANO (oltre il cancello_medaglia, verso Rocca di
-  // Papa) — resta al livello di Monte Porzio, invariato.
+  // Papa) — livello alzato al tier "tra 4ª e 5ª palestra" (cap34-40),
+  // richiesta esplicita di Luca (5 ott 2026).
   'all-p11-4': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
     classe: 'Escursionista', nome: 'Girolamo',
-    squadra: [ { id: 74, livello: 32 }, { id: 111, livello: 33 } ],
+    squadra: [ { id: 74, livello: 36 }, { id: 111, livello: 37 } ],
     dialogo_prima: 'Il sentiero verso Monte Cavo è ripido. Sei sicuro di essere pronto?',
     dialogo_dopo: 'Ok, ok. Sei forte quanto la montagna.',
     premio: 650,
@@ -2788,7 +2791,7 @@ const DATI_TRAINER = {
   'all-p11-5': {
     sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 5,
     classe: 'Escursionista', nome: 'Genoveffa',
-    squadra: [ { id: 187, livello: 13 }, { id: 209, livello: 14 } ],
+    squadra: [ { id: 187, livello: 18 }, { id: 209, livello: 19 } ],
     dialogo_prima: 'Facevo un picnic tranquillo... ma una sfida non si rifiuta mai!',
     dialogo_dopo: 'Che peccato, si era freddato pure il panino.',
     premio: 540,

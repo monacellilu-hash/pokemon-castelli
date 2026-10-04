@@ -19010,6 +19010,64 @@
        "value": "placeholder, da riposizionare - uscita da ariccia_casa3_2"
       }
      ]
+    },
+    {
+     "id": 123,
+     "name": "warp_grande_magazzino",
+     "type": "",
+     "point": true,
+     "x": 0,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "celadon_dept_1f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - ingresso Grande Magazzino"
+      }
+     ]
+    },
+    {
+     "id": 124,
+     "name": "spawn_da_dept_1f",
+     "type": "",
+     "point": true,
+     "x": 32,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_dept_1f"
+      }
+     ]
     }
    ],
    "opacity": 1,

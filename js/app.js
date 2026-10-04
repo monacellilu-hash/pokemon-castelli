@@ -141,6 +141,9 @@ let stato = {
   // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati + passi insieme + uovo pronto da ritirare
   pensione: { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false },
   pokedex:  {}, // { [id]: { visto, catturato, nome, spriteFronte } } — registro Pokédex
+  // Laboratorio Rianimazione Fossili di Genzano (5 ott 2026): null finché non
+  // si consegna un fossile, poi { fossile, idPokemon, giornoPronto }.
+  fossileRianimazione: null,
 };
 
 // ── Salvataggio / caricamento ────────────────────────────────
@@ -229,6 +232,8 @@ async function caricaPartita() {
       if (!stato.inventario.chiave || typeof stato.inventario.chiave !== 'object') stato.inventario.chiave = {};
       // Migrazione: Pokédex (visti/catturati) e Opzioni (sess. 5 set 2026)
       if (!stato.pokedex || typeof stato.pokedex !== 'object') stato.pokedex = {};
+      // Migrazione: Laboratorio Rianimazione Fossili di Genzano (5 ott 2026)
+      if (stato.fossileRianimazione === undefined) stato.fossileRianimazione = null;
       if (!stato.opzioni || typeof stato.opzioni !== 'object') stato.opzioni = {};
       if (stato.opzioni.velocitaTesto === undefined) stato.opzioni.velocitaTesto = 'normale';
       if (stato.opzioni.animazioniBattaglia === undefined) stato.opzioni.animazioniBattaglia = true;
@@ -249,6 +254,28 @@ async function caricaPartita() {
           p.genere = Battle.generaGenere(p.id);
         }
       });
+      // Migrazione: mosse salvate PRIMA dell'aggiunta del campo "categoria"
+      // (riduciMossa() in pokeapi.js) restano bloccate per sempre col bug
+      // "Nitrocarica alza la velocità dell'avversario invece che la mia" —
+      // applicaCambiStat() in battle.js legge mossa.categoria per sapere su
+      // chi applicare il cambio di statistica, ma l'oggetto mossa salvato
+      // nel JSON non ce l'ha. Ripeschiamo in background (senza bloccare
+      // l'avvio) la categoria mancante da PokeAPI e la fondiamo nei dati
+      // salvati. Segnalato da Luca, 5 ott 2026.
+      (async () => {
+        if (typeof PokeAPI === 'undefined' || !PokeAPI.getMossa) return;
+        const tutti = [...(stato.squadra || []), ...tuttiIBoxFlat()];
+        for (const p of tutti) {
+          if (!p || !Array.isArray(p.mosse)) continue;
+          for (const m of p.mosse) {
+            if (!m || m.categoria !== undefined || !m.nome) continue;
+            try {
+              const dettagli = await PokeAPI.getMossa(m.nome);
+              if (dettagli && dettagli.categoria !== undefined) m.categoria = dettagli.categoria;
+            } catch (e) { /* offline o mossa non trovata: si ritenta al prossimo avvio */ }
+          }
+        }
+      })();
       // Migrazione Box PC: vecchio Box unico e piatto → 24 box da 30 slot.
       // Riempie i box in ordine, 30 Pokémon per box, mantenendo l'ordine originale.
       // NB: controlliamo il salvataggio grezzo (`salvato.boxes`), non
@@ -1472,21 +1499,23 @@ function trovaEvoluzioneScambio(idPkm) {
 }
 
 /* Mercante degli scambi (NPC nei Centri Pokémon da Marino in poi).
-   Aggancia un NPC Tiled con azione:'interagisciMercanteScambi'. Per semplicità
-   l'oggetto richiesto si verifica nello ZAINO (non "tenuto" dal Pokémon). */
+   Aggancia un NPC Tiled con azione:'interagisciMercanteScambi'. L'oggetto
+   richiesto (se c'è) va TENUTO dal Pokémon (pkm.oggetto), non nello zaino —
+   stessa regola della Pietra Scambio (usaOggettoSu, categoria 'scambio'),
+   allineate il 5 ott 2026 su richiesta esplicita di Luca. */
 async function interagisciMercanteScambi() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const nome = 'Mercante degli Scambi';
 
-  // Candidati: Pokémon in squadra che evolvono per scambio e (oggetto nello zaino o scambio semplice)
+  // Candidati: Pokémon in squadra che evolvono per scambio e (lo tengono già o scambio semplice)
   const candidati = stato.squadra
     .map((pkm, idx) => ({ pkm, idx, evo: trovaEvoluzioneScambio(pkm.id) }))
-    .filter(c => c.evo && (c.evo.valore === null || (stato.zaino[c.evo.valore] || 0) > 0));
+    .filter(c => c.evo && (c.evo.valore === null || c.pkm.oggetto === c.evo.valore));
 
   if (candidati.length === 0) {
     await mostraDialogo(nome, [
       'Vuoi scambiare un Pokémon? Ti offro una buona squadra!',
-      'Al momento nessuno dei tuoi Pokémon può evolvere con uno scambio (serve anche l\'oggetto giusto, se richiesto).'
+      'Al momento nessuno dei tuoi Pokémon può evolvere con uno scambio (se serve un oggetto, deve già tenerlo).'
     ]);
     return;
   }
@@ -1494,20 +1523,94 @@ async function interagisciMercanteScambi() {
   // Propone il primo candidato (MVP). Si può estendere a una lista completa.
   const c = candidati[0];
   const oggReq = c.evo.valore ? OGGETTI[c.evo.valore] : null;
-  const nomeEvo = (typeof NOMI_POKEMON !== 'undefined' && NOMI_POKEMON[c.evo.idEvo]) || `n.${c.evo.idEvo}`;
   const scelta = await mostraScelta(
-    `Il tuo ${c.pkm.nome} può evolversi con uno scambio${oggReq ? ' (serve ' + oggReq.nome + ')' : ''}. Procedo?`,
+    `Il tuo ${c.pkm.nome} può evolversi con uno scambio${oggReq ? ' (tiene già ' + oggReq.nome + ')' : ''}. Procedo?`,
     'Sì, scambia', 'No, lascia'
   );
   if (scelta !== 1) {
     await mostraDialogo(nome, ['Va bene, torna quando vuoi!']);
     return;
   }
-  if (c.evo.valore) {                       // consuma l'oggetto richiesto
-    stato.zaino[c.evo.valore] -= 1;
-    if ((stato.zaino[c.evo.valore] || 0) <= 0) delete stato.zaino[c.evo.valore];
-  }
   await avviaEvoluzione(c.pkm, c.evo.idEvo);
+}
+
+/* ── Laboratorio Rianimazione Fossili di Genzano (5 ott 2026) ──
+   NPC 'npc_rianima_fossili_genzano' (genzano_laboratorio_ricerca.tmj).
+   Consegni un fossile + 5000¥, torni il giorno dopo (stato.tempo.giorno),
+   il Pokémon rianimato ti arriva direttamente nel Box (depositaInBox). */
+const FOSSILE_POKEMON = {
+  fossile_elice:   138, // Omanyte
+  fossile_cupola:  140, // Kabuto
+  ambra_antica:    142, // Aerodactyl
+  fossile_radice:  345, // Lileep
+  fossile_artiglio: 347, // Anorith
+};
+const COSTO_RIANIMAZIONE_FOSSILE = 5000;
+const LIVELLO_FOSSILE_RIANIMATO = 20;
+
+async function interagisciRianimaFossiliGenzano() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Scienziato';
+
+  // Rianimazione già avviata: controlla se è pronta.
+  if (stato.fossileRianimazione) {
+    const q = stato.fossileRianimazione;
+    if (stato.tempo.giorno < q.giornoPronto) {
+      await mostraDialogo(nome, [
+        'Il tuo fossile sta ancora rianimando nella camera genetica...',
+        'Torna tra un po\', ci vuole tempo!'
+      ]);
+      return;
+    }
+    const pkm = await Battle.creaIstanza(q.idPokemon, LIVELLO_FOSSILE_RIANIMATO);
+    if (pkm) depositaInBox(pkm);
+    const nomePkm = (typeof NOMI_POKEMON !== 'undefined' && NOMI_POKEMON[q.idPokemon]) || `n.${q.idPokemon}`;
+    stato.fossileRianimazione = null;
+    salvaPartita();
+    await mostraDialogo(nome, [
+      'Ce l\'abbiamo fatta! La rianimazione è un successo!',
+      `${nomePkm} è vivo e vegeto. Te l'ho già mandato al Box del PC!`
+    ]);
+    return;
+  }
+
+  // Nessuna rianimazione in corso: cerca un fossile nello zaino.
+  const fossiliPosseduti = Object.keys(FOSSILE_POKEMON).filter(k => (stato.zaino[k] || 0) > 0);
+  if (fossiliPosseduti.length === 0) {
+    await mostraDialogo(nome, [
+      'Porta qui un fossile e 5000¥: lo rianimo e te lo consegno!',
+      'Senza un fossile non posso fare niente, mi dispiace.'
+    ]);
+    return;
+  }
+  const chiaveFossile = fossiliPosseduti[0];
+  const oggFossile = OGGETTI[chiaveFossile];
+  const scelta = await mostraScelta(
+    `Rianimo il tuo ${oggFossile.nome} per ${COSTO_RIANIMAZIONE_FOSSILE}¥? Ci vorrà un giorno intero.`,
+    'Sì, procedi', 'No, aspetta'
+  );
+  if (scelta !== 1) {
+    await mostraDialogo(nome, ['Va bene, torna quando vuoi.']);
+    return;
+  }
+  if ((stato.soldi || 0) < COSTO_RIANIMAZIONE_FOSSILE) {
+    await mostraDialogo(nome, [`Non hai abbastanza Pokéyen (servono ${COSTO_RIANIMAZIONE_FOSSILE}¥).`]);
+    return;
+  }
+  stato.soldi -= COSTO_RIANIMAZIONE_FOSSILE;
+  stato.zaino[chiaveFossile] -= 1;
+  if ((stato.zaino[chiaveFossile] || 0) <= 0) delete stato.zaino[chiaveFossile];
+  stato.fossileRianimazione = {
+    fossile: chiaveFossile,
+    idPokemon: FOSSILE_POKEMON[chiaveFossile],
+    giornoPronto: stato.tempo.giorno + 1,
+  };
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nome, [
+    'Perfetto, mi metto subito al lavoro!',
+    'Torna domani: la rianimazione richiede un giorno intero.'
+  ]);
 }
 
 // ── Centro Pokémon: cura + "Dormi" (F9.1) ───────────────────
@@ -4230,7 +4333,7 @@ function iconaOggettoHtml(oggetto) {
 // Costruisce la card di un oggetto dello zaino (icona, nome, quantità,
 // descrizione, bottone "Usa" se applicabile). Riusata dalle tasche 1 e 3.
 function creaCardOggetto(chiave, oggetto, quanti) {
-  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'mt' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
+  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
   const direttamente = oggetto.categoria === 'repellente';
   const usabile = suBersaglio || direttamente;
 
@@ -4651,6 +4754,29 @@ async function usaOggettoSu(chiave, idx) {
     stato.zaino[chiave] -= 1;
     if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
     chiudiMenu();                       // chiude il menu per mostrare l'evoluzione
+    await avviaEvoluzione(pkm, evo.idEvo);
+    return;
+  } else if (oggetto.categoria === 'scambio') {
+    // Pietra Scambio (richiesta esplicita di Luca, 5 ott 2026): sostituisce
+    // il bisogno di un vero scambio per le evoluzioni tipo Gengar/Alakazam/
+    // Machamp. Per quelle che richiedono anche un oggetto tenuto durante lo
+    // scambio (Steelix/Scizor/Kingdra/Porygon2…) il Pokémon deve già TENERE
+    // quell'oggetto (pkm.oggetto, equipaggiato da Zaino → Oggetti, categoria
+    // 'held') prima che la pietra funzioni — niente scorciatoie: va tenuto
+    // prima, poi si usa la pietra, esattamente come chiesto.
+    const evo = trovaEvoluzioneScambio(pkm.id);
+    if (!evo) {
+      mostraToast(`${pkm.nome} non ha un'evoluzione per scambio.`);
+      return;
+    }
+    if (evo.valore && pkm.oggetto !== evo.valore) {
+      const richiesto = OGGETTI[evo.valore] ? OGGETTI[evo.valore].nome : evo.valore;
+      mostraToast(`${pkm.nome} deve prima TENERE ${richiesto} (Zaino → Oggetti) prima di usare la Pietra Scambio.`);
+      return;
+    }
+    stato.zaino[chiave] -= 1;
+    if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+    chiudiMenu();
     await avviaEvoluzione(pkm, evo.idEvo);
     return;
   } else if (oggetto.categoria === 'mt') {
