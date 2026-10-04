@@ -59,6 +59,13 @@ const CLUSTERS = {
       collegamento_cotral: { offsetX: 193, offsetY: -171, w: 40, h: 40 },
     }
   },
+  Victory_Path: {
+    nome: 'Victory_Path',
+    mappe: {
+      percorso_montepo_3: { offsetX: 0, offsetY: -15, w: 24, h: 175 },
+      percorso_montepo_1: { offsetX: 24, offsetY: 23, w: 24, h: 80 },
+    }
+  },
   montepo: {
     nome: 'montepo',
     mappe: {

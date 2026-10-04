@@ -898,6 +898,19 @@ const DATI_NPC = {
     sprite: 'Grunt_Cotral_uomo', nome: 'Maso', direzione: 'est', movimento: 'fisso',
   },
 
+  /* -- Grunt CoTrAL che blocca Percorso Monte Po 3 (sess. 6 ott 2026,
+     Victory_Path.world): finche' non hai completato la Lega blocca il
+     passaggio solo a parole (questo NPC-gate). Dopo la Lega sparisce,
+     sostituito dal trainer vero 'grunt_gate_montepo3' (dati/trainer.js). -- */
+  'npc_gate_montepo3_pre': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Grunt CoTrAL', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Zona sotto controllo CoTrAL. Non si passa.',
+      'Il Capo è impegnato in questo momento. E non crediate che le vostre azioni all\'Osservatorio abbiano portato a qualcosa.',
+      'Tra poco vedrete di cosa è capace il nostro piano!',
+    ],
+  },
+
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */

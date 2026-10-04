@@ -1,0 +1,20 @@
+{
+    "maps": [
+        {
+            "fileName": "percorso_montepo_3.tmj",
+            "height": 5600,
+            "width": 768,
+            "x": 0,
+            "y": -480
+        },
+        {
+            "fileName": "percorso_montepo_1.tmj",
+            "height": 2560,
+            "width": 768,
+            "x": 768,
+            "y": 736
+        }
+    ],
+    "onlyShowAdjacentMaps": false,
+    "type": "world"
+}

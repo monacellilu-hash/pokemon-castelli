@@ -3558,4 +3558,24 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Mi hai rovinato la giornata di shopping...',
     premio: 660,
   },
+
+  /* ── Grunt CoTrAL — gate di Percorso Monte Po 3 (sess. 6 ott 2026,
+     Victory_Path.world): sfidabile solo dopo la Lega (condizione
+     'grunt_gate_montepo3_attivo', impostata alla vittoria sul Campione),
+     "speciale" così sparisce da solo una volta battuto e libera il
+     passaggio verso nord (dove si trova Maso con Zapdos). Molto forte
+     come richiesto da Luca: livello post-Lega. ── */
+  'grunt_gate_montepo3': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Sentinella',
+    squadra: [
+      { id: 208, livello: 64 },   // Steelix
+      { id: 94, livello: 64 },    // Gengar
+      { id: 169, livello: 65 },   // Crobat
+      { id: 373, livello: 66 },   // Salamence
+    ],
+    dialogo_prima: 'Ah, sei tu. Ora che la Lega è alle spalle possiamo giocare a carte scoperte. Fatti sotto, se vuoi passare.',
+    dialogo_dopo: '...Va bene, hai vinto. Passa pure, tanto ormai non importa più niente.',
+    premio: 2600,
+  },
 };
