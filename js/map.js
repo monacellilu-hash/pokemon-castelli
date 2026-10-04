@@ -6491,7 +6491,17 @@ const GameMap = (function () {
         }
         await this._impostaFollowerAlleato('trainer_LEADER_Camilla');   // torna a seguirti come prima
 
+        // Camilla si congeda (aggiunto 6 ott 2026, segnalato da Luca: prima
+        // mancava del tutto — lei restava come follower per sempre, invece
+        // deve tornare alla sua palestra di Genzano e staccarsi davvero).
+        if (typeof mostraDialogo === 'function') {
+          await mostraDialogo('Camilla', [
+            'Ora torno alla mia palestra: qualcuno deve pur tenere d\'occhio Genzano.',
+            'Chiamami se ti serve aiuto, va bene?',
+          ]);
+        }
         await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+        await this._impostaFollowerAlleato();   // si stacca per davvero: torna il Pokémon in squadra
         await this._rigeneraNpc();
         await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
         if (typeof salvaPartita === 'function') salvaPartita();

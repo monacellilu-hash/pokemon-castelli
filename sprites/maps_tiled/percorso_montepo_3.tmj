@@ -44072,6 +44072,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_1"
@@ -44080,11 +44085,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44102,6 +44102,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_2"
@@ -44110,11 +44115,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44132,6 +44132,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_3"
@@ -44140,11 +44145,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44162,6 +44162,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_4"
@@ -44170,11 +44175,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44192,6 +44192,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_5"
@@ -44200,11 +44205,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44222,6 +44222,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_6"
@@ -44230,11 +44235,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44252,6 +44252,11 @@
      "point": true,
      "properties": [
       {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "trainer_montepo3_7"
@@ -44260,11 +44265,6 @@
        "name": "type",
        "type": "string",
        "value": "trainer"
-      },
-      {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -44282,6 +44282,21 @@
      "point": true,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "legaCompletata"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "id",
        "type": "string",
        "value": "npc_gate_montepo3_pre"
@@ -44292,17 +44307,7 @@
        "value": "npc"
       },
       {
-       "name": "direzione",
-       "type": "string",
-       "value": "sud"
-      },
-      {
-       "name": "condizione",
-       "type": "string",
-       "value": "legaCompletata"
-      },
-      {
-       "name": "gate",
+       "name": "noTestBypass",
        "type": "bool",
        "value": true
       }
@@ -44421,25 +44426,15 @@
      "y": 5352.25
     },
     {
+     "height": 24.909090909091,
      "id": 2295,
      "name": "grunt_gate_montepo3",
-     "type": "trainer",
-     "x": 752,
-     "y": 3189.33333333333,
-     "width": 32,
-     "height": 32,
-     "rotation": 0,
-     "visible": true,
+     "opacity": 1,
      "properties": [
       {
-       "name": "id",
+       "name": "condizione",
        "type": "string",
-       "value": "grunt_gate_montepo3"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "trainer"
+       "value": "grunt_gate_montepo3_attivo"
       },
       {
        "name": "direzione",
@@ -44447,16 +44442,272 @@
        "value": "sud"
       },
       {
-       "name": "condizione",
+       "name": "id",
        "type": "string",
-       "value": "grunt_gate_montepo3_attivo"
+       "value": "grunt_gate_montepo3"
       },
       {
        "name": "speciale",
        "type": "bool",
        "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "trainer"
+      },
+      {
+       "name": "vista",
+       "type": "string",
+       "value": "7"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "trainer",
+     "visible": true,
+     "width": 30.7272727272727,
+     "x": 706.060606060606,
+     "y": 3171.39393939394
+    },
+    {
+     "height": 150.591333333334,
+     "id": 2295,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 552.479666666667,
+     "x": 111.0935,
+     "y": 4102.03766666667
+    },
+    {
+     "height": 86.5910000000003,
+     "id": 2296,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 458.48,
+     "x": 105.76,
+     "y": 3823.37116666667
+    },
+    {
+     "height": 183.257666666666,
+     "id": 2297,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 75.8133333333334,
+     "x": 426.093333333333,
+     "y": 3916.03783333333
+    },
+    {
+     "height": 263.924666666666,
+     "id": 2298,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 107.8133,
+     "x": 456.09335,
+     "y": 3537.70433333333
+    },
+    {
+     "height": 263.925,
+     "id": 2299,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 47.813,
+     "x": 199.426833333333,
+     "y": 3536.70416666667
+    },
+    {
+     "height": 287.925,
+     "id": 2300,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 88.4796666666667,
+     "x": 230.760166666667,
+     "y": 3360.70416666667
+    },
+    {
+     "height": 91.2583333333332,
+     "id": 2301,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 109.146366666667,
+     "x": 330.426816666667,
+     "y": 3536.70416666667
+    },
+    {
+     "height": 159.924966666666,
+     "id": 2302,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 555.812666666667,
+     "x": 106.093666666667,
+     "y": 3179.03751666667
+    },
+    {
+     "height": 150.591666666667,
+     "id": 2303,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 172.479666666667,
+     "x": 300.760166666667,
+     "y": 3018.70416666667
+    },
+    {
+     "height": 81.9253333333336,
+     "id": 2304,
+     "name": "acqua_percorso_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "acqua_percorso_montepo3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "acqua surf"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 161.813333333333,
+     "x": 664.426666666667,
+     "y": 3207.37066666667
     }
    ],
    "opacity": 1,
@@ -44467,7 +44718,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 2295,
+ "nextobjectid": 2305,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
