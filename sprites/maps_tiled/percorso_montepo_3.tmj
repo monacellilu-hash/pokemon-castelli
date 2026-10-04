@@ -44067,28 +44067,28 @@
     {
      "height": 0,
      "id": 1,
-     "name": "npc_percorso_montepo_3_1",
+     "name": "trainer_montepo3_1",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_1"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_1"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 496,
@@ -44097,28 +44097,28 @@
     {
      "height": 0,
      "id": 2,
-     "name": "npc_percorso_montepo_3_2",
+     "name": "trainer_montepo3_2",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_2"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_2"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 272,
@@ -44127,28 +44127,28 @@
     {
      "height": 0,
      "id": 3,
-     "name": "npc_percorso_montepo_3_3",
+     "name": "trainer_montepo3_3",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_3"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_3"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 464,
@@ -44157,28 +44157,28 @@
     {
      "height": 0,
      "id": 4,
-     "name": "npc_percorso_montepo_3_4",
+     "name": "trainer_montepo3_4",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_4"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_4"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 528,
@@ -44187,28 +44187,28 @@
     {
      "height": 0,
      "id": 5,
-     "name": "npc_percorso_montepo_3_5",
+     "name": "trainer_montepo3_5",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_5"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_5"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 336,
@@ -44217,28 +44217,28 @@
     {
      "height": 0,
      "id": 6,
-     "name": "npc_percorso_montepo_3_6",
+     "name": "trainer_montepo3_6",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_6"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_6"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 464,
@@ -44247,28 +44247,28 @@
     {
      "height": 0,
      "id": 7,
-     "name": "npc_percorso_montepo_3_7",
+     "name": "trainer_montepo3_7",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_percorso_montepo_3_7"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_POLICEMAN"
+       "value": "trainer_montepo3_7"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
-     "type": "",
+     "type": "trainer",
      "visible": true,
      "width": 0,
      "x": 208,

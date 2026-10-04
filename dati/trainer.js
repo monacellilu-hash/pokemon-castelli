@@ -3663,4 +3663,65 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Vai pure, ma non dire che non ti avevo avvisato.',
     premio: 1250,
   },
+
+  /* ── Trainer di Percorso Monte Po 3 (sess. 6 ott 2026, Victory_Path.world)
+     — livello "dopo l'ottava palestra" (cap58-60, verso Via Vittoria),
+     richiesta esplicita di Luca. Sprite poliziotto/security dell'originale
+     FireRed, qui diventano guardie della zona. ── */
+  'trainer_montepo3_1': {
+    sprite: 'NPC 09', ritratto: 'trainer_COOLTRAINER_M', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 248, livello: 58 }, { id: 376, livello: 59 } ],
+    dialogo_prima: 'Qui si passa solo se sei abbastanza forte.',
+    dialogo_dopo: 'Complimenti, sei davvero in forma.',
+    premio: 1300,
+  },
+  'trainer_montepo3_2': {
+    sprite: 'NPC 10', ritratto: 'trainer_COOLTRAINER_F', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 373, livello: 58 }, { id: 350, livello: 59 } ],
+    dialogo_prima: 'Via Vittoria è proprio più avanti. Pronto a tutto?',
+    dialogo_dopo: 'Forse ce la farai davvero, lassù.',
+    premio: 1300,
+  },
+  'trainer_montepo3_3': {
+    sprite: 'NPC 09', ritratto: 'trainer_COOLTRAINER_M', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 306, livello: 59 }, { id: 365, livello: 59 } ],
+    dialogo_prima: 'Non lasciamo passare chiunque da queste parti.',
+    dialogo_dopo: 'Vai pure, te lo sei guadagnato.',
+    premio: 1350,
+  },
+  'trainer_montepo3_4': {
+    sprite: 'NPC 10', ritratto: 'trainer_COOLTRAINER_F', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 149, livello: 59 }, { id: 230, livello: 60 } ],
+    dialogo_prima: 'Pensavo fossi un turista. Mi sa che mi sbagliavo.',
+    dialogo_dopo: 'Rispetto. Prosegui pure.',
+    premio: 1350,
+  },
+  'trainer_montepo3_5': {
+    sprite: 'NPC 09', ritratto: 'trainer_COOLTRAINER_M', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 303, livello: 59 }, { id: 319, livello: 60 } ],
+    dialogo_prima: 'Siamo quasi a Via Vittoria. L\'aria qui è diversa, lo senti?',
+    dialogo_dopo: 'In bocca al lupo per quello che ti aspetta.',
+    premio: 1400,
+  },
+  'trainer_montepo3_6': {
+    sprite: 'NPC 10', ritratto: 'trainer_COOLTRAINER_F', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 330, livello: 59 }, { id: 232, livello: 60 } ],
+    dialogo_prima: 'Ultimo tratto prima della salita vera. Dimostrami che puoi farcela.',
+    dialogo_dopo: 'Ok, sei pronto per quello che viene dopo.',
+    premio: 1400,
+  },
+  'trainer_montepo3_7': {
+    sprite: 'NPC 09', ritratto: 'trainer_COOLTRAINER_M', vista: 5,
+    classe: 'Guardia', nome: 'Vigilante',
+    squadra: [ { id: 376, livello: 60 }, { id: 373, livello: 60 } ],
+    dialogo_prima: 'L\'ultima guardia prima di Via Vittoria. Fatti onore.',
+    dialogo_dopo: 'Vai. Non lascerò passare nessun altro oggi.',
+    premio: 1450,
+  },
 };
