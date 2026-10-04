@@ -42447,8 +42447,8 @@
      "type": "trainer",
      "visible": true,
      "width": 0,
-     "x": 528,
-     "y": 4096
+     "x": 528.25,
+     "y": 4080.75
     },
     {
      "height": 0,
@@ -42477,8 +42477,8 @@
      "type": "trainer",
      "visible": true,
      "width": 0,
-     "x": 336,
-     "y": 3520
+     "x": 338,
+     "y": 3507
     },
     {
      "height": 0,
@@ -42700,7 +42700,7 @@
       {
        "name": "condizione",
        "type": "string",
-       "value": "grunt_gate_montepo3_attivo"
+       "value": "legaCompletata"
       },
       {
        "name": "direzione",
@@ -42976,43 +42976,39 @@
      "y": 3207.37066666667
     },
     {
+     "height": 64,
      "id": 2305,
      "name": "muro_gate_montepo3",
-     "type": "cancello_condizione",
-     "x": 704,
-     "y": 3168,
-     "width": 32,
-     "height": 160,
-     "rotation": 0,
-     "visible": true,
+     "opacity": 1,
      "properties": [
-      {
-       "name": "type",
-       "type": "string",
-       "value": "cancello_condizione"
-      },
       {
        "name": "condizione",
        "type": "string",
        "value": "legaCompletata"
-      }
-     ]
-    },
-    {
-     "id": 2306,
-     "name": "trigger_grunt_gate_montepo3",
-     "type": "trigger_lotta_prossimita",
-     "x": 704,
-     "y": 3168,
-     "width": 32,
-     "height": 160,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
+      },
       {
        "name": "type",
        "type": "string",
-       "value": "trigger_lotta_prossimita"
+       "value": "cancello_condizione"
+      }
+     ],
+     "rotation": 0,
+     "type": "cancello_condizione",
+     "visible": true,
+     "width": 160,
+     "x": 640,
+     "y": 3200
+    },
+    {
+     "height": 64,
+     "id": 2306,
+     "name": "trigger_grunt_gate_montepo3",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "condizione",
+       "type": "string",
+       "value": "grunt_gate_montepo3_sconfitto"
       },
       {
        "name": "trainer_id",
@@ -43020,11 +43016,17 @@
        "value": "grunt_gate_montepo3"
       },
       {
-       "name": "condizione",
+       "name": "type",
        "type": "string",
-       "value": "grunt_gate_montepo3_sconfitto"
+       "value": "trigger_lotta_prossimita"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "trigger_lotta_prossimita",
+     "visible": true,
+     "width": 160,
+     "x": 640,
+     "y": 3200
     }
    ],
    "opacity": 1,

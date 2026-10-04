@@ -8282,10 +8282,12 @@ const GameMap = (function () {
       if (dati.campioneLega) {
         if (!stato.flags) stato.flags = {};
         stato.flags.legaCompletata = true;
-        // Grunt CoTrAL che blocca Percorso Monte Po 3 (sess. 6 ott 2026):
-        // da qui in poi è SFIDABILE (prima bloccava solo a parole). Si
-        // disattiva di nuovo quando viene battuto, vedi _avviaLottaTrainer.
-        stato.flags.grunt_gate_montepo3_attivo = true;
+        // Grunt CoTrAL di Percorso Monte Po 3: il muro/il Grunt dipendono
+        // entrambi SOLO da legaCompletata (fix 6 ott 2026: prima c'era un
+        // flag separato "grunt_gate_montepo3_attivo" mai impostato quando
+        // si testava legaCompletata a mano da console, quindi il Grunt
+        // restava invisibile anche a muro aperto — semplificato a un
+        // flag solo).
       }
       // Boss GdF della Grotta del Vulcano (sess. 8 set 2026): battuto (ultimo
       // della catena sottocomandante→boss) → seconda parte di cutscene
