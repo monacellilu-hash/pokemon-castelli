@@ -6369,17 +6369,14 @@ const GameMap = (function () {
       followerPos = { tx: latoTx, ty: latoTy, dir: 'est' };
       const dirCamilla2 = this._direzioneTraCaselle(latoTx, latoTy, posTile.tx, posTile.ty);
       if (followerSprite) this._setNpcFrame(followerSprite, dirCamilla2, false);
-      // Fix 6 ott 2026 (segnalato da Luca): PRIMA qui si chiamava
-      // _impostaFollowerAlleato() senza argomenti, che faceva ricomparire il
-      // Pokémon in squadra al posto di Camilla — sbagliato, lei è ancora
-      // visibile lì accanto al boss, non deve "trasformarsi" in un Pokémon.
-      // Ora il follower si nasconde e basta, nessun Pokémon al suo posto.
-      // "false" (non null): sentinella che _aggiornaFollowerSpecie()
-      // rispetta anche quando sbloccaMovimento() la richiama di continuo
-      // durante il resto della cutscene (vedi commento lì).
-      followerAlleatoTexKey = false;
-      followerSpecieId = null;
-      if (followerSprite) followerSprite.setVisible(false);
+      // Fix 6 ott 2026 (segnalato da Luca, corretto due volte): NON si
+      // nasconde e NON torna a essere il Pokémon — resta VISIBILE come
+      // Camilla, ferma lì accanto al boss, per tutto il resto della scena
+      // (1v1, apparizione di Maso compresa). Basta NON toccare
+      // followerAlleatoTexKey: resta 'trainer_LEADER_Camilla' da prima,
+      // quindi _aggiornaFollowerSpecie() continua a mostrare lei anche
+      // quando sbloccaMovimento() la richiama — il giocatore comunque non
+      // si muove (bloccaMovimento attivo), quindi lei non la segue più.
       await new Promise(r => setTimeout(r, 1000));   // schermata nera 1s più lunga
       await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
 
@@ -6406,14 +6403,9 @@ const GameMap = (function () {
       // NIENTE reset dell'override qui: da quando si è fatta da parte,
       // Camilla resta staccata come follower per il resto della scena
       // (richiesta esplicita di Luca) — combatti da solo, vinci o perdi.
-      // CAUSA VERA del bug "Camilla diventa il mio Pokémon" trovata (6 ott
-      // 2026): sbloccaMovimento() richiama SEMPRE _aggiornaFollowerSpecie(),
-      // e con "null" qui quella funzione ricadeva nel ramo "mostra squadra".
-      // Risolto alla radice in _aggiornaFollowerSpecie() (sentinella
-      // "false"), questa riga resta solo come riaffermazione difensiva.
-      followerAlleatoTexKey = false;
-      followerSpecieId = null;
-      if (followerSprite) followerSprite.setVisible(false);
+      // Fix 6 ott 2026 (seconda correzione): NON si nasconde più, resta
+      // visibile accanto al boss — vedi commento più sopra, dove si fa
+      // da parte, stessa logica (non toccare followerAlleatoTexKey).
 
       if (esito === 'vittoria') {
         const premio = DATI_TRAINER['cotral_boss_osservatorio'].premio || 0;
