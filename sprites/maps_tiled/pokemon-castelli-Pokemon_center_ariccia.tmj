@@ -137,8 +137,8 @@
     0,
     0,
     0,
-    0,
-    0,
+    177,
+    177,
     0,
     0,
     0,
@@ -147,7 +147,7 @@
     0
    ],
    "height": 10,
-   "id": 6,
+   "id": 1,
    "name": "ground",
    "opacity": 1,
    "type": "tilelayer",
@@ -300,7 +300,7 @@
     0
    ],
    "height": 10,
-   "id": 7,
+   "id": 5,
    "name": "deco_sotto",
    "opacity": 1,
    "type": "tilelayer",
@@ -453,7 +453,7 @@
     0
    ],
    "height": 10,
-   "id": 8,
+   "id": 2,
    "name": "edifici",
    "opacity": 1,
    "type": "tilelayer",
@@ -1287,6 +1287,10 @@
    "tilecount": 176,
    "tileheight": 32,
    "tilewidth": 32
+  },
+  {
+   "firstgid": 177,
+   "source": "../../outside.tsx"
   }
  ],
  "tilewidth": 32,

@@ -620,6 +620,16 @@ const GameMap = (function () {
     'celadon_condominio_3f':       { file: 'sprites/maps_tiled/celadon_condominio_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
     'celadon_condominio_roof':     { file: 'sprites/maps_tiled/celadon_condominio_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
     'celadon_condominio_roofroom': { file: 'sprites/maps_tiled/celadon_condominio_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    // ── Centro Allevamento di Nemi (ex Route117_PokemonDayCare di Smeraldo,
+    // 5 ott 2026): solo la mappa+NPC, la meccanica di allevamento/uova NON è
+    // ancora implementata (fuori scope di questa sessione) — vedi dialogo
+    // placeholder della Nonna. Warp verso 'lago_nemi' da collegare. ──
+    'nemi_daycare': {
+      file: 'sprites/maps_tiled/nemi_daycare.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.7160, lonFissa: 12.7020,
+    },
     // ── Colonna (città finale, post-Lega — sess. 14 set 2026): Luca ha
     // disegnato Colonna.tmj/Colonna_2.tmj e un Colonna.world che le mette in
     // fila verticale CONTIGUA con Lega_pokemon.tmj (hall in cima, poi
@@ -1322,6 +1332,7 @@ const GameMap = (function () {
     'ts-cond-3f':            'sprites/celadon_condominio_3f_tileset.png',
     'ts-cond-roof':          'sprites/celadon_condominio_roof_tileset.png',
     'ts-cond-roofroom':      'sprites/celadon_condominio_roofroom_tileset.png',
+    'ts-nemi-daycare':       'sprites/nemi_daycare_tileset.png',
   };
   Object.assign(TILESET_META, {
     'sub':        { key: 'ts-sub',        tw: 32, th: 32, cols: 4  },
@@ -1363,6 +1374,7 @@ const GameMap = (function () {
     'celadon_condominio_3f_tileset':       { key: 'ts-cond-3f',   tw: 32, th: 32, cols: 16 },
     'celadon_condominio_roof_tileset':     { key: 'ts-cond-roof', tw: 32, th: 32, cols: 16 },
     'celadon_condominio_roofroom_tileset': { key: 'ts-cond-roofroom', tw: 32, th: 32, cols: 16 },
+    'nemi_daycare_tileset':            { key: 'ts-nemi-daycare', tw: 32, th: 32, cols: 16 },
   });
 
   /* ══════════════════════════════════════════════════════════

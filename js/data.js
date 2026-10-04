@@ -2985,17 +2985,18 @@ const OGGETTI = {
                descrizione: 'Fossile di un antico Pokémon marino. Sembra parte di un artiglio.' },
 
   // ── PIETRE EVOLUTIVE (categoria 'pietra': si usano su un Pokémon per evolverlo) ──
-  pietra_fuoco:  { nome: 'Pietra Fuoco',  categoria: 'pietra', prezzo: 2100, icona: '🔥',
+  // Prezzi alzati su richiesta di Luca (5 ott 2026): la meno costosa parte da 8000.
+  pietra_fuoco:  { nome: 'Pietra Fuoco',  categoria: 'pietra', prezzo: 8000, icona: '🔥',
                descrizione: 'Fa evolvere alcuni Pokémon (Vulpix, Growlithe, Eevee→Flareon).' },
-  pietra_acqua:  { nome: 'Pietra Acqua',  categoria: 'pietra', prezzo: 2100, icona: '💧',
+  pietra_acqua:  { nome: 'Pietra Acqua',  categoria: 'pietra', prezzo: 8000, icona: '💧',
                descrizione: 'Fa evolvere alcuni Pokémon (Poliwhirl, Shellder, Staryu, Eevee→Vaporeon, Lombre).' },
-  pietra_tuono:  { nome: 'Pietra Tuono',  categoria: 'pietra', prezzo: 2100, icona: '⚡',
+  pietra_tuono:  { nome: 'Pietra Tuono',  categoria: 'pietra', prezzo: 8000, icona: '⚡',
                descrizione: 'Fa evolvere Pikachu ed Eevee→Jolteon.' },
-  pietra_foglia: { nome: 'Pietra Foglia', categoria: 'pietra', prezzo: 2100, icona: '🍃',
+  pietra_foglia: { nome: 'Pietra Foglia', categoria: 'pietra', prezzo: 8000, icona: '🍃',
                descrizione: 'Fa evolvere Gloom→Vileplume, Weepinbell, Exeggcute, Nuzleaf.' },
-  pietra_luna:   { nome: 'Pietra Luna',   categoria: 'pietra', prezzo: 2100, icona: '🌙',
+  pietra_luna:   { nome: 'Pietra Luna',   categoria: 'pietra', prezzo: 9000, icona: '🌙',
                descrizione: 'Fa evolvere Nidorina/o, Clefairy, Jigglypuff, Skitty.' },
-  pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 2100, icona: '☀️',
+  pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 9500, icona: '☀️',
                descrizione: 'Fa evolvere Gloom→Bellossom e Sunkern→Sunflora.' },
 
   // ── OGGETTI PER EVOLUZIONE DA SCAMBIO (categoria 'evo': si consegnano al mercante scambi) ──

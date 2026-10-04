@@ -608,6 +608,14 @@ const DATI_NPC = {
     dialogo: ['Questa stanzetta sul tetto è il mio posto preferito di tutto il palazzo.'],
   },
 
+  /* ── Nonna del Centro Allevamento di Nemi (ex Route117_PokemonDayCare di
+     Smeraldo, 5 ott 2026): solo mappa+dialogo placeholder, la meccanica di
+     allevamento/uova non esiste ancora nel motore. ── */
+  'npc_nemi_daycare_nonna': {
+    sprite: 'npc joy', nome: 'Nonna dell\'Asilo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui un giorno potrai lasciarmi due Pokémon affinché facciano amicizia... ma per ora sto solo sistemando il recinto!'],
+  },
+
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */
