@@ -1742,8 +1742,23 @@ const GameMap = (function () {
             idsMed.every(id => stato.medaglie.includes(id));
           cancelloMedaglia = !haTutte;
         }
-        if (calpestabile || ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia) {
-          const val = (ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia) ? 1 : 0;
+        // Cancello a FLAG generico (sess. 6 ott 2026, richiesta esplicita di
+        // Luca — Grunt gate di Percorso Monte Po 3): un muro vero, largo
+        // quanto il rettangolo disegnato, solido finché la condizione
+        // ("condizione"/"richiede", stessa sintassi di verificaCondizione —
+        // es. "legaCompletata") non è vera. A differenza di cancello_medaglia
+        // (solo liste di medaglie) questo accetta qualsiasi flag/token che
+        // verificaCondizione sa già leggere, quindi è riutilizzabile ovunque
+        // serva un "muro" condizionato invece di un NPC-gate a 1 casella.
+        let cancelloCondizione = false;
+        if (tipo === 'cancello_condizione') {
+          const props = {};
+          if (obj.properties) obj.properties.forEach(p => { props[p.name] = p.value; });
+          const cond = props.condizione || props.richiede || '';
+          cancelloCondizione = !!cond && !verificaCondizione(cond).ok;
+        }
+        if (calpestabile || ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia || cancelloCondizione) {
+          const val = (ostacoloMn || cartelloRett || decoSolida || cancelloBloccato || cancelloMedaglia || cancelloCondizione) ? 1 : 0;
           if (obj.width > 0 && obj.height > 0) {
             segnaRett(obj, val);
           } else {
