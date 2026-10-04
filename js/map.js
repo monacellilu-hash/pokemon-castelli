@@ -636,6 +636,9 @@ const GameMap = (function () {
     'albano_casa6_1': { file: 'sprites/maps_tiled/albano_casa6_1.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_casa6_2': { file: 'sprites/maps_tiled/albano_casa6_2.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_casa6_3': { file: 'sprites/maps_tiled/albano_casa6_3.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
+    // ── Scuola di Albano (ex ViridianCity_School di FireRed, 5 ott 2026):
+    // Ricorda Mosse + Elimina Mosse, vedi dati/npc.js. ──
+    'albano_scuola': { file: 'sprites/maps_tiled/albano_scuola.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     // ── Condominio × 2 in Albano (clonato da celadon_condominio_*, sess. 5
     // ott 2026): stesso edificio, due istanze con NPC distinti. ──
     'albano_condominio_a_1f':       { file: 'sprites/maps_tiled/albano_condominio_a_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
@@ -1361,6 +1364,7 @@ const GameMap = (function () {
     'ts-cond-roof':          'sprites/celadon_condominio_roof_tileset.png',
     'ts-cond-roofroom':      'sprites/celadon_condominio_roofroom_tileset.png',
     'ts-nemi-daycare':       'sprites/nemi_daycare_tileset.png',
+    'ts-albano-scuola':      'sprites/albano_scuola_tileset.png',
   };
   Object.assign(TILESET_META, {
     'sub':        { key: 'ts-sub',        tw: 32, th: 32, cols: 4  },
@@ -1403,6 +1407,7 @@ const GameMap = (function () {
     'celadon_condominio_roof_tileset':     { key: 'ts-cond-roof', tw: 32, th: 32, cols: 16 },
     'celadon_condominio_roofroom_tileset': { key: 'ts-cond-roofroom', tw: 32, th: 32, cols: 16 },
     'nemi_daycare_tileset':            { key: 'ts-nemi-daycare', tw: 32, th: 32, cols: 16 },
+    'albano_scuola_tileset':           { key: 'ts-albano-scuola', tw: 32, th: 32, cols: 16 },
   });
 
   /* ══════════════════════════════════════════════════════════
@@ -10756,7 +10761,7 @@ const GameMap = (function () {
         this._layer.add(nome); this._elementiLista.push(nome);
 
         let xUsa = P.x1 - 8;
-        if (v.oggetto.categoria === 'mt') {
+        if (v.oggetto.categoria === 'mt' || v.oggetto.categoria === 'mn') {
           // Espansione "ℹ️" (integrata su richiesta di Luca): stesso identico
           // contenuto del popup dettagli mossa del vecchio pannello DOM
           // (creaCardMt in app.js) — resta un overlay a schermo intero,

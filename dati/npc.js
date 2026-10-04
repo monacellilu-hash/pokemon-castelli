@@ -878,6 +878,18 @@ const DATI_NPC = {
     azione: 'interagisciRianimaFossiliGenzano',
   },
 
+  /* -- Scuola di Albano (ex ViridianCity_School, 5 ott 2026): i due anziani
+     Ricorda Mosse ed Elimina Mosse. Vedi interagisciRicordaMosse/
+     interagisciEliminaMosse in app.js. -- */
+  'npc_albano_ricorda_mosse': {
+    sprite: 'NPC 09', nome: 'Anziano', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciRicordaMosse',
+  },
+  'npc_albano_elimina_mosse': {
+    sprite: 'NPC 08', nome: 'Vecchietta', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciEliminaMosse',
+  },
+
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */

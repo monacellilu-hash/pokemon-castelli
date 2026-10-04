@@ -3027,6 +3027,27 @@ const OGGETTI = {
   pietra_scambio: { nome: 'Pietra Scambio', categoria: 'scambio', prezzo: 10000, icona: '🔄',
                descrizione: 'Fa evolvere un Pokémon che normalmente evolverebbe solo con uno scambio. Se serve anche un oggetto da tenere, il Pokémon deve già tenerlo.' },
 
+  // ── MN (categoria 'mn': insegnano la mossa VERA — Taglio/Surf/ecc. — a
+  // differenza del permesso stato.mn.<nome> che sblocca solo l'uso FUORI
+  // dalla lotta. A differenza delle MT, NON si consumano mai (si possono
+  // usare quante volte si vuole): arrivano nello zaino quando si riceve la
+  // MN dal donatore (vedi _interagisciDonatoreTiled in app.js). La mossa
+  // insegnata è "protetta": non si può far dimenticare al Pokémon tramite
+  // un'altra MT/MN, solo l'Elimina Mosse (Scuola di Albano) può farlo —
+  // richiesta esplicita di Luca, 5 ott 2026. ──
+  mn_taglio: { nome: 'MN Taglio', categoria: 'mn', mossa: 'cut', prezzo: 0, icona: '🌿',
+               descrizione: 'Insegna Taglio (Normale). Riutilizzabile all\'infinito.' },
+  mn_surf: { nome: 'MN Surf', categoria: 'mn', mossa: 'surf', prezzo: 0, icona: '🌊',
+               descrizione: 'Insegna Surf (Acqua, potenza 90). Riutilizzabile all\'infinito.' },
+  mn_volo: { nome: 'MN Volo', categoria: 'mn', mossa: 'fly', prezzo: 0, icona: '🕊️',
+               descrizione: 'Insegna Volo (Volante, potenza 90). Riutilizzabile all\'infinito.' },
+  mn_forza: { nome: 'MN Forza', categoria: 'mn', mossa: 'strength', prezzo: 0, icona: '💪',
+               descrizione: 'Insegna Forza (Normale, potenza 80). Riutilizzabile all\'infinito.' },
+  mn_cascata: { nome: 'MN Cascata', categoria: 'mn', mossa: 'waterfall', prezzo: 0, icona: '🌊',
+               descrizione: 'Insegna Cascata (Acqua, potenza 80). Riutilizzabile all\'infinito.' },
+  mn_spaccaroccia: { nome: 'MN Spaccaroccia', categoria: 'mn', mossa: 'rock-smash', prezzo: 0, icona: '🪨',
+               descrizione: 'Insegna Spaccaroccia (Lotta, potenza 40). Riutilizzabile all\'infinito.' },
+
   // ── MT (categoria 'mt': si usano su un Pokémon per insegnargli una mossa,
   //    si consumano all'uso — stile Gen 1-3, non riutilizzabili). Il campo
   //    "mossa" è lo slug PokéAPI usato da PokeAPI.getMossa() per scaricare i

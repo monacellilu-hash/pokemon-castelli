@@ -1613,6 +1613,128 @@ async function interagisciRianimaFossiliGenzano() {
   ]);
 }
 
+/* ── Scuola di Albano: Ricorda Mosse + Elimina Mosse (5 ott 2026) ──
+   Due NPC anziani (npc_albano_ricorda_mosse / npc_albano_elimina_mosse). */
+const COSTO_RICORDA_MOSSE = 1000;
+
+async function interagisciRicordaMosse() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Anziano';
+  if (!stato.squadra || stato.squadra.length === 0) {
+    await mostraDialogo(nome, ['Torna con un Pokémon in squadra!']);
+    return;
+  }
+  const nomiSquadra = stato.squadra.map(p => p.nome);
+  const idxPkm = await mostraSceltaLista('Quale Pokémon vuoi far ricordare una mossa?', nomiSquadra);
+  if (idxPkm < 0) return;
+  const pkm = stato.squadra[idxPkm];
+
+  let specie;
+  try { specie = await PokeAPI.getPokemon(pkm.id); } catch (e) {
+    await mostraDialogo(nome, ['Errore di connessione: riprova più tardi.']);
+    return;
+  }
+  const conosciute = pkm.mosse.map(m => m.nome);
+  const dimenticate = (specie.mosse || []).filter(m => m.livello <= pkm.livello && !conosciute.includes(m.nome));
+  // Nomi unici (una mossa può comparire più volte a livelli diversi)
+  const viste = new Set();
+  const candidate = dimenticate.filter(m => (viste.has(m.nome) ? false : (viste.add(m.nome), true)));
+
+  if (candidate.length === 0) {
+    await mostraDialogo(nome, [`${pkm.nome} non ha mosse dimenticate da ricordare.`]);
+    return;
+  }
+
+  const haSquama = (stato.zaino.squama_cuore || 0) > 0;
+  const costoTesto = haSquama ? `1 Squama Cuore oppure ${COSTO_RICORDA_MOSSE}¥` : `${COSTO_RICORDA_MOSSE}¥ (non hai Squame Cuore)`;
+  const confermaPagamento = await mostraScelta(
+    `Posso far ricordare una mossa a ${pkm.nome}. Costo: ${costoTesto}. Procedo?`,
+    'Sì', 'No'
+  );
+  if (confermaPagamento !== 1) {
+    await mostraDialogo(nome, ['Torna quando vuoi.']);
+    return;
+  }
+  let pagamentoScelto = 'soldi';
+  if (haSquama) {
+    const sceltaPag = await mostraScelta('Come paghi?', '💗 Squama Cuore', `💰 ${COSTO_RICORDA_MOSSE}¥`);
+    pagamentoScelto = sceltaPag === 1 ? 'squama' : 'soldi';
+  }
+  if (pagamentoScelto === 'soldi' && (stato.soldi || 0) < COSTO_RICORDA_MOSSE) {
+    await mostraDialogo(nome, ['Non hai abbastanza Pokéyen!']);
+    return;
+  }
+
+  const opzioni = candidate.map(m => m.nomeIt || m.nome);
+  // PokeAPI.getMossa serve per i nomi italiani: le mosse di estraiMosseLivello
+  // sono "snelle" (solo nome/url/livello), quindi mostriamo per ora il nome
+  // tecnico tradotto al momento della scelta effettiva.
+  const nomiVisti = await Promise.all(candidate.map(async m => {
+    try { const d = await PokeAPI.getMossa(m.nome); return d.nomeIt || m.nome; }
+    catch (e) { return m.nome; }
+  }));
+  const idxMossa = await mostraSceltaLista(`Quale mossa deve ricordare ${pkm.nome}?`, nomiVisti);
+  if (idxMossa < 0) return;
+
+  let dettagli;
+  try { dettagli = await PokeAPI.getMossa(candidate[idxMossa].nome); }
+  catch (e) { await mostraDialogo(nome, ['Errore di connessione: riprova più tardi.']); return; }
+
+  const insegna = async () => {
+    if (pkm.mosse.length < 4) {
+      pkm.mosse.push({ ...dettagli, pp: dettagli.ppMax });
+      return true;
+    }
+    const scegliibili = pkm.mosse.map((m, i) => ({ m, i })).filter(x => !x.m.protetta);
+    if (scegliibili.length === 0) {
+      mostraToast(`${pkm.nome} conosce solo mosse protette: serve l'Elimina Mosse prima.`);
+      return false;
+    }
+    const opz = scegliibili.map(x => x.m.nomeIt || x.m.nome);
+    const sc = await mostraSceltaLista(`${pkm.nome} conosce già 4 mosse. Quale dimenticare?`, opz);
+    if (sc < 0) return false;
+    pkm.mosse[scegliibili[sc].i] = { ...dettagli, pp: dettagli.ppMax };
+    return true;
+  };
+  const ok = await insegna();
+  if (!ok) return;
+
+  if (pagamentoScelto === 'squama') {
+    stato.zaino.squama_cuore -= 1;
+    if (stato.zaino.squama_cuore <= 0) delete stato.zaino.squama_cuore;
+  } else {
+    stato.soldi -= COSTO_RICORDA_MOSSE;
+  }
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nome, [`Fatto! ${pkm.nome} ora ricorda ${dettagli.nomeIt}!`]);
+}
+
+async function interagisciEliminaMosse() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Vecchietta';
+  if (!stato.squadra || stato.squadra.length === 0) {
+    await mostraDialogo(nome, ['Torna con un Pokémon in squadra!']);
+    return;
+  }
+  const nomiSquadra = stato.squadra.map(p => p.nome);
+  const idxPkm = await mostraSceltaLista('Quale Pokémon deve dimenticare una mossa?', nomiSquadra);
+  if (idxPkm < 0) return;
+  const pkm = stato.squadra[idxPkm];
+  if (pkm.mosse.length <= 1) {
+    await mostraDialogo(nome, [`${pkm.nome} conosce una sola mossa: non posso fargliela dimenticare!`]);
+    return;
+  }
+  const opzioni = pkm.mosse.map(m => (m.nomeIt || m.nome) + (m.protetta ? ' (MN)' : ''));
+  const idxMossa = await mostraSceltaLista(`Quale mossa deve dimenticare ${pkm.nome}?`, opzioni);
+  if (idxMossa < 0) return;
+  const mossaRimossa = pkm.mosse[idxMossa];
+  pkm.mosse.splice(idxMossa, 1);
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nome, [`${pkm.nome} ha dimenticato ${mossaRimossa.nomeIt || mossaRimossa.nome}. Fatto!`]);
+}
+
 // ── Centro Pokémon: cura + "Dormi" (F9.1) ───────────────────
 
 function curaSquadraDaCentro(idCentro) {
@@ -2100,6 +2222,7 @@ function donaTaglioFrascati() {
     return;
   }
   stato.mn.taglio = true;
+  stato.zaino.mn_taglio = (stato.zaino.mn_taglio || 0) + 1;   // mossa vera, riutilizzabile
   salvaPartita();
   aggiornaHUD();
   mostraDialogo(nome, [
@@ -2564,6 +2687,7 @@ async function interagisciDonatore(idDonatore) {
   await mostraDialogo(d.nome, d.dialogoDono);
   if (!stato.mn) stato.mn = { taglio: false, surf: false, volo: false };
   stato.mn[d.mn] = true;
+  if (OGGETTI[`mn_${d.mn}`]) stato.zaino[`mn_${d.mn}`] = (stato.zaino[`mn_${d.mn}`] || 0) + 1;
   stato.ultimaZonaLocked = null; // così le zone appena sbloccate vengono ricontrollate
   salvaPartita();
   aggiornaHUD();
@@ -2613,6 +2737,7 @@ async function _interagisciDonatoreTiled(idDonatore) {
   await mostraDialogo(d.nome, d.dialogoDono);
   if (!stato.mn) stato.mn = { taglio: false, surf: false, volo: false };
   stato.mn[d.mn] = true;
+  if (OGGETTI[`mn_${d.mn}`]) stato.zaino[`mn_${d.mn}`] = (stato.zaino[`mn_${d.mn}`] || 0) + 1;
   stato.ultimaZonaLocked = null;
   salvaPartita();
   aggiornaHUD();
@@ -4318,7 +4443,7 @@ let zainoMtAperto = false;   // dentro la tasca 2: contenitore MT/MN aperto?
 let zainoMtEspansa = null;   // chiave della MT di cui sto mostrando i dettagli mossa
 
 function categoriaInTasca3(categoria) { return categoria === 'ball'; }
-function categoriaInTasca2(categoria) { return categoria === 'mt'; }
+function categoriaInTasca2(categoria) { return categoria === 'mt' || categoria === 'mn'; }
 
 // Icona di un oggetto: usa la grafica vera (oggetto.img, in
 // CARTELLA_ICONE_OGGETTI) quando disponibile, altrimenti l'emoji di
@@ -4333,7 +4458,7 @@ function iconaOggettoHtml(oggetto) {
 // Costruisce la card di un oggetto dello zaino (icona, nome, quantità,
 // descrizione, bottone "Usa" se applicabile). Riusata dalle tasche 1 e 3.
 function creaCardOggetto(chiave, oggetto, quanti) {
-  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
+  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'mn' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
   const direttamente = oggetto.categoria === 'repellente';
   const usabile = suBersaglio || direttamente;
 
@@ -4808,15 +4933,56 @@ async function usaOggettoSu(chiave, idx) {
       if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
       mostraToast(`💿 ${pkm.nome} ha imparato ${dettagli.nomeIt}!`);
     } else {
-      const opzioni = pkm.mosse.map(m => m.nomeIt || m.nome);
+      // Le mosse "protette" (insegnate con una MN) non si possono scegliere
+      // per essere dimenticate qui — solo l'Elimina Mosse può farlo.
+      const scegliibili = pkm.mosse.map((m, i) => ({ m, i })).filter(x => !x.m.protetta);
+      if (scegliibili.length === 0) {
+        mostraToast(`${pkm.nome} conosce solo mosse protette (insegnate con una MN): serve l'Elimina Mosse.`);
+        return;
+      }
+      const opzioni = scegliibili.map(x => x.m.nomeIt || x.m.nome);
       const scelta = await mostraSceltaLista(
         `${pkm.nome} conosce già 4 mosse. Quale dimenticare per imparare ${dettagli.nomeIt}?`,
         opzioni
       );
       if (scelta < 0) { renderScegliBersaglio(chiave); return; }   // annullato, l'MT non si consuma
-      pkm.mosse[scelta] = { ...dettagli, pp: dettagli.ppMax };
+      const idxReale = scegliibili[scelta].i;
+      pkm.mosse[idxReale] = { ...dettagli, pp: dettagli.ppMax };
       stato.zaino[chiave] -= 1;
       if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+      mostraToast(`💿 ${pkm.nome} ha dimenticato una mossa e ha imparato ${dettagli.nomeIt}!`);
+    }
+  } else if (oggetto.categoria === 'mn') {
+    // MN (richiesta esplicita di Luca, 5 ott 2026): come una MT ma non si
+    // consuma mai, e la mossa insegnata è "protetta" (vedi sopra).
+    let dettagli;
+    try {
+      dettagli = await PokeAPI.getMossa(oggetto.mossa);
+    } catch (e) {
+      mostraToast('Errore di connessione: riprova più tardi.');
+      return;
+    }
+    if (pkm.mosse.some(m => m.nome === dettagli.nome)) {
+      mostraToast(`${pkm.nome} conosce già ${dettagli.nomeIt}!`);
+      return;
+    }
+    if (pkm.mosse.length < 4) {
+      pkm.mosse.push({ ...dettagli, pp: dettagli.ppMax, protetta: true });
+      mostraToast(`💿 ${pkm.nome} ha imparato ${dettagli.nomeIt}!`);
+    } else {
+      const scegliibili = pkm.mosse.map((m, i) => ({ m, i })).filter(x => !x.m.protetta);
+      if (scegliibili.length === 0) {
+        mostraToast(`${pkm.nome} conosce solo mosse protette: serve l'Elimina Mosse prima.`);
+        return;
+      }
+      const opzioni = scegliibili.map(x => x.m.nomeIt || x.m.nome);
+      const scelta = await mostraSceltaLista(
+        `${pkm.nome} conosce già 4 mosse. Quale dimenticare per imparare ${dettagli.nomeIt}?`,
+        opzioni
+      );
+      if (scelta < 0) { renderScegliBersaglio(chiave); return; }
+      const idxReale = scegliibili[scelta].i;
+      pkm.mosse[idxReale] = { ...dettagli, pp: dettagli.ppMax, protetta: true };
       mostraToast(`💿 ${pkm.nome} ha dimenticato una mossa e ha imparato ${dettagli.nomeIt}!`);
     }
   } else if (oggetto.categoria === 'held') {

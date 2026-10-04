@@ -9681,6 +9681,64 @@
        "value": "da_albano_condominio_b"
       }
      ]
+    },
+    {
+     "id": 177,
+     "name": "warp_scuola",
+     "type": "",
+     "point": true,
+     "x": 64,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "albano_scuola"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_citta"
+      },
+      {
+       "name": "nota_origine",
+       "type": "string",
+       "value": "placeholder, da riposizionare - ingresso Scuola"
+      }
+     ]
+    },
+    {
+     "id": 178,
+     "name": "spawn_da_scuola",
+     "type": "",
+     "point": true,
+     "x": 96,
+     "y": 0,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_scuola"
+      }
+     ]
     }
    ],
    "opacity": 1,
