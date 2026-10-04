@@ -1260,7 +1260,7 @@ const GameMap = (function () {
   // forza il ricaricamento di TUTTI i tileset al prossimo commit, anche se
   // il telefono ne aveva già una versione vecchia salvata. Da alzare a
   // mano quando serve essere sicuri che un test veda i file freschi.
-  const CACHE_BUST = 'v=20261004';
+  const CACHE_BUST = 'v=20261006';
 
   const TILESET_IMMAGINI = {
     // Questi 5 puntavano dentro "Essentials FRLG/" (cartella SOLO locale,
@@ -6402,9 +6402,6 @@ const GameMap = (function () {
             'Non... non è possibile. Avevo programmato tutto, ogni singola variabile, ogni singolo dettaglio.',
             'Come diavolo è possibile che un allenatore qualunque mandi all\'aria anni di lavoro in un pomeriggio?',
           ]);
-          await mostraDialogo('Tom', [
-            'Filiamo, ragazzi. Ora chi lo sente, il Capo... sarà furioso.',
-          ]);
         }
         if (premio > 0 && typeof mostraToast === 'function') {
           mostraToast(`Hai ricevuto ₽${premio} per la vittoria!`, 3200);
@@ -6439,14 +6436,21 @@ const GameMap = (function () {
           }
         }
 
-        // Ora Tom E Maso si girano ENTRAMBI verso sud, poi spariscono
-        // INSIEME con un'unica dissolvenza (fix 6 ott 2026: prima erano
-        // due dissolvenze separate, una per Tom e una per Maso).
+        // Ora Tom E Maso si girano ENTRAMBI verso sud, Tom dice la battuta
+        // finale ("Filiamo, ragazzi" — SPOSTATA qui, fix 6 ott 2026: prima
+        // veniva detta subito dopo la sconfitta, troppo presto secondo
+        // Luca), poi spariscono INSIEME con un'unica dissolvenza (prima
+        // erano due dissolvenze separate, una per Tom e una per Maso).
         boss.dir = 'sud';
         if (boss.sprite) this._setNpcFrame(boss.sprite, 'sud', false);
         if (maso) {
           maso.dir = 'sud';
           if (maso.sprite) this._setNpcFrame(maso.sprite, 'sud', false);
+        }
+        if (typeof mostraDialogo === 'function') {
+          await mostraDialogo('Tom', [
+            'Filiamo, ragazzi. Ora chi lo sente, il Capo... sarà furioso.',
+          ]);
         }
         await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
         stato.flags.osservatorio_boss_area_attiva = false;   // Tom e scagnozzi spariscono per sempre
