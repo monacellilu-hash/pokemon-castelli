@@ -4892,6 +4892,21 @@ const GameMap = (function () {
         if (trovato) break;
       }
 
+      // "Parlare attraverso il bancone" (richiesta esplicita di Luca, 4 ott
+      // 2026 — come nei giochi originali: bancone di Market/Centro Pokémon
+      // spesso profondo 2 celle, col commesso/infermiera sulla cella più
+      // lontana). Se la casella che guardi è un ostacolo solido e lì non
+      // c'è nessun evento, guarda UNA casella più in là nella STESSA
+      // direzione (mai di lato): se c'è un NPC/allenatore, si interagisce
+      // comunque. Prima di questa modifica il raggio d'azione era sempre e
+      // solo 1 casella, qualunque fosse la profondità del bancone.
+      if (!trovato && collGrid && collGrid[fty] && collGrid[fty][ftx] === 1 &&
+          (facciata === 'left' || facciata === 'right' || facciata === 'up' || facciata === 'down')) {
+        const ftx2 = posTile.tx + (facciata === 'right' ? 2 : facciata === 'left' ? -2 : 0);
+        const fty2 = posTile.ty + (facciata === 'down'  ? 2 : facciata === 'up'   ? -2 : 0);
+        trovato = this._eventoInCasella(ftx2, fty2);
+      }
+
       // Il pulsante [A] ora è sempre visibile e senza etichetta (sess. 5 set
       // 2026, richiesta esplicita: niente più popup col nome di chi hai
       // vicino) — qui basta aggiornare eventoVicino, il click lo controlla
