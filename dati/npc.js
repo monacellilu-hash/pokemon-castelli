@@ -895,7 +895,7 @@ const DATI_NPC = {
      attivo, impostata/tolta da _cutsceneBossFinaleOsservatorio in map.js),
      niente azione: lo script lo pilota direttamente via npcStato. -- */
   'maso_cotral_osservatorio_2f': {
-    sprite: 'Grunt_Cotral_uomo', nome: 'Maso', direzione: 'est', movimento: 'fisso',
+    sprite: 'trainer_RIVAL', nome: 'Maso', direzione: 'est', movimento: 'fisso',
   },
 
   /* -- Grunt CoTrAL che blocca Percorso Monte Po 3 (sess. 6 ott 2026,

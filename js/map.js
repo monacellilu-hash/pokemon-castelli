@@ -6407,22 +6407,16 @@ const GameMap = (function () {
         await this._rigeneraNpc();
         await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 400 });
 
-        // Tom si gira verso ovest, saluta Maso, poi sparisce per sempre
-        // insieme a tutti gli altri CoTrAL dell'Osservatorio.
-        boss.dir = 'ovest';
-        if (boss.sprite) this._setNpcFrame(boss.sprite, 'ovest', false);
+        // Tom saluta Maso (senza girarsi ancora — resta rivolto verso il
+        // giocatore come dopo la lotta). Fix 6 ott 2026, segnalato da Luca:
+        // prima Tom si girava subito a ovest, sbagliato.
         if (typeof mostraDialogo === 'function') {
           await mostraDialogo('Tom', [
             'Ciao Maso, benvenuto! Sai già che fare, ci vediamo più tardi!',
           ]);
         }
-        stato.flags.osservatorio_boss_area_attiva = false;   // Tom e scagnozzi spariscono per sempre
-        await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
-        await this._rigeneraNpc();
-        await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
 
-        // Maso cammina 10 celle a est e 2 a sud, parla, poi sparisce per
-        // sempre (richiesta esplicita di Luca).
+        // Maso cammina 10 celle a est e 2 a sud, poi parla.
         const maso = npcStato.find(s => s.id === 'maso_cotral_osservatorio_2f');
         if (maso) {
           await this._camminaNpcA(maso, maso.homeTx + 10, maso.homeTy + 2, 14);
@@ -6431,11 +6425,22 @@ const GameMap = (function () {
               'Eccomi qui, pronto e operativo, non ci fermerete mai!',
             ]);
           }
-          await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
-          stato.flags.maso_osservatorio_attivo = false;
-          await this._rigeneraNpc();
-          await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
         }
+
+        // Ora Tom E Maso si girano ENTRAMBI verso sud, poi spariscono
+        // INSIEME con un'unica dissolvenza (fix 6 ott 2026: prima erano
+        // due dissolvenze separate, una per Tom e una per Maso).
+        boss.dir = 'sud';
+        if (boss.sprite) this._setNpcFrame(boss.sprite, 'sud', false);
+        if (maso) {
+          maso.dir = 'sud';
+          if (maso.sprite) this._setNpcFrame(maso.sprite, 'sud', false);
+        }
+        await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+        stato.flags.osservatorio_boss_area_attiva = false;   // Tom e scagnozzi spariscono per sempre
+        stato.flags.maso_osservatorio_attivo = false;        // Maso sparisce con loro
+        await this._rigeneraNpc();
+        await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
 
         // Camilla si mette davanti al giocatore (la cella che hai di fronte
         // mentre guardi) e lancia l'appello a diventare Campione.

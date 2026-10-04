@@ -3500,11 +3500,17 @@ const DATI_TRAINER = {
   // non leggendari di taglia pseudo-leggendaria per reggere il ruolo di
   // vero boss dell'intero dungeon — nessuno nel resto dell'Osservatorio
   // arriva a questo livello.
+  // Corretto il 6 ott 2026 (richiesta esplicita di Luca): Tom NON ha
+  // Zapdos in squadra qui — quello vero compare solo con Maso nella
+  // battaglia finale post-Lega su Percorso Monte Po 3, catturabile solo
+  // dopo averlo battuto. Sostituito con Ampharos (stesso tema "energia
+  // elettrica" dell'esperimento, senza essere il leggendario vero).
+  // Sprite di Tom allineato a Maso: entrambi "cloni", stesso trainer_RIVAL.
   'cotral_boss_osservatorio': {
-    sprite: 'NPC', ritratto: 'trainer_ROCKETBOSS', vista: 0,
+    sprite: 'trainer_RIVAL', ritratto: 'trainer_ROCKETBOSS', vista: 0,
     classe: 'Comandante CoTrAL', nome: 'Tom',
     squadra: [
-      { id: 145, livello: 58 },   // Zapdos
+      { id: 181, livello: 58 },   // Ampharos
       { id: 385, livello: 58 },   // Jirachi
       { id: 306, livello: 59 },   // Aggron
       { id: 350, livello: 59 },   // Milotic
