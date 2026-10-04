@@ -144,6 +144,13 @@ const Battle = (function () {
   let indiceNemico = 0;           // quale Pokémon nemico è in campo
   let fuggireImpossibile = false; // F11: true per i leggendari (fuga bloccata)
   let nienteTeleportSuSconfitta = false; // vedi avvia(): solo la 1a lotta col rivale nel lab
+  // Switch volontario dell'IA (sess. 6 ott 2026, hack dedicato per Maso su
+  // Percorso Monte Po 3 — richiesta esplicita di Luca, NON un comportamento
+  // generale degli allenatori): attivo solo se datiAllenatore.switchIntelligente
+  // è true. Cambia Pokémon se uno in panchina è nettamente più efficace di
+  // quello in campo contro il nostro, non più spesso di una volta ogni 3 turni.
+  let numeroTurnoBattaglia = 0;
+  let ultimoSwitchVolontarioTurno = -99;
 
   // ---- Lotta in DOPPIO (2 allenatori vedono il giocatore insieme, vedi map.js
   // _trainerSpottaDoppia): motore parallelo, separato da quello 1v1 sopra, per
@@ -1948,9 +1955,17 @@ const Battle = (function () {
     for (const voce of scorteCuraNemico) {
       if (voce.quantita <= 0) continue;
       const og = OGGETTI[voce.chiave];
-      if (!og || !og.cura) continue;
+      if (!og) continue;
+      // Cura Totale (categoria 'curatotale', es. le "ricariche" di Maso,
+      // sess. 6 ott 2026): niente campo "cura" numerico, guarisce SEMPRE
+      // tutti gli HP + qualsiasi stato — trattato come "basta da solo".
+      if (og.categoria === 'curatotale') {
+        if (!bastaDaSolo || bastaDaSolo.og.categoria !== 'curatotale') bastaDaSolo = { voce, og };
+        continue;
+      }
+      if (!og.cura) continue;
       if (og.cura >= mancanti) {
-        if (!bastaDaSolo || og.cura < bastaDaSolo.og.cura) bastaDaSolo = { voce, og };
+        if (!bastaDaSolo || (bastaDaSolo.og.categoria !== 'curatotale' && og.cura < bastaDaSolo.og.cura)) bastaDaSolo = { voce, og };
       } else if (!megliOpzioneParziale || og.cura > megliOpzioneParziale.og.cura) {
         megliOpzioneParziale = { voce, og };
       }
@@ -1958,20 +1973,64 @@ const Battle = (function () {
     return bastaDaSolo || megliOpzioneParziale;
   }
 
+  // Switch volontario dell'IA — hack dedicato a Maso (sess. 6 ott 2026),
+  // non un comportamento generale: attivo solo con datiAllenatore.
+  // switchIntelligente === true. Cerca in panchina un Pokémon nettamente
+  // più efficace (STAB ≥2×) contro il nostro Pokémon in campo rispetto a
+  // quello attualmente schierato; se lo trova, switcha con il 70% di
+  // probabilità, non più di una volta ogni 3 turni. Ritorna true se ha
+  // switchato (consuma il turno, niente attacco quel giro).
+  async function _provaSwitchNemico() {
+    if (!datiAllenatore || !datiAllenatore.switchIntelligente) return false;
+    if (!nemico || nemico.hpAttuale <= 0 || !mio) return false;
+    if (squadraNemica.length <= 1) return false;
+    if (numeroTurnoBattaglia - ultimoSwitchVolontarioTurno < 3) return false;
+
+    const efficaciaMax = (ist) => ist.tipi.reduce((max, t) => Math.max(max, efficacia(t, mio.tipi)), 0);
+    const efficaciaAttuale = efficaciaMax(nemico);
+
+    let migliore = null, migliorEfficacia = efficaciaAttuale;
+    for (let i = 0; i < squadraNemica.length; i++) {
+      if (i === indiceNemico) continue;
+      const candidato = squadraNemica[i];
+      if (!candidato || candidato.hpAttuale <= 0) continue;
+      const eff = efficaciaMax(candidato);
+      if (eff >= 2 && eff > migliorEfficacia) { migliore = i; migliorEfficacia = eff; }
+    }
+    if (migliore === null) return false;
+    if (Math.random() > 0.7) return false;   // "può deciderlo", non sempre
+
+    ultimoSwitchVolontarioTurno = numeroTurnoBattaglia;
+    const vecchio = nemico;
+    indiceNemico = migliore;
+    nemico = squadraNemica[indiceNemico];
+    aggiornaPannelli();
+    await di(`${etichettaNemico()} ritira ${vecchio.nome}!`);
+    await di(`${etichettaNemico()} manda in campo ${nemico.nome}!`);
+    return true;
+  }
+
   // IA di cura dell'allenatore (sess. 1 ott 2026, richiesta di Luca: i
   // capipalestra devono potersi curare, non solo attaccare — prima
   // rendeva le palestre troppo facili). Si cura quando è sotto metà vita
-  // E ha ancora scorte: consuma il turno (niente attacco quello stesso
-  // giro), come nel gioco vero. Ritorna true se si è curato.
+  // (o ha uno stato alterato, esteso il 6 ott 2026 per le "ricariche" di
+  // Maso) E ha ancora scorte: consuma il turno (niente attacco quello
+  // stesso giro), come nel gioco vero. Ritorna true se si è curato.
   async function _provaCuraNemico() {
     if (!scorteCuraNemico || !nemico || nemico.hpAttuale <= 0) return false;
     const mancanti = nemico.hpMax - nemico.hpAttuale;
-    if (mancanti <= 0) return false;
-    if (nemico.hpAttuale / nemico.hpMax > 0.5) return false;
+    const haStato = !!nemico.condizione;
+    if (mancanti <= 0 && !haStato) return false;
+    if (nemico.hpAttuale / nemico.hpMax > 0.5 && !haStato) return false;
     const scelta = _scegliOggettoCuraNemico(mancanti);
     if (!scelta) return false;
     scelta.voce.quantita -= 1;
-    nemico.hpAttuale = Math.min(nemico.hpMax, nemico.hpAttuale + scelta.og.cura);
+    if (scelta.og.categoria === 'curatotale') {
+      nemico.hpAttuale = nemico.hpMax;
+      nemico.condizione = null;
+    } else {
+      nemico.hpAttuale = Math.min(nemico.hpMax, nemico.hpAttuale + scelta.og.cura);
+    }
     aggiornaPannelli();
     await di(`${etichettaNemico()} usa ${scelta.og.nome} su ${nemico.nome}!`);
     return true;
@@ -1992,7 +2051,8 @@ const Battle = (function () {
   // o fallisce la fuga): attacca, poi scattano i danni da stato. Prima prova
   // a curarsi (consuma il turno, niente attacco quel giro se lo fa).
   async function turnoNemicoEFine() {
-    if (!(await _provaCuraNemico())) {
+    numeroTurnoBattaglia += 1;
+    if (!(await _provaSwitchNemico()) && !(await _provaCuraNemico())) {
       await eseguiTurno(nemico, mio, scegliMossaNemico(), etichettaNemico(), mio.nome);
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     }
@@ -2009,8 +2069,9 @@ const Battle = (function () {
   // attacca comunque, il nemico no.
   async function turnoCompleto(mossaMia) {
     nascondiMenu();
+    numeroTurnoBattaglia += 1;
 
-    if (await _provaCuraNemico()) {
+    if ((await _provaSwitchNemico()) || (await _provaCuraNemico())) {
       await eseguiTurno(mio, nemico, mossaMia, mio.nome, etichettaNemico());
       if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
@@ -2815,6 +2876,8 @@ const Battle = (function () {
     scorteCuraNemico = (datiAllenatore && Array.isArray(datiAllenatore.oggettiCura))
       ? datiAllenatore.oggettiCura.map(o => ({ chiave: o.chiave, quantita: o.quantita }))
       : null;
+    numeroTurnoBattaglia = 0;
+    ultimoSwitchVolontarioTurno = -99;
     fuggireImpossibile = opzioni.fuggireImpossibile || false;
     // Richiesta esplicita di Luca: la primissima lotta col rivale nel
     // laboratorio è l'UNICO caso in tutto il gioco in cui una sconfitta non
@@ -2887,7 +2950,15 @@ const Battle = (function () {
         const facile = statoGioco && statoGioco.difficolta === 'facile';
         for (const voce of datiAllenatore.squadra) {
           const livello = facile ? Math.max(2, voce.livello - 2) : voce.livello;
-          squadraNemica.push(await creaIstanza(voce.id, livello));
+          const istanza = await creaIstanza(voce.id, livello);
+          // "Cloni" con le mosse ESATTE di un Pokémon del giocatore (hack
+          // dedicato a Maso, sess. 6 ott 2026): voce.mosseOverride è un
+          // array già pronto (copiato da pkm.mosse altrove), sostituisce
+          // il moveset normale deciso da creaIstanza/scegliMosse.
+          if (Array.isArray(voce.mosseOverride) && voce.mosseOverride.length > 0) {
+            istanza.mosse = voce.mosseOverride.map(m => ({ ...m, pp: m.ppMax }));
+          }
+          squadraNemica.push(istanza);
         }
         indiceNemico = 0;
         nemico = squadraNemica[0];

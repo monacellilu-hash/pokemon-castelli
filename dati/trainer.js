@@ -3584,4 +3584,83 @@ const DATI_TRAINER = {
     dialogo_dopo: '...Va bene, hai vinto. Passa pure, tanto ormai non importa più niente.',
     premio: 2600,
   },
+
+  /* ── Maso — battaglia finale post-Lega (Percorso Monte Po 3, sess. 6 ott
+     2026). Squadra VERA calcolata a runtime da costruisciSquadraMaso()
+     (Zapdos + fino a 5 cloni della squadra del giocatore, vedi app.js) —
+     "squadra: []" qui è solo un placeholder, _cutsceneMasoMontepo3 in
+     map.js la sostituisce prima di Battle.avvia(). switchIntelligente +
+     oggettiCura (4 Cura Totale) sono il "hack dedicato" richiesto da Luca,
+     vedi battle.js (_provaSwitchNemico/_provaCuraNemico esteso). ── */
+  'maso_montepo3_finale': {
+    sprite: 'trainer_RIVAL', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'CoTrAL', nome: 'Maso',
+    squadra: [],
+    switchIntelligente: true,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 4 }],
+    flagVittoria: 'maso_montepo3_sconfitto',   // sblocca anche la cattura di Zapdos
+    dialogo_prima: 'Ahahah, troppo tardi pivello, adesso fatti sotto.',
+    dialogo_dopo: 'Com\'è possibile che tu abbia questo culo... forse sto sbagliando qualcosa, chissà.',
+    premio: 8000,
+  },
+
+  /* ── Grunt CoTrAL di pattuglia su Percorso Monte Po 1 (sess. 6 ott 2026,
+     Victory_Path.world) — piazzati da Luca senza dettagli, squadre generiche
+     coerenti con la zona (vicino a Via Vittoria, cap60). ── */
+  'grunt_montepo1_1': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [ { id: 42, livello: 56 }, { id: 169, livello: 57 } ],
+    dialogo_prima: 'Zona di pattuglia. Non dovresti essere qui.',
+    dialogo_dopo: 'Vabbè, passa pure.',
+    premio: 1100,
+  },
+  'grunt_montepo1_2': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetta',
+    squadra: [ { id: 330, livello: 56 }, { id: 376, livello: 57 } ],
+    dialogo_prima: 'Non hai niente da fare qui intorno!',
+    dialogo_dopo: 'Figurati se mi fermi davvero...',
+    premio: 1100,
+  },
+  'grunt_montepo1_3': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [ { id: 306, livello: 57 }, { id: 232, livello: 58 } ],
+    dialogo_prima: 'Fuori dai piedi, è zona nostra.',
+    dialogo_dopo: 'Avviserò gli altri...',
+    premio: 1150,
+  },
+  'grunt_montepo1_4': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetta',
+    squadra: [ { id: 319, livello: 57 }, { id: 365, livello: 58 } ],
+    dialogo_prima: 'Dovevi fermarti al cancello, sai?',
+    dialogo_dopo: 'Mmh, forte più di quanto pensassi.',
+    premio: 1150,
+  },
+  'grunt_montepo1_5': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [ { id: 248, livello: 58 }, { id: 373, livello: 59 } ],
+    dialogo_prima: 'Siamo in tanti qui intorno. Hai sbagliato strada.',
+    dialogo_dopo: 'Tiè, passa, ma stai attento.',
+    premio: 1200,
+  },
+  'grunt_montepo1_6': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetta',
+    squadra: [ { id: 350, livello: 58 }, { id: 303, livello: 59 } ],
+    dialogo_prima: 'Maso è proprio lì avanti, non ti conviene continuare.',
+    dialogo_dopo: 'Fai come vuoi, sono solo io.',
+    premio: 1200,
+  },
+  'grunt_montepo1_7': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [ { id: 149, livello: 59 }, { id: 230, livello: 59 } ],
+    dialogo_prima: 'Ultimo avviso: torna indietro finché sei in tempo.',
+    dialogo_dopo: 'Vai pure, ma non dire che non ti avevo avvisato.',
+    premio: 1250,
+  },
 };

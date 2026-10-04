@@ -3186,6 +3186,27 @@ function costruisciSquadraRivale(tappa, assoLivelloOverride, rivaleRif) {
   return team;
 }
 
+// Squadra di Maso (battaglia finale post-Lega, Percorso Monte Po 3, sess. 6
+// ott 2026): Zapdos + fino a 5 "cloni" della squadra del giocatore, stesse
+// mosse esatte (mosseOverride, vedi battle.js), tutti 5 livelli sopra il
+// Pokémon più forte del giocatore (max 100). Se il giocatore ha meno di 5
+// Pokémon, Maso ne ha di conseguenza una squadra più corta (richiesta
+// esplicita di Luca).
+function costruisciSquadraMaso() {
+  const squadraGiocatore = stato.squadra || [];
+  const livelloMax = Math.min(100, Math.max(5, ...squadraGiocatore.map(p => p.livello || 5)) + 5);
+  const team = [{ id: 145, livello: livelloMax }];   // Zapdos, sempre primo
+  const cloni = squadraGiocatore.slice(0, 5);
+  for (const pkm of cloni) {
+    team.push({
+      id: pkm.id,
+      livello: livelloMax,
+      mosseOverride: (pkm.mosse || []).map(m => ({ ...m })),
+    });
+  }
+  return team;
+}
+
 /* ----------------------------------------------------------
    RACCOLTA OGGETTI MAPPA (F12b)
    Controlla se il giocatore è vicino (≤40 m) a un oggetto non ancora

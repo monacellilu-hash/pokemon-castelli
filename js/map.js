@@ -6474,6 +6474,53 @@ const GameMap = (function () {
       if (typeof salvaPartita === 'function') salvaPartita();
     }
 
+    // Battaglia finale con Maso (Percorso Monte Po 3, sess. 6 ott 2026):
+    // sfidabile solo dopo aver battuto il Grunt gate (quindi già post-Lega).
+    // Trigger rettangolare "trigger_maso_montepo3" (placeholder, Luca lo
+    // riposiziona in Tiled) vicino agli alberi a nord del gate.
+    _checkMasoMontepo3Trigger() {
+      if (mappaCorrente !== 'percorso_montepo_1') return;
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      if (!stato.flags) stato.flags = {};
+      if (!stato.flags.grunt_gate_montepo3_sconfitto || stato.flags.maso_montepo3_vista) return;
+      const trigger = eventiMappa.find(ev => ev.tipo === 'trigger_maso_montepo3');
+      if (!trigger) return;
+      const dentro = (trigger.w > 0 && trigger.h > 0)
+        ? (posTile.tx >= trigger.tx0 && posTile.tx <= trigger.tx1 && posTile.ty >= trigger.ty0 && posTile.ty <= trigger.ty1)
+        : (posTile.tx === trigger.tx && posTile.ty === trigger.ty);
+      if (!dentro) return;
+      this._cutsceneMasoMontepo3();
+    }
+
+    async _cutsceneMasoMontepo3() {
+      if (!stato.flags) stato.flags = {};
+      stato.flags.maso_montepo3_vista = true;
+      bloccaMovimento();
+
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Grunt CoTrAL', [
+          'Eccolo ragazzi, siamo riusciti a incastrarlo vicino agli alberi: adesso non ci scapperà!',
+        ]);
+        await mostraDialogo('', ['Zapdos emette un grido acuto: "GHIOOOOO!"']);
+      }
+      await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+      await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+
+      const maso = npcStato.find(s => s.id === 'maso_montepo3_finale');
+      if (maso) {
+        const dir = this._direzioneTraCaselle(maso.tx, maso.ty, posTile.tx, posTile.ty);
+        maso.dir = dir;
+        if (maso.sprite) this._setNpcFrame(maso.sprite, dir, false);
+      }
+
+      sbloccaMovimento();
+      if (typeof DATI_TRAINER !== 'undefined' && typeof costruisciSquadraMaso === 'function') {
+        DATI_TRAINER['maso_montepo3_finale'].squadra = costruisciSquadraMaso();
+      }
+      const datiMaso = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER['maso_montepo3_finale'] : null;
+      if (datiMaso) this._avviaLottaTrainer('maso_montepo3_finale', datiMaso, maso ? maso.ev : {});
+    }
+
     // Grunt CoTrAL dell'Osservatorio (sess. 15 set 2026, RIDISEGNATO dopo il
     // primo giro — "coppie in scatola" bocciate da Luca): ognuno è SOLO,
     // libero di girare per il piano (movimento:'random' sull'oggetto Tiled),
@@ -7553,6 +7600,7 @@ const GameMap = (function () {
       this._checkOsservatorioGruntTrigger();
       this._checkOsservatorioBossTrigger();
       this._checkOsservatorioBossFinaleTrigger();
+      this._checkMasoMontepo3Trigger();
       this._checkCamillaInvitoTrigger();
       this._checkOsservatorioConfrontoTrigger();
       this._checkTriggerProssimita();
@@ -8329,6 +8377,12 @@ const GameMap = (function () {
               this.caricaMappa('lega_pokemon', 35, 45, 'spawn_lega_ingresso');
               if (typeof salvaPartita === 'function') salvaPartita();
               return;
+            }
+            // Sconfitta contro Maso (Percorso Monte Po 3): si può riprovare,
+            // il trigger della narrazione riparte da capo (così la squadra
+            // viene ricalcolata di nuovo da costruisciSquadraMaso()).
+            if (esito === 'sconfitta' && id === 'maso_montepo3_finale') {
+              stato.flags.maso_montepo3_vista = false;
             }
             if (!gestitoAltrove) {
               sbloccaMovimento();
