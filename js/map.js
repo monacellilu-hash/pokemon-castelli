@@ -569,6 +569,57 @@ const GameMap = (function () {
       latC: 41.8337, lonC: 12.7532,
       interno: true,   // niente Volo dentro la Lega (richiesta esplicita, sess. 5 set)
     },
+    // ── Entrata Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F di FireRed,
+    // 5 ott 2026): Centro Pokémon + Market combinati, con NPC che parlano dei
+    // Superquattro. Warp verso 'lega_pokemon' placeholder, Luca lo riposiziona. ──
+    'lega_pokemon_entrata': {
+      file: 'sprites/maps_tiled/lega_pokemon_entrata.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8337, lonFissa: 12.7532,
+    },
+    // ── "Casa doppia di lusso" (ex SaffronCity_PokemonTrainerFanClub di
+    // FireRed, 5 ott 2026): Luca decide ancora in quale città piazzarla —
+    // per ora raggiungibile solo per test da console (GameMap.vaiAMappa). ──
+    'casadoppia_luxury': {
+      file: 'sprites/maps_tiled/casadoppia_luxury.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.79, lonFissa: 12.69,
+    },
+    // ── Case 5-8 (ex ThreeIsland_House2/3/4/5 di FireRed, 5 ott 2026): come
+    // casadoppia_luxury, Luca decide ancora dove piazzarle. ──
+    'casa5': { file: 'sprites/maps_tiled/casa5.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'casa6': { file: 'sprites/maps_tiled/casa6.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'casa7': { file: 'sprites/maps_tiled/casa7.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'casa8': { file: 'sprites/maps_tiled/casa8.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    // ── Percorso Monte Porzio 1-3 (ex Route21_North/South/Route23 di
+    // FireRed, 5 ott 2026): coordinate placeholder vicine a Monte Porzio,
+    // Luca le posiziona/collega lui. Niente warp funzionanti ancora — le
+    // uscite originali puntavano a mappe che qui non esistono (Victory
+    // Road/Route22), lasciate come nota per quando servirà. ──
+    'percorso_montepo_1': { file: 'sprites/maps_tiled/percorso_montepo_1.tmj', latC: 41.8180, lonC: 12.7170 },
+    'percorso_montepo_2': { file: 'sprites/maps_tiled/percorso_montepo_2.tmj', latC: 41.8180, lonC: 12.7170 },
+    'percorso_montepo_3': { file: 'sprites/maps_tiled/percorso_montepo_3.tmj', latC: 41.8180, lonC: 12.7170 },
+    // ── Grande Magazzino (ex CeladonCity_DepartmentStore di FireRed, 5 ott
+    // 2026): 6 piani (1F-5F+Roof) collegati con scale dirette piano-piano
+    // (l'ascensore originale era un meccanismo a menu non replicabile, si usa
+    // solo la scala). Trainer su 3F e Roof, venditori 2F-5F. Luca decide
+    // ancora in quale città piazzare l'ingresso. ──
+    'celadon_dept_1f':   { file: 'sprites/maps_tiled/celadon_dept_1f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_2f':   { file: 'sprites/maps_tiled/celadon_dept_2f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_3f':   { file: 'sprites/maps_tiled/celadon_dept_3f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_4f':   { file: 'sprites/maps_tiled/celadon_dept_4f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_5f':   { file: 'sprites/maps_tiled/celadon_dept_5f.tmj',   interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_dept_roof': { file: 'sprites/maps_tiled/celadon_dept_roof.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    // ── Condominio (ex CeladonCity_Condominiums di FireRed, 5 ott 2026): 5
+    // piani (1F-3F+Roof+RoofRoom) collegati con scale dirette, solo NPC
+    // random (nessun trainer/venditore). Luca decide ancora la città. ──
+    'celadon_condominio_1f':       { file: 'sprites/maps_tiled/celadon_condominio_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_condominio_2f':       { file: 'sprites/maps_tiled/celadon_condominio_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_condominio_3f':       { file: 'sprites/maps_tiled/celadon_condominio_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_condominio_roof':     { file: 'sprites/maps_tiled/celadon_condominio_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
+    'celadon_condominio_roofroom': { file: 'sprites/maps_tiled/celadon_condominio_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.79, lonFissa: 12.69 },
     // ── Colonna (città finale, post-Lega — sess. 14 set 2026): Luca ha
     // disegnato Colonna.tmj/Colonna_2.tmj e un Colonna.world che le mette in
     // fila verticale CONTIGUA con Lega_pokemon.tmj (hall in cima, poi
@@ -764,6 +815,34 @@ const GameMap = (function () {
     'palestra_genzano_interno': {
       file: 'sprites/maps_tiled/pokemon-castelli-palestra_genzano.tmj',
       interno: true,
+      latFissa: 41.7057, lonFissa: 12.6864,
+    },
+    // ── Laboratorio Rianimazione Fossili di Genzano (estratto da FireRed,
+    // CinnabarIsland_PokemonLab) — entrata fa da pivot, le altre 3 stanze si
+    // raggiungono solo passando da li'. Warp/spawn gia' collegati tra loro,
+    // solo il lato Genzano e' un placeholder da posizionare (5 ott 2026). ──
+    'genzano_laboratorio_entrata': {
+      file: 'sprites/maps_tiled/genzano_laboratorio_entrata.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.7057, lonFissa: 12.6864,
+    },
+    'genzano_laboratorio_lounge': {
+      file: 'sprites/maps_tiled/genzano_laboratorio_lounge.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.7057, lonFissa: 12.6864,
+    },
+    'genzano_laboratorio_ricerca': {
+      file: 'sprites/maps_tiled/genzano_laboratorio_ricerca.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.7057, lonFissa: 12.6864,
+    },
+    'genzano_laboratorio_esperimenti': {
+      file: 'sprites/maps_tiled/genzano_laboratorio_esperimenti.tmj',
+      interno: true,
+      bloccaVuoti: true,
       latFissa: 41.7057, lonFissa: 12.6864,
     },
     // ── Percorso 12 — confina con Genzano nel world Castelli_lasthree (si
@@ -1219,6 +1298,30 @@ const GameMap = (function () {
     'ts-casarivale-1f':      'sprites/casarivale_1f_tileset.png',
     'ts-casarivale-2f':      'sprites/casarivale_2f_tileset.png',
     'ts-negozio-bici':       'sprites/negozio_di_bici_tileset.png',
+    'ts-lab-entrata':        'sprites/genzano_laboratorio_entrata_tileset.png',
+    'ts-lab-lounge':         'sprites/genzano_laboratorio_lounge_tileset.png',
+    'ts-lab-ricerca':        'sprites/genzano_laboratorio_ricerca_tileset.png',
+    'ts-lab-esperimenti':    'sprites/genzano_laboratorio_esperimenti_tileset.png',
+    'ts-lega-entrata':       'sprites/lega_pokemon_entrata_tileset.png',
+    'ts-casadoppia-lux':     'sprites/casadoppia_luxury_tileset.png',
+    'ts-casa5':              'sprites/casa5_tileset.png',
+    'ts-casa6':              'sprites/casa6_tileset.png',
+    'ts-casa7':              'sprites/casa7_tileset.png',
+    'ts-casa8':              'sprites/casa8_tileset.png',
+    'ts-pmontepo1':          'sprites/percorso_montepo_1_tileset.png',
+    'ts-pmontepo2':          'sprites/percorso_montepo_2_tileset.png',
+    'ts-pmontepo3':          'sprites/percorso_montepo_3_tileset.png',
+    'ts-dept-1f':            'sprites/celadon_dept_1f_tileset.png',
+    'ts-dept-2f':            'sprites/celadon_dept_2f_tileset.png',
+    'ts-dept-3f':            'sprites/celadon_dept_3f_tileset.png',
+    'ts-dept-4f':            'sprites/celadon_dept_4f_tileset.png',
+    'ts-dept-5f':            'sprites/celadon_dept_5f_tileset.png',
+    'ts-dept-roof':          'sprites/celadon_dept_roof_tileset.png',
+    'ts-cond-1f':            'sprites/celadon_condominio_1f_tileset.png',
+    'ts-cond-2f':            'sprites/celadon_condominio_2f_tileset.png',
+    'ts-cond-3f':            'sprites/celadon_condominio_3f_tileset.png',
+    'ts-cond-roof':          'sprites/celadon_condominio_roof_tileset.png',
+    'ts-cond-roofroom':      'sprites/celadon_condominio_roofroom_tileset.png',
   };
   Object.assign(TILESET_META, {
     'sub':        { key: 'ts-sub',        tw: 32, th: 32, cols: 4  },
@@ -1235,6 +1338,31 @@ const GameMap = (function () {
     'casarivale_1f_tileset':         { key: 'ts-casarivale-1f',   tw: 32, th: 32, cols: 16 },
     'casarivale_2f_tileset':         { key: 'ts-casarivale-2f',   tw: 32, th: 32, cols: 16 },
     'negozio_di_bici_tileset':       { key: 'ts-negozio-bici',    tw: 32, th: 32, cols: 16 },
+    // Laboratorio Rianimazione Fossili di Genzano (da FireRed, 5 ott 2026).
+    'genzano_laboratorio_entrata_tileset':     { key: 'ts-lab-entrata',     tw: 32, th: 32, cols: 16 },
+    'genzano_laboratorio_lounge_tileset':      { key: 'ts-lab-lounge',      tw: 32, th: 32, cols: 16 },
+    'genzano_laboratorio_ricerca_tileset':     { key: 'ts-lab-ricerca',     tw: 32, th: 32, cols: 16 },
+    'genzano_laboratorio_esperimenti_tileset': { key: 'ts-lab-esperimenti', tw: 32, th: 32, cols: 16 },
+    'lega_pokemon_entrata_tileset':   { key: 'ts-lega-entrata',   tw: 32, th: 32, cols: 16 },
+    'casadoppia_luxury_tileset':      { key: 'ts-casadoppia-lux', tw: 32, th: 32, cols: 16 },
+    'casa5_tileset':                  { key: 'ts-casa5', tw: 32, th: 32, cols: 16 },
+    'casa6_tileset':                  { key: 'ts-casa6', tw: 32, th: 32, cols: 16 },
+    'casa7_tileset':                  { key: 'ts-casa7', tw: 32, th: 32, cols: 16 },
+    'casa8_tileset':                  { key: 'ts-casa8', tw: 32, th: 32, cols: 16 },
+    'percorso_montepo_1_tileset':     { key: 'ts-pmontepo1', tw: 32, th: 32, cols: 16 },
+    'percorso_montepo_2_tileset':     { key: 'ts-pmontepo2', tw: 32, th: 32, cols: 16 },
+    'percorso_montepo_3_tileset':     { key: 'ts-pmontepo3', tw: 32, th: 32, cols: 16 },
+    'celadon_dept_1f_tileset':        { key: 'ts-dept-1f',   tw: 32, th: 32, cols: 16 },
+    'celadon_dept_2f_tileset':        { key: 'ts-dept-2f',   tw: 32, th: 32, cols: 16 },
+    'celadon_dept_3f_tileset':        { key: 'ts-dept-3f',   tw: 32, th: 32, cols: 16 },
+    'celadon_dept_4f_tileset':        { key: 'ts-dept-4f',   tw: 32, th: 32, cols: 16 },
+    'celadon_dept_5f_tileset':        { key: 'ts-dept-5f',   tw: 32, th: 32, cols: 16 },
+    'celadon_dept_roof_tileset':      { key: 'ts-dept-roof', tw: 32, th: 32, cols: 16 },
+    'celadon_condominio_1f_tileset':       { key: 'ts-cond-1f',   tw: 32, th: 32, cols: 16 },
+    'celadon_condominio_2f_tileset':       { key: 'ts-cond-2f',   tw: 32, th: 32, cols: 16 },
+    'celadon_condominio_3f_tileset':       { key: 'ts-cond-3f',   tw: 32, th: 32, cols: 16 },
+    'celadon_condominio_roof_tileset':     { key: 'ts-cond-roof', tw: 32, th: 32, cols: 16 },
+    'celadon_condominio_roofroom_tileset': { key: 'ts-cond-roofroom', tw: 32, th: 32, cols: 16 },
   });
 
   /* ══════════════════════════════════════════════════════════

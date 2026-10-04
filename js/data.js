@@ -3330,6 +3330,25 @@ const POKE_MARKET = [
   { id: 'mk-colonna', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
     merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante'] },
 
+  // Market dell'Entrata della Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F
+  // di FireRed, 5 ott 2026): ultima tappa di rifornimento prima della sfida
+  // finale, stessa logica end-game del market di Colonna.
+  { id: 'mk-lega', comune: 'Lega Pokémon', lat: 41.8337, lon: 12.7532,
+    merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante'] },
+
+  // Grande Magazzino (ex CeladonCity_DepartmentStore di FireRed, 5 ott
+  // 2026): un negozio per piano, merce via via più avanzata salendo.
+  { id: 'mk-dept-2f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
+    merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'antidototot'] },
+  { id: 'mk-dept-3f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
+    merce: ['iperpozione', 'revitalizzante', 'elisir', 'repellente', 'massimorepellente'] },
+  { id: 'mk-dept-4f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
+    merce: ['pietra_foglia', 'pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_luna'] },
+  { id: 'mk-dept-5f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
+    merce: ['ultraball', 'maxpozione', 'elisir', 'revitalizzante'] },
+  { id: 'mk-dept-5f-rari', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
+    merce: ['rimasugli', 'amomoneta', 'carbonella', 'magnete'] },
+
   // Erborista di Colonna (stesso negozio, secondo NPC — venditore speciale):
   // le 4 erbe medicinali di FireRed/LeafGreen (Essentials FRLG).
   { id: 'mk-colonna-erborista', comune: 'Colonna', lat: 41.8144, lon: 12.7607,

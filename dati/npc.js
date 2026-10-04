@@ -452,6 +452,162 @@ const DATI_NPC = {
     azione: 'apriMarketFrascati',
   },
 
+  /* ── Venditore del Poké Market dentro l'Entrata della Lega Pokémon
+     (ex IndigoPlateau_PokemonCenter_1F, estratta da FireRed il 5 ott 2026). ── */
+  'pokemon market venditore lega': {
+    sprite: 'NPC 21', nome: 'Commesso', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto! Qui trovi solo l\'occorrente per l\'ultima sfida: la Lega Pokémon.'],
+    azione: 'apriMarketLega',
+  },
+
+  /* ── NPC random dell'Entrata della Lega: parlano dei Superquattro e delle
+     loro squadre estratte a sorte (sistema a pool, vedi data.js/battle.js) —
+     nessuno sa mai in anticipo chi affronterà davvero. ── */
+  'npc_lega_entrata_superquattro_3': {
+    sprite: 'NPC 11', nome: 'Allenatore', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Il Superquattro non ha una squadra fissa: ogni sfida pescano 6 Pokémon da un pool più ampio. Non puoi prepararti del tutto!'],
+  },
+  'npc_lega_entrata_superquattro_4': {
+    sprite: 'NPC 12', nome: 'Allenatrice', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho sentito che ognuno dei Superquattro ha un "Core": il Pokémon più forte del suo pool, esce sempre per ultimo.'],
+  },
+  'npc_lega_entrata_superquattro_5': {
+    sprite: 'NPC 13', nome: 'Lottatore', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Io punto tutto sui tipi: Lotta, Roccia, Buio e Terra per il primo. Ma la squadra cambia ogni volta, quindi occhio.'],
+  },
+  'npc_lega_entrata_superquattro_6': {
+    sprite: 'NPC 14', nome: 'Visitatore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il Campione è l\'unico che non cambia mai: qui è Remo. Buona fortuna, ne avrai bisogno.'],
+  },
+  'npc_lega_entrata_superquattro_7': {
+    sprite: 'NPC 10', nome: 'Allenatore', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Niente leggendari nei pool del Superquattro, almeno quello è garantito.'],
+  },
+  'npc_lega_entrata_superquattro_8': {
+    sprite: 'NPC 09', nome: 'Allenatrice', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Cura bene la squadra prima di entrare: una volta dentro la Lega non si torna indietro facilmente.'],
+  },
+
+  /* ── Venditori del Grande Magazzino (ex CeladonCity_DepartmentStore,
+     estratto da FireRed il 5 ott 2026) — un negozio per piano (2F-5F,
+     il 5F ne ha due). ── */
+  'pokemon market venditore dept 2f': {
+    sprite: 'NPC 21', nome: 'Commesso', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto al 2° piano! Qui trovi Poké Ball di ogni tipo.'],
+    azione: 'apriMarketDept2f',
+  },
+  'pokemon market venditore dept 3f': {
+    sprite: 'NPC 21', nome: 'Commessa', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['3° piano: oggetti curativi e accessori per l\'allenamento.'],
+    azione: 'apriMarketDept3f',
+  },
+  'pokemon market venditore dept 4f': {
+    sprite: 'NPC 21', nome: 'Commesso', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['4° piano: MT ed evolutivi, se li trovi li porti a casa.'],
+    azione: 'apriMarketDept4f',
+  },
+  'pokemon market venditore dept 5f': {
+    sprite: 'NPC 21', nome: 'Commessa', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['5° piano, reparto oggetti rari!'],
+    azione: 'apriMarketDept5f',
+  },
+  'pokemon market venditore dept 5f b': {
+    sprite: 'NPC 06', nome: 'Commesso', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Io vendo le chicche più particolari del magazzino.'],
+    azione: 'apriMarketDept5fB',
+  },
+
+  /* ── NPC random del Grande Magazzino: chiacchiere da centro commerciale,
+     ogni piano il suo. ── */
+  'npc_dept_random_1': {
+    sprite: 'NPC 18', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Questo negozio ha di tutto, potrei passarci la giornata!'],
+  },
+  'npc_dept_random_2': {
+    sprite: 'NPC 15', nome: 'Inserviente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Benvenuto al Grande Magazzino! Sei al piano terra.'],
+  },
+  'npc_dept_random_3': {
+    sprite: 'NPC 06', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Le Poké Ball qui costano un po\' care, ma valgono il prezzo.'],
+  },
+  'npc_dept_random_4': {
+    sprite: 'NPC 10', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho sentito che al 5° piano vendono roba davvero rara.'],
+  },
+  'npc_dept_random_5': {
+    sprite: 'NPC 13', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Sto cercando un regalo per il mio Pokémon preferito.'],
+  },
+  'npc_dept_random_6': {
+    sprite: 'NPC 09', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Le MT qui sopra sono utilissime per completare la squadra.'],
+  },
+  'npc_dept_random_7': {
+    sprite: 'NPC 11', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Certe pietre evolutive si trovano solo qui, lo sapevi?'],
+  },
+  'npc_dept_random_8': {
+    sprite: 'NPC 12', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Sono salito fin qui solo per il reparto oggetti rari.'],
+  },
+  'npc_dept_random_9': {
+    sprite: 'NPC 14', nome: 'Cliente', direzione: 'sud', movimento: 'random',
+    dialogo: ['Che vista dall\'ultimo piano, si vede tutta la città!'],
+  },
+
+  /* ── NPC random del Condominio (ex CeladonCity_Condominiums, estratto da
+     FireRed il 5 ott 2026): chiacchiere da palazzo residenziale, uno per
+     piano come richiesto, nessun venditore/trainer qui. ── */
+  'npc_condominio_random_1': {
+    sprite: 'NPC 18', nome: 'Inquilino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Questo condominio è tranquillo, mi piace abitarci.'],
+  },
+  'npc_condominio_random_2': {
+    sprite: 'NPC 06', nome: 'Inquilina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il mio Pokémon adora passeggiare per i corridoi.'],
+  },
+  'npc_condominio_random_3': {
+    sprite: 'NPC 10', nome: 'Vicino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Al piano sopra abita un allenatore piuttosto famoso, dicono.'],
+  },
+  'npc_condominio_random_4': {
+    sprite: 'NPC 13', nome: 'Vicina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Le scale sono tante, ma la vista dal tetto vale la salita.'],
+  },
+  'npc_condominio_random_5': {
+    sprite: 'NPC 09', nome: 'Inquilino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho appena traslocato qui, ancora mi perdo tra i piani.'],
+  },
+  'npc_condominio_random_6': {
+    sprite: 'NPC 11', nome: 'Inquilina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Qui si sta benissimo, peccato per le scale senza ascensore.'],
+  },
+  'npc_condominio_random_7': {
+    sprite: 'NPC 12', nome: 'Vicino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Mio nonno abita a questo piano da una vita.'],
+  },
+  'npc_condominio_random_8': {
+    sprite: 'NPC 14', nome: 'Vicina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Certe sere si sentono rumori strani dal tetto...'],
+  },
+  'npc_condominio_random_9': {
+    sprite: 'NPC 15', nome: 'Inquilino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Sto innaffiando le piante sul balcone, torna più tardi se vuoi parlare.'],
+  },
+  'npc_condominio_random_10': {
+    sprite: 'NPC 07', nome: 'Inquilina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho sentito dire che in cima al palazzo c\'è una stanza segreta.'],
+  },
+  'npc_condominio_random_11': {
+    sprite: 'NPC 08', nome: 'Vicino', direzione: 'sud', movimento: 'random',
+    dialogo: ['Siamo arrivati in cima! Che vista magnifica da qui.'],
+  },
+  'npc_condominio_random_12': {
+    sprite: 'NPC 17', nome: 'Vicina', direzione: 'sud', movimento: 'random',
+    dialogo: ['Questa stanzetta sul tetto è il mio posto preferito di tutto il palazzo.'],
+  },
+
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */

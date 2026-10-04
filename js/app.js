@@ -1601,6 +1601,17 @@ function apriMarketGenzano() { apriMarketVenditore('mk-genzano'); }
 function apriVenditoreSpecialeGenzano() { apriMarketVenditore('mk-genzano-speciale'); }
 function apriMarketGrottaferrata() { apriMarketVenditore('mk-grottaferrata'); }
 
+// Market dell'Entrata della Lega Pokémon (merce end-game, ultima tappa prima
+// della sfida finale — sess. 5 ott 2026).
+function apriMarketLega() { apriMarketVenditore('mk-lega'); }
+
+// Venditori del Grande Magazzino (sess. 5 ott 2026): un negozio per piano.
+function apriMarketDept2f() { apriMarketVenditore('mk-dept-2f'); }
+function apriMarketDept3f() { apriMarketVenditore('mk-dept-3f'); }
+function apriMarketDept4f() { apriMarketVenditore('mk-dept-4f'); }
+function apriMarketDept5f() { apriMarketVenditore('mk-dept-5f'); }
+function apriMarketDept5fB() { apriMarketVenditore('mk-dept-5f-rari'); }
+
 // Market di Colonna (città finale, post-Lega): merce end-game + l'Erborista
 // come secondo venditore, stesso schema "venditore speciale" delle altre città.
 function apriMarketColonna() { apriMarketVenditore('mk-colonna'); }

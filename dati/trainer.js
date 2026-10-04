@@ -3509,4 +3509,49 @@ const DATI_TRAINER = {
     ],
     premio: 6000,
   },
+
+  /* ── Grande Magazzino (ex CeladonCity_DepartmentStore, estratto da
+     FireRed il 5 ott 2026) — 3 allenatori al 3°F, 2 sul tetto. Livelli
+     generici medio-alti: Luca deciderà in quale punto del percorso
+     inserire l'edificio e potrà ritararli. ── */
+  'all-dept-1': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    classe: 'Ragazzino', nome: 'Pietro',
+    squadra: [ { id: 19, livello: 30 }, { id: 109, livello: 31 } ],
+    dialogo_prima: 'Al 3° piano trovi i giocattoli, ma io sono qui per allenarmi!',
+    dialogo_dopo: 'Vabbè, tornerò più forte.',
+    premio: 620,
+  },
+  'all-dept-2': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    classe: 'Ragazzino', nome: 'Walter',
+    squadra: [ { id: 100, livello: 30 }, { id: 81, livello: 31 } ],
+    dialogo_prima: 'Scommetto che non hai mai affrontato un elettrico qui dentro!',
+    dialogo_dopo: 'Accidenti, speravo di stupirti.',
+    premio: 620,
+  },
+  'all-dept-3': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    classe: 'Ragazzino', nome: 'Osvaldo',
+    squadra: [ { id: 56, livello: 30 }, { id: 66, livello: 31 }, { id: 29, livello: 31 } ],
+    dialogo_prima: 'Tre contro una, ma tranquillo, giochiamo pulito!',
+    dialogo_dopo: 'Che batosta. Il negozio consola, almeno.',
+    premio: 680,
+  },
+  'all-dept-roof-1': {
+    sprite: 'trainer_COOLTRAINER_M', ritratto: 'COOLTRAINER_M', vista: 6,
+    classe: 'Fuoriclasse', nome: 'Learco',
+    squadra: [ { id: 130, livello: 32 }, { id: 65, livello: 33 } ],
+    dialogo_prima: 'Vengo sempre qui sul tetto per allenarmi con vista panoramica.',
+    dialogo_dopo: 'Bella lotta, complimenti davvero.',
+    premio: 700,
+  },
+  'all-dept-roof-2': {
+    sprite: 'trainer_LASS', ritratto: 'LASS', vista: 6,
+    classe: 'Damerina', nome: 'Benedetta',
+    squadra: [ { id: 35, livello: 31 }, { id: 113, livello: 32 } ],
+    dialogo_prima: 'Shopping e battaglie, la combinazione perfetta!',
+    dialogo_dopo: 'Mi hai rovinato la giornata di shopping...',
+    premio: 660,
+  },
 };
