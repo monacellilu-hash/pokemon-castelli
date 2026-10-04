@@ -6357,7 +6357,14 @@ const GameMap = (function () {
       followerPos = { tx: latoTx, ty: latoTy, dir: 'est' };
       const dirCamilla2 = this._direzioneTraCaselle(latoTx, latoTy, posTile.tx, posTile.ty);
       if (followerSprite) this._setNpcFrame(followerSprite, dirCamilla2, false);
-      await this._impostaFollowerAlleato();   // si stacca: niente più Camilla come follower
+      // Fix 6 ott 2026 (segnalato da Luca): PRIMA qui si chiamava
+      // _impostaFollowerAlleato() senza argomenti, che faceva ricomparire il
+      // Pokémon in squadra al posto di Camilla — sbagliato, lei è ancora
+      // visibile lì accanto al boss, non deve "trasformarsi" in un Pokémon.
+      // Ora il follower si nasconde e basta, nessun Pokémon al suo posto.
+      followerAlleatoTexKey = null;
+      followerSpecieId = null;
+      if (followerSprite) followerSprite.setVisible(false);
       await new Promise(r => setTimeout(r, 1000));   // schermata nera 1s più lunga
       await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
 
@@ -6366,6 +6373,11 @@ const GameMap = (function () {
           `Non ce l'ho fatta. È il tuo turno. In bocca al lupo, ${this._nomeGiocatore()}.`,
         ]);
       }
+
+      // Il giocatore si volta verso il boss (nord) prima che si avvicini —
+      // fix 6 ott 2026 (segnalato da Luca): restava rivolto verso Camilla/sud.
+      facciata = 'up';
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
 
       // Il boss ti si avvicina.
       await this._camminaVersoGiocatore(boss, 10);

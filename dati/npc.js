@@ -1725,8 +1725,12 @@ const DATI_NPC = {
   // (_cutsceneBossFinaleOsservatorio in map.js, sess. 18 set 2026), niente
   // azione qui — il boss non si interagisce col tasto [A], parte tutto dal
   // rettangolo trigger piazzato da Luca su Osservatorio_2f.tmj.
+  // Sprite/nome corretti il 6 ott 2026: l'oggetto Tiled su Osservatorio_2f
+  // è type:'npc' (non 'trainer'), quindi lo sprite in battaglia usa QUESTA
+  // voce (DATI_NPC), non dati/trainer.js — prima la modifica a trainer.js
+  // non aveva alcun effetto visibile sulla mappa.
   'cotral_boss_osservatorio': {
-    sprite: 'NPC', nome: 'Comandante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'trainer_RIVAL', nome: 'Tom', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Non hai idea di cosa stiamo per scatenare. Ma questo... è un discorso per un\'altra volta.'],
   },
   // Comparse della cutscene finale del boss (sess. 18 set 2026): 3 ricercatori
