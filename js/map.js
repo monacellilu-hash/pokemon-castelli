@@ -3906,6 +3906,18 @@ const GameMap = (function () {
     // spawn/warp e ogni volta che la squadra potrebbe essere cambiata
     // (rigeneraFollower esposta in app.js per quei casi, es. dopo il Box).
     async _aggiornaFollowerSpecie() {
+      // Follower forzato invisibile (es. Camilla si stacca prima del 1v1
+      // col boss dell'Osservatorio, sess. 6 ott 2026): sentinella DIVERSA
+      // da null/undefined, perché sbloccaMovimento() chiama SEMPRE questa
+      // funzione a ogni lotta/dialogo — con "null" qui dentro ricadeva nel
+      // ramo sotto e rimostrava il Pokémon in squadra, annullando in
+      // silenzio la sparizione di Camilla (bug segnalato da Luca: "diventa
+      // il mio pokemon" subito dopo che Tom la sconfigge).
+      if (followerAlleatoTexKey === false) {
+        followerSpecieId = null;
+        if (followerSprite) followerSprite.setVisible(false);
+        return;
+      }
       // Override alleato attivo (Camilla all'Osservatorio): ignora squadra/
       // Pokémon, mostra sempre e solo questo sprite finché non viene tolto.
       if (followerAlleatoTexKey) {
@@ -6362,7 +6374,10 @@ const GameMap = (function () {
       // Pokémon in squadra al posto di Camilla — sbagliato, lei è ancora
       // visibile lì accanto al boss, non deve "trasformarsi" in un Pokémon.
       // Ora il follower si nasconde e basta, nessun Pokémon al suo posto.
-      followerAlleatoTexKey = null;
+      // "false" (non null): sentinella che _aggiornaFollowerSpecie()
+      // rispetta anche quando sbloccaMovimento() la richiama di continuo
+      // durante il resto della cutscene (vedi commento lì).
+      followerAlleatoTexKey = false;
       followerSpecieId = null;
       if (followerSprite) followerSprite.setVisible(false);
       await new Promise(r => setTimeout(r, 1000));   // schermata nera 1s più lunga
@@ -6391,6 +6406,14 @@ const GameMap = (function () {
       // NIENTE reset dell'override qui: da quando si è fatta da parte,
       // Camilla resta staccata come follower per il resto della scena
       // (richiesta esplicita di Luca) — combatti da solo, vinci o perdi.
+      // CAUSA VERA del bug "Camilla diventa il mio Pokémon" trovata (6 ott
+      // 2026): sbloccaMovimento() richiama SEMPRE _aggiornaFollowerSpecie(),
+      // e con "null" qui quella funzione ricadeva nel ramo "mostra squadra".
+      // Risolto alla radice in _aggiornaFollowerSpecie() (sentinella
+      // "false"), questa riga resta solo come riaffermazione difensiva.
+      followerAlleatoTexKey = false;
+      followerSpecieId = null;
+      if (followerSprite) followerSprite.setVisible(false);
 
       if (esito === 'vittoria') {
         const premio = DATI_TRAINER['cotral_boss_osservatorio'].premio || 0;
