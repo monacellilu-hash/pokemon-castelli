@@ -9221,6 +9221,41 @@
        "value": "npc"
       }
      ]
+    },
+    {
+     "height": 0,
+     "id": 24,
+     "name": "maso_cotral_osservatorio_2f",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "condizione",
+       "type": "string",
+       "value": "maso_osservatorio_attivo"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "est"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "maso_cotral_osservatorio_2f"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 149.667,
+     "y": 214.667
     }
    ],
    "opacity": 1,
@@ -9231,7 +9266,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 24,
+ "nextobjectid": 25,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

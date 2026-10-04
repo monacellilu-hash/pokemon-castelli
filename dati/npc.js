@@ -890,6 +890,14 @@ const DATI_NPC = {
     azione: 'interagisciEliminaMosse',
   },
 
+  /* -- Maso (CoTrAL), 1a apparizione: Osservatorio_2f.tmj, sess. 6 ott
+     2026. Appare solo DENTRO la cutscene (condizione: maso_osservatorio_
+     attivo, impostata/tolta da _cutsceneBossFinaleOsservatorio in map.js),
+     niente azione: lo script lo pilota direttamente via npcStato. -- */
+  'maso_cotral_osservatorio_2f': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Maso', direzione: 'est', movimento: 'fisso',
+  },
+
   /* ── Cliente generico dentro i Poké Market: id condiviso identico in
      ogni città (stesso oggetto Tiled ripetuto 3 volte nello stampino) —
      una sola voce basta per tutte le istanze. ── */

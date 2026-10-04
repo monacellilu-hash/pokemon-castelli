@@ -5825,6 +5825,34 @@ const GameMap = (function () {
       return st;
     }
 
+    // Cammina verso una cella FISSA della mappa (non verso il giocatore né
+    // il follower) — stesso schema di _camminaVersoGiocatore/
+    // _camminaFollowerVerso, generalizzato per cutscene con NPC scriptati
+    // su un percorso prestabilito (es. Maso all'Osservatorio, sess. 6 ott
+    // 2026: "cammina 10 celle a destra e 2 giù").
+    async _camminaNpcA(st, targetTx, targetTy, maxPassi) {
+      let tentativi = maxPassi || 20;
+      while (tentativi-- > 0) {
+        const dtx = targetTx - st.tx, dty = targetTy - st.ty;
+        if (dtx === 0 && dty === 0) break;
+        const provaOrdine = Math.abs(dtx) >= Math.abs(dty)
+          ? [[Math.sign(dtx), 0], [0, Math.sign(dty)]]
+          : [[0, Math.sign(dty)], [Math.sign(dtx), 0]];
+        let mosso = false;
+        for (const [pdx, pdy] of provaOrdine) {
+          if (pdx === 0 && pdy === 0) continue;
+          const nx = st.tx + pdx, ny = st.ty + pdy;
+          if (!this._liberoPerNPC(nx, ny, st)) continue;
+          st.dir = pdx > 0 ? 'est' : pdx < 0 ? 'ovest' : (pdy > 0 ? 'sud' : 'nord');
+          await this._passoTrainer(st, nx, ny);
+          mosso = true;
+          break;
+        }
+        if (!mosso) break;
+      }
+      if (st.sprite) this._setNpcFrame(st.sprite, st.dir, false);
+    }
+
     // Rimuove un NPC temporaneo creato con _spawnNpcTemp (sprite + stato).
     _distruggiNpcTemp(st) {
       if (st.sprite) {
@@ -6264,12 +6292,12 @@ const GameMap = (function () {
       if (!boss) { sbloccaMovimento(); return; }
 
       if (typeof mostraDialogo === 'function') {
-        await mostraDialogo('Comandante', [
+        await mostraDialogo('Tom', [
           'Siamo così vicini. Un altro test, uno solo, e avremo il pieno controllo del meteo.',
           'E chi controlla il meteo... controlla tutto il resto.',
           'Abbiamo già catturato gli esemplari che ci servivano. Restano solo i test giusti da fare, e questo è l\'ultimo.',
         ]);
-        await mostraDialogo('Comandante', ['Avvia il test.']);
+        await mostraDialogo('Tom', ['Avvia il test.']);
         await mostraDialogo('Ricercatore', ['Sì, capo. Procedo subito.']);
       }
 
@@ -6288,10 +6316,11 @@ const GameMap = (function () {
       boss.dir = 'sud';
       if (boss.sprite) this._setNpcFrame(boss.sprite, 'sud', false);
       if (typeof mostraDialogo === 'function') {
-        await mostraDialogo('Comandante', [
+        await mostraDialogo('Tom', [
           'Tu chi... aspetta. Ti riconosco. Sei quello che è venuto a rompere le uova nel paniere anche a Rocca di Papa, vero?',
           'Il nostro rifugio là sotto, il luogotenente, tutto quanto. Notizie di questo tipo viaggiano in fretta, anche tra un\'organizzazione e l\'altra.',
           'Ma questa volta è diverso. Lì eravamo solo agli inizi. Qui abbiamo finito.',
+          'L\'esperimento è già in corso: ci siamo clonati. Questo ci rende inarrestabili!',
           'Vieni pure, fatti sotto! Ho appena acquisito il controllo dei Pokémon necessari: non potrai battermi.',
         ]);
       }
@@ -6341,7 +6370,7 @@ const GameMap = (function () {
       // Il boss ti si avvicina.
       await this._camminaVersoGiocatore(boss, 10);
       if (typeof mostraDialogo === 'function') {
-        await mostraDialogo('Comandante', [
+        await mostraDialogo('Tom', [
           'È inutile. Anche tu non riuscirai in questa impresa folle.',
         ]);
       }
@@ -6357,11 +6386,11 @@ const GameMap = (function () {
           stato.soldi = (stato.soldi || 0) + premio;
         }
         if (typeof mostraDialogo === 'function') {
-          await mostraDialogo('Comandante', [
+          await mostraDialogo('Tom', [
             'Non... non è possibile. Avevo programmato tutto, ogni singola variabile, ogni singolo dettaglio.',
             'Come diavolo è possibile che un allenatore qualunque mandi all\'aria anni di lavoro in un pomeriggio?',
           ]);
-          await mostraDialogo('Comandante', [
+          await mostraDialogo('Tom', [
             'Filiamo, ragazzi. Ora chi lo sente, il Capo... sarà furioso.',
           ]);
         }
@@ -6369,7 +6398,63 @@ const GameMap = (function () {
           mostraToast(`Hai ricevuto ₽${premio} per la vittoria!`, 3200);
         }
         stato.flags.osservatorio_boss_finale_sconfitto = true;
-        stato.flags.osservatorio_boss_area_attiva = false;   // boss e comparse spariscono per sempre
+
+        // Maso compare (sess. 6 ott 2026): materializza il suo oggetto
+        // Tiled (condizione: maso_osservatorio_attivo) con una breve
+        // dissolvenza, così Tom può "vederlo" per il saluto.
+        stato.flags.maso_osservatorio_attivo = true;
+        await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 400 });
+        await this._rigeneraNpc();
+        await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 400 });
+
+        // Tom si gira verso ovest, saluta Maso, poi sparisce per sempre
+        // insieme a tutti gli altri CoTrAL dell'Osservatorio.
+        boss.dir = 'ovest';
+        if (boss.sprite) this._setNpcFrame(boss.sprite, 'ovest', false);
+        if (typeof mostraDialogo === 'function') {
+          await mostraDialogo('Tom', [
+            'Ciao Maso, benvenuto! Sai già che fare, ci vediamo più tardi!',
+          ]);
+        }
+        stato.flags.osservatorio_boss_area_attiva = false;   // Tom e scagnozzi spariscono per sempre
+        await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+        await this._rigeneraNpc();
+        await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+
+        // Maso cammina 10 celle a est e 2 a sud, parla, poi sparisce per
+        // sempre (richiesta esplicita di Luca).
+        const maso = npcStato.find(s => s.id === 'maso_cotral_osservatorio_2f');
+        if (maso) {
+          await this._camminaNpcA(maso, maso.homeTx + 10, maso.homeTy + 2, 14);
+          if (typeof mostraDialogo === 'function') {
+            await mostraDialogo('Maso', [
+              'Eccomi qui, pronto e operativo, non ci fermerete mai!',
+            ]);
+          }
+          await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+          stato.flags.maso_osservatorio_attivo = false;
+          await this._rigeneraNpc();
+          await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
+        }
+
+        // Camilla si mette davanti al giocatore (la cella che hai di fronte
+        // mentre guardi) e lancia l'appello a diventare Campione.
+        const OFFSET_FACCIATA = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] };
+        const off = OFFSET_FACCIATA[facciata] || [0, 1];
+        await this._camminaFollowerVerso(posTile.tx + off[0], posTile.ty + off[1], 14);
+        if (followerSprite) {
+          const dirVersoPlayer = this._direzioneTraCaselle(followerPos.tx, followerPos.ty, posTile.tx, posTile.ty);
+          this._setNpcFrame(followerSprite, dirVersoPlayer, false);
+        }
+        if (typeof mostraDialogo === 'function') {
+          await mostraDialogo('Camilla', [
+            'Questa è una tragedia. Va fermato subito.',
+            `Ma se vai in giro a dirlo così come stanno le cose, ${this._nomeGiocatore()}, ti rinchiudono e buttano la chiave.`,
+            'Devi diventare Campione: solo allora tutti saranno costretti ad ascoltarti.',
+          ]);
+        }
+        await this._impostaFollowerAlleato('trainer_LEADER_Camilla');   // torna a seguirti come prima
+
         await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
         await this._rigeneraNpc();
         await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });

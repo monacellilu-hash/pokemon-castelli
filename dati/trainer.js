@@ -3490,10 +3490,11 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Va bene, va bene! Tieni questa maledetta chiave, e sparisci da qui prima che arrivi il Comandante.',
     premio: 4500,
   },
-  // Comandante CoTrAL — boss finale della cutscene del 2F (sess. 18 set
-  // 2026). Lotta 1 CONTRO 1 (Camilla si tira indietro apposta, "andiamo uno
-  // alla volta"), gestita per intero da _cutsceneBossFinaleOsservatorio in
-  // map.js (dialoghi/animazioni prima e dopo, non passa da _avviaLottaTrainer).
+  // Comandante CoTrAL "Tom" (nome assegnato da Luca il 6 ott 2026) — boss
+  // finale della cutscene del 2F (sess. 18 set 2026). Lotta 1 CONTRO 1
+  // (Camilla si tira indietro apposta, "andiamo uno alla volta"), gestita
+  // per intero da _cutsceneBossFinaleOsservatorio in map.js (dialoghi/
+  // animazioni prima e dopo, non passa da _avviaLottaTrainer).
   // Squadra scelta con Luca: Zapdos e Jirachi sono ESPLICITAMENTE suoi (il
   // "controllo dei pokémon necessari" di cui parla nel dialogo), + 4 forti
   // non leggendari di taglia pseudo-leggendaria per reggere il ruolo di
@@ -3501,7 +3502,7 @@ const DATI_TRAINER = {
   // arriva a questo livello.
   'cotral_boss_osservatorio': {
     sprite: 'NPC', ritratto: 'trainer_ROCKETBOSS', vista: 0,
-    classe: 'Comandante CoTrAL', nome: 'Comandante',
+    classe: 'Comandante CoTrAL', nome: 'Tom',
     squadra: [
       { id: 145, livello: 58 },   // Zapdos
       { id: 385, livello: 58 },   // Jirachi
