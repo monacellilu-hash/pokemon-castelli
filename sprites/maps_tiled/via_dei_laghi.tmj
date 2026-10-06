@@ -2720,6 +2720,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_1"
@@ -2737,6 +2742,11 @@
                  "name":"trainer_2",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -2756,6 +2766,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_3"
@@ -2773,6 +2788,11 @@
                  "name":"trainer_4",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -2792,6 +2812,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_5"
@@ -2810,6 +2835,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_6"
@@ -2827,6 +2857,11 @@
                  "name":"trainer_7",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4649,6 +4684,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_11"
@@ -4666,6 +4706,11 @@
                  "name":"trainer_12",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4685,6 +4730,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_13"
@@ -4702,6 +4752,11 @@
                  "name":"trainer_14",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4721,6 +4776,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_15"
@@ -4738,6 +4798,11 @@
                  "name":"trainer_16",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4757,6 +4822,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_17"
@@ -4774,6 +4844,11 @@
                  "name":"trainer_18",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4793,6 +4868,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_19"
@@ -4810,6 +4890,11 @@
                  "name":"trainer_20",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -4830,6 +4915,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_21"
@@ -4848,6 +4938,11 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
                          "name":"id",
                          "type":"string",
                          "value":"via_laghi_trainer_22"
@@ -4865,6 +4960,11 @@
                  "name":"trainer_23",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",
@@ -5257,6 +5357,11 @@
                  "name":"trainer_10",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
                         {
                          "name":"id",
                          "type":"string",

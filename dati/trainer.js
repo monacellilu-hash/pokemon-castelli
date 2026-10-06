@@ -2083,7 +2083,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_1': {
     sprite: 'trainer_SAILOR', ritratto: 'SAILOR', vista: 6,
     classe: 'Marinaio', nome: 'Nazzareno',
-    squadra: [ { id: 54, livello: 24 }, { id: 118, livello: 26 }, { id: 61, livello: 28 } ],
+    squadra: [ { id: 54, livello: 26 }, { id: 118, livello: 28 }, { id: 61, livello: 30 } ],
     dialogo_prima: 'Ao! Sti laghi li conosco a menadito. Famo \'sta lotta, và!',
     dialogo_dopo: 'Vabbè, mo\' me ritiro a riva a leccamme le ferite.',
     premio: 780,
@@ -2091,7 +2091,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_2': {
     sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
     classe: 'Pescatore', nome: 'Osvaldo',
-    squadra: [ { id: 129, livello: 24 }, { id: 98, livello: 26 }, { id: 341, livello: 28 } ],
+    squadra: [ { id: 129, livello: 33 }, { id: 98, livello: 35 }, { id: 341, livello: 37 } ],
     dialogo_prima: 'Stavo a pescà tranquillo e mo\' me trovo pure a combatte...',
     dialogo_dopo: 'Nfatti, oggi nun era giornata bona manco pe\' le lotte.',
     premio: 720,
@@ -2099,7 +2099,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_3': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
     classe: 'Escursionista', nome: 'Ferruccio',
-    squadra: [ { id: 74, livello: 25 }, { id: 66, livello: 27 }, { id: 95, livello: 29 } ],
+    squadra: [ { id: 74, livello: 33 }, { id: 66, livello: 35 }, { id: 95, livello: 37 } ],
     dialogo_prima: 'Sto tratto de strada l\'ho fatto mille vorte, ma sfide poche. Daje!',
     dialogo_dopo: 'La roccia regge sempre, io un po\' meno.',
     premio: 780,
@@ -2107,7 +2107,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_4': {
     sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 6,
     classe: 'Motociclista', nome: 'Italo',
-    squadra: [ { id: 109, livello: 25 }, { id: 88, livello: 27 }, { id: 100, livello: 29 } ],
+    squadra: [ { id: 109, livello: 31 }, { id: 88, livello: 33 }, { id: 100, livello: 35 } ],
     dialogo_prima: 'Se me sorpassi in salita, te tocca prima batteme!',
     dialogo_dopo: 'Vabbè, mo\' me tocca spinge la moto a piedi...',
     premio: 780,
@@ -2115,7 +2115,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_5': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 4,
     classe: 'Campeggiatore', nome: 'Renzo',
-    squadra: [ { id: 19, livello: 25 }, { id: 27, livello: 27 }, { id: 263, livello: 29 } ],
+    squadra: [ { id: 19, livello: 30 }, { id: 27, livello: 32 }, { id: 263, livello: 34 } ],
     dialogo_prima: 'Ao, so\' accampato qua da \'na settimana. Facciamo \'na lotta pe\' ammazzà er tempo?',
     dialogo_dopo: 'Vabbè, mo\' me rimetto a guardà er fuoco.',
     premio: 660,
@@ -2123,7 +2123,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_6': {
     sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 4,
     classe: 'Escursionista', nome: 'Ines',
-    squadra: [ { id: 43, livello: 25 }, { id: 69, livello: 27 }, { id: 273, livello: 29 } ],
+    squadra: [ { id: 43, livello: 31 }, { id: 69, livello: 33 }, { id: 273, livello: 35 } ],
     dialogo_prima: 'Ho preparato le fraschette pe\' tutti! Prima però, \'na sfida!',
     dialogo_dopo: 'Embè, mo\' me consolo co\' \'na fetta de porchetta.',
     premio: 660,
@@ -2131,7 +2131,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_7': {
     sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 8,
     classe: 'Ornitologo', nome: 'Amleto',
-    squadra: [ { id: 16, livello: 26 }, { id: 84, livello: 28 }, { id: 276, livello: 30 } ],
+    squadra: [ { id: 16, livello: 31 }, { id: 84, livello: 33 }, { id: 276, livello: 35 } ],
     dialogo_prima: 'Sti laghi so\' pieni de uccelli. Pure li mii sanno vola, eh!',
     dialogo_dopo: 'Volato via pure \'sto vantaggio, nfatti.',
     premio: 780,
@@ -2139,7 +2139,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_8': {
     sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
     classe: 'Signora', nome: 'Pierina',
-    squadra: [ { id: 35, livello: 26 }, { id: 39, livello: 28 }, { id: 300, livello: 30 } ],
+    squadra: [ { id: 35, livello: 33 }, { id: 39, livello: 35 }, { id: 300, livello: 37 } ],
     dialogo_prima: 'Che bella passeggiata attorno ar lago! Ti va de sfidamme?',
     dialogo_dopo: 'Embè, la prossima volta faccio \'na passeggiata e basta.',
     premio: 720,
@@ -2147,7 +2147,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_9': {
     sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 5,
     classe: 'Gentiluomo', nome: 'Egisto',
-    squadra: [ { id: 53, livello: 26 }, { id: 58, livello: 28 }, { id: 52, livello: 30 } ],
+    squadra: [ { id: 53, livello: 33 }, { id: 58, livello: 35 }, { id: 52, livello: 37 } ],
     dialogo_prima: 'Buondì. Approfitto de \'sta vista pe\' \'na sfida raffinata.',
     dialogo_dopo: 'Complimenti, un incontro davvero elegante.',
     premio: 840,
@@ -2155,7 +2155,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_10': {
     sprite: 'trainer_AROMALADY', ritratto: 'AROMALADY', vista: 5,
     classe: 'Aromatica', nome: 'Rosalba',
-    squadra: [ { id: 45, livello: 26 }, { id: 315, livello: 28 }, { id: 182, livello: 30 } ],
+    squadra: [ { id: 45, livello: 27 }, { id: 315, livello: 29 }, { id: 182, livello: 31 } ],
     dialogo_prima: 'Sento er profumo de la vittoria... o forse so\' solo li fiori.',
     dialogo_dopo: 'Vabbè, mo\' me rifaccio er naso co\' \'st\'aria bona.',
     premio: 840,
@@ -2163,7 +2163,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_11': {
     sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 6,
     classe: 'Nuotatore', nome: 'Ubaldo',
-    squadra: [ { id: 116, livello: 27 }, { id: 86, livello: 29 }, { id: 8, livello: 31 } ],
+    squadra: [ { id: 116, livello: 29 }, { id: 86, livello: 31 }, { id: 8, livello: 33 } ],
     dialogo_prima: 'Sto lago l\'ho attraversato tutto a nuoto! Mo\' famo \'sta lotta!',
     dialogo_dopo: 'Nfatti, mejo in acqua che in battaglia, io.',
     premio: 840,
@@ -2195,7 +2195,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_15': {
     sprite: 'trainer_PSYCHIC_M', ritratto: 'PSYCHIC_M', vista: 7,
     classe: 'Sensitivo', nome: 'Fioravante',
-    squadra: [ { id: 63, livello: 28 }, { id: 96, livello: 30 }, { id: 177, livello: 32 } ],
+    squadra: [ { id: 63, livello: 29 }, { id: 96, livello: 31 }, { id: 177, livello: 33 } ],
     dialogo_prima: 'Percepisco che perderai... o forse spero solo tanto.',
     dialogo_dopo: 'Nfatti, la mia sensitività lasciava un po\' a desiderà.',
     premio: 840,
@@ -2203,7 +2203,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_16': {
     sprite: 'trainer_PSYCHIC_F', ritratto: 'PSYCHIC_F', vista: 7,
     classe: 'Sensitiva', nome: 'Ottavia',
-    squadra: [ { id: 280, livello: 28 }, { id: 64, livello: 30 }, { id: 196, livello: 32 } ],
+    squadra: [ { id: 280, livello: 31 }, { id: 64, livello: 33 }, { id: 196, livello: 35 } ],
     dialogo_prima: 'Vedo nel tuo futuro... una bella lotta co\' me.',
     dialogo_dopo: 'Embè, sto futuro nun l\'avevo previsto proprio.',
     premio: 900,
@@ -2211,7 +2211,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_17': {
     sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
     classe: 'Cinturanera', nome: 'Anselmo',
-    squadra: [ { id: 67, livello: 28 }, { id: 106, livello: 30 }, { id: 296, livello: 32 } ],
+    squadra: [ { id: 67, livello: 32 }, { id: 106, livello: 34 }, { id: 296, livello: 36 } ],
     dialogo_prima: 'Corpo e mente devono esse tosti come \'sta montagna. Famo!',
     dialogo_dopo: 'Nfatti, tosto lo sei davero.',
     premio: 900,
@@ -2219,7 +2219,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_18': {
     sprite: 'trainer_ENGINEER', ritratto: 'ENGINEER', vista: 5,
     classe: 'Tecnico', nome: 'Bruna',
-    squadra: [ { id: 81, livello: 29 }, { id: 100, livello: 31 }, { id: 309, livello: 33 } ],
+    squadra: [ { id: 81, livello: 33 }, { id: 100, livello: 35 }, { id: 309, livello: 37 } ],
     dialogo_prima: 'Manutenzione all\'Osservatorio finita. Ho tempo pe\' \'na sfida.',
     dialogo_dopo: 'Vabbè, sti calcoli nun tornavano proprio.',
     premio: 840,
@@ -2227,7 +2227,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_19': {
     sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 5,
     classe: 'Scienziato', nome: 'Sante',
-    squadra: [ { id: 88, livello: 29 }, { id: 101, livello: 31 }, { id: 82, livello: 33 } ],
+    squadra: [ { id: 88, livello: 33 }, { id: 101, livello: 35 }, { id: 82, livello: 37 } ],
     dialogo_prima: 'Sto a studià li fenomeni de sto lago. Tu sei la variabile de oggi.',
     dialogo_dopo: 'Nfatti, la variabile ha vinto lei.',
     premio: 900,
@@ -2235,7 +2235,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_20': {
     sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
     classe: 'Insettista', nome: 'Palmira',
-    squadra: [ { id: 10, livello: 29 }, { id: 13, livello: 31 }, { id: 265, livello: 33 } ],
+    squadra: [ { id: 10, livello: 33 }, { id: 13, livello: 35 }, { id: 265, livello: 37 } ],
     dialogo_prima: 'Qua ce so\' certi insetti che manco te immagini! Famo \'na lotta?',
     dialogo_dopo: 'Embè, so\' tornata a cercà bruchi, va.',
     premio: 660,
@@ -2243,7 +2243,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_21': {
     sprite: 'trainer_TAMER', ritratto: 'TAMER', vista: 5,
     classe: 'Domatore', nome: 'Gelsomina',
-    squadra: [ { id: 58, livello: 29 }, { id: 56, livello: 31 }, { id: 261, livello: 33 } ],
+    squadra: [ { id: 58, livello: 34 }, { id: 56, livello: 36 }, { id: 261, livello: 38 } ],
     dialogo_prima: 'Li mii Pokémon so\' addestrati bene. Vediamo li tui!',
     dialogo_dopo: 'Nfatti, l\'addestramento tuo era mejo.',
     premio: 840,
@@ -2251,7 +2251,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_22': {
     sprite: 'trainer_POKEMONBREEDER', ritratto: 'POKEMONBREEDER', vista: 5,
     classe: 'Allevatrice', nome: 'Iole',
-    squadra: [ { id: 133, livello: 30 }, { id: 300, livello: 32 }, { id: 174, livello: 34 } ],
+    squadra: [ { id: 133, livello: 32 }, { id: 300, livello: 34 }, { id: 174, livello: 36 } ],
     dialogo_prima: 'Allevo li mii Pokémon co\' tanto amore. E co\' tanta grinta pure!',
     dialogo_dopo: 'Vabbè, li fo allenà de più da mo\' in poi.',
     premio: 780,

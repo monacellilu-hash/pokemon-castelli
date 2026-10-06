@@ -603,7 +603,13 @@ const DATI_INCONTRI = {
   'incontri tunnel roccioso 4f': {
     probabilita: 7,
     pokemon: [
-    ],
+      { id: 42,  min: 30, max: 33, rate: 22 },  // Golbat
+      { id: 75,  min: 31, max: 34, rate: 18 },  // Graveler
+      { id: 95,  min: 31, max: 34, rate: 16 },  // Onix
+      { id: 302, min: 32, max: 35, rate: 10 },  // Sableye (Gen3, tema buio/grotta)
+      { id: 299, min: 32, max: 35, rate: 10 },  // Nosepass (Gen3)
+      { id: 41,  min: 29, max: 32, rate: 14 },  // Zubat
+],
   },
 
   // ── GROTTA DEL VULCANO — dungeon Team GdF sotto Rocca di Papa, tema
