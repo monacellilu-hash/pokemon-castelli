@@ -83,6 +83,11 @@ const PokeAPI = (function () {
       // Mosse imparate salendo di livello: [{ nome, url, livello }] ordinate per livello.
       // Servirà in battaglia (F5) per scegliere le 4 mosse del Pokémon.
       mosse: estraiMosseLivello(dati.moves),
+      // Marcatore di schema (6 ott 2026): forza il riscarico delle voci in
+      // cache calcolate PRIMA del fix Gen 1-3 di estraiMosseLivello (vedi
+      // sopra) — senza questo, chi aveva già salvato in locale le mosse
+      // "sbagliate" (es. Mudkip Spaccaroccia lv6) se le terrebbe per sempre.
+      schemaMosseGen123: true,
       // Abilità della specie: [{ nome, nascosta }] (nome = slug inglese, es.
       // "static"). Assegnata a caso alla creazione dell'istanza (vedi
       // creaIstanza in battle.js) — solo lo SLUG qui, nome/descrizione in
@@ -108,23 +113,41 @@ const PokeAPI = (function () {
     }
   }
 
-  // Estrae le mosse apprese per livello ("level-up"), col livello più basso
-  // tra le varie versioni di gioco in cui compaiono.
+  // Solo Gen 1-3: niente dati di apprendimento dei giochi moderni (Spada/
+  // Scudo, Scarlatto/Violetto, BDSP...), altrimenti un Pokémon imparava per
+  // livello mosse/MN che nel gioco originale Gen 1-3 non avrebbe mai
+  // imparato così (bug segnalato da Luca: Mudkip imparava Spaccaroccia al
+  // livello 6, cosa vera SOLO nei remake moderni — in Rubino/Zaffiro/
+  // Smeraldo/FireRed/LeafGreen Mudkip non lo impara affatto per livello).
+  // Prendiamo il PRIMO version group Gen 1-3 disponibile in ordine di
+  // preferenza (Smeraldo prima di tutti, coerente con l'ambientazione) e
+  // SOLO quello: niente mix tra giochi/generazioni diverse.
+  const GRUPPI_VERSIONE_GEN123 = [
+    'emerald', 'firered-leafgreen', 'ruby-sapphire',
+    'crystal', 'gold-silver', 'yellow', 'red-blue',
+  ];
+
+  // Estrae le mosse apprese per livello ("level-up") da UN SOLO version
+  // group Gen 1-3 (vedi sopra), non dal minimo tra tutte le versioni.
   function estraiMosseLivello(mosse) {
+    let gruppoScelto = null;
+    for (const gruppo of GRUPPI_VERSIONE_GEN123) {
+      const presente = mosse.some(voce =>
+        voce.version_group_details.some(d =>
+          d.move_learn_method.name === "level-up" && d.version_group.name === gruppo));
+      if (presente) { gruppoScelto = gruppo; break; }
+    }
+    if (!gruppoScelto) return []; // non dovrebbe succedere (ID ≤ 386, sempre dati Gen 1-3)
+
     const risultato = [];
     for (const voce of mosse) {
-      let livelloMinimo = null;
-      for (const dettaglio of voce.version_group_details) {
-        if (dettaglio.move_learn_method.name === "level-up") {
-          const lv = dettaglio.level_learned_at;
-          if (livelloMinimo === null || lv < livelloMinimo) livelloMinimo = lv;
-        }
-      }
-      if (livelloMinimo !== null) {
+      const dettaglio = voce.version_group_details.find(d =>
+        d.move_learn_method.name === "level-up" && d.version_group.name === gruppoScelto);
+      if (dettaglio) {
         risultato.push({
           nome: voce.move.name,
           url: voce.move.url,
-          livello: livelloMinimo
+          livello: dettaglio.level_learned_at
         });
       }
     }
@@ -148,7 +171,8 @@ const PokeAPI = (function () {
     // abilita, aggiunto per le Abilità F9.4), la ignoriamo e riscarichiamo:
     // così la cache si aggiorna da sola.
     const inCache = leggiCache("pokemon_" + id);
-    if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined && inCache.abilita !== undefined) {
+    if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined &&
+        inCache.abilita !== undefined && inCache.schemaMosseGen123 === true) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);
       return inCache;
     }
