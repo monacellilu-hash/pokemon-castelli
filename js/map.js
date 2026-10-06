@@ -565,12 +565,10 @@ const GameMap = (function () {
       interno: true,
       latFissa: 41.8164, lonFissa: 12.7153,
     },
-    // ── Percorso Montano (Monte Porzio → Rocca di Papa) — sale verso la montagna,
-    // con un ramo laterale ("warp_summit") verso la vetta, ancora da collegare. ──
-    'percorso_montano_v1': {
-      file: 'sprites/maps_tiled/percorso_montano_v1.tmj',
-      latC: 41.7880, lonC: 12.7150,
-    },
+    // ── Percorso Montano RIMOSSO (6 ott 2026, richiesta di Luca: "per ora
+    // non ci serve") — mappa .tmj/.tmx eliminata, contenuto incontri
+    // spostato su 'incontri montecavo'. Se un giorno serve di nuovo, va
+    // ricreata da capo (non c'è più nulla da ripristinare qui). ──
     // ── Rocca di Papa (5ª città — Palestra Lotta, Capopalestra Baso, cap 40) ──
     'rocca_di_papa': {
       file: 'sprites/maps_tiled/rocca_di_papa.tmj',
@@ -5131,9 +5129,25 @@ const GameMap = (function () {
       const def = MAPPE[mappaCorrente];
       const eInterno = !def || def.interno;
       const eGrottaBuia = def && (def.tema === 'cave' || def.tema === 'icecave') && mappaCorrente !== 'monte_cavo';
+      // Area "Sabbia" dell'Osservatorio (richiesta di Luca, 6 ott 2026):
+      // tempesta di sabbia PERENNE, ma solo dentro quel rettangolo preciso,
+      // non su tutta la mappa dell'Osservatorio — stesso principio di
+      // monteCavo sopra, ma per zona invece che per mappa intera.
+      let sabbiaOsservatorio = false;
+      if (mappaCorrente === 'osservatorio') {
+        for (const ev of eventiMappa) {
+          if (ev.tipo === 'erba_alta' && ev.props && ev.props.id === 'incontri sabbia osservatorio' &&
+              ev.w > 0 && ev.h > 0 &&
+              posTile.tx >= ev.tx0 && posTile.tx <= ev.tx1 && posTile.ty >= ev.ty0 && posTile.ty <= ev.ty1) {
+            sabbiaOsservatorio = true;
+            break;
+          }
+        }
+      }
       return {
         outdoor: !eInterno && !eGrottaBuia,
         monteCavo: mappaCorrente === 'monte_cavo',
+        sabbiaOsservatorio,
         mappa: mappaCorrente,
         // Sess. 1 ott 2026: le mappe dello stesso cluster sono la STESSA zona
         // "incollata" visivamente (es. Percorso 1 e Borgata Tuscolana) — il

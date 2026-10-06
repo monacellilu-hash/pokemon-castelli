@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="4">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="37">
  <tileset firstgid="1" source="../Caves.tsj"/>
  <tileset firstgid="1593" source="../../outside.tsx"/>
  <layer id="1" name="ground" width="35" height="45">
@@ -198,6 +198,41 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="6" name="collisioni">
+  <object id="4" x="4" y="0" width="1111" height="221"/>
+  <object id="5" x="10" y="176" width="195" height="1250"/>
+  <object id="6" x="214" y="1035" width="685" height="391"/>
+  <object id="7" x="1007.67" y="1351.67" width="5" height="41.6667"/>
+  <object id="8" x="981.333" y="1385.67" width="97.3333" height="13.3333"/>
+  <object id="9" x="1069" y="1320" width="2.33333" height="73"/>
+  <object id="10" x="425" y="936" width="559" height="13"/>
+  <object id="11" x="393" y="908" width="39" height="7"/>
+  <object id="12" x="292" y="876" width="101" height="10"/>
+  <object id="13" x="272" y="844" width="38" height="8"/>
+  <object id="14" x="266" y="323" width="11" height="527"/>
+  <object id="15" x="295" y="337" width="56" height="8"/>
+  <object id="16" x="357" y="302" width="19" height="7"/>
+  <object id="17" x="394" y="330" width="36" height="12"/>
+  <object id="18" x="429" y="337" width="3" height="46"/>
+  <object id="19" x="488" y="257" width="16" height="18"/>
+  <object id="20" x="741" y="320" width="19" height="16"/>
+  <object id="21" x="1097.25" y="293" width="7.75" height="15"/>
+  <object id="22" x="1068.75" y="323" width="4.5" height="14"/>
+  <object id="23" x="1063.75" y="258.75" width="8" height="10.75"/>
+  <object id="24" x="1003.75" y="261.75" width="7.25" height="10"/>
+  <object id="25" x="870.25" y="263.75" width="14" height="16"/>
+  <object id="26" x="341" y="391" width="766" height="98"/>
+  <object id="27" x="333" y="408" width="104" height="383"/>
+  <object id="28" x="449" y="686" width="86" height="105"/>
+  <object id="29" x="542" y="781" width="287" height="11"/>
+  <object id="30" x="584" y="686" width="526" height="57"/>
+  <object id="31" x="974" y="486" width="138" height="300"/>
+  <object id="32" x="876" y="718" width="107" height="75"/>
+  <object id="33" x="875" y="620" width="10" height="8.5"/>
+  <object id="34" x="904" y="555.5" width="10" height="8.5"/>
+  <object id="35" x="937.5" y="493" width="11.5" height="43"/>
+  <object id="36" x="810" y="652" width="13" height="12.5"/>
+ </objectgroup>
  <objectgroup id="5" name="eventi">
   <object id="1" name="port per il primo piano estremamente in alto al centro" x="784" y="592">
    <point/>

@@ -421,29 +421,60 @@ const DATI_INCONTRI = {
   // ATTIVA: marcatore erba_alta aggiunto in Osservatorio.tmj con questo id.
   // Tema cielo/scienza: uccelli, psico, elettro (coerente con Zapdos e il
   // meteorologo del posto).
+  // Esterno dell'Osservatorio — giorno/notte aggiunto 6 ott 2026 (richiesta
+  // di Luca): Lunatone (luna) di notte, Solrock (sole) di giorno è la
+  // coppia più ovvia; Clefairy/Cleffa danzano al chiaro di luna (sempre
+  // notte nel lore), Drowzee/Murkrow/Chimecho notturni per tema, il resto
+  // di giorno. Rate per BST reale (più forte = più raro).
   'incontri osservatorio': {
     probabilita: 15,
     pokemon: [
       { id: 63,  min: 26, max: 30, rate: 22 },  // Abra
-      { id: 96,  min: 26, max: 30, rate: 20 },  // Drowzee
-      { id: 100, min: 26, max: 30, rate: 18 },  // Voltorb
-      { id: 333, min: 27, max: 31, rate: 16 },  // Swablu (Gen3)
-      { id: 198, min: 27, max: 31, rate: 14 },  // Murkrow (Gen2)
-      { id: 337, min: 28, max: 32, rate: 8 },   // Lunatone (Gen3, tema cielo)
-      { id: 338, min: 28, max: 32, rate: 8 },   // Solrock (Gen3, tema cielo)
-      { id: 35,  min: 26, max: 29, rate: 10 },  // Clefairy (rara)
-      { id: 64,  min: 29, max: 32, rate: 6 },   // Kadabra (evoluto, raro)
-      { id: 122, min: 29, max: 32, rate: 1 },   // Mr. Mime (rarissimo)
-      { id: 173, min: 24, max: 26, rate: 6 },   // Cleffa (cucciolo)
-      { id: 351, min: 28, max: 32, rate: 1 },   // Castform (rarissimo, meteo)
-      { id: 358, min: 27, max: 31, rate: 14 },  // Chimecho
+      { id: 64,  min: 29, max: 32, rate: 10 },  // Kadabra (evoluto, raro)
+      { id: 100, min: 26, max: 30, rate: 22 },  // Voltorb
+      { id: 333, min: 27, max: 31, rate: 22 },  // Swablu (Gen3)
+      { id: 338, min: 28, max: 32, rate: 6 },   // Solrock (Gen3, tema sole)
+      { id: 122, min: 29, max: 32, rate: 6 },   // Mr. Mime (raro)
+      { id: 351, min: 28, max: 32, rate: 10 },  // Castform (raro, meteo)
+],
+    pokemonNotte: [
+      { id: 96,  min: 26, max: 30, rate: 22 },  // Drowzee
+      { id: 198, min: 27, max: 31, rate: 10 },  // Murkrow (Gen2)
+      { id: 337, min: 28, max: 32, rate: 6 },   // Lunatone (Gen3, tema luna)
+      { id: 35,  min: 26, max: 29, rate: 22 },  // Clefairy (danza al chiaro di luna)
+      { id: 173, min: 24, max: 26, rate: 28 },  // Cleffa (cucciolo)
+      { id: 358, min: 27, max: 31, rate: 10 },  // Chimecho
 ],
   },
 
-  // ── PERCORSO MONTANO 1 — salita innevata verso Rocca di Papa (Lv 30-38) ──
-  // ATTIVA: marcatore erba_alta aggiunto in percorso_montano_v1.tmj con
-  // questo id. Quota alta, clima freddo: roccia, ghiaccio, orso.
+  // ── AREA "SABBIA" DELL'OSSERVATORIO (nuova, 6 ott 2026): tempesta di
+  // sabbia PERENNE, innaturale — indizio della trama meteo del Team GdF.
+  // Niente giorno/notte: l'anomalia è costante, non segue il ciclo normale.
+  'incontri sabbia osservatorio': {
+    probabilita: 15,
+    pokemon: [
+      { id: 27,  min: 28, max: 32, rate: 22 },  // Sandshrew
+      { id: 28,  min: 31, max: 34, rate: 10 },  // Sandslash (evoluto)
+      { id: 328, min: 29, max: 33, rate: 22 },  // Trapinch (Gen3)
+      { id: 343, min: 28, max: 32, rate: 22 },  // Baltoy (Gen3)
+      { id: 231, min: 29, max: 33, rate: 16 },  // Phanpy (Gen2, raro)
+],
+  },
+
+  // ── PERCORSO MONTANO 1 — DISATTIVATA (6 ott 2026, richiesta di Luca:
+  // "per ora non ci serve"). Il contenuto è stato spostato di sotto su
+  // 'incontri montecavo' — non cancellato, solo rinominato/rilocato.
   'incontri percorso montano': {
+    probabilita: 15,
+    pokemon: [
+],
+  },
+
+  // ── MONTE CAVO (monte_cavo.tmj, si collega a Rocca di Papa) — GRANDINE
+  // PERENNE (richiesta di Luca, 6 ott 2026, come la sabbia dell'Osservatorio:
+  // anomalia meteo, indizio della trama del Team GdF). Contenuto ex
+  // "percorso montano": quota alta, clima freddo, roccia/ghiaccio/orso.
+  'incontri montecavo': {
     probabilita: 15,
     pokemon: [
       { id: 216, min: 31, max: 35, rate: 22 },  // Teddiursa (Gen2)

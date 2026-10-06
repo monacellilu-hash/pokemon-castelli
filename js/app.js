@@ -376,7 +376,10 @@ function avanzaTempo() {
 // abbassata ulteriormente su richiesta di Luca) + ogni fase meteo dura solo
 // qualche ora invece di tutto il giorno intero (vedi DURATA_METEO_MIN sotto).
 const PESI_METEO        = [['sereno', 55], ['sole', 30], ['pioggia', 15]];
-const PESI_METEO_MONTECAVO = [['sereno', 45], ['sole', 25], ['pioggia', 15], ['grandine', 15]];
+// Grandine PERENNE (richiesta esplicita di Luca, 6 ott 2026: non più "a
+// volte", sempre — anomalia innaturale, indizio della trama meteo del
+// Team GdF). Prima era pesata 45/25/15/15, ora 100% grandine.
+const PESI_METEO_MONTECAVO = [['grandine', 100]];
 // Durata in minuti di gioco di una fase meteo: pioggia/grandine più brevi
 // (1.5-4 ore, "non può diluviare tutto il giorno"), sereno/sole più lunghe
 // (4-9 ore) così il cielo non cambia in continuazione.
@@ -407,7 +410,15 @@ function _minutoAssoluto() {
 
 function aggiornaMeteo() {
   const ctx = (typeof GameMap !== 'undefined' && GameMap.contestoMeteo)
-    ? GameMap.contestoMeteo() : { outdoor: false, monteCavo: false };
+    ? GameMap.contestoMeteo() : { outdoor: false, monteCavo: false, sabbiaOsservatorio: false };
+  // Area Sabbia dell'Osservatorio: tempesta perenne, SEMPRE, anche se
+  // tecnicamente l'Osservatorio stesso non è "outdoor" in senso pieno —
+  // va controllata PRIMA del filtro outdoor, non dopo.
+  if (ctx.sabbiaOsservatorio) {
+    stato.meteo = { tipo: 'sabbia', scadeAlPasso: Infinity };
+    if (typeof GameMap !== 'undefined' && GameMap.aggiornaVeloMeteo) GameMap.aggiornaVeloMeteo();
+    return;
+  }
   if (!ctx.outdoor) { stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 }; return; }   // interni: sempre sereno
 
   // Chiave per CLUSTER (zone "incollate" come Percorso 1/Borgata Tuscolana
@@ -1873,7 +1884,11 @@ function _interagisciRicercatoreIgnaro(nomeBase) {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const scoperto = !!(stato.flags && stato.flags.osservatorio_cotral_scoperto);
   if (!scoperto) {
-    mostraDialogo(nomeBase, ['Interessante, i dati di quest\'anno non hanno alcun senso. Il clima è impazzito.']);
+    mostraDialogo(nomeBase, [
+      'Interessante, i dati di quest\'anno non hanno alcun senso. Il clima è impazzito.',
+      'Quella tempesta di sabbia qui fuori non si ferma mai, da settimane. Non è un fenomeno naturale, ne sono certo.',
+      'Sembra quasi che qualcuno la stia alimentando apposta. Ma chi mai potrebbe controllare il meteo così?',
+    ]);
     return;
   }
   mostraDialogo(nomeBase, [
