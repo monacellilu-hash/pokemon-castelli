@@ -984,4 +984,13 @@ DATI_INCONTRI['acqua_percorso_5'] = DATI_INCONTRI['acqua_marino_surf'];
 DATI_INCONTRI['acqua_lago di nemi'] = DATI_INCONTRI['acqua_lago di albano_surf'];
 DATI_INCONTRI['incontri lago di nemi'] = DATI_INCONTRI['incontri lago albano'];
 
+// Alias (6 ott 2026): Luca ha disegnato in via_vittoria_2f.tmj sia l'erba
+// ("incontri via vittoria 2f", già con una tabella propria) sia il Surf
+// ("acqua_via_vittoria_surf", senza tabella). Quel piano è già tutto
+// "acquatico" di tema (Horsea/Seadra/Magikarp/Gyarados/Goldeen/Seaking/
+// Marill/Spheal/Sealeo), quindi il Surf riusa la stessa tabella dell'erba
+// invece di inventarne una nuova — stesso schema già usato per Percorso
+// Monte Po 3 (acqua_percorso_montepo3).
+DATI_INCONTRI['acqua_via_vittoria_surf'] = DATI_INCONTRI['incontri via vittoria 2f'];
+
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;
