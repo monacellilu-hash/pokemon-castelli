@@ -86,6 +86,13 @@ const STARTER_PER_GEN = {
 const GEN_NOMI = { 1: 'Generazione I — Kanto', 2: 'Generazione II — Johto', 3: 'Generazione III — Hoenn' };
 const LIVELLO_STARTER = 5;
 
+// Tutte le 27 specie delle linee starter (base + 2 evoluzioni ciascuna),
+// usate per la Missione 5 di Cenciarels ("squadra pulita" — niente starter
+// in squadra). Costruito dalle basi di STARTER_PER_GEN (id, id+1, id+2).
+const STARTER_IDS = new Set(
+  Object.values(STARTER_PER_GEN).flat().flatMap(s => [s.id, s.id + 1, s.id + 2])
+);
+
 // DUE rivali nel laboratorio (richiesta esplicita di Luca, sess. 22 set
 // 2026): uno a destra (uomo, RIVALE_NOME, starter DEBOLE contro il tuo —
 // modalità FACILE se lo sfidi), uno a sinistra (donna, RIVALE_NOME_FORTE,
@@ -2891,8 +2898,10 @@ const OGGETTI = {
                descrizione: 'Ball di qualità superiore: cattura più facilmente della Poké Ball. (È la "Great Ball" dei giochi originali — "Superball" è il suo nome ufficiale in italiano.)' },
   ultraball: { nome: 'Ultra Ball', categoria: 'ball', bonus: 2.0, prezzo: 1200, icona: '🟡', img: 'ULTRABALL.png',
                descrizione: 'Alta probabilità di cattura.' },
-  masterball: { nome: 'Master Ball', categoria: 'ball', bonus: 255, prezzo: 0, icona: '🟣', img: 'MASTERBALL.png',
-               descrizione: 'Cattura qualsiasi Pokémon selvatico senza fallire mai. Non si trova in vendita.' },
+  // Prezzo 150000 (prima 0/"non in vendita"): da richiesta di Luca, 6 ott
+  // 2026 — unica eccezione, vendute solo da Cenciarels dopo la 5ª missione.
+  masterball: { nome: 'Master Ball', categoria: 'ball', bonus: 255, prezzo: 150000, icona: '🟣', img: 'MASTERBALL.png',
+               descrizione: 'Cattura qualsiasi Pokémon selvatico senza fallire mai. In vendita solo da Cenciarels, al Museo di Nemi.' },
   premierball: { nome: 'Premier Ball', categoria: 'ball', bonus: 1.0, prezzo: 200, icona: '⚪', img: 'PREMIERBALL.png',
                descrizione: 'Stessa efficacia della Poké Ball, ma bianca e rossa: un ricordo per l\'allenatore.' },
   repeatball: { nome: 'Repeat Ball', categoria: 'ball', bonus: 3.5, prezzo: 1000, icona: '🔴', img: 'REPEATBALL.png',
@@ -2962,8 +2971,10 @@ const OGGETTI = {
                descrizione: 'Scongela un Pokémon congelato.' },
   antidototot:   { nome: 'Antidoto totale', categoria: 'curastato', stato: null,         prezzo: 600,  icona: '⭐',
                descrizione: 'Cura qualsiasi stato alterato (veleno, paralisi, sonno, scottatura, congelamento).' },
-  rarecandy: { nome: 'Caramella Rara', categoria: 'raracandy', icona: '🍬', img: 'RARECANDY.png',
-               descrizione: 'Fa salire di 1 livello un Pokémon della squadra (mai oltre il level cap corrente). Oggetto vero, trovabile nel mondo — diverso dalla versione di test.' },
+  // Prezzo 15000 aggiunto (6 ott 2026, richiesta di Luca): prima non era
+  // mai in vendita, ora la vende solo Cenciarels dopo la 5ª missione.
+  rarecandy: { nome: 'Caramella Rara', categoria: 'raracandy', prezzo: 15000, icona: '🍬', img: 'RARECANDY.png',
+               descrizione: 'Fa salire di 1 livello un Pokémon della squadra (mai oltre il level cap corrente). In vendita solo da Cenciarels, al Museo di Nemi.' },
   caramellarara: { nome: 'Caramella Rara (test)', categoria: 'test', icona: '🍬',
                descrizione: 'MODALITÀ TEST: +1 livello a un Pokémon (dal menu Squadra, fuori battaglia).' },
 
@@ -3394,6 +3405,12 @@ const POKE_MARKET = [
   { id: 'mk-lega', comune: 'Lega Pokémon', lat: 41.8337, lon: 12.7532,
     merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante'] },
 
+  // Cenciarels (Museo di Nemi): sbloccato SOLO dopo la 5ª missione (sfida
+  // speciale alla Lega), richiesta di Luca 6 ott 2026 — vedi
+  // interagisciCenciarels in js/app.js per il gate vero.
+  { id: 'mk-cenciarels', comune: 'Museo di Nemi', lat: 41.7185, lon: 12.7042,
+    merce: ['masterball', 'rarecandy'] },
+
   // Grande Magazzino (ex CeladonCity_DepartmentStore di FireRed, 5 ott
   // 2026): un negozio per piano, merce via via più avanzata salendo.
   { id: 'mk-dept-2f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
@@ -3433,11 +3450,34 @@ const LEVEL_CAP_INIZIALE = 14;
    OGGETTI CHIAVE — non consumabili, non acquistabili, cambiano la trama.
    Salvati in stato.inventario.chiave[id] = true.
    ---------------------------------------------------------- */
-// Missioni del Museo di Cenciarels (sess. 22 set 2026): struttura VUOTA, da
-// riempire (le definisce Luca). Forma di ogni missione:
-//   { id: 'nome_univoco', titolo: '...', descrizione: '...', ricompensa: 'fossile_...' }
-// Le ricompense sono i fossili rimasti in stato.fossiliDaCenciarels.
-const MISSIONI_CENCIARELS = [];
+// Missioni del Museo di Cenciarels (definite da Luca, 6 ott 2026). Le
+// missioni 1-4 danno in premio la SCELTA di un fossile tra quelli rimasti in
+// stato.fossiliDaCenciarels (vedi _cutscenaSceltaOggetto per il pattern di
+// scelta riusato in interagisciCenciarels, js/app.js). La missione 5 non dà
+// fossili: sblocca l'acquisto di Masterball/Caramelle rare da Cenciarels
+// (vedi venditore 'mk-cenciarels'). Ogni missione ha un campo "tipo" che
+// interagisciCenciarels usa per sapere come verificarla.
+const MISSIONI_CENCIARELS = [
+  { id: 'cenciarels_pokedex_60', tipo: 'pokedex', soglia: 60,
+    titolo: 'Il Catalogo del Museo',
+    descrizione: 'Cattura almeno 60 specie diverse per il Pokédex.' },
+  { id: 'cenciarels_pokedex_150', tipo: 'pokedex', soglia: 150,
+    titolo: 'Un Catalogo più Completo',
+    descrizione: 'Cattura almeno 150 specie diverse per il Pokédex.' },
+  { id: 'cenciarels_lega', tipo: 'lega',
+    titolo: 'La Sfida della Lega',
+    descrizione: 'Sfida e batti la Lega Pokémon di Colonna.' },
+  { id: 'cenciarels_leggendari_rari', tipo: 'catturaTre', specie: [386, 150, 384],
+    titolo: 'I Tre Enigmi',
+    descrizione: 'Cattura Deoxys, Mewtwo e Rayquaza.' },
+  // Missione 5: niente fossile, sblocca il market. Verificata tramite il
+  // flag nascosto stato.flags.cenciarelsSquadraPulita (impostato in
+  // js/map.js quando si batte il Campione della Lega in RE-sfida con una
+  // squadra senza leggendari/starter/Draghi — vedi lì per i dettagli).
+  { id: 'cenciarels_squadra_pulita', tipo: 'squadraPulita',
+    titolo: 'La Sfida Pura',
+    descrizione: 'Risfida la Lega usando solo Pokémon non leggendari, non starter e non di tipo Draco.' },
+];
 
 const OGGETTI_CHIAVE = {
   // Ricompensa per aver battuto la famiglia del ristorante di Via dei Laghi

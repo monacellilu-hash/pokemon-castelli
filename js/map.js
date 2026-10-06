@@ -8699,6 +8699,21 @@ const GameMap = (function () {
       // post-game (Bunkerino/CoTrAL, leggendari post-Lega, ecc. — vedi CLAUDE.md).
       if (dati.campioneLega) {
         if (!stato.flags) stato.flags = {};
+        // Missione 5 di Cenciarels (Museo di Nemi): si attiva solo in
+        // RI-sfida (legaCompletata era già vera PRIMA di questa vittoria,
+        // quindi non la prima volta) e solo se la squadra reale (niente
+        // uova) non contiene leggendari, starter o Pokémon di tipo Draco.
+        // PENSIONE_LEGGENDARI_ESCLUSI/STARTER_IDS sono già usati altrove
+        // con lo stesso significato (js/app.js, js/data.js).
+        if (stato.flags.legaCompletata) {
+          const squadraReale = (stato.squadra || []).filter(p => p && !p.uovo);
+          const pulita = squadraReale.length > 0 && squadraReale.every(p =>
+            !PENSIONE_LEGGENDARI_ESCLUSI.has(p.id) &&
+            !STARTER_IDS.has(p.id) &&
+            !(p.tipi || []).includes('dragon')
+          );
+          if (pulita) stato.flags.cenciarelsSquadraPulita = true;
+        }
         stato.flags.legaCompletata = true;
         // Grunt CoTrAL di Percorso Monte Po 3: il muro/il Grunt dipendono
         // entrambi SOLO da legaCompletata (fix 6 ott 2026: prima c'era un

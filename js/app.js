@@ -2118,7 +2118,85 @@ async function interagisciCenciarels() {
     await mostraDialogo(nome, ['Le missioni non sono ancora pronte: sto ancora catalogando i reperti. Torna più avanti!']);
     return;
   }
-  // Le missioni vere si collegano qui quando saranno definite.
+  if (!stato.flags.cenciarelsMissioni) stato.flags.cenciarelsMissioni = {};
+  const fatte = stato.flags.cenciarelsMissioni;
+
+  const daFare = MISSIONI_CENCIARELS.filter(m => !fatte[m.id]);
+  if (!daFare.length) {
+    if (fatte.cenciarels_squadra_pulita) {
+      const vuoiComprare = await mostraScelta('Hai completato tutte le missioni! Vuoi comprare qualcosa da me?', 'Sì', 'No');
+      if (vuoiComprare === 1) { apriMarketVenditore('mk-cenciarels'); return; }
+    }
+    await mostraDialogo(nome, ['Hai completato tutte le missioni del museo. Grazie di cuore per il tuo aiuto!']);
+    return;
+  }
+  const missione = daFare[0];
+
+  if (!_missioneCenciarelsCompletata(missione)) {
+    await mostraDialogo(nome, [missione.titolo + ':', missione.descrizione]);
+    return;
+  }
+
+  fatte[missione.id] = true;
+
+  if (missione.tipo === 'squadraPulita') {
+    await mostraDialogo(nome, [
+      'Incredibile... hai battuto di nuovo la Lega con una squadra "pulita"!',
+      'Da oggi puoi comprare da me Master Ball e Caramelle Rare, come in un negozio.',
+    ]);
+    salvaPartita();
+    return;
+  }
+
+  // Missioni 1-4: premio a scelta tra i fossili rimasti in stato.fossiliDaCenciarels.
+  const restanti = (stato.fossiliDaCenciarels || []).filter(k => typeof OGGETTI !== 'undefined' && OGGETTI[k]);
+  if (!restanti.length) {
+    await mostraDialogo(nome, [
+      'Missione completata: ' + missione.titolo + '!',
+      'Vorrei darti un fossile, ma li hai già scelti tutti. Grazie comunque per l\'aiuto!',
+    ]);
+    salvaPartita();
+    return;
+  }
+  await mostraDialogo(nome, [
+    'Missione completata: ' + missione.titolo + '!',
+    'Come promesso, scegli un fossile tra quelli rimasti.',
+  ]);
+  const nomiFossili = restanti.map(k => `${OGGETTI[k].icona || ''} ${OGGETTI[k].nome}`.trim());
+  let sceltoIdx = -1;
+  while (sceltoIdx < 0) {
+    const i = await mostraSceltaLista('Quale fossile vuoi?', nomiFossili);
+    if (i < 0) continue;
+    const conf = await mostraScelta(`Sei sicuro? ${OGGETTI[restanti[i]].nome}`, 'Sì', 'No');
+    if (conf === 1) sceltoIdx = i;
+  }
+  const scelto = restanti[sceltoIdx];
+  if (!stato.zaino[scelto]) stato.zaino[scelto] = 0;
+  stato.zaino[scelto] += 1;
+  stato.fossiliDaCenciarels = restanti.filter(k => k !== scelto);
+  mostraToast(`Hai ricevuto: ${OGGETTI[scelto].nome}!`, 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
+// Verifica se la missione passata è già completata, SENZA segnarla.
+// Usata da interagisciCenciarels per decidere se mostrare la descrizione
+// (non ancora fatta) o consegnare il premio (appena completata).
+function _missioneCenciarelsCompletata(missione) {
+  if (missione.tipo === 'pokedex') {
+    const n = Object.values(stato.pokedex || {}).filter(v => v && v.catturato).length;
+    return n >= missione.soglia;
+  }
+  if (missione.tipo === 'lega') {
+    return !!stato.flags.legaCompletata;
+  }
+  if (missione.tipo === 'catturaTre') {
+    return (missione.specie || []).every(id => stato.pokedex && stato.pokedex[id] && stato.pokedex[id].catturato);
+  }
+  if (missione.tipo === 'squadraPulita') {
+    return !!stato.flags.cenciarelsSquadraPulita;
+  }
+  return false;
 }
 
 async function interagisciScienziatoLab1() {
