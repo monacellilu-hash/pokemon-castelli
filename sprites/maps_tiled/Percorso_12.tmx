@@ -738,197 +738,232 @@
 </data>
  </layer>
  <objectgroup id="5" name="eventi">
-  <object id="5" name="masso_forza_percorso_12" type="masso" x="1732.67" y="1348.67" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="7" name="masso_forza_percorso_12" type="masso" x="1699.17" y="1384.17" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="8" name="masso_forza_percorso_12" type="masso" x="1698.5" y="1415.17" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="9" name="masso_forza_percorso_12" type="masso" x="1700.83" y="1447.5" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="10" name="masso_forza_percorso_12" type="masso" x="1733.83" y="1480.5" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="11" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1701.24" y="1481.67" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
-  <object id="12" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1669.24" y="1449.12" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
-  <object id="13" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1699.06" y="1354.76" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
-  <object id="14" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1669.97" y="1386.21" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
-  <object id="15" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1667.24" y="1419.67" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
-  <object id="16" name="taglio_percorso_12" type="trigger_taglio" x="1315.17" y="4966.58" width="22.6667" height="19.3333">
-   <properties>
-    <property name="type" value="trigger_taglio"/>
-   </properties>
-  </object>
-  <object id="17" name="cartello_verso_via_laghi" type="cartello" x="1827.5" y="296" width="20.5" height="21">
-   <properties>
-    <property name="testo" value="Via dei Laghi →"/>
-    <property name="type" value="cartello"/>
-   </properties>
-  </object>
-  <object id="18" name="warp_via_dei_laghi" type="warp" x="194.333" y="4640.67" width="32" height="32">
-   <properties>
-    <property name="destinazione" value="via_dei_laghi"/>
-    <property name="spawn_id" value="da_percorso_12"/>
-    <property name="type" value="warp"/>
-   </properties>
-  </object>
-  <object id="19" name="spawn" type="spawn" x="249.667" y="4641.33" width="32" height="32">
-   <properties>
-    <property name="id" value="da_via_dei_laghi"/>
-    <property name="type" value="spawn"/>
-   </properties>
-  </object>
-  <object id="20" name="all-p12-1" type="trainer" x="364" y="1478" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-1"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="21" name="all-p12-2" type="trainer" x="1400" y="450" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-2"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="22" name="all-p12-3" type="trainer" x="500" y="750" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-3"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="23" name="all-p12-4" type="trainer" x="1600" y="1050" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-4"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="24" name="all-p12-5" type="trainer" x="600" y="1650" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-5"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="25" name="all-p12-6" type="trainer" x="1410" y="1728" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-6"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="26" name="all-p12-7" type="trainer" x="700" y="2250" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-7"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="27" name="all-p12-8" type="trainer" x="1500" y="2550" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-8"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="28" name="all-p12-9" type="trainer" x="500" y="2850" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-9"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="29" name="all-p12-10" type="trainer" x="1600" y="3150" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-10"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="30" name="all-p12-11" type="trainer" x="700" y="3450" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-11"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="31" name="all-p12-12" type="trainer" x="1400" y="3750" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-12"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="32" name="all-p12-10" type="trainer" x="1158.24" y="4538.55" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-10"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="33" name="all-p12-11" type="trainer" x="258.242" y="4838.55" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-11"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="34" name="all-p12-12" type="trainer" x="430.97" y="5184" width="32" height="32">
-   <properties>
-    <property name="id" value="all-p12-12"/>
-    <property name="type" value="trainer"/>
-   </properties>
-  </object>
-  <object id="35" name="erba_alta" type="erba_alta" x="34.303" y="61.5758" width="192" height="192">
-   <properties>
-    <property name="id" value="incontri percorsi_12"/>
-    <property name="type" value="erba_alta"/>
-   </properties>
-  </object>
-  <object id="36" name="masso_forza_percorso_12" type="masso" x="1662.43" y="325.833" width="24.3333" height="19.6667">
-   <properties>
-    <property name="id" value="masso_forza_percorso_12"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="37" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1633.23" y="327.873" width="23.3333" height="16.6667">
-   <properties>
-    <property name="blocco_id" value="spacca_percorso_12"/>
-    <property name="type" value="trigger_spaccaroccia"/>
-   </properties>
-  </object>
- </objectgroup>
+ <object id="5" name="masso_forza_percorso_12" type="masso" x="1732.67" y="1348.67" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="7" name="masso_forza_percorso_12" type="masso" x="1699.17" y="1384.17" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="8" name="masso_forza_percorso_12" type="masso" x="1698.5" y="1415.17" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="9" name="masso_forza_percorso_12" type="masso" x="1700.83" y="1447.5" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="10" name="masso_forza_percorso_12" type="masso" x="1733.83" y="1480.5" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="11" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1701.24" y="1481.67" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+ <object id="12" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1669.24" y="1449.12" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+ <object id="13" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1699.06" y="1354.76" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+ <object id="14" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1669.97" y="1386.21" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+ <object id="15" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1667.24" y="1419.67" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+ <object id="16" name="taglio_percorso_12" type="trigger_taglio" x="1315.17" y="4966.58" width="22.6667" height="19.3333">
+  <properties>
+   <property name="type" value="trigger_taglio"/>
+  </properties>
+ </object>
+ <object id="17" name="cartello_verso_via_laghi" type="cartello" x="1827.5" y="296" width="20.5" height="21">
+  <properties>
+   <property name="testo" value="Via dei Laghi →"/>
+   <property name="type" value="cartello"/>
+  </properties>
+ </object>
+ <object id="18" name="warp_via_dei_laghi" type="warp" x="194.333" y="4640.67" width="32" height="32">
+  <properties>
+   <property name="destinazione" value="via_dei_laghi"/>
+   <property name="spawn_id" value="da_percorso_12"/>
+   <property name="type" value="warp"/>
+  </properties>
+ </object>
+ <object id="19" name="spawn" type="spawn" x="249.667" y="4641.33" width="32" height="32">
+  <properties>
+   <property name="id" value="da_via_dei_laghi"/>
+   <property name="type" value="spawn"/>
+  </properties>
+ </object>
+ <object id="20" name="all-p12-1" type="trainer" x="364" y="1478" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-1"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ovest"/>
+   <property name="movimento" value="random"/>
+  </properties>
+ </object>
+ <object id="21" name="all-p12-2" type="trainer" x="1400" y="450" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-2"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="nord"/>
+   <property name="movimento" value="random"/>
+  </properties>
+ </object>
+ <object id="22" name="all-p12-3" type="trainer" x="500" y="750" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-3"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="sud"/>
+   <property name="movimento" value="random"/>
+  </properties>
+ </object>
+ <object id="23" name="all-p12-4" type="trainer" x="1600" y="1050" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-4"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="nord"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="24" name="all-p12-5" type="trainer" x="600" y="1650" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-5"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="sud"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="25" name="all-p12-6" type="trainer" x="1410" y="1728" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-6"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="est"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="26" name="all-p12-7" type="trainer" x="700" y="2250" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-7"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ovest"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="27" name="all-p12-8" type="trainer" x="1500" y="2550" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-8"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ns"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="28" name="all-p12-9" type="trainer" x="500" y="2850" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-9"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="eo"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="29" name="all-p12-10" type="trainer" x="1600" y="3150" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-10"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="sud"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="30" name="all-p12-11" type="trainer" x="700" y="3450" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-11"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="est"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="31" name="all-p12-12" type="trainer" x="1400" y="3750" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-12"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ovest"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="32" name="all-p12-10" type="trainer" x="1158.24" y="4538.55" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-13"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ns"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="33" name="all-p12-11" type="trainer" x="258.242" y="4838.55" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-14"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="eo"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="34" name="all-p12-12" type="trainer" x="430.97" y="5184" width="32" height="32">
+  <properties>
+   <property name="id" value="all-p12-15"/>
+   <property name="type" value="trainer"/>
+   <property name="direzione" value="ns"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
+  </properties>
+ </object>
+ <object id="35" name="erba_alta" type="erba_alta" x="34.303" y="61.5758" width="192" height="192">
+  <properties>
+   <property name="id" value="incontri percorsi_12"/>
+   <property name="type" value="erba_alta"/>
+  </properties>
+ </object>
+ <object id="36" name="masso_forza_percorso_12" type="masso" x="1662.43335" y="325.833316666667" width="24.3333" height="19.6667">
+  <properties>
+   <property name="id" value="masso_forza_percorso_12"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="37" name="spacca_percorso_12" type="trigger_spaccaroccia" x="1633.23335" y="327.873316666667" width="23.3333" height="16.6667">
+  <properties>
+   <property name="blocco_id" value="spacca_percorso_12"/>
+   <property name="type" value="trigger_spaccaroccia"/>
+  </properties>
+ </object>
+</objectgroup>
 </map>

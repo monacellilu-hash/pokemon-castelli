@@ -2806,6 +2806,90 @@ const DATI_TRAINER = {
     premio: 1300,
   },
 
+  // 10 nuovi allenatori (richiesta di Luca, 6 ott 2026): posizioni
+  // segnaposto in Tiled, Luca le sposta. Livelli 53-58, tra la 7ª (Ariccia,
+  // cap 56) e l'8ª palestra (Genzano, cap 59).
+  'all-p10-3': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Learco',
+    squadra: [ { id: 95, livello: 53 }, { id: 76, livello: 54 } ],
+    dialogo_prima: 'Sti sentieri li conosco a menadito. Famo due passi insieme, eh?',
+    dialogo_dopo: 'Bella camminata, bella lotta.',
+    premio: 1260,
+  },
+  'all-p10-4': {
+    sprite: 'trainer_LASS', ritratto: 'LASS', vista: 5,
+    classe: 'Pivella', nome: 'Carmela',
+    squadra: [ { id: 300, livello: 53 }, { id: 182, livello: 54 } ],
+    dialogo_prima: 'Scusa, stavo a cogliere fiori... ma mo\' me so\' ricordata che so\' pure allenatrice!',
+    dialogo_dopo: 'Vabbè, i fiori li raccolgo dopo.',
+    premio: 1240,
+  },
+  'all-p10-5': {
+    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 6,
+    classe: 'Campeggiatore', nome: 'Nazzareno',
+    squadra: [ { id: 322, livello: 54 }, { id: 323, livello: 55 } ],
+    dialogo_prima: 'Ho piantato la tenda proprio qui. Un po\' de movimento prima de dormì nun fa male.',
+    dialogo_dopo: 'E mo\' torno a dormì, grazie.',
+    premio: 1280,
+  },
+  'all-p10-6': {
+    sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 7,
+    classe: 'Motociclista', nome: 'Rocco',
+    squadra: [ { id: 319, livello: 55 }, { id: 342, livello: 56 } ],
+    dialogo_prima: 'Frena un attimo! Prima de passà, me devi affrontà.',
+    dialogo_dopo: 'Mo\' sì che puoi passà.',
+    premio: 1320,
+  },
+  'all-p10-7': {
+    sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 5,
+    classe: 'Picnic', nome: 'Assunta',
+    squadra: [ { id: 286, livello: 54 }, { id: 285, livello: 55 } ],
+    dialogo_prima: 'Stavo a fa\' merenda. Una lotta veloce prima del panino?',
+    dialogo_dopo: 'Ecco, mo\' me lo so\' guadagnato per davero quer panino.',
+    premio: 1300,
+  },
+  'all-p10-8': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 6,
+    classe: 'Cinturanera', nome: 'Osvaldo',
+    squadra: [ { id: 296, livello: 55 }, { id: 237, livello: 56 } ],
+    dialogo_prima: 'Lo spirito de combattimento nun se riposa mai, manco su sta strada.',
+    dialogo_dopo: 'Hai un bello spirito pure tu.',
+    premio: 1340,
+  },
+  'all-p10-9': {
+    sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 5,
+    classe: 'Scienziato', nome: 'Learco',
+    squadra: [ { id: 343, livello: 55 }, { id: 344, livello: 56 } ],
+    dialogo_prima: 'Sto a studià le rocce de sta zona. Me presti un attimo i tua Pokémon pe\' un test?',
+    dialogo_dopo: 'Dati raccolti. Grazie der contributo scientifico.',
+    premio: 1350,
+  },
+  'all-p10-10': {
+    sprite: 'trainer_SWIMMER_F', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Nuotatrice', nome: 'Delia',
+    squadra: [ { id: 130, livello: 56 }, { id: 350, livello: 57 } ],
+    dialogo_prima: 'Manco l\'acqua ferma sti miei Pokémon, figurete io!',
+    dialogo_dopo: 'Che nuotata de lotta!',
+    premio: 1380,
+  },
+  'all-p10-11': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Settimio',
+    squadra: [ { id: 75, livello: 56 }, { id: 306, livello: 57 } ],
+    dialogo_prima: 'L\'ultima salita prima de Genzano. Dimme che hai ancora forze!',
+    dialogo_dopo: 'Forze ce ne stanno, eccome.',
+    premio: 1400,
+  },
+  'all-p10-12': {
+    sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 6,
+    classe: 'Gentiluomo', nome: 'Alcide',
+    squadra: [ { id: 219, livello: 57 }, { id: 324, livello: 58 } ],
+    dialogo_prima: 'L\'ultimo saluto prima dell\'Infiorata. Me concede l\'onore di una lotta?',
+    dialogo_dopo: 'Che eleganza, davvero. A Genzano, allora.',
+    premio: 1420,
+  },
+
   /* ── Percorso_11 (Grottaferrata → Rocca di Papa, bivio Monte Cavo) — sessione
      documentazione 5 agosto: 2 allenatori generici "di passaggio", livelli
      provvisori intorno al cap di Monte Porzio (34). Posizione sulla mappa
@@ -3242,6 +3326,34 @@ const DATI_TRAINER = {
     dialogo_prima: 'L\'ultimo di sto sentiero so\' io, e nun te la regalo.',
     dialogo_dopo: 'Sei pronto. Via dei Laghi t\'aspetta da un lato, Genzano dall\'altro.',
     premio: 1700,
+  },
+
+  // Nati da un ID duplicato trovato su Percorso 12 (due oggetti Tiled con lo
+  // stesso "all-p12-10/11/12", 6 ott 2026): la seconda posizione è diventata
+  // un allenatore vero invece di un doppione morto. Stessi livelli (58-62).
+  'all-p12-13': {
+    sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 6,
+    classe: 'Nuotatore', nome: 'Tarcisio',
+    squadra: [ { id: 130, livello: 61 }, { id: 319, livello: 62 } ],
+    dialogo_prima: 'Qui er sentiero è pieno de curve, ma io me ce trovo benissimo!',
+    dialogo_dopo: 'Bella lotta, davero.',
+    premio: 1600,
+  },
+  'all-p12-14': {
+    sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 5,
+    classe: 'Entomologo', nome: 'Ferruccio',
+    squadra: [ { id: 267, livello: 60 }, { id: 269, livello: 61 } ],
+    dialogo_prima: 'Pure quassù ce stanno specie interessanti, sai?',
+    dialogo_dopo: 'Segno tutto sur taccuino, grazie!',
+    premio: 1550,
+  },
+  'all-p12-15': {
+    sprite: 'trainer_PSYCHIC_F', ritratto: 'PSYCHIC_F', vista: 6,
+    classe: 'Sensitiva', nome: 'Odalys',
+    squadra: [ { id: 302, livello: 61 }, { id: 358, livello: 62 } ],
+    dialogo_prima: 'Sento una presenza forte vicino a te... sarai tu stesso!',
+    dialogo_dopo: 'Le vibrazioni non mentono mai.',
+    premio: 1650,
   },
 
   /* ── VIA VITTORIA — dungeon finale pre-Lega, 12 allenatori + 2 rivali

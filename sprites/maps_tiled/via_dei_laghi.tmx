@@ -810,6 +810,10 @@
  <object id="283" x="1642" y="3684" width="80" height="84"/>
  <object id="288" x="1767.25" y="1846.75" width="52.25" height="37.5"/>
  <object id="289" x="1855.5" y="1847.5" width="56.375" height="37.375"/>
+ <object id="291" x="2915.5" y="1159.75" width="21.5" height="12.25"/>
+ <object id="292" x="2884.75" y="1190.5" width="22" height="16.5"/>
+ <object id="293" x="2889.5" y="1262.5" width="16.75" height="41"/>
+ <object id="294" x="2903.25" y="1287.75" width="38.5" height="10.25"/>
 </objectgroup>
  <objectgroup id="6" name="eventi">
  <object id="6" name="cartello_fine" type="cartello" x="2783.33333333333" y="1057.33333333333" width="32" height="32">
@@ -827,48 +831,59 @@
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_1"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="9" name="trainer_2" type="trainer" x="869.333333333333" y="2250.66666666667" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_2"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="10" name="trainer_3" type="trainer" x="1006" y="2727" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="via_laghi_trainer_3"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="11" name="trainer_4" type="trainer" x="1440" y="2880" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="eo"/>
    <property name="id" value="via_laghi_trainer_4"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="12" name="trainer_5" type="trainer" x="1664" y="3136" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="via_laghi_trainer_5"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="13" name="trainer_6" type="trainer" x="1444" y="3682.66666666667" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_6"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="14" name="trainer_7" type="trainer" x="1483" y="2459.33333333333" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_7"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="15" name="trainer_8" type="trainer" x="977.333333333333" y="1320" width="32" height="32">
   <properties>
    <property name="direzione" value="ovest"/>
    <property name="id" value="via_laghi_trainer_8"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="16" name="oggetto_1" type="oggetto" x="2690.66666666667" y="1824" width="32" height="32">
@@ -1337,84 +1352,102 @@
   <properties>
    <property name="direzione" value="est"/>
    <property name="id" value="via_laghi_trainer_9"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="226" name="trainer_11" type="trainer" x="2050" y="2150" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="eo"/>
    <property name="id" value="via_laghi_trainer_11"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="227" name="trainer_12" type="trainer" x="2503.33333333333" y="1710.66666666667" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="via_laghi_trainer_12"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="228" name="trainer_13" type="trainer" x="2600" y="2450" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_13"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="229" name="trainer_14" type="trainer" x="2200" y="2750" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_14"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="230" name="trainer_15" type="trainer" x="1908" y="2972" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_15"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="231" name="trainer_16" type="trainer" x="1478" y="3250" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="est"/>
    <property name="id" value="via_laghi_trainer_16"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="232" name="trainer_17" type="trainer" x="1300" y="3450" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_17"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="233" name="trainer_18" type="trainer" x="769" y="3835" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_18"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="234" name="trainer_19" type="trainer" x="800" y="3200" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_19"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="235" name="trainer_20" type="trainer" x="874.666666666667" y="2837.66666666667" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="eo"/>
    <property name="id" value="via_laghi_trainer_20"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="236" name="trainer_21" type="trainer" x="600" y="2000" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="via_laghi_trainer_21"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="237" name="trainer_22" type="trainer" x="1200" y="1750" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_22"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="238" name="trainer_23" type="trainer" x="1850" y="3900" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_23"/>
+   <property name="movimento" value="random"/>
   </properties>
  </object>
  <object id="240" name="spawn_da_tunnel roccioso" type="spawn" x="2888.50351666667" y="712.262" width="11.3333333333335" height="15.3333333333334">
@@ -1449,20 +1482,20 @@
   </properties>
   <point/>
  </object>
- <object id="260" name="warp_percorso_12" type="warp" x="2954.66666666667" y="1217.33333333333" width="21.333333333333" height="32">
+ <object id="260" name="warp_percorso_12" type="warp" x="2961.91666666667" y="1217.33333333333" width="14.083333333333" height="32">
   <properties>
    <property name="destinazione" value="percorso_12"/>
    <property name="spawn_id" value="da_via_dei_laghi"/>
    <property name="type" value="warp"/>
   </properties>
  </object>
- <object id="261" name="spawn" type="spawn" x="2880.66666666667" y="1216.33333333333" width="32" height="32">
+ <object id="261" name="spawn" type="spawn" x="2911.41666666667" y="1215.83333333333" width="32" height="32">
   <properties>
    <property name="id" value="da_percorso_12"/>
    <property name="type" value="spawn"/>
   </properties>
  </object>
- <object id="262" name="npc_gate_percorso_12" type="npc" x="2822.66666666667" y="1213.33333333333" width="32" height="32">
+ <object id="262" name="npc_gate_percorso_12" type="npc" x="2883.66666666667" y="1221.83333333333" width="24.5" height="19.75">
   <properties>
    <property name="condizione" value="medaglie&gt;=8"/>
    <property name="gate" value="true"/>
@@ -1499,11 +1532,13 @@
  </object>
  <object id="288" name="trainer" x="1671" y="1833.66666666667" width="21.3333333333335" height="19">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="famiglia_laghi_1"/>
    <property name="sprite" value="YOUNGSTER"/>
    <property name="type" value="trainer"/>
    <property name="vista" value="5"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
  <object id="289" name="npc" x="1890" y="1830" width="32" height="32">
@@ -1515,8 +1550,10 @@
  </object>
  <object id="290" name="trainer_10" type="trainer" x="2592" y="1384" width="32" height="32">
   <properties>
-   <property name="direzione" value="sud"/>
+   <property name="direzione" value="ns"/>
    <property name="id" value="via_laghi_trainer_10"/>
+   <property name="pattuglia" value="true"/>
+   <property name="movimento" value="fisso"/>
   </properties>
  </object>
 </objectgroup>
