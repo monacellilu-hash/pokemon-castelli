@@ -168,7 +168,7 @@
    <property name="direzione" value="est"/>
    <property name="id" value="gregario 1 palestra marino"/>
    <property name="type" value="trainer"/>
-   <property name="vista" value="7"/>
+   <property name="vista" value="9"/>
   </properties>
   <point/>
  </object>
@@ -177,7 +177,7 @@
    <property name="direzione" value="ovest"/>
    <property name="id" value="gregario 2 palestra marino"/>
    <property name="type" value="trainer"/>
-   <property name="vista" value="7"/>
+   <property name="vista" value="9"/>
   </properties>
   <point/>
  </object>

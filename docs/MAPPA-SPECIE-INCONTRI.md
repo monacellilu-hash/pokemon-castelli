@@ -2,10 +2,6 @@
 
 Fonte di verita unica: `dati/incontri.js`. Se le tabelle cambiano, rigenerare questo file (non modificarlo a mano).
 
-## ⚠️ Zona vuota trovata
-`incontri tunnel roccioso 4f` esiste nel file ma ha l'array `pokemon` completamente
-vuoto: zero specie assegnate. Da riempire se quella zona è davvero attiva in gioco.
-
 ## incontri lago albano profondo
 Probabilita per casella: 35%
 
@@ -34,27 +30,32 @@ Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 10 | Caterpie | 2-5 | 30 |
-| 13 | Weedle | 2-5 | 30 |
+| 10 | Caterpie | 2-5 | 28 |
+| 13 | Weedle | 2-5 | 28 |
 | 16 | Pidgey | 2-5 | 28 |
 | 19 | Rattata | 2-5 | 28 |
-| 29 | Nidoran♀ | 2-4 | 18 |
-| 32 | Nidoran♂ | 2-4 | 18 |
-| 43 | Oddish | 3-5 | 16 |
-| 60 | Poliwag | 3-5 | 14 |
-| 69 | Bellsprout | 3-5 | 14 |
-| 161 | Sentret (Gen2) | 2-5 | 18 |
-| 163 | Hoothoot (Gen2) | 3-5 | 16 |
-| 165 | Ledyba (Gen2) | 3-5 | 12 |
-| 265 | Wurmple (Gen3) | 2-5 | 16 |
-| 276 | Taillow (Gen3) | 3-6 | 14 |
-| 263 | Zigzagoon (Gen3) | 3-5 | 14 |
-| 20 | Raticate (evoluto, raro) | 5-7 | 3 |
+| 20 | Raticate (evoluto, raro) | 5-7 | 10 |
+| 60 | Poliwag | 3-5 | 22 |
+| 69 | Bellsprout | 3-5 | 22 |
+| 161 | Sentret (Gen2) | 2-5 | 28 |
+| 162 | Furret (evoluto, raro) | 4-6 | 10 |
+| 165 | Ledyba (Gen2) | 3-5 | 28 |
+| 263 | Zigzagoon (Gen3) | 3-5 | 28 |
+| 265 | Wurmple (Gen3) | 2-5 | 28 |
+| 266 | Silcoon (Wurmple evoluto A) | 3-5 | 28 |
+| 268 | Cascoon (Wurmple evoluto B) | 3-5 | 28 |
+| 276 | Taillow (Gen3) | 3-6 | 28 |
+| 277 | Swellow (evoluto, raro) | 4-6 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
 | 23 | Ekans | 2-5 | 22 |
-| 162 | Furret (evoluto, raro) | 4-6 | 5 |
-| 266 | Silcoon (Wurmple evoluto A) | 3-5 | 16 |
-| 268 | Cascoon (Wurmple evoluto B) | 3-5 | 16 |
-| 277 | Swellow (evoluto, raro) | 4-6 | 6 |
+| 29 | Nidoran♀ | 2-4 | 28 |
+| 32 | Nidoran♂ | 2-4 | 28 |
+| 43 | Oddish | 3-5 | 22 |
+| 163 | Hoothoot (Gen2) | 3-5 | 28 |
 
 ## incontri tuscolo
 Probabilita per casella: 15%
@@ -100,156 +101,201 @@ Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 43 | Oddish | 4-6 | 30 |
-| 46 | Paras | 5-7 | 25 |
-| 69 | Bellsprout | 5-8 | 20 |
-| 29 | Nidoran♀ | 4-7 | 18 |
-| 32 | Nidoran♂ | 4-7 | 18 |
-| 187 | Hoppip (Gen2) | 4-7 | 18 |
-| 191 | Sunkern (Gen2) | 5-7 | 16 |
-| 285 | Shroomish (Gen3) | 5-8 | 16 |
+| 43 | Oddish | 4-6 | 22 |
+| 46 | Paras | 5-7 | 22 |
+| 83 | Farfetchd (rarissimo, campi coltivati) | 6-8 | 16 |
+| 187 | Hoppip (Gen2) | 4-7 | 28 |
+| 191 | Sunkern (Gen2) | 5-7 | 28 |
+| 285 | Shroomish (Gen3) | 5-8 | 22 |
 | 315 | Roselia (Gen3, rara) | 6-8 | 10 |
-| 30 | Nidorina (evoluta, rara) | 6-8 | 6 |
-| 33 | Nidorino (evoluto, raro) | 6-8 | 6 |
-| 83 | Farfetchd (rarissimo, campi coltivati) | 6-8 | 4 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 29 | Nidoran♀ | 4-7 | 28 |
+| 30 | Nidorina (evoluta, rara) | 6-8 | 16 |
+| 32 | Nidoran♂ | 4-7 | 28 |
+| 33 | Nidorino (evoluto, raro) | 6-8 | 16 |
+| 69 | Bellsprout | 5-8 | 22 |
 
 ## incontri percorso 2
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 16 | Pidgey | 9-11 | 25 |
-| 19 | Rattata | 9-11 | 25 |
-| 43 | Oddish | 10-12 | 20 |
-| 29 | Nidoran♀ | 9-12 | 18 |
-| 32 | Nidoran♂ | 9-12 | 18 |
-| 179 | Mareep (Gen2) | 10-13 | 18 |
-| 183 | Marill (Gen2) | 9-12 | 18 |
-| 261 | Poochyena (Gen3) | 10-12 | 15 |
-| 263 | Zigzagoon (Gen3) | 9-11 | 15 |
-| 273 | Seedot (Gen3) | 11-13 | 10 |
-| 17 | Pidgeotto (evoluto) | 11-13 | 8 |
-| 203 | Girafarig | 10-13 | 20 |
+| 16 | Pidgey | 9-11 | 28 |
+| 17 | Pidgeotto (evoluto) | 11-13 | 16 |
+| 19 | Rattata | 9-11 | 28 |
+| 203 | Girafarig | 10-13 | 10 |
+| 263 | Zigzagoon (Gen3) | 9-11 | 28 |
 | 264 | Linoone (evoluto) | 11-13 | 10 |
+| 273 | Seedot (Gen3) | 11-13 | 28 |
+| 183 | Marill (Gen2) | 9-12 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 29 | Nidoran♀ | 9-12 | 28 |
+| 32 | Nidoran♂ | 9-12 | 28 |
+| 43 | Oddish | 10-12 | 22 |
+| 179 | Mareep (Gen2) | 10-13 | 22 |
+| 261 | Poochyena (Gen3) | 10-12 | 28 |
 
 ## incontri percorso 2 surf
 Probabilita per casella: 18%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 54 | Psyduck | 25-30 | 28 |
-| 60 | Poliwag | 25-30 | 25 |
-| 183 | Marill | 26-31 | 20 |
-| 90 | Shellder | 26-31 | 18 |
-| 98 | Krabby | 26-31 | 18 |
-| 270 | Lotad | 25-30 | 18 |
-| 271 | Lombre | 28-32 | 12 |
-| 339 | Barboach | 27-32 | 14 |
-| 118 | Goldeen | 27-32 | 12 |
-| 130 | Gyarados (raro, forte) | 30-35 | 6 |
+| 130 | Gyarados (raro, forte) | 30-35 | 3 |
+| 270 | Lotad | 25-30 | 28 |
+| 271 | Lombre | 28-32 | 16 |
+| 183 | Marill | 26-31 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 54 | Psyduck | 25-30 | 22 |
+| 60 | Poliwag | 25-30 | 22 |
+| 90 | Shellder | 26-31 | 22 |
+| 98 | Krabby | 26-31 | 22 |
+| 118 | Goldeen | 27-32 | 22 |
+| 339 | Barboach | 27-32 | 22 |
 
 ## incontri percorso 3
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 41 | Zubat | 10-13 | 25 |
-| 43 | Oddish | 10-13 | 20 |
-| 60 | Poliwag | 11-14 | 20 |
-| 98 | Krabby | 11-14 | 18 |
-| 183 | Marill (Gen2) | 10-13 | 20 |
-| 193 | Yanma (Gen2) | 11-14 | 15 |
-| 270 | Lotad (Gen3) | 11-15 | 15 |
-| 278 | Wingull (Gen3) | 11-15 | 15 |
-| 283 | Surskit (Gen3) | 12-16 | 10 |
-| 54 | Psyduck | 12-16 | 12 |
-| 70 | Weepinbell (evoluto) | 13-16 | 10 |
+| 54 | Psyduck | 12-16 | 22 |
+| 60 | Poliwag | 11-14 | 22 |
+| 70 | Weepinbell (evoluto) | 13-16 | 16 |
+| 98 | Krabby | 11-14 | 22 |
 | 99 | Kingler (evoluto, raro) | 14-16 | 6 |
+| 193 | Yanma (Gen2) | 11-14 | 16 |
+| 270 | Lotad (Gen3) | 11-15 | 28 |
+| 278 | Wingull (Gen3) | 11-15 | 28 |
+| 283 | Surskit (Gen3) | 12-16 | 28 |
+| 183 | Marill (Gen2) | 10-13 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 41 | Zubat | 10-13 | 28 |
+| 43 | Oddish | 10-13 | 22 |
 
 ## incontri percorso 4
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 81 | Magnemite | 12-15 | 25 |
-| 100 | Voltorb | 13-16 | 20 |
-| 84 | Doduo | 12-16 | 20 |
-| 21 | Spearow | 13-17 | 20 |
-| 180 | Flaaffy (Gen2) | 13-17 | 18 |
-| 239 | Elekid (Gen2) | 12-16 | 15 |
-| 170 | Chinchou (Gen2) | 13-17 | 15 |
-| 309 | Electrike (Gen3) | 13-17 | 15 |
+| 21 | Spearow | 13-17 | 28 |
+| 22 | Fearow (evoluto) | 14-17 | 10 |
+| 84 | Doduo | 12-16 | 22 |
+| 170 | Chinchou (Gen2) | 13-17 | 22 |
+| 180 | Flaaffy (Gen2) | 13-17 | 16 |
+| 239 | Elekid (Gen2) | 12-16 | 16 |
+| 309 | Electrike (Gen3) | 13-17 | 22 |
 | 311 | Plusle (Gen3) | 14-18 | 10 |
 | 312 | Minun (Gen3) | 14-18 | 10 |
-| 22 | Fearow (evoluto) | 14-17 | 8 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 81 | Magnemite | 12-15 | 22 |
+| 100 | Voltorb | 13-16 | 22 |
 
 ## incontri marino
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 48 | Venonat | 12-15 | 25 |
-| 167 | Spinarak (Gen2) | 12-15 | 20 |
-| 293 | Whismur (Gen3) | 12-16 | 20 |
-| 300 | Skitty (Gen3) | 12-16 | 16 |
-| 316 | Gulpin (Gen3) | 13-17 | 15 |
-| 188 | Skiploom (Gen2, evoluto) | 14-17 | 12 |
-| 44 | Gloom (evoluto) | 14-17 | 10 |
-| 214 | Heracross (raro, tra i filari) | 14-17 | 5 |
-| 49 | Venomoth (evoluto) | 14-17 | 8 |
-| 294 | Loudred (evoluto) | 14-17 | 8 |
+| 48 | Venonat | 12-15 | 22 |
+| 49 | Venomoth (evoluto) | 14-17 | 10 |
+| 188 | Skiploom (Gen2, evoluto) | 14-17 | 16 |
+| 214 | Heracross (raro, tra i filari) | 14-17 | 6 |
+| 293 | Whismur (Gen3) | 12-16 | 28 |
+| 294 | Loudred (evoluto) | 14-17 | 16 |
+| 300 | Skitty (Gen3) | 12-16 | 28 |
 | 301 | Delcatty (evoluto) | 14-17 | 10 |
-| 317 | Swalot (evoluto) | 14-17 | 8 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 44 | Gloom (evoluto) | 14-17 | 16 |
+| 167 | Spinarak (Gen2) | 12-15 | 28 |
+| 316 | Gulpin (Gen3) | 13-17 | 22 |
+| 317 | Swalot (evoluto) | 14-17 | 6 |
 
 ## acqua_marino_surf
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 54 | Psyduck | 12-16 | 28 |
-| 60 | Poliwag | 12-16 | 25 |
-| 118 | Goldeen | 13-17 | 20 |
-| 183 | Marill (Gen2) | 12-16 | 18 |
-| 270 | Lotad (Gen3) | 12-16 | 18 |
-| 90 | Shellder | 14-18 | 12 |
-| 61 | Poliwhirl (evoluto) | 14-17 | 10 |
-| 298 | Azurill (cucciolo di Marill) | 12-14 | 18 |
+| 54 | Psyduck | 12-16 | 22 |
+| 60 | Poliwag | 12-16 | 22 |
+| 61 | Poliwhirl (evoluto) | 14-17 | 16 |
+| 90 | Shellder | 14-18 | 22 |
+| 118 | Goldeen | 13-17 | 22 |
+| 270 | Lotad (Gen3) | 12-16 | 28 |
+| 183 | Marill (Gen2) | 12-16 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 298 | Azurill (cucciolo di Marill) | 12-14 | 28 |
 
 ## incontri lago albano
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 54 | Psyduck | 15-19 | 25 |
-| 194 | Wooper (Gen2) | 15-19 | 22 |
-| 183 | Marill (Gen2) | 16-20 | 18 |
-| 270 | Lotad (Gen3) | 15-19 | 18 |
-| 278 | Wingull (Gen3) | 16-21 | 18 |
-| 118 | Goldeen | 16-21 | 14 |
-| 79 | Slowpoke | 17-22 | 12 |
+| 54 | Psyduck | 15-19 | 22 |
 | 55 | Golduck (raro, evoluto) | 20-22 | 6 |
+| 79 | Slowpoke | 17-22 | 22 |
 | 80 | Slowbro (evoluto, raro) | 18-21 | 6 |
+| 194 | Wooper (Gen2) | 15-19 | 28 |
+| 270 | Lotad (Gen3) | 15-19 | 28 |
+| 278 | Wingull (Gen3) | 16-21 | 28 |
 | 279 | Pelipper (evoluto) | 17-20 | 10 |
+| 183 | Marill (Gen2) | 16-20 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 118 | Goldeen | 16-21 | 22 |
 
 ## acqua_lago di albano_surf
 Probabilita per casella: 18%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 54 | Psyduck | 18-22 | 28 |
-| 60 | Poliwag | 18-23 | 25 |
-| 90 | Shellder | 20-24 | 22 |
-| 116 | Horsea | 19-24 | 20 |
-| 170 | Chinchou (Gen2) | 18-23 | 20 |
-| 194 | Wooper (Gen2) | 20-25 | 18 |
-| 318 | Carvanha (Gen3) | 24-28 | 10 |
-| 130 | Gyarados (raro, forte) | 25-28 | 5 |
-| 72 | Tentacool | 18-22 | 24 |
-| 73 | Tentacruel (evoluto, raro) | 22-26 | 4 |
-| 86 | Seel | 18-22 | 20 |
+| 60 | Poliwag | 18-23 | 22 |
+| 116 | Horsea | 19-24 | 22 |
+| 120 | Staryu | 18-22 | 16 |
+| 130 | Gyarados (raro, forte) | 25-28 | 3 |
+| 170 | Chinchou (Gen2) | 18-23 | 22 |
+| 370 | Luvdisc | 19-23 | 22 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 54 | Psyduck | 18-22 | 22 |
+| 72 | Tentacool | 18-22 | 22 |
+| 73 | Tentacruel (evoluto, raro) | 22-26 | 6 |
+| 86 | Seel | 18-22 | 22 |
 | 87 | Dewgong (evoluto) | 21-25 | 6 |
-| 120 | Staryu | 18-22 | 22 |
-| 370 | Luvdisc | 19-23 | 10 |
+| 90 | Shellder | 20-24 | 22 |
+| 194 | Wooper (Gen2) | 20-25 | 28 |
+| 318 | Carvanha (Gen3) | 24-28 | 22 |
 
 ## incontri castel gandolfo
 Probabilita per casella: 15%
@@ -257,16 +303,21 @@ Probabilita per casella: 15%
 | ID | Nome | Lv | rate |
 |---|---|---|---|
 | 54 | Psyduck | 16-20 | 22 |
-| 194 | Wooper (Gen2) | 16-20 | 20 |
-| 177 | Natu (Gen2, nei giardini) | 16-20 | 18 |
-| 90 | Shellder | 17-21 | 16 |
-| 222 | Corsola (Gen2) | 17-21 | 12 |
-| 170 | Chinchou (Gen2) | 18-22 | 12 |
-| 318 | Carvanha (Gen3, raro) | 19-23 | 8 |
-| 175 | Togepi (rara, giardini) | 16-19 | 4 |
-| 176 | Togetic (evoluto, rarissimo) | 20-23 | 1 |
+| 90 | Shellder | 17-21 | 22 |
+| 170 | Chinchou (Gen2) | 18-22 | 22 |
+| 175 | Togepi (rara, giardini) | 16-19 | 28 |
+| 176 | Togetic (evoluto, rarissimo) | 20-23 | 10 |
+| 177 | Natu (Gen2, nei giardini) | 16-20 | 22 |
 | 178 | Xatu (evoluto) | 17-20 | 6 |
-| 195 | Quagsire (evoluto) | 17-20 | 8 |
+| 194 | Wooper (Gen2) | 16-20 | 28 |
+| 195 | Quagsire (evoluto) | 17-20 | 10 |
+| 222 | Corsola (Gen2) | 17-21 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 318 | Carvanha (Gen3, raro) | 19-23 | 22 |
 
 ## incontri percorso 5
 Probabilita per casella: 15%
@@ -274,38 +325,48 @@ Probabilita per casella: 15%
 | ID | Nome | Lv | rate |
 |---|---|---|---|
 | 66 | Machop | 16-20 | 22 |
-| 74 | Geodude | 16-20 | 20 |
-| 231 | Phanpy (Gen2) | 16-20 | 18 |
-| 322 | Numel (Gen3, vulcanico) | 17-22 | 18 |
-| 216 | Teddiursa (Gen2) | 17-21 | 16 |
-| 333 | Swablu (Gen3) | 17-22 | 14 |
-| 325 | Spoink (Gen3) | 17-21 | 14 |
-| 304 | Aron (Gen3) | 18-22 | 12 |
-| 246 | Larvitar (rarissimo di montagna) | 20-24 | 4 |
-| 56 | Mankey | 16-20 | 22 |
-| 57 | Primeape (evoluto, raro) | 20-24 | 4 |
-| 331 | Cacnea | 16-20 | 16 |
+| 74 | Geodude | 16-20 | 22 |
+| 216 | Teddiursa (Gen2) | 17-21 | 22 |
+| 231 | Phanpy (Gen2) | 16-20 | 22 |
+| 246 | Larvitar (rarissimo di montagna) | 20-24 | 22 |
+| 304 | Aron (Gen3) | 18-22 | 22 |
+| 325 | Spoink (Gen3) | 17-21 | 22 |
+| 331 | Cacnea | 16-20 | 22 |
 | 332 | Cacturne (evoluto) | 19-23 | 6 |
+| 333 | Swablu (Gen3) | 17-22 | 22 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 56 | Mankey | 16-20 | 22 |
+| 57 | Primeape (evoluto, raro) | 20-24 | 10 |
+| 322 | Numel (Gen3, vulcanico) | 17-22 | 22 |
 
 ## incontri via dei laghi
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 187 | Hoppip (Gen2) | 18-22 | 25 |
+| 114 | Tangela (rara) | 19-23 | 10 |
+| 123 | Scyther (rarissimo) | 20-24 | 6 |
+| 172 | Pichu (Gen2, rarissimo) | 22-28 | 28 |
+| 187 | Hoppip (Gen2) | 18-22 | 28 |
+| 205 | Forretress (Gen2) | 20-24 | 6 |
+| 213 | Shuckle (Gen2, rarissimo) | 20-25 | 6 |
+| 227 | Skarmory (Gen2, raro) | 21-26 | 6 |
+| 235 | Smeargle | 18-22 | 28 |
 | 285 | Shroomish (Gen3) | 18-22 | 22 |
-| 313 | Volbeat (Gen3) | 19-23 | 18 |
-| 314 | Illumise (Gen3) | 19-23 | 18 |
-| 205 | Forretress (Gen2) | 20-24 | 16 |
-| 227 | Skarmory (Gen2, raro) | 21-26 | 14 |
-| 213 | Shuckle (Gen2, rarissimo) | 20-25 | 10 |
-| 172 | Pichu (Gen2, rarissimo) | 22-28 | 4 |
-| 114 | Tangela (rara) | 19-23 | 6 |
-| 123 | Scyther (rarissimo) | 20-24 | 1 |
-| 235 | Smeargle | 18-22 | 18 |
-| 287 | Slakoth | 18-22 | 20 |
+| 287 | Slakoth | 18-22 | 22 |
 | 288 | Vigoroth (evoluto) | 20-24 | 10 |
-| 357 | Tropius | 19-23 | 14 |
+| 313 | Volbeat (Gen3) | 19-23 | 10 |
+| 314 | Illumise (Gen3) | 19-23 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 357 | Tropius | 19-23 | 6 |
 
 ## incontri osservatorio
 Probabilita per casella: 15%
@@ -331,16 +392,21 @@ Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 74 | Geodude | 30-34 | 22 |
-| 220 | Swinub (Gen2) | 30-34 | 20 |
-| 216 | Teddiursa (Gen2) | 31-35 | 18 |
-| 361 | Snorunt (Gen3) | 31-35 | 16 |
-| 246 | Larvitar (raro di montagna) | 32-36 | 14 |
-| 225 | Delibird (Gen2, raro) | 32-37 | 8 |
-| 124 | Jynx (rarissima) | 32-36 | 1 |
+| 216 | Teddiursa (Gen2) | 31-35 | 22 |
+| 220 | Swinub (Gen2) | 30-34 | 28 |
 | 221 | Piloswine (evoluto) | 32-36 | 10 |
-| 238 | Smoochum (cucciolo) | 29-32 | 18 |
+| 225 | Delibird (Gen2, raro) | 32-37 | 22 |
+| 246 | Larvitar (raro di montagna) | 32-36 | 22 |
+| 361 | Snorunt (Gen3) | 31-35 | 22 |
 | 362 | Glalie (evoluto) | 34-37 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 74 | Geodude | 30-34 | 22 |
+| 124 | Jynx (rarissima) | 32-36 | 10 |
+| 238 | Smoochum (cucciolo) | 29-32 | 22 |
 
 ## incontri monteporzio
 Probabilita per casella: 15%
@@ -348,93 +414,128 @@ Probabilita per casella: 15%
 | ID | Nome | Lv | rate |
 |---|---|---|---|
 | 27 | Sandshrew | 24-27 | 22 |
-| 39 | Jigglypuff | 24-27 | 18 |
-| 58 | Growlithe | 25-29 | 18 |
-| 190 | Aipom (Gen2) | 25-29 | 16 |
-| 209 | Snubbull (Gen2) | 26-30 | 16 |
-| 25 | Pikachu (raro) | 24-28 | 5 |
-| 234 | Stantler (Gen2, raro) | 28-30 | 6 |
 | 52 | Meowth | 24-27 | 22 |
-| 53 | Persian (evoluto) | 27-30 | 6 |
-| 133 | Eevee (rarissimo) | 27-30 | 1 |
-| 174 | Igglybuff (cucciolo) | 23-25 | 10 |
-| 210 | Granbull (evoluto) | 28-31 | 8 |
+| 53 | Persian (evoluto) | 27-30 | 10 |
+| 58 | Growlithe | 25-29 | 16 |
+| 133 | Eevee (rarissimo) | 27-30 | 22 |
+| 39 | Jigglypuff | 24-27 | 28 |
+| 174 | Igglybuff (cucciolo) | 23-25 | 28 |
+| 190 | Aipom (Gen2) | 25-29 | 16 |
+| 209 | Snubbull (Gen2) | 26-30 | 22 |
+| 210 | Granbull (evoluto) | 28-31 | 10 |
+| 234 | Stantler (Gen2, raro) | 28-30 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 25 | Pikachu (raro) | 24-28 | 22 |
 
 ## incontri rocca di papa
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 95 | Onix | 32-35 | 22 |
-| 111 | Rhyhorn | 32-36 | 20 |
-| 185 | Sudowoodo (Gen2) | 33-36 | 18 |
-| 299 | Nosepass (Gen3) | 33-37 | 18 |
-| 328 | Trapinch (Gen3) | 32-35 | 14 |
-| 75 | Graveler (evoluto, raro) | 34-38 | 10 |
-| 112 | Rhydon (evoluto, rarissimo) | 36-38 | 4 |
-| 207 | Gligar (raro) | 33-36 | 8 |
+| 75 | Graveler (evoluto, raro) | 34-38 | 16 |
+| 95 | Onix | 32-35 | 16 |
+| 111 | Rhyhorn | 32-36 | 16 |
+| 112 | Rhydon (evoluto, rarissimo) | 36-38 | 6 |
+| 207 | Gligar (raro) | 33-36 | 10 |
+| 328 | Trapinch (Gen3) | 32-35 | 22 |
 | 345 | Lileep | 32-35 | 16 |
-| 346 | Cradily (evoluto, raro) | 35-38 | 4 |
+| 346 | Cradily (evoluto, raro) | 35-38 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 185 | Sudowoodo (Gen2) | 33-36 | 10 |
+| 299 | Nosepass (Gen3) | 33-37 | 16 |
 
 ## incontri percorso 7
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 215 | Sneasel (Gen2) | 34-38 | 20 |
-| 352 | Kecleon (Gen3) | 35-39 | 16 |
-| 241 | Miltank (Gen2) | 36-39 | 10 |
-| 355 | Duskull (Gen3, raro) | 37-40 | 6 |
+| 241 | Miltank (Gen2) | 36-39 | 6 |
+| 352 | Kecleon (Gen3) | 35-39 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 215 | Sneasel (Gen2) | 34-38 | 10 |
+| 355 | Duskull (Gen3, raro) | 37-40 | 22 |
 
 ## incontri albano
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 296 | Makuhita (Gen3) | 40-43 | 22 |
-| 307 | Meditite (Gen3) | 40-44 | 20 |
-| 67 | Machoke (evoluto) | 41-45 | 18 |
-| 128 | Tauros | 42-46 | 14 |
-| 236 | Tyrogue (Gen2, raro) | 40-42 | 10 |
-| 237 | Hitmontop (Gen2, raro) | 44-46 | 6 |
-| 106 | Hitmonlee (rarissimo) | 42-45 | 1 |
-| 107 | Hitmonchan (rarissimo) | 42-45 | 1 |
+| 67 | Machoke (evoluto) | 41-45 | 10 |
+| 128 | Tauros | 42-46 | 6 |
+| 307 | Meditite (Gen3) | 40-44 | 22 |
 | 308 | Medicham (evoluto) | 41-44 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 236 | Tyrogue (Gen2, raro) | 40-42 | 28 |
+| 237 | Hitmontop (Gen2, raro) | 44-46 | 10 |
+| 106 | Hitmonlee (rarissimo) | 42-45 | 10 |
+| 107 | Hitmonchan (rarissimo) | 42-45 | 10 |
+| 296 | Makuhita (Gen3) | 40-43 | 28 |
 
 ## incontri percorso 8
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 42 | Golbat (evoluto) | 40-43 | 20 |
-| 168 | Ariados (Gen2, evoluto) | 40-44 | 18 |
-| 274 | Nuzleaf (Gen3, evoluto) | 41-45 | 18 |
-| 262 | Mightyena (Gen3, evoluto) | 42-46 | 16 |
-| 291 | Ninjask (Gen3, raro) | 43-46 | 8 |
+| 274 | Nuzleaf (Gen3, evoluto) | 41-45 | 16 |
+| 291 | Ninjask (Gen3, raro) | 43-46 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 42 | Golbat (evoluto) | 40-43 | 10 |
+| 168 | Ariados (Gen2, evoluto) | 40-44 | 10 |
+| 262 | Mightyena (Gen3, evoluto) | 42-46 | 10 |
 
 ## incontri zona safari
 Probabilita per casella: 20%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 127 | Pinsir | 30-36 | 20 |
-| 217 | Ursaring (Gen2, evoluto) | 35-40 | 16 |
-| 335 | Zangoose (Gen3) | 33-40 | 14 |
-| 336 | Seviper (Gen3) | 33-40 | 14 |
-| 115 | Kangaskhan (rara) | 36-42 | 8 |
-| 113 | Chansey (rarissima) | 30-40 | 4 |
-| 108 | Lickitung (rara) | 30-40 | 10 |
+| 108 | Lickitung (rara) | 30-40 | 16 |
+| 113 | Chansey (rarissima) | 30-40 | 10 |
+| 115 | Kangaskhan (rara) | 36-42 | 6 |
+| 127 | Pinsir | 30-36 | 6 |
+| 217 | Ursaring (Gen2, evoluto) | 35-40 | 6 |
+| 335 | Zangoose (Gen3) | 33-40 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 336 | Seviper (Gen3) | 33-40 | 10 |
 
 ## incontri percorso 9
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 353 | Shuppet (Gen3) | 44-47 | 20 |
-| 302 | Sableye (Gen3) | 44-48 | 18 |
-| 286 | Breloom (Gen3, evoluto) | 45-49 | 16 |
-| 354 | Banette (Gen3, evoluto) | 46-50 | 12 |
-| 356 | Dusclops (Gen3, rarissimo) | 48-50 | 5 |
+| 286 | Breloom (Gen3, evoluto) | 45-49 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 302 | Sableye (Gen3) | 44-48 | 16 |
+| 353 | Shuppet (Gen3) | 44-47 | 22 |
+| 354 | Banette (Gen3, evoluto) | 46-50 | 10 |
+| 356 | Dusclops (Gen3, rarissimo) | 48-50 | 10 |
 
 ## incontri tunnel roccioso 1f
 Probabilita per casella: 7%
@@ -481,6 +582,18 @@ Probabilita per casella: 7%
 | 208 | Steelix (evoluto rarissimo) | 32-32 | 6 |
 | 371 | Bagon (rarissimo, draghi solo nei dungeon) | 29-31 | 1 |
 | 372 | Shelgon (rarissimo, evoluto) | 31-32 | 1 |
+
+## incontri tunnel roccioso 4f
+Probabilita per casella: 7%
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 42 | Golbat | 30-33 | 22 |
+| 75 | Graveler | 31-34 | 18 |
+| 95 | Onix | 31-34 | 16 |
+| 302 | Sableye (Gen3, tema buio/grotta) | 32-35 | 10 |
+| 299 | Nosepass (Gen3) | 32-35 | 10 |
+| 41 | Zubat | 29-32 | 14 |
 
 ## incontri grotta vulcano
 Probabilita per casella: 8%
@@ -543,47 +656,67 @@ Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 192 | Sunflora (Gen2) | 53-55 | 25 |
-| 166 | Ledian (Gen2) | 53-56 | 20 |
-| 284 | Masquerain (Gen3, raro) | 55-57 | 5 |
-| 327 | Spinda | 53-56 | 18 |
+| 166 | Ledian (Gen2) | 53-56 | 16 |
+| 192 | Sunflora (Gen2) | 53-55 | 10 |
+| 284 | Masquerain (Gen3, raro) | 55-57 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 327 | Spinda | 53-56 | 16 |
 
 ## incontri percorso 11
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 299 | Nosepass (Gen3) | 28-31 | 25 |
+| 202 | Wobbuffet | 29-32 | 10 |
+| 280 | Ralts (rarissimo) | 29-32 | 28 |
+| 299 | Nosepass (Gen3) | 28-31 | 16 |
 | 304 | Aron (Gen3) | 29-32 | 22 |
-| 322 | Numel (Gen3) | 30-33 | 18 |
 | 305 | Lairon (Gen3, evoluto) | 32-34 | 10 |
-| 323 | Camerupt (Gen3, evoluto, raro) | 33-35 | 5 |
-| 202 | Wobbuffet | 29-32 | 8 |
-| 280 | Ralts (rarissimo) | 29-32 | 1 |
-| 360 | Wynaut (cucciolo) | 28-30 | 10 |
+| 322 | Numel (Gen3) | 30-33 | 22 |
+| 323 | Camerupt (Gen3, evoluto, raro) | 33-35 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 360 | Wynaut (cucciolo) | 28-30 | 28 |
 
 ## incontri collegamento cotral
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 88 | Grimer | 30-33 | 25 |
+| 303 | Mawile (rara) | 32-35 | 16 |
 | 343 | Baltoy (Gen3) | 30-33 | 22 |
-| 89 | Muk (evoluto) | 32-34 | 15 |
-| 344 | Claydol (Gen3, evoluto) | 32-35 | 12 |
-| 374 | Beldum (Gen3, rarissimo) | 34-36 | 4 |
+| 344 | Claydol (Gen3, evoluto) | 32-35 | 6 |
+| 374 | Beldum (Gen3, rarissimo) | 34-36 | 22 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 88 | Grimer | 30-33 | 22 |
+| 89 | Muk (evoluto) | 32-34 | 6 |
 | 109 | Koffing | 30-33 | 16 |
-| 303 | Mawile (rara) | 32-35 | 4 |
 
 ## incontri genzano
 Probabilita per casella: 15%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 37 | Vulpix | 55-57 | 25 |
-| 58 | Growlithe | 55-58 | 20 |
-| 77 | Ponyta | 56-58 | 18 |
-| 219 | Magcargo (evoluto, raro) | 57-58 | 5 |
+| 37 | Vulpix | 55-57 | 22 |
+| 77 | Ponyta | 56-58 | 10 |
+| 219 | Magcargo (evoluto, raro) | 57-58 | 10 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 58 | Growlithe | 55-58 | 16 |
 
 ## incontri via vittoria 1f
 Probabilita per casella: 18%
@@ -655,19 +788,29 @@ Probabilita per casella: 10%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 24 | Arbok | 55-60 | 20 |
-| 97 | Hypno | 55-60 | 18 |
-| 101 | Electrode | 56-61 | 16 |
-| 110 | Weezing | 56-61 | 16 |
-| 310 | Manectric | 57-62 | 14 |
-| 130 | Gyarados (rarissimo) | 58-63 | 4 |
+| 130 | Gyarados (rarissimo) | 58-63 | 3 |
+| 310 | Manectric | 57-62 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 24 | Arbok | 55-60 | 10 |
+| 97 | Hypno | 55-60 | 6 |
+| 101 | Electrode | 56-61 | 6 |
+| 110 | Weezing | 56-61 | 6 |
 
 ## incontri percorso montepo 3
 Probabilita per casella: 10%
 
 | ID | Nome | Lv | rate |
 |---|---|---|---|
-| 286 | Breloom | 57-62 | 18 |
-| 297 | Hariyama | 58-63 | 16 |
-| 326 | Grumpig | 56-61 | 16 |
 | 212 | Scizor (rarissimo) | 60-65 | 6 |
+| 286 | Breloom | 57-62 | 6 |
+| 326 | Grumpig | 56-61 | 6 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 297 | Hariyama | 58-63 | 6 |

@@ -539,16 +539,16 @@
                          "name":"id",
                          "type":"string",
                          "value":"gregario 1 palestra marino"
-                        }, 
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"
-                        }, 
+                        },
                         {
                          "name":"vista",
                          "type":"string",
-                         "value":"7"
+                         "value":"9"
                         }],
                  "rotation":0,
                  "type":"",
@@ -573,16 +573,16 @@
                          "name":"id",
                          "type":"string",
                          "value":"gregario 2 palestra marino"
-                        }, 
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"
-                        }, 
+                        },
                         {
                          "name":"vista",
                          "type":"string",
-                         "value":"7"
+                         "value":"9"
                         }],
                  "rotation":0,
                  "type":"",

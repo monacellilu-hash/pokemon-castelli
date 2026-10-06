@@ -74,27 +74,29 @@ const DATI_INCONTRI = {
   'incontri percorso 1': {
     probabilita: 15,
     pokemon: [
-      { id: 10,  min: 2, max: 5, rate: 30 },   // Caterpie
-      { id: 13,  min: 2, max: 5, rate: 30 },   // Weedle
-      { id: 16,  min: 2, max: 5, rate: 28 },   // Pidgey
-      { id: 19,  min: 2, max: 5, rate: 28 },   // Rattata
-      { id: 29,  min: 2, max: 4, rate: 18 },   // Nidoran♀
-      { id: 32,  min: 2, max: 4, rate: 18 },   // Nidoran♂
-      { id: 43,  min: 3, max: 5, rate: 16 },   // Oddish
-      { id: 60,  min: 3, max: 5, rate: 14 },   // Poliwag
-      { id: 69,  min: 3, max: 5, rate: 14 },   // Bellsprout
-      { id: 161, min: 2, max: 5, rate: 18 },   // Sentret (Gen2)
-      { id: 163, min: 3, max: 5, rate: 16 },   // Hoothoot (Gen2)
-      { id: 165, min: 3, max: 5, rate: 12 },   // Ledyba (Gen2)
-      { id: 265, min: 2, max: 5, rate: 16 },   // Wurmple (Gen3)
-      { id: 276, min: 3, max: 6, rate: 14 },   // Taillow (Gen3)
-      { id: 263, min: 3, max: 5, rate: 14 },   // Zigzagoon (Gen3)
-      { id: 20,  min: 5, max: 7, rate: 3 },    // Raticate (evoluto, raro)
-      { id: 23,  min: 2, max: 5, rate: 22 },   // Ekans
-      { id: 162, min: 4, max: 6, rate: 5 },    // Furret (evoluto, raro)
-      { id: 266, min: 3, max: 5, rate: 16 },   // Silcoon (Wurmple evoluto A)
-      { id: 268, min: 3, max: 5, rate: 16 },   // Cascoon (Wurmple evoluto B)
-      { id: 277, min: 4, max: 6, rate: 6 },    // Swellow (evoluto, raro)
+      { id: 10, min: 2, max: 5, rate: 28 },  // Caterpie
+      { id: 13, min: 2, max: 5, rate: 28 },  // Weedle
+      { id: 16, min: 2, max: 5, rate: 28 },  // Pidgey
+      { id: 19, min: 2, max: 5, rate: 28 },  // Rattata
+      { id: 20, min: 5, max: 7, rate: 10 },  // Raticate (evoluto, raro)
+      { id: 60, min: 3, max: 5, rate: 22 },  // Poliwag
+      { id: 69, min: 3, max: 5, rate: 22 },  // Bellsprout
+      { id: 161, min: 2, max: 5, rate: 28 },  // Sentret (Gen2)
+      { id: 162, min: 4, max: 6, rate: 10 },  // Furret (evoluto, raro)
+      { id: 165, min: 3, max: 5, rate: 28 },  // Ledyba (Gen2)
+      { id: 263, min: 3, max: 5, rate: 28 },  // Zigzagoon (Gen3)
+      { id: 265, min: 2, max: 5, rate: 28 },  // Wurmple (Gen3)
+      { id: 266, min: 3, max: 5, rate: 28 },  // Silcoon (Wurmple evoluto A)
+      { id: 268, min: 3, max: 5, rate: 28 },  // Cascoon (Wurmple evoluto B)
+      { id: 276, min: 3, max: 6, rate: 28 },  // Taillow (Gen3)
+      { id: 277, min: 4, max: 6, rate: 10 },  // Swellow (evoluto, raro)
+],
+    pokemonNotte: [
+      { id: 23, min: 2, max: 5, rate: 22 },  // Ekans
+      { id: 29, min: 2, max: 4, rate: 28 },  // Nidoran♀
+      { id: 32, min: 2, max: 4, rate: 28 },  // Nidoran♂
+      { id: 43, min: 3, max: 5, rate: 22 },  // Oddish
+      { id: 163, min: 3, max: 5, rate: 28 },  // Hoothoot (Gen2)
 ],
   },
 
@@ -144,18 +146,20 @@ const DATI_INCONTRI = {
   'incontri frascati': {
     probabilita: 15,
     pokemon: [
-      { id: 43,  min: 4, max: 6, rate: 30 },   // Oddish
-      { id: 46,  min: 5, max: 7, rate: 25 },   // Paras
-      { id: 69,  min: 5, max: 8, rate: 20 },   // Bellsprout
-      { id: 29,  min: 4, max: 7, rate: 18 },   // Nidoran♀
-      { id: 32,  min: 4, max: 7, rate: 18 },   // Nidoran♂
-      { id: 187, min: 4, max: 7, rate: 18 },   // Hoppip (Gen2)
-      { id: 191, min: 5, max: 7, rate: 16 },   // Sunkern (Gen2)
-      { id: 285, min: 5, max: 8, rate: 16 },   // Shroomish (Gen3)
-      { id: 315, min: 6, max: 8, rate: 10 },   // Roselia (Gen3, rara)
-      { id: 30,  min: 6, max: 8, rate: 6 },    // Nidorina (evoluta, rara)
-      { id: 33,  min: 6, max: 8, rate: 6 },    // Nidorino (evoluto, raro)
-      { id: 83,  min: 6, max: 8, rate: 4 },    // Farfetchd (rarissimo, campi coltivati)
+      { id: 43, min: 4, max: 6, rate: 22 },  // Oddish
+      { id: 46, min: 5, max: 7, rate: 22 },  // Paras
+      { id: 83, min: 6, max: 8, rate: 16 },  // Farfetchd (rarissimo, campi coltivati)
+      { id: 187, min: 4, max: 7, rate: 28 },  // Hoppip (Gen2)
+      { id: 191, min: 5, max: 7, rate: 28 },  // Sunkern (Gen2)
+      { id: 285, min: 5, max: 8, rate: 22 },  // Shroomish (Gen3)
+      { id: 315, min: 6, max: 8, rate: 10 },  // Roselia (Gen3, rara)
+],
+    pokemonNotte: [
+      { id: 29, min: 4, max: 7, rate: 28 },  // Nidoran♀
+      { id: 30, min: 6, max: 8, rate: 16 },  // Nidorina (evoluta, rara)
+      { id: 32, min: 4, max: 7, rate: 28 },  // Nidoran♂
+      { id: 33, min: 6, max: 8, rate: 16 },  // Nidorino (evoluto, raro)
+      { id: 69, min: 5, max: 8, rate: 22 },  // Bellsprout
 ],
   },
 
@@ -163,19 +167,21 @@ const DATI_INCONTRI = {
   'incontri percorso 2': {
     probabilita: 15,
     pokemon: [
-      { id: 16,  min: 9,  max: 11, rate: 25 },  // Pidgey
-      { id: 19,  min: 9,  max: 11, rate: 25 },  // Rattata
-      { id: 43,  min: 10, max: 12, rate: 20 },  // Oddish
-      { id: 29,  min: 9,  max: 12, rate: 18 },  // Nidoran♀
-      { id: 32,  min: 9,  max: 12, rate: 18 },  // Nidoran♂
-      { id: 179, min: 10, max: 13, rate: 18 },  // Mareep (Gen2)
-      { id: 183, min: 9,  max: 12, rate: 18 },  // Marill (Gen2)
-      { id: 261, min: 10, max: 12, rate: 15 },  // Poochyena (Gen3)
-      { id: 263, min: 9,  max: 11, rate: 15 },  // Zigzagoon (Gen3)
-      { id: 273, min: 11, max: 13, rate: 10 },  // Seedot (Gen3)
-      { id: 17,  min: 11, max: 13, rate: 8 },   // Pidgeotto (evoluto)
-      { id: 203, min: 10, max: 13, rate: 20 },  // Girafarig
+      { id: 16, min: 9, max: 11, rate: 28 },  // Pidgey
+      { id: 17, min: 11, max: 13, rate: 16 },  // Pidgeotto (evoluto)
+      { id: 19, min: 9, max: 11, rate: 28 },  // Rattata
+      { id: 203, min: 10, max: 13, rate: 10 },  // Girafarig
+      { id: 263, min: 9, max: 11, rate: 28 },  // Zigzagoon (Gen3)
       { id: 264, min: 11, max: 13, rate: 10 },  // Linoone (evoluto)
+      { id: 273, min: 11, max: 13, rate: 28 },  // Seedot (Gen3)
+      { id: 183, min: 9, max: 12, rate: 28 },  // Marill (Gen2)
+],
+    pokemonNotte: [
+      { id: 29, min: 9, max: 12, rate: 28 },  // Nidoran♀
+      { id: 32, min: 9, max: 12, rate: 28 },  // Nidoran♂
+      { id: 43, min: 10, max: 12, rate: 22 },  // Oddish
+      { id: 179, min: 10, max: 13, rate: 22 },  // Mareep (Gen2)
+      { id: 261, min: 10, max: 12, rate: 28 },  // Poochyena (Gen3)
 ],
   },
 
@@ -186,17 +192,19 @@ const DATI_INCONTRI = {
   'incontri percorso 2 surf': {
     probabilita: 18,
     pokemon: [
-      { id: 54,  min: 25, max: 30, rate: 28 },  // Psyduck
-      { id: 60,  min: 25, max: 30, rate: 25 },  // Poliwag
-      { id: 183, min: 26, max: 31, rate: 20 },  // Marill
-      { id: 90,  min: 26, max: 31, rate: 18 },  // Shellder
-      { id: 98,  min: 26, max: 31, rate: 18 },  // Krabby
-      { id: 270, min: 25, max: 30, rate: 18 },  // Lotad
-      { id: 271, min: 28, max: 32, rate: 12 },  // Lombre
-      { id: 339, min: 27, max: 32, rate: 14 },  // Barboach
-      { id: 118, min: 27, max: 32, rate: 12 },  // Goldeen
-      { id: 130, min: 30, max: 35, rate: 6 },   // Gyarados (raro, forte)
-    ],
+      { id: 130, min: 30, max: 35, rate: 3 },  // Gyarados (raro, forte)
+      { id: 270, min: 25, max: 30, rate: 28 },  // Lotad
+      { id: 271, min: 28, max: 32, rate: 16 },  // Lombre
+      { id: 183, min: 26, max: 31, rate: 28 },  // Marill
+],
+    pokemonNotte: [
+      { id: 54, min: 25, max: 30, rate: 22 },  // Psyduck
+      { id: 60, min: 25, max: 30, rate: 22 },  // Poliwag
+      { id: 90, min: 26, max: 31, rate: 22 },  // Shellder
+      { id: 98, min: 26, max: 31, rate: 22 },  // Krabby
+      { id: 118, min: 27, max: 32, rate: 22 },  // Goldeen
+      { id: 339, min: 27, max: 32, rate: 22 },  // Barboach
+],
   },
 
   // ── PERCORSO 3 — campagna verso il lago (Grottaferrata → Marino), Lv 10-16 ──
@@ -205,18 +213,20 @@ const DATI_INCONTRI = {
   'incontri percorso 3': {
     probabilita: 15,
     pokemon: [
-      { id: 41,  min: 10, max: 13, rate: 25 },  // Zubat
-      { id: 43,  min: 10, max: 13, rate: 20 },  // Oddish
-      { id: 60,  min: 11, max: 14, rate: 20 },  // Poliwag
-      { id: 98,  min: 11, max: 14, rate: 18 },  // Krabby
-      { id: 183, min: 10, max: 13, rate: 20 },  // Marill (Gen2)
-      { id: 193, min: 11, max: 14, rate: 15 },  // Yanma (Gen2)
-      { id: 270, min: 11, max: 15, rate: 15 },  // Lotad (Gen3)
-      { id: 278, min: 11, max: 15, rate: 15 },  // Wingull (Gen3)
-      { id: 283, min: 12, max: 16, rate: 10 },  // Surskit (Gen3)
-      { id: 54,  min: 12, max: 16, rate: 12 },  // Psyduck
-      { id: 70,  min: 13, max: 16, rate: 10 },  // Weepinbell (evoluto)
-      { id: 99,  min: 14, max: 16, rate: 6 },   // Kingler (evoluto, raro)
+      { id: 54, min: 12, max: 16, rate: 22 },  // Psyduck
+      { id: 60, min: 11, max: 14, rate: 22 },  // Poliwag
+      { id: 70, min: 13, max: 16, rate: 16 },  // Weepinbell (evoluto)
+      { id: 98, min: 11, max: 14, rate: 22 },  // Krabby
+      { id: 99, min: 14, max: 16, rate: 6 },  // Kingler (evoluto, raro)
+      { id: 193, min: 11, max: 14, rate: 16 },  // Yanma (Gen2)
+      { id: 270, min: 11, max: 15, rate: 28 },  // Lotad (Gen3)
+      { id: 278, min: 11, max: 15, rate: 28 },  // Wingull (Gen3)
+      { id: 283, min: 12, max: 16, rate: 28 },  // Surskit (Gen3)
+      { id: 183, min: 10, max: 13, rate: 28 },  // Marill (Gen2)
+],
+    pokemonNotte: [
+      { id: 41, min: 10, max: 13, rate: 28 },  // Zubat
+      { id: 43, min: 10, max: 13, rate: 22 },  // Oddish
 ],
   },
 
@@ -226,17 +236,19 @@ const DATI_INCONTRI = {
   'incontri percorso 4': {
     probabilita: 15,
     pokemon: [
-      { id: 81,  min: 12, max: 15, rate: 25 },  // Magnemite
-      { id: 100, min: 13, max: 16, rate: 20 },  // Voltorb
-      { id: 84,  min: 12, max: 16, rate: 20 },  // Doduo
-      { id: 21,  min: 13, max: 17, rate: 20 },  // Spearow
-      { id: 180, min: 13, max: 17, rate: 18 },  // Flaaffy (Gen2)
-      { id: 239, min: 12, max: 16, rate: 15 },  // Elekid (Gen2)
-      { id: 170, min: 13, max: 17, rate: 15 },  // Chinchou (Gen2)
-      { id: 309, min: 13, max: 17, rate: 15 },  // Electrike (Gen3)
+      { id: 21, min: 13, max: 17, rate: 28 },  // Spearow
+      { id: 22, min: 14, max: 17, rate: 10 },  // Fearow (evoluto)
+      { id: 84, min: 12, max: 16, rate: 22 },  // Doduo
+      { id: 170, min: 13, max: 17, rate: 22 },  // Chinchou (Gen2)
+      { id: 180, min: 13, max: 17, rate: 16 },  // Flaaffy (Gen2)
+      { id: 239, min: 12, max: 16, rate: 16 },  // Elekid (Gen2)
+      { id: 309, min: 13, max: 17, rate: 22 },  // Electrike (Gen3)
       { id: 311, min: 14, max: 18, rate: 10 },  // Plusle (Gen3)
       { id: 312, min: 14, max: 18, rate: 10 },  // Minun (Gen3)
-      { id: 22,  min: 14, max: 17, rate: 8 },   // Fearow (evoluto)
+],
+    pokemonNotte: [
+      { id: 81, min: 12, max: 15, rate: 22 },  // Magnemite
+      { id: 100, min: 13, max: 16, rate: 22 },  // Voltorb
 ],
   },
 
@@ -247,18 +259,20 @@ const DATI_INCONTRI = {
   'incontri marino': {
     probabilita: 15,
     pokemon: [
-      { id: 48,  min: 12, max: 15, rate: 25 },  // Venonat
-      { id: 167, min: 12, max: 15, rate: 20 },  // Spinarak (Gen2)
-      { id: 293, min: 12, max: 16, rate: 20 },  // Whismur (Gen3)
-      { id: 300, min: 12, max: 16, rate: 16 },  // Skitty (Gen3)
-      { id: 316, min: 13, max: 17, rate: 15 },  // Gulpin (Gen3)
-      { id: 188, min: 14, max: 17, rate: 12 },  // Skiploom (Gen2, evoluto)
-      { id: 44,  min: 14, max: 17, rate: 10 },  // Gloom (evoluto)
-      { id: 214, min: 14, max: 17, rate: 5 },   // Heracross (raro, tra i filari)
-      { id: 49,  min: 14, max: 17, rate: 8 },   // Venomoth (evoluto)
-      { id: 294, min: 14, max: 17, rate: 8 },   // Loudred (evoluto)
+      { id: 48, min: 12, max: 15, rate: 22 },  // Venonat
+      { id: 49, min: 14, max: 17, rate: 10 },  // Venomoth (evoluto)
+      { id: 188, min: 14, max: 17, rate: 16 },  // Skiploom (Gen2, evoluto)
+      { id: 214, min: 14, max: 17, rate: 6 },  // Heracross (raro, tra i filari)
+      { id: 293, min: 12, max: 16, rate: 28 },  // Whismur (Gen3)
+      { id: 294, min: 14, max: 17, rate: 16 },  // Loudred (evoluto)
+      { id: 300, min: 12, max: 16, rate: 28 },  // Skitty (Gen3)
       { id: 301, min: 14, max: 17, rate: 10 },  // Delcatty (evoluto)
-      { id: 317, min: 14, max: 17, rate: 8 },   // Swalot (evoluto)
+],
+    pokemonNotte: [
+      { id: 44, min: 14, max: 17, rate: 16 },  // Gloom (evoluto)
+      { id: 167, min: 12, max: 15, rate: 28 },  // Spinarak (Gen2)
+      { id: 316, min: 13, max: 17, rate: 22 },  // Gulpin (Gen3)
+      { id: 317, min: 14, max: 17, rate: 6 },  // Swalot (evoluto)
 ],
   },
 
@@ -270,14 +284,16 @@ const DATI_INCONTRI = {
   'acqua_marino_surf': {
     probabilita: 15,
     pokemon: [
-      { id: 54,  min: 12, max: 16, rate: 28 },  // Psyduck
-      { id: 60,  min: 12, max: 16, rate: 25 },  // Poliwag
-      { id: 118, min: 13, max: 17, rate: 20 },  // Goldeen
-      { id: 183, min: 12, max: 16, rate: 18 },  // Marill (Gen2)
-      { id: 270, min: 12, max: 16, rate: 18 },  // Lotad (Gen3)
-      { id: 90,  min: 14, max: 18, rate: 12 },  // Shellder
-      { id: 61,  min: 14, max: 17, rate: 10 },  // Poliwhirl (evoluto)
-      { id: 298, min: 12, max: 14, rate: 18 },  // Azurill (cucciolo di Marill)
+      { id: 54, min: 12, max: 16, rate: 22 },  // Psyduck
+      { id: 60, min: 12, max: 16, rate: 22 },  // Poliwag
+      { id: 61, min: 14, max: 17, rate: 16 },  // Poliwhirl (evoluto)
+      { id: 90, min: 14, max: 18, rate: 22 },  // Shellder
+      { id: 118, min: 13, max: 17, rate: 22 },  // Goldeen
+      { id: 270, min: 12, max: 16, rate: 28 },  // Lotad (Gen3)
+      { id: 183, min: 12, max: 16, rate: 28 },  // Marill (Gen2)
+],
+    pokemonNotte: [
+      { id: 298, min: 12, max: 14, rate: 28 },  // Azurill (cucciolo di Marill)
 ],
   },
 
@@ -287,16 +303,18 @@ const DATI_INCONTRI = {
   'incontri lago albano': {
     probabilita: 15,
     pokemon: [
-      { id: 54,  min: 15, max: 19, rate: 25 },  // Psyduck
-      { id: 194, min: 15, max: 19, rate: 22 },  // Wooper (Gen2)
-      { id: 183, min: 16, max: 20, rate: 18 },  // Marill (Gen2)
-      { id: 270, min: 15, max: 19, rate: 18 },  // Lotad (Gen3)
-      { id: 278, min: 16, max: 21, rate: 18 },  // Wingull (Gen3)
-      { id: 118, min: 16, max: 21, rate: 14 },  // Goldeen
-      { id: 79,  min: 17, max: 22, rate: 12 },  // Slowpoke
-      { id: 55,  min: 20, max: 22, rate: 6 },   // Golduck (raro, evoluto)
-      { id: 80,  min: 18, max: 21, rate: 6 },   // Slowbro (evoluto, raro)
+      { id: 54, min: 15, max: 19, rate: 22 },  // Psyduck
+      { id: 55, min: 20, max: 22, rate: 6 },  // Golduck (raro, evoluto)
+      { id: 79, min: 17, max: 22, rate: 22 },  // Slowpoke
+      { id: 80, min: 18, max: 21, rate: 6 },  // Slowbro (evoluto, raro)
+      { id: 194, min: 15, max: 19, rate: 28 },  // Wooper (Gen2)
+      { id: 270, min: 15, max: 19, rate: 28 },  // Lotad (Gen3)
+      { id: 278, min: 16, max: 21, rate: 28 },  // Wingull (Gen3)
       { id: 279, min: 17, max: 20, rate: 10 },  // Pelipper (evoluto)
+      { id: 183, min: 16, max: 20, rate: 28 },  // Marill (Gen2)
+],
+    pokemonNotte: [
+      { id: 118, min: 16, max: 21, rate: 22 },  // Goldeen
 ],
   },
 
@@ -308,20 +326,22 @@ const DATI_INCONTRI = {
   'acqua_lago di albano_surf': {
     probabilita: 18,
     pokemon: [
-      { id: 54,  min: 18, max: 22, rate: 28 },  // Psyduck
-      { id: 60,  min: 18, max: 23, rate: 25 },  // Poliwag
-      { id: 90,  min: 20, max: 24, rate: 22 },  // Shellder
-      { id: 116, min: 19, max: 24, rate: 20 },  // Horsea
-      { id: 170, min: 18, max: 23, rate: 20 },  // Chinchou (Gen2)
-      { id: 194, min: 20, max: 25, rate: 18 },  // Wooper (Gen2)
-      { id: 318, min: 24, max: 28, rate: 10 },  // Carvanha (Gen3)
-      { id: 130, min: 25, max: 28, rate: 5 },   // Gyarados (raro, forte)
-      { id: 72,  min: 18, max: 22, rate: 24 },  // Tentacool
-      { id: 73,  min: 22, max: 26, rate: 4 },   // Tentacruel (evoluto, raro)
-      { id: 86,  min: 18, max: 22, rate: 20 },  // Seel
-      { id: 87,  min: 21, max: 25, rate: 6 },   // Dewgong (evoluto)
-      { id: 120, min: 18, max: 22, rate: 22 },  // Staryu
-      { id: 370, min: 19, max: 23, rate: 10 },  // Luvdisc
+      { id: 60, min: 18, max: 23, rate: 22 },  // Poliwag
+      { id: 116, min: 19, max: 24, rate: 22 },  // Horsea
+      { id: 120, min: 18, max: 22, rate: 16 },  // Staryu
+      { id: 130, min: 25, max: 28, rate: 3 },  // Gyarados (raro, forte)
+      { id: 170, min: 18, max: 23, rate: 22 },  // Chinchou (Gen2)
+      { id: 370, min: 19, max: 23, rate: 22 },  // Luvdisc
+],
+    pokemonNotte: [
+      { id: 54, min: 18, max: 22, rate: 22 },  // Psyduck
+      { id: 72, min: 18, max: 22, rate: 22 },  // Tentacool
+      { id: 73, min: 22, max: 26, rate: 6 },  // Tentacruel (evoluto, raro)
+      { id: 86, min: 18, max: 22, rate: 22 },  // Seel
+      { id: 87, min: 21, max: 25, rate: 6 },  // Dewgong (evoluto)
+      { id: 90, min: 20, max: 24, rate: 22 },  // Shellder
+      { id: 194, min: 20, max: 25, rate: 28 },  // Wooper (Gen2)
+      { id: 318, min: 24, max: 28, rate: 22 },  // Carvanha (Gen3)
 ],
   },
 
@@ -331,17 +351,19 @@ const DATI_INCONTRI = {
   'incontri castel gandolfo': {
     probabilita: 15,
     pokemon: [
-      { id: 54,  min: 16, max: 20, rate: 22 },  // Psyduck
-      { id: 194, min: 16, max: 20, rate: 20 },  // Wooper (Gen2)
-      { id: 177, min: 16, max: 20, rate: 18 },  // Natu (Gen2, nei giardini)
-      { id: 90,  min: 17, max: 21, rate: 16 },  // Shellder
-      { id: 222, min: 17, max: 21, rate: 12 },  // Corsola (Gen2)
-      { id: 170, min: 18, max: 22, rate: 12 },  // Chinchou (Gen2)
-      { id: 318, min: 19, max: 23, rate: 8 },   // Carvanha (Gen3, raro)
-      { id: 175, min: 16, max: 19, rate: 4 },   // Togepi (rara, giardini)
-      { id: 176, min: 20, max: 23, rate: 1 },   // Togetic (evoluto, rarissimo)
-      { id: 178, min: 17, max: 20, rate: 6 },   // Xatu (evoluto)
-      { id: 195, min: 17, max: 20, rate: 8 },   // Quagsire (evoluto)
+      { id: 54, min: 16, max: 20, rate: 22 },  // Psyduck
+      { id: 90, min: 17, max: 21, rate: 22 },  // Shellder
+      { id: 170, min: 18, max: 22, rate: 22 },  // Chinchou (Gen2)
+      { id: 175, min: 16, max: 19, rate: 28 },  // Togepi (rara, giardini)
+      { id: 176, min: 20, max: 23, rate: 10 },  // Togetic (evoluto, rarissimo)
+      { id: 177, min: 16, max: 20, rate: 22 },  // Natu (Gen2, nei giardini)
+      { id: 178, min: 17, max: 20, rate: 6 },  // Xatu (evoluto)
+      { id: 194, min: 16, max: 20, rate: 28 },  // Wooper (Gen2)
+      { id: 195, min: 17, max: 20, rate: 10 },  // Quagsire (evoluto)
+      { id: 222, min: 17, max: 21, rate: 10 },  // Corsola (Gen2)
+],
+    pokemonNotte: [
+      { id: 318, min: 19, max: 23, rate: 22 },  // Carvanha (Gen3, raro)
 ],
   },
 
@@ -351,19 +373,21 @@ const DATI_INCONTRI = {
   'incontri percorso 5': {
     probabilita: 15,
     pokemon: [
-      { id: 66,  min: 16, max: 20, rate: 22 },  // Machop
-      { id: 74,  min: 16, max: 20, rate: 20 },  // Geodude
-      { id: 231, min: 16, max: 20, rate: 18 },  // Phanpy (Gen2)
-      { id: 322, min: 17, max: 22, rate: 18 },  // Numel (Gen3, vulcanico)
-      { id: 216, min: 17, max: 21, rate: 16 },  // Teddiursa (Gen2)
-      { id: 333, min: 17, max: 22, rate: 14 },  // Swablu (Gen3)
-      { id: 325, min: 17, max: 21, rate: 14 },  // Spoink (Gen3)
-      { id: 304, min: 18, max: 22, rate: 12 },  // Aron (Gen3)
-      { id: 246, min: 20, max: 24, rate: 4 },   // Larvitar (rarissimo di montagna)
-      { id: 56,  min: 16, max: 20, rate: 22 },  // Mankey
-      { id: 57,  min: 20, max: 24, rate: 4 },   // Primeape (evoluto, raro)
-      { id: 331, min: 16, max: 20, rate: 16 },  // Cacnea
-      { id: 332, min: 19, max: 23, rate: 6 },   // Cacturne (evoluto)
+      { id: 66, min: 16, max: 20, rate: 22 },  // Machop
+      { id: 74, min: 16, max: 20, rate: 22 },  // Geodude
+      { id: 216, min: 17, max: 21, rate: 22 },  // Teddiursa (Gen2)
+      { id: 231, min: 16, max: 20, rate: 22 },  // Phanpy (Gen2)
+      { id: 246, min: 20, max: 24, rate: 22 },  // Larvitar (rarissimo di montagna)
+      { id: 304, min: 18, max: 22, rate: 22 },  // Aron (Gen3)
+      { id: 325, min: 17, max: 21, rate: 22 },  // Spoink (Gen3)
+      { id: 331, min: 16, max: 20, rate: 22 },  // Cacnea
+      { id: 332, min: 19, max: 23, rate: 6 },  // Cacturne (evoluto)
+      { id: 333, min: 17, max: 22, rate: 22 },  // Swablu (Gen3)
+],
+    pokemonNotte: [
+      { id: 56, min: 16, max: 20, rate: 22 },  // Mankey
+      { id: 57, min: 20, max: 24, rate: 10 },  // Primeape (evoluto, raro)
+      { id: 322, min: 17, max: 22, rate: 22 },  // Numel (Gen3, vulcanico)
 ],
   },
 
@@ -374,20 +398,22 @@ const DATI_INCONTRI = {
   'incontri via dei laghi': {
     probabilita: 15,
     pokemon: [
-      { id: 187, min: 18, max: 22, rate: 25 },  // Hoppip (Gen2)
+      { id: 114, min: 19, max: 23, rate: 10 },  // Tangela (rara)
+      { id: 123, min: 20, max: 24, rate: 6 },  // Scyther (rarissimo)
+      { id: 172, min: 22, max: 28, rate: 28 },  // Pichu (Gen2, rarissimo)
+      { id: 187, min: 18, max: 22, rate: 28 },  // Hoppip (Gen2)
+      { id: 205, min: 20, max: 24, rate: 6 },  // Forretress (Gen2)
+      { id: 213, min: 20, max: 25, rate: 6 },  // Shuckle (Gen2, rarissimo)
+      { id: 227, min: 21, max: 26, rate: 6 },  // Skarmory (Gen2, raro)
+      { id: 235, min: 18, max: 22, rate: 28 },  // Smeargle
       { id: 285, min: 18, max: 22, rate: 22 },  // Shroomish (Gen3)
-      { id: 313, min: 19, max: 23, rate: 18 },  // Volbeat (Gen3)
-      { id: 314, min: 19, max: 23, rate: 18 },  // Illumise (Gen3)
-      { id: 205, min: 20, max: 24, rate: 16 },  // Forretress (Gen2)
-      { id: 227, min: 21, max: 26, rate: 14 },  // Skarmory (Gen2, raro)
-      { id: 213, min: 20, max: 25, rate: 10 },  // Shuckle (Gen2, rarissimo)
-      { id: 172, min: 22, max: 28, rate: 4 },   // Pichu (Gen2, rarissimo)
-      { id: 114, min: 19, max: 23, rate: 6 },   // Tangela (rara)
-      { id: 123, min: 20, max: 24, rate: 1 },   // Scyther (rarissimo)
-      { id: 235, min: 18, max: 22, rate: 18 },  // Smeargle
-      { id: 287, min: 18, max: 22, rate: 20 },  // Slakoth
+      { id: 287, min: 18, max: 22, rate: 22 },  // Slakoth
       { id: 288, min: 20, max: 24, rate: 10 },  // Vigoroth (evoluto)
-      { id: 357, min: 19, max: 23, rate: 14 },  // Tropius
+      { id: 313, min: 19, max: 23, rate: 10 },  // Volbeat (Gen3)
+      { id: 314, min: 19, max: 23, rate: 10 },  // Illumise (Gen3)
+],
+    pokemonNotte: [
+      { id: 357, min: 19, max: 23, rate: 6 },  // Tropius
 ],
   },
 
@@ -420,16 +446,18 @@ const DATI_INCONTRI = {
   'incontri percorso montano': {
     probabilita: 15,
     pokemon: [
-      { id: 74,  min: 30, max: 34, rate: 22 },  // Geodude
-      { id: 220, min: 30, max: 34, rate: 20 },  // Swinub (Gen2)
-      { id: 216, min: 31, max: 35, rate: 18 },  // Teddiursa (Gen2)
-      { id: 361, min: 31, max: 35, rate: 16 },  // Snorunt (Gen3)
-      { id: 246, min: 32, max: 36, rate: 14 },  // Larvitar (raro di montagna)
-      { id: 225, min: 32, max: 37, rate: 8 },   // Delibird (Gen2, raro)
-      { id: 124, min: 32, max: 36, rate: 1 },   // Jynx (rarissima)
+      { id: 216, min: 31, max: 35, rate: 22 },  // Teddiursa (Gen2)
+      { id: 220, min: 30, max: 34, rate: 28 },  // Swinub (Gen2)
       { id: 221, min: 32, max: 36, rate: 10 },  // Piloswine (evoluto)
-      { id: 238, min: 29, max: 32, rate: 18 },  // Smoochum (cucciolo)
-      { id: 362, min: 34, max: 37, rate: 6 },   // Glalie (evoluto)
+      { id: 225, min: 32, max: 37, rate: 22 },  // Delibird (Gen2, raro)
+      { id: 246, min: 32, max: 36, rate: 22 },  // Larvitar (raro di montagna)
+      { id: 361, min: 31, max: 35, rate: 22 },  // Snorunt (Gen3)
+      { id: 362, min: 34, max: 37, rate: 6 },  // Glalie (evoluto)
+],
+    pokemonNotte: [
+      { id: 74, min: 30, max: 34, rate: 22 },  // Geodude
+      { id: 124, min: 32, max: 36, rate: 10 },  // Jynx (rarissima)
+      { id: 238, min: 29, max: 32, rate: 22 },  // Smoochum (cucciolo)
 ],
   },
 
@@ -439,18 +467,20 @@ const DATI_INCONTRI = {
   'incontri monteporzio': {
     probabilita: 15,
     pokemon: [
-      { id: 27,  min: 24, max: 27, rate: 22 },  // Sandshrew
-      { id: 39,  min: 24, max: 27, rate: 18 },  // Jigglypuff
-      { id: 58,  min: 25, max: 29, rate: 18 },  // Growlithe
+      { id: 27, min: 24, max: 27, rate: 22 },  // Sandshrew
+      { id: 52, min: 24, max: 27, rate: 22 },  // Meowth
+      { id: 53, min: 27, max: 30, rate: 10 },  // Persian (evoluto)
+      { id: 58, min: 25, max: 29, rate: 16 },  // Growlithe
+      { id: 133, min: 27, max: 30, rate: 22 },  // Eevee (rarissimo)
+      { id: 39, min: 24, max: 27, rate: 28 },  // Jigglypuff
+      { id: 174, min: 23, max: 25, rate: 28 },  // Igglybuff (cucciolo)
       { id: 190, min: 25, max: 29, rate: 16 },  // Aipom (Gen2)
-      { id: 209, min: 26, max: 30, rate: 16 },  // Snubbull (Gen2)
-      { id: 25,  min: 24, max: 28, rate: 5 },   // Pikachu (raro)
-      { id: 234, min: 28, max: 30, rate: 6 },   // Stantler (Gen2, raro)
-      { id: 52,  min: 24, max: 27, rate: 22 },  // Meowth
-      { id: 53,  min: 27, max: 30, rate: 6 },   // Persian (evoluto)
-      { id: 133, min: 27, max: 30, rate: 1 },   // Eevee (rarissimo)
-      { id: 174, min: 23, max: 25, rate: 10 },  // Igglybuff (cucciolo)
-      { id: 210, min: 28, max: 31, rate: 8 },   // Granbull (evoluto)
+      { id: 209, min: 26, max: 30, rate: 22 },  // Snubbull (Gen2)
+      { id: 210, min: 28, max: 31, rate: 10 },  // Granbull (evoluto)
+      { id: 234, min: 28, max: 30, rate: 6 },  // Stantler (Gen2, raro)
+],
+    pokemonNotte: [
+      { id: 25, min: 24, max: 28, rate: 22 },  // Pikachu (raro)
 ],
   },
 
@@ -460,16 +490,18 @@ const DATI_INCONTRI = {
   'incontri rocca di papa': {
     probabilita: 15,
     pokemon: [
-      { id: 95,  min: 32, max: 35, rate: 22 },  // Onix
-      { id: 111, min: 32, max: 36, rate: 20 },  // Rhyhorn
-      { id: 185, min: 33, max: 36, rate: 18 },  // Sudowoodo (Gen2)
-      { id: 299, min: 33, max: 37, rate: 18 },  // Nosepass (Gen3)
-      { id: 328, min: 32, max: 35, rate: 14 },  // Trapinch (Gen3)
-      { id: 75,  min: 34, max: 38, rate: 10 },  // Graveler (evoluto, raro)
-      { id: 112, min: 36, max: 38, rate: 4 },   // Rhydon (evoluto, rarissimo)
-      { id: 207, min: 33, max: 36, rate: 8 },   // Gligar (raro)
+      { id: 75, min: 34, max: 38, rate: 16 },  // Graveler (evoluto, raro)
+      { id: 95, min: 32, max: 35, rate: 16 },  // Onix
+      { id: 111, min: 32, max: 36, rate: 16 },  // Rhyhorn
+      { id: 112, min: 36, max: 38, rate: 6 },  // Rhydon (evoluto, rarissimo)
+      { id: 207, min: 33, max: 36, rate: 10 },  // Gligar (raro)
+      { id: 328, min: 32, max: 35, rate: 22 },  // Trapinch (Gen3)
       { id: 345, min: 32, max: 35, rate: 16 },  // Lileep
-      { id: 346, min: 35, max: 38, rate: 4 },   // Cradily (evoluto, raro)
+      { id: 346, min: 35, max: 38, rate: 6 },  // Cradily (evoluto, raro)
+],
+    pokemonNotte: [
+      { id: 185, min: 33, max: 36, rate: 10 },  // Sudowoodo (Gen2)
+      { id: 299, min: 33, max: 37, rate: 16 },  // Nosepass (Gen3)
 ],
   },
 
@@ -480,11 +512,13 @@ const DATI_INCONTRI = {
   'incontri percorso 7': {
     probabilita: 15,
     pokemon: [
-      { id: 215, min: 34, max: 38, rate: 20 },  // Sneasel (Gen2)
-      { id: 352, min: 35, max: 39, rate: 16 },  // Kecleon (Gen3)
-      { id: 241, min: 36, max: 39, rate: 10 },  // Miltank (Gen2)
-      { id: 355, min: 37, max: 40, rate: 6 },   // Duskull (Gen3, raro)
-    ],
+      { id: 241, min: 36, max: 39, rate: 6 },  // Miltank (Gen2)
+      { id: 352, min: 35, max: 39, rate: 10 },  // Kecleon (Gen3)
+],
+    pokemonNotte: [
+      { id: 215, min: 34, max: 38, rate: 10 },  // Sneasel (Gen2)
+      { id: 355, min: 37, max: 40, rate: 22 },  // Duskull (Gen3, raro)
+],
   },
 
   // ── ALBANO LAZIALE — città, tema Lotta (Lv 40-46) ──
@@ -492,15 +526,17 @@ const DATI_INCONTRI = {
   'incontri albano': {
     probabilita: 15,
     pokemon: [
-      { id: 296, min: 40, max: 43, rate: 22 },  // Makuhita (Gen3)
-      { id: 307, min: 40, max: 44, rate: 20 },  // Meditite (Gen3)
-      { id: 67,  min: 41, max: 45, rate: 18 },  // Machoke (evoluto)
-      { id: 128, min: 42, max: 46, rate: 14 },  // Tauros
-      { id: 236, min: 40, max: 42, rate: 10 },  // Tyrogue (Gen2, raro)
-      { id: 237, min: 44, max: 46, rate: 6 },   // Hitmontop (Gen2, raro)
-      { id: 106, min: 42, max: 45, rate: 1 },   // Hitmonlee (rarissimo)
-      { id: 107, min: 42, max: 45, rate: 1 },   // Hitmonchan (rarissimo)
+      { id: 67, min: 41, max: 45, rate: 10 },  // Machoke (evoluto)
+      { id: 128, min: 42, max: 46, rate: 6 },  // Tauros
+      { id: 307, min: 40, max: 44, rate: 22 },  // Meditite (Gen3)
       { id: 308, min: 41, max: 44, rate: 10 },  // Medicham (evoluto)
+],
+    pokemonNotte: [
+      { id: 236, min: 40, max: 42, rate: 28 },  // Tyrogue (Gen2, raro)
+      { id: 237, min: 44, max: 46, rate: 10 },  // Hitmontop (Gen2, raro)
+      { id: 106, min: 42, max: 45, rate: 10 },  // Hitmonlee (rarissimo)
+      { id: 107, min: 42, max: 45, rate: 10 },  // Hitmonchan (rarissimo)
+      { id: 296, min: 40, max: 43, rate: 28 },  // Makuhita (Gen3)
 ],
   },
 
@@ -509,12 +545,14 @@ const DATI_INCONTRI = {
   'incontri percorso 8': {
     probabilita: 15,
     pokemon: [
-      { id: 42,  min: 40, max: 43, rate: 20 },  // Golbat (evoluto)
-      { id: 168, min: 40, max: 44, rate: 18 },  // Ariados (Gen2, evoluto)
-      { id: 274, min: 41, max: 45, rate: 18 },  // Nuzleaf (Gen3, evoluto)
-      { id: 262, min: 42, max: 46, rate: 16 },  // Mightyena (Gen3, evoluto)
-      { id: 291, min: 43, max: 46, rate: 8 },   // Ninjask (Gen3, raro)
-    ],
+      { id: 274, min: 41, max: 45, rate: 16 },  // Nuzleaf (Gen3, evoluto)
+      { id: 291, min: 43, max: 46, rate: 10 },  // Ninjask (Gen3, raro)
+],
+    pokemonNotte: [
+      { id: 42, min: 40, max: 43, rate: 10 },  // Golbat (evoluto)
+      { id: 168, min: 40, max: 44, rate: 10 },  // Ariados (Gen2, evoluto)
+      { id: 262, min: 42, max: 46, rate: 10 },  // Mightyena (Gen3, evoluto)
+],
   },
 
   // ── ZONA SAFARI — specie esclusive, ingresso a pagamento (Lv 30-45) ──
@@ -523,13 +561,15 @@ const DATI_INCONTRI = {
   'incontri zona safari': {
     probabilita: 20,
     pokemon: [
-      { id: 127, min: 30, max: 36, rate: 20 },  // Pinsir
-      { id: 217, min: 35, max: 40, rate: 16 },  // Ursaring (Gen2, evoluto)
-      { id: 335, min: 33, max: 40, rate: 14 },  // Zangoose (Gen3)
-      { id: 336, min: 33, max: 40, rate: 14 },  // Seviper (Gen3)
-      { id: 115, min: 36, max: 42, rate: 8 },   // Kangaskhan (rara)
-      { id: 113, min: 30, max: 40, rate: 4 },   // Chansey (rarissima)
-      { id: 108, min: 30, max: 40, rate: 10 },  // Lickitung (rara)
+      { id: 108, min: 30, max: 40, rate: 16 },  // Lickitung (rara)
+      { id: 113, min: 30, max: 40, rate: 10 },  // Chansey (rarissima)
+      { id: 115, min: 36, max: 42, rate: 6 },  // Kangaskhan (rara)
+      { id: 127, min: 30, max: 36, rate: 6 },  // Pinsir
+      { id: 217, min: 35, max: 40, rate: 6 },  // Ursaring (Gen2, evoluto)
+      { id: 335, min: 33, max: 40, rate: 10 },  // Zangoose (Gen3)
+],
+    pokemonNotte: [
+      { id: 336, min: 33, max: 40, rate: 10 },  // Seviper (Gen3)
 ],
   },
 
@@ -539,12 +579,14 @@ const DATI_INCONTRI = {
   'incontri percorso 9': {
     probabilita: 15,
     pokemon: [
-      { id: 353, min: 44, max: 47, rate: 20 },  // Shuppet (Gen3)
-      { id: 302, min: 44, max: 48, rate: 18 },  // Sableye (Gen3)
-      { id: 286, min: 45, max: 49, rate: 16 },  // Breloom (Gen3, evoluto)
-      { id: 354, min: 46, max: 50, rate: 12 },  // Banette (Gen3, evoluto)
-      { id: 356, min: 48, max: 50, rate: 5 },   // Dusclops (Gen3, rarissimo)
-    ],
+      { id: 286, min: 45, max: 49, rate: 6 },  // Breloom (Gen3, evoluto)
+],
+    pokemonNotte: [
+      { id: 302, min: 44, max: 48, rate: 16 },  // Sableye (Gen3)
+      { id: 353, min: 44, max: 47, rate: 22 },  // Shuppet (Gen3)
+      { id: 354, min: 46, max: 50, rate: 10 },  // Banette (Gen3, evoluto)
+      { id: 356, min: 48, max: 50, rate: 10 },  // Dusclops (Gen3, rarissimo)
+],
   },
 
   // ── TUNNEL ROCCIOSO — dungeon 4 piani, Via dei Laghi → Monte Porzio, tra
@@ -684,10 +726,12 @@ const DATI_INCONTRI = {
   'incontri percorso 10': {
     probabilita: 15,
     pokemon: [
-      { id: 192, min: 53, max: 55, rate: 25 },  // Sunflora (Gen2)
-      { id: 166, min: 53, max: 56, rate: 20 },  // Ledian (Gen2)
-      { id: 284, min: 55, max: 57, rate: 5 },   // Masquerain (Gen3, raro)
-      { id: 327, min: 53, max: 56, rate: 18 },  // Spinda
+      { id: 166, min: 53, max: 56, rate: 16 },  // Ledian (Gen2)
+      { id: 192, min: 53, max: 55, rate: 10 },  // Sunflora (Gen2)
+      { id: 284, min: 55, max: 57, rate: 10 },  // Masquerain (Gen3, raro)
+],
+    pokemonNotte: [
+      { id: 327, min: 53, max: 56, rate: 16 },  // Spinda
 ],
   },
 
@@ -698,14 +742,16 @@ const DATI_INCONTRI = {
   'incontri percorso 11': {
     probabilita: 15,
     pokemon: [
-      { id: 299, min: 28, max: 31, rate: 25 },  // Nosepass (Gen3)
+      { id: 202, min: 29, max: 32, rate: 10 },  // Wobbuffet
+      { id: 280, min: 29, max: 32, rate: 28 },  // Ralts (rarissimo)
+      { id: 299, min: 28, max: 31, rate: 16 },  // Nosepass (Gen3)
       { id: 304, min: 29, max: 32, rate: 22 },  // Aron (Gen3)
-      { id: 322, min: 30, max: 33, rate: 18 },  // Numel (Gen3)
       { id: 305, min: 32, max: 34, rate: 10 },  // Lairon (Gen3, evoluto)
-      { id: 323, min: 33, max: 35, rate: 5 },   // Camerupt (Gen3, evoluto, raro)
-      { id: 202, min: 29, max: 32, rate: 8 },   // Wobbuffet
-      { id: 280, min: 29, max: 32, rate: 1 },   // Ralts (rarissimo)
-      { id: 360, min: 28, max: 30, rate: 10 },  // Wynaut (cucciolo)
+      { id: 322, min: 30, max: 33, rate: 22 },  // Numel (Gen3)
+      { id: 323, min: 33, max: 35, rate: 6 },  // Camerupt (Gen3, evoluto, raro)
+],
+    pokemonNotte: [
+      { id: 360, min: 28, max: 30, rate: 28 },  // Wynaut (cucciolo)
 ],
   },
 
@@ -715,13 +761,15 @@ const DATI_INCONTRI = {
   'incontri collegamento cotral': {
     probabilita: 15,
     pokemon: [
-      { id: 88,  min: 30, max: 33, rate: 25 },  // Grimer
+      { id: 303, min: 32, max: 35, rate: 16 },  // Mawile (rara)
       { id: 343, min: 30, max: 33, rate: 22 },  // Baltoy (Gen3)
-      { id: 89,  min: 32, max: 34, rate: 15 },  // Muk (evoluto)
-      { id: 344, min: 32, max: 35, rate: 12 },  // Claydol (Gen3, evoluto)
-      { id: 374, min: 34, max: 36, rate: 4 },   // Beldum (Gen3, rarissimo)
+      { id: 344, min: 32, max: 35, rate: 6 },  // Claydol (Gen3, evoluto)
+      { id: 374, min: 34, max: 36, rate: 22 },  // Beldum (Gen3, rarissimo)
+],
+    pokemonNotte: [
+      { id: 88, min: 30, max: 33, rate: 22 },  // Grimer
+      { id: 89, min: 32, max: 34, rate: 6 },  // Muk (evoluto)
       { id: 109, min: 30, max: 33, rate: 16 },  // Koffing
-      { id: 303, min: 32, max: 35, rate: 4 },   // Mawile (rara)
 ],
   },
 
@@ -734,11 +782,13 @@ const DATI_INCONTRI = {
   'incontri genzano': {
     probabilita: 15,
     pokemon: [
-      { id: 37,  min: 55, max: 57, rate: 25 },  // Vulpix
-      { id: 58,  min: 55, max: 58, rate: 20 },  // Growlithe
-      { id: 77,  min: 56, max: 58, rate: 18 },  // Ponyta
-      { id: 219, min: 57, max: 58, rate: 5 },   // Magcargo (evoluto, raro)
-    ],
+      { id: 37, min: 55, max: 57, rate: 22 },  // Vulpix
+      { id: 77, min: 56, max: 58, rate: 10 },  // Ponyta
+      { id: 219, min: 57, max: 58, rate: 10 },  // Magcargo (evoluto, raro)
+],
+    pokemonNotte: [
+      { id: 58, min: 55, max: 58, rate: 16 },  // Growlithe
+],
   },
 
   // ── VIA VITTORIA — dungeon finale pre-Lega, cap 60 (13 agosto). Un
@@ -817,13 +867,15 @@ const DATI_INCONTRI = {
   'incontri percorso montepo 1': {
     probabilita: 10,
     pokemon: [
-      { id: 24,  min: 55, max: 60, rate: 20 },  // Arbok
-      { id: 97,  min: 55, max: 60, rate: 18 },  // Hypno
-      { id: 101, min: 56, max: 61, rate: 16 },  // Electrode
-      { id: 110, min: 56, max: 61, rate: 16 },  // Weezing
-      { id: 310, min: 57, max: 62, rate: 14 },  // Manectric
-      { id: 130, min: 58, max: 63, rate: 4 },   // Gyarados (rarissimo)
-    ],
+      { id: 130, min: 58, max: 63, rate: 3 },  // Gyarados (rarissimo)
+      { id: 310, min: 57, max: 62, rate: 6 },  // Manectric
+],
+    pokemonNotte: [
+      { id: 24, min: 55, max: 60, rate: 10 },  // Arbok
+      { id: 97, min: 55, max: 60, rate: 6 },  // Hypno
+      { id: 101, min: 56, max: 61, rate: 6 },  // Electrode
+      { id: 110, min: 56, max: 61, rate: 6 },  // Weezing
+],
   },
 
   // ── PERCORSO MONTE PO 3 — post-Lega (sess. 5 ott 2026), livelli alti.
@@ -833,11 +885,13 @@ const DATI_INCONTRI = {
   'incontri percorso montepo 3': {
     probabilita: 10,
     pokemon: [
-      { id: 286, min: 57, max: 62, rate: 18 },  // Breloom
-      { id: 297, min: 58, max: 63, rate: 16 },  // Hariyama
-      { id: 326, min: 56, max: 61, rate: 16 },  // Grumpig
-      { id: 212, min: 60, max: 65, rate: 6 },   // Scizor (rarissimo)
-    ],
+      { id: 212, min: 60, max: 65, rate: 6 },  // Scizor (rarissimo)
+      { id: 286, min: 57, max: 62, rate: 6 },  // Breloom
+      { id: 326, min: 56, max: 61, rate: 6 },  // Grumpig
+],
+    pokemonNotte: [
+      { id: 297, min: 58, max: 63, rate: 6 },  // Hariyama
+],
   },
 
 };
