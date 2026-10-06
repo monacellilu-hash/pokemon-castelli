@@ -96,7 +96,7 @@ Dimensione consigliata: 36×24 (come il vecchio CITTA_DEFS)
 ## GROTTAFERRATA — Palestra 2 (Psico, cap 21)
 Dimensione: 32×22
 - EDIFICI: GYM, PC, Mart, Abbazia di San Nilo (landmark), 3 case
-- CAPOPALESTRA: Nilo (Psico) — Natu 17, Spoink 18, Kadabra 19, Hypno 20, Grumpig 21
+- CAPOPALESTRA: Igino (Psico) — Natu 17, Spoink 18, Kadabra 19, Hypno 20, Grumpig 21
   + 4 gregari (lv 15-20)
 - NPC reali (5): Cesare il fornaio, Fra' Bartolo, Anselmo, Studentessa, Tizio col cane
 - SPECIALE: Fra' Potatore (dona MN Taglio, ≥2 medaglie)
@@ -109,7 +109,7 @@ Dimensione: 32×22
 ## MARINO — Palestra 3 (Acqua, cap 28)
 Dimensione: 30×20
 - EDIFICI: GYM, PC, Mart, 3 case (+ accesso Lab CoTrAL #1 nei pressi)
-- CAPOPALESTRA: Moro (Acqua) — Pelipper 25, Seaking 26, Quagsire 26, Azumarill 27,
+- CAPOPALESTRA: Matilde (Acqua) — Pelipper 25, Seaking 26, Quagsire 26, Azumarill 27,
   Gyarados 28 + 5 gregari (lv 22-27)
 - NPC reali (5): Nello il vignarolo, Pina della Sagra, Bambino bagnato, Pescatore, Signora
 - USCITE: → Via Grottaferrata-Marino, → Vigne di Marino, → Via Marino-Monte Porzio,
@@ -137,7 +137,7 @@ Dimensione: 30×20
 ## MONTE PORZIO CATONE — Palestra 4 (Elettro, cap 34)
 Dimensione: 30×20
 - EDIFICI: GYM, PC, Mart, Osservatorio (landmark → Zapdos, Jirachi), 2 case
-- CAPOPALESTRA: Stella (Elettro) — Raichu 31, Electrode 32, Magneton 32, Manectric 33,
+- CAPOPALESTRA: Biretta (Elettro) — Raichu 31, Electrode 32, Magneton 32, Manectric 33,
   Ampharos 34 + 6 gregari (lv 28-33)
 - NPC reali (5): Ruggero (hint Zapdos), Aldo l'astrofilo, Studente, Vecchietto, Ragazza
 - SPECIALE: Ruggero il meteorologo (temporale → Zapdos)
@@ -216,7 +216,7 @@ Dimensione: 32×22
 ## ARICCIA — Palestra 7 (Buio, cap 52)
 Dimensione: 30×20
 - EDIFICI: GYM, PC, Mart, Palazzo Chigi (landmark), 2 case
-- CAPOPALESTRA: Ombretta (Buio) — Mightyena 48, Sharpedo 49, Shiftry 50, Crawdaunt 50,
+- CAPOPALESTRA: Isa (Buio) — Mightyena 48, Sharpedo 49, Shiftry 50, Crawdaunt 50,
   Absol 51, Houndoom 52 + 9 gregari (lv 46-51)
 - NPC reali (5): Sora Nunzia, Peppe, Il vecchio del ponte, Musicista, Turista
 - SPECIALE: Adriano il porchettaro (Piuma Iridescente dopo 4 CoTrAL → Ho-Oh)
@@ -231,7 +231,7 @@ Dimensione: 30×20
 ## GENZANO — Palestra 8 (Folletto, cap 58)
 Dimensione: 30×20 — INFIORATA (fiori)
 - EDIFICI: GYM, PC, Mart, 2 case, accesso Via Vittoria
-- CAPOPALESTRA: Flora (Folletto) — Wigglytuff 54, Mr.Mime 55, Granbull 55, Clefable 56,
+- CAPOPALESTRA: Camilla (Folletto) — Wigglytuff 54, Mr.Mime 55, Granbull 55, Clefable 56,
   Azumarill 57, Gardevoir 58 + 10 gregari (lv 52-57)
 - NPC reali (5): Romolo il panettiere, Iolanda, Bambina, Fioraio, Vecchietto (hint Via Vittoria)
 - USCITE: → Campagna Ariccia-Genzano, → Via Vittoria (gate 8 medaglie)

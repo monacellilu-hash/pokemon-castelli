@@ -169,6 +169,15 @@ const DATI_NPC = {
     sprite: 'trainer_SUPERNERD', nome: 'Professor Anselmi', direzione: 'sud', movimento: 'fisso',
     azione: 'parlaScienziatoGrottaVulcano',
   },
+  // Direttore Lucio del Bunkerino (F12b, sess. 5 ott 2026): riusa la
+  // funzione già scritta interagisciBunkerino() (js/app.js), che gestisce da
+  // sola gauntlet 4 guardie + boss + Mewtwo in base a stato.gauntletBunkerino
+  // — qui serve solo collegarla a un NPC vero sulla mappa Tiled (prima
+  // dipendeva da lat/lon col vecchio motore, vedi fix nella stessa funzione).
+  'npc_bunkerino_direttore': {
+    sprite: 'trainer_SUPERNERD', nome: 'Direttore Lucio', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciBunkerino',
+  },
   // Giovanni è FISICAMENTE già nella stanza fin dall'inizio (come lo
   // scienziato) — non compare dal nulla dopo la lotta con Levantino, ci
   // sta già, fermo, in disparte (richiesta esplicita di Luca: "non è che
@@ -611,9 +620,13 @@ const DATI_NPC = {
   /* ── Nonna del Centro Allevamento di Nemi (ex Route117_PokemonDayCare di
      Smeraldo, 5 ott 2026): solo mappa+dialogo placeholder, la meccanica di
      allevamento/uova non esiste ancora nel motore. ── */
+  // Pensione Pokémon di Nemi (F9.3, cablata davvero il 6 ott 2026): prima
+  // questo NPC aveva solo un dialogo placeholder, la logica vera esisteva
+  // già in js/app.js (interagisciPensione) ma era attaccata a un NPC
+  // "pensione_nemi" mai piazzato su nessuna mappa — quindi non funzionava.
   'npc_nemi_daycare_nonna': {
     sprite: 'npc joy', nome: 'Nonna dell\'Asilo', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Qui un giorno potrai lasciarmi due Pokémon affinché facciano amicizia... ma per ora sto solo sistemando il recinto!'],
+    azione: 'interagisciPensione',
   },
 
   /* -- NPC delle case Genzano/Albano estratte da FireRed (sess. 5 ott
@@ -821,55 +834,6 @@ const DATI_NPC = {
     sprite: 'NPC 14', nome: 'Adele', direzione: 'sud', movimento: 'random',
     dialogo: ['Albano e tranquilla, a parte il viavai per la Zona Safari.'],
   },
-  'npc_albano_condominio_b_random_13': {
-    sprite: 'NPC 03', nome: 'Enzo', direzione: 'sud', movimento: 'random',
-    dialogo: ['Anche da questo palazzo si arriva a piedi alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_14': {
-    sprite: 'NPC 04', nome: 'Lina', direzione: 'sud', movimento: 'random',
-    dialogo: ['I turisti passano sempre di qui per andare alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_15': {
-    sprite: 'NPC 05', nome: 'Attilio', direzione: 'sud', movimento: 'random',
-    dialogo: ['Ho provato la Zona Safari la settimana scorsa, fantastica esperienza.'],
-  },
-  'npc_albano_condominio_b_random_16': {
-    sprite: 'NPC 06', nome: 'Rina', direzione: 'sud', movimento: 'random',
-    dialogo: ['Qui in condominio parliamo spesso di chi ha preso i Pokemon piu rari alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_17': {
-    sprite: 'NPC 07', nome: 'Mario', direzione: 'sud', movimento: 'random',
-    dialogo: ['Il custode dice che presto apriranno una nuova area della Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_18': {
-    sprite: 'NPC 08', nome: 'Ada', direzione: 'sud', movimento: 'random',
-    dialogo: ['Vivere qui vicino alla Zona Safari ha i suoi vantaggi.'],
-  },
-  'npc_albano_condominio_b_random_19': {
-    sprite: 'NPC 09', nome: 'Sergio', direzione: 'sud', movimento: 'random',
-    dialogo: ['Anche da questo palazzo si arriva a piedi alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_20': {
-    sprite: 'NPC 10', nome: 'Ida', direzione: 'sud', movimento: 'random',
-    dialogo: ['I turisti passano sempre di qui per andare alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_21': {
-    sprite: 'NPC 11', nome: 'Franco', direzione: 'sud', movimento: 'random',
-    dialogo: ['Ho provato la Zona Safari la settimana scorsa, fantastica esperienza.'],
-  },
-  'npc_albano_condominio_b_random_22': {
-    sprite: 'NPC 12', nome: 'Elvira', direzione: 'sud', movimento: 'random',
-    dialogo: ['Qui in condominio parliamo spesso di chi ha preso i Pokemon piu rari alla Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_23': {
-    sprite: 'NPC 13', nome: 'Guido', direzione: 'sud', movimento: 'random',
-    dialogo: ['Il custode dice che presto apriranno una nuova area della Zona Safari.'],
-  },
-  'npc_albano_condominio_b_random_24': {
-    sprite: 'NPC 14', nome: 'Maria', direzione: 'sud', movimento: 'random',
-    dialogo: ['Vivere qui vicino alla Zona Safari ha i suoi vantaggi.'],
-  },
-
   /* -- Scienziato del Laboratorio Rianimazione Fossili di Genzano (sess. 5
      ott 2026): consegna un fossile + 5000, aspetta un giorno, il Pokemon
      arriva direttamente nel Box. Vedi interagisciRianimaFossiliGenzano. -- */
@@ -888,6 +852,19 @@ const DATI_NPC = {
   'npc_albano_elimina_mosse': {
     sprite: 'NPC 08', nome: 'Vecchietta', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciEliminaMosse',
+  },
+
+  /* -- Negozio di bici di Albano (negozio_di_bici.tmj, sess. 5 ott 2026):
+     Gino scambia il "buono bici" con la bicicletta vera (interagisciNegozioBici
+     in app.js). Mancava la registrazione qui: l'NPC sulla mappa non faceva
+     nulla. Il secondo NPC è un cliente di contorno, solo dialogo. -- */
+  'npc_negozio_di_bici_1': {
+    sprite: 'NPC 05', nome: 'Gino', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciNegozioBici',
+  },
+  'npc_negozio_di_bici_2': {
+    sprite: 'NPC 18', nome: 'Cliente', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Qui a Albano siamo tutti appassionati di bici. Belle, vero?'],
   },
 
   /* -- Maso (CoTrAL), 1a apparizione: Osservatorio_2f.tmj, sess. 6 ott
@@ -1260,7 +1237,7 @@ const DATI_NPC = {
     movimento: 'random',
     dialogo: [
       'Qui a Monte Porzio si vede tutto il Tuscolo, se non c\'è foschia.',
-      'Stella, la Capopalestra, si allena all\'Osservatorio: dice che i lampi le danno la carica.',
+      'Biretta, la Capopalestra, si allena all\'Osservatorio: dice che i lampi le danno la carica.',
     ],
   },
   'monteporzio_npc3': {
@@ -1360,13 +1337,13 @@ const DATI_NPC = {
     ],
   },
 
-  /* ── Ariccia (7ª città — Palestra Buio, Ombretta, cap 52) ──
+  /* ── Ariccia (7ª città — Palestra Buio, Isa, cap 52) ──
      Adriano il Porchettaro e i suoi colleghi alludono alla catena Ho-Oh
      (4 grunt CoTrAL → Piuma Iridescente, STORIA_COMPLETA): per ora solo
      dialogo, la meccanica dei grunt/quest arriverà con F10/F11. ── */
   'ariccia_npc1': {
     sprite: 'NPC 07', nome: 'Letizia', direzione: 'sud', movimento: 'random',
-    dialogo: ["Ariccia è famosa pe' le fraschette e la porchetta! Ma occhio a Ombretta, la capopalestra: i su' Pokémon Buio non se vedono arrivà."],
+    dialogo: ["Ariccia è famosa pe' le fraschette e la porchetta! Ma occhio a Isa, la capopalestra: i su' Pokémon Buio non se vedono arrivà."],
   },
   'ariccia_npc2': {
     sprite: 'NPC 21', nome: 'Raniero', direzione: 'est', movimento: 'fisso',
@@ -1422,6 +1399,29 @@ const DATI_NPC = {
     sprite: 'NPC 20', nome: 'Ilario', direzione: 'sud', movimento: 'fisso',
     azione: 'sfidaParentiRocco',
   },
+  // Guaritore vicino al motel di Lilycove su Via dei Laghi: dà il "buono
+  // bici" dopo la catena famiglia_laghi_1→4 (vedi interagisciGuaritoreLaghi
+  // in js/app.js). Mancava qui — l'NPC sulla mappa non faceva nulla.
+  'guaritore_laghi': {
+    sprite: 'NPC 09', nome: 'Guaritore dei Laghi', direzione: 'ovest', movimento: 'fisso',
+    azione: 'interagisciGuaritoreLaghi',
+  },
+
+  /* -- MN Spaccaroccia (richiesta di Luca, 6 ott 2026): "Spaccatore" dentro
+     castel_gandolfo_casa4_1 (prima erano 2 NPC morti, senza voce qui). Dà
+     la MN solo dopo la Medaglia Stella (Biretta, Monte Porzio) — vedi
+     DONATORI_MN['mn-spaccaroccia'] in js/data.js + interagisciDonatoreSpaccaroccia
+     in js/app.js. -- */
+  // Scambiati su richiesta di Luca (6 ott 2026): non trovava "_1" in mappa,
+  // ora il donatore è "_2" (OBJ_EVENT_GFX_SCHOOL_KID_M).
+  'npc_castel_gandolfo_casa4_1_1': {
+    sprite: 'NPC 12', nome: 'Reclutatore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui formiamo spaccatori di rocce per tutti i Castelli. Dura disciplina, ma ne vale la pena.'],
+  },
+  'npc_castel_gandolfo_casa4_1_2': {
+    sprite: 'NPC 60', nome: 'Spaccatore', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciDonatoreSpaccaroccia',
+  },
   'via_laghi_infermiera': {
     // Cesira è la mamma di Baso (richiesta esplicita di Luca, sess. 19 set
     // 2026, sprite dedicato "Mamma_Baso" — la rivelazione narrativa, non
@@ -1429,14 +1429,6 @@ const DATI_NPC = {
     sprite: 'Mamma_Baso', nome: 'Cesira', direzione: 'sud', movimento: 'fisso',
     condizione: 'famiglia_rocco_battuta',
     azione: 'curaSquadraViaLaghi',
-  },
-
-  // Pensione Pokémon di Nemi (F9.3): deposita 1-2 Pokémon, se compatibili
-  // (M+F stessa specie, o Ditto + chiunque) dopo un po' di passi insieme
-  // nasce un uovo che il giocatore ritira e porta in squadra fino alla schiusa.
-  'pensione_nemi': {
-    sprite: 'NPC 27', nome: 'Reginella', direzione: 'sud', movimento: 'fisso',
-    azione: 'interagisciPensione',
   },
 
   /* ── Tunnel Roccioso 4F — scena Latios/Latias (sessione 6 agosto) ── */
@@ -1451,6 +1443,43 @@ const DATI_NPC = {
   'ariccia_sagra_2': {
     sprite: 'NPC 13', nome: 'Evaristo', direzione: 'est', movimento: 'fisso',
     dialogo: ["Hai sentito? Dicono che stanotte i Porchettari cercano uno sfidante vero. Io nun me ce butterei, eh."],
+  },
+
+  /* -- 8 NPC dentro le 6 case generiche nuove di Ariccia (5 ott 2026,
+     richiesta esplicita di Luca): parlano tutti di Ariccia/Sagra/GdF che
+     blocca il passaggio "per la porchetta" in questo periodo — stesso tono
+     romanesco scherzoso degli altri NPC della Sagra qui sopra. -- */
+  'npc_ariccia_casa1_1_1': {
+    sprite: 'NPC 14', nome: 'Pierina', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Pure li grunt der GdF stanno giù a bloccà la strada pe' Genzano... embè, famo a capisse, è periodo de Sagra, se vonno beve 'no spritz pure loro!"],
+  },
+  'npc_ariccia_casa1_2_1': {
+    sprite: 'NPC 09', nome: 'Learco', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Io nun ciò gnente contro li grunt, basta che me portano 'na fetta de porchetta pure a me quanno torneno de guardia."],
+  },
+  'npc_ariccia_casa5_1_1': {
+    sprite: 'NPC 12', nome: 'Remigio', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Ogni anno è a stessa storia: finché c'è a Sagra, quelli der GdF nun se move da davanti ar barile. Mejo così, va'."],
+  },
+  'npc_ariccia_casa5_1_2': {
+    sprite: 'NPC 17', nome: 'Palmira', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Ho visto du' grunt litigà pe' l'urtima fetta de porchetta. Manco fossero in missione segreta, questi."],
+  },
+  'npc_ariccia_casa5_2_1': {
+    sprite: 'NPC 10', nome: 'Severino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["A Sagra è l'unica cosa che mette d'accordo tutti quanti, pure chi dovrebbe blocca' a strada."],
+  },
+  'npc_ariccia_casa5_2_2': {
+    sprite: 'NPC 18', nome: 'Ortensia', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Fino a che nun finisce a Sagra, qui nun se passa manco pagando. Io però nun me lamento, c'è er vino bono."],
+  },
+  'npc_ariccia_casa6_1_1': {
+    sprite: 'NPC 08', nome: 'Flavia', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Pure li grunt tengheno sete come tutti quanti, nun je se po' da' torto in periodo de Sagra."],
+  },
+  'npc_ariccia_casa6_2_1': {
+    sprite: 'NPC 13', nome: 'Adalgiso', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Me sa che a strada pe' Genzano resta chiusa finché nun finisce er vino. E qui er vino nun finisce mai."],
   },
 
   // NPC "chiacchiera" a Castel Gandolfo e Via dei Laghi (sess. 28 set 2026,
@@ -1744,4 +1773,123 @@ const DATI_NPC = {
   'osservatorio_boss_grunt_1': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud' },
   'osservatorio_boss_grunt_2': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud' },
 
+  /* -- Ristorante dei Laghi (ex "Motel Cove Lily", estratto da pret/pokeemerald,
+     rinominato 6 ott 2026 su richiesta di Luca), collegato a Via dei Laghi:
+     1 receptionist al piano terra + 7 ospiti al piano di sopra (locande sopra
+     il ristorante), solo chiacchiere, nessuna azione speciale. -- */
+  'npc_ristorante_laghi_1f_1': {
+    sprite: 'NPC 06', nome: 'Receptionist', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto al Ristorante dei Laghi! Le camere sono di sopra, fai pure con comodo.'],
+  },
+  'npc_ristorante_laghi_2f_1': {
+    sprite: 'NPC 09', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Che pace qui vicino al lago... torno sempre volentieri in questo motel.'],
+  },
+  'npc_ristorante_laghi_2f_2': {
+    sprite: 'NPC 12', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Domani vorrei fare un giro sul lago, se il tempo regge.'],
+  },
+  'npc_ristorante_laghi_2f_3': {
+    sprite: 'NPC 14', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Le lenzuola qui sono morbidissime, dormirei una settimana.'],
+  },
+  'npc_ristorante_laghi_2f_4': {
+    sprite: 'NPC 17', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Sto scrivendo delle cartoline... non so ancora a chi mandarle.'],
+  },
+  'npc_ristorante_laghi_2f_5': {
+    sprite: 'NPC 21', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho sentito dire che qui vicino si possono incontrare Pokémon rari. Sarà vero?'],
+  },
+  'npc_ristorante_laghi_2f_6': {
+    sprite: 'NPC 08', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Viaggio sempre con la mia squadra al completo, non si sa mai.'],
+  },
+  'npc_ristorante_laghi_2f_7': {
+    sprite: 'NPC 13', nome: 'Ospite', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il check-out è a mezzogiorno, ma per fortuna ho ancora un po\' di tempo.'],
+  },
+
+  /* -- Erboristeria di Lavaridge (estratta da pret/pokeemerald, collegata a
+     Percorso 9, sess. 5 ott 2026): 2 avventori + 1 erborista dietro il
+     bancone (market vero, mk-herbshop in js/data.js). -- */
+  'npc_lavaridgetown_herbshop_1': {
+    sprite: 'NPC 17', nome: 'Erborista', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Benvenuto! Qui trovi le cure migliori e qualche oggetto raro per i tuoi Pokémon... a un prezzo adeguato, eh.'],
+    azione: 'apriMarketErboristeria',
+  },
+  'npc_lavaridgetown_herbshop_2': {
+    sprite: 'NPC 11', nome: 'Avventore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Le erbe di qui costano un occhio della testa, ma funzionano meglio di qualunque pozione da discount.'],
+  },
+  'npc_lavaridgetown_herbshop_3': {
+    sprite: 'NPC 06', nome: 'Avventore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho sentito che certi oggetti qui dentro potenziano le mosse di un tipo preciso. Costano una fortuna, però.'],
+  },
+
+  /* -- Dojo di Saffron: 2 oggetti Tiled originariamente "a terra" (item
+     ball) lasciati come semplici cartelli/decorazione, non collegati a
+     nessun oggetto vero per ora. -- */
+  'npc_saffroncity_dojo_6': {
+    sprite: 'NPC 08', nome: '', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Un vecchio trofeo del Dojo, pieno di polvere.'],
+  },
+  'npc_saffroncity_dojo_7': {
+    sprite: 'NPC 08', nome: '', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Un altro trofeo, ancora più vecchio.'],
+  },
+
+  /* ── NPC case generiche Marino/Percorso 5 (sess. 5 ott 2026): tutti nominano Matilde, figura nota del paese ── */
+  'npc_marino_casa1_1_1': {
+    sprite: 'NPC 01', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Lo sai che Matilde ha predetto la pioggia di tre giorni fa guardando le anatre del lago? Ha sempre ragione lei."],
+  },
+  'npc_marino_casa2_4_1': {
+    sprite: 'NPC 02', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Matilde dice che i pesci del lago di Marino sono più furbi da quando ci passano gli allenatori con la canna da pesca."],
+  },
+  'npc_marino_casa3_4_1': {
+    sprite: 'NPC 03', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Se hai un problema vai da Matilde, giù al porticciolo. Lei ha una soluzione per tutto, o almeno un consiglio."],
+  },
+  'npc_marino_casa4_3_1': {
+    sprite: 'NPC 04', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Marino di sera è un'altra cosa: le luci sul lago, il silenzio... Matilde dice che è lì che pensa meglio."],
+  },
+  'npc_marino_casa5_1_1': {
+    sprite: 'NPC 05', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Matilde mi ha raccontato che da ragazza ha visto un Pokémon acqua enorme emergere dal lago. Chissà se è vero."],
+  },
+  'npc_marino_casa6_1_1': {
+    sprite: 'NPC 06', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Qui a Marino si vive bene, tra il lago e le vigne. Chiedi pure a Matilde, lei il paese lo conosce a memoria."],
+  },
+  'npc_marino_casa7_1_1': {
+    sprite: 'NPC 07', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Matilde fa il miglior vino di Marino, si dice. Peccato che non lo venda a nessuno, lo tiene tutto per sé."],
+  },
+  'npc_marino_casa8_1_1': {
+    sprite: 'NPC 08', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Il lago di Marino non si vede mai uguale due giorni di fila. Matilde dice che ha un'anima tutta sua."],
+  },
+  'npc_marino_casapiccola_3_1': {
+    sprite: 'NPC 09', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Sai cosa dice sempre Matilde? Che a Marino il tempo passa più lento, e meno male."],
+  },
+  'npc_marino_casa2_5_1': {
+    sprite: 'NPC 10', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Matilde abita qui vicino. Se la saluti per strada ti risponde sempre con un proverbio sul lago."],
+  },
+  'npc_marino_casa5_2_1': {
+    sprite: 'NPC 11', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Ho sentito Matilde dire che i Pokémon acqua del lago riconoscono chi li tratta bene. Vero o no, io ci credo."],
+  },
+  'npc_percorso_5_casa2_1_1': {
+    sprite: 'NPC 12', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["A Marino la vita gira intorno al lago, e Matilde ne sa qualcosa: dicono abbia nuotato in ogni angolo."],
+  },
+  'npc_percorso_5_casa7_1_1': {
+    sprite: 'NPC 13', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ["Matilde organizza ogni anno una festa sul lago. Se sei fortunato capiti proprio in quel periodo."],
+  },
 };

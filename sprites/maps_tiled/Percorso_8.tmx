@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="37">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="39">
  <editorsettings>
   <export target="Percorso_8.tmj" format="json"/>
  </editorsettings>
@@ -322,6 +322,21 @@
    <properties>
     <property name="id" value="incontri percorso 8"/>
     <property name="type" value="erba_alta"/>
+   </properties>
+  </object>
+  <object id="37" name="ingresso_grotta_hooh" x="547" y="63" width="23.8182" height="26.9091">
+   <properties>
+    <property name="condizione" value="piuma_porchettari"/>
+    <property name="destinazione" value="grotta_ohoh"/>
+    <property name="messaggio_gate" value="🔒 Qualcosa qui reagirebbe solo a un segno sacro... (serve la Piuma)"/>
+    <property name="spawn_id" value="da_ariccia"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="38" name="da_grotta_hooh" x="545" y="107" width="28" height="16.3636">
+   <properties>
+    <property name="id" value="da_grotta_hooh"/>
+    <property name="type" value="spawn"/>
    </properties>
   </object>
  </objectgroup>

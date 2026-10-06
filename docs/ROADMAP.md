@@ -4,6 +4,58 @@
 
 ---
 
+## Sessione 5 ottobre 2026 — Cutscene Maso/Zapdos (Percorso Monte Po 3) COMPLETA e testata dal vivo
+
+- **Cutscene finita e confermata funzionante da Luca**: Grunt gate (post-Lega, trainer normale a vista
+  larga tramite `trigger_lotta_prossimita` — vedi sotto perché NON vista a 1 casella) → cammini a nord
+  su `percorso_montepo_1` → trigger `trigger_maso_montepo3` → Zapdos visibile (sprite creato a mano da
+  `sprites/follower/ZAPDOS.png`, niente PokéAPI a runtime) → cattura (schermo nero) → Grunt vicini si
+  girano a nord → Maso ti si avvicina e ti sfida → lotta (Zapdos + fino a 5 cloni della tua squadra,
+  stesse mosse, +5 livelli, `costruisciSquadraMaso()` in js/app.js) → epilogo con battuta di sconfitta →
+  schermo nero 1 secondo → spariscono TUTTI per sempre: Maso, Zapdos, i Grunt di scorta
+  (`grunt_montepo1_1/2/3/4/5/7` — **non** `_6`, lasciato invariato apposta), e il Grunt del cancello più
+  a sud (`grunt_gate_montepo3`). Nessun Zapdos "premio" catturabile lasciato lì: se ne vanno con lui.
+- **METODO DA RICORDARE per testare lotte pesanti senza doverle rigiocare** (richiesto esplicitamente da
+  Luca di tenerlo a mente per il futuro): quando una lotta di storia è troppo lunga da rigiocare ogni
+  volta solo per controllare la cutscene attorno (es. Modalità Test con squadre clonate al livello
+  100), si aggiunge un flag di scorciatoia controllato da console che salta `_avviaLottaTrainer` e va
+  dritto all'epilogo di vittoria — es. `stato.flags.debug_skip_lotta_maso = true` PRIMA di entrare nel
+  trigger (vedi `_cutsceneMasoMontepo3` in js/map.js). **Attenzione**: se l'epilogo fa sparire l'NPC
+  tramite `trainerBattuti` (il Set che normalmente si riempie solo dentro una lotta vera), la
+  scorciatoia deve aggiungerlo a mano lì, altrimenti l'NPC non sparisce mai nonostante tutto il resto
+  funzioni (bug reale capitato qui, non solo cache).
+- **Lezione tecnica da ricordare — vista a 1 casella vs area larga**: un trainer "a vista" normale
+  (`vista: N` in `dati/trainer.js`) vede SOLO in linea retta larga esattamente 1 casella nella direzione
+  in cui guarda. Funziona per i corridoi strette (la maggioranza delle mappe). In uno spiazzo largo più
+  di 1 casella (qui: 4 caselle libere una volta aperto il muro, misurato replicando `buildCollGrid` a
+  mano) NON scatta quasi mai per puro disallineamento di colonna — non è un bug, è geometria. La
+  soluzione già esistente nel motore per questo caso è `trigger_lotta_prossimita` (rettangolo, qualunque
+  lato tu entri lo vede — stesso sistema del boss della Grotta del Vulcano). **Occhio al "ripiego"**:
+  se l'NPC collegato al trigger non è trovato in `npcStato` (condizione di visibilità non soddisfatta,
+  già battuto, flag non allineati), NON deve più combattere alla cieca — `_checkTriggerProssimita` in
+  js/map.js ora fa semplicemente `continue` in quel caso (prima forzava una lotta "fantasma", bug reale
+  corretto in questa sessione).
+- **Cancelli condizionati (`cancello_condizione`) ora dinamici**: prima la collisione di un "muro"
+  condizionato veniva scritta in `collGrid` UNA SOLA VOLTA al caricamento della mappa — se cambiavi un
+  flag a mano da console mentre eri già sulla mappa, il muro restava fisicamente solido anche se la
+  condizione era già vera. Aggiunta `_aggiornaCancelliDinamici()` (js/map.js), richiamata da
+  `_rigeneraNpc()` (quindi anche da `GameMap.rigeneraNpcMappa()` da console): ricalcola `cancello_
+  condizione`/`cancello_pulsante`/`cancello_medaglia` con lo stato ATTUALE dei flag, senza dover
+  uscire/rientrare dalla mappa.
+- **`verificaCondizione` ora supporta composizione**: `"flagA+flagB"` (AND tra token) e `"!flagX"`
+  (negazione singola o dentro il "+"). Evita di dover creare flag derivati tenuti a mano sincronizzati
+  con due condizioni indipendenti (bug già capitato due volte con varianti del Grunt gate).
+- **ATTENZIONE cache browser**: tutti gli script in `index.html` condividono lo stesso parametro
+  `?v=AAAAMMGGx` — se non lo si incrementa dopo una modifica a un file `.js` (NON serve per i `.tmj`,
+  caricati sempre con `fetch({cache:'no-store'})`), il browser può continuare a eseguire la versione
+  vecchia e sembra che le correzioni non abbiano effetto. **Incrementare SEMPRE la lettera finale in
+  `index.html` dopo aver modificato un file `.js`.** Causa sospetta di diversi "non funziona ancora"
+  di questa sessione.
+- **Prossimo passo**: continuare F9 (dungeon/MN/città vive) oppure, se Luca preferisce, proseguire sul
+  post-Lega CoTrAL (Bunkerino) visto che questa sessione ha già scritto a mano la narrativa Maso/Zapdos.
+
+---
+
 ## Sessione 30 settembre 2026 — Fix vero della Ball "sempre aperta", committato
 
 - **Bug risolto (committo f9d020a)**: Luca segnalava che sia il lancio d'entrata in campo sia il lancio
@@ -126,8 +178,8 @@ per questa sessione):
 - **Gate a nord di Borgata Tuscolana**: 5 NPC nel varco tra i due edifici in cima al paese (sotto
   il cartello "Percorso 1 - Frascati"), gate su `starterScelto` — impossibile lasciare la città
   prima di scegliere lo starter dal Professore.
-- **Grottaferrata → Nilo rinominato Igino** (Luca aveva scritto "Lino", quasi certamente refuso di
-  "Nilo": rinominato SOLO il personaggio, non il luogo "Abbazia di San Nilo" che è un nome reale).
+- **Grottaferrata → Igino rinominato Igino** (Luca aveva scritto "Lino", quasi certamente refuso di
+  "Igino": rinominato SOLO il personaggio, non il luogo "Abbazia di San Nilo" che è un nome reale).
 - **Palestra di Grottaferrata, warp uscita/entrata**: il warp di uscita puntava a `frascati` invece
   che a `grottaferrata` (con `spawn_id`/`id` che non si agganciavano a nessuno spawn reale) — probabile
   copia-incolla da un template. Corretto: ora esce sullo spawn giusto proprio davanti alla palestra.
@@ -1558,7 +1610,7 @@ sul codice e non sulle vecchie note). **Nessun test a schermo in questa sessione
   Ariccia (già implementata, non è un "dungeon" da disegnare), Spiaggia di Albano = Lago di Albano
   (mappa già esistente), Percorso Grottaferrata→Rocca di Papa (già collegato via
   `percorso_montano_v1`), Monte Cavo/Articuno/miniboss (già fatto). Segnalata la discrepanza
-  narrativa nota Flora/Camilla per la palestra di Genzano (non risolta, su richiesta di Luca).
+  narrativa nota Camilla/Camilla per la palestra di Genzano (non risolta, su richiesta di Luca).
   Gruppo C riscritto con lo stato reale di ogni MN (tabella CLAUDE.md verificata riga per riga: Taglio/
   Spaccaroccia/Forza fatte, Surf ha solo il permesso pronto, Volo ha una discrepanza col donatore
   reale, Cascata resta l'unica del tutto aperta — D4). Confermato via ricerca nel codice che la
@@ -1569,7 +1621,7 @@ sul codice e non sulle vecchie note). **Nessun test a schermo in questa sessione
 Luca ha risposto a tutte le domande aperte della prima ondata e ha chiesto altre cose subito.
 **Ancora nessun test a schermo.**
 
-- **Genzano: Flora → Camilla, sovrascrittura definitiva** ("capo palestra genzano si chiama camilla
+- **Genzano: Camilla → Camilla, sovrascrittura definitiva** ("capo palestra genzano si chiama camilla
   stop, sovrascrivi"): rinominata con `sed` in `js/data.js` e `dati/trainer.js` (16 occorrenze
   totali, verificato nessun uso ambiguo della parola "flora" generica prima di lanciare la
   sostituzione). Risolve la discrepanza narrativa segnalata nella prima ondata.
@@ -1665,7 +1717,7 @@ Luca ha disegnato le 6 mappe di Via Vittoria (`1f`/`2f`/`3f`/`4f`/`5f`/`secret`)
   rinominata **Medaglia Lava → Medaglia Pigna**.
 - **Albano Laziale**: tipo Lotta → **Roccia**, capopalestra **Massimo → Giorgia**, medaglia invariata
   (**Medaglia Scudo**).
-- **Genzano**: tipo Folletto → **Fuoco**, capopalestra **Flora** (invariata), medaglia rinominata
+- **Genzano**: tipo Folletto → **Fuoco**, capopalestra **Camilla** (invariata), medaglia rinominata
   **Medaglia Infiorata → Medaglia Lava** (libera perché Rocca di Papa non è più Roccia). Narrativa:
   "la lava fa germogliare i fiori migliori".
 
@@ -1681,11 +1733,11 @@ nel layer eventi) — mai popolate. Ne ho approfittato per costruirle da zero in
   squadre (hobby di famiglia legato al Monte Cavo, non al tipo della palestra di Baso): solo i dialoghi
   che nominano "Rocco" sono diventati "Baso". Chiavi tecniche/flag interni **non rinominati** (invisibili
   al giocatore, per non rompere riferimenti incrociati map.js/app.js/trainer.js).
-- Genzano: squadra di Flora e dei 10 gregari passata da Folletto a Fuoco, dialoghi riscritti mantenendo
+- Genzano: squadra di Camilla e dei 10 gregari passata da Folletto a Fuoco, dialoghi riscritti mantenendo
   il tema Infiorata. Interno palestra di Genzano **non esiste ancora su Tiled** (fuori scope, resta un
   gap noto per una sessione futura).
 - Aggiornati CLAUDE.md, STORIA_COMPLETA.md, STATO-PROGETTO.md con i nuovi tipi/nomi/medaglie. **Non
-  toccata** la questione narrativa Camilla/Flora per Genzano in BIBBIA-NARRATIVA.md/STATO-PROGETTO.md
+  toccata** la questione narrativa Camilla/Camilla per Genzano in BIBBIA-NARRATIVA.md/STATO-PROGETTO.md
   (discrepanza preesistente, fuori scope di questa sessione — vedi `docs/TODO.md` se va risolta).
 
 **Da testare a runtime** (non ancora ripercorso a mano in game):
@@ -1697,10 +1749,10 @@ nel layer eventi) — mai popolate. Ne ho approfittato per costruirle da zero in
 
 **Aggiornamento stessa sessione**: Luca ha nel frattempo disegnato anche gli interni di Ariccia e
 Genzano su Tiled (vuoti, come Rocca di Papa/Albano prima). Popolati anche questi:
-- **Genzano**: interno completo (10 gregari + Flora), porta città→palestra aggiunta (l'edificio
+- **Genzano**: interno completo (10 gregari + Camilla), porta città→palestra aggiunta (l'edificio
   esterno era già disegnato sulla mappa città, riconosciuto via tile grafico), spawn di ritorno
   aggiunto, mappa registrata come `palestra_genzano_interno`. Nuove entry in `dati/trainer.js`.
-- **Ariccia**: interno completo (9 gregari + Ombretta), nuove entry in `dati/trainer.js`, mappa
+- **Ariccia**: interno completo (9 gregari + Isa), nuove entry in `dati/trainer.js`, mappa
   registrata come `palestra_ariccia_interno`. **La porta in città NON è stata aggiunta**: l'edificio
   esterno della palestra non è ancora disegnato su `Ariccia.tmj` (verificato: nessun tile della
   palestra presente) — raggiungibile solo da console finché Luca non disegna l'edificio e mi dice
@@ -2141,7 +2193,7 @@ schermo alla prossima occasione, in particolare Genzano (mai esistita nel motore
 - **Oggetti raccoglibili piazzati nel mondo** (tipo Tiled `oggetto`, pattern esistente riusato):
   i 5 tesori mai piazzati da quando erano stati aggiunti (sessione 7 agosto) ora sono in giro —
   Perla (Marino), Perla Grande (Castel Gandolfo), Polvere di Stelle (Monte Porzio), Frammento di
-  Stella (Rocca di Papa), Squama Cuore (Lago di Nemi) — più una pozione/superpozione/revitalizzante
+  Biretta (Rocca di Papa), Squama Cuore (Lago di Nemi) — più una pozione/superpozione/revitalizzante
   segnaposto sulle 3 mappe nuove (Percorso 10/11, collegamento_Cotral). Tutti posizionati a vista,
   Luca li sposta in Tiled se non sono su erba/pavimento libero.
   **Nota per Luca**: `monteporzio.tmx` e `Lago di Nemi.tmx` hanno dimensioni diverse dai rispettivi
@@ -2367,7 +2419,7 @@ ogni Centro Pokémon** (come nei giochi veri). Corretto:
 - **Oggetti Gen 1-3 dal pacchetto Essentials FRLG**: filtrati 198 oggetti coerenti con Gen1-2-3 da
   `Essentials FRLG/PBS/items.txt` (esclusi tutti quelli Gen4+), catalogati in
   `docs/OGGETTI-GEN1-3-REFERENCE.md`. Aggiunti al gioco:
-  - **5 nuovi tesori vendibili** (Perla, Perla Grande, Polvere di Stelle, Frammento di Stella, Squama
+  - **5 nuovi tesori vendibili** (Perla, Perla Grande, Polvere di Stelle, Frammento di Biretta, Squama
     Cuore) in `OGGETTI` — categoria `tesoro`, stesso pattern della Pepita. **Da fare (LUCA): piazzarli
     su una mappa in Tiled** (oggetto `tipo:'oggetto'`, prop `oggetto:<chiave>`) perché siano davvero
     trovabili — oggi esistono solo come definizioni, non ancora nel mondo.
@@ -2602,7 +2654,7 @@ Percorso_8, Zona Safari, Percorso_9, Ariccia). Fatto tutto tranne un bug scopert
   Papa), registrati in `MAPPE` (`pokecenter_ariccia`/`mart_ariccia`), porte + spawn aggiunti su
   `Ariccia.tmj`/`.tmx`. Venditore speciale: `apriVenditoreSpecialeAriccia()` (`js/app.js`), NPC
   dedicati in `dati/npc.js` (Adalgiso al market, Serafina la speciale — evitati nomi duplicati con
-  Ombretta/Learco già usati altrove ad Ariccia), merce splittata da un `mk-ariccia` orfano già
+  Isa/Learco già usati altrove ad Ariccia), merce splittata da un `mk-ariccia` orfano già
   presente in `js/data.js` (base vs `mk-ariccia-speciale`: Pietra Sole + Dente Oscuro). **Albano e
   Rocca di Papa avevano GIÀ pokecenter/market dedicati** (sessione 36): non rifatti, solo verificati.
   **Genzano non ha ancora nessuna mappa**: fuori scope, nessuna azione possibile.
@@ -2613,7 +2665,7 @@ Percorso_8, Zona Safari, Percorso_9, Ariccia). Fatto tutto tranne un bug scopert
   Papa e il cap di Albano). Verificato a runtime (claude-in-chrome): `DATI_TRAINER['all-p7-1']` ha i
   dati giusti, nessun `all-gm-*` residuo su percorso_7.
 - **5 nuovi trainer ad Ariccia** (`all-ariccia-1..5`, Lv49-52, tema Buio in avvicinamento alla
-  palestra di Ombretta): prima la città aveva solo NPC/dialogo. Posizioni segnaposto in
+  palestra di Isa): prima la città aveva solo NPC/dialogo. Posizioni segnaposto in
   `Ariccia.tmj`/`.tmx`, Luca le sposta.
 - **Tabelle incontri mancanti**: `dati/incontri.js` non aveva NESSUNA voce per monteporzio,
   rocca_di_papa, percorso_7, albano, percorso_8, zona_safari, percorso_9, ariccia — quindi anche
@@ -2720,7 +2772,7 @@ Percorso_8, Zona Safari, Percorso_9, Ariccia). Fatto tutto tranne un bug scopert
 - Riportato in `docs/BIBBIA-NARRATIVA.md` (v3): due capi GdF (Pietra Rossa/Grotta del Vulcano, Pietra
   Blu/rifugio di Marino), password del rifugio di Marino ora in **3 parti**, Museo di Nemi senza le
   pietre (pista fredda), Team CoTrAL attivo **durante** il gioco (non solo post-Lega) in tre tempi,
-  **Camilla** capopalestra di Genzano (sostituisce "Flora"), scontro Osservatorio in **doppio** con
+  **Camilla** capopalestra di Genzano (sostituisce "Camilla"), scontro Osservatorio in **doppio** con
   Camilla (Jirachi, Master Ball), **due rivali** (Remo=Campione, secondo rivale nuovo dà il Braciere
   all'uscita di Via Vittoria), **treno** per Lugia, tuta spaziale per Deoxys dalla sconfitta di Mewtwo.
 - Aggiornato `docs/STATO-PROGETTO.md`: verificate nel codice reale diverse voci che risultavano stale
@@ -2755,8 +2807,8 @@ riprendere con l'implementazione a partire dal Gruppo A di `docs/TODO.md`.
 > `docs/BIBBIA-NARRATIVA.md` v3. La sezione sotto resta come **registro storico** di cosa era stato
 > costruito sotto la vecchia storia (non cancellata per regola di roadmap) ma **non va più usata come
 > riferimento per decidere cosa implementare**: molti dettagli sotto (boss unico GdF all'Abbazia,
-> Fulvia/Crasso nei lab CoTrAL, MN Surf/Forza/Volo dati da Moro/Osservatorio/Faustino, Lugia via
-> radura su Monte Cavo, Genzano="Flora") sono in conflitto diretto con la storia nuova — vedi
+> Fulvia/Crasso nei lab CoTrAL, MN Surf/Forza/Volo dati da Matilde/Osservatorio/Faustino, Lugia via
+> radura su Monte Cavo, Genzano="Camilla") sono in conflitto diretto con la storia nuova — vedi
 > `docs/TODO.md` domande D19-D21 e il riepilogo contraddizioni della sessione 5 agosto.
 
 > Da tenere aggiornato ogni sessione che tocca narrativa/dungeon. `docs/STORIA_COMPLETA.md`
@@ -2805,7 +2857,7 @@ ricostruire quella parte.
 
 ### MN — stato reale (attenzione, diverso da quanto assunto in sessione 26!)
 - **Taglio**: ✅ ottenibile oggi (Frascati, dopo Medaglia Vigna, `donaTaglioFrascati`).
-- **Surf**: STORIA_COMPLETA dice **Moro la dà a Marino dopo la vittoria di palestra**
+- **Surf**: STORIA_COMPLETA dice **Matilde la dà a Marino dopo la vittoria di palestra**
   — diverso dal vecchio `DONATORI_MN` (Nonna Assunta ad Albano, ≥5 medaglie) usato
   nella sessione scorsa. **Non ancora corretto nel codice**: da sistemare quando si
   torna sulla palestra di Marino.
@@ -3059,7 +3111,7 @@ dell'utente, a partire da un nuovo prompt narrativo con arco Rocca di Papa/Monte
   - `Percorso_8.tmx` (Albano → Ariccia, cap 46-49): 5 trainer (`all-p8-1..5`) +
     2 NPC "Porchettaro" che alludono alla Sagra/CoTrAL/Adriano.
   - `Percorso_9.tmx` (sale verso Ariccia, cap 48-52): 9 trainer (`all-p9-1..9`).
-  - `Ariccia.tmx` (7ª città, Palestra Buio Ombretta): 5 NPC generici + **Adriano
+  - `Ariccia.tmx` (7ª città, Palestra Buio Isa): 5 NPC generici + **Adriano
     il Porchettaro** (chiave per Ho-Oh, STORIA_COMPLETA) + 3 Porchettari, tutti
     solo a livello di dialogo/allusione — nessuna meccanica di quest/grunt
     implementata (arriverà con F10/F11).
@@ -3451,9 +3503,9 @@ ancora la meccanica di pesca vera (tabelle dedicate per canna, dove si può pesc
 
 ### Sessione 31 — Gregari Marino/Monteporzio, NPC Surf al Lago, trainer P4/Lago, venditori market (11 luglio 2026)
 - **Palestra di Marino**: l'utente ha ridisegnato la mappa da zero (`pokemon-castelli-palestra_marino.tmj`,
-  layer eventi svuotato). Riaggiunti i 6 oggetti trainer (5 gregari + Moro, dati già pronti in
+  layer eventi svuotato). Riaggiunti i 6 oggetti trainer (5 gregari + Matilde, dati già pronti in
   `dati/trainer.js` dalla sessione 27) nel `.tmj`. **Palestra di Monte Porzio**: già completa (6 gregari +
-  Stella presenti nel `.tmj` ridisegnato dall'utente), nessuna modifica necessaria.
+  Biretta presenti nel `.tmj` ridisegnato dall'utente), nessuna modifica necessaria.
 - **MN Surf riallineata a STORIA_COMPLETA** (risolve il punto aperto della sessione 30): spostata da
   "Nonna Assunta ad Albano Laziale, ≥5 medaglie" a **Nonna Assunta al Lago di Albano**, gate ora
   `stato.medaglie.includes('monte-porzio')` (sconfiggi la palestra di Monte Porzio) invece di un conteggio
@@ -3486,12 +3538,12 @@ ancora la meccanica di pesca vera (tabelle dedicate per canna, dove si può pesc
 - **Confermato**: gli sfondi di battaglia (sessione 29) erano già automatici per
   posizione (grotta/acqua/interno/esterno) — nessuna modifica necessaria, il sistema
   `GameMap.temaBattaglia()` copre già questo caso.
-- **Palestra di Monte Porzio (Elettro, Stella) completata**: registrata
+- **Palestra di Monte Porzio (Elettro, Biretta) completata**: registrata
   `palestra_monteporzio_interno` in `js/map.js` (file
   `pokemon-castelli-palestra_monteporzio.tmj`, disegnato dall'utente ma con layer
   eventi vuoto). Aggiunti: spawn `entrata_principale` + uscita (varco sul bordo
   NORD della stanza, non sud come le altre palestre — orientamento diverso di
-  questa mappa), **6 gregari + Capopalestra Stella** come oggetti trainer +
+  questa mappa), **6 gregari + Capopalestra Biretta** come oggetti trainer +
   relative voci in `dati/trainer.js` (dati presi da `PALESTRE['monte-porzio']`).
 - **MN Forza ora la dà Remo**: dopo averlo battuto alla tappa 4 (Monte Porzio),
   `stato.mn.forza = true` (vedi nota sopra in "MN — stato reale"). Sblocca
@@ -3500,7 +3552,7 @@ ancora la meccanica di pesca vera (tabelle dedicate per canna, dove si può pesc
   caricano senza errori JS.
 - Prossimo passo: l'utente prosegue con altri interni/dungeon (Marino, Rocca di
   Papa restano da rifinire lato utente); quando si torna sulla narrativa, allineare
-  MN Surf (Marino/Moro) e la divergenza Forza con STORIA_COMPLETA.
+  MN Surf (Marino/Matilde) e la divergenza Forza con STORIA_COMPLETA.
 
 ### Sessione 29 — Battleback dinamici (8 luglio 2026)
 - **Sfondi di battaglia da `sprites/Battlebacks/`** (l'utente li ha aggiunti: coppie
@@ -3547,7 +3599,7 @@ ancora la meccanica di pesca vera (tabelle dedicate per canna, dove si può pesc
 ### Sessione 27 — Gregari Marino + Rocca di Papa costruita da zero (8 luglio 2026)
 > Nota: la sessione precedente si era chiusa senza salvare la cronologia; questa
 > ripartita rileggendo `docs/STATO-PROGETTO.md` + `git status`.
-- **Palestra di Marino**: 5 gregari + gym_leader Moro aggiunti in `dati/trainer.js`
+- **Palestra di Marino**: 5 gregari + gym_leader Matilde aggiunti in `dati/trainer.js`
   e come oggetti trainer nel layer eventi di `pokemon-castelli-palestra_marino.tmj`
   (prima vuoto). Rimossi 24 oggetti "acqua_lago di albano_surf" nel layer collisioni
   (copiati per errore dal Lago Albano: bloccavano mezza palestra). Registrata
@@ -3610,7 +3662,7 @@ comunica o la si vede cambiata nel file.
    alta (sessione 33) — vedi dettagli in sessione 34; valutare insieme la canna da
    pesca.
 4. Punti aperti lasciati in sospeso **su richiesta esplicita dell'utente — non
-   riproporli finché non li chiede lui**: MN Surf da riallineare a Moro/Marino
+   riproporli finché non li chiede lui**: MN Surf da riallineare a Matilde/Marino
    (oggi è ancora sul vecchio `DONATORI_MN`, ma resterà su Nonna Assunta finché
    l'utente non la sposta di persona al "Ristorante dei Laghi"); divergenza MN
    Forza (ora da Remo, non dall'Osservatorio) da eventualmente riportare in
@@ -3658,7 +3710,7 @@ Nuove mappe disegnate dall'utente in Tiled: `marino_v3.tmj`, `Percorso_4.tmj`, `
   `VOLO_TILED` aggiornato con Marino (spawn tx=30,ty=48) e Castel Gandolfo (tx=16,ty=29).
 - Warp: tutti i percorsi si riconnettono (percorso_3 ↔ marino, marino ↔ percorso_4,
   percorso_4 ↔ castel_gandolfo e lago_albano, castel_gandolfo ↔ percorso_5).
-- Prossimo: città di Marino completa (palestra Acqua / Moro / Medaglia Fontana, NPC, Solitario).
+- Prossimo: città di Marino completa (palestra Acqua / Matilde / Medaglia Fontana, NPC, Solitario).
 
 ### Sessione 25 — Percorso 3 (Grottaferrata → Marino) cablato (30 giugno 2026)
 La **mappa `percorso_3.tmj` l'ha disegnata l'utente in Tiled** (60×28, campagna verso il lago);
@@ -3677,7 +3729,7 @@ io ho cablato la logica. Tileset: solo `outside.tsx` (già supportato → render
   `erba_alta` con id `incontri percorso 3`, quindi al momento **niente incontri selvatici sul Percorso 3**.
   Per attivarli: in Tiled, layer `eventi`, disegna un oggetto `type:erba_alta` (o `erba_alta` come nome)
   con property `id = "incontri percorso 3"` sulle aree d'erba.
-- Prossima città: **Marino** (P3 Acqua, Capopalestra Moro, Medaglia Fontana) — mappa da creare.
+- Prossima città: **Marino** (P3 Acqua, Capopalestra Matilde, Medaglia Fontana) — mappa da creare.
 
 ### Sessione 24b — Regole sprite NPC (29 giugno 2026)
 - **Team GdF → sprite `NPC 20`** (riservato; alias `GDF_GRUNT_SPRITE`).
@@ -3693,7 +3745,7 @@ La **città di Grottaferrata l'ha disegnata l'utente in Tiled** (`grottaferrata.
 tutta la logica e gli interni.
 - **Palestra** (`pokemon-castelli-palestra_Grottaferrata.tmj`): registrata come
   `palestra_grottaferrata_interno` (chiave usata dal warp del paese, spawn `entrata_principale`).
-  4 gregari + Capopalestra **Nilo** (Psico) in `dati/trainer.js` (id del TMJ
+  4 gregari + Capopalestra **Igino** (Psico) in `dati/trainer.js` (id del TMJ
   `gym_leader_palestra grottaferrata`, `gregario 1..4 palestra grottaferrata`), squadre/dialoghi da
   `PALESTRE['grottaferrata']`. `palestraId:'grottaferrata'` → **Medaglia Icona** + level cap **21**.
   Aggiunti al TMJ (via script) lo spawn `entrata_principale` (13,25) e l'uscita (13,26, ritorno via stack).
@@ -4111,13 +4163,13 @@ Mancano: **Via Vittoria + Lega (F12)**, pubblicazione (F13), grafica cartoon (F1
   ritrovare il giocatore **alla Lega di Colonna** (gancio narrativo aperto per F12).
 - **Le 8 palestre** (tutte attive e battibili, in quest'ordine obbligato):
   1. **Frascati** — Vinicio (Erba) — *Medaglia Vigna* — Villa Torlonia, tema vigne/vino DOC
-  2. **Grottaferrata** — Nilo (Psico) — *Medaglia Icona* — Abbazia di San Nilo, meditazione
-  3. **Marino** — Moro (Acqua) — *Medaglia Fontana* — Fontana Quattro Mori, Sagra dell'Uva
-  4. **Monte Porzio** — Stella (Elettro) — *Medaglia Stella* — astronoma dell'Osservatorio
+  2. **Grottaferrata** — Igino (Psico) — *Medaglia Icona* — Abbazia di San Nilo, meditazione
+  3. **Marino** — Matilde (Acqua) — *Medaglia Fontana* — Fontana Quattro Mori, Sagra dell'Uva
+  4. **Monte Porzio** — Biretta (Elettro) — *Medaglia Stella* — astronoma dell'Osservatorio
   5. **Rocca di Papa** — Baso (Lotta) — *Medaglia Pigna* — pugni duri come il peperino del Vulcano Laziale
   6. **Albano** — Giorgia (Roccia) — *Medaglia Scudo* — Castra Albana, mura di pietra
-  7. **Ariccia** — Ombretta (Buio) — *Medaglia Fraschetta* — fraschette di notte, il ponte
-  8. **Genzano** — Flora (Fuoco) — *Medaglia Lava* — l'Infiorata, la lava fa fiorire i fiori migliori
+  7. **Ariccia** — Isa (Buio) — *Medaglia Fraschetta* — fraschette di notte, il ponte
+  8. **Genzano** — Camilla (Fuoco) — *Medaglia Lava* — l'Infiorata, la lava fa fiorire i fiori migliori
 - **Servizi**: Centri Pokémon 🏥 in tutti gli 8 comuni (cura gratuita + "Dormi" entro
   150 m). **Poké Market 🛒** in 9 punti (Borgata + 8 comuni) con merce a progressione e
   valuta **Pokéyen ₽** (F9.2). Menu ☰ con squadra/zaino/Market/Box/salvataggi
@@ -4582,13 +4634,13 @@ F9.3 NPC + donatori MN → F9.4 dungeon e laghi. Si parte dal tempo.
 - **F8 — Le altre 7 palestre: COMPLETATA ✔**
   - Capipalestra 2-8 in `data.js` con dialoghi a tema locale e **asso sempre al
     level cap** (verificato via test):
-    - P2 Grottaferrata: **Nilo** (Psico) — Medaglia Icona
-    - P3 Marino: **Moro** (Acqua) — Medaglia Fontana
-    - P4 Monte Porzio: **Stella** (Elettro) — Medaglia Stella
+    - P2 Grottaferrata: **Igino** (Psico) — Medaglia Icona
+    - P3 Marino: **Matilde** (Acqua) — Medaglia Fontana
+    - P4 Monte Porzio: **Biretta** (Elettro) — Medaglia Stella
     - P5 Rocca di Papa: **Rocco** (Roccia) — Medaglia Lava
     - P6 Albano: **Massimo** (Lotta) — Medaglia Scudo
-    - P7 Ariccia: **Ombretta** (Buio) — Medaglia Fraschetta
-    - P8 Genzano: **Flora** (Folletto) — Medaglia Infiorata
+    - P7 Ariccia: **Isa** (Buio) — Medaglia Fraschetta
+    - P8 Genzano: **Camilla** (Folletto) — Medaglia Infiorata
   - **Squadre potenziate su richiesta utente**: 4 → 6 Pokémon (crescenti lungo il
     path) e specie con BST più alto (Gyarados, Ampharos, Aggron, Machamp, Houndoom,
     Gardevoir come assi…). Tutte ≤ ID 386, senza doppioni interni.
@@ -4614,10 +4666,10 @@ F9.3 NPC + donatori MN → F9.4 dungeon e laghi. Si parte dal tempo.
 2. Menu ☰ → Squadra → clicca un Pokémon → **"🍬 Caramella Rara"**: +1 livello a click
    (toast con livello/mosse/evoluzioni). Al cap si blocca con l'avviso medaglia.
 3. Con le caramelle porta la squadra al cap e fai il giro del path:
-   Grottaferrata → **davanti a Marino ti ferma Remo!** → battilo → palestra di Moro
+   Grottaferrata → **davanti a Marino ti ferma Remo!** → battilo → palestra di Matilde
    (occhio al Gyarados!) → Monte Porzio → Rocca di Papa → **Remo di nuovo davanti
    ad Albano** → Massimo → Ariccia (di notte… si fa per dire) → Genzano.
-4. Dopo l'8ª medaglia il level cap arriva a 60 e Flora ti annuncia la Via Vittoria.
+4. Dopo l'8ª medaglia il level cap arriva a 60 e Camilla ti annuncia la Via Vittoria.
 5. Ricorda: cura al 🏥 tra una palestra e l'altra (i PP non si rigenerano da soli).
 
 ### Correzione dopo feedback utente (13/6)
@@ -4826,7 +4878,7 @@ di Frascati: Capopalestra Erba, dialoghi, medaglia, sblocco level cap a 21.
 ## Sessione 3 — 12 giugno 2026
 
 ### Cosa è stato fatto
-- **CLAUDE.md aggiornato dall'utente**: aggiunta la "⭐ Stella Polare" in cima — l'obiettivo è
+- **CLAUDE.md aggiornato dall'utente**: aggiunta la "⭐ Biretta Polare" in cima — l'obiettivo è
   un RPG completo stile Pokémon Smeraldo; la mappa OSM è solo impalcatura temporanea (via in F14).
 - **F5 — Battaglia selvatici: COMPLETATA ✔**
   - Nuovo file `js/battle.js` (modulo `Battle`): combattimento a turni completo.

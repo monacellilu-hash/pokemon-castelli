@@ -598,5 +598,18 @@
     <property name="vista" type="int" value="5"/>
    </properties>
   </object>
+  <object id="9001" name="warp_treno_lugia" x="32" y="32">
+   <properties>
+    <property name="destinazione" value="treno_lugia"/>
+    <property name="spawn_id" value="da_monte_cavo"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9002" name="spawn_da_treno_lugia" type="spawn" x="64" y="32">
+   <properties>
+    <property name="id" value="da_treno_lugia"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

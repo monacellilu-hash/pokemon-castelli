@@ -18,12 +18,27 @@
 
    Zone ATTIVE nei .tmj: "incontri percorso 1", "incontri tuscolo",
    "incontri percorso 2" (+ surf), "incontri percorso 3", "incontri marino",
-   "acqua_lago di albano_surf" (Lago di Albano), "acqua_marino_surf" (Marino).
-   Zone PRONTE (tabella qui, manca l'oggetto zona erba_alta nel .tmj — crearlo
-   in Tiled sul layer eventi, rettangolo con type=erba_alta e id=chiave):
+   "acqua_lago di albano_surf" (Lago di Albano), "acqua_marino_surf" (Marino),
    "incontri frascati" (frascati_est), "incontri percorso 4" (Percorso_4),
-   "incontri lago albano" (riva, Lago di Albano),
-   "incontri castel gandolfo" (castel_gandolfo_v2), "incontri percorso 5".
+   "incontri castel gandolfo" (castel_gandolfo), "incontri percorso 5"
+   (verificato attivo il 5 ott 2026 — i rettangoli esistono già nei .tmj).
+   "incontri lago albano" è aliasata a "incontri lago di albano spiaggia",
+   l'id reale già disegnato in "Lago di Albano.tmj" (nome diverso, stessa zona).
+
+   ⭐ DISTRIBUZIONE SPECIE 1-386 (sess. 5 ott 2026): tutte le 281 specie
+   "trovabile in natura" secondo docs/CLASSIFICAZIONE-INCONTRI-386.md sono
+   ora assegnate ad almeno una zona reale (vedi docs/MAPPA-SPECIE-INCONTRI.md
+   per l'elenco completo zona per zona). Famiglie evolutive tenute nella
+   stessa zona/pozza quando possibile; i draghi ultra rari (Dratini/
+   Dragonair, Bagon/Shelgon, Altaria) sono SOLO nei dungeon (Tunnel
+   Roccioso, Via Vittoria), mai nelle zone di superficie.
+
+   ⭐ GIORNO/NOTTE: una zona può avere "pokemonNotte" in aggiunta a
+   "pokemon" — se è notte (fasciaOraria()==='notte') e la zona ha un pool
+   notturno, si usa quello al posto di quello diurno (vedi js/map.js,
+   _tentaIncontro). Oggi implementato su "incontri tuscolo" (Haunter/Unown
+   più comuni di notte tra le rovine) e "incontri ariccia" (Umbreon/Absol/
+   Sableye più comuni di notte, coerente col tema Buio della città).
 */
 
 const DATI_INCONTRI = {
@@ -38,8 +53,6 @@ const DATI_INCONTRI = {
       { id: 130, min: 58, max: 64, rate: 20 },  // Gyarados
       { id: 91,  min: 55, max: 60, rate: 22 },  // Cloyster
       { id: 121, min: 55, max: 61, rate: 22 },  // Starmie
-      { id: 134, min: 55, max: 60, rate: 20 },  // Vaporeon
-      { id: 199, min: 56, max: 62, rate: 16 },  // Slowking
       { id: 171, min: 55, max: 60, rate: 16 },  // Lanturn
       { id: 224, min: 56, max: 61, rate: 14 },  // Octillery
       { id: 211, min: 55, max: 60, rate: 14 },  // Qwilfish
@@ -48,12 +61,13 @@ const DATI_INCONTRI = {
       { id: 319, min: 57, max: 63, rate: 12 },  // Sharpedo
       { id: 367, min: 56, max: 61, rate: 10 },  // Huntail
       { id: 368, min: 56, max: 61, rate: 10 },  // Gorebyss
-      { id: 230, min: 58, max: 64, rate: 1 },   // Kingdra
-      { id: 350, min: 60, max: 66, rate: 5 },   // Milotic
-      { id: 365, min: 60, max: 66, rate: 1 },   // Walrein
       { id: 321, min: 60, max: 65, rate: 4 },   // Wailord
       { id: 369, min: 62, max: 68, rate: 3 },   // Relicanth (rarissimo, relitto del passato)
-    ],
+      { id: 131, min: 58, max: 63, rate: 6 },   // Lapras (rara)
+      { id: 223, min: 55, max: 60, rate: 20 },  // Remoraid
+      { id: 226, min: 56, max: 61, rate: 20 },  // Mantine
+      { id: 320, min: 56, max: 62, rate: 16 },  // Wailmer
+],
   },
 
   // ── PERCORSO 1 / 1b — campagna aperta della Via Tuscolana (Lv 2-6) ──
@@ -75,7 +89,13 @@ const DATI_INCONTRI = {
       { id: 265, min: 2, max: 5, rate: 16 },   // Wurmple (Gen3)
       { id: 276, min: 3, max: 6, rate: 14 },   // Taillow (Gen3)
       { id: 263, min: 3, max: 5, rate: 14 },   // Zigzagoon (Gen3)
-    ],
+      { id: 20,  min: 5, max: 7, rate: 3 },    // Raticate (evoluto, raro)
+      { id: 23,  min: 2, max: 5, rate: 22 },   // Ekans
+      { id: 162, min: 4, max: 6, rate: 5 },    // Furret (evoluto, raro)
+      { id: 266, min: 3, max: 5, rate: 16 },   // Silcoon (Wurmple evoluto A)
+      { id: 268, min: 3, max: 5, rate: 16 },   // Cascoon (Wurmple evoluto B)
+      { id: 277, min: 4, max: 6, rate: 6 },    // Swellow (evoluto, raro)
+],
   },
 
   // ── BOSCHI DEL TUSCOLO — bosco fitto + rovine (Lv 8-12) ──
@@ -100,6 +120,22 @@ const DATI_INCONTRI = {
       { id: 290, min: 8,  max: 10, rate: 14 },  // Nincada (Gen3)
       { id: 283, min: 9,  max: 11, rate: 12 },  // Surskit (Gen3)
       // Celebi: gestito a parte (logica speciale 3% post-Solitario).
+      { id: 12,  min: 11, max: 13, rate: 4 },   // Butterfree (evoluto, raro)
+      { id: 15,  min: 11, max: 13, rate: 4 },   // Beedrill (evoluto, raro)
+      { id: 47,  min: 11, max: 13, rate: 6 },   // Parasect (evoluto)
+      { id: 201, min: 10, max: 12, rate: 3 },   // Unown (rovine, raro)
+      { id: 206, min: 10, max: 12, rate: 4 },   // Dunsparce (raro)
+    ],
+    // Incontri notturni (sess. 5 ott 2026): di notte le rovine si popolano
+    // di fantasmi — stesso bosco ma con Gastly più comune e Haunter
+    // (evoluto) che compare solo col buio, mai di giorno.
+    pokemonNotte: [
+      { id: 10,  min: 8,  max: 11, rate: 20 },  // Caterpie
+      { id: 13,  min: 8,  max: 11, rate: 20 },  // Weedle
+      { id: 92,  min: 10, max: 12, rate: 28 },  // Gastly (più comune di notte)
+      { id: 93,  min: 11, max: 13, rate: 8 },   // Haunter (evoluto, solo di notte)
+      { id: 74,  min: 9,  max: 12, rate: 18 },  // Geodude
+      { id: 201, min: 10, max: 12, rate: 6 },   // Unown (più facile di notte tra le rovine)
     ],
   },
 
@@ -117,7 +153,10 @@ const DATI_INCONTRI = {
       { id: 191, min: 5, max: 7, rate: 16 },   // Sunkern (Gen2)
       { id: 285, min: 5, max: 8, rate: 16 },   // Shroomish (Gen3)
       { id: 315, min: 6, max: 8, rate: 10 },   // Roselia (Gen3, rara)
-    ],
+      { id: 30,  min: 6, max: 8, rate: 6 },    // Nidorina (evoluta, rara)
+      { id: 33,  min: 6, max: 8, rate: 6 },    // Nidorino (evoluto, raro)
+      { id: 83,  min: 6, max: 8, rate: 4 },    // Farfetchd (rarissimo, campi coltivati)
+],
   },
 
   // ── PERCORSO 2 — castagneti collinari (Frascati→Grottaferrata) Lv 9-13 ──
@@ -134,7 +173,10 @@ const DATI_INCONTRI = {
       { id: 261, min: 10, max: 12, rate: 15 },  // Poochyena (Gen3)
       { id: 263, min: 9,  max: 11, rate: 15 },  // Zigzagoon (Gen3)
       { id: 273, min: 11, max: 13, rate: 10 },  // Seedot (Gen3)
-    ],
+      { id: 17,  min: 11, max: 13, rate: 8 },   // Pidgeotto (evoluto)
+      { id: 203, min: 10, max: 13, rate: 20 },  // Girafarig
+      { id: 264, min: 11, max: 13, rate: 10 },  // Linoone (evoluto)
+],
   },
 
   // ── PERCORSO 2 — laghetto tra i castagni, accessibile SOLO con MN Surf ──
@@ -147,7 +189,6 @@ const DATI_INCONTRI = {
       { id: 54,  min: 25, max: 30, rate: 28 },  // Psyduck
       { id: 60,  min: 25, max: 30, rate: 25 },  // Poliwag
       { id: 183, min: 26, max: 31, rate: 20 },  // Marill
-      { id: 184, min: 28, max: 33, rate: 1 },   // Azumarill (3° stadio, rarissimo)
       { id: 90,  min: 26, max: 31, rate: 18 },  // Shellder
       { id: 98,  min: 26, max: 31, rate: 18 },  // Krabby
       { id: 270, min: 25, max: 30, rate: 18 },  // Lotad
@@ -174,7 +215,9 @@ const DATI_INCONTRI = {
       { id: 278, min: 11, max: 15, rate: 15 },  // Wingull (Gen3)
       { id: 283, min: 12, max: 16, rate: 10 },  // Surskit (Gen3)
       { id: 54,  min: 12, max: 16, rate: 12 },  // Psyduck
-    ],
+      { id: 70,  min: 13, max: 16, rate: 10 },  // Weepinbell (evoluto)
+      { id: 99,  min: 14, max: 16, rate: 6 },   // Kingler (evoluto, raro)
+],
   },
 
   // ── PERCORSO 4 — salita verso Monte Porzio/Osservatorio (Lv 12-19, tema Elettro) ──
@@ -193,7 +236,8 @@ const DATI_INCONTRI = {
       { id: 309, min: 13, max: 17, rate: 15 },  // Electrike (Gen3)
       { id: 311, min: 14, max: 18, rate: 10 },  // Plusle (Gen3)
       { id: 312, min: 14, max: 18, rate: 10 },  // Minun (Gen3)
-    ],
+      { id: 22,  min: 14, max: 17, rate: 8 },   // Fearow (evoluto)
+],
   },
 
   // ── MARINO — erba alta tra le vigne (Lv 12-17) ──
@@ -211,11 +255,15 @@ const DATI_INCONTRI = {
       { id: 188, min: 14, max: 17, rate: 12 },  // Skiploom (Gen2, evoluto)
       { id: 44,  min: 14, max: 17, rate: 10 },  // Gloom (evoluto)
       { id: 214, min: 14, max: 17, rate: 5 },   // Heracross (raro, tra i filari)
-    ],
+      { id: 49,  min: 14, max: 17, rate: 8 },   // Venomoth (evoluto)
+      { id: 294, min: 14, max: 17, rate: 8 },   // Loudred (evoluto)
+      { id: 301, min: 14, max: 17, rate: 10 },  // Delcatty (evoluto)
+      { id: 317, min: 14, max: 17, rate: 8 },   // Swalot (evoluto)
+],
   },
 
   // ── MARINO — in acqua col Surf (Lv 12-18) ──
-  // ⭐ Prima zona Surf del gioco (Moro dà la MN qui dopo la palestra): livelli
+  // ⭐ Prima zona Surf del gioco (Matilde dà la MN qui dopo la palestra): livelli
   // bassi ma già specie diverse da quelle dell'erba di Marino.
   // ATTIVA: ogni casella acquaSurf è automaticamente zona incontri (motore),
   // la chiave è l'"id" già presente sui rettangoli trigger_surf nel .tmj.
@@ -228,7 +276,9 @@ const DATI_INCONTRI = {
       { id: 183, min: 12, max: 16, rate: 18 },  // Marill (Gen2)
       { id: 270, min: 12, max: 16, rate: 18 },  // Lotad (Gen3)
       { id: 90,  min: 14, max: 18, rate: 12 },  // Shellder
-    ],
+      { id: 61,  min: 14, max: 17, rate: 10 },  // Poliwhirl (evoluto)
+      { id: 298, min: 12, max: 14, rate: 18 },  // Azurill (cucciolo di Marill)
+],
   },
 
   // ── LAGO ALBANO — spiaggia, erba alta sulla riva (Lv 15-22) ──
@@ -245,7 +295,9 @@ const DATI_INCONTRI = {
       { id: 118, min: 16, max: 21, rate: 14 },  // Goldeen
       { id: 79,  min: 17, max: 22, rate: 12 },  // Slowpoke
       { id: 55,  min: 20, max: 22, rate: 6 },   // Golduck (raro, evoluto)
-    ],
+      { id: 80,  min: 18, max: 21, rate: 6 },   // Slowbro (evoluto, raro)
+      { id: 279, min: 17, max: 20, rate: 10 },  // Pelipper (evoluto)
+],
   },
 
   // ── LAGO ALBANO — in acqua col Surf (Lv 18-28) ──
@@ -264,7 +316,13 @@ const DATI_INCONTRI = {
       { id: 194, min: 20, max: 25, rate: 18 },  // Wooper (Gen2)
       { id: 318, min: 24, max: 28, rate: 10 },  // Carvanha (Gen3)
       { id: 130, min: 25, max: 28, rate: 5 },   // Gyarados (raro, forte)
-    ],
+      { id: 72,  min: 18, max: 22, rate: 24 },  // Tentacool
+      { id: 73,  min: 22, max: 26, rate: 4 },   // Tentacruel (evoluto, raro)
+      { id: 86,  min: 18, max: 22, rate: 20 },  // Seel
+      { id: 87,  min: 21, max: 25, rate: 6 },   // Dewgong (evoluto)
+      { id: 120, min: 18, max: 22, rate: 22 },  // Staryu
+      { id: 370, min: 19, max: 23, rate: 10 },  // Luvdisc
+],
   },
 
   // ── CASTEL GANDOLFO — giardini e riva del borgo (Lv 16-23) ──
@@ -280,7 +338,11 @@ const DATI_INCONTRI = {
       { id: 222, min: 17, max: 21, rate: 12 },  // Corsola (Gen2)
       { id: 170, min: 18, max: 22, rate: 12 },  // Chinchou (Gen2)
       { id: 318, min: 19, max: 23, rate: 8 },   // Carvanha (Gen3, raro)
-    ],
+      { id: 175, min: 16, max: 19, rate: 4 },   // Togepi (rara, giardini)
+      { id: 176, min: 20, max: 23, rate: 1 },   // Togetic (evoluto, rarissimo)
+      { id: 178, min: 17, max: 20, rate: 6 },   // Xatu (evoluto)
+      { id: 195, min: 17, max: 20, rate: 8 },   // Quagsire (evoluto)
+],
   },
 
   // ── PERCORSO 5 — salita montana verso Rocca di Papa (Lv 16-24) ──
@@ -298,7 +360,11 @@ const DATI_INCONTRI = {
       { id: 325, min: 17, max: 21, rate: 14 },  // Spoink (Gen3)
       { id: 304, min: 18, max: 22, rate: 12 },  // Aron (Gen3)
       { id: 246, min: 20, max: 24, rate: 4 },   // Larvitar (rarissimo di montagna)
-    ],
+      { id: 56,  min: 16, max: 20, rate: 22 },  // Mankey
+      { id: 57,  min: 20, max: 24, rate: 4 },   // Primeape (evoluto, raro)
+      { id: 331, min: 16, max: 20, rate: 16 },  // Cacnea
+      { id: 332, min: 19, max: 23, rate: 6 },   // Cacturne (evoluto)
+],
   },
 
   // ── VIA DEI LAGHI — erba alta lungo la strada tra i laghi (Lv 18-30) ──
@@ -316,7 +382,13 @@ const DATI_INCONTRI = {
       { id: 227, min: 21, max: 26, rate: 14 },  // Skarmory (Gen2, raro)
       { id: 213, min: 20, max: 25, rate: 10 },  // Shuckle (Gen2, rarissimo)
       { id: 172, min: 22, max: 28, rate: 4 },   // Pichu (Gen2, rarissimo)
-    ],
+      { id: 114, min: 19, max: 23, rate: 6 },   // Tangela (rara)
+      { id: 123, min: 20, max: 24, rate: 1 },   // Scyther (rarissimo)
+      { id: 235, min: 18, max: 22, rate: 18 },  // Smeargle
+      { id: 287, min: 18, max: 22, rate: 20 },  // Slakoth
+      { id: 288, min: 20, max: 24, rate: 10 },  // Vigoroth (evoluto)
+      { id: 357, min: 19, max: 23, rate: 14 },  // Tropius
+],
   },
 
   // ── OSSERVATORIO — prati intorno alla cupola (Lv 26-32) ──
@@ -333,7 +405,13 @@ const DATI_INCONTRI = {
       { id: 198, min: 27, max: 31, rate: 14 },  // Murkrow (Gen2)
       { id: 337, min: 28, max: 32, rate: 8 },   // Lunatone (Gen3, tema cielo)
       { id: 338, min: 28, max: 32, rate: 8 },   // Solrock (Gen3, tema cielo)
-    ],
+      { id: 35,  min: 26, max: 29, rate: 10 },  // Clefairy (rara)
+      { id: 64,  min: 29, max: 32, rate: 6 },   // Kadabra (evoluto, raro)
+      { id: 122, min: 29, max: 32, rate: 1 },   // Mr. Mime (rarissimo)
+      { id: 173, min: 24, max: 26, rate: 6 },   // Cleffa (cucciolo)
+      { id: 351, min: 28, max: 32, rate: 1 },   // Castform (rarissimo, meteo)
+      { id: 358, min: 27, max: 31, rate: 14 },  // Chimecho
+],
   },
 
   // ── PERCORSO MONTANO 1 — salita innevata verso Rocca di Papa (Lv 30-38) ──
@@ -348,7 +426,11 @@ const DATI_INCONTRI = {
       { id: 361, min: 31, max: 35, rate: 16 },  // Snorunt (Gen3)
       { id: 246, min: 32, max: 36, rate: 14 },  // Larvitar (raro di montagna)
       { id: 225, min: 32, max: 37, rate: 8 },   // Delibird (Gen2, raro)
-    ],
+      { id: 124, min: 32, max: 36, rate: 1 },   // Jynx (rarissima)
+      { id: 221, min: 32, max: 36, rate: 10 },  // Piloswine (evoluto)
+      { id: 238, min: 29, max: 32, rate: 18 },  // Smoochum (cucciolo)
+      { id: 362, min: 34, max: 37, rate: 6 },   // Glalie (evoluto)
+],
   },
 
   // ── MONTE PORZIO CATONE — città (Lv 24-30) ──
@@ -364,7 +446,12 @@ const DATI_INCONTRI = {
       { id: 209, min: 26, max: 30, rate: 16 },  // Snubbull (Gen2)
       { id: 25,  min: 24, max: 28, rate: 5 },   // Pikachu (raro)
       { id: 234, min: 28, max: 30, rate: 6 },   // Stantler (Gen2, raro)
-    ],
+      { id: 52,  min: 24, max: 27, rate: 22 },  // Meowth
+      { id: 53,  min: 27, max: 30, rate: 6 },   // Persian (evoluto)
+      { id: 133, min: 27, max: 30, rate: 1 },   // Eevee (rarissimo)
+      { id: 174, min: 23, max: 25, rate: 10 },  // Igglybuff (cucciolo)
+      { id: 210, min: 28, max: 31, rate: 8 },   // Granbull (evoluto)
+],
   },
 
   // ── ROCCA DI PAPA — città, tema roccia/cratere (Lv 32-38) ──
@@ -380,7 +467,10 @@ const DATI_INCONTRI = {
       { id: 328, min: 32, max: 35, rate: 14 },  // Trapinch (Gen3)
       { id: 75,  min: 34, max: 38, rate: 10 },  // Graveler (evoluto, raro)
       { id: 112, min: 36, max: 38, rate: 4 },   // Rhydon (evoluto, rarissimo)
-    ],
+      { id: 207, min: 33, max: 36, rate: 8 },   // Gligar (raro)
+      { id: 345, min: 32, max: 35, rate: 16 },  // Lileep
+      { id: 346, min: 35, max: 38, rate: 4 },   // Cradily (evoluto, raro)
+],
   },
 
   // ── PERCORSO 7 — tra Rocca di Papa e Albano (Lv 34-40) ──
@@ -391,8 +481,6 @@ const DATI_INCONTRI = {
     probabilita: 15,
     pokemon: [
       { id: 215, min: 34, max: 38, rate: 20 },  // Sneasel (Gen2)
-      { id: 267, min: 34, max: 37, rate: 1 },   // Beautifly (Gen3, 3° stadio, rarissimo)
-      { id: 269, min: 34, max: 37, rate: 1 },   // Dustox (Gen3, 3° stadio, rarissimo)
       { id: 352, min: 35, max: 39, rate: 16 },  // Kecleon (Gen3)
       { id: 241, min: 36, max: 39, rate: 10 },  // Miltank (Gen2)
       { id: 355, min: 37, max: 40, rate: 6 },   // Duskull (Gen3, raro)
@@ -410,7 +498,10 @@ const DATI_INCONTRI = {
       { id: 128, min: 42, max: 46, rate: 14 },  // Tauros
       { id: 236, min: 40, max: 42, rate: 10 },  // Tyrogue (Gen2, raro)
       { id: 237, min: 44, max: 46, rate: 6 },   // Hitmontop (Gen2, raro)
-    ],
+      { id: 106, min: 42, max: 45, rate: 1 },   // Hitmonlee (rarissimo)
+      { id: 107, min: 42, max: 45, rate: 1 },   // Hitmonchan (rarissimo)
+      { id: 308, min: 41, max: 44, rate: 10 },  // Medicham (evoluto)
+],
   },
 
   // ── PERCORSO 8 — tra Albano e Zona Safari/Percorso 9 (Lv 40-46) ──
@@ -433,18 +524,18 @@ const DATI_INCONTRI = {
     probabilita: 20,
     pokemon: [
       { id: 127, min: 30, max: 36, rate: 20 },  // Pinsir
-      { id: 85,  min: 32, max: 38, rate: 18 },  // Dodrio
       { id: 217, min: 35, max: 40, rate: 16 },  // Ursaring (Gen2, evoluto)
       { id: 335, min: 33, max: 40, rate: 14 },  // Zangoose (Gen3)
       { id: 336, min: 33, max: 40, rate: 14 },  // Seviper (Gen3)
       { id: 115, min: 36, max: 42, rate: 8 },   // Kangaskhan (rara)
       { id: 113, min: 30, max: 40, rate: 4 },   // Chansey (rarissima)
-    ],
+      { id: 108, min: 30, max: 40, rate: 10 },  // Lickitung (rara)
+],
   },
 
   // ── PERCORSO 9 — sale verso Ariccia (Lv 44-50) ──
   // NUOVA: aveva già trainer (all-p9-*) ma nessuna tabella incontri.
-  // Anticipa il tema Buio/notte della palestra di Ariccia (Ombretta).
+  // Anticipa il tema Buio/notte della palestra di Ariccia (Isa).
   'incontri percorso 9': {
     probabilita: 15,
     pokemon: [
@@ -484,7 +575,9 @@ const DATI_INCONTRI = {
       { id: 366, min: 31, max: 34, rate: 16 },  // Clamperl (Gen3)
       { id: 349, min: 32, max: 35, rate: 8 },   // Feebas (Gen3, raro)
       { id: 369, min: 34, max: 36, rate: 4 },   // Relicanth (Gen3, rarissimo, "pesce fossile")
-    ],
+      { id: 147, min: 32, max: 35, rate: 1 },   // Dratini (rarissimo, draghi solo nei dungeon)
+      { id: 148, min: 35, max: 36, rate: 1 },   // Dragonair (rarissimo, evoluto)
+],
   },
 
   'incontri tunnel roccioso 2f': {
@@ -502,18 +595,14 @@ const DATI_INCONTRI = {
     pokemon: [
       { id: 354, min: 29, max: 31, rate: 20 },  // Banette (Gen3)
       { id: 247, min: 30, max: 32, rate: 18 },  // Pupitar (Gen2)
-      { id: 330, min: 30, max: 32, rate: 1 },   // Flygon (Gen3, 3° stadio, rarissimo)
-      { id: 306, min: 31, max: 32, rate: 1 },   // Aggron (Gen3, 3° stadio, rarissimo)
       { id: 208, min: 32, max: 32, rate: 6 },   // Steelix (evoluto rarissimo)
-    ],
+      { id: 371, min: 29, max: 31, rate: 1 },   // Bagon (rarissimo, draghi solo nei dungeon)
+      { id: 372, min: 31, max: 32, rate: 1 },   // Shelgon (rarissimo, evoluto)
+],
   },
   'incontri tunnel roccioso 4f': {
     probabilita: 7,
     pokemon: [
-      { id: 76,  min: 32, max: 33, rate: 8 },   // Golem (3° stadio, rarissimo)
-      { id: 169, min: 32, max: 34, rate: 6 },   // Crobat (Gen2, 3° stadio, rarissimo)
-      { id: 289, min: 33, max: 34, rate: 5 },   // Slaking (Gen3, 3° stadio, rarissimo)
-      { id: 248, min: 34, max: 34, rate: 3 },   // Tyranitar (Gen2, 3° stadio, rarissimo)
     ],
   },
 
@@ -535,20 +624,50 @@ const DATI_INCONTRI = {
       { id: 111, min: 47, max: 51, rate: 14 },  // Rhyhorn
       { id: 246, min: 48, max: 53, rate: 8 },   // Larvitar (raro)
       { id: 227, min: 50, max: 55, rate: 6 },   // Skarmory (raro)
-      { id: 157, min: 54, max: 58, rate: 1 },   // Typhlosion (3° stadio, rarissimo)
-    ],
+      { id: 126, min: 48, max: 53, rate: 1 },   // Magmar (rarissimo)
+      { id: 240, min: 46, max: 49, rate: 10 },  // Magby (cucciolo)
+      { id: 324, min: 47, max: 51, rate: 16 },  // Torkoal
+],
   },
 
-  // ── ARICCIA — città, tema Buio (Lv 46-52, Capopalestra Ombretta) ──
+  // ── CENTRALE ELETTRICA (Power Plant, estratta da pret/pokefirered,
+  // collegata a Percorso 9, sess. 5 ott 2026) — dungeon tema Elettro,
+  // Lv 30-40. Tutto il pavimento è zona incontri (MAPPE['powerplant'].
+  // incontriCostanti, vedi js/map.js), niente rettangolo erba_alta. ──
+  'incontri power plant': {
+    probabilita: 8,
+    pokemon: [
+      { id: 100, min: 30, max: 35, rate: 22 },  // Voltorb
+      { id: 101, min: 33, max: 38, rate: 14 },  // Electrode
+      { id: 81,  min: 30, max: 35, rate: 20 },  // Magnemite
+      { id: 82,  min: 34, max: 40, rate: 14 },  // Magneton
+      { id: 25,  min: 31, max: 36, rate: 14 },  // Pikachu
+      { id: 239, min: 30, max: 34, rate: 10 },  // Elekid (raro)
+      { id: 309, min: 30, max: 35, rate: 16 },  // Electrike
+      { id: 310, min: 35, max: 40, rate: 8 },   // Manectric (raro)
+      { id: 125, min: 32, max: 37, rate: 1 },   // Electabuzz (rarissimo)
+      { id: 137, min: 30, max: 35, rate: 14 },  // Porygon (rimesso su richiesta di Luca, 6 ott 2026)
+      { id: 233, min: 37, max: 40, rate: 1 },   // Porygon2 (evoluto, impossibile)
+],
+  },
+
+  // ── ARICCIA — città, tema Buio (Lv 46-52, Capopalestra Isa) ──
   // NUOVA: 7ª città, mai avuta una tabella incontri (né rettangolo erba_alta).
   'incontri ariccia': {
     probabilita: 15,
     pokemon: [
-      { id: 164, min: 46, max: 49, rate: 20 },  // Noctowl (Gen2, evoluto)
-      { id: 200, min: 46, max: 50, rate: 18 },  // Misdreavus (Gen2)
-      { id: 292, min: 47, max: 50, rate: 10 },  // Shedinja (Gen3, raro/unico)
-      { id: 359, min: 48, max: 51, rate: 12 },  // Absol (Gen3, raro)
-      { id: 197, min: 50, max: 52, rate: 5 },   // Umbreon (Gen2, rarissimo)
+      { id: 164, min: 46, max: 49, rate: 25 },  // Noctowl (Gen2, evoluto)
+      { id: 200, min: 46, max: 50, rate: 22 },  // Misdreavus (Gen2)
+      { id: 292, min: 47, max: 50, rate: 12 },  // Shedinja (Gen3, raro/unico)
+      { id: 359, min: 48, max: 51, rate: 6 },   // Absol (raro, più comune di notte)
+    ],
+    // Incontri notturni (sess. 5 ott 2026): città a tema Buio — col buio vero
+    // Umbreon e Absol diventano molto più comuni, coerente col tema.
+    pokemonNotte: [
+      { id: 164, min: 46, max: 49, rate: 16 },  // Noctowl
+      { id: 200, min: 46, max: 50, rate: 16 },  // Misdreavus
+      { id: 359, min: 48, max: 51, rate: 20 },  // Absol (comune di notte)
+      { id: 302, min: 47, max: 50, rate: 14 },  // Sableye (occhi nel buio)
     ],
   },
 
@@ -561,10 +680,9 @@ const DATI_INCONTRI = {
     pokemon: [
       { id: 192, min: 53, max: 55, rate: 25 },  // Sunflora (Gen2)
       { id: 166, min: 53, max: 56, rate: 20 },  // Ledian (Gen2)
-      { id: 45,  min: 54, max: 56, rate: 1 },  // Vileplume (evoluto)
-      { id: 182, min: 54, max: 57, rate: 1 },  // Bellossom (Gen2, evoluto)
       { id: 284, min: 55, max: 57, rate: 5 },   // Masquerain (Gen3, raro)
-    ],
+      { id: 327, min: 53, max: 56, rate: 18 },  // Spinda
+],
   },
 
   // ── PERCORSO 11 — biforcazione Grottaferrata → Rocca di Papa, verso Monte
@@ -579,7 +697,10 @@ const DATI_INCONTRI = {
       { id: 322, min: 30, max: 33, rate: 18 },  // Numel (Gen3)
       { id: 305, min: 32, max: 34, rate: 10 },  // Lairon (Gen3, evoluto)
       { id: 323, min: 33, max: 35, rate: 5 },   // Camerupt (Gen3, evoluto, raro)
-    ],
+      { id: 202, min: 29, max: 32, rate: 8 },   // Wobbuffet
+      { id: 280, min: 29, max: 32, rate: 1 },   // Ralts (rarissimo)
+      { id: 360, min: 28, max: 30, rate: 10 },  // Wynaut (cucciolo)
+],
   },
 
   // ── COLLEGAMENTO COTRAL — diramazione verso il nascondiglio CoTrAL ai piedi
@@ -593,10 +714,12 @@ const DATI_INCONTRI = {
       { id: 89,  min: 32, max: 34, rate: 15 },  // Muk (evoluto)
       { id: 344, min: 32, max: 35, rate: 12 },  // Claydol (Gen3, evoluto)
       { id: 374, min: 34, max: 36, rate: 4 },   // Beldum (Gen3, rarissimo)
-    ],
+      { id: 109, min: 30, max: 33, rate: 16 },  // Koffing
+      { id: 303, min: 32, max: 35, rate: 4 },   // Mawile (rara)
+],
   },
 
-  // ── GENZANO — città (8ª e ultima, Palestra Fuoco, Capopalestra Flora,
+  // ── GENZANO — città (8ª e ultima, Palestra Fuoco, Capopalestra Camilla,
   // cap 58), tema Fuoco/lava che fa fiorire l'Infiorata. Tabella pronta ma
   // NON ancora agganciata a nessun rettangolo erba_alta: la mappa Genzano.tmj
   // non ha ancora nessun layer oggetti (vedi ROADMAP sessione 8 agosto) —
@@ -608,7 +731,6 @@ const DATI_INCONTRI = {
       { id: 37,  min: 55, max: 57, rate: 25 },  // Vulpix
       { id: 58,  min: 55, max: 58, rate: 20 },  // Growlithe
       { id: 77,  min: 56, max: 58, rate: 18 },  // Ponyta
-      { id: 78,  min: 57, max: 58, rate: 10 },  // Rapidash (evoluto)
       { id: 219, min: 57, max: 58, rate: 5 },   // Magcargo (evoluto, raro)
     ],
   },
@@ -629,9 +751,8 @@ const DATI_INCONTRI = {
       { id: 247, min: 57, max: 60, rate: 12 },  // Pupitar
       { id: 74,  min: 55, max: 57, rate: 20 },  // Geodude
       { id: 75,  min: 57, max: 59, rate: 14 },  // Graveler
-      { id: 76,  min: 60, max: 62, rate: 1 },   // Golem (evoluto, raro)
-      { id: 248, min: 62, max: 63, rate: 1 },   // Tyranitar (rarissimo)
-    ],
+      { id: 334, min: 60, max: 63, rate: 1 },   // Altaria (rarissimo, drago/volante dungeon-only)
+],
   },
   'incontri via vittoria 2f': {
     probabilita: 20,
@@ -643,7 +764,6 @@ const DATI_INCONTRI = {
       { id: 118, min: 55, max: 58, rate: 18 },  // Goldeen
       { id: 119, min: 58, max: 60, rate: 10 },  // Seaking
       { id: 183, min: 55, max: 57, rate: 16 },  // Marill
-      { id: 184, min: 59, max: 61, rate: 1 },   // Azumarill (evoluto, raro)
       { id: 363, min: 57, max: 60, rate: 12 },  // Spheal
       { id: 364, min: 60, max: 62, rate: 5 },   // Sealeo (evoluto, raro)
     ],
@@ -657,7 +777,6 @@ const DATI_INCONTRI = {
       { id: 200, min: 55, max: 58, rate: 16 },  // Misdreavus
       { id: 41,  min: 54, max: 57, rate: 20 },  // Zubat
       { id: 42,  min: 57, max: 60, rate: 14 },  // Golbat
-      { id: 169, min: 60, max: 62, rate: 1 },   // Crobat (evoluto, raro)
       { id: 359, min: 61, max: 63, rate: 4 },   // Absol (rarissimo)
     ],
   },
@@ -666,12 +785,10 @@ const DATI_INCONTRI = {
     pokemon: [
       { id: 304, min: 56, max: 59, rate: 20 },  // Aron
       { id: 305, min: 58, max: 61, rate: 12 },  // Lairon
-      { id: 306, min: 61, max: 63, rate: 1 },   // Aggron (evoluto, rarissimo)
       { id: 231, min: 55, max: 58, rate: 20 },  // Phanpy
       { id: 232, min: 59, max: 62, rate: 10 },  // Donphan (evoluto, raro)
       { id: 66,  min: 54, max: 57, rate: 18 },  // Machop
       { id: 67,  min: 57, max: 60, rate: 12 },  // Machoke
-      { id: 68,  min: 61, max: 63, rate: 1 },   // Machamp (evoluto, rarissimo)
     ],
   },
   'incontri via vittoria 5f': {
@@ -682,12 +799,43 @@ const DATI_INCONTRI = {
       { id: 338, min: 56, max: 59, rate: 18 },  // Solrock
       { id: 328, min: 55, max: 58, rate: 18 },  // Trapinch
       { id: 329, min: 58, max: 61, rate: 10 },  // Vibrava
-      { id: 330, min: 62, max: 63, rate: 1 },   // Flygon (evoluto, rarissimo)
       { id: 344, min: 56, max: 59, rate: 13 },  // Claydol
     ],
   },
 
+  // ── PERCORSO MONTE PO 1 — post-Lega (sess. 5 ott 2026), livelli alti.
+  // Rettangolo erba_alta da disegnare in percorso_montepo_1.tmj con
+  // id="incontri percorso montepo 1" (il tile-locale-6 di outside.tsx non
+  // funziona qui: la mappa usa un tileset suo estratto da pret, non
+  // outside.tsx — vedi commento in _buildErbaAltaTiles, js/map.js). ──
+  'incontri percorso montepo 1': {
+    probabilita: 10,
+    pokemon: [
+      { id: 24,  min: 55, max: 60, rate: 20 },  // Arbok
+      { id: 97,  min: 55, max: 60, rate: 18 },  // Hypno
+      { id: 101, min: 56, max: 61, rate: 16 },  // Electrode
+      { id: 110, min: 56, max: 61, rate: 16 },  // Weezing
+      { id: 310, min: 57, max: 62, rate: 14 },  // Manectric
+      { id: 130, min: 58, max: 63, rate: 4 },   // Gyarados (rarissimo)
+    ],
+  },
+
+  // ── PERCORSO MONTE PO 3 — post-Lega (sess. 5 ott 2026), livelli alti.
+  // Rettangolo erba_alta da disegnare in percorso_montepo_3.tmj con
+  // id="incontri percorso montepo 3". L'acqua (trigger_surf id
+  // "acqua_percorso_montepo3", già disegnata) riusa la STESSA tabella. ──
+  'incontri percorso montepo 3': {
+    probabilita: 10,
+    pokemon: [
+      { id: 286, min: 57, max: 62, rate: 18 },  // Breloom
+      { id: 297, min: 58, max: 63, rate: 16 },  // Hariyama
+      { id: 326, min: 56, max: 61, rate: 16 },  // Grumpig
+      { id: 212, min: 60, max: 65, rate: 6 },   // Scizor (rarissimo)
+    ],
+  },
+
 };
+DATI_INCONTRI['acqua_percorso_montepo3'] = DATI_INCONTRI['incontri percorso montepo 3'];
 
 // Alias: il singolo tile "acqua profonda lago di nemi" (Lago di Albano
 // interno.tmj) ha un id Tiled proprio invece di "acqua_lago di albano_surf"
@@ -697,5 +845,11 @@ const DATI_INCONTRI = {
 // surfabile — vedi js/map.js — ora lo è, ma senza questo alias non
 // troverebbe comunque una tabella incontri).
 DATI_INCONTRI['acqua profonda lago di nemi'] = DATI_INCONTRI['acqua_lago di albano_surf'];
+
+// Alias (sess. 5 ott 2026, distribuzione specie 386): il rettangolo erba_alta
+// già disegnato in "Lago di Albano.tmj" usa l'id "incontri lago di albano
+// spiaggia" (diverso dalla chiave storica "incontri lago albano" usata qui
+// sotto) — stessa zona, stessa tabella, solo nome diverso sul tile.
+DATI_INCONTRI['incontri lago di albano spiaggia'] = DATI_INCONTRI['incontri lago albano'];
 
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;

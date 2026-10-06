@@ -1087,24 +1087,6 @@
                  "y":1662.92
                 }, 
                 {
-                 "height":11.3224,
-                 "id":52,
-                 "name":"Ingresso percorso 1b",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"uscita"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":139.266,
-                 "x":416.613,
-                 "y":1650.54
-                }, 
-                {
                  "height":0,
                  "id":108,
                  "name":"trainer percorso 1b - numero 6",
@@ -1267,29 +1249,6 @@
                  "width":93.9327,
                  "x":29.0337,
                  "y":5.3388
-                }, 
-                {
-                 "height":17.3333,
-                 "id":120,
-                 "name":"spwan_percorso 1b",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"id",
-                         "type":"string",
-                         "value":"Da percorso 1"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"spwan"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":34,
-                 "x":468.25,
-                 "y":1631.08
                 }, 
                 {
                  "height":17.3333,

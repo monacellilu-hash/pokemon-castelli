@@ -31,26 +31,26 @@ dei Castelli. Medaglia: **Medaglia Vigna**.
 Qui trovi l'accesso ai **Boschi del Tuscolo** a nord — il dungeon
 più ricco di contenuto del gioco, esplorabile fin dall'inizio.
 
-### Palestra 2 — Grottaferrata · Nilo · Tipo Psico · cap 21
+### Palestra 2 — Grottaferrata · Igino · Tipo Psico · cap 21
 
-L'Abbazia di San Nilo domina la città. Nilo, il capopalestra,
+L'Abbazia di San Nilo domina la città. Igino, il capopalestra,
 è un monaco studioso che ha trasformato la palestra in un labirinto
 di chiostri. I suoi Pokémon Psico riflettono la meditazione e la
 spiritualità del luogo. Medaglia: **Medaglia Icona**.
 
 Fuori dall'Abbazia, per la prima volta, incontri il **Team GdF**.
 
-### Palestra 3 — Marino · Moro · Tipo Acqua · cap 28
+### Palestra 3 — Marino · Matilde · Tipo Acqua · cap 28
 
-Marino è famosa per la Sagra dell'Uva, ma Moro preferisce l'acqua
+Marino è famosa per la Sagra dell'Uva, ma Matilde preferisce l'acqua
 al vino. La palestra è costruita attorno a una vasca centrale.
 I suoi Pokémon Acqua richiamano il lago vulcanico e le fontane
 storiche della città. Medaglia: **Medaglia Fontana**.
-Moro dà la **MN Surf** dopo la vittoria.
+Matilde dà la **MN Surf** dopo la vittoria.
 
-### Palestra 4 — Monte Porzio Catone · Stella · Tipo Elettro · cap 34
+### Palestra 4 — Monte Porzio Catone · Biretta · Tipo Elettro · cap 34
 
-L'Osservatorio Astronomico INAF domina la collina. Stella è una
+L'Osservatorio Astronomico INAF domina la collina. Biretta è una
 ricercatrice notturna ossessionata dalle stelle e dai Pokémon Elettro
 che "brillano come costellazioni". Medaglia: **Medaglia Stella**.
 La **MN Forza** si ottiene da un NPC dell'Osservatorio dopo
@@ -72,16 +72,16 @@ disciplina ferrea. La palestra sembra una caserma. Medaglia:
 La **MN Volo** si ottiene da Faustino, NPC di Rocca di Papa,
 dopo la sesta medaglia.
 
-### Palestra 7 — Ariccia · Ombretta · Tipo Buio · cap 52
+### Palestra 7 — Ariccia · Isa · Tipo Buio · cap 52
 
-Ariccia di notte è un posto diverso. Ombretta gestisce la palestra
+Ariccia di notte è un posto diverso. Isa gestisce la palestra
 in un vicolo buio, tra fraschette e ombre. I suoi Pokémon Buio
 si nascondono nell'oscurità. Medaglia: **Medaglia Ombra**.
 
-### Palestra 8 — Genzano · Flora · Tipo Fuoco · cap 58
+### Palestra 8 — Genzano · Camilla · Tipo Fuoco · cap 58
 
 Genzano è famosa per l'Infiorata — i fiori che decorano le strade.
-Flora è una fioraia sognatrice i cui Pokémon di Fuoco scaldano il
+Camilla è una fioraia sognatrice i cui Pokémon di Fuoco scaldano il
 sottosuolo che fa sbocciare i colori dell'Infiorata. Medaglia:
 **Medaglia Lava**.
 

@@ -132,80 +132,110 @@
 </data>
  </layer>
  <objectgroup id="6" name="collisioni">
-  <object id="9" x="96.4139" y="185.834" width="202.819" height="21.9804"/>
-  <object id="10" x="70.4371" y="207.315" width="8.49242" height="60.446"/>
-  <object id="11" x="66.4407" y="338.198" width="597.966" height="8.49242"/>
-  <object id="12" x="413.631" y="416.128" width="280.749" height="10.9902"/>
-  <object id="13" x="466.084" y="494.558" width="2.99732" height="288.742"/>
-  <object id="14" x="781.302" y="228.296" width="7.99286" height="239.786"/>
-  <object id="15" x="569.492" y="258.269" width="231.293" height="8.49242"/>
-  <object id="16" x="557.003" y="132.382" width="4.99554" height="88.9209"/>
-  <object id="17" x="147.868" y="265.763" width="417.128" height="3.99643"/>
-  <object id="18" x="300.232" y="129.884" width="3.99643" height="70.4371"/>
-  <object id="19" x="395.147" y="455.593" width="9.99108" height="63.9429"/>
-  <object id="20" x="392.15" y="584.978" width="11.9893" height="95.9144"/>
-  <object id="21" x="397.645" y="746.833" width="3.49688" height="33.4701"/>
-  <object id="22" x="359.679" y="803.283" width="14.4871" height="46.9581"/>
-  <object id="23" x="496.557" y="820.268" width="9.49153" height="31.9715"/>
-  <object id="24" x="-104.906" y="103.408"/>
- </objectgroup>
+ <object id="16" x="557.003" y="132.382136485281" width="4.99554" height="88.9208554861731"/>
+ <object id="22" x="359.679" y="803.283" width="14.4871" height="46.9581"/>
+ <object id="23" x="496.557" y="820.268" width="9.49153" height="31.9715"/>
+ <object id="24" x="-104.906" y="103.408"/>
+ <object id="30" x="67.4397859054416" y="552.506690454951" width="15.4861730597681" height="206.315789473684"/>
+ <object id="31" x="80.9277430865299" y="200.321141837645" width="228.795718108831" height="5.49509366636931"/>
+ <object id="32" x="294.736842105263" y="131.882247992864" width="8.49241748438897" height="70.4371097234612"/>
+ <object id="33" x="138.376449598573" y="265.762711864407" width="648.421052631579" height="8.99197145405884"/>
+ <object id="34" x="559.00089206066" y="220.303300624442" width="2.49776984834966" height="24.9776984834969"/>
+ <object id="35" x="581.480820695807" y="84.4246208742195" width="19.4826048171276" height="63.4433541480821"/>
+ <object id="37" x="590.972346119536" y="203.318465655665" width="7.4933095450491" height="44.9598572702944"/>
+ <object id="38" x="264.763603925067" y="102.408563782337" width="14.9866190900981" height="47.957181088314"/>
+ <object id="40" x="77.9304192685103" y="209.812667261374" width="6.99375557537913" height="64.9420160570919"/>
+ <object id="41" x="75.9322033898305" y="325.209634255129" width="9.99107939339875" height="133.880463871543"/>
+ <object id="42" x="414.130240856378" y="339.197145405888" width="301.730597680642" height="6.49420160570918"/>
+ <object id="43" x="469.580731489741" y="490.062444246209" width="198.322925958965" height="15.985727029438"/>
+ <object id="44" x="493.559322033898" y="519.036574487065" width="9.49152542372877" height="150.865298840321"/>
+ <object id="45" x="373.166815343443" y="491.061552185549" width="81.9268510258698" height="10.9901873327386"/>
+ <object id="46" x="110.401427297056" y="331.204281891169" width="291.239964317574" height="10.9901873327386"/>
+ <object id="47" x="99.9107939339875" y="747.832292595897" width="280.249776984835" height="11.9892952720785"/>
+ <object id="48" x="162.35504014273" y="677.894736842105" width="245.780553077609" height="8.9919714540589"/>
+ <object id="49" x="93.9161462979483" y="584.977698483497" width="54.9509366636931" height="9.99107939339876"/>
+ <object id="50" x="200.321141837645" y="584.977698483497" width="144.870651204282" height="7.49330954504899"/>
+ <object id="51" x="170.847457627119" y="423.621766280107" width="38.4656556645852" height="112.399643175736"/>
+ <object id="52" x="206.815343443354" y="542.016057091882" width="9.49152542372883" height="32.471008028546"/>
+ <object id="53" x="134.380017841213" y="393.148974130241" width="17.9839429081178" height="47.957181088314"/>
+ <object id="54" x="423.122212310437" y="358.679750223015" width="10.4906333630687" height="75.9322033898305"/>
+ <object id="55" x="715.361284567351" y="358.180196253345" width="12.4888492417484" height="115.896520963426"/>
+ <object id="56" x="501.552185548617" y="680.892060660125" width="289.741302408564" height="12.9884032114184"/>
+ <object id="57" x="467.582515611062" y="746.833184656557" width="359.179304192685" height="6.49420160570924"/>
+ <object id="59" x="332.702943800178" y="523.532560214095" width="7.49330954504904" height="45.4594112399643"/>
+ <object id="60" x="344.192685102587" y="497.555753791258" width="13.9875111507582" height="13.9875111507583"/>
+ <object id="61" x="787.297056199822" y="708.867082961641" width="7.99286351471903" height="20.9812667261374"/>
+ <object id="62" x="845.245316681534" y="424.121320249777" width="7.99286351471903" height="207.814451382694"/>
+ <object id="63" x="803.28278322926" y="426.619090098127" width="22.9794826048171" height="12.9884032114184"/>
+ <object id="64" x="748.331846565566" y="358.180196253345" width="69.4380017841214" height="14.4870651204282"/>
+ <object id="65" x="812.274754683319" y="325.209634255129" width="9.99107939339876" height="24.478144513827"/>
+ <object id="66" x="837.752007136485" y="295.236396074933" width="12.9884032114185" height="18.4834968777877"/>
+ <object id="67" x="841.248884924175" y="264.264049955397" width="12.9884032114184" height="21.9803746654772"/>
+ <object id="68" x="845.744870651204" y="199.821587867975" width="12.4888492417484" height="57.9482604817127"/>
+ <object id="69" x="681.891168599465" y="182.337198929527" width="169.348795718109" height="6.99375557537911"/>
+ <object id="70" x="-0.499553969669938" y="6.99375557537913" width="898.198037466548" height="110.401427297056"/>
+ <object id="72" x="6.49420160570919" y="877.71632471008" width="364.174843889385" height="11.4897413024086"/>
+ <object id="73" x="489.063336306869" y="877.21677074041" width="401.14183764496" height="10.4906333630687"/>
+ <object id="74" x="79.4290811775201" y="262.265834076717" width="6.49420160570919" height="20.4817127564675"/>
+ <object id="76" x="812.274754683319" y="383.157894736842" width="10.4906333630687" height="30.9723461195361"/>
+</objectgroup>
  <objectgroup id="5" name="eventi">
-  <object id="1" name="Igino" x="433.613" y="178.341">
-   <properties>
-    <property name="direzione" value="sud"/>
-    <property name="id" value="gym_leader_palestra grottaferrata"/>
-    <property name="type" value="trainer"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="2" x="368.171" y="724.853">
-   <properties>
-    <property name="direzione" value="est"/>
-    <property name="id" value="gregario 1 palestra grottaferrata"/>
-    <property name="type" value="trainer"/>
-    <property name="vista" value="15"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="6" x="369.17" y="558.002">
-   <properties>
-    <property name="direzione" value="est"/>
-    <property name="id" value="gregario 2 palestra grottaferrata"/>
-    <property name="type" value="trainer"/>
-    <property name="vista" value="15"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="7" x="78.9295" y="302.23">
-   <properties>
-    <property name="direzione" value="est"/>
-    <property name="id" value="gregario 3 palestra grottaferrata"/>
-    <property name="type" value="trainer"/>
-    <property name="vista" value="1"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="8" x="336.2" y="211.311">
-   <properties>
-    <property name="direzione" value="sud"/>
-    <property name="id" value="gregario 4 palestra grottaferrata"/>
-    <property name="type" value="trainer"/>
-    <property name="vista" value="2"/>
-   </properties>
-   <point/>
-  </object>
-  <object id="28" name="warp" type="warp" x="418.612" y="859.046" width="27.0045" height="19.5112">
-   <properties>
-    <property name="destinazione" value="grottaferrata"/>
-    <property name="spawn_id" value="da palestra grottaferrata"/>
-    <property name="type" value="warp"/>
-   </properties>
-  </object>
-  <object id="29" name="spawn" type="spawn" x="417.029" y="836.914" width="25.8364" height="16.5103">
-   <properties>
-    <property name="id" value="entrata_principale"/>
-    <property name="type" value="spawn"/>
-   </properties>
-  </object>
- </objectgroup>
+ <object id="1" name="Igino" x="433.613" y="178.341">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gym_leader_palestra grottaferrata"/>
+   <property name="type" value="trainer"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="2" x="655.414532560214" y="245.78074308653">
+  <properties>
+   <property name="direzione" value="nord"/>
+   <property name="id" value="gregario 1 palestra grottaferrata"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="15"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="6" x="145.869375557538" y="626.940447814451">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 2 palestra grottaferrata"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="5"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="7" x="81.4272698483497" y="308.724201605709">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 3 palestra grottaferrata"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="1"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="8" x="784.799464763604" y="667.403774308653">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 4 palestra grottaferrata"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="6"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="28" name="warp" type="warp" x="418.611953612846" y="859.04625646744" width="27.0044603033006" height="19.5111507582516">
+  <properties>
+   <property name="destinazione" value="grottaferrata"/>
+   <property name="spawn_id" value="da palestra grottaferrata"/>
+   <property name="type" value="warp"/>
+  </properties>
+ </object>
+ <object id="29" name="spawn" type="spawn" x="417.029183764496" y="836.914492863515" width="25.8364222123104" height="16.5102586975914">
+  <properties>
+   <property name="id" value="entrata_principale"/>
+   <property name="type" value="spawn"/>
+  </properties>
+ </object>
+</objectgroup>
 </map>

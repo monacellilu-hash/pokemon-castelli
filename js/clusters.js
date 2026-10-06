@@ -19,7 +19,6 @@ const CLUSTERS = {
       percorso_7: { offsetX: 0, offsetY: 0, w: 60, h: 50 },
       albano: { offsetX: 60, offsetY: 0, w: 40, h: 50 },
       percorso_8: { offsetX: 100, offsetY: 0, w: 50, h: 50 },
-      zona_safari: { offsetX: 0, offsetY: -50, w: 100, h: 50 },
       percorso_9: { offsetX: 100, offsetY: -150, w: 50, h: 150 },
       ariccia: { offsetX: 90, offsetY: -220, w: 60, h: 70 },
       percorso_10: { offsetX: 10, offsetY: -233, w: 80, h: 92 },
@@ -31,7 +30,7 @@ const CLUSTERS = {
   Castelli_prima: {
     nome: 'Castelli_prima',
     mappe: {
-      percorso_1b: { offsetX: 291, offsetY: 32, w: 58, h: 60 },
+      percorso_1b: { offsetX: 305, offsetY: 40, w: 36, h: 52 },
       borgata_tuscolana: { offsetX: 276, offsetY: 144, w: 79, h: 20 },
       percorso_tuscolana: { offsetX: 282, offsetY: 92, w: 60, h: 52 },
     }
@@ -63,7 +62,7 @@ const CLUSTERS = {
     nome: 'Victory_Path',
     mappe: {
       percorso_montepo_3: { offsetX: 0, offsetY: -15, w: 24, h: 175 },
-      percorso_montepo_1: { offsetX: 24, offsetY: 23, w: 24, h: 80 },
+      percorso_montepo_1: { offsetX: 24, offsetY: 14, w: 24, h: 89 },
     }
   },
   montepo: {

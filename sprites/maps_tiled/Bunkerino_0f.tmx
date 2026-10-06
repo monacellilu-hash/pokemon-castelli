@@ -109,4 +109,26 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,870,871,872,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
+ <objectgroup id="5" name="eventi">
+  <object id="9001" name="warp_colonna" x="32" y="32">
+   <properties>
+    <property name="destinazione" value="colonna"/>
+    <property name="spawn_id" value="da_bunkerino"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9002" name="spawn_da_colonna" type="spawn" x="64" y="32">
+   <properties>
+    <property name="id" value="da_colonna"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="9003" name="warp_bunkerino_1f" x="32" y="64">
+   <properties>
+    <property name="destinazione" value="bunkerino_1f"/>
+    <property name="spawn_id" value="da_bunkerino_0f"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+ </objectgroup>
 </map>

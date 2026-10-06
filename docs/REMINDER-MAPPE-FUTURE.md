@@ -10,7 +10,7 @@
   `sprites/maps_tiled/albano.tmj` esiste già ma non è nel path del gioco).
 - **Donatore MN Volo (Faustino)**: ✅ già piazzato a Rocca di Papa (`faustino_funivia`
   in dati/npc.js, azione `interagisciDonatoreVolo`), gate a ≥6 Medaglie.
-- **Interno palestra di Marino** (Moro): la mappa `pokemon-castelli-palestra_marino.tmj`
+- **Interno palestra di Marino** (Matilde): la mappa `pokemon-castelli-palestra_marino.tmj`
   esiste ma va disegnata/rifinita dall'utente (i dati gregari 1-7... anzi 1-5 +
   gym_leader sono già in `dati/trainer.js`, pronti per gli id degli oggetti trainer).
   Rimossi 24 oggetti "acqua_lago di albano_surf" copiati per errore dal Lago Albano

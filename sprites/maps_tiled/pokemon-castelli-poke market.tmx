@@ -92,7 +92,7 @@
   <object id="59" x="71.125" y="342.25" width="23.75" height="42.5"/>
  </objectgroup>
  <objectgroup id="6" name="eventi">
-  <object id="47" name="npc" type="npc" x="106" y="130.5" width="16.5" height="17">
+  <object id="47" name="npc" type="npc" x="103.5" y="133.5" width="15" height="13.5">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="pokemon market venditore"/>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="139">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="150">
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../../Emerald_Outside.tsx"/>
  <tileset firstgid="9265" source="../outside.tsx"/>
@@ -168,7 +168,7 @@
 9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702,9701,9702
 </data>
  </layer>
- <layer id="4" name="sopra_testa" width="50" height="50" visible="0">
+ <layer id="4" name="sopra_testa" width="50" height="50">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -224,15 +224,15 @@
  </layer>
  <objectgroup id="20" name="collisioni">
   <object id="54" x="258.667" y="258" width="51.3333" height="117.333"/>
-  <object id="55" x="259.333" y="263.333" width="116" height="55.3333"/>
+  <object id="55" x="259.333" y="263.333" width="116" height="74.6667"/>
   <object id="56" x="360.667" y="309.333" width="14.6667" height="68"/>
-  <object id="57" x="451.333" y="274" width="118" height="102.667"/>
+  <object id="57" x="451.333" y="274" width="118" height="75.6667"/>
   <object id="58" x="330.667" y="640" width="18.6667" height="154.667"/>
   <object id="59" x="416" y="641.333" width="11.3333" height="157.333"/>
   <object id="60" x="290" y="1146.67" width="58.6667" height="124.667"/>
   <object id="61" x="304" y="1143.33" width="136" height="70"/>
   <object id="62" x="387.333" y="1178.67" width="50.6667" height="96"/>
-  <object id="63" x="516" y="1174.67" width="112" height="94.6667"/>
+  <object id="63" x="516" y="1174.67" width="112" height="65.6667"/>
   <object id="64" x="1010.67" y="1091.33" width="102" height="242.667"/>
   <object id="65" x="1318.67" y="1094.67" width="74.6667" height="155.923"/>
   <object id="66" x="1284.67" y="1092.67" width="18.6667" height="15.3333"/>
@@ -265,7 +265,7 @@
   <object id="111" x="1317" y="263" width="14" height="18"/>
   <object id="112" x="1386" y="230" width="15" height="19"/>
   <object id="113" x="1418" y="175" width="89" height="104"/>
-  <object id="114" x="6" y="11" width="476" height="145"/>
+  <object id="114" x="-1" y="4.5" width="318" height="145"/>
   <object id="115" x="891" y="313" width="123" height="88"/>
   <object id="116" x="1413" y="890" width="149" height="94"/>
   <object id="117" x="1026" y="1345" width="345" height="62"/>
@@ -274,13 +274,22 @@
   <object id="121" x="195" y="928" width="7" height="526"/>
   <object id="123" x="201" y="1425" width="602" height="35"/>
   <object id="124" x="894" y="1423" width="705" height="30"/>
-  <object id="128" x="614" y="8.5" width="476" height="145"/>
+  <object id="128" x="676.667" y="8.5" width="413.333" height="145"/>
   <object id="129" x="777" y="1424" width="286" height="169"/>
   <object id="130" x="4" y="269" width="197" height="515"/>
   <object id="131" x="189" y="161" width="15" height="142"/>
   <object id="135" x="1370.83" y="64.3333" width="51" height="88"/>
   <object id="136" x="1017" y="997.333" width="102" height="48.667"/>
   <object id="137" x="1319" y="1002.33" width="76.6667" height="40.667"/>
+  <object id="139" x="575" y="1226.17" width="57" height="51.6667"/>
+  <object id="140" x="516.5" y="1225.17" width="27" height="51.6667"/>
+  <object id="141" x="511" y="311.167" width="53" height="74.6667"/>
+  <object id="142" x="448.5" y="304.667" width="25" height="74.6667"/>
+  <object id="143" x="332" y="23" width="148" height="105"/>
+  <object id="144" x="385" y="49" width="88" height="105"/>
+  <object id="145" x="326" y="89" width="22" height="72"/>
+  <object id="146" x="613.333" y="17.5" width="317.333" height="103"/>
+  <object id="147" x="614" y="54.5" width="23.333" height="103"/>
  </objectgroup>
  <objectgroup color="#ff0000" id="6" name="eventi">
   <object id="2" name="gate_npc" type="npc" x="1346.96" y="223.901" width="26.5406" height="23.5076">
@@ -350,7 +359,7 @@
     <property name="type" value="trigger_leggendario"/>
    </properties>
   </object>
-  <object id="14" name="npc" type="npc" x="514.937" y="388.621" width="32" height="32">
+  <object id="14" name="npc" type="npc" x="682.937" y="937.621" width="32" height="32">
    <properties>
     <property name="dialogo" value="&quot;Ciao so Cesare, pizza o pangocciolo?&quot;"/>
     <property name="direzione" value="nord"/>
@@ -433,13 +442,6 @@
     <property name="type" value="warp"/>
    </properties>
   </object>
-  <object id="31" name="warp" type="warp" x="542.696" y="1237.06" width="32" height="32">
-   <properties>
-    <property name="destinazione" value="casa_grotta_2_interno"/>
-    <property name="spawn_id" value="entrata"/>
-    <property name="type" value="warp"/>
-   </properties>
-  </object>
   <object id="32" name="warp" type="warp" x="1201.22" y="1175.69" width="32" height="32">
    <properties>
     <property name="destinazione" value="grotta_meteora"/>
@@ -508,6 +510,74 @@
   <object id="95" name="spawn" x="1345" y="191">
    <properties>
     <property name="id" value="da_abbazia_interno"/>
+    <property name="type" value="spawn"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="139" name="warp_grottaferrata_casa3_1" x="655.333" y="147.333">
+   <properties>
+    <property name="destinazione" value="grottaferrata_casa3_1"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - porta di grottaferrata_casa3_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="140" name="spawn_grottaferrata_casa3_1" x="656.667" y="176">
+   <properties>
+    <property name="id" value="da_grottaferrata_casa3_1"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - uscita da grottaferrata_casa3_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="143" name="warp_grottaferrata_casa4_1" x="497" y="370">
+   <properties>
+    <property name="destinazione" value="grottaferrata_casa4_1"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - porta di grottaferrata_casa4_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="144" name="spawn_grottaferrata_casa4_1" x="492" y="406">
+   <properties>
+    <property name="id" value="da_grottaferrata_casa4_1"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - uscita da grottaferrata_casa4_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="145" name="warp_grottaferrata_casa4_2" x="559" y="1266">
+   <properties>
+    <property name="destinazione" value="grottaferrata_casa4_2"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - porta di grottaferrata_casa4_2"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="146" name="spawn_grottaferrata_casa4_2" x="560" y="1295">
+   <properties>
+    <property name="id" value="da_grottaferrata_casa4_2"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - uscita da grottaferrata_casa4_2"/>
+    <property name="type" value="spawn"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="148" name="warp_grottaferrata_casa3_2" x="366.5" y="147">
+   <properties>
+    <property name="destinazione" value="grottaferrata_casa3_2"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - porta di grottaferrata_casa3_2"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="149" name="spawn_grottaferrata_casa3_2" x="368" y="175.5">
+   <properties>
+    <property name="id" value="da_grottaferrata_casa3_2"/>
+    <property name="nota_origine" value="placeholder, da riposizionare - uscita da grottaferrata_casa3_2"/>
     <property name="type" value="spawn"/>
    </properties>
    <point/>

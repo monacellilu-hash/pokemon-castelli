@@ -208,8 +208,11 @@ const Battle = (function () {
     sun: 'Il sole torna normale.', rain: 'Smette di piovere.',
     sandstorm: 'La tempesta di sabbia si placa.', hail: 'La grandine si ferma.',
   };
-  // Converte il meteo di mappa (app.js, stato.meteo.tipo) nel meteo di battaglia
-  const METEO_DA_MAPPA = { pioggia: 'rain', sole: 'sun', grandine: 'hail' }; // sabbia: nessuna zona ancora
+  // Converte il meteo di mappa (app.js, stato.meteo.tipo) nel meteo di battaglia.
+  // "sabbia" aggiunto il 5 ott 2026 per il meteo forzato nelle palestre a
+  // difficoltà massima (vedi _avviaLottaTrainer, js/map.js) — prima non
+  // serviva perché nessuna zona overworld generava mai tempesta di sabbia.
+  const METEO_DA_MAPPA = { pioggia: 'rain', sole: 'sun', grandine: 'hail', sabbia: 'sandstorm' };
 
   // Aggiorna l'etichetta del meteo in battaglia (mostrata/nascosta)
   function aggiornaMeteoUI() {
@@ -1463,6 +1466,17 @@ const Battle = (function () {
     await di(`${etichetta} è ${STATI[tipoStato].nome}!`);
   }
 
+  // Mosse "damage+lower" che però abbassano le PROPRIE statistiche (non quelle
+  // del bersaglio) dopo aver colpito — stesso bug di Nitrocarica ma al contrario:
+  // su PokéAPI hanno "categoria" = "damage+lower" ESATTAMENTE come Rockfrana/
+  // Attacco d'Ira/Spaccaroccia (che invece abbassano il bersaglio, comportamento
+  // di default corretto) — serve quindi un elenco esplicito, non si distingue
+  // dal solo campo "categoria" (censimento richiesto da Luca, 6 ott 2026).
+  const MOSSE_AUTOABBASSANO = new Set([
+    'superpower', 'close-combat', 'overheat', 'draco-meteor',
+    'psycho-boost', 'v-create', 'hammer-arm',
+  ]);
+
   // Applica i cambi di statistica al bersaglio giusto (se stesso o avversario)
   async function applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif) {
     // Le mosse con bersaglio "user" modificano CHI le usa (Crescita, Danza Spada…).
@@ -1471,8 +1485,12 @@ const Battle = (function () {
     // cambio statistica è SEMPRE sull'utente — "bersaglio" lì descrive solo
     // il danno, non il cambiStat. Senza questo controllo Nitrocarica alzava
     // la Velocità del NEMICO invece che la propria (bug segnalato da Luca).
+    // Stesso discorso, ma al contrario, per Troppoforte/Vampata/Meteora di
+    // Draco & co. (MOSSE_AUTOABBASSANO sopra): abbassano l'ATTACCANTE anche
+    // se "bersaglio" è l'avversario.
     const versoSe = (mossa.bersaglio === 'user' || mossa.bersaglio === 'users-field' ||
-                     mossa.categoria === 'damage+raise');
+                     mossa.categoria === 'damage+raise' ||
+                     MOSSE_AUTOABBASSANO.has(mossa.nome));
     const obiettivo = versoSe ? att : dif;
     const etich = versoSe ? etichettaAtt : etichettaDif;
 
@@ -1551,6 +1569,13 @@ const Battle = (function () {
     // cambia solo quanti sono.
     if (!colpisce(att, dif, mossa)) {
       await di('...ma il colpo è andato a vuoto!');
+      return;
+    }
+
+    // Mangiasogni: funziona SOLO se il bersaglio è addormentato (regola dei
+    // giochi originali, bug segnalato da Luca — prima colpiva chiunque).
+    if (mossa.nome === 'dream-eater' && (!dif.condizione || dif.condizione.tipo !== 'sleep')) {
+      await di(`Ma ${etichettaDif} non sta dormendo!`);
       return;
     }
 
@@ -1656,13 +1681,19 @@ const Battle = (function () {
       // volta sola dopo tutta la sequenza, non per ogni colpo (coerente col
       // gioco vero — es. Spilloscuro controlla l'avvelenamento una volta,
       // dopo entrambi i colpi, non due volte).
+      // ATTENZIONE: su PokéAPI una probabilità di 0 NON significa "non
+      // succede mai" — significa "non è una percentuale, succede sempre"
+      // (stessa convenzione già usata sotto per le mosse di STATO pure, es.
+      // riga ~1721). Prima qui mancava: Troppoforte/Vampata/Meteora di Draco
+      // (cambiStatProbabilita=0 su PokéAPI = sempre) non riducevano MAI le
+      // statistiche di chi le usa — bug segnalato da Luca, 6 ott 2026.
       if (mossa.statoEffetto && STATI[mossa.statoEffetto] && !dif.condizione &&
-          mossa.statoProbabilita > 0 && Math.random() * 100 < mossa.statoProbabilita) {
+          (mossa.statoProbabilita === 0 || Math.random() * 100 < mossa.statoProbabilita)) {
         await applicaStato(dif, mossa.statoEffetto, etichettaDif);
       }
       // Cambio di statistiche secondario
       if (mossa.cambiStat && mossa.cambiStat.length > 0 &&
-          mossa.cambiStatProbabilita > 0 && Math.random() * 100 < mossa.cambiStatProbabilita) {
+          (mossa.cambiStatProbabilita === 0 || Math.random() * 100 < mossa.cambiStatProbabilita)) {
         await applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif);
       }
       return;

@@ -103,10 +103,12 @@ let stato = {
   legRespawn:        {},    // F11: { [id]: { tentativi, giornoRespawn } }
   legScomparsi:      [],    // F11: ID leggendari scomparsi (KO 3×)
   oggettiRaccolti:   [],    // ID degli oggetti mappa già raccolti
-  // oggetti chiave (non consumabili, per eventi). bicicletta/cannaPesca già
-  // sbloccati per test — quando si decide come farli ottenere in game, basta
-  // partire da "false" e assegnarli dall'evento/NPC giusto.
-  inventario:        { chiave: { bicicletta: true, cannaPesca: true } },
+  // oggetti chiave (non consumabili, per eventi). cannaPesca ancora sbloccata
+  // per test. bicicletta ORA si ottiene davvero in game (5 ott 2026): sconfiggi
+  // la famiglia del ristorante di Via dei Laghi, prendi il "buono bici" dal
+  // guaritore lì vicino, scambialo con uno degli NPC del negozio di bici di
+  // Albano — vedi 'npc_negozio_di_bici_1' in dati/npc.js.
+  inventario:        { chiave: { bicicletta: false, cannaPesca: true } },
   flags:             {
     starterScelto:    false,
     pokedexRicevuto:  false,
@@ -138,8 +140,12 @@ let stato = {
   meteo: { tipo: 'sereno', scadeAlPasso: 0 },
   // Gauntlet palestre: traccia l'indice del prossimo gregario da affrontare
   gauntletPalestra: {},
-  // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati + passi insieme + uovo pronto da ritirare
-  pensione: { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false },
+  // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati, ciascuno col GIORNO in cui
+  // è stato lasciato (per il level-up in solitaria ogni 20 giorni) + il giorno in
+  // cui la coppia compatibile si è formata (per l'uovo, sempre ogni 20 giorni) +
+  // l'uovo pronto da ritirare. Rifatto a giorni (6 ott 2026, richiesta di Luca):
+  // prima era tutto a passi, ora SOLO la schiusa dell'uovo in squadra resta a passi.
+  pensione: { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false },
   pokedex:  {}, // { [id]: { visto, catturato, nome, spriteFronte } } — registro Pokédex
   // Laboratorio Rianimazione Fossili di Genzano (5 ott 2026): null finché non
   // si consegna un fossile, poi { fossile, idPokemon, giornoPronto }.
@@ -191,7 +197,10 @@ async function caricaPartita() {
       if (stato.genere === undefined) stato.genere = null;
       if (!stato.inventario) stato.inventario = { chiave: {} };
       if (!stato.inventario.chiave) stato.inventario.chiave = {};
-      if (stato.inventario.chiave.bicicletta === undefined) stato.inventario.chiave.bicicletta = true;
+      // 5 ott 2026: la bici ora si ottiene davvero in game (buono bici, vedi
+      // sopra) — un salvataggio vecchio che non l'aveva ancora non la riceve
+      // gratis qui, deve guadagnarsela come tutti.
+      if (stato.inventario.chiave.bicicletta === undefined) stato.inventario.chiave.bicicletta = false;
       if (stato.inventario.chiave.cannaPesca === undefined) stato.inventario.chiave.cannaPesca = true;
       // Migrazione F9.2: vecchi salvataggi senza economia
       if (stato.soldi === undefined) stato.soldi = SOLDI_INIZIALI;
@@ -246,8 +255,15 @@ async function caricaPartita() {
       if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
       // Migrazione F9.3: Pensione Pokémon
       if (!stato.pensione || typeof stato.pensione !== 'object') {
-        stato.pensione = { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false };
+        stato.pensione = { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false };
       }
+      // Migrazione 6 ott 2026: da passi a giorni (vecchi salvataggi avevano
+      // "passiInsieme" invece dei 3 campi "giorno*" — li inizializza a oggi,
+      // non si può recuperare il progresso già fatto a passi.
+      if (stato.pensione.giornoSlot1 === undefined) stato.pensione.giornoSlot1 = null;
+      if (stato.pensione.giornoSlot2 === undefined) stato.pensione.giornoSlot2 = null;
+      if (stato.pensione.giornoCoppia === undefined) stato.pensione.giornoCoppia = null;
+      delete stato.pensione.passiInsieme;
       // Migrazione: assegna il sesso ai Pokémon salvati prima dell'introduzione del genere
       [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
         if (p && p.genere === undefined && typeof Battle !== 'undefined' && Battle.generaGenere) {
@@ -1798,6 +1814,9 @@ function apriMarketVenditore(idMarket) {
 // quindi lo stesso venditore/merce; nessuna funzione dedicata necessaria.
 function apriMarketFrascati() { apriMarketVenditore('mk-frascati'); }
 
+// Venditore dell'erboristeria di Lavaridge (Percorso 9, sess. 5 ott 2026).
+function apriMarketErboristeria() { apriMarketVenditore('mk-herbshop'); }
+
 // Apre il Box interagendo col PC di un Centro Pokémon (oggetto Tiled tipo:'pc',
 // vedi js/map.js). Un solo PC per Centro basta: i box sono condivisi in tutto
 // il gioco, non serve un id come per i Market.
@@ -1943,6 +1962,68 @@ async function interagisciGianluca() {
 async function interagisciBasoCotralRocca() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   await mostraDialogo('Baso', ['Libera Gianluca! Vai, ci penso io a sistemare questi qui dentro.']);
+}
+
+// Guaritore vicino al warp del motel di Lilycove, Via dei Laghi (sess. 5 ott
+// 2026): dà il "buono bici" dopo che il giocatore ha battuto tutti e 4 i
+// membri della famiglia del ristorante (dati/trainer.js, catena
+// famiglia_laghi_1→4, flagVittoria su famiglia_laghi_sconfitta).
+async function interagisciGuaritoreLaghi() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Guaritore dei Laghi';
+  if (!stato.flags) stato.flags = {};
+  if (!stato.inventario) stato.inventario = { chiave: {} };
+  if (!stato.inventario.chiave) stato.inventario.chiave = {};
+
+  if (stato.inventario.chiave['buono-bici'] || stato.inventario.chiave.bicicletta) {
+    await mostraDialogo(nome, ['Il buono bici te l\'ho già dato — portalo al negozio di bici di Albano, se non l\'hai ancora fatto!']);
+    return;
+  }
+  if (!stato.flags.famiglia_laghi_sconfitta) {
+    await mostraDialogo(nome, [
+      'Curo gratis i Pokémon di chi mangia al ristorante qui vicino.',
+      'Ma prima bisogna passare dalla famiglia che lo gestisce... sono quattro, uno via l\'altro!',
+      'Se riesci a batterli tutti, torna da me: ho qualcosa per te.',
+    ]);
+    return;
+  }
+  stato.inventario.chiave['buono-bici'] = true;
+  salvaPartita();
+  await mostraDialogo(nome, [
+    'Complimenti! Hai battuto tutta la famiglia del ristorante, fino al capocuoco!',
+    'Prendi questo buono bici. Portalo al negozio di bici di Albano, sapranno cosa farne.',
+  ]);
+  if (typeof mostraToast === 'function') mostraToast('🎫 Hai ottenuto: Buono Bici!', 3000);
+}
+
+// Negozio di bici di Albano (sess. 5 ott 2026): scambia il "buono bici" con
+// la bicicletta vera. Prima di questo la bici partiva già sbloccata per
+// tutti (placeholder di test) — ora si guadagna davvero.
+async function interagisciNegozioBici() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Gino';
+  if (!stato.inventario) stato.inventario = { chiave: {} };
+  if (!stato.inventario.chiave) stato.inventario.chiave = {};
+
+  if (stato.inventario.chiave.bicicletta) {
+    await mostraDialogo(nome, ['La tua bici va che è una meraviglia, eh? Tasto B per pedalare fuori dagli interni.']);
+    return;
+  }
+  if (!stato.inventario.chiave['buono-bici']) {
+    await mostraDialogo(nome, [
+      'Benvenuto! Qui vendiamo accessori per le due ruote, ma la bici in sé non è in vendita.',
+      'Se hai un buono bici, però, te la posso consegnare io stesso!',
+    ]);
+    return;
+  }
+  delete stato.inventario.chiave['buono-bici'];
+  stato.inventario.chiave.bicicletta = true;
+  salvaPartita();
+  await mostraDialogo(nome, [
+    'Oh, hai un buono bici! Fammi vedere...',
+    'Ecco a te: la tua prima bicicletta! Premi B per usarla (fuori dagli interni).',
+  ]);
+  if (typeof mostraToast === 'function') mostraToast('🚲 Hai ottenuto la Bicicletta!', 3000);
 }
 
 async function interagisciGianlucaCotralRocca() {
@@ -2349,22 +2430,38 @@ function parlaScienziatoGrottaVulcano() {
 
 /* ============================================================
    PENSIONE POKÉMON — Nemi (F9.3)
-   Lasci 1-2 Pokémon; se compatibili (maschio+femmina della stessa specie,
-   oppure Ditto + qualsiasi altra specie non asessuata) dopo un po' di passi
-   fatti insieme nasce un uovo. L'uovo va ritirato dal giocatore, viaggia
-   nella squadra e si schiude dopo altri passi nello stadio 1 (Lv.5) della
-   specie non-Ditto.
+   Lasci 1-2 Pokémon.
+   - UNO SOLO: si allena da solo, +1 livello ogni GIORNI_PENSIONE_LIVELLO
+     giorni di gioco (mai sopra il level cap — niente scorciatoie, richiesta
+     esplicita di Luca il 6 ott 2026: "non deve diventare overpower").
+   - DUE, COMPATIBILI (maschio+femmina della stessa specie, oppure Ditto +
+     qualsiasi altra specie non asessuata): NON si allenano più da soli,
+     dopo GIORNI_PENSIONE_UOVO giorni insieme nasce un uovo. L'uovo va
+     ritirato dal giocatore, viaggia nella squadra e si schiude dopo
+     PASSI_SCHIUSA_UOVO passi nello stadio 1 (Lv.5) della specie non-Ditto.
+   - DUE, NON compatibili: ognuno si allena per conto suo come se fosse solo.
    ============================================================ */
 
-const PASSI_PENSIONE_UOVO = 150;  // passi insieme (compatibili) prima che nasca l'uovo
-const PASSI_SCHIUSA_UOVO  = 80;   // passi camminati col giocatore prima della schiusa
+const GIORNI_PENSIONE_LIVELLO = 20; // giorni di gioco per +1 livello (deposito singolo/incompatibile)
+const GIORNI_PENSIONE_UOVO    = 20; // giorni di gioco insieme (coppia compatibile) prima che nasca l'uovo
+const PASSI_SCHIUSA_UOVO      = 10000; // passi camminati col giocatore prima della schiusa
+
+// I 21 leggendari (Gen 1-3, vedi CLAUDE.md): MAI uova, nemmeno con Ditto —
+// a differenza degli altri asessuati "veri" (Magnemite/Voltorb/Staryu/
+// Porygon), per i leggendari l'esclusione non basta farla passare dal
+// genere perché il controllo Ditto nella funzione sotto la scavalcherebbe.
+const PENSIONE_LEGGENDARI_ESCLUSI = new Set([
+  144, 145, 146, 150, 151, 243, 244, 245, 249, 250, 251,
+  377, 378, 379, 380, 381, 382, 383, 384, 385, 386,
+]);
 
 // Due Pokémon della pensione possono fare un uovo insieme?
 function pensioneCompatibili(a, b) {
   if (!a || !b) return false;
+  if (PENSIONE_LEGGENDARI_ESCLUSI.has(a.id) || PENSIONE_LEGGENDARI_ESCLUSI.has(b.id)) return false;
   const DITTO = 132;
   if (a.id === DITTO && b.id === DITTO) return false;           // due Ditto: niente
-  if (a.id === DITTO || b.id === DITTO) return true;             // Ditto + chiunque altro
+  if (a.id === DITTO || b.id === DITTO) return true;             // Ditto + chiunque altro (tranne leggendari, già escluso sopra)
   if (a.genere === 'N' || b.genere === 'N') return false;        // asessuati (non-Ditto): niente
   if (!a.genere || !b.genere || a.genere === b.genere) return false; // serve maschio+femmina
   if (typeof Battle === 'undefined' || !Battle.trovaSpecieBase) return false;
@@ -2407,17 +2504,55 @@ function creaUovo(speciePadreId) {
   };
 }
 
-// Chiamata ad ogni passo (da alPasso): fa avanzare i passi insieme dei
-// Pokémon depositati alla pensione e produce l'uovo al traguardo.
+// Chiamata ad ogni passo (il costo è trascurabile: solo confronti fra numeri,
+// nessun ciclo pesante) — controlla il GIORNO attuale contro i giorni di
+// deposito e applica uovo/livelli quando sono passati abbastanza giorni.
 function aggiornaPensione() {
-  if (!stato.pensione) return;
-  const { slot1, slot2 } = stato.pensione;
-  if (slot1 && slot2 && !stato.pensione.uovoPronto && pensioneCompatibili(slot1, slot2)) {
-    stato.pensione.passiInsieme += 1;
-    if (stato.pensione.passiInsieme >= PASSI_PENSIONE_UOVO) {
-      stato.pensione.uovoPronto = true;
-      stato.pensione.passiInsieme = 0;
+  if (!stato.pensione || !stato.tempo) return;
+  const p = stato.pensione;
+  const giornoOra = stato.tempo.giorno;
+  const coppiaCompatibile = p.slot1 && p.slot2 && pensioneCompatibili(p.slot1, p.slot2);
+
+  if (coppiaCompatibile) {
+    if (!p.uovoPronto && p.giornoCoppia != null && giornoOra - p.giornoCoppia >= GIORNI_PENSIONE_UOVO) {
+      p.uovoPronto = true;
+      if (typeof salvaPartita === 'function') salvaPartita();
     }
+    return; // coppia compatibile: niente livelli individuali, solo l'uovo
+  }
+
+  // Non c'è una coppia compatibile: ogni occupante (1 o 2 incompatibili)
+  // si allena per conto suo. _livellaPensioneSingolo consuma blocchi di
+  // GIORNI_PENSIONE_LIVELLO giorni uno alla volta (se il giocatore non
+  // torna per 60 giorni, ne recupera 3, non uno solo).
+  if (p.slot1) _livellaPensioneSingolo(p, 'slot1', 'giornoSlot1', giornoOra);
+  if (p.slot2) _livellaPensioneSingolo(p, 'slot2', 'giornoSlot2', giornoOra);
+}
+
+// Asincrona (Battle.caramellaRara fa fetch delle mosse nuove su PokéAPI):
+// chiamata senza await da aggiornaPensione (va bene, non deve bloccare il
+// movimento), ma AL SUO INTERNO aspetta ogni livello uno alla volta, così
+// due blocchi di 20 giorni recuperati insieme non corrono in parallelo
+// sullo stesso Pokémon (rischio reale: due evoluzioni/doppio apprendimento
+// mosse quasi simultanei sulla stessa istanza).
+async function _livellaPensioneSingolo(p, chiaveSlot, chiaveGiorno, giornoOra) {
+  if (p[chiaveGiorno] == null) return;
+  let cambiato = false;
+  while (giornoOra - p[chiaveGiorno] >= GIORNI_PENSIONE_LIVELLO) {
+    const pkm = p[chiaveSlot];
+    const cap = (typeof stato !== 'undefined' && stato.levelCap) || 100;
+    if (typeof Battle === 'undefined' || !Battle.caramellaRara || pkm.livello >= cap) {
+      // Al cap: il contatore non avanza più, resta fermo finché il cap
+      // non sale (prossima medaglia) — niente livelli "in banca" perduti.
+      break;
+    }
+    await Battle.caramellaRara(pkm, cap);
+    p[chiaveGiorno] += GIORNI_PENSIONE_LIVELLO;
+    cambiato = true;
+  }
+  if (cambiato) {
+    if (typeof aggiornaHUD === 'function') aggiornaHUD();
+    if (typeof salvaPartita === 'function') salvaPartita();
   }
 }
 
@@ -2451,8 +2586,8 @@ async function schiudiUovo(uovo) {
 // l'uovo quando è pronto.
 async function interagisciPensione() {
   if (stato.incontroAttivo || dialogoInCorso) return;
-  const nomeNpc = 'Reginella';
-  if (!stato.pensione) stato.pensione = { slot1: null, slot2: null, passiInsieme: 0, uovoPronto: false };
+  const nomeNpc = 'Nonna dell\'Asilo';
+  if (!stato.pensione) stato.pensione = { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false };
 
   if (stato.pensione.uovoPronto) {
     if (stato.squadra.length >= 6) {
@@ -2465,7 +2600,10 @@ async function interagisciPensione() {
     const speciePadre = pensioneSpecieUovo(stato.pensione.slot1, stato.pensione.slot2);
     stato.squadra.push(creaUovo(speciePadre));
     stato.pensione.uovoPronto = false;
-    stato.pensione.passiInsieme = 0;
+    // I genitori restano alla pensione: il prossimo uovo riparte da oggi,
+    // non si fermano — coerente con i giochi veri (si può continuare a
+    // ritirare uova dalla stessa coppia).
+    stato.pensione.giornoCoppia = (stato.tempo && stato.tempo.giorno) || null;
     salvaPartita();
     aggiornaHUD();
     await mostraDialogo(nomeNpc, [
@@ -2514,9 +2652,14 @@ async function depositaPensione(nomeNpc) {
   if (!p.genere && typeof Battle !== 'undefined' && Battle.generaGenere) p.genere = Battle.generaGenere(p.id);
 
   stato.squadra.splice(idx, 1);
-  if (!stato.pensione.slot1) stato.pensione.slot1 = p;
-  else stato.pensione.slot2 = p;
-  stato.pensione.passiInsieme = 0;
+  const oggi = (stato.tempo && stato.tempo.giorno) || 1;
+  if (!stato.pensione.slot1) { stato.pensione.slot1 = p; stato.pensione.giornoSlot1 = oggi; }
+  else { stato.pensione.slot2 = p; stato.pensione.giornoSlot2 = oggi; }
+  // Se con questo deposito si forma una coppia compatibile, il livellamento
+  // in solitaria si ferma da qui e parte il conto alla rovescia dell'uovo.
+  if (stato.pensione.slot1 && stato.pensione.slot2 && pensioneCompatibili(stato.pensione.slot1, stato.pensione.slot2)) {
+    stato.pensione.giornoCoppia = oggi;
+  }
   salvaPartita();
   aggiornaHUD();
   await mostraDialogo(nomeNpc, [`Va bene, me prendo cura de ${p.nome}!`]);
@@ -2532,7 +2675,9 @@ async function ritiraPensione(nomeNpc) {
   occupanti.forEach(p => stato.squadra.push(p));
   stato.pensione.slot1 = null;
   stato.pensione.slot2 = null;
-  stato.pensione.passiInsieme = 0;
+  stato.pensione.giornoSlot1 = null;
+  stato.pensione.giornoSlot2 = null;
+  stato.pensione.giornoCoppia = null;
   salvaPartita();
   aggiornaHUD();
   await mostraDialogo(nomeNpc, ['Eccoli qua, sani e contenti!']);
@@ -2748,6 +2893,7 @@ async function _interagisciDonatoreTiled(idDonatore) {
 // Medaglia Vigna) — non va duplicata con un secondo donatore.
 function interagisciDonatoreSurf() { _interagisciDonatoreTiled('mn-surf'); }
 function interagisciDonatoreVolo() { _interagisciDonatoreTiled('mn-volo'); }
+function interagisciDonatoreSpaccaroccia() { _interagisciDonatoreTiled('mn-spaccaroccia'); }
 
 /* ============================================================
    MUSEO DELLE NAVI ROMANE DI NEMI — evento F10 (Team GdF)
@@ -3374,14 +3520,14 @@ async function interagisciPorchettaro() {
 const GRUNTI_BUNKERINO = ['bunkerino-grunt-1', 'bunkerino-grunt-2', 'bunkerino-grunt-3', 'bunkerino-grunt-4'];
 
 async function interagisciBunkerino() {
+  // Fix 5 ott 2026: prima richiedeva una distanza lat/lon dal vecchio motore
+  // OSM (oggetto BUNKERINO in js/data.js), mai aggiornata dopo il passaggio
+  // al motore Tiled (MAPPA_TILED=true) — la funzione restava quindi
+  // irraggiungibile. Ora è collegata a un NPC vero (npc_bunkerino_direttore,
+  // dati/npc.js, mappa bunkerino_1f): la "vicinanza" è già garantita dal
+  // fatto stesso che il giocatore gli ha parlato, niente più controllo
+  // lat/lon qui.
   if (stato.incontroAttivo || dialogoInCorso) return;
-  if (typeof BUNKERINO === 'undefined') return;
-
-  const distanza = GameMap.distanzaMetri(stato.posizione, BUNKERINO);
-  if (distanza > BUNKERINO.raggioInterazione) {
-    mostraToast(`🚶 Avvicinati al Bunkerino (sei a ${Math.round(distanza)} m).`);
-    return;
-  }
 
   if (!stato.flags.legaCompletata) {
     await mostraDialogo('🏭 Bunkerino', [
@@ -4479,7 +4625,7 @@ function iconaOggettoHtml(oggetto) {
 // Costruisce la card di un oggetto dello zaino (icona, nome, quantità,
 // descrizione, bottone "Usa" se applicabile). Riusata dalle tasche 1 e 3.
 function creaCardOggetto(chiave, oggetto, quanti) {
-  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'mn' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
+  const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'felicita' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'mn' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
   const direttamente = oggetto.categoria === 'repellente';
   const usabile = suBersaglio || direttamente;
 
@@ -4902,6 +5048,22 @@ async function usaOggettoSu(chiave, idx) {
     chiudiMenu();                       // chiude il menu per mostrare l'evoluzione
     await avviaEvoluzione(pkm, evo.idEvo);
     return;
+  } else if (oggetto.categoria === 'felicita') {
+    // Pietra Amicizia (richiesta di Luca, 5 ott 2026): scorciatoia per le
+    // evoluzioni per felicità (Eevee→Umbreon di notte/Espeon di giorno,
+    // Golbat→Crobat, Chansey→Blissey...) — il motore vero (tracciare la
+    // felicità che sale giocando) non esiste, questo oggetto porta la
+    // felicità al massimo (255) in un colpo solo. NON fa evolvere subito:
+    // l'evoluzione scatta da sola al prossimo level-up, esattamente come nei
+    // giochi veri (controllo già esistente in js/battle.js riga ~426).
+    if (pkm.felicita != null && pkm.felicita >= 255) {
+      mostraToast(`${pkm.nome} è già al massimo della felicità.`);
+      return;
+    }
+    pkm.felicita = 255;
+    stato.zaino[chiave] -= 1;
+    if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+    mostraToast(`${oggetto.icona} ${pkm.nome} sembra molto più affezionato a te! Potrebbe evolvere al prossimo livello.`);
   } else if (oggetto.categoria === 'scambio') {
     // Pietra Scambio (richiesta esplicita di Luca, 5 ott 2026): sostituisce
     // il bisogno di un vero scambio per le evoluzioni tipo Gengar/Alakazam/

@@ -32,14 +32,14 @@
 ## ⛲ MARINO
 - **Nello il vignarolo:** "Alla Sagra dell'Uva dalla fontana esce VINO. Giuro! L'anno scorso un Magikarp c'è cascato dentro e è uscito allegro."
 - **Pina della Sagra:** "Te la prepari la cesta pe' la Sagra? Porta un Pokémon Acqua, che se la fontana s'intasa serve."
-- **Bambino bagnato:** "So' caduto nella fontana. Moro ha riso. Pure il suo Gyarados ha riso."
+- **Bambino bagnato:** "So' caduto nella fontana. Matilde ha riso. Pure il suo Gyarados ha riso."
 - **Pescatore annoiato:** "Pesco da stamattina. Solo Magikarp. Sempre Magikarp. UN Magikarp lo vòi?"
 - **Signora:** "Marino è la città del vino. E del traffico. Soprattutto del traffico."
 
 ## 🔭 MONTE PORZIO CATONE
 - **Ruggero il meteorologo:** "Tra qualche giorno piove. E quando piove qui, sull'osservatorio, i fulmini fanno cose strane. Tiè, segnatelo."
 - **Aldo l'astrofilo:** "La notte, nei giorni dispari, col telescopio si vedono cose… Una volta ho visto 'na stella che s'è mossa. O era 'n moscerino."
-- **Studente di astronomia:** "Stella è la Capopalestra più sveglia dei Castelli. Letteralmente: non dorme mai, guarda le stelle."
+- **Studente di astronomia:** "Biretta è la Capopalestra più sveglia dei Castelli. Letteralmente: non dorme mai, guarda le stelle."
 - **Vecchietto col cappello:** "Lassù all'osservatorio fanno la scienza. Io guardo le stelle dalla finestra e mi basta."
 - **Ragazza:** "C'ho un Magnemite che si attacca alla calamita del frigo. Comodo, ma poi non se stacca più."
 
@@ -59,7 +59,7 @@
 
 ## 🌉 ARICCIA
 - **Sora Nunzia della fraschetta:** "Porchetta e vino, fijo! Mangia, che pure il tuo Pokémon c'ha 'na faccia smunta. Tiè, 'na fetta pure a lui."
-- **Peppe er porchettaro:** "Porchetta de Ariccia IGP, mica pizza e fichi! L'aroma fa svenì pure gli Houndoom de Ombretta."
+- **Peppe er porchettaro:** "Porchetta de Ariccia IGP, mica pizza e fichi! L'aroma fa svenì pure gli Houndoom de Isa."
 - **Il vecchio del ponte:** "Di giorno è solo un ponte. Di notte… guarda mejo le ombre. A volte te guardano indietro."
 - **Musicista:** "Suono nelle fraschette. Di notte qui i Pokémon Buio escono a sentì la musica. Pubblico strano, ma applaude."
 - **Turista:** "Sono venuto pe' la porchetta. So' rimasto pe' la porchetta. Domani? Ancora porchetta."
@@ -67,7 +67,7 @@
 ## 🌸 GENZANO
 - **Romolo il panettiere:** "Pane de Genzano IGP, fijo! Crosta che canta. Ce reggi sopra pure un Snorlax e non se rompe."
 - **Iolanda dell'Infiorata:** "Ogni giugno copriamo la via di petali. Un anno feci un Gyarados tutto de fiori. Venne 'na meraviglia."
-- **Bambina:** "Flora è bravissima coi fiori. Ma se la fai arrabbià, i suoi Folletto te le sòneno. Delicati de fuori, cattivelli de dentro."
+- **Bambina:** "Camilla è bravissima coi fiori. Ma se la fai arrabbià, i suoi Folletto te le sòneno. Delicati de fuori, cattivelli de dentro."
 - **Fioraio:** "Petali a tonnellate per l'Infiorata. E un Bellsprout che me li sceglie pe' colore. Dipendente modello."
 - **Vecchietto:** "Dopo Genzano c'è la Via Vittoria. Robba seria. Curate bene, e non te fa' fregà dal panorama."
 

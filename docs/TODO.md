@@ -1,5 +1,57 @@
 # TO-DO — Pokémon Castelli Romani
 
+> **5 ottobre 2026 — Due idee nuove da Luca per il futuro (non urgenti, solo da non perdere):**
+> - **WebAssembly** per far caricare meglio/più in fretta le mappe (oggi `.tmj` via `fetch` +
+>   parsing JS puro in `js/map.js` — da valutare se/dove un modulo WASM aiuterebbe davvero, es.
+>   parsing dei tile layer o building della collision grid su mappe grandi/cluster).
+> - ✅ **RISOLTO il 5 ottobre 2026 — pipeline estrazione mappe da pret RITROVATA**: Luca ha ritrovato
+>   il vero `convert2.py` perduto (quello usato nel commit `1681e26` del 4 ottobre) e l'ha incollato in
+>   chat. Salvato come `strumenti/estrai_mappe_pret.py` (con riga di comando aggiunta), **testato dal
+>   vivo su PalletTown (pokefirered) — risultato visivamente corretto al 100%**, vedi
+>   `strumenti/README_estrai_mappe.md` per l'uso. Una prima riscrittura da zero fatta nella stessa
+>   sessione PRIMA del ritrovamento aveva 2 bug (palette non applicata, tile dei tetti dal foglio
+>   sbagliato) — non più nel progetto, sostituita da questa versione vera.
+
+> Il WebAssembly resta non iniziato (vedi anche analisi performance più sotto, sessione 5 ottobre).
+
+> **5 ottobre 2026 (4) — Da fare, segnate esplicitamente come "ancora da fare" da Luca stesso (non
+> toccate in questa sessione)**:
+> - **Missioni di Jirachi** (CLAUDE.md la chiama ancora "[luogo da definire]"): confermato con Luca,
+>   ancora da progettare/implementare.
+> - **Musica di gioco**: domanda aperta di Luca su come/se aggiungerla (chiptune generate, royalty-free
+>   scaricate, o niente musica per ora — solo effetti sonori). Nessuna decisione presa, da riprendere
+>   insieme quando si arriva lì.
+> - **Villa Torlonia**: nominata da Luca come mappa da aggiungere, ma non è in nessun documento di
+>   design esistente (non in CLAUDE.md) — non si sa dove va collegata né cosa rappresenta. Serve un
+>   chiarimento diretto da Luca prima di crearla.
+> - **Bug preesistente trovato (NON causato da oggi, confermato con `git diff`/`git log`, già nei
+>   commit `197356b`/`65a392f` di settimane fa)**: `sprites/maps_tiled/frascati_est.tmx` e
+>   `frascati_ovest.tmx` contengono JSON invece di XML (sembrano essere stati salvati per sbaglio col
+>   contenuto del rispettivo `.tmj`) — probabilmente Tiled non riesce ad aprirli così. Vanno
+>   rigenerati da zero in XML vero (es. con `strumenti/tmj_a_tmx.py` dal `.tmj` corrispondente, che
+>   invece è valido) quando c'è tempo. Non urgente, non bloccante per il lavoro di oggi.
+
+> **5 ottobre 2026 (3) — Riordino `sprites/` per categoria: SOSPESO, non funzionante.** Fatto SOLO
+> dentro la copia `C:\Users\Luca\Desktop\Pokemon_Castelli` (l'originale non è mai stato toccato).
+> Un agente in background aveva dichiarato tutto spostato/corretto/verificato (tileset, `.tsj`,
+> `.tmj`, `TILESET_IMMAGINI`/`TILESET_META`, `clusters.js` rigenerato, server+curl ok), ma **Luca ha
+> aperto la copia in Tiled e nessun tileset viene trovato, tutte le mappe risultano nere**. La
+> verifica fatta dall'agente (richieste HTTP via `curl` al server del gioco) evidentemente non basta a
+> garantire che Tiled risolva davvero i percorsi — lezione da tenere a mente: non fidarsi di un
+> "verificato" di un agente in background su un riordino di file così esteso senza un controllo vero
+> in Tiled stesso prima di dichiararlo concluso. Da riprendere con più attenzione, non urgente ora.
+
+> **5 ottobre 2026 (2) — Decisione confermata su STATO_PROGETTO.md**: il Campione finale della Lega
+> di Colonna NON è un terzo personaggio fisso chiamato "Remo" — **deve essere lo stesso rivale scelto
+> dal giocatore nel laboratorio** (Blue o Red), col nome giusto. Oggi `REMO_LEGA` (`js/data.js`) è
+> fisso per tutti. Da implementare: sostituire la logica del Campione con quella del rivale scelto
+> (`stato.duoRivali`/equivalente, stesso meccanismo già usato per le rivincite lungo il path).
+>
+> **Altri due promemoria da Luca, da affrontare quando si arriva lì**: pulizia/riordino completo di
+> `sprites/` (tenere solo ciò che è davvero usato, riorganizzare in cartelle, ripuntare i tileset in
+> Tiled di conseguenza) — SOLO a mappe finite, non ora. E le zone di incontri selvatici vanno
+> ridisegnate/riorganizzate — dettaglio da chiarire con Luca quando si affronta.
+
 > **22 settembre 2026 — Due rivali nel laboratorio + nome del personaggio (MAI TESTATO dal vivo)**:
 > scritto ma non ancora aperto nel browser (solo `node --check` sui file .js). Riassunto di cosa manca
 > ancora, e un promemoria a parte per Luca (vedi in fondo):
@@ -148,7 +200,7 @@
 > già piazzato da Luca.
 >
 > **Seconda ondata, stessa giornata (12 agosto)**: capopalestra di Genzano sovrascritta in **Camilla**
-> (via definitiva, non più Flora); MN Volo spostata da "6 medaglie" a "dopo la palestra di Albano";
+> (via definitiva, non più Camilla); MN Volo spostata da "6 medaglie" a "dopo la palestra di Albano";
 > MN Cascata (permesso da Ariccia) e MN Sub (permesso da Genzano, MN nuova) assegnate — resta aperto
 > solo dove trovare i due oggetti sul campo; Museo di Nemi popolato con 3 grunt + 1 capo GdF (2ª parte
 > password Marino) + 2 ostaggi + 1 Pepita + MT Idro Pompa; **Risfida allenatori implementata**
@@ -161,18 +213,27 @@
 
 ## Gruppo A — Mappe e contenuti narrativi
 
+> **Nota 5 ottobre 2026**: molte voci di questo gruppo sono scritte a mano via mano che Luca disegna
+> le mappe in Tiled, e diverse risultano superate — mappe elencate sotto come "da fare"/"manca" sono
+> in realtà già esistenti e cablate (es. Grotta del Vulcano, Osservatorio, rifugio GdF di Marino: tutte
+> giocabili). I due buchi VERI confermati sul codice reale: **Bunkerino** (mappe `.tmx` presenti ma mai
+> convertite in `.tmj` né registrate in `js/map.js` — oggi irraggiungibile) e **10 leggendari su 21 non
+> piazzati in nessuna mappa** (Articuno, Mewtwo, Mew, Lugia, Ho-Oh, Celebi, i 3 Regi, Kyogre, Rayquaza,
+> Jirachi — solo Zapdos/preview, Moltres, i 3 cani leggendari, Latios/Latias, Groudon e Deoxys-trigger
+> sono piazzati davvero). Prima di fidarsi di una voce "manca" qui sotto, controllare col codice.
+
 ### Percorso di Marino allungato + biforcazione Spaccaroccia + Snorlax
 - ✅ **FATTO**: ramo, biforcazione e ostacolo Spaccaroccia esistono su `marino.tmj`; Snorlax/NPC
   Pokéflauto piazzati.
 - ⏳ **MANCA**: nulla di bloccante segnalato. Da ripercorrere a mano se non già fatto.
 
-### Palestra di Marino (Moro) — Medaglia Fontana
-- ✅ **FATTO**: Moro piazzato su `pokemon-castelli-palestra_marino.tmj`, registrata come
+### Palestra di Marino (Matilde) — Medaglia Fontana
+- ✅ **FATTO**: Matilde piazzato su `pokemon-castelli-palestra_marino.tmj`, registrata come
   `interno_palestra_moro`, dati allineati.
 - ⏳ **MANCA**: solo la ripercorsa a mano (mai confermato a schermo che si ottiene davvero la
   Medaglia Fontana). Nessuna azione di codice nota.
 
-### Palestra di Monte Porzio (Stella) — Medaglia Stella
+### Palestra di Monte Porzio (Biretta) — Medaglia Stella
 - ✅ **FATTO**: id palestra allineati (`gym_leader_palestra monteporzio`), nessun bug residuo.
 - ⏳ **MANCA**: solo la ripercorsa a mano.
 
@@ -189,11 +250,11 @@
   Luca lo ritiene un problema); gate Zona Safari (pagamento già pronto, manca la cattura vera —
   vedi Gruppo C); ripercorsa a mano.
 
-### Palestra di Ariccia (Ombretta) — Medaglia Fraschetta
+### Palestra di Ariccia (Isa) — Medaglia Fraschetta
 - ✅ **FATTO** (sessione 12 agosto): la porta esterna era il "dot" senza proprietà che Luca aveva
   già piazzato su `Ariccia.tmj` (oggetto `palestra`, id 104) — trasformato in una vera porta
   (`destinazione: palestra_ariccia_interno`, `spawn_id: entrata_principale`) e aggiunto lo spawn di
-  ritorno `da_palestra_ariccia`. L'interno (Ombretta + 9 gregari) era già popolato da sessioni
+  ritorno `da_palestra_ariccia`. L'interno (Isa + 9 gregari) era già popolato da sessioni
   precedenti.
 - ✅ **FATTO** (stessa sessione): 4 tileset di `Ariccia.tmj` non erano mai stati registrati nel motore
   (`party`, `party2`, `party3`, `porchetta`) — stesso identico problema già risolto per `palestre`/
@@ -339,7 +400,7 @@
 
 ### Genzano città + palestra (Camilla, tipo Fuoco)
 - ✅ **FATTO** (12 agosto, sovrascritto su richiesta esplicita di Luca — "capo palestra genzano si
-  chiama camilla stop"): rinominata ovunque da **Flora** a **Camilla** (`js/data.js`, `dati/trainer.js`
+  chiama camilla stop"): rinominata ovunque da **Camilla** a **Camilla** (`js/data.js`, `dati/trainer.js`
   — 16 occorrenze), tipo resta **Fuoco**, Medaglia Lava invariata. Risolve la discrepanza narrativa
   segnalata nella sessione precedente (BIBBIA-NARRATIVA/STATO-PROGETTO parlavano già di "Camilla":
   ora i dati reali coincidono). Interno completo con 10 gregari, porta città↔palestra cablata.
@@ -348,7 +409,7 @@
 
 ### Osservatorio — dungeon-laboratorio con boss in doppio
 - ⏳ **MANCA tutto**: `Osservatorio.tmj` esiste come luogo-evento (Zapdos) ma non è ancora un
-  dungeon con un vero scontro finale. La discrepanza Flora/Camilla è risolta (vedi voce Genzano
+  dungeon con un vero scontro finale. La discrepanza Camilla/Camilla è risolta (vedi voce Genzano
   sopra): il boss doppio finale sarà con Camilla.
 - ℹ️ **Aggiornamento 3 settembre 2026**: il motore di lotta in doppio (`Battle.avviaDoppia`, vedi
   Gruppo C) ora **esiste** — scritto per il caso "2 allenatori mi vedono insieme" (Boschi del
@@ -414,7 +475,7 @@
 
 ## Gruppo B — Cose già rotte o incomplete nel progetto (verificate in questa sessione)
 
-- ~~**Monte Porzio**: id Tiled del capopalestra Stella disallineato~~ — RISOLTO (vedi Gruppo A sopra,
+- ~~**Monte Porzio**: id Tiled del capopalestra Biretta disallineato~~ — RISOLTO (vedi Gruppo A sopra,
   verificato sessione 8 agosto: i dati sono già allineati).
 - ~~**Rocca di Papa**: nessuna mappa-interno palestra, Rocco non piazzato~~ — RISOLTO sessione 11
   agosto (insieme allo scambio tipi con Albano, vedi ROADMAP). Da ripercorrere a mano in game.
@@ -424,9 +485,12 @@
   riferimento per i prossimi, non il pattern generico mai scritto.
 - ~~**L'interno dell'Abbazia** non esiste~~ — la mappa ORA esiste (Luca l'ha disegnata, confermato 12
   settembre 2026); resta da cablare Ginevra/cutscene/gate password (vedi nota in cima al documento).
-- **`MODALITA_TEST`** è acceso in `js/data.js:17` e va spento prima di qualunque pubblicazione.
-- **Il combattimento in doppio** non esiste nel motore (serve per lo scontro Osservatorio/Flora, ex
-  Camilla — vedi discrepanza narrativa in Gruppo A).
+- ~~**`MODALITA_TEST` va spento prima di qualunque pubblicazione**~~ — SUPERATO (verificato 5 ottobre
+  2026): oggi si autogestisce da solo (`js/data.js`), acceso solo in locale/file://, spento online
+  finché non si sblocca a password via console. Non è più un ostacolo prima della pubblicazione.
+- ~~**Il combattimento in doppio non esiste nel motore**~~ — SUPERATO (verificato 5 ottobre 2026):
+  `Battle.avviaDoppia` esiste in `js/battle.js` ed è usato attivamente da `_battagliaDoppiaAlleato`/
+  `_trainerSpottaDoppia` in `js/map.js` (es. proprio lo scontro Osservatorio con Camilla alleata).
 - **`NOME_TEAM`**: la nota nella vecchia `BIBBIA-NARRATIVA.md` che chiedeva di rinominarlo era
   superata — `TEAM_GDF_NOME`/`TEAM_COTRAL_NOME` esistono già in `js/data.js:67-68`. Nessuna azione.
 
@@ -465,13 +529,8 @@
   principale (sale naturalmente coi livelli più alti, nessun codice dedicato necessario). Logica in
   `js/map.js` (`_offriRisfida`, agganciata al punto dove il gioco già gestiva "allenatore già
   battuto"). **Non testata a schermo.**
-- **Lotta in doppio** (nuovo requisito dalla storia v3, scontro Osservatorio — richiesta di nuovo il
-  12 agosto: "se due allenatori mi vedono insieme o con Camilla alla fine"): **non implementata**.
-  Verificato che `js/battle.js` (1536 righe) è scritto per un solo Pokémon avversario alla volta
-  (`mio` vs `nemico` filo diretto in tutta la logica di turno/IA/UI) — un vero 2v2 richiede riscrivere
-  l'ordine dei turni tra 4 combattenti, la selezione del bersaglio, l'IA per 2 avversari e la UI
-  (2 sprite/barre HP nemiche). Farlo in coda a tutto il resto di questa sessione rischiava di rompere
-  le lotte 1v1 esistenti senza un test vero. **Proposta**: sessione dedicata a parte.
+- ~~**Lotta in doppio non implementata**~~ — SUPERATO, voce duplicata di quella già corretta sopra
+  in Gruppo B: `Battle.avviaDoppia` esiste ed è in uso da tempo.
 - **Meccanica di "viaggio a lungo raggio"** per il treno di Lugia: da progettare da zero (confermato
   "da fare").
 - **Ricalibrazione livelli allenatori** verso l'alto e in crescita lungo il path.
@@ -494,7 +553,11 @@
 
 ## Gruppo D — Sistema cutscene
 
-Rimandato alla sessione dedicata (spec separata). Nessuna voce qui.
+~~Rimandato alla sessione dedicata~~ — SUPERATO (verificato 5 ottobre 2026): il sistema dichiarativo
+`dati/cutscene.js` esiste ed è usato attivamente (diverse cutscene definite, richiamate da
+`_giocaCutscene()` in `js/map.js` in più punti — es. epilogo rifugio Marino, boss Grotta del Vulcano).
+Non è più "nessuna voce qui": se emergono richieste nuove di cutscene, questo è il pattern da
+riusare, non da costruire da zero.
 
 ---
 
@@ -541,8 +604,8 @@ Vedi le domande D1-D18 in fondo a questo documento.
 - **D10** — Il miniboss del dungeon innevato è il luogotenente già battuto o un altro? *(Già risolto
   in sessione precedente: è un altro, nessun team, semplicemente un altro sfidante di Articuno.)*
 - **D11** — Nome, aspetto, squadra e dialoghi dei capipalestra di Marino, Monte Porzio, Ariccia.
-  *(Marino/Monte Porzio/Rocca di Papa/Albano hanno già nome+squadra in `dati/trainer.js` — Moro,
-  Stella, Baso, Giorgia. Restano da decidere aspetto/dialoghi di rifinitura e tutto Ariccia/Genzano.)*
+  *(Marino/Monte Porzio/Rocca di Papa/Albano hanno già nome+squadra in `dati/trainer.js` — Matilde,
+  Biretta, Baso, Giorgia. Restano da decidere aspetto/dialoghi di rifinitura e tutto Ariccia/Genzano.)*
 - **D12** — I due Capi del GdF e i due boss di sede (Museo di Nemi, Abbazia di San Nilo): nomi,
   aspetto, squadre. Come si riconciliano con "Comandante Crasso"/Fulvia/Tarcisio del vecchio sistema
   dati — restano come admin intermedi o si tolgono del tutto?

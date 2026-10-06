@@ -294,7 +294,7 @@ const DATI_TRAINER = {
   },
 
   'gym_leader_palestra grottaferrata': {
-    sprite: 'Nilo_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
+    sprite: 'Igino_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
     classe: 'Capopalestra', nome: 'Igino',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
@@ -314,7 +314,7 @@ const DATI_TRAINER = {
   },
 
   /* ── PALESTRA DI MARINO (tipo Acqua, 3ª città — Fontana dei Quattro Mori) ──
-     5 gregari + Capopalestra Moro. Squadre/dialoghi da PALESTRE['marino'] (data.js).
+     5 gregari + Capopalestra Matilde. Squadre/dialoghi da PALESTRE['marino'] (data.js).
      Il leader assegna la Medaglia Fontana e alza il level cap a 28. */
 
   'gregario 1 palestra marino': {
@@ -363,7 +363,7 @@ const DATI_TRAINER = {
   },
 
   /* ── PALESTRA DI MONTE PORZIO CATONE (tipo Elettro, 4ª città — cap 34) ──
-     6 gregari + Capopalestra Stella. Squadre/dialoghi da PALESTRE['monte-porzio']
+     6 gregari + Capopalestra Biretta. Squadre/dialoghi da PALESTRE['monte-porzio']
      (js/data.js). Il leader assegna la Medaglia Stella e alza il level cap a 34. */
 
   'gregario 1 palestra monteporzio': {
@@ -416,7 +416,7 @@ const DATI_TRAINER = {
   },
   'gym_leader_palestra monteporzio': {
     sprite: 'Er_biretta_Capopalestra', ritratto: 'LEADER_Surge', vista: 0,
-    classe: 'Capopalestra', nome: 'Stella',
+    classe: 'Capopalestra', nome: 'Biretta',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
@@ -428,7 +428,7 @@ const DATI_TRAINER = {
       { id: 181, livello: 34 },  // Ampharos (l'asso)
     ],
     oggettiCura: [{ chiave: 'superpozione', quantita: 2 }, { chiave: 'iperpozione', quantita: 1 }],
-    dialogo_prima: 'Ciao! Sono Stella, astronoma dell\'Osservatorio di Monte Porzio. Ogni notte studio le stelle… e i miei Pokémon Elettro generano l\'energia dei telescopi! Preparati: la mia squadra colpisce alla velocità della luce!',
+    dialogo_prima: 'Ciao! Sono Biretta, astronoma dell\'Osservatorio di Monte Porzio. Ogni notte studio le stelle… e i miei Pokémon Elettro generano l\'energia dei telescopi! Preparati: la mia squadra colpisce alla velocità della luce!',
     dialogo_dopo: 'Brilli più di una supernova! La Medaglia Stella è tua: portala in alto!',
     premio: 3400,
     palestraId: 'monte-porzio',   // → assegna la Medaglia Stella e alza il level cap a 34
@@ -440,7 +440,7 @@ const DATI_TRAINER = {
   'all-p4-1': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 6,
     classe: 'Escursionista', nome: 'Dario',
-    squadra: [{ id: 74, livello: 20 }, { id: 66, livello: 21 }],
+    squadra: [{ id: 74, livello: 28 }, { id: 66, livello: 29 }],
     dialogo_prima: 'Questa salita verso Monte Porzio taglia le gambe! I miei Pokémon Roccia e Lotta invece la adorano.',
     dialogo_dopo: 'Uff… mi tocca sedermi un attimo.',
     premio: 320,
@@ -448,7 +448,7 @@ const DATI_TRAINER = {
   'all-p4-2': {
     sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 6,
     classe: 'Ciclista', nome: 'Nella',
-    squadra: [{ id: 19, livello: 19 }, { id: 84, livello: 21 }],
+    squadra: [{ id: 19, livello: 31 }, { id: 84, livello: 32 }],
     dialogo_prima: 'Faccio questa strada in bici tutti i giorni. Occhio, che i miei Pokémon sono più veloci di te!',
     dialogo_dopo: 'Mi hai staccato in salita, complimenti.',
     premio: 300,
@@ -462,7 +462,7 @@ const DATI_TRAINER = {
   'npc_casa_sul_lago_1': {
     sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
     classe: 'Pescatore', nome: 'Learco',
-    squadra: [{ id: 55, livello: 32 }, { id: 195, livello: 33 }],
+    squadra: [{ id: 55, livello: 35 }, { id: 195, livello: 36 }],
     dialogo_prima: 'Mia nonna non la disturbi finché non dimostri di saperci fare coi Pokémon!',
     dialogo_dopo: 'Vabbè, dai. Vai pure da nonna, te la sei guadagnata.',
     premio: 660,
@@ -470,7 +470,7 @@ const DATI_TRAINER = {
   'all-lago-1': {
     sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 6,
     classe: 'Pescatore', nome: 'Nino',
-    squadra: [{ id: 60, livello: 20 }, { id: 129, livello: 21 }],
+    squadra: [{ id: 60, livello: 34 }, { id: 129, livello: 35 }],
     dialogo_prima: 'Il Lago Albano è pieno di sorprese. Anche i miei Pokémon lo sono!',
     dialogo_dopo: 'Oggi non abbocca niente per me.',
     premio: 340,
@@ -478,7 +478,7 @@ const DATI_TRAINER = {
   'all-lago-2': {
     sprite: 'trainer_SWIMMER_F', ritratto: 'SWIMMER_F', vista: 6,
     classe: 'Nuotatrice', nome: 'Wanda',
-    squadra: [{ id: 118, livello: 21 }, { id: 194, livello: 22 }],
+    squadra: [{ id: 118, livello: 35 }, { id: 194, livello: 36 }],
     dialogo_prima: 'Nuoto in questo lago da quando ero piccola. Vediamo se resisti alla mia squadra!',
     dialogo_dopo: 'Che tuffo, mi hai steso.',
     premio: 350,
@@ -486,7 +486,7 @@ const DATI_TRAINER = {
   'all-lago-3': {
     sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 6,
     classe: 'Nuotatore', nome: 'Renzo',
-    squadra: [{ id: 72, livello: 21 }, { id: 183, livello: 22 }],
+    squadra: [{ id: 72, livello: 36 }, { id: 183, livello: 37 }],
     dialogo_prima: 'Acqua fresca e Pokémon Acqua: la combinazione perfetta!',
     dialogo_dopo: 'Mi hai trascinato a fondo.',
     premio: 350,
@@ -494,7 +494,7 @@ const DATI_TRAINER = {
   'all-lago-4': {
     sprite: 'trainer_SWIMMER2_F', ritratto: 'SWIMMER2_F', vista: 6,
     classe: 'Nuotatrice', nome: 'Ilaria',
-    squadra: [{ id: 79, livello: 22 }, { id: 222, livello: 23 }],
+    squadra: [{ id: 79, livello: 37 }, { id: 222, livello: 38 }],
     dialogo_prima: 'Il fondale del lago nasconde più cose di quanto pensi.',
     dialogo_dopo: 'Affondo, in tutti i sensi.',
     premio: 370,
@@ -502,7 +502,7 @@ const DATI_TRAINER = {
   'all-lago-5': {
     sprite: 'trainer_SWIMMER2_M', ritratto: 'SWIMMER2_M', vista: 6,
     classe: 'Sommozzatore', nome: 'Beppe',
-    squadra: [{ id: 170, livello: 22 }, { id: 223, livello: 23 }],
+    squadra: [{ id: 170, livello: 38 }, { id: 223, livello: 39 }],
     dialogo_prima: 'Mi immergo ogni giorno. Ho visto cose che non hai visto tu... e anche Pokémon forti!',
     dialogo_dopo: 'Risalgo per riprendere fiato.',
     premio: 370,
@@ -510,7 +510,7 @@ const DATI_TRAINER = {
   'all-lago-6': {
     sprite: 'trainer_SAILOR', ritratto: 'SAILOR', vista: 6,
     classe: 'Velista', nome: 'Ottavia',
-    squadra: [{ id: 278, livello: 23 }, { id: 73, livello: 24 }],
+    squadra: [{ id: 278, livello: 39 }, { id: 73, livello: 40 }],
     dialogo_prima: 'Il vento sul lago è perfetto oggi. Peccato per te!',
     dialogo_dopo: 'Vento a favore tuo, stavolta.',
     premio: 390,
@@ -936,8 +936,8 @@ const DATI_TRAINER = {
   },
 
   'gym_leader_palestra marino': {
-    sprite: 'marino_capopalestra', ritratto: 'LEADER_Misty', vista: 0,
-    classe: 'Capopalestra', nome: 'Moro',
+    sprite: 'Capopalestra_Marino_Matilde', ritratto: 'LEADER_Misty', vista: 0,
+    classe: 'Capopalestra', nome: 'Matilde',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
     squadra: [
@@ -949,14 +949,14 @@ const DATI_TRAINER = {
       { id: 130, livello: 28 },  // Gyarados (l'asso)
     ],
     oggettiCura: [{ chiave: 'superpozione', quantita: 2 }],
-    dialogo_prima: 'Ehilà! Sono Moro, come i Quattro Mori della nostra fontana! Lo sai che alla Sagra dell\'Uva la fontana versa vino invece dell\'acqua? Ma per i miei Pokémon solo acqua di sorgente, eh! Vediamo se sai navigare in acque agitate!',
+    dialogo_prima: 'Ehilà! Sono Matilde, come i Quattro Mori della nostra fontana! Lo sai che alla Sagra dell\'Uva la fontana versa vino invece dell\'acqua? Ma per i miei Pokémon solo acqua di sorgente, eh! Vediamo se sai navigare in acque agitate!',
     dialogo_dopo: 'Mi hai travolto come una piena! Quest\'anno alla Sagra la fontana verserà in tuo onore. Ecco la Medaglia Fontana!',
     premio: 2800,
     palestraId: 'marino',   // → assegna la Medaglia Fontana e alza il level cap a 28
   },
 
   /* ── PALESTRA DI ARICCIA (tipo Buio, 7ª città — cap 52) ──
-     9 gregari + Capopalestra Ombretta. Squadre/dialoghi da PALESTRE['ariccia']
+     9 gregari + Capopalestra Isa. Squadre/dialoghi da PALESTRE['ariccia']
      (js/data.js). Il leader assegna la Medaglia Fraschetta e alza il level cap
      a 52. NB: interno popolato (sessione 11 agosto) ma la porta in Ariccia.tmj
      non esiste ancora — l'edificio esterno va disegnato da Luca prima di poter
@@ -1030,13 +1030,13 @@ const DATI_TRAINER = {
     sprite: 'trainer_SUPERNERD', ritratto: 'SUPERNERD', vista: 7,
     classe: 'Notturno', nome: 'Giorgione',
     squadra: [{ id: 229, livello: 51 }, { id: 359, livello: 51 }],
-    dialogo_prima: 'Ultimo ostacolo prima di Ombretta. Supera me se ne sei capace!',
+    dialogo_prima: 'Ultimo ostacolo prima di Isa. Supera me se ne sei capace!',
     dialogo_dopo: 'La notte ti appartiene.',
     premio: 1220,
   },
   'gym_leader_palestra ariccia': {
     sprite: 'Capopalestra_Ariccia', ritratto: 'LEADER_Koga', vista: 0,
-    classe: 'Capopalestra', nome: 'Ombretta',
+    classe: 'Capopalestra', nome: 'Isa',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     squadra: [
       { id: 262, livello: 48 },  // Mightyena
@@ -1047,7 +1047,7 @@ const DATI_TRAINER = {
       { id: 229, livello: 52 },  // Houndoom (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
-    dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Ombretta. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
+    dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Isa. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
     dialogo_dopo: 'Hai acceso una luce nel mio buio… La Medaglia Fraschetta è tua. Ora brindiamo, va\'!',
     premio: 5200,
     palestraId: 'ariccia',   // → assegna la Medaglia Fraschetta e alza il level cap a 52
@@ -1646,6 +1646,66 @@ const DATI_TRAINER = {
   },
 
   /* ── BOSCHETTO SEGRETO (post-Lega) — allenatori FORTI (Lv 58-62) ── */
+  /* ── FAMIGLIA DEL RISTORANTE DI VIA DEI LAGHI (sess. 5 ott 2026) — sfida
+     a 4 consecutivi stile Grotta del Vulcano (catena "prossimaLotta", stesso
+     meccanismo: si passa al successivo SOLO vincendo, nessun flag/premio
+     intermedio, tutto scatta sull'ultimo). Livelli coerenti con la zona
+     (tra 8ª palestra e Campione, vedi calibrazione di oggi). Vinta tutta la
+     catena: `flagVittoria: 'famiglia_laghi_sconfitta'` sull'ultimo (papà)
+     sblocca il "guaritore laghi" che dà il buono bici (dati/npc.js). ── */
+  'famiglia_laghi_1': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    classe: 'Figlio di famiglia', nome: 'Dario',
+    squadra: [
+      { id: 55,  livello: 35 },  // Golduck
+      { id: 99,  livello: 35 },  // Kingler
+      { id: 119, livello: 36 },  // Seaking
+    ],
+    dialogo_prima: 'Vuoi mangiare qui? Prima devi passare da noi. Comincio io!',
+    dialogo_dopo: 'Niente male. Ma la famiglia non finisce qui — tocca a mamma.',
+    prossimaLotta: 'famiglia_laghi_2',
+    premio: 2800,
+  },
+  'famiglia_laghi_2': {
+    sprite: 'trainer_LASS', ritratto: 'LASS', vista: 5,
+    classe: 'Madre di famiglia', nome: 'Rosanna',
+    squadra: [
+      { id: 80,  livello: 36 },  // Slowbro
+      { id: 171, livello: 36 },  // Lanturn
+      { id: 73,  livello: 37 },  // Tentacruel
+    ],
+    dialogo_prima: 'Hai battuto mio figlio? Vediamo come te la cavi con sua madre.',
+    dialogo_dopo: 'Brava/o. Ora però c\'è il nonno — lui pesca qui da prima che nascessi tu.',
+    prossimaLotta: 'famiglia_laghi_3',
+    premio: 3000,
+  },
+  'famiglia_laghi_3': {
+    sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
+    classe: 'Nonno di famiglia', nome: 'Learco',
+    squadra: [
+      { id: 340, livello: 37 },  // Whiscash
+      { id: 272, livello: 38 },  // Ludicolo
+      { id: 195, livello: 37 },  // Quagsire
+    ],
+    dialogo_prima: 'Eh eh, sei arrivato fin qui. Vediamo se sai nuotare anche in lotta.',
+    dialogo_dopo: 'Bella sfida! Ma l\'ultima parola spetta a mio figlio: il capocuoco in persona.',
+    prossimaLotta: 'famiglia_laghi_4',
+    premio: 3200,
+  },
+  'famiglia_laghi_4': {
+    sprite: 'trainer_COOLTRAINER_M', ritratto: 'trainer_COOLTRAINER_M', vista: 5,
+    classe: 'Capocuoco', nome: 'Massimo',
+    squadra: [
+      { id: 350, livello: 39 },  // Milotic
+      { id: 130, livello: 40 },  // Gyarados
+      { id: 121, livello: 40 },  // Starmie
+    ],
+    dialogo_prima: 'Hai battuto tutta la mia famiglia. Io sono l\'ultimo, e cucino meglio di quanto lotto — ma lotto comunque bene.',
+    dialogo_dopo: 'Complimenti davvero. Vai a parlare col guaritore qui fuori, ha qualcosa per te.',
+    flagVittoria: 'famiglia_laghi_sconfitta',
+    premio: 4000,
+  },
+
   'all-boschetto-1': {
     sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
     classe: 'Veterano', nome: 'Egidio',
@@ -1687,10 +1747,14 @@ const DATI_TRAINER = {
     premio: 3400,
   },
 
-  /* ── IL SOLITARIO — campione leggendario del boschetto (post-Lega) ── */
+  /* ── IL SOLITARIO — campione leggendario del boschetto (post-Lega).
+     Ha un nome vero, Simone (richiesta di Luca, sess. 19 set 2026): l'NPC
+     che appare DOPO averlo battuto (dati/npc.js, 'il_solitario_post') lo usa
+     già da allora, ma QUESTA entry (la lotta vera) era rimasta indietro —
+     corretto il 5 ottobre 2026, stessa richiesta ripetuta da Luca. ── */
   'il_solitario': {
     sprite: 'CAMPIONE_SOLITARIO', ritratto: 'CHAMPION', vista: 1,
-    classe: 'Campione', nome: 'Il Solitario',
+    classe: 'Campione', nome: 'Simone',
     squadra: [
       { id: 149, livello: 65 },  // Dragonite
       { id: 376, livello: 65 },  // Metagross
@@ -1986,7 +2050,7 @@ const DATI_TRAINER = {
     classe: 'Ornitologo', nome: 'Remo',
     squadra: [ { id: 41, livello: 13 }, { id: 42, livello: 14 } ],
     dialogo_prima: 'L\'ultimo prima di Marino! Se passi me, sei pronto per la Fontana!',
-    dialogo_dopo: 'Battuto. Vai, a Marino t\'aspetta il capopalestra Moro.',
+    dialogo_dopo: 'Battuto. Vai, a Marino t\'aspetta il capopalestra Matilde.',
     premio: 280,
   },
   // Zona laterale — sbloccabile con MN Forza (oltre il masso 'masso_p3_1')
@@ -2023,7 +2087,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_2': {
     sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
     classe: 'Pescatore', nome: 'Osvaldo',
-    squadra: [ { id: 129, livello: 22 }, { id: 98, livello: 24 }, { id: 341, livello: 26 } ],
+    squadra: [ { id: 129, livello: 24 }, { id: 98, livello: 26 }, { id: 341, livello: 28 } ],
     dialogo_prima: 'Stavo a pescà tranquillo e mo\' me trovo pure a combatte...',
     dialogo_dopo: 'Nfatti, oggi nun era giornata bona manco pe\' le lotte.',
     premio: 720,
@@ -2031,7 +2095,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_3': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
     classe: 'Escursionista', nome: 'Ferruccio',
-    squadra: [ { id: 74, livello: 24 }, { id: 66, livello: 26 }, { id: 95, livello: 28 } ],
+    squadra: [ { id: 74, livello: 25 }, { id: 66, livello: 27 }, { id: 95, livello: 29 } ],
     dialogo_prima: 'Sto tratto de strada l\'ho fatto mille vorte, ma sfide poche. Daje!',
     dialogo_dopo: 'La roccia regge sempre, io un po\' meno.',
     premio: 780,
@@ -2039,7 +2103,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_4': {
     sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 6,
     classe: 'Motociclista', nome: 'Italo',
-    squadra: [ { id: 109, livello: 24 }, { id: 88, livello: 26 }, { id: 100, livello: 28 } ],
+    squadra: [ { id: 109, livello: 25 }, { id: 88, livello: 27 }, { id: 100, livello: 29 } ],
     dialogo_prima: 'Se me sorpassi in salita, te tocca prima batteme!',
     dialogo_dopo: 'Vabbè, mo\' me tocca spinge la moto a piedi...',
     premio: 780,
@@ -2047,7 +2111,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_5': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 4,
     classe: 'Campeggiatore', nome: 'Renzo',
-    squadra: [ { id: 19, livello: 20 }, { id: 27, livello: 22 }, { id: 263, livello: 24 } ],
+    squadra: [ { id: 19, livello: 25 }, { id: 27, livello: 27 }, { id: 263, livello: 29 } ],
     dialogo_prima: 'Ao, so\' accampato qua da \'na settimana. Facciamo \'na lotta pe\' ammazzà er tempo?',
     dialogo_dopo: 'Vabbè, mo\' me rimetto a guardà er fuoco.',
     premio: 660,
@@ -2055,7 +2119,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_6': {
     sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 4,
     classe: 'Escursionista', nome: 'Ines',
-    squadra: [ { id: 43, livello: 20 }, { id: 69, livello: 22 }, { id: 273, livello: 24 } ],
+    squadra: [ { id: 43, livello: 25 }, { id: 69, livello: 27 }, { id: 273, livello: 29 } ],
     dialogo_prima: 'Ho preparato le fraschette pe\' tutti! Prima però, \'na sfida!',
     dialogo_dopo: 'Embè, mo\' me consolo co\' \'na fetta de porchetta.',
     premio: 660,
@@ -2063,7 +2127,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_7': {
     sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 8,
     classe: 'Ornitologo', nome: 'Amleto',
-    squadra: [ { id: 16, livello: 24 }, { id: 84, livello: 26 }, { id: 276, livello: 28 } ],
+    squadra: [ { id: 16, livello: 26 }, { id: 84, livello: 28 }, { id: 276, livello: 30 } ],
     dialogo_prima: 'Sti laghi so\' pieni de uccelli. Pure li mii sanno vola, eh!',
     dialogo_dopo: 'Volato via pure \'sto vantaggio, nfatti.',
     premio: 780,
@@ -2071,7 +2135,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_8': {
     sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
     classe: 'Signora', nome: 'Pierina',
-    squadra: [ { id: 35, livello: 22 }, { id: 39, livello: 24 }, { id: 300, livello: 26 } ],
+    squadra: [ { id: 35, livello: 26 }, { id: 39, livello: 28 }, { id: 300, livello: 30 } ],
     dialogo_prima: 'Che bella passeggiata attorno ar lago! Ti va de sfidamme?',
     dialogo_dopo: 'Embè, la prossima volta faccio \'na passeggiata e basta.',
     premio: 720,
@@ -2095,7 +2159,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_11': {
     sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 6,
     classe: 'Nuotatore', nome: 'Ubaldo',
-    squadra: [ { id: 116, livello: 26 }, { id: 86, livello: 28 }, { id: 8, livello: 30 } ],
+    squadra: [ { id: 116, livello: 27 }, { id: 86, livello: 29 }, { id: 8, livello: 31 } ],
     dialogo_prima: 'Sto lago l\'ho attraversato tutto a nuoto! Mo\' famo \'sta lotta!',
     dialogo_dopo: 'Nfatti, mejo in acqua che in battaglia, io.',
     premio: 840,
@@ -2103,7 +2167,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_12': {
     sprite: 'trainer_SWIMMER_F', ritratto: 'SWIMMER_F', vista: 6,
     classe: 'Nuotatrice', nome: 'Wanda',
-    squadra: [ { id: 90, livello: 26 }, { id: 120, livello: 28 }, { id: 183, livello: 30 } ],
+    squadra: [ { id: 90, livello: 27 }, { id: 120, livello: 29 }, { id: 183, livello: 31 } ],
     dialogo_prima: 'L\'acqua è fresca e io so\' carica! Famo \'sta sfida, daje!',
     dialogo_dopo: 'Embè, mo\' torno a nuotà, che me consola de più.',
     premio: 840,
@@ -2111,7 +2175,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_13': {
     sprite: 'trainer_SWIMMER2_M', ritratto: 'SWIMMER2_M', vista: 6,
     classe: 'Nuotatore Esperto', nome: 'Aldo',
-    squadra: [ { id: 117, livello: 28 }, { id: 61, livello: 30 }, { id: 79, livello: 32 } ],
+    squadra: [ { id: 117, livello: 27 }, { id: 61, livello: 29 }, { id: 79, livello: 31 } ],
     dialogo_prima: 'So\' er più forte de tutto \'sto lago. Dimostramelo che sbajo!',
     dialogo_dopo: 'Nfatti sbajavo, mo\' me sta bene.',
     premio: 900,
@@ -2127,7 +2191,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_15': {
     sprite: 'trainer_PSYCHIC_M', ritratto: 'PSYCHIC_M', vista: 7,
     classe: 'Sensitivo', nome: 'Fioravante',
-    squadra: [ { id: 63, livello: 26 }, { id: 96, livello: 28 }, { id: 177, livello: 30 } ],
+    squadra: [ { id: 63, livello: 28 }, { id: 96, livello: 30 }, { id: 177, livello: 32 } ],
     dialogo_prima: 'Percepisco che perderai... o forse spero solo tanto.',
     dialogo_dopo: 'Nfatti, la mia sensitività lasciava un po\' a desiderà.',
     premio: 840,
@@ -2151,7 +2215,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_18': {
     sprite: 'trainer_ENGINEER', ritratto: 'ENGINEER', vista: 5,
     classe: 'Tecnico', nome: 'Bruna',
-    squadra: [ { id: 81, livello: 26 }, { id: 100, livello: 28 }, { id: 309, livello: 30 } ],
+    squadra: [ { id: 81, livello: 29 }, { id: 100, livello: 31 }, { id: 309, livello: 33 } ],
     dialogo_prima: 'Manutenzione all\'Osservatorio finita. Ho tempo pe\' \'na sfida.',
     dialogo_dopo: 'Vabbè, sti calcoli nun tornavano proprio.',
     premio: 840,
@@ -2159,7 +2223,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_19': {
     sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 5,
     classe: 'Scienziato', nome: 'Sante',
-    squadra: [ { id: 88, livello: 28 }, { id: 101, livello: 30 }, { id: 82, livello: 32 } ],
+    squadra: [ { id: 88, livello: 29 }, { id: 101, livello: 31 }, { id: 82, livello: 33 } ],
     dialogo_prima: 'Sto a studià li fenomeni de sto lago. Tu sei la variabile de oggi.',
     dialogo_dopo: 'Nfatti, la variabile ha vinto lei.',
     premio: 900,
@@ -2167,7 +2231,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_20': {
     sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
     classe: 'Insettista', nome: 'Palmira',
-    squadra: [ { id: 10, livello: 20 }, { id: 13, livello: 22 }, { id: 265, livello: 24 } ],
+    squadra: [ { id: 10, livello: 29 }, { id: 13, livello: 31 }, { id: 265, livello: 33 } ],
     dialogo_prima: 'Qua ce so\' certi insetti che manco te immagini! Famo \'na lotta?',
     dialogo_dopo: 'Embè, so\' tornata a cercà bruchi, va.',
     premio: 660,
@@ -2175,7 +2239,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_21': {
     sprite: 'trainer_TAMER', ritratto: 'TAMER', vista: 5,
     classe: 'Domatore', nome: 'Gelsomina',
-    squadra: [ { id: 58, livello: 26 }, { id: 56, livello: 28 }, { id: 261, livello: 30 } ],
+    squadra: [ { id: 58, livello: 29 }, { id: 56, livello: 31 }, { id: 261, livello: 33 } ],
     dialogo_prima: 'Li mii Pokémon so\' addestrati bene. Vediamo li tui!',
     dialogo_dopo: 'Nfatti, l\'addestramento tuo era mejo.',
     premio: 840,
@@ -2183,7 +2247,7 @@ const DATI_TRAINER = {
   'via_laghi_trainer_22': {
     sprite: 'trainer_POKEMONBREEDER', ritratto: 'POKEMONBREEDER', vista: 5,
     classe: 'Allevatrice', nome: 'Iole',
-    squadra: [ { id: 133, livello: 24 }, { id: 300, livello: 26 }, { id: 174, livello: 28 } ],
+    squadra: [ { id: 133, livello: 30 }, { id: 300, livello: 32 }, { id: 174, livello: 34 } ],
     dialogo_prima: 'Allevo li mii Pokémon co\' tanto amore. E co\' tanta grinta pure!',
     dialogo_dopo: 'Vabbè, li fo allenà de più da mo\' in poi.',
     premio: 780,
@@ -2664,12 +2728,12 @@ const DATI_TRAINER = {
     sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 6,
     classe: 'Duro', nome: 'Osvaldo',
     squadra: [ { id: 354, livello: 52 }, { id: 302, livello: 52 } ],
-    dialogo_prima: 'L\'ultimo prima di Ariccia! Se passi me, sei pronto pe\' Ombretta!',
-    dialogo_dopo: 'Battuto. Ombretta t\'aspetta, e coi Buio nun scherza.',
+    dialogo_prima: 'L\'ultimo prima di Ariccia! Se passi me, sei pronto pe\' Isa!',
+    dialogo_dopo: 'Battuto. Isa t\'aspetta, e coi Buio nun scherza.',
     premio: 1150,
   },
 
-  /* ── ARICCIA — città, Lv 49-52 (7ª città, Palestra Buio, Capopalestra Ombretta) ──
+  /* ── ARICCIA — città, Lv 49-52 (7ª città, Palestra Buio, Capopalestra Isa) ──
      NUOVA (sessione 6 agosto): la città aveva solo NPC/dialogo (+ la Sfida dei
      Porchettari), nessun allenatore vero. 5 allenatori generici, tema Buio in
      avvicinamento alla palestra, posizioni segnaposto in Ariccia.tmj/.tmx
@@ -2703,14 +2767,14 @@ const DATI_TRAINER = {
     classe: 'Cercatrice', nome: 'Selvaggia',
     squadra: [ { id: 164, livello: 50 }, { id: 359, livello: 51 } ],
     dialogo_prima: 'Vado in giro pe\' boschi e ponti a cercà Pokémon rari. Uno l\'ho trovato: tocca affrontamme!',
-    dialogo_dopo: 'Bravo, davvero. Ombretta t\'aspetta, ma preparate bene.',
+    dialogo_dopo: 'Bravo, davvero. Isa t\'aspetta, ma preparate bene.',
     premio: 1140,
   },
   'all-ariccia-5': {
     sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 6,
     classe: 'Veterano dell\'Ombra', nome: 'Ottavio',
     squadra: [ { id: 355, livello: 51 }, { id: 353, livello: 52 } ],
-    dialogo_prima: 'L\'ultimo prima de Ombretta so\' io. Se me passi, sei davero pronto pe\' la Medaglia Fraschetta.',
+    dialogo_prima: 'L\'ultimo prima de Isa so\' io. Se me passi, sei davero pronto pe\' la Medaglia Fraschetta.',
     dialogo_dopo: 'Battuto in piena regola. Vai pure, la palestra è quella davanti.',
     premio: 1200,
   },
@@ -3610,7 +3674,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_1': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
-    squadra: [ { id: 42, livello: 56 }, { id: 169, livello: 57 } ],
+    squadra: [ { id: 42, livello: 60 }, { id: 169, livello: 61 } ],
     dialogo_prima: 'Zona di pattuglia. Non dovresti essere qui.',
     dialogo_dopo: 'Vabbè, passa pure.',
     premio: 1100,
@@ -3618,7 +3682,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_2': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
-    squadra: [ { id: 330, livello: 56 }, { id: 376, livello: 57 } ],
+    squadra: [ { id: 330, livello: 60 }, { id: 376, livello: 61 } ],
     dialogo_prima: 'Non hai niente da fare qui intorno!',
     dialogo_dopo: 'Figurati se mi fermi davvero...',
     premio: 1100,
@@ -3626,7 +3690,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_3': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
-    squadra: [ { id: 306, livello: 57 }, { id: 232, livello: 58 } ],
+    squadra: [ { id: 306, livello: 61 }, { id: 232, livello: 62 } ],
     dialogo_prima: 'Fuori dai piedi, è zona nostra.',
     dialogo_dopo: 'Avviserò gli altri...',
     premio: 1150,
@@ -3634,7 +3698,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_4': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
-    squadra: [ { id: 319, livello: 57 }, { id: 365, livello: 58 } ],
+    squadra: [ { id: 319, livello: 62 }, { id: 365, livello: 63 } ],
     dialogo_prima: 'Dovevi fermarti al cancello, sai?',
     dialogo_dopo: 'Mmh, forte più di quanto pensassi.',
     premio: 1150,
@@ -3642,7 +3706,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_5': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
-    squadra: [ { id: 248, livello: 58 }, { id: 373, livello: 59 } ],
+    squadra: [ { id: 248, livello: 63 }, { id: 373, livello: 64 } ],
     dialogo_prima: 'Siamo in tanti qui intorno. Hai sbagliato strada.',
     dialogo_dopo: 'Tiè, passa, ma stai attento.',
     premio: 1200,
@@ -3650,7 +3714,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_6': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetta',
-    squadra: [ { id: 350, livello: 58 }, { id: 303, livello: 59 } ],
+    squadra: [ { id: 350, livello: 64 }, { id: 303, livello: 65 } ],
     dialogo_prima: 'Maso è proprio lì avanti, non ti conviene continuare.',
     dialogo_dopo: 'Fai come vuoi, sono solo io.',
     premio: 1200,
@@ -3658,7 +3722,7 @@ const DATI_TRAINER = {
   'grunt_montepo1_7': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Addetto',
-    squadra: [ { id: 149, livello: 59 }, { id: 230, livello: 59 } ],
+    squadra: [ { id: 149, livello: 65 }, { id: 230, livello: 66 } ],
     dialogo_prima: 'Ultimo avviso: torna indietro finché sei in tempo.',
     dialogo_dopo: 'Vai pure, ma non dire che non ti avevo avvisato.',
     premio: 1250,
@@ -3723,5 +3787,54 @@ const DATI_TRAINER = {
     dialogo_prima: 'L\'ultima guardia prima di Via Vittoria. Fatti onore.',
     dialogo_dopo: 'Vai. Non lascerò passare nessun altro oggi.',
     premio: 1450,
+  },
+
+  /* ── Dojo di Saffron (estratto da pret/pokefirered, collegato a Percorso
+     9, sess. 5 ott 2026): 5 allenatori, tutti squadre di tipo Lotta. I
+     primi 4 sotto il cap della 6ª palestra (Albano, cap 46); il "maestro"
+     poco sotto il cap della 7ª (Ariccia, cap 52). ── */
+  'saffroncity_dojo_1': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Allievo del Dojo', nome: 'Toshi',
+    squadra: [ { id: 67, livello: 41 }, { id: 57, livello: 42 } ],   // Machoke, Primeape
+    dialogo_prima: 'Qui dentro ci si allena sul serio. Mostrami quanto vali.',
+    dialogo_dopo: 'Mmh. Hai ancora molto da imparare, ma non sei male.',
+    premio: 820,
+  },
+  'saffroncity_dojo_2': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Allieva del Dojo', nome: 'Mai',
+    squadra: [ { id: 106, livello: 42 }, { id: 296, livello: 40 } ],   // Hitmonlee, Makuhita
+    dialogo_prima: 'Il corpo e la mente devono essere una cosa sola. Vediamo il tuo equilibrio.',
+    dialogo_dopo: 'Un buon combattimento. Torna ad allenarti.',
+    premio: 840,
+  },
+  'saffroncity_dojo_3': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Allievo del Dojo', nome: 'Kenji',
+    squadra: [ { id: 107, livello: 43 }, { id: 308, livello: 41 } ],   // Hitmonchan, Medicham
+    dialogo_prima: 'Colpisci prima che pensino di colpire te. Questa è la regola.',
+    dialogo_dopo: 'Hai riflessi niente male, lo ammetto.',
+    premio: 860,
+  },
+  'saffroncity_dojo_4': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Allieva del Dojo', nome: 'Sora',
+    squadra: [ { id: 297, livello: 44 }, { id: 214, livello: 43 } ],   // Hariyama, Heracross
+    dialogo_prima: 'Sono l\'ultima prima del Maestro. Non pensare che sia una passeggiata.',
+    dialogo_dopo: 'Il Maestro ti aspetta. Buona fortuna, ne avrai bisogno.',
+    premio: 900,
+  },
+  'saffroncity_dojo_maestro': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Maestro del Dojo', nome: 'Ryota',
+    squadra: [ { id: 237, livello: 48 }, { id: 62, livello: 49 }, { id: 68, livello: 50 } ],   // Hitmontop, Poliwrath, Machamp
+    dialogo_prima: 'Sono il Maestro di questo Dojo da vent\'anni. Vediamo se riesci a smuovermi.',
+    dialogo_dopo: 'Incredibile... non perdevo da anni. Sei forte davvero. Scegli il tuo premio.',
+    premio: 2200,
+    flagVittoria: 'dojoMaestroSconfitto',
+    // Scelta tra Hitmonchan(107) e Hitmonlee(106), Lv45, richiesta di Luca.
+    scelteVittoriaPokemon: [107, 106],
+    livelloVittoriaPokemon: 45,
   },
 };

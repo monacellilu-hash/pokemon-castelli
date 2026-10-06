@@ -135,6 +135,144 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="6" name="collisioni"/>
- <objectgroup id="5" name="eventi"/>
+ <objectgroup id="6" name="collisioni">
+ <object id="69" x="4.99553969669938" y="5.49509366636931" width="18.4834968777877" height="880.7136485281"/>
+ <object id="70" x="21.9803746654773" y="868.224799286352" width="319.71454058876" height="19.9821587867975"/>
+ <object id="71" x="461.587867975022" y="866.726137377342" width="421.623550401427" height="22.4799286351472"/>
+ <object id="72" x="866.226583407672" y="10.4906333630687" width="26.4763603925066" height="863.728813559322"/>
+ <object id="73" x="205.816235504014" y="326.708296164139" width="169.848349687779" height="13.9875111507582"/>
+ <object id="74" x="204.317573595004" y="330.205173951829" width="4.99553969669938" height="74.4335414808207"/>
+ <object id="75" x="40.9634255129349" y="294.237288135593" width="7.49330954504907" height="10.9901873327386"/>
+ <object id="76" x="69.4380017841213" y="328.206958073149" width="49.9553969669938" height="14.4870651204282"/>
+ <object id="77" x="96.413916146298" y="234.790365744871" width="18.9830508474576" height="50.9545049063336"/>
+ <object id="78" x="157.8590544157" y="178.840321141838" width="21.4808206958073" height="38.4656556645852"/>
+ <object id="79" x="27.4754683318466" y="1.49866190900981" width="864.228367528992" height="49.9553969669938"/>
+ <object id="80" x="76.4317573595005" y="38.9652096342551" width="45.9589652096343" height="85.4237288135593"/>
+ <object id="81" x="203.818019625335" y="36.9669937555754" width="46.4585191793042" height="84.9241748438894"/>
+ <object id="82" x="642.42640499554" y="24.9776984834969" width="57.4487065120428" height="97.9125780553078"/>
+ <object id="83" x="778.804638715433" y="30.4727921498662" width="46.4585191793042" height="94.4157002676182"/>
+ <object id="84" x="667.903657448707" y="169.848349687779" width="25.9768064228367" height="41.4629794826048"/>
+ <object id="85" x="725.352363960749" y="238.78679750223" width="26.9759143621767" height="28.9741302408564"/>
+ <object id="86" x="775.807314897413" y="266.262265834077" width="44.4603033006244" height="9.99107939339876"/>
+ <object id="87" x="711.864406779661" y="295.236396074933" width="29.4736842105264" height="13.4879571810883"/>
+ <object id="88" x="460.089206066013" y="330.205173951829" width="179.839429081178" height="11.4897413024086"/>
+ <object id="89" x="669.901873327386" y="300.231935771632" width="20.9812667261374" height="37.9661016949153"/>
+ <object id="90" x="768.813559322034" y="299.732381801963" width="22.9794826048171" height="45.4594112399643"/>
+ <object id="91" x="794.790365744871" y="360.178412132025" width="20.4817127564675" height="48.9562890276539"/>
+ <object id="92" x="818.768956289028" y="427.618198037467" width="52.4531668153434" height="17.9839429081177"/>
+ <object id="93" x="586.476360392507" y="352.685102586976" width="14.4870651204282" height="55.950044603033"/>
+ <object id="94" x="205.816235504014" y="453.095450490633" width="6.99375557537914" height="44.4603033006244"/>
+ <object id="95" x="173.844781445138" y="493.059768064228" width="3.49687778768956" height="38.9652096342551"/>
+ <object id="96" x="200.820695807315" y="551.507582515611" width="7.99286351471901" height="34.9687778768956"/>
+ <object id="97" x="228.296164139161" y="588.974130240856" width="6.99375557537914" height="34.9687778768956"/>
+ <object id="98" x="256.770740410348" y="617.448706512043" width="14.9866190900981" height="38.4656556645851"/>
+ <object id="99" x="336.199821587868" y="649.420160570919" width="129.884032114184" height="22.4799286351472"/>
+ <object id="100" x="464.085637823372" y="682.890276538805" width="47.4576271186441" height="6.49420160570924"/>
+ <object id="101" x="304.727921498662" y="682.390722569135" width="36.4674397859054" height="8.49241748438897"/>
+ <object id="102" x="330.704727921499" y="748.331846565566" width="7.99286351471903" height="8.49241748438897"/>
+ <object id="103" x="270.758251561106" y="775.307760927743" width="35.4683318465655" height="8.49241748438885"/>
+ <object id="104" x="200.820695807315" y="806.779661016949" width="77.9304192685103" height="15.486173059768"/>
+ <object id="105" x="206.815343443354" y="821.766280107047" width="9.99107939339876" height="23.978590544157"/>
+ <object id="106" x="460.089206066013" y="751.828724353256" width="6.99375557537911" height="7.99286351471892"/>
+ <object id="107" x="488.064228367529" y="773.309545049063" width="53.4522747546833" height="11.9892952720785"/>
+ <object id="108" x="527.029438001784" y="806.779661016949" width="77.9304192685103" height="8.99197145405878"/>
+ <object id="109" x="588.474576271186" y="818.768956289028" width="5.99464763603919" height="36.9669937555753"/>
+ <object id="110" x="328.706512042819" y="816.271186440678" width="8.49241748438897" height="36.9669937555755"/>
+ <object id="111" x="461.088314005352" y="808.278322925959" width="7.49330954504904" height="50.4549509366636"/>
+ <object id="112" x="525.031222123104" y="617.448706512043" width="5.9946476360393" height="45.4594112399643"/>
+ <object id="113" x="558.00178412132" y="592.471008028546" width="0.499553969669932" height="35.9678858162356"/>
+ <object id="114" x="591.971454058876" y="557.00267618198" width="2.49776984834966" height="37.9661016949153"/>
+ <object id="115" x="552.506690454951" y="586.975914362177" width="8.99197145405878" height="38.4656556645851"/>
+ <object id="116" x="587.975022301517" y="455.093666369313" width="7.99286351471903" height="47.457627118644"/>
+ <object id="117" x="618.447814451383" y="490.561998215879" width="8.49241748438885" height="47.457627118644"/>
+</objectgroup>
+ <objectgroup id="5" name="eventi">
+ <object id="1" name="Dante" x="106.033898305085" y="566.408563782337">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 1 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="2" name="Ubaldo" x="332.974130240856" y="299.646743978591">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 2 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="3" name="Emilio" x="467.49687778769" y="253.687778768956">
+  <properties>
+   <property name="direzione" value="ovest"/>
+   <property name="id" value="gregario 3 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="4" name="Siro" x="658.968777876896" y="375.578947368421">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 4 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="5" name="Mirta" x="174.044603033006" y="568.406779661017">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 5 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="6" name="Arnaldo" x="561.270294380018" y="790.936663693131">
+  <properties>
+   <property name="direzione" value="nord"/>
+   <property name="id" value="gregario 6 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="7" name="Furio" x="146.42640499554" y="851.882247992864">
+  <properties>
+   <property name="direzione" value="nord"/>
+   <property name="id" value="gregario 7 palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="10"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="8" name="Baso" x="390.066012488849" y="111.443354148082">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gym_leader_palestra rocca di papa"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="9" name="spawn" x="432" y="848">
+  <properties>
+   <property name="id" value="entrata_principale"/>
+   <property name="type" value="spawn"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="10" name="warp" x="464" y="848">
+  <properties>
+   <property name="destinazione" value="rocca_di_papa"/>
+   <property name="spawn_id" value="da_palestra_rocca_di_papa"/>
+   <property name="type" value="warp"/>
+  </properties>
+  <point/>
+ </object>
+</objectgroup>
 </map>

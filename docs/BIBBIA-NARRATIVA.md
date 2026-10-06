@@ -122,7 +122,7 @@ sopra decine di volte senza notarla, e ci tornerà solo da Campione.
 
 #### Grottaferrata
 
-Seconda medaglia, capopalestra **Nilo**.
+Seconda medaglia, capopalestra **Igino**.
 
 E il primo contatto col Team GdF. Tre uomini presidiano l'esterno dell'**Abbazia di San Nilo**.
 La porta è sbarrata. Parlano di verifiche in corso, di documentazione, di accesso
@@ -548,9 +548,9 @@ Voluto, non è un errore.
 6. Dove esattamente si ottiene l'**oggetto MN Cascata** a Genzano.
 7. Dettaglio della squadra-copia di Mewtwo (livelli, se è una copia esatta 1:1 o adattata).
 8. Lore interna del **Bunkerino**.
-9. Nomi/aspetto/squadre dei capipalestra ancora mancanti: Monte Porzio (Stella, dati già presenti),
+9. Nomi/aspetto/squadre dei capipalestra ancora mancanti: Monte Porzio (Biretta, dati già presenti),
    Rocca di Papa (Baso, dati già presenti — tipo Lotta, ex Rocco/Roccia), Albano (Giorgia, dati già
-   presenti — tipo Roccia, ex Massimo/Lotta), Ariccia (Ombretta), Genzano (Camilla).
+   presenti — tipo Roccia, ex Massimo/Lotta), Ariccia (Isa), Genzano (Camilla).
 10. Se **Fulvia** e **Tarcisio** (admin GdF della v2) restano nel gioco come intermedi sotto i due
     capi, o vengono rimossi del tutto.
 
@@ -562,7 +562,7 @@ Voluto, non è un errore.
 > Vedi la v2 in cronologia git per il dettaglio città-per-città completo (Poké Market, case, NPC
 > locali) — qui si riportano solo le città con contenuto narrativo **cambiato** dalla storia nuova.
 
-- **Genzano (P8)**: capopalestra **Camilla** (non più "Flora" — nome della v2 superato).
+- **Genzano (P8)**: capopalestra **Camilla** (non più "Camilla" — nome della v2 superato).
 - **Marino (P3)**: rifugio GdF ora a **3 parti** di password (non più 2).
 - **Nemi**: Museo delle Navi ora **senza le Pietre** (pista fredda), ma con un boss GdF (2ª parte
   password).

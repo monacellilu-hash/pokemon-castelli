@@ -913,29 +913,6 @@
                  "y":384.203
                 }, 
                 {
-                 "height":13.0138,
-                 "id":55,
-                 "name":"uscita_nord_",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"destinazione",
-                         "type":"string",
-                         "value":"pokemon-castelli- Percorso 1b"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"uscita"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":175.065,
-                 "x":1129.134,
-                 "y":1.4931
-                }, 
-                {
                  "height":157.732,
                  "id":56,
                  "name":"erba alta percorso 1",

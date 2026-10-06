@@ -1,5 +1,12 @@
 # STATO DEL PROGETTO — Pokémon Castelli Romani
 
+> **AVVISO 5 ottobre 2026**: questo documento è fermo al 5 agosto 2026, due mesi di lavoro fa — NON
+> fidarsi del resto del file per lo stato di Lega di Colonna, Team GdF/CoTrAL, lotta in doppio, menu
+> nativi, sistema cutscene o leggendari: sono tutti cambiati parecchio da allora (nel bene — molto più
+> fatto — e in qualche buco vero). Stato reale verificato sul codice: vedi `CLAUDE.md` §STATO ATTUALE
+> (riassunto) e la nota in cima a `docs/TODO.md` Gruppo A (dettaglio). I due buchi veri rimasti:
+> Bunkerino post-Lega (mappe mai cablate) e 10 leggendari su 21 mai piazzati.
+
 > Documento riassuntivo "fotografia" dello stato attuale, aggiornato al **5 agosto 2026** (sessione
 > di sola documentazione: nuova storia canonica da `STORIA.md`, verifica del codice reale). Questa
 > versione **corregge diversi punti della fotografia del 3 agosto che erano già superati dal codice**
@@ -16,7 +23,7 @@ La versione precedente di questo documento diceva cose che **non sono più vere*
 `js/map.js` e `dati/trainer.js` direttamente in questa sessione:
 
 - ❌ *"Marino: la Medaglia Fontana non è ottenibile"* → **FALSO oggi**. Il trainer `gym_leader_palestra
-  marino` (Moro, `palestraId: 'marino'`) risulta piazzato su `pokemon-castelli-palestra_marino.tmj`,
+  marino` (Matilde, `palestraId: 'marino'`) risulta piazzato su `pokemon-castelli-palestra_marino.tmj`,
   registrata in `MAPPE` come `interno_palestra_moro`. La medaglia sembra ottenibile (il warp
   porta↔interno non è stato ripercorso a mano in questa sessione, solo verificato che i dati
   combaciano).
@@ -27,7 +34,7 @@ La versione precedente di questo documento diceva cose che **non sono più vere*
   percorso_montano_v1 ↔ rocca_di_papa`.
 - ❌ *"Il codice ha `NOME_TEAM`, da rinominare in `TEAM_GDF_NOME`"* (nota in `BIBBIA-NARRATIVA.md` v2)
   → **FALSO oggi**: `js/data.js:67-68` ha già `TEAM_GDF_NOME` e `TEAM_COTRAL_NOME` distinti.
-- ⚠️ **NUOVO BUG trovato in questa sessione** (non era mai stato segnalato): il trainer **Stella**
+- ⚠️ **NUOVO BUG trovato in questa sessione** (non era mai stato segnalato): il trainer **Biretta**
   (capopalestra Monte Porzio) è piazzato su `pokemon-castelli-palestra_monteporzio.tmj` con id Tiled
   `"gym_leader_palestra monteporzio"` (**senza trattino**), ma la sua voce dati in `dati/trainer.js`
   usa la chiave `'gym_leader_palestra monte-porzio'` (**con trattino**) e `palestraId: 'monte-porzio'`.
@@ -36,7 +43,7 @@ La versione precedente di questo documento diceva cose che **non sono più vere*
   dialogo, medaglia). **Verificato solo staticamente, non testato a runtime.**
 - ✅ **GAP risolto in sessione successiva** (tipo Rocca di Papa cambiato Roccia→Lotta, capopalestra
   Rocco→Baso; Albano cambiato Lotta→Roccia, capopalestra Massimo→Giorgia; Genzano Folletto→Fuoco,
-  capopalestra Flora invariata): entrambi gli interni palestra (Rocca di Papa e Albano) sono stati
+  capopalestra Camilla invariata): entrambi gli interni palestra (Rocca di Papa e Albano) sono stati
   popolati in Tiled e registrati in `MAPPE` (`interno_palestra_rocco`, `palestra_albano_interno`).
   Non ancora ripercorsi a mano in game — verificare a runtime.
 - ✅ **Confermato ancora vero**: `MODALITA_TEST = true` in `js/data.js:17`. Il pattern generico
@@ -60,7 +67,7 @@ Phaser 3). Il vecchio motore con mappa reale Leaflet/OpenStreetMap (coordinate l
 
 - **3 palestre su 8 hanno un capopalestra piazzato e dati corretti** (Frascati, Grottaferrata,
   Marino). **1 palestra ha il capopalestra piazzato ma con un bug di id che probabilmente lo rompe**
-  (Monte Porzio/Stella — vedi §0). **Rocca di Papa (Baso, tipo Lotta) e Albano (Giorgia, tipo Roccia)
+  (Monte Porzio/Biretta — vedi §0). **Rocca di Papa (Baso, tipo Lotta) e Albano (Giorgia, tipo Roccia)
   hanno ora un capopalestra piazzato** (sessione odierna, da testare a runtime). **Ariccia e Genzano
   non hanno ancora nessuna mappa-interno palestra**.
 - **Cluster di mappe continue** (world Tiled, cammino senza dissolvenza): `Castelli_prima`,
@@ -130,13 +137,13 @@ Vedi `docs/DIZIONARIO-TILED.md` per la tabella di riferimento completa.
   | Palestra | Capopalestra nei dati | Piazzato su una mappa | Medaglia ottenibile oggi |
   |---|---|---|---|
   | Frascati (Vinicio) | ✅ | ✅ | ✅ |
-  | Grottaferrata (Nilo) | ✅ | ✅ | ✅ |
-  | Marino (Moro) | ✅ | ✅ | ✅ probabile (non ripercorso a mano) |
-  | Monte Porzio (Stella) | ✅ | ✅ ma **id disallineato** (bug, vedi §0) | ⚠️ probabile NO |
+  | Grottaferrata (Igino) | ✅ | ✅ | ✅ |
+  | Marino (Matilde) | ✅ | ✅ | ✅ probabile (non ripercorso a mano) |
+  | Monte Porzio (Biretta) | ✅ | ✅ ma **id disallineato** (bug, vedi §0) | ⚠️ probabile NO |
   | Rocca di Papa (Baso, ex "Rocco" — tipo cambiato da Roccia a Lotta, sessione odierna) | ✅ dati | ✅ interno palestra popolato e registrato (sessione odierna, da testare a runtime) | ⚠️ probabile, non ripercorso a mano |
   | Albano (Giorgia, ex "Massimo" — tipo cambiato da Lotta a Roccia, sessione odierna) | ✅ dati (nuovi, sessione odierna) | ✅ interno palestra popolato e registrato (sessione odierna, da testare a runtime) | ⚠️ probabile, non ripercorso a mano |
-  | Ariccia (Ombretta) | ❌ solo nome in dialoghi | ❌ | ❌ NO |
-  | Genzano (Camilla, ex "Flora" nella v2) | ❌ | ❌ | ❌ NO |
+  | Ariccia (Isa) | ❌ solo nome in dialoghi | ❌ | ❌ NO |
+  | Genzano (Camilla, ex "Camilla" nella v2) | ❌ | ❌ | ❌ NO |
 
 ### 2.4 Combattimento, cattura, squadra
 - Turni classici, danni con STAB/efficacia tipi/livello, cattura su HP residui + Ball, EXP scalata,
@@ -173,7 +180,7 @@ Vedi `docs/DIZIONARIO-TILED.md` per la tabella di riferimento completa.
 | `Castelli_prima` | `borgata_tuscolana`, `percorso_tuscolana`, `percorso_1b` | Partenza, tutorial |
 | Boschi del Tuscolo | `tuscolo_ingresso/interno/rovine/profondo`, `boschetto_segreto` | 18 allenatori, Trio Regi |
 | `FrascatiGrotta` | `frascati_sud/centro/est/ovest/nord`, `percorso_2`, `percorso_3`, `grottaferrata` | ✅ P1 Frascati completa. P2 Grottaferrata completa |
-| — (warp, non cluster) | `marino` | ✅ P3 completa (Moro piazzato correttamente) |
+| — (warp, non cluster) | `marino` | ✅ P3 completa (Matilde piazzato correttamente) |
 | `Castelli_lakes` | `marino`*, `lago_albano`, `interno_lago`, `lago_nemi`, `via_dei_laghi`, `percorso_4`, `castel_gandolfo`, `percorso_5` | Castel Gandolfo = sotto-trama GdF (Villa, 7 grunt). *`marino` è anche testa del cluster lakes E del blocco warp sopra — vedi `js/clusters.js` |
 | — (warp, non cluster) | `monteporzio`, `osservatorio`, `percorso_montano_v1`, `rocca_di_papa` | ⚠️ P4 Monte Porzio con bug id (§0). Rocca di Papa: città + PC/Market sì, palestra interna NO |
 | `Castelli_lasthree` | `percorso_7`, `percorso_7b`, `albano`, `percorso_8`, `zona_safari`, `percorso_9`, `ariccia` | Città Albano/Ariccia disegnate, palestre NON ancora dentro |
@@ -309,7 +316,7 @@ restano dietro al pulsante dev "🧪 Setup squadra TEST".
 
 ## 8. Prossimi passi suggeriti (fotografia, non decisi)
 
-- Sistemare il bug id di Stella (Monte Porzio) — `dati/trainer.js` vs id Tiled disallineati (§0).
+- Sistemare il bug id di Biretta (Monte Porzio) — `dati/trainer.js` vs id Tiled disallineati (§0).
 - ~~Costruire la palestra interna di Rocca di Papa e piazzare Baso~~ fatto in sessione odierna
   (insieme all'interno di Albano/Giorgia) — da testare a runtime.
 - Portare i donatori di MN (Spaccaroccia/Surf/Volo/Sub/Cascata) sul motore Tiled col pattern `azione`

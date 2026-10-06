@@ -1105,7 +1105,7 @@
                  "y":157
                 }, 
                 {
-                 "height":255,
+                 "height":245,
                  "id":104,
                  "name":"",
                  "opacity":1,
@@ -2090,7 +2090,7 @@
                  "y":1252
                 }, 
                 {
-                 "height":32,
+                 "height":18,
                  "id":8,
                  "name":"trainer",
                  "opacity":1,
@@ -2123,12 +2123,12 @@
                  "rotation":0,
                  "type":"trainer",
                  "visible":true,
-                 "width":32,
-                 "x":607,
-                 "y":934
+                 "width":24.3333333333334,
+                 "x":638,
+                 "y":937
                 }, 
                 {
-                 "height":32,
+                 "height":19,
                  "id":9,
                  "name":"trainer",
                  "opacity":1,
@@ -2161,9 +2161,9 @@
                  "rotation":0,
                  "type":"trainer",
                  "visible":true,
-                 "width":32,
-                 "x":613,
-                 "y":1109
+                 "width":26,
+                 "x":641.666666666667,
+                 "y":1091.66666666667
                 }, 
                 {
                  "height":32,

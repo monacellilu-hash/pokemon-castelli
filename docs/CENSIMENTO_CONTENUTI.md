@@ -97,13 +97,13 @@
 | # | Città | ID | Tipo | Capopalestra | Squadra | Medaglia | Cap |
 |---|---|---|---|---|---|---|---|
 | 1 | Frascati | frascati | Erba | Vinicio | Oddish 11, Shroomish 12, Gloom 13, **Roselia 14** | Vigna | 14 |
-| 2 | Grottaferrata | grottaferrata | Psico | Nilo | Natu 17, Spoink 18, Kadabra 19, Hypno 20, **Grumpig 21** | Icona | 21 |
-| 3 | Marino | marino | Acqua | Moro | Pelipper 25, Seaking 26, Quagsire 26, Azumarill 27, **Gyarados 28** | Fontana | 28 |
-| 4 | Monte Porzio | monte-porzio | Elettro | Stella | Raichu 31, Electrode 32, Magneton 32, Manectric 33, **Ampharos 34** | Stella | 34 |
+| 2 | Grottaferrata | grottaferrata | Psico | Igino | Natu 17, Spoink 18, Kadabra 19, Hypno 20, **Grumpig 21** | Icona | 21 |
+| 3 | Marino | marino | Acqua | Matilde | Pelipper 25, Seaking 26, Quagsire 26, Azumarill 27, **Gyarados 28** | Fontana | 28 |
+| 4 | Monte Porzio | monte-porzio | Elettro | Biretta | Raichu 31, Electrode 32, Magneton 32, Manectric 33, **Ampharos 34** | Biretta | 34 |
 | 5 | Rocca di Papa | rocca-di-papa | Roccia | Rocco | Sandslash 36, Lairon 37, Golem 38, Rhydon 39, **Aggron 40** | Cratere | 40 |
 | 6 | Albano | albano | Lotta | Massimo | Hitmonchan 42, Hitmonlee 43, Breloom 44, Hariyama 44, Medicham 45, **Machamp 46** | Legione | 46 |
-| 7 | Ariccia | ariccia | Buio | Ombretta | Mightyena 48, Sharpedo 49, Shiftry 50, Crawdaunt 50, Absol 51, **Houndoom 52** | Fraschetta | 52 |
-| 8 | Genzano | genzano | Folletto | Flora | Wigglytuff 54, Mr. Mime 55, Granbull 55, Clefable 56, Azumarill 57, **Gardevoir 58** | Infiorata | 58 |
+| 7 | Ariccia | ariccia | Buio | Isa | Mightyena 48, Sharpedo 49, Shiftry 50, Crawdaunt 50, Absol 51, **Houndoom 52** | Fraschetta | 52 |
+| 8 | Genzano | genzano | Folletto | Camilla | Wigglytuff 54, Mr. Mime 55, Granbull 55, Clefable 56, Azumarill 57, **Gardevoir 58** | Infiorata | 58 |
 
 **Grassetto = asso (ultimo Pokémon, livello = level cap)**
 

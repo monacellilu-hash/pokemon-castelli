@@ -281,6 +281,39 @@ const GameMap = (function () {
       bloccaVuoti: true,
       latFissa: 41.7196, lonFissa: 12.6752,
     },
+    // ── 6 case generiche nuove per Ariccia (5 ott 2026, richiesta esplicita
+    // di Luca: 2 istanze ciascuna dei template casa1/casa5/casa6, mai usati
+    // altrove prima d'ora) — stesso schema delle ariccia_casa3_* sopra. ──
+    'ariccia_casa1_1': {
+      file: 'sprites/maps_tiled/ariccia_casa1_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
+    'ariccia_casa1_2': {
+      file: 'sprites/maps_tiled/ariccia_casa1_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
+    'ariccia_casa5_1': {
+      file: 'sprites/maps_tiled/ariccia_casa5_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
+    'ariccia_casa5_2': {
+      file: 'sprites/maps_tiled/ariccia_casa5_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
+    'ariccia_casa6_1': {
+      file: 'sprites/maps_tiled/ariccia_casa6_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
+    'ariccia_casa6_2': {
+      file: 'sprites/maps_tiled/ariccia_casa6_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7196, lonFissa: 12.6752,
+    },
     // ── Frascati (nuove mappe a warp) ──
     'frascati_sud': {
       file: 'sprites/maps_tiled/frascati_sud.tmj',
@@ -317,11 +350,26 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/percorso_3.tmj',
       latC: 41.7800, lonC: 12.6620,
     },
-    // ── Marino (3ª città — Palestra Acqua, Capopalestra Moro) ──
+    // ── Marino (3ª città — Palestra Acqua, Capopalestra Matilde) ──
     'marino': {
       file: 'sprites/maps_tiled/marino.tmj',
       latC: 41.7725, lonC: 12.6560,
     },
+    // ── 11 case Marino + 2 Percorso 5 (sess. 5 ott 2026), repliche dei
+    // template casa1-8/casapiccola già esistenti, NPC a tema Matilde/Marino. ──
+    'marino_casa1_1':      { file: 'sprites/maps_tiled/marino_casa1_1.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa2_4':      { file: 'sprites/maps_tiled/marino_casa2_4.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa3_4':      { file: 'sprites/maps_tiled/marino_casa3_4.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa4_3':      { file: 'sprites/maps_tiled/marino_casa4_3.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa5_1':      { file: 'sprites/maps_tiled/marino_casa5_1.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa6_1':      { file: 'sprites/maps_tiled/marino_casa6_1.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa7_1':      { file: 'sprites/maps_tiled/marino_casa7_1.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa8_1':      { file: 'sprites/maps_tiled/marino_casa8_1.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casapiccola_3':{ file: 'sprites/maps_tiled/marino_casapiccola_3.tmj',interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa2_5':      { file: 'sprites/maps_tiled/marino_casa2_5.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'marino_casa5_2':      { file: 'sprites/maps_tiled/marino_casa5_2.tmj',      interno: true, bloccaVuoti: true, latFissa: 41.7725, lonFissa: 12.6560 },
+    'percorso_5_casa2_1':  { file: 'sprites/maps_tiled/percorso_5_casa2_1.tmj',  interno: true, bloccaVuoti: true, latFissa: 41.7400, lonFissa: 12.6350 },
+    'percorso_5_casa7_1':  { file: 'sprites/maps_tiled/percorso_5_casa7_1.tmj',  interno: true, bloccaVuoti: true, latFissa: 41.7400, lonFissa: 12.6350 },
     // ── Rifugio GdF di Marino (dungeon multi-piano, dietro la porta a password
     // nella piazza) — sessione 10 agosto. ──
     'gdf_marino_1f': {
@@ -386,6 +434,19 @@ const GameMap = (function () {
     'via_dei_laghi': {
       file: 'sprites/maps_tiled/via_dei_laghi.tmj',
       latC: 41.7300, lonC: 12.6900,
+    },
+    // Ristorante dei Laghi (ex "Motel Cove Lily", estratto da pret/pokeemerald,
+    // rinominato 6 ott 2026): collegato a Via dei Laghi, angolo in alto a
+    // sinistra — posizione segnaposto, Luca lo sposta a mano dove preferisce.
+    'ristorante_laghi_1f': {
+      file: 'sprites/maps_tiled/ristorante_laghi_1f.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7300, lonFissa: 12.6900,
+    },
+    'ristorante_laghi_2f': {
+      file: 'sprites/maps_tiled/ristorante_laghi_2f.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7300, lonFissa: 12.6900,
     },
     // ── Tunnel Roccioso (dungeon 4 piani, Via dei Laghi → Monte Porzio, tra
     // 3ª e 4ª palestra) — sessione 6 agosto. L'uscita a Monte Porzio la cabla
@@ -454,7 +515,7 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/Percorso_5.tmj',
       latC: 41.7400, lonC: 12.6350,
     },
-    // ── Monte Porzio Catone (4ª città — Palestra Elettro, Capopalestra Stella) ──
+    // ── Monte Porzio Catone (4ª città — Palestra Elettro, Capopalestra Biretta) ──
     'monteporzio': {
       file: 'sprites/maps_tiled/monteporzio.tmj',
       latC: 41.8180, lonC: 12.7170,
@@ -639,18 +700,14 @@ const GameMap = (function () {
     // ── Scuola di Albano (ex ViridianCity_School di FireRed, 5 ott 2026):
     // Ricorda Mosse + Elimina Mosse, vedi dati/npc.js. ──
     'albano_scuola': { file: 'sprites/maps_tiled/albano_scuola.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    // ── Condominio × 2 in Albano (clonato da celadon_condominio_*, sess. 5
-    // ott 2026): stesso edificio, due istanze con NPC distinti. ──
+    // ── Condominio di Albano (ri-clonato da celadon_condominio_* il 6 ott
+    // 2026 con le modifiche più recenti di Luca — sostituisce la vecchia
+    // coppia A/B: il "B" è stato eliminato, non serviva più). ──
     'albano_condominio_a_1f':       { file: 'sprites/maps_tiled/albano_condominio_a_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_condominio_a_2f':       { file: 'sprites/maps_tiled/albano_condominio_a_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_condominio_a_3f':       { file: 'sprites/maps_tiled/albano_condominio_a_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_condominio_a_roof':     { file: 'sprites/maps_tiled/albano_condominio_a_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     'albano_condominio_a_roofroom': { file: 'sprites/maps_tiled/albano_condominio_a_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    'albano_condominio_b_1f':       { file: 'sprites/maps_tiled/albano_condominio_b_1f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    'albano_condominio_b_2f':       { file: 'sprites/maps_tiled/albano_condominio_b_2f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    'albano_condominio_b_3f':       { file: 'sprites/maps_tiled/albano_condominio_b_3f.tmj',       interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    'albano_condominio_b_roof':     { file: 'sprites/maps_tiled/albano_condominio_b_roof.tmj',     interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
-    'albano_condominio_b_roofroom': { file: 'sprites/maps_tiled/albano_condominio_b_roofroom.tmj', interno: true, bloccaVuoti: true, latFissa: 41.7295, lonFissa: 12.6588 },
     // ── Centro Allevamento di Nemi (ex Route117_PokemonDayCare di Smeraldo,
     // 5 ott 2026): solo la mappa+NPC, la meccanica di allevamento/uova NON è
     // ancora implementata (fuori scope di questa sessione) — vedi dialogo
@@ -680,6 +737,25 @@ const GameMap = (function () {
     'colonna': {
       file: 'sprites/maps_tiled/Colonna.tmj',
       latC: 41.8110, lonC: 12.7607,
+    },
+    // -- Bunkerino di Colonna (F12b, sess. 5 ott 2026): .tmx esistevano da
+    // tempo ma mai convertiti/registrati, ricollegati oggi al sistema Tiled
+    // vero (prima la logica usava solo lat/lon, oggi inutilizzato). --
+    'bunkerino_0f': {
+      file: 'sprites/maps_tiled/bunkerino_0f.tmj',
+      interno: true, latFissa: 41.8110, lonFissa: 12.7607,
+    },
+    'bunkerino_1f': {
+      file: 'sprites/maps_tiled/bunkerino_1f.tmj',
+      interno: true, latFissa: 41.8110, lonFissa: 12.7607,
+    },
+    // -- Treno per Monte Cavo/Lugia (sess. 5 ott 2026): "viaggio a lungo
+    // raggio" richiesto da Luca, mai esistito prima (Monte Cavo era
+    // irraggiungibile, nessun warp puntava lì) — vagone minimale creato a
+    // mano (nessuna mappa pret adatta trovata), Rocca di Papa <-> Monte Cavo. --
+    'treno_lugia': {
+      file: 'sprites/maps_tiled/treno_lugia.tmj',
+      interno: true, latFissa: 41.7530, lonFissa: 12.7120,
     },
     // Centro Pokémon e Market dedicati di Colonna: il Market è un file a sé
     // (non il generico 'mart_interno') perché vende merce END-GAME unica,
@@ -794,18 +870,70 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/albano.tmj',
       latC: 41.7295, lonC: 12.6588,
     },
+    // ── Negozio di Bici di Albano (sess. 5 ott 2026): mappa già estratta da
+    // pret in passato ma mai registrata né collegata — ora cablata davvero. ──
+    'negozio_di_bici': {
+      file: 'sprites/maps_tiled/negozio_di_bici.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7295, lonFissa: 12.6588,
+    },
     // ── Percorso 8 — Albano → Ariccia (world Castelli_lasthree, stesso cluster
     // di 'albano': bordo adiacente, camminata continua senza dissolvenza). ──
     'percorso_8': {
       file: 'sprites/maps_tiled/Percorso_8.tmj',
       latC: 41.7250, lonC: 12.6680,
     },
-    // ── Zona Safari (world Castelli_lasthree) — ingresso a pagamento, ancora
-    // priva di trainer/incontri dedicati: solo il custode/guardia. ──
-    'zona_safari': {
-      file: 'sprites/maps_tiled/Zona Safari.tmj',
-      latC: 41.7220, lonC: 12.6700,
-      interno: true,   // ingresso a pagamento: niente Volo dentro, come nei giochi veri
+    // ── Zona Safari VERA (sess. 5 ott 2026): la vecchia "Zona Safari.tmj"
+    // disegnata a mano (1 sola mappa) è stata tolta da Luca dal world
+    // Castelli_lasthree — sostituita dalle 11 mappe estratte da pret/
+    // pokefirered (stessa topologia del gioco vero, vedi strumenti/
+    // README_estrai_mappe.md), collegate tra loro con warp VERI. L'ingresso
+    // (fuchsiacity_safarizone_entrance/_office) si aggancia ad Albano invece
+    // che a Fuchsia City (che non esiste qui) — vedi i warp aggiunti dentro
+    // Albano stesso, angolo alto-sinistra, Luca li riposiziona a mano. ──
+    'fuchsiacity_safarizone_entrance': {
+      file: 'sprites/maps_tiled/fuchsiacity_safarizone_entrance.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'fuchsiacity_safarizone_office': {
+      file: 'sprites/maps_tiled/fuchsiacity_safarizone_office.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_center': {
+      file: 'sprites/maps_tiled/safarizone_center.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_center_resthouse': {
+      file: 'sprites/maps_tiled/safarizone_center_resthouse.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_east': {
+      file: 'sprites/maps_tiled/safarizone_east.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_east_resthouse': {
+      file: 'sprites/maps_tiled/safarizone_east_resthouse.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_north': {
+      file: 'sprites/maps_tiled/safarizone_north.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_north_resthouse': {
+      file: 'sprites/maps_tiled/safarizone_north_resthouse.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_secrethouse': {
+      file: 'sprites/maps_tiled/safarizone_secrethouse.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_west': {
+      file: 'sprites/maps_tiled/safarizone_west.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
+    },
+    'safarizone_west_resthouse': {
+      file: 'sprites/maps_tiled/safarizone_west_resthouse.tmj',
+      interno: true, latFissa: 41.7295, lonFissa: 12.6588,
     },
     // ── Grotta di Ho-Oh (Ariccia) — sess. 5 set 2026: mappa disegnata da
     // Luca (grotta_ohoh.tmx, convertita qui in .tmj con strumenti/
@@ -826,12 +954,31 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/Percorso_9.tmj',
       latC: 41.7180, lonC: 12.6720,
     },
-    // ── Ariccia (7ª città — Palestra Buio, Capopalestra Ombretta, cap 52) ──
+    // ── 3 edifici estratti da pret, collegati a Percorso 9 (sess. 5 ott
+    // 2026): angolo in alto a sinistra della mappa per ora, Luca li
+    // riposiziona lui a mano in Tiled. ──
+    'lavaridgetown_herbshop': {
+      file: 'sprites/maps_tiled/lavaridgetown_herbshop.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7180, lonFissa: 12.6720,
+    },
+    'powerplant': {
+      file: 'sprites/maps_tiled/powerplant.tmj',
+      interno: true, bloccaVuoti: true, tema: 'cave',
+      latFissa: 41.7180, lonFissa: 12.6720,
+      incontriCostanti: true, incontriId: 'incontri power plant',
+    },
+    'saffroncity_dojo': {
+      file: 'sprites/maps_tiled/saffroncity_dojo.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7180, lonFissa: 12.6720,
+    },
+    // ── Ariccia (7ª città — Palestra Buio, Capopalestra Isa, cap 52) ──
     'ariccia': {
       file: 'sprites/maps_tiled/Ariccia.tmj',
       latC: 41.7196, lonC: 12.6752,
     },
-    // ── Interno palestra Ariccia (Ombretta) — popolato con gregari/leader
+    // ── Interno palestra Ariccia (Isa) — popolato con gregari/leader
     // (sessione 11 agosto), ma la porta in Ariccia.tmj NON esiste ancora:
     // l'edificio esterno non è ancora disegnato in città. Raggiungibile solo
     // da console finché Luca non piazza l'edificio e la porta. ──
@@ -846,12 +993,12 @@ const GameMap = (function () {
       latC: 41.7130, lonC: 12.6810,
     },
     // ── Genzano di Roma (8ª e ultima città — Palestra Fuoco, Capopalestra
-    // Flora, cap 58). ──
+    // Camilla, cap 58). ──
     'genzano': {
       file: 'sprites/maps_tiled/Genzano.tmj',
       latC: 41.7057, lonC: 12.6864,
     },
-    // ── Interno palestra Genzano (Flora) — chiave = destinazione esatta
+    // ── Interno palestra Genzano (Camilla) — chiave = destinazione esatta
     // scritta sulla porta in Genzano.tmj (palestra_door). ──
     'palestra_genzano_interno': {
       file: 'sprites/maps_tiled/pokemon-castelli-palestra_genzano.tmj',
@@ -1339,12 +1486,28 @@ const GameMap = (function () {
     'ts-casarivale-1f':      'sprites/casarivale_1f_tileset.png',
     'ts-casarivale-2f':      'sprites/casarivale_2f_tileset.png',
     'ts-negozio-bici':       'sprites/negozio_di_bici_tileset.png',
+    'ts-sz-entrance':  'sprites/fuchsiacity_safarizone_entrance_tileset.png',
+    'ts-sz-office':    'sprites/fuchsiacity_safarizone_office_tileset.png',
+    'ts-sz-center':    'sprites/safarizone_center_tileset.png',
+    'ts-sz-center-rh': 'sprites/safarizone_center_resthouse_tileset.png',
+    'ts-sz-east':      'sprites/safarizone_east_tileset.png',
+    'ts-sz-east-rh':   'sprites/safarizone_east_resthouse_tileset.png',
+    'ts-sz-north':     'sprites/safarizone_north_tileset.png',
+    'ts-sz-north-rh':  'sprites/safarizone_north_resthouse_tileset.png',
+    'ts-sz-secret':    'sprites/safarizone_secrethouse_tileset.png',
+    'ts-sz-west':      'sprites/safarizone_west_tileset.png',
+    'ts-sz-west-rh':   'sprites/safarizone_west_resthouse_tileset.png',
+    // ── Edifici estratti da pret per Percorso 9 (sess. 5 ott 2026) ──
+    'ts-herbshop':           'sprites/lavaridgetown_herbshop_tileset.png',
+    'ts-powerplant':         'sprites/powerplant_tileset.png',
+    'ts-dojo':               'sprites/saffroncity_dojo_tileset.png',
     'ts-lab-entrata':        'sprites/genzano_laboratorio_entrata_tileset.png',
     'ts-lab-lounge':         'sprites/genzano_laboratorio_lounge_tileset.png',
     'ts-lab-ricerca':        'sprites/genzano_laboratorio_ricerca_tileset.png',
     'ts-lab-esperimenti':    'sprites/genzano_laboratorio_esperimenti_tileset.png',
     'ts-lega-entrata':       'sprites/lega_pokemon_entrata_tileset.png',
     'ts-casadoppia-lux':     'sprites/casadoppia_luxury_tileset.png',
+    'ts-casa1':              'sprites/casa1_tileset.png',
     'ts-casa5':              'sprites/casa5_tileset.png',
     'ts-casa6':              'sprites/casa6_tileset.png',
     'ts-casa7':              'sprites/casa7_tileset.png',
@@ -1352,6 +1515,8 @@ const GameMap = (function () {
     'ts-pmontepo1':          'sprites/percorso_montepo_1_tileset.png',
     'ts-pmontepo2':          'sprites/percorso_montepo_2_tileset.png',
     'ts-pmontepo3':          'sprites/percorso_montepo_3_tileset.png',
+    'ts-lilycove-motel-1f':  'sprites/ristorante_laghi_1f_tileset.png',
+    'ts-lilycove-motel-2f':  'sprites/ristorante_laghi_2f_tileset.png',
     'ts-dept-1f':            'sprites/celadon_dept_1f_tileset.png',
     'ts-dept-2f':            'sprites/celadon_dept_2f_tileset.png',
     'ts-dept-3f':            'sprites/celadon_dept_3f_tileset.png',
@@ -1364,6 +1529,11 @@ const GameMap = (function () {
     'ts-cond-roof':          'sprites/celadon_condominio_roof_tileset.png',
     'ts-cond-roofroom':      'sprites/celadon_condominio_roofroom_tileset.png',
     'ts-nemi-daycare':       'sprites/nemi_daycare_tileset.png',
+    // Tileset orfani trovati col censimento del 6 ott 2026: usati davvero
+    // da almeno una mappa (120 e 696 tile rispettivamente) ma mai registrati
+    // qui — risultato: tile invisibili/mancanti a schermo.
+    'ts-soccer-field':       'sprites/pokemon_soccer_field.png',
+    'ts-stazione-treno':     'sprites/Tile_nuovi/Stazione_treno.png',
     'ts-albano-scuola':      'sprites/albano_scuola_tileset.png',
   };
   Object.assign(TILESET_META, {
@@ -1381,6 +1551,20 @@ const GameMap = (function () {
     'casarivale_1f_tileset':         { key: 'ts-casarivale-1f',   tw: 32, th: 32, cols: 16 },
     'casarivale_2f_tileset':         { key: 'ts-casarivale-2f',   tw: 32, th: 32, cols: 16 },
     'negozio_di_bici_tileset':       { key: 'ts-negozio-bici',    tw: 32, th: 32, cols: 16 },
+    'fuchsiacity_safarizone_entrance_tileset': { key: 'ts-sz-entrance',  tw: 32, th: 32, cols: 16 },
+    'fuchsiacity_safarizone_office_tileset':   { key: 'ts-sz-office',    tw: 32, th: 32, cols: 16 },
+    'safarizone_center_tileset':               { key: 'ts-sz-center',    tw: 32, th: 32, cols: 16 },
+    'safarizone_center_resthouse_tileset':     { key: 'ts-sz-center-rh', tw: 32, th: 32, cols: 16 },
+    'safarizone_east_tileset':                 { key: 'ts-sz-east',      tw: 32, th: 32, cols: 16 },
+    'safarizone_east_resthouse_tileset':       { key: 'ts-sz-east-rh',   tw: 32, th: 32, cols: 16 },
+    'safarizone_north_tileset':                { key: 'ts-sz-north',     tw: 32, th: 32, cols: 16 },
+    'safarizone_north_resthouse_tileset':      { key: 'ts-sz-north-rh',  tw: 32, th: 32, cols: 16 },
+    'safarizone_secrethouse_tileset':          { key: 'ts-sz-secret',    tw: 32, th: 32, cols: 16 },
+    'safarizone_west_tileset':                 { key: 'ts-sz-west',      tw: 32, th: 32, cols: 16 },
+    'safarizone_west_resthouse_tileset':       { key: 'ts-sz-west-rh',   tw: 32, th: 32, cols: 16 },
+    'lavaridgetown_herbshop_tileset': { key: 'ts-herbshop',       tw: 32, th: 32, cols: 16 },
+    'powerplant_tileset':             { key: 'ts-powerplant',     tw: 32, th: 32, cols: 16 },
+    'saffroncity_dojo_tileset':       { key: 'ts-dojo',           tw: 32, th: 32, cols: 16 },
     // Laboratorio Rianimazione Fossili di Genzano (da FireRed, 5 ott 2026).
     'genzano_laboratorio_entrata_tileset':     { key: 'ts-lab-entrata',     tw: 32, th: 32, cols: 16 },
     'genzano_laboratorio_lounge_tileset':      { key: 'ts-lab-lounge',      tw: 32, th: 32, cols: 16 },
@@ -1388,6 +1572,7 @@ const GameMap = (function () {
     'genzano_laboratorio_esperimenti_tileset': { key: 'ts-lab-esperimenti', tw: 32, th: 32, cols: 16 },
     'lega_pokemon_entrata_tileset':   { key: 'ts-lega-entrata',   tw: 32, th: 32, cols: 16 },
     'casadoppia_luxury_tileset':      { key: 'ts-casadoppia-lux', tw: 32, th: 32, cols: 16 },
+    'casa1_tileset':                  { key: 'ts-casa1', tw: 32, th: 32, cols: 16 },
     'casa5_tileset':                  { key: 'ts-casa5', tw: 32, th: 32, cols: 16 },
     'casa6_tileset':                  { key: 'ts-casa6', tw: 32, th: 32, cols: 16 },
     'casa7_tileset':                  { key: 'ts-casa7', tw: 32, th: 32, cols: 16 },
@@ -1395,6 +1580,8 @@ const GameMap = (function () {
     'percorso_montepo_1_tileset':     { key: 'ts-pmontepo1', tw: 32, th: 32, cols: 16 },
     'percorso_montepo_2_tileset':     { key: 'ts-pmontepo2', tw: 32, th: 32, cols: 16 },
     'percorso_montepo_3_tileset':     { key: 'ts-pmontepo3', tw: 32, th: 32, cols: 16 },
+    'ristorante_laghi_1f_tileset':      { key: 'ts-lilycove-motel-1f', tw: 32, th: 32, cols: 16 },
+    'ristorante_laghi_2f_tileset':      { key: 'ts-lilycove-motel-2f', tw: 32, th: 32, cols: 16 },
     'celadon_dept_1f_tileset':        { key: 'ts-dept-1f',   tw: 32, th: 32, cols: 16 },
     'celadon_dept_2f_tileset':        { key: 'ts-dept-2f',   tw: 32, th: 32, cols: 16 },
     'celadon_dept_3f_tileset':        { key: 'ts-dept-3f',   tw: 32, th: 32, cols: 16 },
@@ -1407,6 +1594,8 @@ const GameMap = (function () {
     'celadon_condominio_roof_tileset':     { key: 'ts-cond-roof', tw: 32, th: 32, cols: 16 },
     'celadon_condominio_roofroom_tileset': { key: 'ts-cond-roofroom', tw: 32, th: 32, cols: 16 },
     'nemi_daycare_tileset':            { key: 'ts-nemi-daycare', tw: 32, th: 32, cols: 16 },
+    'pokemon_soccer_field':            { key: 'ts-soccer-field',   tw: 32, th: 32, cols: 15 },
+    'Stazione_treno':                  { key: 'ts-stazione-treno', tw: 32, th: 32, cols: 49 },
     'albano_scuola_tileset':           { key: 'ts-albano-scuola', tw: 32, th: 32, cols: 16 },
   });
 
@@ -1544,6 +1733,32 @@ const GameMap = (function () {
   // Verifica una condizione. Ritorna { ok, messaggio }.
   function verificaCondizione(cond) {
     if (!cond || cond === true) return { ok: true };
+    // Composizione con "+": AND tra più token, ciascuno eventualmente
+    // negato con "!" davanti (es. "legaCompletata+!maso_montepo3_sconfitto").
+    // Evita di dover creare un flag derivato tenuto a mano sincronizzato con
+    // due condizioni indipendenti (bug già capitato una volta: un flag
+    // "_attivo" mai impostato testando a mano da console — vedi Grunt
+    // gate di Percorso Monte Po 3).
+    if (String(cond).includes('+')) {
+      const parti = String(cond).split('+').map(p => p.trim()).filter(Boolean);
+      for (const parte of parti) {
+        const negata = parte.startsWith('!');
+        const token = negata ? parte.slice(1) : parte;
+        const esito = verificaCondizione(token);
+        const okParte = negata ? !esito.ok : esito.ok;
+        if (!okParte) return { ok: false, messaggio: (!negata && esito.messaggio) || '🔒 Non puoi ancora passare di qui.' };
+      }
+      return { ok: true };
+    }
+    // Negazione singola (senza "+"), es. "!maso_montepo3_sconfitto": utile
+    // per un NPC "premio" che deve mostrarsi finché un flag NON è vero,
+    // senza ricorrere a "gate" (che in Modalità Test viene sempre bypassato
+    // e farebbe sparire l'NPC anche quando non dovrebbe — bug già capitato
+    // con i Grunt vicino a Maso).
+    if (String(cond).trim().startsWith('!')) {
+      const esito = verificaCondizione(String(cond).trim().slice(1));
+      return esito.ok ? { ok: false, messaggio: '🔒 Non puoi ancora passare di qui.' } : { ok: true };
+    }
     const s = String(cond).toLowerCase();
     const flags = (typeof stato !== 'undefined' && stato.flags) ? stato.flags : {};
 
@@ -2428,6 +2643,8 @@ const GameMap = (function () {
 
     create() {
       scena = this;
+      // Scorciatoia di debug per la console (es. scenaMappa.caricaMappa('museo_navi_2f',10,10))
+      window.scenaMappa = this;
 
       // Pulizia difensiva (segnalato da Luca, 2 ott 2026: il follower
       // "sdoppiato" fino a 13 copie identiche lasciate indietro sull'erba).
@@ -3397,6 +3614,12 @@ const GameMap = (function () {
         // per sempre. Una volta "scappati" (flag), non ricompare più qui: da
         // quel momento diventano roaming (vedi _checkRoamingLatiosLatias).
         if (isLegAmbientale) {
+          // Condizione opzionale (es. "zapdos_montepo3_visibile", sess. Maso/
+          // Zapdos): permette di far apparire/sparire l'ambientale a comando
+          // dalla cutscene, oltre ai due casi fissi (Latios/Latias, cani) già
+          // gestiti sotto.
+          const condAmb = ev.props.condizione || ev.props.richiede;
+          if (condAmb && !verificaCondizione(condAmb).ok) continue;
           const legId = legIdDaEv(ev);
           if (!legId) continue;
           if ((legId === 380 || legId === 381) && typeof stato !== 'undefined' && stato.flags && stato.flags.latiosLatiasRoaming) continue;
@@ -3712,12 +3935,54 @@ const GameMap = (function () {
     // quindi quello sprite non veniva mai distrutto (il bug della "copia
     // dello scienziato che rimane nella stanza" segnalato da Luca).
     async _rigeneraNpc() {
+      this._aggiornaCancelliDinamici();
       for (const s of npcSprites) { try { s.destroy(); } catch (_) {} }
       npcSprites = [];
       this._creaNpcStato();
       await this._creaSpritesNPC();
       await this._creaLeggendari();
       await this._creaCompagniPokemon();
+    }
+
+    // I cancelli "cancello_condizione"/"cancello_pulsante"/"cancello_medaglia"
+    // (muri/collisioni vere, non NPC) venivano scritti UNA SOLA VOLTA dentro
+    // collGrid al caricamento della mappa (buildCollGrid) e non si
+    // riaggiornavano mai più — bug segnalato da Luca: sconfitto il Grunt
+    // gate di Percorso Monte Po 3, il muro restava solido perché la
+    // collisione era già stata "cotta" prima che la condizione diventasse
+    // vera. _rigeneraNpc() viene già richiamato ogni volta che un flag
+    // rilevante cambia (anche a mano da console, in test): da qui gli basta
+    // ripassare sugli stessi rettangoli e riscriverli in base allo stato
+    // ATTUALE, usando la stessa identica logica di buildCollGrid.
+    _aggiornaCancelliDinamici() {
+      if (typeof collGrid === 'undefined' || !collGrid || !collGrid.length) return;
+      for (const ev of eventiMappa) {
+        if (ev.tx0 === undefined) continue;   // serve un rettangolo, non un punto
+        let solido = null;
+        if (ev.tipo === 'cancello_condizione') {
+          const cond = ev.props.condizione || ev.props.richiede || '';
+          solido = !!cond && !verificaCondizione(cond).ok;
+        } else if (ev.tipo === 'cancello_pulsante') {
+          const idsPuls = String(ev.props.attivato_da || ev.props.collega || '')
+            .split(',').map(s => s.trim()).filter(Boolean);
+          const attivo = idsPuls.length > 0 && typeof stato !== 'undefined' && stato.flags &&
+            idsPuls.every(id => stato.flags['pulsante_' + id]);
+          solido = !attivo;
+        } else if (ev.tipo === 'cancello_medaglia') {
+          const idsMed = String(ev.props.richiede || '')
+            .split(',').map(s => s.trim()).filter(Boolean);
+          const haTutte = idsMed.length > 0 && typeof stato !== 'undefined' && stato.medaglie &&
+            idsMed.every(id => stato.medaglie.includes(id));
+          solido = !haTutte;
+        }
+        if (solido === null) continue;
+        for (let r = ev.ty0; r <= ev.ty1; r++) {
+          if (!collGrid[r]) continue;
+          for (let c = ev.tx0; c <= ev.tx1; c++) {
+            if (c >= 0 && c < collGrid[r].length) collGrid[r][c] = solido ? 1 : 0;
+          }
+        }
+      }
     }
 
     // Mostra i leggendari (type "pokemon leggendario"/"leggendario_ambientale",
@@ -6109,9 +6374,14 @@ const GameMap = (function () {
         // Luca — solo che qui l'NPC cammina VERSO il giocatore da qualunque
         // lato (_camminaVersoGiocatore), non in una sola direzione fissa
         // (quella richiederebbe l'allineamento che "vista" non garantiva).
+        // Se l'NPC non è (ancora) sulla mappa — condizione di visibilità non
+        // soddisfatta, già battuto, flag non ancora allineati — NON si
+        // combatte "alla cieca": bug reale capitato col Grunt gate di
+        // Percorso Monte Po 3 (lotta-fantasma contro un allenatore invisibile).
+        // Niente fallback: se non c'è nessuno lì, non succede nulla.
         const st = npcStato.find(s => s.id === trainerId);
-        if (st) this._prossimitaSpotta(st, trainerId, dati, ev);
-        else this._avviaLottaTrainer(trainerId, dati, ev);   // ripiego: NPC non trovato sulla mappa
+        if (!st) continue;
+        this._prossimitaSpotta(st, trainerId, dati, ev);
         return;
       }
     }
@@ -6548,33 +6818,147 @@ const GameMap = (function () {
       this._cutsceneMasoMontepo3();
     }
 
+    // Crea/distrugge a mano lo sprite di Zapdos per la cutscene (niente
+    // PokéAPI/condizione a runtime, troppo lento/fragile per un cameo che
+    // deve apparire ISTANTANEAMENTE): usa lo stesso foglio follower già
+    // presente in sprites/follower/ZAPDOS.png (lo stesso delle altre
+    // specie "ambientali"), posizionato sulla casella dell'oggetto Tiled
+    // "zapdos_montepo3_preview" (letta da eventiMappa, già in coordinate
+    // di cluster — niente calcoli a mano).
+    async _mostraZapdosPreviewMontepo3() {
+      if (this._zapdosPreviewSprite) return;
+      const texKey = await this._caricaTexFollower('Zapdos');
+      if (!texKey) return;
+      const evZap = eventiMappa.find(e => e.id === 'zapdos_montepo3_preview');
+      const maso = npcStato.find(s => s.id === 'maso_montepo3_finale');
+      const tx = evZap ? evZap.tx : (maso ? maso.homeTx : posTile.tx);
+      const ty = evZap ? evZap.ty : (maso ? maso.homeTy - 2 : posTile.ty - 2);
+      const px = tx * tileSize + tileSize / 2;
+      const py = (ty + 1) * tileSize;
+      const spr = this.add.sprite(px, py, texKey, 1).setOrigin(0.5, 1).setDepth(20);
+      const frameW = this.textures.get(texKey).get(0).width || 64;
+      spr.setScale((tileSize * 1.4) / frameW);
+      this._zapdosPreviewSprite = spr;
+      npcSprites.push(spr);
+    }
+
+    _nascondiZapdosPreviewMontepo3() {
+      if (!this._zapdosPreviewSprite) return;
+      try { this._zapdosPreviewSprite.destroy(); } catch (_) {}
+      const i = npcSprites.indexOf(this._zapdosPreviewSprite);
+      if (i >= 0) npcSprites.splice(i, 1);
+      this._zapdosPreviewSprite = null;
+    }
+
     async _cutsceneMasoMontepo3() {
       if (!stato.flags) stato.flags = {};
       stato.flags.maso_montepo3_vista = true;
       bloccaMovimento();
 
+      // Zapdos si vede mentre il Grunt lo tiene bloccato (richiesta esplicita
+      // di Luca): appare un istante prima della cattura, poi sparisce con la
+      // schermata nera. I Grunt già piazzati lì vicino (grunt_montepo1_1/2/3)
+      // si girano verso nord, cioè verso di lui, per "venderlo" visivamente
+      // come se lo stessero tenendo bloccato.
+      await this._mostraZapdosPreviewMontepo3();
+      ['grunt_montepo1_1', 'grunt_montepo1_2', 'grunt_montepo1_3'].forEach((gid) => {
+        const g = npcStato.find(s => s.id === gid);
+        if (g) {
+          g.dir = 'nord';
+          if (g.sprite) this._setNpcFrame(g.sprite, 'nord', false);
+        }
+      });
+
       if (typeof mostraDialogo === 'function') {
         await mostraDialogo('Grunt CoTrAL', [
-          'Eccolo ragazzi, siamo riusciti a incastrarlo vicino agli alberi: adesso non ci scapperà!',
+          'Tienilo fermo, non lasciarlo scappare!',
         ]);
-        await mostraDialogo('', ['Zapdos emette un grido acuto: "GHIOOOOO!"']);
+        await mostraDialogo('', ['Zapdos lancia grida furiose, scoccando scariche in ogni direzione!']);
       }
       await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 500 });
+      this._nascondiZapdosPreviewMontepo3();   // catturato: sparisce
       await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 500 });
 
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Maso', [
+          'Ah, sì! Eccolo qui... finalmente l\'abbiamo catturato!',
+        ]);
+      }
+
+      // Si accorgono di te: Maso si gira verso sud e ti viene incontro,
+      // fermandosi davanti a te (stessa tecnica già usata per il suo arrivo
+      // all'Osservatorio: _camminaNpcA con offset fisso dalla sua casella di
+      // partenza, non un vero pathfinding verso il giocatore).
       const maso = npcStato.find(s => s.id === 'maso_montepo3_finale');
       if (maso) {
+        maso.dir = 'sud';
+        if (maso.sprite) this._setNpcFrame(maso.sprite, 'sud', false);
+        await this._camminaNpcA(maso, maso.homeTx, maso.homeTy + 2, 14);
         const dir = this._direzioneTraCaselle(maso.tx, maso.ty, posTile.tx, posTile.ty);
         maso.dir = dir;
         if (maso.sprite) this._setNpcFrame(maso.sprite, dir, false);
       }
 
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Maso', [
+          'Oh, ma guarda chi si vede. Pensavi davvero di poterci fermare?',
+          'Ormai abbiamo quello che volevamo: non hai più alcuna speranza di cambiare le cose.',
+          'Ma visto che insisti tanto... facciamolo a modo tuo. Vediamo quanto sei bravo davvero!',
+        ]);
+      }
+
       sbloccaMovimento();
+
+      // Scorciatoia di TEST (console: stato.flags.debug_skip_lotta_maso =
+      // true, PRIMA di entrare nel trigger): salta la lotta vera e passa
+      // dritto all'epilogo di vittoria. Utile in Modalità Test, dove la
+      // squadra di Maso è clonata dalla tua (tutti al livello 100) ed è
+      // una lotta lunghissima da rigiocare solo per controllare la cutscene.
+      if (typeof stato !== 'undefined' && stato.flags && stato.flags.debug_skip_lotta_maso) {
+        // Senza questo, Maso non spariva MAI con la scorciatoia di test: la
+        // sua sparizione dipende da trainerBattuti (lo stesso Set che una
+        // lotta vera riempie dentro _applicaEsitoTrainer), che qui non viene
+        // mai toccato perché si salta la lotta — bug reale, non solo cache.
+        trainerBattuti.add('maso_montepo3_finale');
+        if (!stato.allenatoriBattuti) stato.allenatoriBattuti = [];
+        if (!stato.allenatoriBattuti.includes('maso_montepo3_finale')) stato.allenatoriBattuti.push('maso_montepo3_finale');
+        this._epilogoMasoMontepo3();
+        return;
+      }
+
       if (typeof DATI_TRAINER !== 'undefined' && typeof costruisciSquadraMaso === 'function') {
         DATI_TRAINER['maso_montepo3_finale'].squadra = costruisciSquadraMaso();
       }
       const datiMaso = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER['maso_montepo3_finale'] : null;
       if (datiMaso) this._avviaLottaTrainer('maso_montepo3_finale', datiMaso, maso ? maso.ev : {});
+    }
+
+    // Epilogo dopo la vittoria su Maso (Percorso Monte Po 3): battuta di
+    // sconfitta sarcastica, schermata nera di 1 secondo (richiesta esplicita
+    // di Luca, sess. successiva — prima era mezzo secondo) e sparisce per
+    // sempre insieme a TUTTO quello che restava di CoTrAL su questa mappa:
+    // Maso stesso (flag "_sconfitto", stesso meccanismo "speciale" degli
+    // altri trainer di storia), i Grunt di scorta (grunt_montepo1_1/2/3,
+    // gate su questo stesso flag), il Grunt del cancello più a sud
+    // (grunt_gate_montepo3, condizione composta "legaCompletata+!...") e lo
+    // Zapdos catturato: se ne vanno CON LUI, niente da catturare qui — non
+    // c'è più nessuno ad aspettarti quando torni.
+    async _epilogoMasoMontepo3() {
+      if (!stato.flags) stato.flags = {};
+      bloccaMovimento();
+      if (typeof mostraDialogo === 'function') {
+        await mostraDialogo('Maso', [
+          'Tze... non ce l\'avrei mai fatta a batterti in condizioni normali, lo sai?',
+          'Che culo che hai avuto. Ma tanto ormai abbiamo quello che volevamo lo stesso.',
+        ]);
+      }
+      await this._eseguiPassoCutscena({ tipo: 'fade_out', ms: 1000 });
+      stato.flags.maso_montepo3_sconfitto = true;
+      this._nascondiZapdosPreviewMontepo3();   // difensivo: a questo punto è già sparito prima della lotta
+      await this._rigeneraNpc();
+      await this._eseguiPassoCutscena({ tipo: 'fade_in', ms: 1000 });
+      sbloccaMovimento();
+      if (typeof salvaPartita === 'function') salvaPartita();
     }
 
     // Grunt CoTrAL dell'Osservatorio (sess. 15 set 2026, RIDISEGNATO dopo il
@@ -7976,7 +8360,15 @@ const GameMap = (function () {
       const prob = (dati.probabilita != null) ? dati.probabilita : PROB_INCONTRO;
       if (Math.random() * 100 > prob) return;
 
-      const pool = dati.pokemon;
+      // Incontri differenziati giorno/notte (sess. 5 ott 2026, richiesta
+      // esplicita di Luca): una zona può avere "pokemonNotte" in aggiunta a
+      // "pokemon" — se è notte (21-06, stessa fascia di fasciaOraria) e la
+      // zona ha un pool notturno, si usa quello invece del pool diurno.
+      // Retrocompatibile: zone senza "pokemonNotte" restano identiche a
+      // prima, a qualunque ora.
+      const eNotte = typeof stato !== 'undefined' && stato.tempo &&
+        typeof fasciaOraria === 'function' && fasciaOraria(stato.tempo.minuti) === 'notte';
+      const pool = (eNotte && dati.pokemonNotte && dati.pokemonNotte.length) ? dati.pokemonNotte : dati.pokemon;
       if (!pool || pool.length === 0) return;
       // MOD 3: scelta PESATA. Ogni specie può avere "rate" (peso relativo:
       // comune ~25-30, raro ~8-15, rarissimo ~3-5). Se manca, peso di default 10.
@@ -8276,6 +8668,17 @@ const GameMap = (function () {
         // qui (Michela → museo_nemi_password, Ginevra → abbazia_password,
         // sess. 8 set 2026): dopo ognuna, controlla se ora ci sono tutte e 3.
         this._controllaPasswordRifugio();
+        // Pokémon in premio a scelta (es. Maestro del Dojo: Hitmonchan o
+        // Hitmonlee Lv45, richiesta di Luca 6 ott 2026) — una tantum, il
+        // flagVittoria stesso impedisce di rivincere e riscegliere. Non la
+        // aspettiamo (this._applicaEsitoTrainer resta sincrona: il chiamante
+        // in alcuni punti usa il suo valore di ritorno true/false — vedi
+        // "gestitoAltrove" — renderla async lo romperebbe lì), la scelta
+        // del Pokémon va comunque in scena subito dopo grazie al suo stesso
+        // overlay (mostraSceltaLista), non serve bloccare questa funzione.
+        if (dati.scelteVittoriaPokemon && dati.scelteVittoriaPokemon.length > 0) {
+          this._offriSceltaPokemon(dati.scelteVittoriaPokemon, dati.livelloVittoriaPokemon || 5);
+        }
       }
       // Campione della Lega sconfitto: fine del gioco principale, sblocca il
       // post-game (Bunkerino/CoTrAL, leggendari post-Lega, ecc. — vedi CLAUDE.md).
@@ -8323,6 +8726,30 @@ const GameMap = (function () {
         });
         return true;
       }
+      // Maso (Percorso Monte Po 3): epilogo scriptato con battuta di
+      // sconfitta + breve schermata nera, PRIMA del blocco generico
+      // "speciale" qui sotto (che altrimenti alzerebbe subito il flag e
+      // rigenererebbe gli NPC senza lasciare il tempo al dialogo finale).
+      if (id === 'maso_montepo3_finale') {
+        this._epilogoMasoMontepo3();
+        return true;
+      }
+      // Grunt gate di Percorso Monte Po 3 (sess. 6 ott 2026, richiesta
+      // esplicita di Luca): battuto, NON sparisce — resta sul posto come un
+      // trainer normale, risfidabile solo a parole (dialogo_dopo: "hai
+      // vinto, passa pure"). Alza comunque il flag che sblocca Maso più a
+      // nord. Niente "speciale" su questo oggetto apposta, quindi non passa
+      // dal blocco generico qui sotto: va gestito a mano.
+      if (id === 'grunt_gate_montepo3') {
+        if (!stato.flags) stato.flags = {};
+        stato.flags.grunt_gate_montepo3_sconfitto = true;
+        // Bug reale (segnalato da Luca): senza questo, Maso (condizionato
+        // allo stesso flag, su percorso_montepo_1) restava invisibile finché
+        // non si richiamava rigeneraNpcMappa() a mano da console — gli altri
+        // "casi speciali" qui sotto lo chiamano già tutti, questo no perché
+        // non passa più dal blocco generico "speciale".
+        this._rigeneraNpc();
+      }
       // Trainer SPECIALE (es. Il Solitario): alza un flag "<id>_sconfitto"
       // e rinfresca gli NPC (così appare l'NPC post-battaglia e il campione
       // sparisce). Il flag sblocca anche l'incontro con Celebi.
@@ -8364,9 +8791,62 @@ const GameMap = (function () {
       }
     }
 
+    // Premio "scegli un Pokémon tra N" dopo una lotta speciale (es. Maestro
+    // del Dojo: Hitmonchan o Hitmonlee Lv45, richiesta di Luca 6 ott 2026).
+    // Generico: riusabile da qualunque trainer con `scelteVittoriaPokemon`.
+    async _offriSceltaPokemon(idSpecie, livello) {
+      if (typeof PokeAPI === 'undefined' || typeof Battle === 'undefined') return;
+      const nomi = [];
+      for (const id of idSpecie) {
+        const d = await PokeAPI.getPokemon(id);
+        nomi.push(d.nome.charAt(0).toUpperCase() + d.nome.slice(1));
+      }
+      const scelta = await mostraSceltaLista('Scegli il tuo premio:', nomi);
+      if (scelta < 0) {
+        await mostraDialogo('', ['Hai rinunciato al premio. Torna quando hai deciso.']);
+        return;
+      }
+      const nuovo = await Battle.creaIstanza(idSpecie[scelta], livello);
+      if (stato.squadra.length < 6) {
+        stato.squadra.push(nuovo);
+        await mostraDialogo('', [`${nomi[scelta]} si unisce alla tua squadra!`]);
+      } else {
+        if (typeof depositaInBox === 'function') depositaInBox(nuovo);
+        await mostraDialogo('', [`${nomi[scelta]} è stato mandato al Box (squadra piena)!`]);
+      }
+      if (typeof segnaPokedex === 'function') segnaPokedex(nuovo.id, nuovo.nome, nuovo.sprite && nuovo.sprite.fronte, true);
+      if (typeof salvaPartita === 'function') salvaPartita();
+      if (typeof aggiornaHUD === 'function') aggiornaHUD();
+    }
+
     _avviaLottaTrainer(id, dati, ev) {
       stato.incontroAttivo = true;
       bloccaMovimento();
+
+      // Meteo forzato nella lotta col capopalestra a difficoltà MASSIMA
+      // (richiesta esplicita di Luca, 5 ott 2026): indebolisce il tipo
+      // "contro naturale" del capopalestra. Usa solo meteo che il motore
+      // sa già gestire per davvero (bonus/malus danno reale in battle.js,
+      // non solo estetico) — niente meteo inventati per i tipi che non ne
+      // hanno uno canonico (Psico/Elettro/Lotta/Buio/Acqua restano senza,
+      // segnalato a Luca invece di improvvisare). Funziona perché
+      // Battle.avvia() eredita SEMPRE stato.meteo.tipo a inizio lotta
+      // (battle.js, METEO_DA_MAPPA) — bastava impostarlo prima di chiamarla.
+      // Si auto-ripristina da solo dopo: gli interni azzerano sempre il
+      // meteo a "sereno" al primo aggiornamento (app.js, aggiornaVeloMeteo),
+      // non serve ripristinarlo manualmente qui.
+      const METEO_PALESTRA_DIFFICILE = {
+        frascati: 'pioggia',   // Erba: indebolisce il contro-tipo Fuoco
+        genzano:  'sole',      // Fuoco: indebolisce il contro-tipo Acqua
+        albano:   'sabbia',    // Roccia: tempesta di sabbia a tema
+        // grottaferrata (Psico), marino (Acqua), monteporzio (Elettro),
+        // rocca_di_papa (Lotta), ariccia (Buio): nessun meteo canonico
+        // indebolisce il loro contro-tipo in questo motore — lasciati senza.
+      };
+      if (dati.palestraId && stato.difficolta === 'difficile' && METEO_PALESTRA_DIFFICILE[dati.palestraId]) {
+        if (!stato.meteo) stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 };
+        stato.meteo.tipo = METEO_PALESTRA_DIFFICILE[dati.palestraId];
+      }
 
       // Rivale sulla mappa (es. "rivale_tuscolo"): sess. 28 set 2026, Luca ha
       // piazzato ENTRAMBI i rivali in giro per il mondo (sprite Tiled

@@ -294,5 +294,18 @@
  </objectgroup>
  <objectgroup id="6" name="eventi">
   <object id="1" name="Indovinello_1" x="1641.33" y="1076" width="26.6667" height="34.6667"/>
+  <object id="9001" name="spawn_da_bunkerino_0f" type="spawn" x="32" y="32">
+   <properties>
+    <property name="id" value="da_bunkerino_0f"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="9002" name="npc_bunkerino_direttore" x="64" y="32">
+   <properties>
+    <property name="azione" value="interagisciBunkerino"/>
+    <property name="id" value="npc_bunkerino_direttore"/>
+    <property name="type" value="npc"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

@@ -834,6 +834,16 @@
                  "opacity":1,
                  "properties":[
                         {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"albano"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_negozio_di_bici"
+                        }, 
+                        {
                          "name":"type",
                          "type":"string",
                          "value":"warp"
@@ -846,11 +856,16 @@
                  "y":295.538814800866
                 }, 
                 {
-                 "height":11.4469,
+                 "height":3.44690000000003,
                  "id":63,
                  "name":"spawn",
                  "opacity":1,
                  "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"da_albano"
+                        }, 
                         {
                          "name":"type",
                          "type":"string",
@@ -859,9 +874,9 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":32,
-                 "x":112.956900527257,
-                 "y":267.278814800866
+                 "width":15.3333333333333,
+                 "x":100.956900527257,
+                 "y":269.612148134199
                 }],
          "opacity":1,
          "type":"objectgroup",

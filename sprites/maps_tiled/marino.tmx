@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="88" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="418">
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="88" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="437">
  <tileset firstgid="1" source="../Sea.tsj"/>
  <tileset firstgid="99" source="../Outside_pallet.tsx"/>
  <tileset firstgid="4115" source="../../outside.tsx"/>
@@ -7,6 +7,10 @@
  <tileset firstgid="8136" source="../../Emerald_Outside.tsx"/>
  <tileset firstgid="13384" source="../outside.tsx"/>
  <tileset firstgid="17400" source="../fontana.tsj"/>
+ <tileset firstgid="17430" source="../fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="17438" source="../fiori_rosa_animati.tsj"/>
+ <tileset firstgid="17446" source="../fiori_gialli_animati.tsj"/>
+ <tileset firstgid="17454" source="../fiori_blu_animati.tsj"/>
  <layer id="1" name="ground" width="60" height="88">
   <data encoding="csv">
 101,102,102,102,102,104,104,102,102,102,104,102,102,102,102,101,104,102,101,101,104,103,102,102,103,102,104,102,102,101,103,103,101,103,101,104,102,102,103,101,101,104,104,103,102,104,103,104,102,102,102,103,4119,4119,4119,4119,4119,4119,4119,4119,
@@ -103,49 +107,49 @@
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,252,253,253,253,253,253,253,253,253,253,253,253,253,253,253,254,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,252,253,253,253,253,253,253,253,253,253,253,253,253,253,253,254,105,105,105,105,105,105,105,105,105,0,0,0,0,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,105,105,105,105,105,105,105,0,0,0,0,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,105,105,105,105,105,105,105,0,0,0,0,105,105,105,105,105,105,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,105,105,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,260,261,261,261,261,261,261,261,261,261,261,261,261,261,261,262,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,268,269,269,269,269,269,269,269,269,269,269,269,269,269,269,270,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,1055,0,0,0,0,0,0,0,0,0,0,1055,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17451,17451,0,0,0,0,0,0,0,0,0,0,17456,17456,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,1055,0,0,0,0,0,0,0,0,0,0,1055,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,5063,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17456,17456,0,0,0,0,0,0,0,0,0,0,17451,17451,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,5063,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17442,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,1055,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,17436,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -283,7 +287,7 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup color="#ff0000" id="4" name="collisioni" opacity="0.5">
+ <objectgroup color="#ff0000" id="4" name="collisioni" visible="0" opacity="0.5">
   <object id="1" name="vigna_filare_0" type="solid" x="96" y="96" width="32" height="32"/>
   <object id="2" name="vigna_filare_0" type="solid" x="128" y="96" width="32" height="32"/>
   <object id="3" name="vigna_filare_0" type="solid" x="160" y="96" width="32" height="32"/>
@@ -466,7 +470,6 @@
   <object id="180" name="casa_mattoni1_wall" type="solid" x="1280" y="256" width="32" height="32"/>
   <object id="181" name="casa_mattoni1_wall" type="solid" x="1312" y="256" width="32" height="32"/>
   <object id="182" name="casa_mattoni1_wall" type="solid" x="1216" y="288" width="32" height="32"/>
-  <object id="183" name="casa_mattoni1_wall" type="solid" x="1248" y="288" width="32" height="32"/>
   <object id="184" name="casa_mattoni1_wall" type="solid" x="1280" y="288" width="32" height="32"/>
   <object id="185" name="casa_mattoni1_wall" type="solid" x="1312" y="288" width="32" height="32"/>
   <object id="186" name="casa_rossa1_wall" type="solid" x="1440" y="224" width="32" height="32"/>
@@ -478,7 +481,6 @@
   <object id="192" name="casa_rossa1_wall" type="solid" x="1504" y="256" width="32" height="32"/>
   <object id="193" name="casa_rossa1_wall" type="solid" x="1536" y="256" width="32" height="32"/>
   <object id="194" name="casa_rossa1_wall" type="solid" x="1440" y="288" width="32" height="32"/>
-  <object id="195" name="casa_rossa1_wall" type="solid" x="1472" y="288" width="32" height="32"/>
   <object id="196" name="casa_rossa1_wall" type="solid" x="1504" y="288" width="32" height="32"/>
   <object id="197" name="casa_rossa1_wall" type="solid" x="1536" y="288" width="32" height="32"/>
   <object id="198" name="casa_mattoni2_wall" type="solid" x="128" y="512" width="32" height="32"/>
@@ -505,7 +507,6 @@
   <object id="219" name="casa_gialla1_wall" type="solid" x="416" y="576" width="32" height="32"/>
   <object id="220" name="casa_gialla1_wall" type="solid" x="448" y="576" width="32" height="32"/>
   <object id="221" name="casa_gialla1_wall" type="solid" x="352" y="608" width="32" height="32"/>
-  <object id="222" name="casa_gialla1_wall" type="solid" x="384" y="608" width="32" height="32"/>
   <object id="223" name="casa_gialla1_wall" type="solid" x="416" y="608" width="32" height="32"/>
   <object id="224" name="casa_gialla1_wall" type="solid" x="448" y="608" width="32" height="32"/>
   <object id="225" name="casa_verde1_wall" type="solid" x="128" y="832" width="32" height="32"/>
@@ -517,7 +518,6 @@
   <object id="231" name="casa_verde1_wall" type="solid" x="192" y="864" width="32" height="32"/>
   <object id="232" name="casa_verde1_wall" type="solid" x="224" y="864" width="32" height="32"/>
   <object id="233" name="casa_verde1_wall" type="solid" x="128" y="896" width="32" height="32"/>
-  <object id="234" name="casa_verde1_wall" type="solid" x="160" y="896" width="32" height="32"/>
   <object id="235" name="casa_verde1_wall" type="solid" x="192" y="896" width="32" height="32"/>
   <object id="236" name="casa_verde1_wall" type="solid" x="224" y="896" width="32" height="32"/>
   <object id="237" name="casa_blu1_wall" type="solid" x="384" y="832" width="32" height="32"/>
@@ -529,7 +529,6 @@
   <object id="243" name="casa_blu1_wall" type="solid" x="448" y="864" width="32" height="32"/>
   <object id="244" name="casa_blu1_wall" type="solid" x="480" y="864" width="32" height="32"/>
   <object id="245" name="casa_blu1_wall" type="solid" x="384" y="896" width="32" height="32"/>
-  <object id="246" name="casa_blu1_wall" type="solid" x="416" y="896" width="32" height="32"/>
   <object id="247" name="casa_blu1_wall" type="solid" x="448" y="896" width="32" height="32"/>
   <object id="248" name="casa_blu1_wall" type="solid" x="480" y="896" width="32" height="32"/>
   <object id="249" name="casa_campagna1_wall" type="solid" x="128" y="1056" width="32" height="32"/>
@@ -545,7 +544,6 @@
   <object id="259" name="casa_campagna1_wall" type="solid" x="192" y="1120" width="32" height="32"/>
   <object id="260" name="casa_campagna1_wall" type="solid" x="224" y="1120" width="32" height="32"/>
   <object id="261" name="casa_campagna1_wall" type="solid" x="128" y="1152" width="32" height="32"/>
-  <object id="262" name="casa_campagna1_wall" type="solid" x="160" y="1152" width="32" height="32"/>
   <object id="263" name="casa_campagna1_wall" type="solid" x="192" y="1152" width="32" height="32"/>
   <object id="264" name="casa_campagna1_wall" type="solid" x="224" y="1152" width="32" height="32"/>
   <object id="265" name="casa_rossa2_wall" type="solid" x="320" y="1280" width="32" height="32"/>
@@ -557,7 +555,6 @@
   <object id="271" name="casa_rossa2_wall" type="solid" x="384" y="1312" width="32" height="32"/>
   <object id="272" name="casa_rossa2_wall" type="solid" x="416" y="1312" width="32" height="32"/>
   <object id="273" name="casa_rossa2_wall" type="solid" x="320" y="1344" width="32" height="32"/>
-  <object id="274" name="casa_rossa2_wall" type="solid" x="352" y="1344" width="32" height="32"/>
   <object id="275" name="casa_rossa2_wall" type="solid" x="384" y="1344" width="32" height="32"/>
   <object id="276" name="casa_rossa2_wall" type="solid" x="416" y="1344" width="32" height="32"/>
   <object id="277" name="casa_gialla2_wall" type="solid" x="1088" y="1344" width="32" height="32"/>
@@ -569,7 +566,6 @@
   <object id="283" name="casa_gialla2_wall" type="solid" x="1152" y="1376" width="32" height="32"/>
   <object id="284" name="casa_gialla2_wall" type="solid" x="1184" y="1376" width="32" height="32"/>
   <object id="285" name="casa_gialla2_wall" type="solid" x="1088" y="1408" width="32" height="32"/>
-  <object id="286" name="casa_gialla2_wall" type="solid" x="1120" y="1408" width="32" height="32"/>
   <object id="287" name="casa_gialla2_wall" type="solid" x="1152" y="1408" width="32" height="32"/>
   <object id="288" name="casa_gialla2_wall" type="solid" x="1184" y="1408" width="32" height="32"/>
   <object id="289" name="casa_campagna2_wall" type="solid" x="1408" y="1312" width="32" height="32"/>
@@ -585,14 +581,13 @@
   <object id="299" name="casa_campagna2_wall" type="solid" x="1472" y="1376" width="32" height="32"/>
   <object id="300" name="casa_campagna2_wall" type="solid" x="1504" y="1376" width="32" height="32"/>
   <object id="301" name="casa_campagna2_wall" type="solid" x="1408" y="1408" width="32" height="32"/>
-  <object id="302" name="casa_campagna2_wall" type="solid" x="1440" y="1408" width="32" height="32"/>
   <object id="303" name="casa_campagna2_wall" type="solid" x="1472" y="1408" width="32" height="32"/>
   <object id="304" name="casa_campagna2_wall" type="solid" x="1504" y="1408" width="32" height="32"/>
   <object id="314" name="fontana_quattro_mori" type="solid" x="788" y="531" width="153.5" height="105"/>
-  <object id="315" name="panchina" type="solid" x="992" y="640" width="32" height="32"/>
-  <object id="316" name="panchina" type="solid" x="1024" y="640" width="32" height="32"/>
-  <object id="317" name="panchina" type="solid" x="992" y="672" width="32" height="32"/>
-  <object id="318" name="panchina" type="solid" x="1024" y="672" width="32" height="32"/>
+  <object id="315" name="panchina" type="solid" x="992" y="661.5" width="32" height="10.5"/>
+  <object id="316" name="panchina" type="solid" x="1024" y="659.5" width="32" height="12.5"/>
+  <object id="317" name="panchina" type="solid" x="992" y="672" width="32" height="11.5"/>
+  <object id="318" name="panchina" type="solid" x="1024" y="672" width="30" height="15.5"/>
   <object id="319" name="bordo_0_0" type="solid" x="0" y="0" width="64" height="96"/>
   <object id="320" name="bordo_3_0" type="solid" x="0" y="96" width="64" height="96"/>
   <object id="321" name="bordo_6_0" type="solid" x="0" y="192" width="64" height="96"/>
@@ -779,12 +774,6 @@
     <property name="note" value="sul corso"/>
    </properties>
   </object>
-  <object id="17" name="palazzo_colonna_door" type="warp" x="768" y="320" width="32" height="32">
-   <properties>
-    <property name="destinazione" value="interno_palazzo_colonna"/>
-    <property name="note" value="palazzo_colonna_door"/>
-   </properties>
-  </object>
   <object id="18" name="palestra_moro_door" type="warp" x="1440" y="864" width="32" height="20.6667">
    <properties>
     <property name="destinazione" value="interno_palestra_moro"/>
@@ -815,7 +804,7 @@
     <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="28" name="erba alta percorso 3" x="639.49" y="64.1683" width="594.164" height="85.4287">
+  <object id="28" name="erba alta percorso 3" x="1002.16" y="64.1683" width="231.497" height="85.4287">
    <properties>
     <property name="id" value="incontri marino"/>
     <property name="type" value="erba_alta"/>
@@ -882,7 +871,7 @@
     <property name="type" value="acqua surf"/>
    </properties>
   </object>
-  <object id="83" x="464" y="464">
+  <object id="83" x="1621.33" y="1018.67">
    <properties>
     <property name="contenuto" value="pietra_acqua"/>
     <property name="id" value="oggetto_84"/>
@@ -946,7 +935,7 @@
     <property name="type" value="npc"/>
    </properties>
   </object>
-  <object id="408" name="guardia_marino" type="npc" x="1632" y="740.666" width="28" height="26.6667">
+  <object id="408" name="guardia_marino" type="npc" x="1671.5" y="774.166" width="28" height="26.6667">
    <properties>
     <property name="condizione" value="marino_password"/>
     <property name="direzione" value="sud"/>
@@ -970,24 +959,161 @@
     <property name="type" value="spawn"/>
    </properties>
   </object>
-  <object id="409" name="masso_marino_1" type="masso" x="1882.67" y="445.333" width="32" height="32">
-   <properties>
-    <property name="id" value="masso_marino_1"/>
-    <property name="type" value="masso"/>
-   </properties>
-  </object>
-  <object id="410" name="pulsante_marino_1" type="pulsante" x="1216" y="1024" width="32" height="32">
-   <properties>
-    <property name="id" value="pulsante_marino_1"/>
-    <property name="type" value="pulsante"/>
-   </properties>
-  </object>
-  <object id="411" name="oggetto_perla" type="oggetto" x="852.667" y="850.667" width="32" height="32">
+  <object id="411" name="oggetto_perla" type="oggetto" x="931.334" y="638.667" width="32" height="32">
    <properties>
     <property name="contenuto" value="perla"/>
     <property name="id" value="oggetto_perla"/>
     <property name="quantita" type="int" value="1"/>
     <property name="type" value="oggetto"/>
+   </properties>
+  </object>
+  <object id="9001" name="warp_marino_casa1_1" x="173.333" y="619.333">
+   <properties>
+    <property name="destinazione" value="marino_casa1_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9002" name="spawn_marino_casa1_1" type="spawn" x="176" y="654">
+   <properties>
+    <property name="id" value="da_marino_casa1_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="9003" name="warp_marino_casa2_4" x="403.333" y="617.333">
+   <properties>
+    <property name="destinazione" value="marino_casa2_4"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9004" name="spawn_marino_casa2_4" type="spawn" x="402" y="656">
+   <properties>
+    <property name="id" value="da_marino_casa2_4"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="9005" name="warp_marino_casa3_4" x="783.333" y="332">
+   <properties>
+    <property name="destinazione" value="marino_casa3_4"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9006" name="spawn_marino_casa3_4" type="spawn" x="785.333" y="368">
+   <properties>
+    <property name="id" value="da_marino_casa3_4"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="418" name="warp_marino_casa4_3" x="174.667" y="912">
+   <properties>
+    <property name="destinazione" value="marino_casa4_3"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="419" name="spawn_marino_casa4_3" type="spawn" x="174.667" y="944">
+   <properties>
+    <property name="id" value="da_marino_casa4_3"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="420" name="warp_marino_casa5_1" x="175.333" y="1164">
+   <properties>
+    <property name="destinazione" value="marino_casa5_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="421" name="spawn_marino_casa5_1" type="spawn" x="175.333" y="1196">
+   <properties>
+    <property name="id" value="da_marino_casa5_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="422" name="warp_marino_casa6_1" x="432.667" y="910.667">
+   <properties>
+    <property name="destinazione" value="marino_casa6_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="423" name="spawn_marino_casa6_1" type="spawn" x="432.667" y="942.667">
+   <properties>
+    <property name="id" value="da_marino_casa6_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="424" name="warp_marino_casa7_1" x="370" y="1356">
+   <properties>
+    <property name="destinazione" value="marino_casa7_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="425" name="spawn_marino_casa7_1" type="spawn" x="370" y="1388">
+   <properties>
+    <property name="id" value="da_marino_casa7_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="426" name="warp_marino_casa8_1" x="1457" y="1418.33">
+   <properties>
+    <property name="destinazione" value="marino_casa8_1"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="427" name="spawn_marino_casa8_1" type="spawn" x="1457" y="1450.33">
+   <properties>
+    <property name="id" value="da_marino_casa8_1"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="428" name="warp_marino_casapiccola_3" x="1264" y="309.333">
+   <properties>
+    <property name="destinazione" value="marino_casapiccola_3"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="429" name="spawn_marino_casapiccola_3" type="spawn" x="1264" y="341.333">
+   <properties>
+    <property name="id" value="da_marino_casapiccola_3"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="432" name="warp_marino_casa5_2" x="1136.5" y="1421.33">
+   <properties>
+    <property name="destinazione" value="marino_casa5_2"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="433" name="spawn_marino_casa5_2" type="spawn" x="1136.5" y="1453.33">
+   <properties>
+    <property name="id" value="da_marino_casa5_2"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="434" name="warp_marino_casa2_5" x="1487.75" y="301.5">
+   <properties>
+    <property name="destinazione" value="marino_casa2_5"/>
+    <property name="spawn_id" value="da_citta"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="435" name="spawn_marino_casa2_5" type="spawn" x="1487.75" y="333.5">
+   <properties>
+    <property name="id" value="da_marino_casa2_5"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="436" name="erba alta percorso 3" x="633.585" y="67.9523" width="231.497" height="85.4287">
+   <properties>
+    <property name="id" value="incontri marino"/>
+    <property name="type" value="erba_alta"/>
    </properties>
   </object>
  </objectgroup>

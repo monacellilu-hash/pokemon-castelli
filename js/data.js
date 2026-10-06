@@ -134,10 +134,10 @@ const PALESTRE = [
       premioSoldi: 1400,  // ricompensa in Pokéyen alla sconfitta
       // L'asso (Roselia) è al livello del level cap pre-palestra: 14
       squadra: [
-        { id: 43,  livello: 11 },  // Oddish
-        { id: 285, livello: 12 },  // Shroomish
-        { id: 44,  livello: 13 },  // Gloom (già evoluto: BST 395)
-        { id: 315, livello: 14 },  // Roselia (l'asso, BST 400)
+        { id: 43,  livello: 13 },  // Oddish
+        { id: 285, livello: 14 },  // Shroomish
+        { id: 44,  livello: 15 },  // Gloom (già evoluto: BST 395)
+        { id: 315, livello: 16 },  // Roselia (l'asso, BST 400)
       ],
       dialogoIntro: [
         'Benvenuto a Villa Torlonia, giovane sfidante!',
@@ -184,11 +184,11 @@ const PALESTRE = [
       nome: 'Igino',
       premioSoldi: 2100,
       squadra: [
-        { id: 177, livello: 17 },  // Natu
-        { id: 325, livello: 18 },  // Spoink
-        { id: 64,  livello: 19 },  // Kadabra (BST 400)
-        { id: 97,  livello: 20 },  // Hypno (BST 483)
-        { id: 326, livello: 21 },  // Grumpig (l'asso, BST 470)
+        { id: 177, livello: 20 },  // Natu
+        { id: 325, livello: 21 },  // Spoink
+        { id: 64,  livello: 22 },  // Kadabra (BST 400)
+        { id: 97,  livello: 23 },  // Hypno (BST 483)
+        { id: 326, livello: 24 },  // Grumpig (l'asso, BST 470)
       ],
       dialogoIntro: [
         'Benvenuto all\'Abbazia di San Nilo, pellegrino.',
@@ -236,17 +236,17 @@ const PALESTRE = [
     medaglia: 'Medaglia Fontana',
     mtDonata: 'mt03',
     capopalestra: {
-      nome: 'Moro',
+      nome: 'Matilde',
       premioSoldi: 2800,
       squadra: [
-        { id: 279, livello: 25 },  // Pelipper (BST 440)
-        { id: 119, livello: 26 },  // Seaking (BST 450)
-        { id: 195, livello: 26 },  // Quagsire (BST 430)
-        { id: 184, livello: 27 },  // Azumarill (BST 420)
-        { id: 130, livello: 28 },  // Gyarados (l'asso, BST 540!)
+        { id: 279, livello: 28 },  // Pelipper (BST 440)
+        { id: 119, livello: 29 },  // Seaking (BST 450)
+        { id: 195, livello: 29 },  // Quagsire (BST 430)
+        { id: 184, livello: 30 },  // Azumarill (BST 420)
+        { id: 130, livello: 31 },  // Gyarados (l'asso, BST 540!)
       ],
       dialogoIntro: [
-        'Ehilà! Sono Moro, come i Quattro Mori della nostra fontana!',
+        'Ehilà! Sono Matilde, come i Quattro Mori della nostra fontana!',
         'Lo sai che alla Sagra dell\'Uva la fontana versa vino invece dell\'acqua? Ma per i miei Pokémon solo acqua di sorgente, eh!',
         'Vediamo se sai navigare in acque agitate!'
       ],
@@ -258,7 +258,7 @@ const PALESTRE = [
         premioSoldi: 400,
         dialogoIntro: ['Pesco da trent\'anni nel lago. I miei Pokémon Acqua sanno come si combatte in acqua alta!'],
         dialogoSconfitta: 'Stavolta il pesce grosso sei tu.',
-        dialogoDopo: ['Moro ama il Gyarados. Attento alle onde alte.'] },
+        dialogoDopo: ['Matilde ama il Gyarados. Attento alle onde alte.'] },
       { id: 'greg-marino-2', classe: 'Nuotatrice', nome: 'Giada',
         squadra: [{ id: 72, livello: 23 }, { id: 183, livello: 24 }],
         premioSoldi: 420,
@@ -270,7 +270,7 @@ const PALESTRE = [
         premioSoldi: 440,
         dialogoIntro: ['Salvo i bagnanti dal mare. Salverò pure me da questa sconfitta!'],
         dialogoSconfitta: 'SOS: ho bisogno di aiuto.',
-        dialogoDopo: ['Occhio al Gyarados di Moro: è la prima a uscire.'] },
+        dialogoDopo: ['Occhio al Gyarados di Matilde: è la prima a uscire.'] },
       { id: 'greg-marino-4', classe: 'Sommozzatore', nome: 'Enzo',
         squadra: [{ id: 86, livello: 25 }, { id: 116, livello: 26 }],
         premioSoldi: 460,
@@ -282,7 +282,7 @@ const PALESTRE = [
         premioSoldi: 480,
         dialogoIntro: ['Vado a vela sul lago da vent\'anni. Il vento è con me, oggi!'],
         dialogoSconfitta: 'Vento contrario.',
-        dialogoDopo: ['Moro ti aspetta. È tosto, ma simpatico.'] },
+        dialogoDopo: ['Matilde ti aspetta. È tosto, ma simpatico.'] },
     ]
   },
   {
@@ -297,17 +297,17 @@ const PALESTRE = [
     medaglia: 'Medaglia Stella',
     mtDonata: 'mt04',
     capopalestra: {
-      nome: 'Stella',
+      nome: 'Biretta',
       premioSoldi: 3400,
       squadra: [
-        { id: 26,  livello: 31 },  // Raichu (BST 485)
-        { id: 101, livello: 32 },  // Electrode (BST 490)
-        { id: 82,  livello: 32 },  // Magneton (BST 465)
-        { id: 310, livello: 33 },  // Manectric (BST 475)
-        { id: 181, livello: 34 },  // Ampharos (l'asso, BST 510)
+        { id: 26,  livello: 35 },  // Raichu (BST 485)
+        { id: 101, livello: 36 },  // Electrode (BST 490)
+        { id: 82,  livello: 36 },  // Magneton (BST 465)
+        { id: 310, livello: 37 },  // Manectric (BST 475)
+        { id: 181, livello: 38 },  // Ampharos (l'asso, BST 510)
       ],
       dialogoIntro: [
-        'Ciao! Sono Stella, astronoma dell\'Osservatorio di Monte Porzio.',
+        'Ciao! Sono Biretta, astronoma dell\'Osservatorio di Monte Porzio.',
         'Ogni notte studio le stelle… e i miei Pokémon Elettro generano l\'energia dei telescopi!',
         'Preparati: la mia squadra colpisce alla velocità della luce!'
       ],
@@ -319,7 +319,7 @@ const PALESTRE = [
         premioSoldi: 500,
         dialogoIntro: ['Mantengo i telescopi dell\'osservatorio. I miei Pokémon Elettro alimentano tutto!'],
         dialogoSconfitta: 'Cortocircuito.',
-        dialogoDopo: ['Stella ha Ampharos. Quella coda brilla forte.'] },
+        dialogoDopo: ['Biretta ha Ampharos. Quella coda brilla forte.'] },
       { id: 'greg-mporzio-2', classe: 'Astrofila', nome: 'Dora',
         squadra: [{ id: 25, livello: 29 }, { id: 170, livello: 30 }],
         premioSoldi: 520,
@@ -337,19 +337,19 @@ const PALESTRE = [
         premioSoldi: 560,
         dialogoIntro: ['La fisica quantistica dice che hai il 30% di probabilità di vincere. Oggi.'],
         dialogoSconfitta: 'Il 30% ha vinto. Interessante.',
-        dialogoDopo: ['Stella è brava con le equazioni. E con i Pokémon.'] },
+        dialogoDopo: ['Biretta è brava con le equazioni. E con i Pokémon.'] },
       { id: 'greg-mporzio-5', classe: 'Ingegnere', nome: 'Livio',
         squadra: [{ id: 100, livello: 31 }, { id: 180, livello: 32 }],
         premioSoldi: 560,
         dialogoIntro: ['Ho progettato il sistema elettrico di questo osservatorio. E la mia squadra!'],
         dialogoSconfitta: 'Sistema in sovraccarico.',
-        dialogoDopo: ['L\'Ampharos di Stella ha la coda che illumina la notte intera.'] },
+        dialogoDopo: ['L\'Ampharos di Biretta ha la coda che illumina la notte intera.'] },
       { id: 'greg-mporzio-6', classe: 'Ricercatrice', nome: 'Nadia',
         squadra: [{ id: 309, livello: 32 }, { id: 82, livello: 33 }],
         premioSoldi: 580,
         dialogoIntro: ['Sono la ricercatrice senior di questo osservatorio. Superare me non è dato a tutti!'],
         dialogoSconfitta: 'Devo riscrivere i dati.',
-        dialogoDopo: ['Stella ti aspetta nella sala principale. In bocca al lupo.'] },
+        dialogoDopo: ['Biretta ti aspetta nella sala principale. In bocca al lupo.'] },
     ]
   },
   {
@@ -367,11 +367,11 @@ const PALESTRE = [
       nome: 'Baso',
       premioSoldi: 4000,
       squadra: [
-        { id: 107, livello: 36 },  // Hitmonchan (BST 455)
-        { id: 106, livello: 37 },  // Hitmonlee (BST 455)
-        { id: 286, livello: 38 },  // Breloom (BST 460)
-        { id: 308, livello: 39 },  // Medicham (BST 410)
-        { id: 68,  livello: 40 },  // Machamp (l'asso, BST 505)
+        { id: 107, livello: 40 },  // Hitmonchan (BST 455)
+        { id: 106, livello: 41 },  // Hitmonlee (BST 455)
+        { id: 286, livello: 42 },  // Breloom (BST 460)
+        { id: 308, livello: 43 },  // Medicham (BST 410)
+        { id: 68,  livello: 44 },  // Machamp (l'asso, BST 505)
       ],
       dialogoIntro: [
         'Fermo lì! Sono Baso di Rocca di Papa, e qui ci si allena scalando la pietra viva del Vulcano Laziale!',
@@ -440,11 +440,11 @@ const PALESTRE = [
       nome: 'Giorgia',
       premioSoldi: 4600,
       squadra: [
-        { id: 28,  livello: 42 },  // Sandslash (BST 450)
-        { id: 305, livello: 43 },  // Lairon (BST 430)
-        { id: 76,  livello: 44 },  // Golem (BST 495)
-        { id: 112, livello: 45 },  // Rhydon (BST 485)
-        { id: 306, livello: 46 },  // Aggron (l'asso, BST 530)
+        { id: 28,  livello: 46 },  // Sandslash (BST 450)
+        { id: 305, livello: 47 },  // Lairon (BST 430)
+        { id: 76,  livello: 48 },  // Golem (BST 495)
+        { id: 112, livello: 49 },  // Rhydon (BST 485)
+        { id: 306, livello: 50 },  // Aggron (l'asso, BST 530)
       ],
       dialogoIntro: [
         'ALT! Chi entra nei Castra Albana deve dimostrare il proprio valore!',
@@ -519,19 +519,19 @@ const PALESTRE = [
     // agosto). L'oggetto sul campo resta da assegnare (ancora da decidere dove).
     mnDonata: 'cascata',
     capopalestra: {
-      nome: 'Ombretta',
+      nome: 'Isa',
       premioSoldi: 5200,
       squadra: [
-        { id: 262, livello: 48 },  // Mightyena (BST 420)
-        { id: 319, livello: 49 },  // Sharpedo (BST 460)
-        { id: 275, livello: 50 },  // Shiftry (BST 480)
-        { id: 342, livello: 50 },  // Crawdaunt (BST 468)
-        { id: 359, livello: 51 },  // Absol (BST 465)
-        { id: 229, livello: 52 },  // Houndoom (l'asso, BST 500)
+        { id: 262, livello: 52 },  // Mightyena (BST 420)
+        { id: 319, livello: 53 },  // Sharpedo (BST 460)
+        { id: 275, livello: 54 },  // Shiftry (BST 480)
+        { id: 342, livello: 54 },  // Crawdaunt (BST 468)
+        { id: 359, livello: 55 },  // Absol (BST 465)
+        { id: 229, livello: 56 },  // Houndoom (l'asso, BST 500)
       ],
       dialogoIntro: [
         'Shhh… benvenuto ad Ariccia, dove la notte è padrona.',
-        'Sono Ombretta. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare.',
+        'Sono Isa. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare.',
         'Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!'
       ],
       dialogoSconfitta: 'Hai acceso una luce nel mio buio… La Medaglia Fraschetta è tua. Ora brindiamo, va\'!'
@@ -542,13 +542,13 @@ const PALESTRE = [
         premioSoldi: 1100,
         dialogoIntro: ['La fraschetta di notte è un altro mondo. I miei Pokémon Buio si sentono a casa!'],
         dialogoSconfitta: 'Luci accese per te, stanotte.',
-        dialogoDopo: ['Ombretta ti aspetta al buio. Portati una torcia... no, anzi, non farlo.'] },
+        dialogoDopo: ['Isa ti aspetta al buio. Portati una torcia... no, anzi, non farlo.'] },
       { id: 'greg-ariccia-2', classe: 'Porchettaro', nome: 'Sergio',
         squadra: [{ id: 262, livello: 47 }, { id: 228, livello: 47 }],
         premioSoldi: 1120,
         dialogoIntro: ['Porchetta e Pokémon Buio: la mia vita. E ora te li metto in campo entrambi!'],
         dialogoSconfitta: 'Porchetta amara, stavolta.',
-        dialogoDopo: ['Il Houndoom di Ombretta ama il fumo della porchetta. Occhio.'] },
+        dialogoDopo: ['Il Houndoom di Isa ama il fumo della porchetta. Occhio.'] },
       { id: 'greg-ariccia-3', classe: 'Ombra', nome: 'Nera',
         squadra: [{ id: 302, livello: 48 }, { id: 215, livello: 48 }],
         premioSoldi: 1140,
@@ -578,19 +578,19 @@ const PALESTRE = [
         premioSoldi: 1200,
         dialogoIntro: ['Non mi vedi finché non voglio. E quando voglio, è troppo tardi!'],
         dialogoSconfitta: 'Mi hai visto davvero.',
-        dialogoDopo: ['Ombretta si nasconde tra le ombre. Avanza piano.'] },
+        dialogoDopo: ['Isa si nasconde tra le ombre. Avanza piano.'] },
       { id: 'greg-ariccia-8', classe: 'Ombra', nome: 'Marina',
         squadra: [{ id: 319, livello: 50 }, { id: 228, livello: 51 }],
         premioSoldi: 1210,
         dialogoIntro: ['I Pokémon Buio che allevo sono affilati come lame. Provami!'],
         dialogoSconfitta: 'La lama si è spuntata.',
-        dialogoDopo: ['Sei quasi arrivato. Ombretta è li.'] },
+        dialogoDopo: ['Sei quasi arrivato. Isa è li.'] },
       { id: 'greg-ariccia-9', classe: 'Notturno', nome: 'Giorgione',
         squadra: [{ id: 229, livello: 51 }, { id: 359, livello: 51 }],
         premioSoldi: 1220,
-        dialogoIntro: ['Ultimo ostacolo prima di Ombretta. Supera me se ne sei capace!'],
+        dialogoIntro: ['Ultimo ostacolo prima di Isa. Supera me se ne sei capace!'],
         dialogoSconfitta: 'La notte ti appartiene.',
-        dialogoDopo: ['Ombretta dietro quella porta. In bocca al lupo nel buio.'] },
+        dialogoDopo: ['Isa dietro quella porta. In bocca al lupo nel buio.'] },
     ]
   },
   {
@@ -611,12 +611,12 @@ const PALESTRE = [
       nome: 'Camilla',
       premioSoldi: 5800,
       squadra: [
-        { id: 38,  livello: 54 },  // Ninetales (BST 505)
-        { id: 126, livello: 55 },  // Magmar (BST 495)
-        { id: 323, livello: 55 },  // Camerupt (BST 460)
-        { id: 324, livello: 56 },  // Torkoal (BST 470)
-        { id: 136, livello: 57 },  // Flareon (BST 525)
-        { id: 59,  livello: 58 },  // Arcanine (l'asso, BST 555)
+        { id: 38,  livello: 55 },  // Ninetales (BST 505)
+        { id: 126, livello: 56 },  // Magmar (BST 495)
+        { id: 323, livello: 56 },  // Camerupt (BST 460)
+        { id: 324, livello: 57 },  // Torkoal (BST 470)
+        { id: 136, livello: 58 },  // Flareon (BST 525)
+        { id: 59,  livello: 59 },  // Arcanine (l'asso, BST 555)
       ],
       dialogoIntro: [
         'Benvenuto a Genzano, dove ogni giugno la via si copre di petali per l\'Infiorata!',
@@ -828,14 +828,14 @@ const ABITANTI = [
   { id: 'ab-marino', comune: 'Marino', lat: 41.7692, lon: 12.6635, battute: [
     { nome: 'Nello il vignarolo', testo: "Alla Sagra dell'Uva dalla fontana esce VINO. Giuro! L'anno scorso un Magikarp c'è cascato dentro e è uscito allegro." },
     { nome: 'Pina della Sagra', testo: "Te la prepari la cesta pe' la Sagra? Porta un Pokémon Acqua, che se la fontana s'intasa serve." },
-    { nome: 'Bambino bagnato', testo: "So' caduto nella fontana. Moro ha riso. Pure il suo Gyarados ha riso." },
+    { nome: 'Bambino bagnato', testo: "So' caduto nella fontana. Matilde ha riso. Pure il suo Gyarados ha riso." },
     { nome: 'Pescatore annoiato', testo: "Pesco da stamattina. Solo Magikarp. Sempre Magikarp. UN Magikarp lo vòi?" },
     { nome: 'Signora', testo: "Marino è la città del vino. E del traffico. Soprattutto del traffico." },
   ]},
   { id: 'ab-monte-porzio', comune: 'Monte Porzio Catone', lat: 41.8158, lon: 12.7143, battute: [
     { nome: 'Ruggero il meteorologo', testo: "Tra qualche giorno piove. E quando piove qui, sull'osservatorio, i fulmini fanno cose strane. Tiè, segnatelo." },
     { nome: "Aldo l'astrofilo", testo: "La notte, nei giorni dispari, col telescopio si vedono cose… Una volta ho visto 'na stella che s'è mossa. O era 'n moscerino." },
-    { nome: 'Studente di astronomia', testo: "Stella è la Capopalestra più sveglia dei Castelli. Letteralmente: non dorme mai, guarda le stelle." },
+    { nome: 'Studente di astronomia', testo: "Biretta è la Capopalestra più sveglia dei Castelli. Letteralmente: non dorme mai, guarda le stelle." },
     { nome: 'Vecchietto col cappello', testo: "Lassù all'osservatorio fanno la scienza. Io guardo le stelle dalla finestra e mi basta." },
     { nome: 'Ragazza', testo: "C'ho un Magnemite che si attacca alla calamita del frigo. Comodo, ma poi non se stacca più." },
   ]},
@@ -853,7 +853,7 @@ const ABITANTI = [
   ]},
   { id: 'ab-ariccia', comune: 'Ariccia', lat: 41.7218, lon: 12.6710, battute: [
     { nome: 'Sora Nunzia della fraschetta', testo: "Porchetta e vino, fijo! Mangia, che pure il tuo Pokémon c'ha 'na faccia smunta. Tiè, 'na fetta pure a lui." },
-    { nome: 'Peppe er porchettaro', testo: "Porchetta de Ariccia IGP, mica pizza e fichi! L'aroma fa svenì pure gli Houndoom de Ombretta." },
+    { nome: 'Peppe er porchettaro', testo: "Porchetta de Ariccia IGP, mica pizza e fichi! L'aroma fa svenì pure gli Houndoom de Isa." },
     { nome: 'Il vecchio del ponte', testo: "Di giorno è solo un ponte. Di notte… guarda mejo le ombre. A volte te guardano indietro." },
     { nome: 'Musicista', testo: "Suono nelle fraschette. Di notte qui i Pokémon Buio escono a sentì la musica. Pubblico strano, ma applaude." },
     { nome: 'Turista', testo: "Sono venuto pe' la porchetta. So' rimasto pe' la porchetta. Domani? Ancora porchetta." },
@@ -947,6 +947,26 @@ const DONATORI_MN = [
       'Mo\' co\' un Pokémon che la sa usà voli in un lampo verso le città che hai già visitato. Usa il pulsante ✈️!'
     ],
     dialogoDopo: ['Vòi un altro giro in cima? Quando vòi. L\'aria fina fa bene ar Pokédex.']
+  },
+  {
+    // MN Spaccaroccia (richiesta di Luca, 6 ott 2026): un tizio dentro una
+    // casa di Castel Gandolfo, sbloccato dopo la Medaglia Stella (Biretta,
+    // Monte Porzio, P4) — non dopo Marino come scritto in CLAUDE.md v1,
+    // scelta esplicita rifatta in questa sessione.
+    id: 'mn-spaccaroccia', mn: 'spaccaroccia', nomeMN: 'MN Spaccaroccia',
+    nome: 'Spaccatore', comune: 'Castel Gandolfo',
+    lat: 41.7503, lon: 12.6525,
+    palestraRichiesta: 'monte-porzio',
+    medaglieMin: 4,   // fallback documentativo, la vera condizione è palestraRichiesta
+    dialogoPrima: [
+      'Sto cercando uno più forte di Biretta. Torna da me quando lo sarai.',
+      'Non sei ancora all\'altezza.'
+    ],
+    dialogoDono: [
+      'Hai battuto Biretta! Allora sei pronto quanto serve.',
+      'Tieni la MN SPACCAROCCIA: con questa i tuoi Pokémon sbriciolano i massi che bloccano certi sentieri.'
+    ],
+    dialogoDopo: ['La squadra è sempre a caccia di nuove reclute per spaccare rocce in giro per i Castelli.']
   },
 ];
 
@@ -1437,7 +1457,7 @@ const ALLENATORI = [
     squadra: [{ id: 43, livello: 9 }, { id: 16, livello: 10 }], // Oddish, Pidgey
     dialogoIntro: ['Scendo da Grottaferrata a Marino ogni sera. Velocità e forza!'],
     dialogoSconfitta: 'In discesa si va più veloci.',
-    dialogoDopo: ['Marino è in fondo alla discesa. Moro ti aspetta alla fontana.']
+    dialogoDopo: ['Marino è in fondo alla discesa. Matilde ti aspetta alla fontana.']
   },
   {
     id: 'all-gm-2', classe: 'Agricoltore', nome: 'Egidio', zona: 'Via Grottaferrata-Marino',
@@ -1469,7 +1489,7 @@ const ALLENATORI = [
     squadra: [{ id: 44, livello: 13 }, { id: 187, livello: 13 }], // Gloom, Hoppip
     dialogoIntro: ['Alleno da vent\'anni su questa strada. Ogni allenatore che passa è un test!'],
     dialogoSconfitta: 'Il test l\'hai passato.',
-    dialogoDopo: ['Marino è a un chilometro. Stai attento all\'Acqua di Moro.']
+    dialogoDopo: ['Marino è a un chilometro. Stai attento all\'Acqua di Matilde.']
   },
 
   // ── Vigne di Marino — espansione (Lv 7-10) ──
@@ -1531,7 +1551,7 @@ const ALLENATORI = [
     squadra: [{ id: 17, livello: 12 }, { id: 161, livello: 13 }], // Pidgeotto, Sentret
     dialogoIntro: ['Salgo verso Monte Porzio in bici ogni mattina. In salita alleno la forza!'],
     dialogoSconfitta: 'In salita si fa più fatica.',
-    dialogoDopo: ['Monte Porzio è lassù. Stella studia le stelle di notte e vince di giorno.']
+    dialogoDopo: ['Monte Porzio è lassù. Biretta studia le stelle di notte e vince di giorno.']
   },
   {
     id: 'all-mmp-2', classe: 'Tecnico del gas', nome: 'Ferrucci', zona: 'Via Marino-Monte Porzio',
@@ -1545,9 +1565,9 @@ const ALLENATORI = [
     id: 'all-mmp-3', classe: 'Giovane allenatore', nome: 'Amerigo', zona: 'Via Marino-Monte Porzio',
     lat: 41.7900, lon: 12.6930, premioSoldi: 700,
     squadra: [{ id: 100, livello: 15 }, { id: 170, livello: 15 }], // Voltorb, Chinchou
-    dialogoIntro: ['Mi alleno verso l\'osservatorio ogni giorno. Stella mi ha detto: "Prima vinci i percorsi, poi sfida me!"'],
+    dialogoIntro: ['Mi alleno verso l\'osservatorio ogni giorno. Biretta mi ha detto: "Prima vinci i percorsi, poi sfida me!"'],
     dialogoSconfitta: 'Esercizio utile.',
-    dialogoDopo: ['L\'osservatorio è in vista. Ma Stella è tosta, preparati bene.']
+    dialogoDopo: ['L\'osservatorio è in vista. Ma Biretta è tosta, preparati bene.']
   },
   {
     id: 'all-mmp-4', classe: 'Insegnante', nome: 'Agnese', zona: 'Via Marino-Monte Porzio',
@@ -1555,7 +1575,7 @@ const ALLENATORI = [
     squadra: [{ id: 25, livello: 16 }, { id: 81, livello: 16 }], // Pikachu, Magnemite
     dialogoIntro: ['Insegno scienze al liceo di Monte Porzio. E uso Pokémon Elettro come esempio in classe!'],
     dialogoSconfitta: 'Lezione di umiltà.',
-    dialogoDopo: ['A scuola spiego i tipi Elettro. Stella è la mia ispirazione.']
+    dialogoDopo: ['A scuola spiego i tipi Elettro. Biretta è la mia ispirazione.']
   },
   {
     id: 'all-mmp-5', classe: 'Astrofilo', nome: 'Reginaldo', zona: 'Via Marino-Monte Porzio',
@@ -1563,7 +1583,7 @@ const ALLENATORI = [
     squadra: [{ id: 82, livello: 17 }, { id: 311, livello: 17 }], // Magneton, Plusle
     dialogoIntro: ['Studio le stelle dal mio terrazzo vicino all\'osservatorio. E studia anche i miei avversari!'],
     dialogoSconfitta: 'Galassia scoperta: la mia sconfitta.',
-    dialogoDopo: ['L\'osservatorio INAF è lassù. Stella lavora là ogni notte.']
+    dialogoDopo: ['L\'osservatorio INAF è lassù. Biretta lavora là ogni notte.']
   },
 
   // ── Via Monte Porzio → Rocca di Papa (Lv 17-23, versante vulcanico) ──
@@ -2998,6 +3018,8 @@ const OGGETTI = {
                descrizione: 'Fa evolvere Nidorina/o, Clefairy, Jigglypuff, Skitty.' },
   pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 9500, icona: '☀️',
                descrizione: 'Fa evolvere Gloom→Bellossom e Sunkern→Sunflora.' },
+  pietra_amicizia: { nome: 'Pietra Amicizia', categoria: 'felicita', prezzo: 9000, icona: '💞',
+               descrizione: 'Porta la felicità del Pokémon al massimo. Alcuni evolvono per felicità al livello successivo (es. Eevee→Umbreon di notte, →Espeon di giorno).' },
 
   // ── OGGETTI DA TENERE PER EVOLUZIONE DA SCAMBIO (categoria 'held': il
   // Pokémon deve TENERLI — Zaino→Oggetti — prima di poter evolvere tramite
@@ -3057,9 +3079,9 @@ const OGGETTI = {
   mt02: { nome: 'MT02 — Psiconda', categoria: 'mt', mossa: 'psybeam', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Psiconda (Psico, potenza 65, può confondere). Dono di Igino, Palestra di Grottaferrata.' },
   mt03: { nome: 'MT03 — Idropulsar', categoria: 'mt', mossa: 'water-pulse', prezzo: 0, icona: '💿',
-               descrizione: 'Insegna Idropulsar (Acqua, potenza 60, può confondere). Dono di Moro, Palestra di Marino.' },
+               descrizione: 'Insegna Idropulsar (Acqua, potenza 60, può confondere). Dono di Matilde, Palestra di Marino.' },
   mt04: { nome: 'MT04 — Fulmine', categoria: 'mt', mossa: 'thunderbolt', prezzo: 0, icona: '💿',
-               descrizione: 'Insegna Fulmine (Elettro, potenza 90, può paralizzare). Dono di Stella, Palestra di Monte Porzio.' },
+               descrizione: 'Insegna Fulmine (Elettro, potenza 90, può paralizzare). Dono di Biretta, Palestra di Monte Porzio.' },
   mt_semitraglia: { nome: 'MT — Semi Mitraglia', categoria: 'mt', mossa: 'bullet-seed', prezzo: 1800, icona: '💿',
                descrizione: 'Insegna Semi Mitraglia (Erba, colpisce 2-5 volte). Si trova lungo il Percorso 2.' },
   mt05: { nome: 'MT05 — Slavina', categoria: 'mt', mossa: 'rock-slide', prezzo: 0, icona: '💿',
@@ -3067,7 +3089,7 @@ const OGGETTI = {
   mt06: { nome: 'MT06 — Rissa Campale', categoria: 'mt', mossa: 'brick-break', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Rissa Campale (Lotta, potenza 75, abbatte le barriere). Dono di Baso, Palestra di Rocca di Papa.' },
   mt07: { nome: 'MT07 — Buio Pesto', categoria: 'mt', mossa: 'dark-pulse', prezzo: 0, icona: '💿',
-               descrizione: 'Insegna Buio Pesto (Buio, potenza 80, può far tentennare). Dono di Ombretta, Palestra di Ariccia.' },
+               descrizione: 'Insegna Buio Pesto (Buio, potenza 80, può far tentennare). Dono di Isa, Palestra di Ariccia.' },
   mt08: { nome: 'MT08 — Corpopeso', categoria: 'mt', mossa: 'body-slam', prezzo: 0, icona: '💿',
                descrizione: 'Insegna Corpopeso (Normale, potenza 85, può paralizzare). Dono di Camilla, Palestra di Genzano (nonostante il fuoco, un buon corpo a corpo non guasta mai).' },
   mt_scavare: { nome: 'MT — Scavare', categoria: 'mt', mossa: 'dig', prezzo: 1800, icona: '💿',
@@ -3088,7 +3110,7 @@ const OGGETTI = {
                descrizione: 'Una grossa perla che scintilla d\'argento. Non serve in battaglia, si vende.' },
   polvere_stelle: { nome: 'Polvere di Stelle', categoria: 'tesoro', prezzo: 1500, icona: '✨',
                descrizione: 'Sabbia rossa e setosa, bellissima. Non serve in battaglia, si vende.' },
-  frammento_stella: { nome: 'Frammento di Stella', categoria: 'tesoro', prezzo: 6000, icona: '⭐',
+  frammento_stella: { nome: 'Frammento di Biretta', categoria: 'tesoro', prezzo: 6000, icona: '⭐',
                descrizione: 'Una scheggia di gemma rossa scintillante. Non serve in battaglia, si vende.' },
   squama_cuore: { nome: 'Squama Cuore', categoria: 'tesoro', prezzo: 50, icona: '💗',
                descrizione: 'Una scaglia rarissima a forma di cuore, cangiante come un arcobaleno. Non serve in battaglia, si vende.' },
@@ -3390,6 +3412,17 @@ const POKE_MARKET = [
   // le 4 erbe medicinali di FireRed/LeafGreen (Essentials FRLG).
   { id: 'mk-colonna-erborista', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
     merce: ['polvere_energetica', 'radice_energetica', 'polvere_curativa', 'erba_rediviva'] },
+
+  // Erboristeria di Lavaridge (estratta da pret/pokeemerald, collegata a
+  // Percorso 9, sess. 5 ott 2026): cure a fascia medio-alta (non le pozioni
+  // base) + TUTTI i 16 oggetti potenzia-mossa per tipo già esistenti nel
+  // gioco (categoria 'held', boostTipo — vedi js/battle.js riga ~581), a
+  // prezzo pieno: sono gli oggetti più costosi del gioco dopo le pietre.
+  { id: 'mk-herbshop', comune: 'Percorso 9 (erboristeria)', lat: 41.7180, lon: 12.6720,
+    merce: ['superpozione', 'iperpozione', 'revitalizzante', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo',
+            'carbonella', 'acqua_magica', 'magnete', 'seme_miracolo', 'ghiaccio_perenne', 'cintura_nera',
+            'aculeo_veleno', 'sabbia_soffice', 'becco_rigido', 'cucchiaio_psico', 'polvere_argento',
+            'pietra_dura', 'sigillo_ombra', 'zanna_drago', 'lenti_scure', 'foulard_seta'] },
 ];
 
 // Level cap iniziale: prima di battere la Palestra 1 (Frascati)
@@ -3407,6 +3440,14 @@ const LEVEL_CAP_INIZIALE = 14;
 const MISSIONI_CENCIARELS = [];
 
 const OGGETTI_CHIAVE = {
+  // Ricompensa per aver battuto la famiglia del ristorante di Via dei Laghi
+  // (4 lotte consecutive, sess. 5 ott 2026) — si scambia con la bici vera da
+  // uno degli NPC del negozio di bici di Albano (dati/npc.js).
+  'buono-bici': {
+    nome: 'Buono Bici',
+    icona: '🎫',
+    descrizione: 'Vinto battendo la famiglia del ristorante di Via dei Laghi. Portalo al negozio di bici di Albano.',
+  },
   // Le 3 parti della password del Rifugio GdF di Marino (sess. 22 set 2026):
   // password_1 = Rocca di Papa (lettera CoTrAL), password_2 = Museo delle Navi
   // di Nemi (Poké Ball dopo Michela), password_3 = Abbazia di San Nilo (Ginevra).

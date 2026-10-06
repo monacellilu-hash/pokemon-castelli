@@ -136,44 +136,152 @@
 </data>
  </layer>
  <objectgroup id="6" name="collisioni">
-  <object id="69" x="161" y="706.5" width="24" height="26.5"/>
-  <object id="70" x="69" y="810.5" width="21" height="15.5"/>
-  <object id="71" x="196.5" y="583" width="22.5" height="22.5"/>
-  <object id="72" x="261.5" y="489" width="21.5" height="25"/>
-  <object id="73" x="197.5" y="422" width="15.5" height="22"/>
-  <object id="74" x="170" y="359" width="19" height="21"/>
-  <object id="75" x="199" y="264" width="16" height="23"/>
-  <object id="76" x="57.5" y="210" width="27.5" height="111"/>
-  <object id="77" x="2.5" y="9.5" width="896.5" height="84"/>
-  <object id="78" x="70.5" y="83.5" width="161" height="61"/>
-  <object id="79" x="256.5" y="149" width="95.5" height="44"/>
-  <object id="80" x="479" y="151" width="114" height="39.5"/>
-  <object id="81" x="647.5" y="93.5" width="172" height="46.5"/>
-  <object id="82" x="741.5" y="230.5" width="19" height="31.5"/>
-  <object id="83" x="792" y="226" width="35.5" height="97.5"/>
-  <object id="84" x="581" y="354.5" width="19.5" height="23"/>
-  <object id="85" x="641.5" y="425.5" width="17.5" height="21"/>
-  <object id="86" x="769.5" y="462" width="23.5" height="18"/>
-  <object id="87" x="645" y="555" width="20.5" height="17.5"/>
-  <object id="88" x="616.5" y="586" width="18.5" height="25.5"/>
-  <object id="89" x="505" y="743" width="31.5" height="94.5"/>
-  <object id="90" x="343" y="744.5" width="34.5" height="92.5"/>
-  <object id="91" x="742" y="745" width="22" height="25.5"/>
-  <object id="92" x="235" y="579.5" width="375.5" height="25.5"/>
-  <object id="93" x="199" y="614.5" width="10" height="85.5"/>
-  <object id="96" x="204" y="461.5" width="13.5" height="49.5"/>
-  <object id="97" x="225" y="494.5" width="26" height="14.5"/>
-  <object id="98" x="91.5" y="258" width="96.5" height="12"/>
-  <object id="99" x="183" y="295.5" width="17.5" height="50"/>
-  <object id="100" x="196.5" y="386.5" width="13" height="24"/>
-  <object id="101" x="204.5" y="517" width="13.5" height="63.5"/>
-  <object id="102" x="302" y="206.5" width="10" height="229.5"/>
-  <object id="105" x="326.5" y="263.5" width="273.5" height="17"/>
-  <object id="106" x="597" y="399" width="9" height="45.5"/>
-  <object id="107" x="613.5" y="434" width="18.5" height="10"/>
-  <object id="108" x="612" y="264.5" width="149.5" height="16.5"/>
-  <object id="109" x="625.5" y="627.5" width="14.5" height="229.5"/>
-  <object id="110" x="505" y="645.5" width="28.5" height="59.5"/>
- </objectgroup>
- <objectgroup id="5" name="eventi"/>
+ <object id="69" x="161" y="706.5" width="24" height="26.5"/>
+ <object id="70" x="69" y="810.5" width="21" height="15.5"/>
+ <object id="71" x="196.5" y="583" width="22.5" height="22.5"/>
+ <object id="73" x="197.5" y="422" width="15.5" height="22"/>
+ <object id="74" x="170" y="359" width="19" height="21"/>
+ <object id="75" x="199" y="264" width="16" height="23"/>
+ <object id="76" x="66.5" y="206" width="27.5" height="111"/>
+ <object id="77" x="2.5" y="9.5" width="896.5" height="84"/>
+ <object id="78" x="70.5" y="83.5" width="161" height="61"/>
+ <object id="79" x="256.5" y="149" width="95.5" height="44"/>
+ <object id="80" x="479" y="151" width="114" height="39.5"/>
+ <object id="81" x="647.5" y="93.5" width="172" height="46.5"/>
+ <object id="82" x="741.5" y="230.5" width="19" height="31.5"/>
+ <object id="84" x="581" y="354.5" width="19.5" height="23"/>
+ <object id="85" x="641.5" y="425.5" width="17.5" height="21"/>
+ <object id="86" x="769.5" y="462" width="23.5" height="18"/>
+ <object id="87" x="645" y="555" width="20.5" height="17.5"/>
+ <object id="88" x="616.5" y="586" width="18.5" height="25.5"/>
+ <object id="89" x="483.5" y="739" width="31.5" height="118"/>
+ <object id="90" x="352.5" y="770.5" width="29" height="92.5"/>
+ <object id="91" x="742" y="745" width="22" height="25.5"/>
+ <object id="92" x="235" y="579.5" width="375.5" height="25.5"/>
+ <object id="93" x="199" y="614.5" width="10" height="85.5"/>
+ <object id="96" x="204" y="461.5" width="13.5" height="49.5"/>
+ <object id="97" x="225" y="494.5" width="26" height="14.5"/>
+ <object id="98" x="91.5" y="258" width="96.5" height="12"/>
+ <object id="99" x="183" y="295.5" width="17.5" height="50"/>
+ <object id="100" x="196.5" y="386.5" width="13" height="24"/>
+ <object id="101" x="204.5" y="517" width="13.5" height="63.5"/>
+ <object id="102" x="302" y="206.5" width="10" height="229.5"/>
+ <object id="105" x="326.5" y="263.5" width="273.5" height="17"/>
+ <object id="106" x="597" y="399" width="9" height="45.5"/>
+ <object id="107" x="613.5" y="434" width="18.5" height="10"/>
+ <object id="108" x="612" y="264.5" width="149.5" height="16.5"/>
+ <object id="109" x="625.5" y="627.5" width="14.5" height="229.5"/>
+ <object id="110" x="485" y="644.5" width="56.5" height="59.5"/>
+ <object id="112" x="2" y="99" width="7.5" height="777"/>
+ <object id="113" x="868.5" y="91.5" width="24" height="803.5"/>
+ <object id="114" x="460.5" y="867" width="420" height="29"/>
+ <object id="115" x="0.5" y="868.5" width="404.5" height="25.5"/>
+</objectgroup>
+ <objectgroup id="5" name="eventi">
+ <object id="1" name="Tonino" x="368" y="304">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 1 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="2" name="Sergio" x="782" y="311">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 2 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="3" name="Nera" x="496" y="304">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 3 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="4" name="Fantasio" x="621.5" y="115.5">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 4 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="5" name="Carla" x="338" y="854.5">
+  <properties>
+   <property name="direzione" value="ovest"/>
+   <property name="id" value="gregario 5 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="6" name="Orfeo" x="718" y="764">
+  <properties>
+   <property name="direzione" value="ovest"/>
+   <property name="id" value="gregario 6 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="7" name="Omberto" x="562" y="826.5">
+  <properties>
+   <property name="direzione" value="nord"/>
+   <property name="id" value="gregario 7 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="8" name="Marina" x="51" y="664.5">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 8 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="9" name="Giorgione" x="242" y="179.5">
+  <properties>
+   <property name="direzione" value="ovest"/>
+   <property name="id" value="gregario 9 palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="10" name="Ombretta" x="403" y="120.5">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gym_leader_palestra ariccia"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="11" name="spawn" x="431.5" y="849">
+  <properties>
+   <property name="id" value="entrata_principale"/>
+   <property name="type" value="spawn"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="12" name="warp" x="431.5" y="881.5">
+  <properties>
+   <property name="destinazione" value="ariccia"/>
+   <property name="spawn_id" value="da_palestra_ariccia"/>
+   <property name="type" value="warp"/>
+  </properties>
+  <point/>
+ </object>
+</objectgroup>
 </map>

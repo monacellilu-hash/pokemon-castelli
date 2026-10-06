@@ -5363,7 +5363,7 @@
    "objects": [
     {
      "id": 7,
-     "name": "da_ariccia",
+     "name": "da_percorso_8",
      "class": "",
      "visible": true,
      "x": 384,
@@ -5381,7 +5381,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "da_ariccia"
+       "value": "da_percorso_8"
       }
      ]
     },
@@ -5405,7 +5405,7 @@
       {
        "name": "destinazione",
        "type": "string",
-       "value": "ariccia"
+       "value": "percorso_8"
       },
       {
        "name": "spawn_id",

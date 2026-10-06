@@ -55,13 +55,13 @@ Si parte da **Roma** (Borgata Tuscolana) sulla **Via Tuscolana** verso i Castell
 0. **BORGATA TUSCOLANA** (Roma) — Prof. **Castagno**, starter (scelta gen + starter), Pokédex, Ball, Pozioni. Il rivale **Remo** sfida subito.
 1. **Percorso Tuscolana** (tutorial) →
 2. **FRASCATI** — P1 **Erba** (Vinicio) · cap **14** · Medaglia Vigna
-3. **GROTTAFERRATA** — P2 **Psico** (Nilo) · cap **21** · Medaglia Icona
-4. **MARINO** — P3 **Acqua** (Moro) · cap **28** · Medaglia Fontana
-5. **MONTE PORZIO CATONE** — P4 **Elettro** (Stella) · cap **34** · Medaglia Stella
+3. **GROTTAFERRATA** — P2 **Psico** (Igino) · cap **21** · Medaglia Icona
+4. **MARINO** — P3 **Acqua** (Matilde) · cap **28** · Medaglia Fontana
+5. **MONTE PORZIO CATONE** — P4 **Elettro** (Biretta) · cap **34** · Medaglia Stella
 6. **ROCCA DI PAPA** — P5 **Lotta** (Baso) · cap **40** · Medaglia Pigna
 7. **ALBANO LAZIALE** — P6 **Roccia** (Giorgia) · cap **46** · Medaglia Scudo
-8. **ARICCIA** — P7 **Buio** (Ombretta) · cap **52** · Medaglia Fraschetta
-9. **GENZANO** — P8 **Fuoco** (Flora) · cap **58** · Medaglia Lava
+8. **ARICCIA** — P7 **Buio** (Isa) · cap **52** · Medaglia Fraschetta
+9. **GENZANO** — P8 **Fuoco** (Camilla) · cap **58** · Medaglia Lava
 10. **VIA VITTORIA** · cap **60**
 11. **COLONNA — LEGA POKÉMON** · Superquattro + Campione (**Remo**) · livelli **60-66**
 
@@ -183,12 +183,25 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
 6. [FATTO] **F6 — Squadra, zaino, salvataggio**.
 7. [FATTO] **F7 — Città di partenza + Palestra Frascati**.
 8. [FATTO] **F8 — Le altre 7 palestre + level cap + EXP scalato**.
-9. **F9 — Path, dungeon, MN + città vive**: soldi, Poké Market, repellenti, NPC, donatori MN, **sistema del tempo**, dungeon, laghi con Surf.
-10. **F10 — Team GdF**: grunt, admin, covo, sfere, scontro al cratere.
-11. **F11 — Leggendari ed eventi** (Gen 1-3, come sopra).
-12. **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool, Campione Remo) + **post-game CoTrAL/Bunkerino** (Mewtwo doppia, Deoxys, ecc.).
-13. **F13 — Pubblicazione su GitHub Pages.**
-14. **F14 (estetica) — Grafica cartoon** (Tiled + tileset liberi, avatar pixel, edifici iconici). La logica NON cambia.
+9. [FATTO] **F9 — Path, dungeon, MN + città vive**: tempo, economia, tutte e 7 le MN, NPC, Team GdF
+   (grunt/Marino/Grotta del Vulcano) e Team CoTrAL (Osservatorio) cablati e giocabili. Mancano ancora
+   alcuni dungeon narrativi minori (Museo di Nemi, dungeon dei porchettari) — vedi `docs/TODO.md`.
+10. [FATTO] **F10 — Team GdF**: covo di Marino, Giovanni, Grotta del Vulcano, tutto cablato.
+11. **F11 — Leggendari ed eventi**: SOLO 6 su 21 piazzati davvero su una mappa (Zapdos-preview,
+    Moltres, Raikou/Entei/Suicune, Latios/Latias, Groudon, Deoxys-trigger). **Mancano 10 su 21**:
+    Articuno, Mewtwo, Mew, Lugia, Ho-Oh, Celebi, i 3 Regi, Kyogre, Rayquaza, Jirachi.
+12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione Remo: cablati e
+    giocabili). **Post-game CoTrAL/Bunkerino: ASSENTE** — le mappe `Bunkerino_0f/1f.tmx` esistono come
+    file ma non sono mai state convertite in `.tmj` né registrate nel motore (oggi irraggiungibili).
+    Mewtwo/Mew (doppia): nessuna lotta vera da nessuna parte.
+13. **F13 — Pubblicazione su GitHub Pages**: non fatta. `MODALITA_TEST` non blocca più (si autogestisce,
+    spento online finché non si sblocca a password — `js/data.js`), quindi non è un ostacolo residuo.
+14. **F14 (estetica) — Grafica cartoon** (Tiled + tileset liberi, avatar pixel, edifici iconici). La logica NON cambia. Non iniziata.
+
+**Verificato il 5 ottobre 2026** (lotta in doppio ESISTE da tempo ed è usata attivamente —
+`Battle.avviaDoppia`, js/battle.js — contrariamente a quanto si poteva leggere qui prima; i menu
+Squadra/Zaino/Box/Market/Pokédex/Opzioni sono TUTTI nativi Phaser, zero pannelli DOM residui; il
+sistema di cutscene dichiarativo `dati/cutscene.js` è usato attivamente, non "rimandato").
 
 ## VINCOLI LEGALI
 - Sprite/nomi Pokémon = IP Nintendo/Game Freak: progetto SOLO personale/didattico. Mai monetizzare/promuovere.
@@ -196,11 +209,20 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
 - **"GdF" e "CoTrAL"** e i nomi di luoghi reali: mantenerli sostituibili via costante.
 - OSM: attribuzione obbligatoria sulla mappa.
 
-## STATO ATTUALE
-F1-F8 complete. Limite **Gen 1-2-3 (ID 1-386)**. Booster ⏩ x1-x5. Modalità test (999 Caramelle Rare, `MODALITA_TEST`). **Sessione di design narrativo** aggiornata (nuova narrativa Rocca di Papa/CoTrAL,
-MN **Spaccaroccia** introdotta, doppio flag oggetto/permesso da implementare in futuro). Vedi
-`docs/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
-aperti. **Prossima: F9** (a blocchi: tempo → economia → NPC/MN → dungeon).
+## STATO ATTUALE (verificato sul codice reale il 5 ottobre 2026 — non fidarsi di versioni precedenti di questa riga)
+**F1-F10 e F12 fatte e giocabili** (tempo, economia, tutte e 7 le MN, Team GdF, Lega di Colonna con
+Superquattro/Remo, menu nativi completi, lotta in doppio, sistema cutscene). Limite **Gen 1-2-3
+(ID 1-386)**. `MODALITA_TEST` oggi si autogestisce (acceso in locale, spento online finché non si
+sblocca a password) — non è più un ostacolo prima della pubblicazione.
+
+**I due buchi veri che restano**: **F11 Leggendari solo 6/21 piazzati** (manca Articuno, Mewtwo, Mew,
+Lugia, Ho-Oh, Celebi, i 3 Regi, Kyogre, Rayquaza, Jirachi) e **il Bunkerino post-Lega CoTrAL (F12)
+non esiste ancora in gioco** (mappe `.tmx` presenti ma mai convertite/cablate — niente Mewtwo/Mew).
+F13 (pubblicazione) e F14 (grafica cartoon) non iniziate.
+
+Vedi `docs/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
+aperti — ATTENZIONE: parti di quel file erano scollate dal codice reale fino al 5 ottobre 2026,
+controllare sempre col codice prima di fidarsi ciecamente di una voce vecchia.
 
 ## DOCUMENTI DI DESIGN (leggi anche questi, oltre a ROADMAP)
 - `docs/ROADMAP.md` — stato preciso e avanzamento per sessione (leggi a inizio sessione).
@@ -213,3 +235,9 @@ aperti. **Prossima: F9** (a blocchi: tempo → economia → NPC/MN → dungeon).
 - `docs/DIALOGHI-NPC.md` — battute degli NPC (filler), città per città.
 - `docs/COORDINATE-NUOVI-LUOGHI.md` — **coordinate dei luoghi nuovi** da aggiungere in F9-F11
   (marker in data.js, zone/dungeon in world.js).
+- `docs/TEMPLATE-CUTSCENE.md` — **usa SEMPRE questo template per ogni cutscene nuova** (Luca lo
+  compila, tu lo traduci in passi di `dati/cutscene.js`). Non scrivere mai una cutscene come funzione
+  JS su misura in `js/map.js`: se manca un "passo" nel vocabolario del motore (vedi commento in testa
+  a `dati/cutscene.js`), aggiungilo lì una volta per tutte — riusabile da tutte le cutscene future,
+  non solo quella che stai facendo. Questa regola è nata da una sessione dolorosa (5 ottobre 2026,
+  cutscene Maso/Zapdos a Percorso Monte Po 3): non riproporre lo stesso approccio "a codice su misura".

@@ -981,8 +981,66 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":621.673414304993,
-                 "y":1294.00809716599
+                 "x":621.923414304993,
+                 "y":1277.00809716599
+                }, 
+                {
+                 "height":0,
+                 "id":69,
+                 "name":"esci_museo",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"lago_nemi"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_museo_navi"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":656.423414304993,
+                 "y":1276.25809716599
+                }, 
+                {
+                 "height":0,
+                 "id":68,
+                 "name":"esci_museo",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"lago_nemi"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_museo_navi"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":592.173414304993,
+                 "y":1275.75809716599
                 }, 
                 {
                  "height":0,
@@ -1176,7 +1234,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":68,
+ "nextobjectid":70,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

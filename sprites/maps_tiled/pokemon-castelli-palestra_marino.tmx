@@ -132,31 +132,102 @@
 </data>
  </layer>
  <objectgroup id="6" name="collisioni">
-  <object id="26" x="32.471" y="484.068" width="22.9795" height="21.4808"/>
-  <object id="27" x="839.75" y="486.066" width="21.4808" height="21.9804"/>
-  <object id="28" x="1.49866" y="0.499554" width="25.4773" height="892.203"/>
-  <object id="29" x="-0.999108" y="-0.999108" width="874.719" height="98.9117"/>
-  <object id="30" x="859.233" y="12.4888" width="24.4781" height="6.99376"/>
-  <object id="31" x="873.72" y="6.4942" width="15.9857" height="889.206"/>
-  <object id="59" name="warp" type="warp" x="447.518" y="904.458" width="32" height="32" rotation="270.822">
-   <properties>
-    <property name="destinazione" value="marino"/>
-    <property name="spawn_id" value="da_palestra_marino"/>
-    <property name="type" value="warp"/>
-   </properties>
-  </object>
-  <object id="60" name="spawn" type="spawn" x="446.156" y="837.458" width="32" height="32">
-   <properties>
-    <property name="id" value="da_marino"/>
-    <property name="type" value="spawn"/>
-   </properties>
-  </object>
-  <object id="61" x="68.9384" y="144.371">
-   <polygon points="0,0 0.499554,709.367 367.672,710.366 368.171,630.937 226.798,630.437 225.299,664.407 114.897,670.901 114.897,539.019 226.298,543.015 232.792,583.979 357.181,580.482 363.176,406.637 135.379,408.136 132.881,359.179 103.907,347.69 103.408,225.299 234.79,225.798 237.288,347.19 198.822,354.683 451.097,353.684 422.123,326.708 426.12,225.798 551.508,226.298 555.004,251.276 654.915,256.771 646.922,222.302 616.45,219.304 615.45,185.834 359.179,196.824 362.676,96.9135 202.819,101.909 199.322,0.999108"/>
-  </object>
-  <object id="62" x="617.449" y="151.365">
-   <polygon points="0,0 -1.99822,88.9206 -124.389,96.9135 -123.39,120.393 69.438,120.892 70.9367,92.4175 190.83,95.4148 189.331,222.302 159.857,219.804 163.354,311.722 3.49688,310.223 2.99732,344.193 -20.9813,344.193 -26.9759,383.657 -27.975,405.638 -124.389,407.136 -122.89,569.492 -58.9474,572.489 -91.9179,549.01 -84.9242,434.612 41.9625,439.607 34.4692,569.991 9.49153,570.491 7.49331,598.466 4.99554,635.433 -125.888,639.429 -115.397,690.384 201.82,698.376 199.322,-5.49509"/>
-  </object>
- </objectgroup>
- <objectgroup id="5" name="eventi"/>
+ <object id="26" x="32.471" y="484.068" width="22.9795" height="21.4808"/>
+ <object id="27" x="839.75" y="486.066" width="21.4808" height="21.9804"/>
+ <object id="28" x="1.49866" y="0.499554" width="25.4773" height="892.203"/>
+ <object id="29" x="-0.999108" y="-0.999108" width="874.719" height="98.9117"/>
+ <object id="30" x="859.233" y="12.4888" width="24.4781" height="6.99376"/>
+ <object id="31" x="873.72" y="6.4942" width="15.9857" height="889.206"/>
+ <object id="71" x="72.4353256021409" y="147.867975022302" width="211.810883140054" height="231.793041926851"/>
+ <object id="72" x="68.9384478144514" y="395.646743978591" width="115.396966993756" height="462.586975914362"/>
+ <object id="73" x="191.329170383586" y="819.268510258698" width="250.776092774309" height="42.9616413916146"/>
+ <object id="74" x="307.725245316682" y="781.302408563782" width="128.385370205174" height="33.9696699375558"/>
+ <object id="75" x="196.824264049955" y="553.006244424621" width="245.780553077609" height="138.376449598573"/>
+ <object id="76" x="292.738626226583" y="680.392506690455" width="151.864406779661" height="42.4620874219447"/>
+ <object id="77" x="298.233719892953" y="240.78501338091" width="141.873327386262" height="267.760927743087"/>
+ <object id="78" x="466.583407671722" y="337.698483496878" width="40.4638715432649" height="169.348795718109"/>
+ <object id="79" x="530.026761819804" y="339.197145405888" width="166.851025869759" height="31.971454058876"/>
+ <object id="80" x="632.435325602141" y="374.165923282783" width="94.9152542372881" height="32.471008028546"/>
+ <object id="81" x="595.468331846566" y="495.057983942908" width="224.299732381802" height="108.403211418376"/>
+ <object id="82" x="629.937555753791" y="462.087421944692" width="188.831400535236" height="29.9732381801962"/>
+ <object id="83" x="789.295272078501" y="373.166815343443" width="38.9652096342551" height="82.4264049955397"/>
+ <object id="84" x="624.442462087422" y="148.867082961641" width="199.821587867975" height="93.9161462979482"/>
+ <object id="85" x="501.052631578947" y="242.78322925959" width="194.826048171276" height="33.9696699375558"/>
+ <object id="86" x="807.279214986619" y="239.2863514719" width="11.9892952720785" height="146.868867082962"/>
+ <object id="87" x="646.922390722569" y="601.962533452275" width="171.347011596789" height="251.775200713649"/>
+ <object id="88" x="492.560214094558" y="778.804638715433" width="157.8590544157" height="72.435325602141"/>
+ <object id="89" x="495.057983942908" y="558.50133809099" width="40.9634255129349" height="167.350579839429"/>
+ <object id="90" x="545.512934879572" y="560.49955396967" width="47.957181088314" height="21.9803746654773"/>
+ <object id="91" x="534.023193577163" y="714.362176628011" width="31.4719000892061" height="14.4870651204283"/>
+ <object id="92" x="443.104371097235" y="339.696699375558" width="21.9803746654773" height="163.85370205174"/>
+ <object id="93" x="486.565566458519" y="241.78412132025" width="23.4790365744871" height="26.4763603925067"/>
+</objectgroup>
+ <objectgroup id="5" name="eventi">
+ <object id="63" name="Lello" x="233.477252453167" y="754.412132024978">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 1 palestra marino"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="64" name="Giada" x="591.115075825156" y="753.35593220339">
+  <properties>
+   <property name="direzione" value="ovest"/>
+   <property name="id" value="gregario 2 palestra marino"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="65" name="Marco" x="233.448706512043" y="433.912578055308">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 3 palestra marino"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="66" name="Enzo" x="756.438893844781" y="308.495985727029">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gregario 4 palestra marino"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="67" name="Corinna" x="556.917038358608" y="429.616413916146">
+  <properties>
+   <property name="direzione" value="est"/>
+   <property name="id" value="gregario 5 palestra marino"/>
+   <property name="type" value="trainer"/>
+   <property name="vista" value="7"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="68" name="Moro" x="465.49866190901" y="152.021409455843">
+  <properties>
+   <property name="direzione" value="sud"/>
+   <property name="id" value="gym_leader_palestra marino"/>
+   <property name="type" value="trainer"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="69" name="warp" type="warp" x="451.887791793042" y="895.076600892061" width="24.4368" height="24.4368">
+  <properties>
+   <property name="destinazione" value="marino"/>
+   <property name="spawn_id" value="da_palestra_marino"/>
+   <property name="type" value="warp"/>
+  </properties>
+ </object>
+ <object id="70" name="spawn" type="spawn" x="452.845791793042" y="829.924600892061" width="24.4368" height="24.4368">
+  <properties>
+   <property name="id" value="da_marino"/>
+   <property name="type" value="spawn"/>
+  </properties>
+ </object>
+</objectgroup>
 </map>

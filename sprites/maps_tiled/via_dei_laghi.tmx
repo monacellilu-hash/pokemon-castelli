@@ -1465,5 +1465,34 @@
    </properties>
    <point/>
   </object>
+  <object id="9001" name="warp_ristorante_laghi" type="warp" x="1827" y="1861.92" width="24.5" height="15.5">
+   <properties>
+    <property name="destinazione" value="ristorante_laghi_1f"/>
+    <property name="spawn_id" value="da fuori"/>
+    <property name="type" value="warp"/>
+   </properties>
+  </object>
+  <object id="9002" name="spawn_da_ristorante_laghi" type="spawn" x="1831.5" y="1891.25" width="22.75" height="17.875">
+   <properties>
+    <property name="id" value="da_ristorante_laghi"/>
+    <property name="type" value="spawn"/>
+   </properties>
+  </object>
+  <object id="288" name="trainer" type="trainer" x="1700" y="1830" width="32" height="32">
+   <properties>
+    <property name="direzione" value="sud"/>
+    <property name="id" value="famiglia_laghi_1"/>
+    <property name="sprite" value="YOUNGSTER"/>
+    <property name="type" value="trainer"/>
+    <property name="vista" type="int" value="5"/>
+   </properties>
+  </object>
+  <object id="289" name="npc" type="npc" x="1890" y="1830" width="32" height="32">
+   <properties>
+    <property name="direzione" value="ovest"/>
+    <property name="id" value="guaritore_laghi"/>
+    <property name="type" value="npc"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

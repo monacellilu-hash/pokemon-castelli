@@ -126,7 +126,7 @@ Vedi `docs/DIZIONARIO-TILED.md` per la tabella di riferimento completa; qui il r
 | Percorso 2 | `percorso_2` | 28x120 monoschermata, 6 trainer, ruscello+cascata |
 | **Grottaferrata** (P2, Nilo) | `grottaferrata`, `palestra_grottaferrata_interno` | ✅ Palestra completa, Medaglia Icona, cap 21 |
 | Percorso 3 | `percorso_3` | 8+2 allenatori, zona MN Forza |
-| **Marino** (P3, Moro) | `marino` | ⚠️ Città esiste, palestra interna e Moro mancanti |
+| **Marino** (P3, Matilde) | `marino` | ⚠️ Città esiste, palestra interna e Matilde mancanti |
 | Percorso 4 | `percorso_4` | Collega Marino ↔ Castel Gandolfo/Lago Albano |
 | Lago Albano | `lago_albano` | Spiaggia + acqua Surf. Mancano zone distinte spiaggia/acqua |
 | **Castel Gandolfo** | `castel_gandolfo` | No palestra. 7 grunt GdF, flag `documentoVillaOttenuto` |
@@ -155,7 +155,7 @@ Vedi `docs/DIZIONARIO-TILED.md` per la tabella di riferimento completa; qui il r
 ### 3.4 Interni e mappe mancanti (nessun file, solo nel design)
 
 **Città e percorsi:**
-- Palestra interna Marino + Moro come trainer
+- Palestra interna Marino + Matilde come trainer
 - Percorso 3 (28x80, 8+2 trainer, zona Forza) — aggiornato a Lv 10-16
 - Percorso 4 (28x95, 8+2 trainer, zona Taglio) — Lv 12-19
 - Monte Porzio Catone (mappa esterna — parzialmente disegnata)
@@ -301,7 +301,7 @@ solo da NPC dedicato.
 ### Priorità 1 — sblocca il gioco in modalità normale (senza pulsante test)
 1. Portare Fra' Potatore (MN Taglio) su Tiled in Grottaferrata
 2. Registrare le mappe generate in sessione nel registro `MAPPE` di `map.js`
-3. Completare Marino: palestra interna + Moro come trainer
+3. Completare Marino: palestra interna + Matilde come trainer
 
 ### Priorità 2 — avanzamento path principale
 4. Collegare Monte Porzio Catone (mappa già disegnata)
