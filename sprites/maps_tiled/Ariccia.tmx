@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="70" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="144">
+ <editorsettings>
+  <export target="Ariccia.tmj" format="json"/>
+ </editorsettings>
  <tileset firstgid="1" source="../../outside.tsx"/>
  <tileset firstgid="4017" source="../pokemon_emerald_exterior_32.tsj"/>
  <tileset firstgid="10089" source="../outside.tsx"/>
