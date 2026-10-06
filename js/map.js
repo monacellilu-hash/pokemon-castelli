@@ -8701,11 +8701,17 @@ const GameMap = (function () {
         if (!stato.flags) stato.flags = {};
         // Missione 5 di Cenciarels (Museo di Nemi): si attiva solo in
         // RI-sfida (legaCompletata era già vera PRIMA di questa vittoria,
-        // quindi non la prima volta) e solo se la squadra reale (niente
-        // uova) non contiene leggendari, starter o Pokémon di tipo Draco.
+        // quindi non la prima volta), solo se la squadra reale (niente
+        // uova) non contiene leggendari, starter o Pokémon di tipo Draco, E
+        // solo se la missione 5 è quella che Cenciarels ti ha DAVVERO già
+        // affidato (missioneCenciarelsAttiva) — altrimenti risfidare la Lega
+        // "pulito" per puro caso prima ancora di conoscere Cenciarels
+        // conterebbe come missione già fatta (bug segnalato da Luca).
         // PENSIONE_LEGGENDARI_ESCLUSI/STARTER_IDS sono già usati altrove
         // con lo stesso significato (js/app.js, js/data.js).
-        if (stato.flags.legaCompletata) {
+        if (stato.flags.legaCompletata &&
+            typeof missioneCenciarelsAttiva === 'function' &&
+            missioneCenciarelsAttiva('cenciarels_squadra_pulita')) {
           const squadraReale = (stato.squadra || []).filter(p => p && !p.uovo);
           const pulita = squadraReale.length > 0 && squadraReale.every(p =>
             !PENSIONE_LEGGENDARI_ESCLUSI.has(p.id) &&

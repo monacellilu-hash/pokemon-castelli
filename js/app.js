@@ -2092,9 +2092,25 @@ function fossileRianimato() {
   return !!(stato.flags && stato.flags.fossileRianimato);
 }
 
+// Vera solo se la missione passata (per id, vedi MISSIONI_CENCIARELS) è
+// quella CORRENTE da completare: le missioni sono già state sbloccate E
+// tutte le precedenti nell'ordine 1-5 sono già fatte. Usata per impedire che
+// un traguardo raggiunto PRIMA che Cenciarels affidi davvero quella missione
+// conti come "già completato" (richiesta di Luca, 6 ott 2026: es. risfidare
+// la Lega con squadra pulita PRIMA di arrivare alla missione 5 non deve
+// valere). Il flag a effetto collaterale impostato altrove (js/map.js, alla
+// vittoria sul Campione) controlla questa funzione prima di scattare.
+function missioneCenciarelsAttiva(id) {
+  if (!stato.flags || !stato.flags.cenciarelsMissioniSbloccate) return false;
+  if (typeof MISSIONI_CENCIARELS === 'undefined') return false;
+  const fatte = stato.flags.cenciarelsMissioni || {};
+  const daFare = MISSIONI_CENCIARELS.filter(m => !fatte[m.id]);
+  return daFare.length > 0 && daFare[0].id === id;
+}
+
 // Cenciarels, curatrice del Museo delle Navi (versione "liberata"): riceve il
-// giocatore dopo la scena del Capo GdF. Le missioni vere (MISSIONI_CENCIARELS,
-// js/data.js) sono ancora vuote: le definisce Luca.
+// giocatore dopo la scena del Capo GdF. Le 5 missioni sono in
+// MISSIONI_CENCIARELS (js/data.js).
 async function interagisciCenciarels() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const nome = 'Cenciarels';
