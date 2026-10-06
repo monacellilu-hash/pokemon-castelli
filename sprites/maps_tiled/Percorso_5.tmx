@@ -568,37 +568,37 @@
  <objectgroup color="#00ff00" id="5" name="eventi">
   <object id="1" name="trainer_1" type="trainer" x="1270.71" y="1376" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="guardia ingresso radura Forza"/>
    </properties>
   </object>
   <object id="2" name="trainer_2" type="trainer" x="1127.26" y="1526.59" width="32" height="32">
    <properties>
-    <property name="facing" value="N"/>
+    <property name="direzione" value="nord"/>
     <property name="note" value="in fondo alla radura, vicino oggetto"/>
    </properties>
   </object>
   <object id="3" name="trainer_3" type="trainer" x="1507.65" y="612.245" width="24" height="21.5">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="presso il ponte"/>
    </properties>
   </object>
   <object id="4" name="trainer_4" type="trainer" x="1344.91" y="96.9091" width="32" height="32">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="vicino cima sentiero"/>
    </properties>
   </object>
   <object id="9" name="trainer_6" type="trainer" x="1408.81" y="155.276" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
    </properties>
   </object>
   <object id="10" name="trainer_5" type="trainer" x="1596.15" y="736.542" width="32" height="32">
    <properties>
     <property name="descrizione" value="dentro l'acqua, nuotatore"/>
-    <property name="facing" value="ovest"/>
+    <property name="direzione" value="ovest"/>
    </properties>
   </object>
   <object id="11" name="cartello" type="cartello" x="1187.73" y="131.887" width="22.3657" height="19.1543">

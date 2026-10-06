@@ -2005,10 +2005,14 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Uffa, coccoloni ma sconfitti.',
     premio: 220,
   },
+  // Livelli ricalibrati 6 ott 2026 (richiesta di Luca): Castel Gandolfo sta
+  // tra la 3ª (Marino, cap 31) e la 4ª palestra (Monte Porzio, cap 38) — chi
+  // è piazzato più vicino al Lago di Albano (coordinate reali sulla mappa)
+  // è più forte. Prima erano rimasti ai livelli 10-13 del tutorial.
   'all-gm-3': {
     sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
     classe: 'Coleotterista', nome: 'Pino',
-    squadra: [ { id: 13, livello: 10 }, { id: 11, livello: 11 } ],
+    squadra: [ { id: 13, livello: 36 }, { id: 11, livello: 37 } ],
     dialogo_prima: 'Faccio avanti e indietro tutto il giorno a cercà bachi! Tu fermati a lottà!',
     dialogo_dopo: 'Torno a cercà i miei insetti...',
     premio: 200,
@@ -2016,7 +2020,7 @@ const DATI_TRAINER = {
   'all-gm-4': {
     sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
     classe: 'Pivello', nome: 'Tonino',
-    squadra: [ { id: 23, livello: 11 }, { id: 27, livello: 12 } ],
+    squadra: [ { id: 23, livello: 32 }, { id: 27, livello: 33 } ],
     dialogo_prima: 'Verso il lago ci stanno i Pokémon d\'acqua! Ma prima rispondi a me!',
     dialogo_dopo: 'Eh, c\'avevo i miei serpentelli pronti...',
     premio: 240,
@@ -2024,7 +2028,7 @@ const DATI_TRAINER = {
   'all-gm-5': {
     sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 5,
     classe: 'Ornitologo', nome: 'Aldo',
-    squadra: [ { id: 16, livello: 12 }, { id: 41, livello: 13 } ],
+    squadra: [ { id: 16, livello: 34 }, { id: 41, livello: 35 } ],
     dialogo_prima: 'I miei uccelli volteggiano su tutta la valle! Vediamo se li acchiappi!',
     dialogo_dopo: 'Hanno volato basso oggi, eh.',
     premio: 260,

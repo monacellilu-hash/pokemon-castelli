@@ -1878,8 +1878,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":864
+                 "x":127,
+                 "y":1154.5
                 }, 
                 {
                  "height":32,
@@ -1890,8 +1890,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":96,
-                 "y":864
+                 "x":159,
+                 "y":1154.5
                 }, 
                 {
                  "height":32,
@@ -1902,8 +1902,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":128,
-                 "y":864
+                 "x":191,
+                 "y":1154.5
                 }, 
                 {
                  "height":32,
@@ -1914,8 +1914,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":160,
-                 "y":864
+                 "x":223,
+                 "y":1154.5
                 }, 
                 {
                  "height":32,
@@ -1926,8 +1926,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":896
+                 "x":127,
+                 "y":1186.5
                 }, 
                 {
                  "height":32,
@@ -1938,8 +1938,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":96,
-                 "y":896
+                 "x":159,
+                 "y":1186.5
                 }, 
                 {
                  "height":32,
@@ -1950,8 +1950,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":128,
-                 "y":896
+                 "x":191,
+                 "y":1186.5
                 }, 
                 {
                  "height":32,
@@ -1962,8 +1962,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":160,
-                 "y":896
+                 "x":223,
+                 "y":1186.5
                 }, 
                 {
                  "height":32,
@@ -1974,8 +1974,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":928
+                 "x":127,
+                 "y":1218.5
                 }, 
                 {
                  "height":32,
@@ -1986,8 +1986,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":128,
-                 "y":928
+                 "x":191,
+                 "y":1218.5
                 }, 
                 {
                  "height":32,
@@ -1998,8 +1998,8 @@
                  "type":"solid",
                  "visible":true,
                  "width":32,
-                 "x":160,
-                 "y":928
+                 "x":223,
+                 "y":1218.5
                 }, 
                 {
                  "height":32,
@@ -4034,30 +4034,6 @@
                 }, 
                 {
                  "height":96,
-                 "id":336,
-                 "name":"bosco_31_4",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":128,
-                 "y":992
-                }, 
-                {
-                 "height":96,
-                 "id":337,
-                 "name":"bosco_31_6",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":192,
-                 "y":992
-                }, 
-                {
-                 "height":96,
                  "id":338,
                  "name":"bosco_33_30",
                  "opacity":1,
@@ -4118,30 +4094,6 @@
                 }, 
                 {
                  "height":96,
-                 "id":343,
-                 "name":"bosco_34_4",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":128,
-                 "y":1088
-                }, 
-                {
-                 "height":96,
-                 "id":344,
-                 "name":"bosco_34_6",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":192,
-                 "y":1088
-                }, 
-                {
-                 "height":96,
                  "id":345,
                  "name":"bosco_36_30",
                  "opacity":1,
@@ -4188,31 +4140,6 @@
                  "x":0,
                  "y":1184
                 }, 
-                {
-                 "height":96,
-                 "id":349,
-                 "name":"bosco_37_4",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":128,
-                 "y":1184
-                }, 
-                {
-                 "height":96,
-                 "id":350,
-                 "name":"bosco_37_6",
-                 "opacity":1,
-                 "rotation":0,
-                 "type":"solid",
-                 "visible":true,
-                 "width":64,
-                 "x":192,
-                 "y":1184
-                },
-            
                 {
                  "height":96,
                  "id":360,
@@ -4284,7 +4211,8 @@
                  "width":64,
                  "x":960,
                  "y":1344
-                }, 
+                },
+            
                 {
                  "height":96,
                  "id":377,
@@ -4872,8 +4800,7 @@
                  "width":22.774,
                  "x":1443.69,
                  "y":1989.54
-                },
-            
+                }, 
                 {
                  "height":26.095,
                  "id":22,
@@ -4945,7 +4872,8 @@
                  "width":21.7171,
                  "x":1604.72,
                  "y":91.1829
-                }, 
+                },
+            
                 {
                  "height":14.9562,
                  "id":29,
@@ -5164,7 +5092,7 @@
                 }],
          "opacity":0.5,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }, 
@@ -5181,9 +5109,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"E"
+                         "value":"est"
                         }, 
                         {
                          "name":"note",
@@ -5204,9 +5132,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -5227,9 +5155,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -5250,9 +5178,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"E"
+                         "value":"est"
                         }, 
                         {
                          "name":"note",
@@ -5273,9 +5201,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -5296,9 +5224,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -5319,9 +5247,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"N"
+                         "value":"nord"
                         }, 
                         {
                          "name":"note",
@@ -5393,7 +5321,7 @@
                          "value":"Grunt GdF: Ehi tu! Questa e' zona riservata. La Villa e' sotto il nostro controllo!"
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"est"
                         }, 
@@ -5421,9 +5349,9 @@
                          "value":"Grunt GdF: Un ragazzino? Il Comandante Crasso ci ha detto di non far passare NESSUNO."
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"oest"
+                         "value":"ovest"
                         }, 
                         {
                          "name":"livello_max",
@@ -5449,7 +5377,7 @@
                          "value":"Grunt GdF: Cerchiamo un documento negli archivi pontifici. Ma tu non hai visto niente, chiaro?"
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"ovest"
                         }, 
@@ -5477,7 +5405,7 @@
                          "value":"Grunt GdF: Il meteo dei Castelli sara' nostro! Immagina: pioggia a comando sulle vigne dei concorrenti..."
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"est"
                         }, 
@@ -5505,7 +5433,7 @@
                          "value":"Grunt GdF: Fulvia dice che sei tu quello che ci da' fastidio da Frascati. Ora ci penso io!"
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"ovest"
                         }, 
@@ -5533,7 +5461,7 @@
                          "value":"Grunt GdF: Sei arrivato fin qui? Non importa. Quello che cercavamo l'abbiamo gia' trovato."
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"est"
                         }, 
@@ -5566,9 +5494,9 @@
                          "value":"Il documento dice: 'Le pietre riposano al Museo delle Barche di Nemi'. ...Aspetta, se ve ne siete gia' andati li'... devo correre a Nemi!"
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"flagVittoria",
@@ -6018,8 +5946,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":109.333333333333,
-                 "y":946.666666666667
+                 "x":174.333333333333,
+                 "y":1234.66666666667
                 }, 
                 {
                  "height":0,
@@ -6047,8 +5975,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":114,
-                 "y":987.333333333333
+                 "x":177,
+                 "y":1273.33333333333
                 }, 
                 {
                  "height":0,

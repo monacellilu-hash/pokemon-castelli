@@ -10538,10 +10538,11 @@ const GameMap = (function () {
         this._layer.add(icona);
       });
 
-      const alCap = (typeof stato !== 'undefined') && pkm.livello >= stato.levelCap;
+      // Il giocatore resta sempre un livello sotto l'asso del capopalestra.
+      const alCap = (typeof stato !== 'undefined') && pkm.livello >= stato.levelCap - 1;
       if (alCap) {
         testo(238, 246, 'Exp. Punti', base);
-        testo(238, 280, `⛔ Al level cap (Lv.${stato.levelCap})`, { fontSize: '12px', color: '#f83820' });
+        testo(238, 280, `⛔ Al massimo (Lv.${stato.levelCap - 1})`, { fontSize: '12px', color: '#f83820' });
       } else {
         const expBase = Math.pow(pkm.livello, 3), expProssimo = Math.pow(pkm.livello + 1, 3);
         testo(238, 246, 'Exp. Punti', base);

@@ -217,7 +217,7 @@
 0,0,0,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828,11827,11828
 </data>
  </layer>
- <objectgroup color="#ff0000" id="4" name="collisioni" visible="0" opacity="0.5">
+ <objectgroup color="#ff0000" id="4" name="collisioni" opacity="0.5">
   <object id="1" name="pen" type="solid" x="128" y="128" width="32" height="32"/>
   <object id="2" name="pen" type="solid" x="384" y="128" width="32" height="32"/>
   <object id="3" name="pen" type="solid" x="128" y="288" width="32" height="32"/>
@@ -353,17 +353,17 @@
   <object id="133" name="casa_rossa_wall" type="solid" x="672" y="928" width="32" height="32"/>
   <object id="135" name="casa_rossa_wall" type="solid" x="736" y="928" width="32" height="32"/>
   <object id="136" name="casa_rossa_wall" type="solid" x="768" y="928" width="32" height="32"/>
-  <object id="137" name="casa_verde_wall" type="solid" x="64" y="864" width="32" height="32"/>
-  <object id="138" name="casa_verde_wall" type="solid" x="96" y="864" width="32" height="32"/>
-  <object id="139" name="casa_verde_wall" type="solid" x="128" y="864" width="32" height="32"/>
-  <object id="140" name="casa_verde_wall" type="solid" x="160" y="864" width="32" height="32"/>
-  <object id="141" name="casa_verde_wall" type="solid" x="64" y="896" width="32" height="32"/>
-  <object id="142" name="casa_verde_wall" type="solid" x="96" y="896" width="32" height="32"/>
-  <object id="143" name="casa_verde_wall" type="solid" x="128" y="896" width="32" height="32"/>
-  <object id="144" name="casa_verde_wall" type="solid" x="160" y="896" width="32" height="32"/>
-  <object id="145" name="casa_verde_wall" type="solid" x="64" y="928" width="32" height="32"/>
-  <object id="147" name="casa_verde_wall" type="solid" x="128" y="928" width="32" height="32"/>
-  <object id="148" name="casa_verde_wall" type="solid" x="160" y="928" width="32" height="32"/>
+  <object id="137" name="casa_verde_wall" type="solid" x="127" y="1154.5" width="32" height="32"/>
+  <object id="138" name="casa_verde_wall" type="solid" x="159" y="1154.5" width="32" height="32"/>
+  <object id="139" name="casa_verde_wall" type="solid" x="191" y="1154.5" width="32" height="32"/>
+  <object id="140" name="casa_verde_wall" type="solid" x="223" y="1154.5" width="32" height="32"/>
+  <object id="141" name="casa_verde_wall" type="solid" x="127" y="1186.5" width="32" height="32"/>
+  <object id="142" name="casa_verde_wall" type="solid" x="159" y="1186.5" width="32" height="32"/>
+  <object id="143" name="casa_verde_wall" type="solid" x="191" y="1186.5" width="32" height="32"/>
+  <object id="144" name="casa_verde_wall" type="solid" x="223" y="1186.5" width="32" height="32"/>
+  <object id="145" name="casa_verde_wall" type="solid" x="127" y="1218.5" width="32" height="32"/>
+  <object id="147" name="casa_verde_wall" type="solid" x="191" y="1218.5" width="32" height="32"/>
+  <object id="148" name="casa_verde_wall" type="solid" x="223" y="1218.5" width="32" height="32"/>
   <object id="149" name="casa_gialla_grande_wall" type="solid" x="1280" y="1152" width="32" height="32"/>
   <object id="150" name="casa_gialla_grande_wall" type="solid" x="1312" y="1152" width="32" height="32"/>
   <object id="151" name="casa_gialla_grande_wall" type="solid" x="1344" y="1152" width="32" height="32"/>
@@ -533,21 +533,15 @@
   <object id="333" name="bosco_30_50" type="solid" x="1600" y="960" width="64" height="96"/>
   <object id="334" name="bosco_30_52" type="solid" x="1664" y="960" width="64" height="96"/>
   <object id="335" name="bosco_31_0" type="solid" x="0" y="992" width="64" height="96"/>
-  <object id="336" name="bosco_31_4" type="solid" x="128" y="992" width="64" height="96"/>
-  <object id="337" name="bosco_31_6" type="solid" x="192" y="992" width="64" height="96"/>
   <object id="338" name="bosco_33_30" type="solid" x="960" y="1056" width="64" height="96"/>
   <object id="339" name="bosco_33_32" type="solid" x="1024" y="1056" width="64" height="96"/>
   <object id="340" name="bosco_33_50" type="solid" x="1600" y="1056" width="64" height="96"/>
   <object id="341" name="bosco_33_52" type="solid" x="1664" y="1056" width="64" height="96"/>
   <object id="342" name="bosco_34_0" type="solid" x="0" y="1088" width="64" height="96"/>
-  <object id="343" name="bosco_34_4" type="solid" x="128" y="1088" width="64" height="96"/>
-  <object id="344" name="bosco_34_6" type="solid" x="192" y="1088" width="64" height="96"/>
   <object id="345" name="bosco_36_30" type="solid" x="960" y="1152" width="64" height="96"/>
   <object id="346" name="bosco_36_32" type="solid" x="1024" y="1152" width="64" height="96"/>
   <object id="347" name="bosco_36_52" type="solid" x="1664" y="1152" width="64" height="96"/>
   <object id="348" name="bosco_37_0" type="solid" x="0" y="1184" width="64" height="96"/>
-  <object id="349" name="bosco_37_4" type="solid" x="128" y="1184" width="64" height="96"/>
-  <object id="350" name="bosco_37_6" type="solid" x="192" y="1184" width="64" height="96"/>
   <object id="360" name="bosco_39_30" type="solid" x="960" y="1248" width="64" height="96"/>
   <object id="361" name="bosco_39_32" type="solid" x="1024" y="1248" width="64" height="96"/>
   <object id="362" name="bosco_39_52" type="solid" x="1664" y="1248" width="64" height="96"/>
@@ -631,53 +625,53 @@
  <objectgroup color="#00ff00" id="5" name="eventi">
   <object id="1" name="npc_1" type="npc" x="928" y="544" width="32" height="32">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="cittadino alla fontana"/>
    </properties>
   </object>
   <object id="2" name="npc_2" type="npc" x="795.925" y="1096.39" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="davanti al pokecenter"/>
    </properties>
   </object>
   <object id="3" name="npc_3" type="npc" x="527.547" y="1111.06" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="davanti al market"/>
    </properties>
   </object>
   <object id="4" name="npc_4" type="npc" x="315.326" y="602.788" width="32" height="32">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="giardiniere nel recinto del laghetto"/>
    </properties>
   </object>
   <object id="5" name="npc_5" type="npc" x="452.386" y="424.558" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="curatrice dei giardini fioriti"/>
    </properties>
   </object>
   <object id="6" name="npc_6" type="npc" x="1214" y="1308" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="residente vicino alla piscina"/>
    </properties>
   </object>
   <object id="7" name="npc_7" type="npc" x="1057.55" y="637.888" width="32" height="32">
    <properties>
-    <property name="facing" value="N"/>
+    <property name="direzione" value="nord"/>
     <property name="note" value="custode davanti allo spazio della Villa"/>
    </properties>
   </object>
-  <object id="12" name="pokecenter_door" type="warp" x="350.822" y="931.533" width="32" height="32">
+  <object id="12" name="pokecenter_door" type="warp" x="350.822" y="931.533" width="32.5" height="17.75">
    <properties>
     <property name="destinazione" value="pokecenter_castel_gandolfo"/>
     <property name="note" value="pokecenter_door"/>
    </properties>
   </object>
-  <object id="13" name="market_door" type="warp" x="573.645" y="926.822" width="32" height="32">
+  <object id="13" name="market_door" type="warp" x="576.645" y="926.072" width="32" height="32">
    <properties>
     <property name="destinazione" value="mart_castel_gandolfo"/>
     <property name="note" value="market_door"/>
@@ -686,42 +680,42 @@
   <object id="35" name="gdf-villa-1" type="trainer" x="1316.76" y="611.712" width="21.5" height="20">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Ehi tu! Questa e' zona riservata. La Villa e' sotto il nostro controllo!"/>
-    <property name="facing" value="est"/>
+    <property name="direzione" value="est"/>
     <property name="livello_max" type="int" value="40"/>
    </properties>
   </object>
   <object id="36" name="gdf-villa-2" type="trainer" x="1443.78" y="648.288" width="24.5" height="22">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Un ragazzino? Il Comandante Crasso ci ha detto di non far passare NESSUNO."/>
-    <property name="facing" value="oest"/>
+    <property name="direzione" value="ovest"/>
     <property name="livello_max" type="int" value="41"/>
    </properties>
   </object>
   <object id="37" name="gdf-villa-3" type="trainer" x="1445.52" y="579.585" width="20.6667" height="22.6667">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Cerchiamo un documento negli archivi pontifici. Ma tu non hai visto niente, chiaro?"/>
-    <property name="facing" value="ovest"/>
+    <property name="direzione" value="ovest"/>
     <property name="livello_max" type="int" value="42"/>
    </properties>
   </object>
   <object id="38" name="gdf-villa-4" type="trainer" x="1322.84" y="516.587" width="17.3333" height="22.6667">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Il meteo dei Castelli sara' nostro! Immagina: pioggia a comando sulle vigne dei concorrenti..."/>
-    <property name="facing" value="est"/>
+    <property name="direzione" value="est"/>
     <property name="livello_max" type="int" value="42"/>
    </properties>
   </object>
   <object id="39" name="gdf-villa-5" type="trainer" x="1442.11" y="484.178" width="28.6667" height="23.3333">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Fulvia dice che sei tu quello che ci da' fastidio da Frascati. Ora ci penso io!"/>
-    <property name="facing" value="ovest"/>
+    <property name="direzione" value="ovest"/>
     <property name="livello_max" type="int" value="43"/>
    </properties>
   </object>
   <object id="40" name="gdf-villa-6" type="trainer" x="1321.35" y="424.169" width="19.3333" height="20.6667">
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Sei arrivato fin qui? Non importa. Quello che cercavamo l'abbiamo gia' trovato."/>
-    <property name="facing" value="est"/>
+    <property name="direzione" value="est"/>
     <property name="livello_max" type="int" value="44"/>
    </properties>
   </object>
@@ -729,7 +723,7 @@
    <properties>
     <property name="dialogo_intro" value="Grunt GdF: Vuoi il documento? Tieni, tanto non serve piu'... gia' ci siamo diretti li'!"/>
     <property name="dialogo_vittoria" value="Il documento dice: 'Le pietre riposano al Museo delle Barche di Nemi'. ...Aspetta, se ve ne siete gia' andati li'... devo correre a Nemi!"/>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="flagVittoria" value="documentoVillaOttenuto"/>
     <property name="livello_max" type="int" value="45"/>
     <property name="oggetto_ricompensa" value="documento_navi"/>
@@ -834,7 +828,7 @@
    </properties>
    <point/>
   </object>
-  <object id="71" name="warp_castel_gandolfo_casa2_3" x="109.333" y="946.667">
+  <object id="71" name="warp_castel_gandolfo_casa2_3" x="174.333" y="1234.67">
    <properties>
     <property name="destinazione" value="castel_gandolfo_casa2_3"/>
     <property name="nota_origine" value="placeholder, da riposizionare - porta di castel_gandolfo_casa2_3"/>
@@ -843,7 +837,7 @@
    </properties>
    <point/>
   </object>
-  <object id="72" name="spawn_castel_gandolfo_casa2_3" x="114" y="987.333">
+  <object id="72" name="spawn_castel_gandolfo_casa2_3" x="177" y="1273.33">
    <properties>
     <property name="id" value="da_castel_gandolfo_casa2_3"/>
     <property name="nota_origine" value="placeholder, da riposizionare - uscita da castel_gandolfo_casa2_3"/>

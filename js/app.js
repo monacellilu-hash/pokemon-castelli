@@ -1432,7 +1432,7 @@ async function vinciPalestra(palestra) {
   // Ogni Capopalestra dona anche una MT (stile giochi ufficiali)
   const messaggi = [
     `Hai ottenuto la ${palestra.medaglia || 'medaglia di ' + palestra.comune}! (${stato.medaglie.length}/8)`,
-    `Il level cap sale: ora i tuoi Pokémon possono crescere fino al livello ${stato.levelCap}.`,
+    `Il level cap sale: ora i tuoi Pokémon possono crescere fino al livello ${stato.levelCap - 1}.`,
   ];
   if (palestra.mtDonata && typeof OGGETTI !== 'undefined' && OGGETTI[palestra.mtDonata]) {
     if (!stato.zaino[palestra.mtDonata]) stato.zaino[palestra.mtDonata] = 0;
@@ -4502,9 +4502,10 @@ function renderDettagli(fonte) {
   }
 
   const expProssimo = Math.pow(pkm.livello + 1, 3);
-  const alCap = pkm.livello >= stato.levelCap;
+  // Il giocatore resta sempre un livello sotto l'asso del capopalestra.
+  const alCap = pkm.livello >= stato.levelCap - 1;
   const expTesto = alCap
-    ? `⛔ Al level cap (Lv.${stato.levelCap}): serve la prossima medaglia`
+    ? `⛔ Al massimo consentito (Lv.${stato.levelCap - 1}): serve la prossima medaglia`
     : `EXP: ${pkm.exp} · al prossimo livello mancano ${expProssimo - pkm.exp}`;
 
   const mosseHtml = pkm.mosse.map(m =>

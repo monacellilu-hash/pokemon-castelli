@@ -692,85 +692,85 @@
  <objectgroup color="#00ff00" id="5" name="eventi">
   <object id="1" name="npc_1" type="npc" x="694" y="596" width="32" height="32">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="anziano alla fontana: racconta della Sagra e del vino dalla fontana"/>
    </properties>
   </object>
   <object id="2" name="npc_2" type="npc" x="1054.67" y="578" width="32" height="32">
    <properties>
-    <property name="facing" value="W"/>
+    <property name="direzione" value="ovest"/>
     <property name="note" value="turista che fotografa la Fontana dei Quattro Mori"/>
    </properties>
   </object>
   <object id="3" name="npc_3" type="npc" x="768" y="416" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="davanti a Palazzo Colonna"/>
    </properties>
   </object>
   <object id="5" name="npc_5" type="npc" x="1504" y="960" width="32" height="32">
    <properties>
-    <property name="facing" value="W"/>
+    <property name="direzione" value="ovest"/>
     <property name="note" value="al belvedere, guarda il lago"/>
    </properties>
   </object>
   <object id="6" name="npc_6" type="npc" x="454.451" y="1176.09" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="davanti al pokecenter"/>
    </properties>
   </object>
   <object id="7" name="npc_7" type="npc" x="1176.31" y="1191.36" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="davanti al market"/>
    </properties>
   </object>
   <object id="8" name="npc_8" type="npc" x="160" y="256" width="25.7556" height="25.7556">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="vignaiolo tra i filari: parla della vendemmia e dell'uva di Marino"/>
    </properties>
   </object>
   <object id="9" name="npc_9" type="npc" x="256" y="448" width="32" height="32">
    <properties>
-    <property name="facing" value="N"/>
+    <property name="direzione" value="nord"/>
     <property name="note" value="aiutante del vignaiolo vicino al cartello del vigneto"/>
    </properties>
   </object>
   <object id="10" name="npc_10" type="npc" x="273.955" y="633.092" width="32" height="32">
    <properties>
-    <property name="facing" value="E"/>
+    <property name="direzione" value="est"/>
     <property name="note" value="borgo storico"/>
    </properties>
   </object>
   <object id="11" name="npc_11" type="npc" x="210.733" y="1006.62" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="quartiere residenziale"/>
    </properties>
   </object>
   <object id="12" name="npc_12" type="npc" x="479.222" y="972.831" width="32" height="32">
    <properties>
-    <property name="facing" value="W"/>
+    <property name="direzione" value="ovest"/>
     <property name="note" value="quartiere residenziale"/>
    </properties>
   </object>
   <object id="13" name="npc_13" type="npc" x="1279.11" y="353.12" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="case sopra la piazza"/>
    </properties>
   </object>
   <object id="14" name="npc_14" type="npc" x="1503.47" y="1478.7" width="32" height="32">
    <properties>
-    <property name="facing" value="N"/>
+    <property name="direzione" value="nord"/>
     <property name="note" value="case sud"/>
    </properties>
   </object>
   <object id="15" name="npc_15" type="npc" x="896" y="992" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="sul corso"/>
    </properties>
   </object>

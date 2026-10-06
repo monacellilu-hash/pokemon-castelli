@@ -519,19 +519,19 @@
   </object>
   <object id="4" name="trainer_4" type="trainer" x="640" y="1664" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="presso la curva, guarda a sud"/>
    </properties>
   </object>
   <object id="5" name="trainer_5" type="trainer" x="736" y="896" width="32" height="32">
    <properties>
-    <property name="facing" value="N"/>
+    <property name="direzione" value="nord"/>
     <property name="note" value="al bivio, guarda verso il ramo nord"/>
    </properties>
   </object>
   <object id="6" name="trainer_6" type="trainer" x="1056" y="576" width="32" height="32">
    <properties>
-    <property name="facing" value="S"/>
+    <property name="direzione" value="sud"/>
     <property name="note" value="lungo il ramo verso la cima"/>
    </properties>
   </object>

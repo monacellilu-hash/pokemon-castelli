@@ -1973,9 +1973,45 @@ const Battle = (function () {
       : mossaFallback();
   }
 
-  // Il nemico sceglie una mossa a caso tra quelle con PP
+  // IA dell'allenatore (richiesta di Luca, 6 ott 2026: "sembra non farmi
+  // danno, facciamola attaccare un po' di più"): prima scegliva una mossa
+  // a caso fra tutte quelle con PP, status comprese — risultato, con 2
+  // mosse offensive e 2 di stato su 4, metà delle volte non faceva danno
+  // per niente. Ora pesa le mosse offensive per danno atteso (potenza ×
+  // efficacia di tipo × STAB) e le fa pescare più spesso, ma non sceglie
+  // SEMPRE la migliore: resta una scelta pesata random, non un calcolo
+  // perfetto, altrimenti diventerebbe un avversario "risolto" e prevedibile.
   function scegliMossaNemico() {
-    return sceglieMossaCasuale(nemico);
+    return _scegliMossaPesata(nemico, [mio]);
+  }
+
+  // Generalizzata per 1v1 e doppia (stesso principio, bersagli possibili
+  // diversi): pesa le mosse offensive per danno atteso contro il MIGLIOR
+  // bersaglio disponibile (potenza × efficacia di tipo × STAB), le mosse
+  // di stato restano scegliibili ma con un peso base basso.
+  function _scegliMossaPesata(attaccante, possibiliBersagli) {
+    if (attaccante.inCarica) return attaccante.inCarica;
+    if (attaccante.furia) return attaccante.mosse.find(m => m.nome === attaccante.furia.nome) || mossaFallback();
+    const utilizzabili = attaccante.mosse.filter(m => m.pp > 0);
+    if (!utilizzabili.length) return mossaFallback();
+    const bersagli = possibiliBersagli.filter(b => b && b.hpAttuale > 0);
+    if (!bersagli.length) return utilizzabili[Math.floor(Math.random() * utilizzabili.length)];
+
+    const pesi = utilizzabili.map(m => {
+      if (!m.potenza || m.potenza <= 0) return 1; // mossa di stato: peso base, non esclusa
+      const effMax = Math.max(...bersagli.map(b => efficacia(m.tipo, b.tipi || [])));
+      if (effMax === 0) return 0.2; // non ha alcun effetto su nessuno: quasi mai, ma non vietata del tutto
+      const stab = (attaccante.tipi || []).includes(m.tipo) ? 1.5 : 1;
+      return m.potenza * effMax * stab;
+    });
+    const totale = pesi.reduce((s, p) => s + p, 0);
+    if (totale <= 0) return utilizzabili[Math.floor(Math.random() * utilizzabili.length)];
+    let r = Math.random() * totale;
+    for (let i = 0; i < utilizzabili.length; i++) {
+      r -= pesi[i];
+      if (r <= 0) return utilizzabili[i];
+    }
+    return utilizzabili[utilizzabili.length - 1];
   }
 
   // Sceglie, fra le scorte rimaste, l'oggetto più adatto a coprire "mancanti"
@@ -2169,9 +2205,13 @@ const Battle = (function () {
   // dice sempre, quello non si nasconde mai).
   async function assegnaExp(ist, exp, silenzioso) {
     const cap = statoGioco.levelCap || 100;
-    // L'EXP non può superare la soglia massima del cap:
-    // si "blocca" finché non arriva la medaglia successiva.
-    const expMassima = Math.pow(cap + 1, 3) - 1;
+    // Il level cap è il livello dell'ASSO del capopalestra (es. cap=30 vuol
+    // dire che il capopalestra ha un Pokémon al 30) — il giocatore non deve
+    // mai poterlo raggiungere, resta sempre un livello sotto (richiesta
+    // esplicita di Luca, 6 ott 2026): niente più "Lv.30 contro Lv.30", il
+    // capopalestra resta sempre, per un livello, più forte di qualunque
+    // Pokémon tu possa avere a quel punto della partita.
+    const expMassima = Math.pow(cap, 3) - 1;
     // La barra Exp a schermo è quella di "mio" soltanto: i compagni panchinati
     // non hanno alcuna barra visibile, quindi tutta l'animazione (barra che
     // si riempie, si azzera, riquadro statistiche) ha senso SOLO per lui.
@@ -2678,8 +2718,10 @@ const Battle = (function () {
      ========================================================== */
 
   async function caramellaRara(ist, levelCap) {
-    if (ist.livello >= levelCap) {
-      return { ok: false, messaggi: [`⛔ ${ist.nome} è già al level cap (Lv.${levelCap}): serve la prossima medaglia!`] };
+    // Stesso principio di assegnaExp qui sopra: il giocatore resta sempre
+    // un livello sotto l'asso del capopalestra, non arriva mai a pari.
+    if (ist.livello >= levelCap - 1) {
+      return { ok: false, messaggi: [`⛔ ${ist.nome} è già al massimo consentito (Lv.${levelCap - 1}): serve la prossima medaglia!`] };
     }
 
     const messaggi = [];
@@ -3409,7 +3451,7 @@ const Battle = (function () {
     for (let s = 0; s < 2; s++) {
       const n = doppiaNemiciAttivi[s];
       if (!n || n.hpAttuale <= 0) continue;
-      const mossa = sceglieMossaCasuale(n);
+      const mossa = _scegliMossaPesata(n, mieiVivi);
       const bersagli = _doppiaBersagliIA(n, mossa, mieiVivi);
       coda.push({ ist: n, mossa, bersagli });
     }

@@ -2186,7 +2186,7 @@
                         {
                          "name":"sprite",
                          "type":"string",
-                         "value":"GDF_GRUNT_SPRITE"
+                         "value":"GdF_grunt_uomo"
                         }, 
                         {
                          "name":"type",
@@ -2235,7 +2235,7 @@
                         {
                          "name":"sprite",
                          "type":"string",
-                         "value":"GDF_GRUNT_SPRITE"
+                         "value":"GdF_grunt_uomo"
                         }, 
                         {
                          "name":"type",
@@ -2284,7 +2284,7 @@
                         {
                          "name":"sprite",
                          "type":"string",
-                         "value":"GDF_GRUNT_SPRITE"
+                         "value":"GdF_grunt_uomo"
                         }, 
                         {
                          "name":"type",

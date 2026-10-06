@@ -4519,9 +4519,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -4542,9 +4542,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"N"
+                         "value":"nord"
                         }, 
                         {
                          "name":"note",
@@ -4565,9 +4565,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }, 
                         {
                          "name":"note",
@@ -4588,9 +4588,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"E"
+                         "value":"est"
                         }, 
                         {
                          "name":"note",
@@ -4611,9 +4611,9 @@
                  "opacity":1,
                  "properties":[
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
-                         "value":"S"
+                         "value":"sud"
                         }],
                  "rotation":0,
                  "type":"trainer",
@@ -4634,7 +4634,7 @@
                          "value":"dentro l'acqua, nuotatore"
                         }, 
                         {
-                         "name":"facing",
+                         "name":"direzione",
                          "type":"string",
                          "value":"ovest"
                         }],

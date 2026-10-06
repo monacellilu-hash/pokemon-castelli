@@ -577,7 +577,7 @@
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="grunt_sagra_1"/>
     <property name="noTestBypass" type="bool" value="true"/>
-    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="sprite" value="GdF_grunt_uomo"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
@@ -589,7 +589,7 @@
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="grunt_sagra_2"/>
     <property name="noTestBypass" type="bool" value="true"/>
-    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="sprite" value="GdF_grunt_uomo"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
@@ -601,7 +601,7 @@
     <property name="gate" type="bool" value="true"/>
     <property name="id" value="grunt_sagra_3"/>
     <property name="noTestBypass" type="bool" value="true"/>
-    <property name="sprite" value="GDF_GRUNT_SPRITE"/>
+    <property name="sprite" value="GdF_grunt_uomo"/>
     <property name="type" value="npc"/>
    </properties>
    <point/>
