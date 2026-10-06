@@ -2861,6 +2861,7 @@ const GameMap = (function () {
           await this._caricaMappaSingola(chiave, def, arrivoX, arrivoY, spawnId, sourceKey);
         }
         if (typeof mostraNomeMappa === 'function') mostraNomeMappa(nomeVisualizzatoMappa(chiave));
+        if (typeof Musica !== 'undefined') Musica.suonaPerMappa(chiave);
       } catch (err) {
         console.error('[Map] Errore caricamento mappa:', chiave, err);
       }
@@ -8874,7 +8875,11 @@ const GameMap = (function () {
         squadra = estraiTeamRemo();
       }
       const dopoDialogo = () => {
+        const tipoMusica = dati.rivale ? 'rivale' :
+          (dati.palestraId || dati.superquattro || dati.campioneLega) ? 'capopalestra' :
+          'allenatore';
         Battle.avvia({
+          tipoMusica,
           allenatore: {
             nome: nomeLotta,
             squadra: squadra,

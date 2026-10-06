@@ -133,6 +133,7 @@ const Battle = (function () {
 
   // Modalità allenatore (F7): squadra nemica multipla, niente cattura né fuga
   let modalita = 'selvatico';     // 'selvatico' oppure 'allenatore'
+  let tipoBattagliaMusica = 'selvatico'; // per la musica: selvatico/allenatore/capopalestra/rivale
   let datiAllenatore = null;      // { nome, squadra, dialogoSconfitta }
   // Scorte di cura dell'allenatore (sess. 1 ott 2026, richiesta di Luca: i
   // capipalestra devono potersi curare in lotta, non solo attaccare). Copia
@@ -2707,6 +2708,16 @@ const Battle = (function () {
   function fineBattaglia(esito) {
     inCorso = false;
     _dissolviBattaglia();
+    if (typeof Musica !== 'undefined') {
+      if (esito === 'vittoria' && tipoBattagliaMusica !== 'rivale') {
+        // Niente jingle di vittoria per il rivale: lì di solito segue
+        // subito una cutscene/dialogo con la sua musica propria.
+        Musica.suonaVittoria(tipoBattagliaMusica);
+        setTimeout(() => Musica.ripristina(), 3000);
+      } else {
+        Musica.ripristina();
+      }
+    }
     if (onFine) onFine(esito);
   }
 
@@ -2946,6 +2957,11 @@ const Battle = (function () {
     onFine = opzioni.onFine || null;
     modalita = opzioni.allenatore ? 'allenatore' : 'selvatico';
     datiAllenatore = opzioni.allenatore || null;
+    // Musica di lotta: chi chiama avvia() può specificare 'capopalestra'/
+    // 'rivale' tramite opzioni.tipoMusica (più preciso di modalita, che
+    // conosce solo selvatico/allenatore); altrimenti usa 'modalita'.
+    tipoBattagliaMusica = opzioni.tipoMusica || modalita;
+    if (typeof Musica !== 'undefined') Musica.suonaBattaglia(tipoBattagliaMusica);
     scorteCuraNemico = (datiAllenatore && Array.isArray(datiAllenatore.oggettiCura))
       ? datiAllenatore.oggettiCura.map(o => ({ chiave: o.chiave, quantita: o.quantita }))
       : null;

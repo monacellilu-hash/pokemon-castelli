@@ -1452,7 +1452,9 @@ async function vinciPalestra(palestra) {
   salvaPartita();
   aggiornaHUD();
 
+  if (typeof Musica !== 'undefined') Musica.suonaMedaglia();
   await mostraDialogo('🏅 ' + (palestra.medaglia || 'Medaglia'), messaggi);
+  if (typeof Musica !== 'undefined') Musica.ripristina();
 }
 
 // Chiamata da map.js quando si batte il Capopalestra dentro la palestra Tiled.
