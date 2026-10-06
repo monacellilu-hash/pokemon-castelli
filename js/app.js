@@ -5,6 +5,15 @@
    F9.1: sistema del tempo (giorno/notte, "Dormi" al Centro).
    ============================================================ */
 
+// Traduzione stato alterato: OGGETTI[...].stato è in italiano (coerente coi
+// testi del negozio/zaino), ma pkm.condizione.tipo (js/battle.js, STATI) è
+// in inglese (chiavi PokéAPI). Usata da usaOggettoSu per capire se una cura
+// di stato (Antidoto ecc.) si applica davvero al Pokémon di fronte.
+const STATO_ITA_A_ENG = {
+  veleno: 'poison', paralisi: 'paralysis', scottatura: 'burn',
+  congelamento: 'freeze', sonno: 'sleep',
+};
+
 const CHIAVE_SALVATAGGIO  = 'pkc_salvataggio';
 const PASSI_PER_CHECK     = 10;   // ogni quanti passi si fa il check incontro
 const MINUTI_PER_PASSO    = 1;    // minuti di gioco per ogni passo
@@ -290,6 +299,28 @@ async function caricaPartita() {
               if (dettagli && dettagli.categoria !== undefined) m.categoria = dettagli.categoria;
             } catch (e) { /* offline o mossa non trovata: si ritenta al prossimo avvio */ }
           }
+        }
+      })();
+      // Migrazione: "mosseImparabili" salvato PRIMA del fix Gen 1-3 di
+      // estraiMosseLivello (js/pokeapi.js, 6 ott 2026) resta bloccato per
+      // sempre coi livelli SBAGLIATI (es. Pidgey non imparava più Turbosabbia
+      // al livello 5: il bug precedente aveva già "sporcato" l'elenco salvato
+      // dentro ogni singolo Pokémon, non solo la cache di PokeAPI — il fix
+      // nella cache da solo non basta per chi aveva già giocato). Ripeschiamo
+      // in background la lista fresca per ogni Pokémon posseduto (squadra e
+      // box), segnalato da Luca, 6 ott 2026.
+      (async () => {
+        if (typeof PokeAPI === 'undefined' || !PokeAPI.getPokemon) return;
+        const tutti = [...(stato.squadra || []), ...tuttiIBoxFlat()];
+        for (const p of tutti) {
+          if (!p || p.uovo || p.mosseImparabiliSchema === 'gen123') continue;
+          try {
+            const dati = await PokeAPI.getPokemon(p.id);
+            if (dati && Array.isArray(dati.mosse)) {
+              p.mosseImparabili = dati.mosse;
+              p.mosseImparabiliSchema = 'gen123';
+            }
+          } catch (e) { /* offline: si ritenta al prossimo avvio */ }
         }
       })();
       // Migrazione Box PC: vecchio Box unico e piatto → 24 box da 30 slot.
@@ -5129,7 +5160,14 @@ async function usaOggettoSu(chiave, idx) {
     if (risultato.ok) stato.zaino[chiave] -= 1;
     mostraToast(risultato.messaggi.join(' '), 4000);
   } else if (oggetto.categoria === 'curastato') {
-    const condTarget = oggetto.stato; // null = antidototot (cura tutto)
+    // oggetto.stato è in ITALIANO (veleno/paralisi/scottatura/congelamento),
+    // ma pkm.condizione.tipo è in INGLESE (poison/paralysis/burn/freeze,
+    // chiavi di STATI in js/battle.js) — serve la traduzione, altrimenti il
+    // confronto non scatta MAI (bug trovato 6 ott 2026 controllando le cure
+    // di stato per la richiesta di Luca di usarle anche in battaglia: Antidoto
+    // ecc. erano già rotti anche FUORI battaglia, diceva sempre "non soffre
+    // di" pure quando il Pokémon aveva esattamente quello stato).
+    const condTarget = STATO_ITA_A_ENG[oggetto.stato] || null; // null = antidototot (cura tutto)
     if (!pkm.condizione && pkm.hpAttuale > 0) {
       mostraToast(`${pkm.nome} non ha stati alterati!`);
       return;
@@ -5138,8 +5176,8 @@ async function usaOggettoSu(chiave, idx) {
       mostraToast(`${pkm.nome} è KO: usalo dopo averlo rianimato.`);
       return;
     }
-    if (condTarget && pkm.condizione !== condTarget) {
-      mostraToast(`${pkm.nome} non soffre di ${condTarget}.`);
+    if (condTarget && (!pkm.condizione || pkm.condizione.tipo !== condTarget)) {
+      mostraToast(`${pkm.nome} non soffre di ${oggetto.stato}.`);
       return;
     }
     pkm.condizione = null;

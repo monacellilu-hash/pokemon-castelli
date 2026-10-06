@@ -366,6 +366,7 @@ const Battle = (function () {
       exp: Math.pow(livello, 3),       // curva di crescita: Lv^3
       mosse: await scegliMosse(dati, livello),
       mosseImparabili: dati.mosse,     // lista specie: serve per i level-up futuri
+      mosseImparabiliSchema: 'gen123', // già calcolato col fix Gen 1-3 (6 ott 2026)
       condizione: null,                // stato alterato: null | { tipo, turni }
       mod: modificatoriAzzerati(),     // sbalzi di statistica (-6..+6)
       felicita: 70,                    // 0-255: sale coi livelli/vittorie (evol. felicità)
@@ -399,6 +400,7 @@ const Battle = (function () {
     ist.basi = dati.statistiche;
     ist.baseExp = dati.baseExp || ist.baseExp;
     ist.mosseImparabili = dati.mosse;
+    ist.mosseImparabiliSchema = 'gen123';
     // F9.4: stesso slot abilità di prima (come nei giochi veri), applicato
     // alla lista abilità della NUOVA specie.
     ist.abilitaChiave = abilitaChiaveDaSlot(dati, ist.abilitaSlot || 0);
@@ -1310,10 +1312,12 @@ const Battle = (function () {
     const menu = $('menu-zaino');
     menu.innerHTML = '';
 
-    // In battaglia si usano Ball, Pozioni e X Item (statistiche temporanee)
+    // In battaglia si usano Ball, Pozioni/cure di stato (ora anche sui
+    // Pokémon in riserva, non solo quello in campo — richiesta di Luca, 6
+    // ott 2026) e X Item (statistiche temporanee).
     let almenoUno = false;
     for (const [chiave, oggetto] of Object.entries(OGGETTI)) {
-      if (oggetto.categoria !== 'ball' && oggetto.categoria !== 'cura' && oggetto.categoria !== 'xitem') continue;
+      if (!['ball', 'cura', 'xitem', 'curastato', 'curatotale', 'revive'].includes(oggetto.categoria)) continue;
       const quanti = statoGioco.zaino[chiave] || 0;
       if (quanti <= 0) continue;
       almenoUno = true;
@@ -1321,8 +1325,8 @@ const Battle = (function () {
       btn.innerHTML = `${oggetto.icona} ${oggetto.nome} <span class="mossa-pp">×${quanti}</span>`;
       btn.addEventListener('click', () => {
         if (oggetto.categoria === 'ball') tentaCattura(chiave);
-        else if (oggetto.categoria === 'cura') usaPozione(chiave);
         else if (oggetto.categoria === 'xitem') usaXItem(chiave);
+        else mostraMenuSquadraOggetto(chiave); // cura/curastato/curatotale/revive: scegli il bersaglio
       });
       menu.appendChild(btn);
     }
@@ -2502,20 +2506,98 @@ const Battle = (function () {
     }
   }
 
-  async function usaPozione(chiave) {
-    if (mio.hpAttuale >= mio.hpMax) {
-      await di(`Gli HP di ${mio.nome} sono già al massimo!`);
-      mostraMenuZaino();
-      return;
-    }
+  // Mostra la squadra per scegliere SU CHI usare una Pozione/cura di stato/
+  // Cura Totale/Revitalizzante — richiesta esplicita di Luca (6 ott 2026):
+  // prima queste cure funzionavano SOLO sul Pokémon in campo, come nei
+  // giochi veri si può curare anche chi è in riserva senza farlo entrare.
+  function mostraMenuSquadraOggetto(chiave) {
     nascondiMenu();
-    statoGioco.zaino[chiave] -= 1;
-    const cura = Math.min(OGGETTI[chiave].cura, mio.hpMax - mio.hpAttuale);
-    mio.hpAttuale += cura;
-    aggiornaPannelli();
-    await di(`${mio.nome} recupera ${cura} HP! 🧪`);
+    const menu = $('menu-squadra');
+    menu.innerHTML = '';
+    const oggetto = OGGETTI[chiave];
+    const perRianimare = oggetto.categoria === 'revive';
 
-    // Usare un oggetto consuma il turno: il nemico attacca
+    statoGioco.squadra.forEach((pkm, idx) => {
+      const ko = pkm.hpAttuale <= 0;
+      const btn = document.createElement('button');
+      const etichetta = ko ? ' (KO)' : (idx === indiceAttivo ? ' (in campo)' : '');
+      btn.innerHTML =
+        `<span class="mossa-nome">${pkm.nome}${etichetta}</span>` +
+        `<span class="mossa-pp">Lv.${pkm.livello} · ${pkm.hpAttuale}/${pkm.hpMax} HP</span>`;
+      // Un Revitalizzante serve solo su chi è KO; le altre cure il contrario.
+      btn.disabled = perRianimare ? !ko : ko;
+      btn.addEventListener('click', () => usaOggettoSuSquadraInBattaglia(idx, chiave));
+      menu.appendChild(btn);
+    });
+
+    menu.appendChild(bottoneIndietro());
+    menu.classList.remove('nascosto');
+    resetCursore();
+  }
+
+  async function usaOggettoSuSquadraInBattaglia(idx, chiave) {
+    const oggetto = OGGETTI[chiave];
+    const target = statoGioco.squadra[idx];
+    const etichetta = (idx === indiceAttivo) ? target.nome : `${target.nome} (riserva)`;
+
+    if (oggetto.categoria === 'cura') {
+      if (target.hpAttuale >= target.hpMax) {
+        await di(`Gli HP di ${etichetta} sono già al massimo!`);
+        mostraMenuSquadraOggetto(chiave);
+        return;
+      }
+      nascondiMenu();
+      statoGioco.zaino[chiave] -= 1;
+      const cura = Math.min(oggetto.cura, target.hpMax - target.hpAttuale);
+      target.hpAttuale += cura;
+      aggiornaPannelli();
+      await di(`${etichetta} recupera ${cura} HP! 🧪`);
+    } else if (oggetto.categoria === 'curastato') {
+      // oggetto.stato è in italiano, target.condizione.tipo in inglese —
+      // stessa traduzione usata fuori battaglia (STATO_ITA_A_ENG, js/app.js).
+      const condTarget = (typeof STATO_ITA_A_ENG !== 'undefined' && STATO_ITA_A_ENG[oggetto.stato]) || null;
+      if (!target.condizione) {
+        await di(`${etichetta} non ha nessun problema di stato!`);
+        mostraMenuSquadraOggetto(chiave);
+        return;
+      }
+      if (condTarget && target.condizione.tipo !== condTarget) {
+        await di(`Non ha effetto su ${etichetta}!`);
+        mostraMenuSquadraOggetto(chiave);
+        return;
+      }
+      nascondiMenu();
+      statoGioco.zaino[chiave] -= 1;
+      target.condizione = null;
+      aggiornaPannelli();
+      await di(`${etichetta} non ha più problemi di stato!`);
+    } else if (oggetto.categoria === 'curatotale') {
+      const guaritoStato = !!target.condizione;
+      const curaHp = target.hpMax - target.hpAttuale;
+      if (curaHp <= 0 && !guaritoStato) {
+        await di(`${etichetta} è già al massimo!`);
+        mostraMenuSquadraOggetto(chiave);
+        return;
+      }
+      nascondiMenu();
+      statoGioco.zaino[chiave] -= 1;
+      target.hpAttuale = target.hpMax;
+      target.condizione = null;
+      aggiornaPannelli();
+      if (curaHp > 0 && guaritoStato) await di(`${etichetta} recupera tutti gli HP e guarisce! ✨`);
+      else if (curaHp > 0) await di(`${etichetta} recupera tutti gli HP! ✨`);
+      else await di(`${etichetta} guarisce dallo stato alterato! ✨`);
+    } else if (oggetto.categoria === 'revive') {
+      nascondiMenu();
+      statoGioco.zaino[chiave] -= 1;
+      target.hpAttuale = oggetto.max ? target.hpMax : Math.floor(target.hpMax / 2);
+      target.condizione = null;
+      aggiornaPannelli();
+      await di(`${etichetta} si è ripreso! (${target.hpAttuale}/${target.hpMax} HP) 💊`);
+    }
+
+    // Usare un oggetto consuma il turno: il nemico attacca (anche se il
+    // bersaglio curato era in riserva, non quello attualmente in campo).
     await turnoNemicoEFine();
   }
 
