@@ -553,7 +553,7 @@
  <objectgroup id="2" name="eventi">
   <object id="127" name="erba alta lago di nemi" x="549.48" y="1221.59" width="622.374" height="78.1613">
    <properties>
-    <property name="id" value="incontri  lago di nemi"/>
+    <property name="id" value="incontri lago di nemi"/>
     <property name="type" value="erba_alta"/>
    </properties>
   </object>

@@ -949,7 +949,7 @@
  </object>
  <object id="35" name="erba_alta" type="erba_alta" x="34.303" y="61.5758" width="192" height="192">
   <properties>
-   <property name="id" value="incontri percorsi_12"/>
+   <property name="id" value="incontri percorso 12"/>
    <property name="type" value="erba_alta"/>
   </properties>
  </object>

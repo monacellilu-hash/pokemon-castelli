@@ -185,25 +185,16 @@ const DATI_INCONTRI = {
 ],
   },
 
-  // ── PERCORSO 2 — laghetto tra i castagni, accessibile SOLO con MN Surf ──
-  // ⭐ REGOLA: le zone Surf sono ANCHE zone di incontri selvatici. Siccome la
-  // MN Surf si ottiene molto più avanti (~dopo P5-6), qui i Pokémon sono molto
-  // PIÙ FORTI del resto del percorso: chi torna a nuotare è già di alto livello.
-  'incontri percorso 2 surf': {
-    probabilita: 18,
+  // ── FRASCATI/PERCORSO 2 — laghetto tra i castagni, accessibile SOLO con MN
+  // Surf (frascati_est.tmj e percorso_2.tmj usano lo stesso id, è un'unica
+  // zona) ── Chiave corretta il 6 ott 2026 (era 'incontri percorso 2 surf',
+  // non coincideva con l'id reale dei rettangoli sulle mappe, quindi la
+  // zona era "morta": zero incontri). Contenuto scelto da Luca: solo
+  // Magikarp, basso livello, nessun'altra specie.
+  'acqua_frascati_surf': {
+    probabilita: 15,
     pokemon: [
-      { id: 130, min: 30, max: 35, rate: 3 },  // Gyarados (raro, forte)
-      { id: 270, min: 25, max: 30, rate: 28 },  // Lotad
-      { id: 271, min: 28, max: 32, rate: 16 },  // Lombre
-      { id: 183, min: 26, max: 31, rate: 28 },  // Marill
-],
-    pokemonNotte: [
-      { id: 54, min: 25, max: 30, rate: 22 },  // Psyduck
-      { id: 60, min: 25, max: 30, rate: 22 },  // Poliwag
-      { id: 90, min: 26, max: 31, rate: 22 },  // Shellder
-      { id: 98, min: 26, max: 31, rate: 22 },  // Krabby
-      { id: 118, min: 27, max: 32, rate: 22 },  // Goldeen
-      { id: 339, min: 27, max: 32, rate: 22 },  // Barboach
+      { id: 129, min: 2, max: 5, rate: 100 },  // Magikarp (unica specie qui)
 ],
   },
 
@@ -925,6 +916,37 @@ const DATI_INCONTRI = {
 ],
   },
 
+  // ── PERCORSO 7B — biforcazione di Percorso 7 verso la Spiaggia di Albano
+  // (Lago di Albano), Lv 34-40 (coerente col Percorso 7 che la precede).
+  // Rettangolo erba_alta già disegnato da Luca (id "incontri percorso 7b"),
+  // mancava solo la tabella (6 ott 2026). Specie non riusate altrove. ──
+  'incontri percorso 7b': {
+    probabilita: 15,
+    pokemon: [
+      { id: 62, min: 36, max: 40, rate: 10 },  // Poliwrath (evoluto, raro)
+      { id: 85, min: 35, max: 39, rate: 16 },  // Dodrio
+      { id: 193, min: 34, max: 38, rate: 28 },  // Yanma (Gen2)
+],
+    pokemonNotte: [
+      { id: 169, min: 35, max: 39, rate: 16 },  // Crobat (evoluto)
+],
+  },
+
+  // ── PERCORSO 12 — zona finale post-Lega, Lv 60-66 (stesse specie del
+  // Percorso 10 ma molto più forti, richiesta di Luca 6 ott 2026: "simile
+  // al percorso 10"). ──
+  'incontri percorso 12': {
+    probabilita: 15,
+    pokemon: [
+      { id: 166, min: 60, max: 64, rate: 16 },  // Ledian (Gen2)
+      { id: 192, min: 60, max: 63, rate: 10 },  // Sunflora (Gen2)
+      { id: 284, min: 62, max: 66, rate: 10 },  // Masquerain (Gen3, raro)
+],
+    pokemonNotte: [
+      { id: 327, min: 60, max: 64, rate: 16 },  // Spinda
+],
+  },
+
 };
 DATI_INCONTRI['acqua_percorso_montepo3'] = DATI_INCONTRI['incontri percorso montepo 3'];
 
@@ -942,5 +964,24 @@ DATI_INCONTRI['acqua profonda lago di nemi'] = DATI_INCONTRI['acqua_lago di alba
 // spiaggia" (diverso dalla chiave storica "incontri lago albano" usata qui
 // sotto) — stessa zona, stessa tabella, solo nome diverso sul tile.
 DATI_INCONTRI['incontri lago di albano spiaggia'] = DATI_INCONTRI['incontri lago albano'];
+
+// Alias (6 ott 2026, richiesta di Luca): il rettangolo acqua_sub/surf
+// "acqua profonda lago di albano" di "Lago di Albano interno.tmj" aveva
+// un id proprio senza tabella — Luca vuole che l'interno del lago sia
+// identico a quello esterno ("Lago di Albano interno uguale a Lago di
+// Albano"). Il tuffo vero e proprio (destinazione "lago_albano_profondo")
+// ha già la sua tabella a parte ('incontri lago albano profondo').
+DATI_INCONTRI['acqua profonda lago di albano'] = DATI_INCONTRI['incontri lago albano'];
+
+// Alias (6 ott 2026, richiesta di Luca): Percorso 5 Surf riusa la STESSA
+// tabella del Surf di Castel Gandolfo ("prendi da lì" — stesso specchio
+// d'acqua, Castel Gandolfo sblocca il bivio verso Percorso 5).
+DATI_INCONTRI['acqua_percorso_5'] = DATI_INCONTRI['acqua_marino_surf'];
+
+// Alias (6 ott 2026, richiesta di Luca: "Lago di Nemi fallo uguale a Lago
+// di Albano"): sia la zona Surf che quella a terra riusano le tabelle di
+// Lago di Albano.
+DATI_INCONTRI['acqua_lago di nemi'] = DATI_INCONTRI['acqua_lago di albano_surf'];
+DATI_INCONTRI['incontri lago di nemi'] = DATI_INCONTRI['incontri lago albano'];
 
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;
