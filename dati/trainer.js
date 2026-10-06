@@ -1791,6 +1791,21 @@ const DATI_TRAINER = {
     premio: 500,
   },
 
+  // Percorso 1b (biforcazione di Percorso 1, mappa rigenerata da Luca il 6
+  // ott 2026 — oggetto Tiled type "trainer" id "rivale_percorso1b", tappa 1
+  // già impostata sull'oggetto). Stesso schema di rivale_percorso_1.
+  'rivale_percorso1b': {
+    vista: 6,
+    rivale: true,
+    flagVittoria: 'rivale_percorso1b_battuto',
+    dialogo_prima: 'Ah, sei passato per di qua! Pensavi di evitarmi prendendo questa strada?',
+    dialogo_dopo: 'Mh! Va bene, per questa volta passa. Alla prossima sarò pronto.',
+    squadra: [
+      { id: 16, livello: 12 },   // Pidgey (fallback se manca "tappa" sull'oggetto)
+    ],
+    premio: 500,
+  },
+
   // Sess. 1 ott 2026: prima qui c'era un oggetto trigger_rivale rotto (senza
   // "id" proprio, puntava di default al rivale di fine gioco Tuscolo, livello
   // 60, alla 2ª palestra) — Luca l'aveva cancellato. Ricreato con dati propri.
