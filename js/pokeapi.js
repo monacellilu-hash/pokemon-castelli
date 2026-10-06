@@ -202,7 +202,7 @@ const PokeAPI = (function () {
       // --- Campi per gli effetti in battaglia (F: motore mosse) ---
       priorita: dati.priority || 0,    // >0 = colpisce prima (Attacco Rapido ecc.)
       bersaglio: dati.target ? dati.target.name : "selected-pokemon", // "user" = se stesso
-      // Categoria PokéAPI dell'effetto (es. "damage+raise" = Nitrocarica/
+      // Categoria PokéAPI dell'effetto (es. "damage-raise" = Nitrocarica/
       // Pugno Aumento: danneggia l'AVVERSARIO ma il cambio statistica è
       // SEMPRE sull'utente, anche se "bersaglio" sopra dice "selected-pokemon"
       // — "bersaglio" lì descrive solo il danno, non il cambiStat. Letto in

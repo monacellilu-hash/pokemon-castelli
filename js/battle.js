@@ -1467,9 +1467,9 @@ const Battle = (function () {
     await di(`${etichetta} è ${STATI[tipoStato].nome}!`);
   }
 
-  // Mosse "damage+lower" che però abbassano le PROPRIE statistiche (non quelle
+  // Mosse "damage-lower" che però abbassano le PROPRIE statistiche (non quelle
   // del bersaglio) dopo aver colpito — stesso bug di Nitrocarica ma al contrario:
-  // su PokéAPI hanno "categoria" = "damage+lower" ESATTAMENTE come Rockfrana/
+  // su PokéAPI hanno "categoria" = "damage-lower" ESATTAMENTE come Rockfrana/
   // Attacco d'Ira/Spaccaroccia (che invece abbassano il bersaglio, comportamento
   // di default corretto) — serve quindi un elenco esplicito, non si distingue
   // dal solo campo "categoria" (censimento richiesto da Luca, 6 ott 2026).
@@ -1481,7 +1481,7 @@ const Battle = (function () {
   // Applica i cambi di statistica al bersaglio giusto (se stesso o avversario)
   async function applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif) {
     // Le mosse con bersaglio "user" modificano CHI le usa (Crescita, Danza Spada…).
-    // Le mosse "damage+raise" (Nitrocarica, Pugno Aumento, Testasasso…)
+    // Le mosse "damage-raise" (Nitrocarica, Pugno Aumento, Testasasso…)
     // danneggiano l'AVVERSARIO (bersaglio="selected-pokemon" su PokéAPI) ma il
     // cambio statistica è SEMPRE sull'utente — "bersaglio" lì descrive solo
     // il danno, non il cambiStat. Senza questo controllo Nitrocarica alzava
@@ -1489,8 +1489,13 @@ const Battle = (function () {
     // Stesso discorso, ma al contrario, per Troppoforte/Vampata/Meteora di
     // Draco & co. (MOSSE_AUTOABBASSANO sopra): abbassano l'ATTACCANTE anche
     // se "bersaglio" è l'avversario.
+    // ATTENZIONE: PokéAPI usa il TRATTINO ("damage-raise"), non il "+" — un
+    // precedente fix (6 ott 2026) aveva scritto 'damage+raise' per errore,
+    // quindi il confronto non scattava MAI e Nitrocarica alzava ancora la
+    // Velocità del nemico (bug risegnalato da Luca, verificato live su
+    // PokéAPI: /api/v2/move/flame-charge → meta.category.name = "damage-raise").
     const versoSe = (mossa.bersaglio === 'user' || mossa.bersaglio === 'users-field' ||
-                     mossa.categoria === 'damage+raise' ||
+                     mossa.categoria === 'damage-raise' ||
                      MOSSE_AUTOABBASSANO.has(mossa.nome));
     const obiettivo = versoSe ? att : dif;
     const etich = versoSe ? etichettaAtt : etichettaDif;
