@@ -2892,6 +2892,9 @@ const GameMap = (function () {
         const eCasa = !!(def.interno && /casa/.test(chiave));
         if (!eCasa && typeof mostraNomeMappa === 'function') mostraNomeMappa(nomeVisualizzatoMappa(chiave));
         if (typeof Musica !== 'undefined') Musica.suonaPerMappa(chiave);
+        // Limite squadra in modalità difficile all'ingresso/uscita delle
+        // palestre (item 10) — vedi _applicaLimiteSquadraPalestra, app.js.
+        if (typeof _applicaLimiteSquadraPalestra === 'function') _applicaLimiteSquadraPalestra(chiave);
       } catch (err) {
         console.error('[Map] Errore caricamento mappa:', chiave, err);
       }

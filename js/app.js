@@ -1193,6 +1193,55 @@ async function interagisciLaboratorio() {
 // di Luca): scatta da sola al primo passo dopo aver scelto lo starter, e si
 // ripete IDENTICA ogni volta che gli riparli finché non scegli un rivale —
 // "non c'è limite" a quante volte puoi farti rispiegare la cosa.
+// Modalità difficile (item 10, richiesta esplicita di Luca, 9 ott 2026):
+// all'ingresso di ogni palestra si può usare solo una parte della squadra,
+// dal primo allenatore al Capopalestra. Chiave = MAPPE[...] dell'interno
+// della palestra. 3 Pokémon fino alla 4ª palestra, 4 fino alla 6ª, 6 (tutta
+// la squadra, nessun limite reale) dalla 7ª in poi.
+const LIMITE_SQUADRA_PALESTRA_DIFFICILE = {
+  palestra_frascati: 3,
+  palestra_grottaferrata_interno: 3,
+  interno_palestra_moro: 3,            // Marino
+  palestra_monteporzio_interno: 3,
+  interno_palestra_rocco: 4,           // Rocca di Papa
+  palestra_albano_interno: 4,
+  palestra_ariccia_interno: 6,
+  palestra_genzano_interno: 6,
+};
+
+// Entrando in una palestra in modalità difficile con più Pokémon del
+// limite: i Pokémon in eccesso (gli ULTIMI della squadra, in ordine)
+// restano "a casa" per tutta la visita — spostati in un Box temporaneo
+// invece che nello zaino/box normale, per non confonderli con un
+// deposito vero. Tornano in squadra automaticamente appena si esce dalla
+// palestra (in qualunque modo: porta normale o sconfitta/teletrasporto).
+function _applicaLimiteSquadraPalestra(chiaveMappa) {
+  if (!stato.flags) stato.flags = {};
+  const limite = LIMITE_SQUADRA_PALESTRA_DIFFICILE[chiaveMappa];
+  if (stato.difficolta === 'difficile' && limite && stato.squadra.length > limite &&
+      !stato.squadraStashataGym) {
+    const restano = stato.squadra.slice(0, limite);
+    const stashati = stato.squadra.slice(limite);
+    stato.squadra = restano;
+    stato.squadraStashataGym = { pokemon: stashati, mappa: chiaveMappa };
+    salvaPartita();
+    if (typeof mostraDialogo === 'function') {
+      mostraDialogo('', [
+        `⚔️ Modalità difficile: solo i primi ${limite} Pokémon della tua squadra possono affrontare questa palestra.`,
+        `${stashati.map(p => p.nome).join(', ')} ${stashati.length > 1 ? 'restano' : 'resta'} fuori finché non esci.`,
+      ]);
+    }
+  } else if (chiaveMappa !== (stato.squadraStashataGym && stato.squadraStashataGym.mappa) &&
+             stato.squadraStashataGym) {
+    // Usciti dalla palestra (per qualunque strada, anche sconfitta): la
+    // squadra torna come prima.
+    stato.squadra = stato.squadra.concat(stato.squadraStashataGym.pokemon);
+    stato.squadraStashataGym = null;
+    salvaPartita();
+    if (typeof mostraToast === 'function') mostraToast('⚔️ La tua squadra al completo ti aspettava fuori!', 2500);
+  }
+}
+
 async function spiegaDifficoltaOak() {
   if (!stato.duoRivali) return;
   const debole = stato.duoRivali.debole, forte = stato.duoRivali.forte;
@@ -1203,6 +1252,7 @@ async function spiegaDifficoltaOak() {
     `${debole.nome}, a destra, ha uno starter debole contro ${nomeMioStarter}: se sfidi LUI, giocherai in modalità FACILE.`,
     `${forte.nome}, a sinistra, ha invece uno starter forte contro ${nomeMioStarter}: se sfidi LEI, giocherai in modalità DIFFICILE.`,
     'La difficoltà segue i level cap di ogni palestra: non potrai mai superare il livello dell\'asso del prossimo Capopalestra (o del Campione, alla Lega) — cambia solo quanto sono agguerriti gli allenatori che incontri.',
+    'In modalità DIFFICILE c\'è anche un\'altra regola: all\'ingresso di ogni palestra potrai scegliere SOLO una parte della tua squadra per affrontarla tutta, dal primo allenatore fino al Capopalestra — massimo 3 Pokémon fino alla 4ª palestra, 4 fino alla 6ª, 6 (tutta la squadra) dalla 7ª in poi.',
     'ATTENZIONE: una volta scelto chi sfidare, la decisione sarà DEFINITIVA — non potrai più tornare indietro!',
     'Prenditi tutto il tempo che vuoi: se vuoi che te lo rispieghi, basta che mi parli di nuovo.'
   ]);
