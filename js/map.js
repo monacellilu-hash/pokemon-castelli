@@ -5585,6 +5585,16 @@ const GameMap = (function () {
           if (typeof mostraDialogo === 'function') {
             mostraDialogo(nomeNpc, [ev.props.dialogo]);
           }
+        } else {
+          // Nessun dato, nessuna cutscene/azione, nessun "dialogo" sul tile:
+          // prima questo NPC non diceva NULLA (richiesta di Luca, 9 ott 2026
+          // — "ogni NPC deve avere un dialogo... ma qualcosa deve dire").
+          // Battuta di riempimento a tema città (o generica sui percorsi),
+          // deterministica per id (stessa battuta ogni volta, non a caso).
+          const battuta = this._dialogoFillerPerNpc(ev.id);
+          if (battuta && typeof mostraDialogo === 'function') {
+            mostraDialogo(battuta.nome, [battuta.testo]);
+          }
         }
         return;
       }
@@ -6073,6 +6083,40 @@ const GameMap = (function () {
       facciata = dirPlayerVersoNpc;
       if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
       return Promise.resolve();
+    }
+
+    // Battuta di riempimento per un NPC "orfano" (nessuna voce in DATI_NPC,
+    // nessun "dialogo" sul tile — vedi ramo npc sopra). Sceglie il gruppo di
+    // battute in base al nome della mappa corrente (città riconosciuta per
+    // sottostringa nella chiave, es. "frascati_centro" → FRASCATI), oppure
+    // il gruppo generico per percorsi/dungeon. Dentro il gruppo, la battuta
+    // è deterministica per id (hash), così non cambia a ogni interazione.
+    _dialogoFillerPerNpc(idNpc) {
+      if (typeof FILLER_NPC_PER_CITTA === 'undefined') return null;
+      const CITTA_PER_TOKEN = [
+        ['tuscolana', 'BORGATA_TUSCOLANA'], ['borgata', 'BORGATA_TUSCOLANA'],
+        ['frascati', 'FRASCATI'],
+        ['grottaferrata', 'GROTTAFERRATA'], ['abbazia', 'GROTTAFERRATA'],
+        ['castel_gandolfo', 'CASTEL_GANDOLFO'],
+        ['marino', 'MARINO'],
+        ['monteporzio', 'MONTE_PORZIO'], ['osservatorio', 'MONTE_PORZIO'],
+        ['rocca_di_papa', 'ROCCA_DI_PAPA'], ['grotta_vulcano', 'ROCCA_DI_PAPA'], ['monte_cavo', 'ROCCA_DI_PAPA'],
+        ['albano', 'ALBANO'],
+        ['ariccia', 'ARICCIA'],
+        ['genzano', 'GENZANO'],
+        ['nemi', 'NEMI'],
+        ['colonna', 'COLONNA'], ['bunkerino', 'COLONNA'],
+      ];
+      const chiaveMappa = (mappaCorrente || '').toLowerCase();
+      let gruppo = FILLER_NPC_GENERICO;
+      for (const [token, citta] of CITTA_PER_TOKEN) {
+        if (chiaveMappa.includes(token) && FILLER_NPC_PER_CITTA[citta]) { gruppo = FILLER_NPC_PER_CITTA[citta]; break; }
+      }
+      if (!gruppo || gruppo.length === 0) return null;
+      let h = 0;
+      const s = String(idNpc || '');
+      for (let i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) >>> 0;
+      return gruppo[h % gruppo.length];
     }
 
     // Passo cutscene "esclamativo": vignetta bianca stile fumetto con "!" che
