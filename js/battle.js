@@ -536,6 +536,38 @@ const Battle = (function () {
     return molt;
   }
 
+  // Abilità che scattano quando un Pokémon ENTRA in campo (inizio lotta o
+  // cambio): richiesta esplicita di Luca, 9 ott 2026 — "le Abilità non
+  // possono essere solo estetiche". Qui solo le due famiglie più comuni e
+  // sicure da isolare (meteo automatico, Intimidate); le altre (Static,
+  // Levitate per terra qui sopra in calcolaDanno, ecc.) restano un lavoro
+  // futuro — vedi nota nel riepilogo.
+  const METEO_DA_ABILITA = {
+    drizzle: 'rain', drought: 'sun', 'sand-stream': 'sandstorm', 'snow-warning': 'hail',
+  };
+  async function attivaAbilitaIngresso(pkm, etichetta, avversario, etichettaAvversario) {
+    if (!pkm || !pkm.abilitaChiave) return;
+    const nuovoMeteo = METEO_DA_ABILITA[pkm.abilitaChiave];
+    if (nuovoMeteo && meteoBattaglia !== nuovoMeteo) {
+      meteoBattaglia = nuovoMeteo;
+      meteoBattagliaTurni = 998; // "permanente" come l'abilità nei giochi veri
+      aggiornaMeteoUI();
+      const msg = MOSSE_METEO[Object.keys(MOSSE_METEO).find(k => MOSSE_METEO[k].tipo === nuovoMeteo)];
+      await di(`${etichetta} ha attivato la sua Abilità!`);
+      if (msg) await di(msg.messaggio);
+    }
+    if (pkm.abilitaChiave === 'intimidate' && avversario && avversario.hpAttuale > 0) {
+      const prima = avversario.mod.attack || 0;
+      avversario.mod.attack = Math.max(-6, prima - 1);
+      if (avversario.mod.attack !== prima) {
+        await di(`${etichetta} intimida ${etichettaAvversario}!`);
+        aggiornaPannelli();
+        await frecceStat(avversario, -1);
+        await di(`Attacco di ${etichettaAvversario} è diminuito!`);
+      }
+    }
+  }
+
   // Colpo critico (0172_Battle_Move.rb/0174_Move_UsageCalculations.rb):
   // qui usiamo le regole "classiche" (pre-Gen 6, quelle di Rosso Fuoco/
   // Smeraldo — il progetto è dichiaratamente Gen 1-2-3, CLAUDE.md), non
@@ -552,7 +584,11 @@ const Battle = (function () {
   }
 
   function calcolaDanno(attaccante, difensore, mossa) {
-    const eff = efficacia(mossa.tipo, difensore.tipi);
+    let eff = efficacia(mossa.tipo, difensore.tipi);
+    // Levitate (richiesta esplicita di Luca, 9 ott 2026 — le Abilità non
+    // devono essere solo estetiche): immunità totale alle mosse Terra,
+    // come nei giochi veri.
+    if (mossa.tipo === 'ground' && difensore.abilitaChiave === 'levitate') eff = 0;
     if (eff === 0) return { danno: 0, eff: 0, critico: false };
 
     // Mosse fisiche usano Attacco/Difesa, speciali Att.Sp./Dif.Sp.
@@ -2099,6 +2135,7 @@ const Battle = (function () {
     aggiornaPannelli();
     await di(`${etichettaNemico()} ritira ${vecchio.nome}!`);
     await di(`${etichettaNemico()} manda in campo ${nemico.nome}!`);
+    await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
     return true;
   }
 
@@ -2644,6 +2681,7 @@ const Battle = (function () {
     aggiornaPannelli();
     await animaEntrataPokemon('giocatore');
     await di(`Vai! ${mio.nome}!`);
+    await attivaAbilitaIngresso(mio, mio.nome, nemico, etichettaNemico());
 
     // Il cambio volontario consuma il turno; dopo un KO invece no (come nei giochi)
     if (!eraObbligatorio) {
@@ -2730,6 +2768,7 @@ const Battle = (function () {
       await animaEntrataPokemon('nemico');
       const rimasti = squadraNemica.length - indiceNemico;
       await di(`${datiAllenatore.nome} manda in campo ${nemico.nome}! (gliene restano ${rimasti})`);
+      await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
       mostraMenuPrincipale();
       return;
     }
@@ -3181,6 +3220,10 @@ const Battle = (function () {
     }
     await animaEntrataPokemon('giocatore');
     await di(`Vai! ${mio.nome}!`);
+    // Abilità all'ingresso (Intimidate/meteo automatico): il nemico è
+    // sceso in campo per primo, quindi la sua eventualmente scatta prima.
+    await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
+    await attivaAbilitaIngresso(mio, mio.nome, nemico, etichettaNemico());
     if (meteoBattaglia) {
       const inizio = {
         sun: 'La luce del sole è intensa.', rain: 'Sta piovendo.',

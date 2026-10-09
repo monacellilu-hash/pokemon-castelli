@@ -313,12 +313,22 @@ async function caricaPartita() {
         if (typeof PokeAPI === 'undefined' || !PokeAPI.getPokemon) return;
         const tutti = [...(stato.squadra || []), ...tuttiIBoxFlat()];
         for (const p of tutti) {
-          if (!p || p.uovo || p.mosseImparabiliSchema === 'gen123') continue;
+          if (!p || p.uovo) continue;
+          // Sprite vuoto (bug "i Pokémon spariscono", segnalato da Luca 9
+          // ott 2026): un fetch andato storto in passato aveva salvato
+          // sprite.fronte/retro NULL dentro questo stesso Pokémon (non solo
+          // nella cache di PokeAPI, già corretta a parte) — resta rotto per
+          // sempre finché non lo ripeschiamo qui, da capo.
+          const spriteRotto = !p.sprite || !p.sprite.fronte || !p.sprite.retro;
+          if (p.mosseImparabiliSchema === 'gen123' && !spriteRotto) continue;
           try {
             const dati = await PokeAPI.getPokemon(p.id);
             if (dati && Array.isArray(dati.mosse)) {
               p.mosseImparabili = dati.mosse;
               p.mosseImparabiliSchema = 'gen123';
+            }
+            if (dati && dati.sprite && dati.sprite.fronte && dati.sprite.retro) {
+              p.sprite = dati.sprite;
             }
           } catch (e) { /* offline: si ritenta al prossimo avvio */ }
         }

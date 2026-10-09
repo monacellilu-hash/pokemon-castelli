@@ -170,9 +170,21 @@ const PokeAPI = (function () {
     // Se la voce in cache è "vecchia" (senza baseExp/catchRate o senza
     // abilita, aggiunto per le Abilità F9.4), la ignoriamo e riscarichiamo:
     // così la cache si aggiorna da sola.
+    // Causa reale del bug "i Pokémon spariscono, non si risolve nemmeno
+    // ricaricando" (segnalato da Luca, 9 ott 2026): se in PASSATO un fetch
+    // andato storto (rete instabile, risposta troncata) aveva salvato in
+    // cache uno sprite VUOTO (sprite.fronte/retro null), questo controllo
+    // non lo notava mai — passava comunque la validazione, la cache
+    // restava "valida per sempre" e impostaSpriteConCache in battle.js
+    // riceveva un url vuoto ogni volta: niente da scaricare, niente da
+    // ritentare, lo sprite restava bianco per sempre, anche ricaricando la
+    // pagina (è lo stesso identico valore salvato in localStorage). Ora
+    // uno sprite vuoto in cache forza un nuovo fetch, come se non fosse in
+    // cache per niente.
     const inCache = leggiCache("pokemon_" + id);
     if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined &&
-        inCache.abilita !== undefined && inCache.schemaMosseGen123 === true) {
+        inCache.abilita !== undefined && inCache.schemaMosseGen123 === true &&
+        inCache.sprite && inCache.sprite.fronte && inCache.sprite.retro) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);
       return inCache;
     }
