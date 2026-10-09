@@ -12250,13 +12250,20 @@ const GameMap = (function () {
   // Box/Market/Pausa/Scheda…) è aperta sopra GameScene (in pausa, esclusa).
   function emitTastoSceneNative(nomeEvento) {
     if (!phaserGame) return;
-    const attive = phaserGame.scene.getScenes(true);
-    for (const s of attive) {
-      if (s.scene.key === 'GameScene') continue;
-      if (s.input && s.input.keyboard) {
-        s.input.keyboard.emit(nomeEvento, { preventDefault() {} });
-      }
-    }
+    // Sess. 9 ott 2026 (sospetto bug segnalato da Luca: [A] non confermava
+    // sempre il menu a tendina Info/Ordina della Squadra): prima questa
+    // funzione mandava l'evento a TUTTE le scene attive tranne GameScene —
+    // se InteriorScene (l'equivalente "sotto" quando sei in un interno) o
+    // una scena nativa precedente restavano attive per qualche motivo,
+    // l'evento sintetico arrivava anche a loro, non solo al menu davvero
+    // in primo piano, con doppie reazioni allo stesso tocco di [A]/[B].
+    // Ora mandiamo l'evento SOLO alla scena nativa più in cima allo stack
+    // (l'ultima nell'elenco di Phaser = quella aperta più di recente).
+    const attive = phaserGame.scene.getScenes(true)
+      .filter(s => s.scene.key !== 'GameScene' && s.scene.key !== 'InteriorScene' && s.input && s.input.keyboard);
+    if (attive.length === 0) return;
+    const scenaInCima = attive[attive.length - 1];
+    scenaInCima.input.keyboard.emit(nomeEvento, { preventDefault() {} });
   }
 
   /* ══════════════════════════════════════════════════════════

@@ -5935,7 +5935,29 @@ function alPasso(nuovaPosizione) {
         colpito = true;
       }
     });
-    if (colpito) mostraToast('☠️ Il veleno ha ferito un tuo Pokémon...', 1600);
+    if (colpito) {
+      // Se il veleno ha appena steso l'ULTIMO Pokémon in grado di lottare
+      // (richiesta esplicita di Luca, 9 ott 2026): stessa conseguenza di una
+      // sconfitta in battaglia — squadra curata, teletrasporto all'ultimo
+      // Centro Pokémon usato (o Borgata Tuscolana se non ce n'è ancora uno).
+      const vivi = (stato.squadra || []).filter(p => p.hpAttuale > 0);
+      if (vivi.length === 0) {
+        mostraToast('☠️ Il veleno ha steso il tuo ultimo Pokémon! Torni di corsa al Centro Pokémon...', 3000);
+        stato.squadra.forEach(p => {
+          p.hpAttuale = p.hpMax;
+          p.condizione = null;
+          (p.mosse || []).forEach(m => { m.pp = m.ppMax; });
+        });
+        salvaPartita();
+        const centro = stato.ultimoCentroCura;
+        if (typeof GameMap !== 'undefined' && GameMap.vaiAMappa) {
+          if (centro && centro.mappa) GameMap.vaiAMappa(centro.mappa, centro.tx, centro.ty);
+          else GameMap.vaiAMappa('borgata_tuscolana');
+        }
+        return; // niente altro da fare per questo passo (cambio mappa in corso)
+      }
+      mostraToast('☠️ Il veleno ha ferito un tuo Pokémon...', 1600);
+    }
   }
 
   // Spiegazione automatica della difficoltà (richiesta esplicita di Luca):
