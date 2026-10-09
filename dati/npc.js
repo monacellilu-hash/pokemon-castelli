@@ -944,11 +944,12 @@ const DATI_NPC = {
   },
 
   /* ── Marino: Snorlax addormentato + guardia con parola d'ordine (sess. 37).
-     Posizioni segnaposto nel .tmj, l'utente le sposta dove preferisce. ── */
-  'npc_flauto_marino': {
-    sprite: 'NPC 09', nome: 'Il Suonatore', direzione: 'est', movimento: 'fisso',
-    azione: 'donaFlautoMarino',
-  },
+     Posizioni segnaposto nel .tmj, l'utente le sposta dove preferisce.
+     npc_flauto_marino RIMOSSO (9 ott 2026, richiesta di Luca): dava un
+     secondo Flauto duplicato — l'unica fonte canonica resta il funivista
+     liberato a Rocca di Papa (vedi CLAUDE.md, arco Team CoTrAL). L'oggetto
+     Tiled era già stato tolto dal .tmj di Marino da Luca stesso (restava
+     solo nel .tmx non sincronizzato, ora pulito anche lì). ── */
   'npc_password_marino': {
     sprite: 'NPC 10', nome: 'Comare Ersilia', direzione: 'est', movimento: 'fisso',
     azione: 'rivelaParolaMarino',

@@ -928,13 +928,6 @@
     <property name="type" value="acqua surf"/>
    </properties>
   </object>
-  <object id="406" name="npc_flauto_marino" type="npc" x="1589.34" y="368.666" width="32" height="32">
-   <properties>
-    <property name="direzione" value="est"/>
-    <property name="id" value="npc_flauto_marino"/>
-    <property name="type" value="npc"/>
-   </properties>
-  </object>
   <object id="408" name="guardia_marino" type="npc" x="1671.5" y="774.166" width="28" height="26.6667">
    <properties>
     <property name="condizione" value="marino_password"/>

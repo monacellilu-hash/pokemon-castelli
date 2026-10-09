@@ -1567,7 +1567,7 @@
                         {
                          "name":"destinazione",
                          "type":"string",
-                         "value":"laboratorio_fossili_genzano"
+                         "value":"genzano_laboratorio_entrata"
                         }, 
                         {
                          "name":"spawn_id",

@@ -698,8 +698,8 @@
   <object id="182" name="gate cancello chiave custode!" x="1091" y="1186" width="57" height="15"/>
   <object id="183" name="uscita_1" x="549.314" y="738.575" width="18.8726" height="18.6007">
    <properties>
-    <property name="destinazione" value="daycare_nemi"/>
-    <property name="spawn_id" value="da_lago_nemi"/>
+    <property name="destinazione" value="nemi_daycare"/>
+    <property name="spawn_id" value="da_nemi"/>
     <property name="type" value="warp"/>
    </properties>
   </object>

@@ -5529,7 +5529,7 @@
                         {
                          "name":"destinazione",
                          "type":"string",
-                         "value":"lago_albano_acqua"
+                         "value":"interno_lago"
                         }, 
                         {
                          "name":"required_hm",

@@ -2238,6 +2238,24 @@ const GameMap = (function () {
     return _prettifyChiave(chiave);
   }
 
+  // Se più chiavi di MAPPE riusano lo stesso file (interni condivisi fra
+  // città: Market/Pokémon Center di Colonna/Grottaferrata/Marino/Castel
+  // Gandolfo spesso riusano il file di Frascati) e quindi "pareggiano" nel
+  // nome ricavato dal file, questa funzione scioglie il pareggio guardando
+  // quale candidato ha il nome-città (ricavato dalla CHIAVE, non dal file)
+  // presente nel testo originale del warp. Bug trovato 9 ott 2026: il
+  // Pokémon Center di Frascati si "chiamava" Colonna perché pokecenter_colonna
+  // (dichiarata PRIMA nel registro) e pokecenter_frascati puntano allo stesso
+  // file — Object.entries tornava sempre la prima, sempre Colonna.
+  function _scegliTraCandidatiMappa(lista, nd) {
+    if (lista.length <= 1) return lista[0] || null;
+    const conCittaGiusta = lista.find(chiave => {
+      const citta = chiave.replace(/^(pokecenter|mart|palestra|interno_palestra)_?/, '').replace(/_interno$/, '');
+      return citta && nd.includes(normTxt(citta));
+    });
+    return conCittaGiusta || lista[0];
+  }
+
   // Restituisce la chiave del registro MAPPE che corrisponde a "dest"
   function risolviMappa(dest) {
     if (!dest) return null;
@@ -2247,15 +2265,20 @@ const GameMap = (function () {
     for (const chiave of Object.keys(MAPPE)) {
       if (normTxt(chiave) === nd) return chiave;
     }
-    // 2) corrispondenza esatta col nome ricavato dal file
+    // 2) corrispondenza esatta col nome ricavato dal file (possono essere
+    // PIÙ chiavi, se riusano lo stesso file — vedi _scegliTraCandidatiMappa)
+    const esatti = [];
     for (const [chiave, def] of Object.entries(MAPPE)) {
-      if (nomeMappaDaFile(def.file) === nd) return chiave;
+      if (nomeMappaDaFile(def.file) === nd) esatti.push(chiave);
     }
+    if (esatti.length) return _scegliTraCandidatiMappa(esatti, nd);
     // 3) corrispondenza per inclusione (più permissiva, ultima spiaggia)
+    const perInclusione = [];
     for (const [chiave, def] of Object.entries(MAPPE)) {
       const nf = nomeMappaDaFile(def.file);
-      if (nf && nd && (nf.includes(nd) || nd.includes(nf))) return chiave;
+      if (nf && nd && (nf.includes(nd) || nd.includes(nf))) perInclusione.push(chiave);
     }
+    if (perInclusione.length) return _scegliTraCandidatiMappa(perInclusione, nd);
     return null;
   }
 

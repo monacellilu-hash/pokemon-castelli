@@ -1971,12 +1971,12 @@
                         {
                          "name":"destinazione",
                          "type":"string",
-                         "value":"daycare_nemi"
+                         "value":"nemi_daycare"
                         }, 
                         {
                          "name":"spawn_id",
                          "type":"string",
-                         "value":"da_lago_nemi"
+                         "value":"da_nemi"
                         }, 
                         {
                          "name":"type",

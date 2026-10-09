@@ -546,7 +546,7 @@
   </object>
   <object id="78" name="warp_lab_fossili" x="1700" y="1600">
    <properties>
-    <property name="destinazione" value="laboratorio_fossili_genzano"/>
+    <property name="destinazione" value="genzano_laboratorio_entrata"/>
     <property name="spawn_id" value="entrata_lab_fossili"/>
     <property name="type" value="warp"/>
    </properties>

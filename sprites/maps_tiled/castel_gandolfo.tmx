@@ -731,7 +731,7 @@
   </object>
   <object id="42" name="warp_lago" type="warp" x="14.0769" y="2090.07" width="74.6916" height="15.7279">
    <properties>
-    <property name="destinazione" value="lago_albano_acqua"/>
+    <property name="destinazione" value="interno_lago"/>
     <property name="required_hm" value="surf"/>
     <property name="spawn_id" value="spawn_da_castelgandolfo_acqua"/>
     <property name="type" value="warp"/>

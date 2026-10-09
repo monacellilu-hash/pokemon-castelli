@@ -5488,8 +5488,8 @@
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":639.108,
-                 "y":1152
+                 "x":640.441333333333,
+                 "y":1151.33333333333
                 }, 
                 {
                  "height":20,
@@ -5511,8 +5511,8 @@
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":1088,
-                 "y":1152
+                 "x":1087.33333333333,
+                 "y":1152.66666666667
                 }, 
                 {
                  "height":32,
@@ -6037,34 +6037,6 @@
                  "y":736.847
                 }, 
                 {
-                 "height":32,
-                 "id":406,
-                 "name":"npc_flauto_marino",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"direzione",
-                         "type":"string",
-                         "value":"est"
-                        }, 
-                        {
-                         "name":"id",
-                         "type":"string",
-                         "value":"npc_flauto_marino"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"npc"
-                        }],
-                 "rotation":0,
-                 "type":"npc",
-                 "visible":true,
-                 "width":32,
-                 "x":1589.34,
-                 "y":368.666
-                }, 
-                {
                  "height":26.6667,
                  "id":408,
                  "name":"guardia_marino",
@@ -6099,8 +6071,8 @@
                  "type":"npc",
                  "visible":true,
                  "width":28,
-                 "x":1671.5,
-                 "y":774.166
+                 "x":1792.83333333333,
+                 "y":705.499333333333
                 }, 
                 {
                  "height":32,
@@ -6603,8 +6575,7 @@
                  "width":0,
                  "x":1457,
                  "y":1450.33
-                },
-            
+                }, 
                 {
                  "height":0,
                  "id":428,
@@ -6632,7 +6603,8 @@
                  "width":0,
                  "x":1264,
                  "y":309.333
-                }, 
+                },
+            
                 {
                  "height":0,
                  "id":429,
@@ -6780,6 +6752,52 @@
                  "width":231.497,
                  "x":633.585,
                  "y":67.9523
+                }, 
+                {
+                 "height":15.75,
+                 "id":439,
+                 "name":"spawn",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"da pokemarket marino"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "type":"spawn",
+                 "visible":true,
+                 "width":20.0833,
+                 "x":1092.16118333333,
+                 "y":1190.27066666667
+                }, 
+                {
+                 "height":28,
+                 "id":440,
+                 "name":"spawn",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"da pokecenter marino"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "type":"spawn",
+                 "visible":true,
+                 "width":29.3333,
+                 "x":640.505516666667,
+                 "y":1181.72933333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -6788,7 +6806,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":437,
+ "nextobjectid":441,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",
