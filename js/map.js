@@ -4179,7 +4179,16 @@ const GameMap = (function () {
     // pacchetto (specie non coperta): in quel caso il follower resta nascosto.
     async _caricaTexFollower(nomeSpecie) {
       if (!nomeSpecie) return null;
-      const fileKey = nomeSpecie.toUpperCase().replace(/[^A-Z0-9]/g, '');
+      // 3 specie su 386 avevano il follower "invisibile" per davvero (item
+      // 36, 9 ott 2026): il nome file nel pacchetto non segue la
+      // convenzione normale slug-PokeAPI-tutto-maiuscolo. Censimento fatto
+      // controllando tutti e 386 gli id uno per uno contro sprites/follower/.
+      const ECCEZIONI_FILE = {
+        'nidoran-f': 'NIDORANfE',
+        'nidoran-m': 'NIDORANmA',
+        'deoxys-normal': 'DEOXYS',
+      };
+      const fileKey = ECCEZIONI_FILE[nomeSpecie] || nomeSpecie.toUpperCase().replace(/[^A-Z0-9]/g, '');
       const texKey = 'follower-' + fileKey;
       if (this.textures.exists(texKey)) return texKey;
 

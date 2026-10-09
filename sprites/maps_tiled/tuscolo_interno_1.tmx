@@ -333,12 +333,6 @@
   <object id="154" x="871" y="1021" width="19" height="30"/>
  </objectgroup>
  <objectgroup color="#ff0000" id="6" name="eventi">
-  <object id="2" name="alb_taglio_tuscolo_1" type="albero_taglio" x="540.988" y="958.222" width="32" height="32">
-   <properties>
-    <property name="id" value="alb_taglio_tuscolo_1"/>
-    <property name="type" value="albero_taglio"/>
-   </properties>
-  </object>
   <object id="3" name="tusc_int_ether" type="oggetto" x="478.321" y="930.222" width="32" height="32">
    <properties>
     <property name="contenuto" value="etere"/>
