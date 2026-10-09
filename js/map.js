@@ -9507,7 +9507,12 @@ const GameMap = (function () {
   class PokedexScene extends Phaser.Scene {
     constructor() { super({ key: 'PokedexScene' }); }
 
-    create() {
+    // Richiesta di Luca (9 ott 2026): tornando dalla scheda di un Pokémon
+    // (PokedexDetailScene, tornaAllaLista) la lista deve restare dov'era,
+    // non ripartire sempre da pagina 1 — datiRipristino {pagina,cursore}
+    // arriva da lì (scene.launch con quei dati), omesso al primo ingresso
+    // dal menu (si parte da pagina 0/cursore 0 come sempre).
+    create(datiRipristino) {
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
       this.add.text(CW / 2, 26, 'POKÉDEX', {
@@ -9525,8 +9530,8 @@ const GameMap = (function () {
         fontFamily: 'Arial', fontSize: '12px', color: '#888',
       }).setOrigin(0.5).setDepth(2);
 
-      this._pagina = 0;
-      this._cursore = 0;
+      this._pagina = (datiRipristino && datiRipristino.pagina) || 0;
+      this._cursore = (datiRipristino && datiRipristino.cursore) || 0;
       this._numPagine = Math.ceil(POKEDEX_ID_MAX / POKEDEX_RIGHE_PAGINA);
       this._righeTxt = [];
       const yIniziale = 84;
@@ -9648,7 +9653,7 @@ const GameMap = (function () {
 
       const tornaAllaLista = () => {
         this.scene.stop();
-        this.scene.launch('PokedexScene');
+        this.scene.launch('PokedexScene', this._tornaA);
       };
       this.input.keyboard.on('keydown-ESC', tornaAllaLista);
       this.input.keyboard.on('keydown-B', tornaAllaLista);

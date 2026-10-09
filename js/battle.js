@@ -511,9 +511,13 @@ const Battle = (function () {
 
   // Un Pokémon è immune a quel tipo di stato per via dei suoi tipi?
   function immuneAStato(ist, tipoStato) {
-    if (tipoStato === 'poison')  return ist.tipi.includes('poison') || ist.tipi.includes('steel');
-    if (tipoStato === 'burn')    return ist.tipi.includes('fire');
-    if (tipoStato === 'freeze')  return ist.tipi.includes('ice');
+    if (tipoStato === 'poison')     return ist.tipi.includes('poison') || ist.tipi.includes('steel');
+    if (tipoStato === 'burn')       return ist.tipi.includes('fire');
+    if (tipoStato === 'freeze')     return ist.tipi.includes('ice');
+    // Elettro immune a paralisi (richiesta esplicita di Luca, 9 ott 2026 —
+    // non è una regola di Smeraldo/Gen 3, introdotta solo in Gen 6, ma qui
+    // la vuole comunque).
+    if (tipoStato === 'paralysis')  return ist.tipi.includes('electric');
     return false;
   }
 
@@ -656,7 +660,13 @@ const Battle = (function () {
   function aggiornaPannelli() {
     if (modoDoppia) { aggiornaPannelliDoppia(); return; }
     // Nemico (col tag dello stato alterato, es. " [PAR]")
-    $('nemico-nome').textContent = nemico.nome + siglaCondizione(nemico);
+    // Pallina accanto al nome se il selvatico è già tuo (richiesta di Luca,
+    // 9 ott 2026): solo nei selvatici, non negli allenatori (lì conta sempre
+    // nemico-contatore invece, vedi sotto).
+    const giaPosseduto = modalita === 'selvatico' && statoGioco &&
+      statoGioco.pokedex && statoGioco.pokedex[nemico.id] && statoGioco.pokedex[nemico.id].catturato;
+    $('nemico-nome').innerHTML = nemico.nome + siglaCondizione(nemico) +
+      (giaPosseduto ? ' <img src="sprites/NO/Graphics/UI/Battle/icon_ball.png" alt="" style="height:1em;vertical-align:middle;">' : '');
     $('nemico-lv').textContent = 'Lv.' + nemico.livello;
     aggiornaBarraHp('nemico-hp', nemico.hpAttuale, nemico.hpMax);
 
@@ -2681,8 +2691,13 @@ const Battle = (function () {
     // pokemon al 75 con Lucky Egg mi dava 5.5k, qui un 42 ne dava 15k") era
     // sproporzionato: con 8 medaglie diventava un ×5 aggiuntivo, che sommato
     // al bonus allenatore portava l'EXP a quasi 10 volte il valore reale.
+    // Richiesta esplicita di Luca (9 ott 2026): i selvatici devono dare la
+    // METÀ dell'EXP di un allenatore (non la formula vera dei giochi, dove il
+    // rapporto è 1:1.5) — teniamo il bonus allenatore ×1.5 di sempre e
+    // scaliamo SOLO il selvatico a ×0.75, così selvatico/allenatore = 0.5 esatto.
     let exp = Math.max(10, Math.floor(nemico.baseExp * nemico.livello / 7));
     if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
+    else exp = Math.floor(exp * 0.75);
     await assegnaExp(mio, exp);
 
     // EXP condivisa con il resto della squadra (sess. 29 set 2026: diventata

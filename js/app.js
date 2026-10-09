@@ -406,7 +406,11 @@ function avanzaTempo() {
 // Sess. 1 ott 2026: pioggia ancora meno probabile (era già sotto "sole", ora
 // abbassata ulteriormente su richiesta di Luca) + ogni fase meteo dura solo
 // qualche ora invece di tutto il giorno intero (vedi DURATA_METEO_MIN sotto).
-const PESI_METEO        = [['sereno', 55], ['sole', 30], ['pioggia', 15]];
+// Pesi aggiornati 9 ott 2026 (richiesta esplicita di Luca): sereno 70% del
+// tempo, non dà alcun boost/debuff (è il "niente di speciale" di sempre);
+// Sole intenso è un meteo A SÉ, diverso da Sereno, con i suoi boost/debuff
+// (vedi battle.js) — non può mai capitare di notte, vedi _estraiMeteoPesato.
+const PESI_METEO        = [['sereno', 70], ['sole', 20], ['pioggia', 10]];
 // Grandine PERENNE (richiesta esplicita di Luca, 6 ott 2026: non più "a
 // volte", sempre — anomalia innaturale, indizio della trama meteo del
 // Team GdF). Prima era pesata 45/25/15/15, ora 100% grandine.
@@ -462,8 +466,18 @@ function aggiornaMeteo() {
   const oraAssoluta = _minutoAssoluto();
   let voce = stato.meteoPerMappa[chiaveMeteo];
 
+  // Se il Sole intenso era già in corso e nel frattempo è scesa la notte,
+  // lo tronchiamo subito invece di aspettare la sua scadenza naturale.
+  const eNotteOra = fasciaOraria(stato.tempo.minuti) === 'notte';
+  if (voce && voce.tipo === 'sole' && eNotteOra) voce = null;
+
   if (!voce || oraAssoluta >= voce.scadeMinuto) {
-    const nuovoTipo = _estraiMeteoPesato(ctx.monteCavo ? PESI_METEO_MONTECAVO : PESI_METEO);
+    // Di notte non può esserci Sole intenso (richiesta esplicita di Luca,
+    // 9 ott 2026): lo togliamo dal sorteggio invece di ridistribuire il suo
+    // peso a mano, così sereno/pioggia restano nello stesso rapporto tra loro.
+    let pesi = ctx.monteCavo ? PESI_METEO_MONTECAVO : PESI_METEO;
+    if (eNotteOra) pesi = pesi.filter(([tipo]) => tipo !== 'sole');
+    const nuovoTipo = _estraiMeteoPesato(pesi);
     const cambiato = voce && voce.tipo !== nuovoTipo;
     const d = DURATA_METEO_MIN[nuovoTipo];
     voce = { tipo: nuovoTipo, scadeMinuto: oraAssoluta + d.min + Math.random() * (d.max - d.min) };
