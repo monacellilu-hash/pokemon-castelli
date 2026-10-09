@@ -274,5 +274,37 @@
   </properties>
   <point/>
  </object>
+ <object id="118" name="pulsante_rocca_1" type="pulsante" x="288" y="416">
+  <properties>
+   <property name="id" value="pulsante_rocca1"/>
+   <property name="type" value="pulsante"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="119" name="pulsante_rocca_2" type="pulsante" x="512" y="416">
+  <properties>
+   <property name="id" value="pulsante_rocca2"/>
+   <property name="type" value="pulsante"/>
+  </properties>
+  <point/>
+ </object>
+ <object id="120" name="cancello_pulsante_rocca" type="cancello_pulsante" x="384" y="320" width="64" height="32">
+  <properties>
+   <property name="attivato_da" value="pulsante_rocca1,pulsante_rocca2"/>
+   <property name="type" value="cancello_pulsante"/>
+  </properties>
+ </object>
+ <object id="121" name="masso_forza_rocca_papa" type="masso" x="288" y="384" width="32" height="32">
+  <properties>
+   <property name="id" value="masso_forza_rocca_papa_1"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
+ <object id="122" name="masso_forza_rocca_papa" type="masso" x="512" y="384" width="32" height="32">
+  <properties>
+   <property name="id" value="masso_forza_rocca_papa_2"/>
+   <property name="type" value="masso"/>
+  </properties>
+ </object>
 </objectgroup>
 </map>

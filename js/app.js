@@ -1988,11 +1988,20 @@ async function interagisciGianluca() {
   const nome = 'Gianluca';
   if (!stato.flags.gianluca_grato) {
     stato.flags.gianluca_grato = true;
+    // Pokéflauto (richiesta di Luca, 9 ott 2026): la fonte canonica è questa,
+    // non più un NPC a Marino (vedi npc_flauto_marino, rimosso). Serve per
+    // svegliare lo Snorlax addormentato di Marino — si torna indietro.
+    if (!stato.inventario) stato.inventario = { chiave: {} };
+    if (!stato.inventario.chiave) stato.inventario.chiave = {};
+    stato.inventario.chiave.flauto = true;
     salvaPartita();
     await mostraDialogo(nome, [
       'Grazie per avermi salvato, te ne sarò sempre grato!',
+      'Tieni, prendi questo: è il mio vecchio flauto, non mi serve più. Magari a te servirà.',
       'Usa pure la mia funivia quando vuoi!',
     ]);
+    if (typeof mostraToast === 'function') mostraToast('🎵 Hai ricevuto il Flauto Pokémon!', 3000);
+    aggiornaHUD();
     return;
   }
   const scelta = await mostraScelta('Vuoi salire in cima?', 'Sì', 'No');
@@ -2354,26 +2363,9 @@ function apriVenditoreSpecialeAriccia() { apriMarketVenditore('mk-ariccia-specia
    .tmj: l'utente le sposterà dove preferisce quando disegna la mappa.
    ============================================================ */
 
-// NPC vicino a Snorlax: regala il Flauto Pokémon (oggetto chiave, unico
-// modo per svegliarlo — Snorlax addormentato è l'UNICO esemplare del gioco).
-async function donaFlautoMarino() {
-  if (stato.incontroAttivo || dialogoInCorso) return;
-  const nome = 'Suonatore Ambulante';
-  if (stato.inventario && stato.inventario.chiave && stato.inventario.chiave.flauto) {
-    await mostraDialogo(nome, ['Quella nenia ormai la conosci a memoria, eh? Bel colpo con quel bestione!']);
-    return;
-  }
-  await mostraDialogo(nome, [
-    'Visto quel coso enorme addormentato in mezzo alla strada? Nessuno riesce a passare!',
-    'Ho un vecchio flauto che potrebbe svegliarlo... Tieni, prendilo pure, io non lo suono più.',
-  ]);
-  if (!stato.inventario) stato.inventario = { chiave: {} };
-  if (!stato.inventario.chiave) stato.inventario.chiave = {};
-  stato.inventario.chiave.flauto = true;
-  salvaPartita();
-  aggiornaHUD();
-  mostraToast('🎵 Hai ricevuto il Flauto Pokémon!', 3000);
-}
+// Il Flauto Pokémon (serve per svegliare lo Snorlax addormentato, l'UNICO
+// esemplare del gioco) ora lo dà Gianluca a Rocca di Papa, non più un NPC
+// qui a Marino — vedi interagisciGianluca (richiesta di Luca, 9 ott 2026).
 
 // NPC che (se convinto) rivela la parola d'ordine per passare la guardia
 // che blocca l'accesso a una zona di Marino (gate NPC, vedi 'guardia_marino').
