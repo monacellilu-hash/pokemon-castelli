@@ -2224,7 +2224,11 @@ const GameMap = (function () {
   function nomeVisualizzatoMappa(chiave) {
     if (MAPPA_COMUNE[chiave]) return MAPPA_COMUNE[chiave];
     if (chiave.startsWith('pokecenter')) {
-      const resto = chiave.replace(/^pokecenter_?/, '');
+      // La chiave del Centro Pokémon di Borgata Tuscolana è il generico
+      // 'pokecenter' (senza suffisso città) — senza questo caso speciale
+      // mostrava solo "Centro Pokémon" senza nome (bug segnalato da Luca,
+      // 9 ott 2026, insieme al Centro di Frascati che si chiamava Colonna).
+      const resto = chiave === 'pokecenter' ? 'Borgata Tuscolana' : chiave.replace(/^pokecenter_?/, '');
       return 'Centro Pokémon' + (resto ? ' ' + _prettifyChiave(resto) : '');
     }
     if (chiave.startsWith('mart_')) {
@@ -2881,7 +2885,12 @@ const GameMap = (function () {
           clusterAttivo = null; clusterOriginX = 0; clusterOriginY = 0; clusterBoxes = {};
           await this._caricaMappaSingola(chiave, def, arrivoX, arrivoY, spawnId, sourceKey);
         }
-        if (typeof mostraNomeMappa === 'function') mostraNomeMappa(nomeVisualizzatoMappa(chiave));
+        // Niente banner entrando in una CASA (richiesta di Luca, 9 ott
+        // 2026): è ridondante, l'hai appena vista fuori. Centro Pokémon/
+        // Market/Palestra (altri interni) continuano a mostrarlo col nome
+        // della loro città — non sono "case".
+        const eCasa = !!(def.interno && /casa/.test(chiave));
+        if (!eCasa && typeof mostraNomeMappa === 'function') mostraNomeMappa(nomeVisualizzatoMappa(chiave));
         if (typeof Musica !== 'undefined') Musica.suonaPerMappa(chiave);
       } catch (err) {
         console.error('[Map] Errore caricamento mappa:', chiave, err);
@@ -10927,6 +10936,21 @@ const GameMap = (function () {
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x141420, 1).setDepth(0);
 
+      // Sfondo reale del Box (richiesta di Luca, 9 ott 2026 — "sfondi
+      // grafiche Box" non erano in realtà mai state fatte, solo un colore
+      // piatto): 40 varianti disponibili (sprites/NO/Graphics/UI/Storage/
+      // box_N.png), una diversa per ciascuno dei 24 box così si riconoscono
+      // a colpo d'occhio. Velo scuro sopra per leggibilità, stesso
+      // trattamento di SalvaScene/MarketScene.
+      const chiaveSfondoBox = `ui-box-bg-${boxIndiceAttivo % 40}`;
+      const sfondoGiaPronto = this.textures.exists(chiaveSfondoBox);
+      const disegnaSfondoBox = () => {
+        this.add.image(CW / 2, CH / 2, chiaveSfondoBox).setDisplaySize(CW, CH).setDepth(0.4);
+        this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0a0e18, 0.45).setDepth(0.5);
+      };
+      if (sfondoGiaPronto) disegnaSfondoBox();
+      else this.load.image(chiaveSfondoBox, `sprites/NO/Graphics/UI/Storage/box_${boxIndiceAttivo % 40}.png`);
+
       // Intestazione con frecce pagina
       this.add.text(CW / 2 - 90, 26, '◀', {
         fontSize: '18px', color: '#ffcb05', backgroundColor: '#1a2940', padding: { x: 10, y: 6 },
@@ -10955,7 +10979,7 @@ const GameMap = (function () {
       const daCaricare = new Set();
       stato.boxes[boxIndiceAttivo].forEach(pkm => { if (pkm) daCaricare.add(chiaveIconaPokemon(pkm.nome)); });
       stato.squadra.forEach(pkm => { if (pkm) daCaricare.add(chiaveIconaPokemon(pkm.nome)); });
-      let contaCaricamenti = 0;
+      let contaCaricamenti = sfondoGiaPronto ? 0 : 1;
       daCaricare.forEach(chiave => {
         const key = `pkm-icon-${chiave}`;
         if (!this.textures.exists(key)) {
@@ -10963,8 +10987,12 @@ const GameMap = (function () {
           contaCaricamenti++;
         }
       });
-      if (contaCaricamenti > 0) { this.load.once('complete', () => this._disegnaGriglia()); this.load.start(); }
-      else this._disegnaGriglia();
+      if (contaCaricamenti > 0) {
+        this.load.once('complete', () => { if (!sfondoGiaPronto) disegnaSfondoBox(); this._disegnaGriglia(); });
+        this.load.start();
+      } else {
+        this._disegnaGriglia();
+      }
 
       const uscire = () => {
         // Rete di sicurezza (come chiudiMenu() in app.js): se stavo tenendo

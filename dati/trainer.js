@@ -1509,126 +1509,126 @@ const DATI_TRAINER = {
 
   'all-bosco-1': {
     classe: 'Coleotterista', nome: 'Bruco',
-    squadra: [{ id: 10, livello: 8 }, { id: 11, livello: 9 }, { id: 14, livello: 9 }],
+    squadra: [{ id: 10, livello: 16 }, { id: 11, livello: 17 }, { id: 14, livello: 17 }],
     dialogo_prima: 'Shhh! Stavo osservando un Metapod. Ma una bella lotta non si rifiuta mai!',
     dialogo_dopo: 'I miei insetti hanno ancora da crescere.',
     premio: 540,
   },
   'all-bosco-2': {
     classe: 'Scout', nome: 'Tito',
-    squadra: [{ id: 13, livello: 9 }, { id: 14, livello: 10 }, { id: 69, livello: 10 }],
+    squadra: [{ id: 13, livello: 17 }, { id: 14, livello: 18 }, { id: 69, livello: 18 }],
     dialogo_prima: 'Conosco ogni sentiero di questo bosco. E ogni allenatore che ci passa lo sfido!',
     dialogo_dopo: 'Mi sono perso... nella tua strategia.',
     premio: 600,
   },
   'all-bosco-3': {
     classe: 'Archeologa', nome: 'Livia',
-    squadra: [{ id: 74, livello: 10 }, { id: 46, livello: 11 }],
+    squadra: [{ id: 74, livello: 18 }, { id: 46, livello: 19 }],
     dialogo_prima: 'Scavo tra i ruderi del Tuscolo. Sotto la terra dei Castelli c\'è di tutto… anche guai!',
     dialogo_dopo: 'Reperti intatti, orgoglio in frantumi.',
     premio: 660,
   },
   'all-bosco-4': {
     classe: 'Eremita', nome: 'Silvio',
-    squadra: [{ id: 43, livello: 10 }, { id: 69, livello: 11 }, { id: 44, livello: 12 }],
+    squadra: [{ id: 43, livello: 18 }, { id: 69, livello: 19 }, { id: 44, livello: 20 }],
     dialogo_prima: 'Vivo nel bosco da anni. I miei Pokémon Erba sono la mia famiglia. Mostrami rispetto… in battaglia!',
     dialogo_dopo: 'La natura sceglie il più forte. Oggi sei tu.',
     premio: 720,
   },
   'all-bosco-5': {
     classe: 'Botanico', nome: 'Fabio',
-    squadra: [{ id: 10, livello: 9 }, { id: 46, livello: 10 }],
+    squadra: [{ id: 10, livello: 17 }, { id: 46, livello: 18 }],
     dialogo_prima: 'Catalogo le piante di questi boschi. E i Pokémon che ci vivono!',
     dialogo_dopo: 'Nuova voce nel catalogo: ho perso.',
     premio: 580,
   },
   'all-bosco-6': {
     classe: 'Ranger del parco', nome: 'Saveria',
-    squadra: [{ id: 13, livello: 10 }, { id: 285, livello: 10 }],
+    squadra: [{ id: 13, livello: 18 }, { id: 285, livello: 18 }],
     dialogo_prima: 'Proteggo questo bosco come parte del Parco Regionale. Ogni visitatore viene "testato"!',
     dialogo_dopo: 'Il test l\'hai superato.',
     premio: 600,
   },
   'all-bosco-7': {
     classe: 'Lumacaio', nome: 'Gelsomino',
-    squadra: [{ id: 43, livello: 10 }, { id: 13, livello: 11 }],
+    squadra: [{ id: 43, livello: 18 }, { id: 13, livello: 19 }],
     dialogo_prima: 'Colleziono lumache e Pokémon lenti ma potenti!',
     dialogo_dopo: 'Sono rimasto indietro.',
     premio: 600,
   },
   'all-bosco-8': {
     classe: 'Studente di storia', nome: 'Agostino',
-    squadra: [{ id: 74, livello: 10 }, { id: 10, livello: 11 }],
+    squadra: [{ id: 74, livello: 18 }, { id: 10, livello: 19 }],
     dialogo_prima: 'Studio le rovine di Tuscolo per la mia tesi. Ogni pietra ha una storia… come questa lotta!',
     dialogo_dopo: 'Capitolo difficile.',
     premio: 620,
   },
   'all-bosco-9': {
     classe: 'Apicoltore', nome: 'Ciro',
-    squadra: [{ id: 13, livello: 10 }, { id: 14, livello: 11 }, { id: 10, livello: 11 }],
+    squadra: [{ id: 13, livello: 18 }, { id: 14, livello: 19 }, { id: 10, livello: 19 }],
     dialogo_prima: 'Le mie api raccolgono il polline in questi boschi. I miei Pokémon Coleottero sono altrettanto laboriosi!',
     dialogo_dopo: 'Le api sono tornate senza miele.',
     premio: 640,
   },
   'all-bosco-10': {
     classe: 'Naturalista', nome: 'Palma',
-    squadra: [{ id: 285, livello: 11 }, { id: 46, livello: 11 }],
+    squadra: [{ id: 285, livello: 19 }, { id: 46, livello: 19 }],
     dialogo_prima: 'Studio l\'ecosistema dei boschi tuscolani da cinque anni. I Pokémon funghi sono i miei preferiti!',
     dialogo_dopo: 'L\'equilibrio si è rotto.',
     premio: 640,
   },
   'all-bosco-11': {
     classe: 'Gitante domenicale', nome: 'Ermete',
-    squadra: [{ id: 43, livello: 11 }, { id: 161, livello: 11 }],
+    squadra: [{ id: 43, livello: 19 }, { id: 161, livello: 19 }],
     dialogo_prima: 'Ogni domenica vengo qui a passeggiare. E ogni domenica sfido chi trovo!',
     dialogo_dopo: 'Domenica storta.',
     premio: 660,
   },
   'all-bosco-12': {
     classe: 'Cercatore di funghi', nome: 'Oreste',
-    squadra: [{ id: 46, livello: 11 }, { id: 285, livello: 12 }],
+    squadra: [{ id: 46, livello: 19 }, { id: 285, livello: 20 }],
     dialogo_prima: 'I funghi più rari crescono vicino ai Pokémon. E io li trovo tutti!',
     dialogo_dopo: 'Fungo avvelenato.',
     premio: 680,
   },
   'all-bosco-13': {
     classe: 'Arrampicatore di rovine', nome: 'Ezio',
-    squadra: [{ id: 74, livello: 11 }, { id: 13, livello: 12 }],
+    squadra: [{ id: 74, livello: 19 }, { id: 13, livello: 20 }],
     dialogo_prima: 'Salgo sulle mura del teatro romano ogni giorno. Sono il re di queste rovine!',
     dialogo_dopo: 'Sono caduto.',
     premio: 680,
   },
   'all-bosco-14': {
     classe: 'Fotografa naturalistica', nome: 'Serafina',
-    squadra: [{ id: 10, livello: 12 }, { id: 11, livello: 12 }],
+    squadra: [{ id: 10, livello: 20 }, { id: 11, livello: 20 }],
     dialogo_prima: 'Fotografo i Pokémon selvatici di questo bosco. E quando non trovo soggetti, sfido gli allenatori!',
     dialogo_dopo: 'Foto mossa.',
     premio: 700,
   },
   'all-bosco-15': {
     classe: 'Studente universitario', nome: 'Viterbese',
-    squadra: [{ id: 43, livello: 12 }, { id: 187, livello: 12 }],
+    squadra: [{ id: 43, livello: 20 }, { id: 187, livello: 20 }],
     dialogo_prima: 'Faccio tesi sulle rovine del Tuscolo. Ho scoperto che alcuni Pokémon vivono nelle rovine stesse!',
     dialogo_dopo: 'La tesi si complica.',
     premio: 700,
   },
   'all-bosco-16': {
     classe: 'Guardia del parco', nome: 'Timoteo',
-    squadra: [{ id: 74, livello: 11 }, { id: 46, livello: 12 }, { id: 13, livello: 12 }],
+    squadra: [{ id: 74, livello: 19 }, { id: 46, livello: 20 }, { id: 13, livello: 20 }],
     dialogo_prima: 'Sorvegliate! Questo bosco è protetto. E i Pokémon che vivono qui pure!',
     dialogo_dopo: 'Il parco è tuo ora.',
     premio: 720,
   },
   'all-bosco-17': {
     classe: 'Avventuriero', nome: 'Brenno',
-    squadra: [{ id: 44, livello: 12 }, { id: 11, livello: 12 }],
+    squadra: [{ id: 44, livello: 20 }, { id: 11, livello: 20 }],
     dialogo_prima: 'Esploro questi boschi in cerca di segreti. E ogni tanto trovo un allenatore valido!',
     dialogo_dopo: 'Il segreto oggi eri tu.',
     premio: 720,
   },
   'all-bosco-18': {
     classe: 'Druida', nome: 'Quirino',
-    squadra: [{ id: 46, livello: 12 }, { id: 44, livello: 12 }, { id: 285, livello: 12 }],
+    squadra: [{ id: 46, livello: 20 }, { id: 44, livello: 20 }, { id: 285, livello: 20 }],
     dialogo_prima: 'Questi boschi sono sacri. Sono il guardiano delle rovine del Tuscolo. Dovrai superare me!',
     dialogo_dopo: 'Le rovine ti riconoscono.',
     premio: 740,
@@ -1639,7 +1639,7 @@ const DATI_TRAINER = {
   // aveva già scritto in Tiled (proprietà "dialogo", mai letta per i trainer).
   'all-bosco-19': {
     classe: 'Coleotterista', nome: 'Learco',
-    squadra: [{ id: 13, livello: 10 }, { id: 48, livello: 11 }],
+    squadra: [{ id: 13, livello: 18 }, { id: 48, livello: 19 }],
     dialogo_prima: '"Sono arrivato prima io, i Barbecue sono miei!"',
     dialogo_dopo: 'Il barbecue te lo sei guadagnato.',
     premio: 620,
@@ -1894,12 +1894,12 @@ const DATI_TRAINER = {
     premio: 1000,
   },
 
-  /* ── PERCORSO 2 — castagneti collinari (Frascati Est → Grottaferrata), Lv 7-11 ── */
+  /* ── PERCORSO 2 — castagneti collinari (Frascati Est → Grottaferrata), Lv 15-19 (richiesta Luca 9 ott 2026: livelli tra Donnie e Igino) ── */
 
   'all-p2-1': {
     sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
     classe: 'Coleotterista', nome: 'Tonino',
-    squadra: [ { id: 13, livello: 7 }, { id: 10, livello: 8 } ],
+    squadra: [ { id: 13, livello: 15 }, { id: 10, livello: 16 } ],
     dialogo_prima: 'Tra \'sti castagni ce stanno certi insetti! Guarda che ho acchiappato!',
     dialogo_dopo: 'Eh, i miei so\' ancora piccoletti.',
     premio: 280,
@@ -1907,7 +1907,7 @@ const DATI_TRAINER = {
   'all-p2-2': {
     sprite: 'trainer_LASS', ritratto: 'LASS', vista: 5,
     classe: 'Bambina', nome: 'Rosa',
-    squadra: [ { id: 16, livello: 8 }, { id: 183, livello: 9 } ],
+    squadra: [ { id: 16, livello: 16 }, { id: 183, livello: 17 } ],
     dialogo_prima: 'Vengo qui a raccogliere le castagne con i miei Pokémon! Giochi con noi?',
     dialogo_dopo: 'Uffa, hai vinto. Però le castagne le tengo io!',
     premio: 320,
@@ -1915,7 +1915,7 @@ const DATI_TRAINER = {
   'all-p2-3': {
     sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 4,
     classe: 'Pivello', nome: 'Saverio',
-    squadra: [ { id: 19, livello: 9 }, { id: 32, livello: 9 } ],
+    squadra: [ { id: 19, livello: 17 }, { id: 32, livello: 17 } ],
     dialogo_prima: 'Sto sentiero porta a Grottaferrata, ma prima passi da me!',
     dialogo_dopo: 'E mo\' che faccio, ci ripenso a tutto.',
     premio: 360,
@@ -1923,7 +1923,7 @@ const DATI_TRAINER = {
   'all-p2-4': {
     sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 5,
     classe: 'Pic-nic', nome: 'Carla',
-    squadra: [ { id: 29, livello: 9 }, { id: 43, livello: 10 }, { id: 187, livello: 10 } ],
+    squadra: [ { id: 29, livello: 17 }, { id: 43, livello: 18 }, { id: 187, livello: 18 } ],
     dialogo_prima: 'Che bel posto per un pranzo all\'aperto! Ma prima... una sfida!',
     dialogo_dopo: 'Vabbè, almeno il panino me lo godo.',
     premio: 400,
@@ -1931,7 +1931,7 @@ const DATI_TRAINER = {
   'all-p2-5': {
     sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
     classe: 'Montanaro', nome: 'Peppe',
-    squadra: [ { id: 74, livello: 10 }, { id: 179, livello: 11 } ],
+    squadra: [ { id: 74, livello: 18 }, { id: 179, livello: 19 } ],
     dialogo_prima: 'Queste colline le conosco a memoria. E i miei Pokémon pure!',
     dialogo_dopo: 'Forte \'sto ragazzino. Buona salita!',
     premio: 440,
@@ -1939,13 +1939,13 @@ const DATI_TRAINER = {
   'all-p2-6': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
     classe: 'Esploratore', nome: 'Furio',
-    squadra: [ { id: 261, livello: 10 }, { id: 273, livello: 11 }, { id: 16, livello: 11 } ],
+    squadra: [ { id: 261, livello: 18 }, { id: 273, livello: 19 }, { id: 16, livello: 19 } ],
     dialogo_prima: 'Ultimo prima di Grottaferrata! Se mi batti, sei pronto per la palestra Psico.',
     dialogo_dopo: 'Battuto in piena regola. Vai pure, il capopalestra ti aspetta!',
     premio: 480,
   },
 
-  /* ── PERCORSO 2 — Via Frascati → Grottaferrata, Lv 7-11 (sess. 29 set 2026) ──
+  /* ── PERCORSO 2 — Via Frascati → Grottaferrata, Lv 15-19 (sess. 29 set 2026, livelli aggiornati 9 ott 2026) ──
      6 allenatori GIÀ piazzati su Tiled (percorso_2.tmj, id "all-fg-1".."all-fg-6")
      ma SENZA nessuna voce qui: DATI_TRAINER[id] tornava undefined e
      _avviaLottaTrainer li saltava in silenzio — presenti sulla mappa ma

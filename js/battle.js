@@ -1474,9 +1474,11 @@ const Battle = (function () {
       await di(`Non ha effetto su ${etichetta}!`);
       return;
     }
-    // Il sonno dura da 1 a 3 turni
-    const turni = tipoStato === 'sleep' ? 1 + Math.floor(Math.random() * 3) : 0;
-    bersaglio.condizione = { tipo: tipoStato, turni };
+    // Sonno (richiesta esplicita di Luca, 9 ott 2026): non più durata fissa
+    // sorteggiata all'inizio — ai primi 2 turni il Pokémon ha il 50% di
+    // probabilità di svegliarsi, al 3° turno si sveglia SEMPRE. turniDormito
+    // conta i turni già dormiti (vedi puoAgire).
+    bersaglio.condizione = { tipo: tipoStato, turni: 0, turniDormito: 0 };
     aggiornaPannelli();
     await di(`${etichetta} è ${STATI[tipoStato].nome}!`);
   }
@@ -1791,13 +1793,16 @@ const Battle = (function () {
     if (!c) return true;
 
     if (c.tipo === 'sleep') {
-      if (c.turni > 0) c.turni -= 1;
-      if (c.turni <= 0) {
+      // Richiesta esplicita di Luca: 50% di svegliarsi ai primi 2 turni di
+      // sonno, sveglia GARANTITA al 3° turno (turniDormito arrivato a 2).
+      const sveglia = c.turniDormito >= 2 || Math.random() < 0.5;
+      if (sveglia) {
         att.condizione = null;
         aggiornaPannelli();
         await di(`${etichetta} si è svegliato!`);
         return true;
       }
+      c.turniDormito = (c.turniDormito || 0) + 1;
       await di(`${etichetta} sta dormendo profondamente...`);
       return false;
     }
