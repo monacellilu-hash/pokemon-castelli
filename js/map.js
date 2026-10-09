@@ -11071,21 +11071,31 @@ const GameMap = (function () {
         fontFamily: 'Arial', fontSize: '14px', color: '#ffcb05', fontStyle: 'bold',
       }).setOrigin(0.5).setDepth(2);
 
-      this._merce = market.merce.map(chiave => OGGETTI[chiave] ? { chiave, oggetto: OGGETTI[chiave] } : null).filter(Boolean);
+      this._market = market;
+      // Compra/Vendi (richiesta esplicita di Luca, 9 ott 2026: "al Market
+      // non si può vendere" — introdotta la vendita a metà prezzo). Due
+      // scheda cliccabili in alto; TAB le alterna anche da tastiera.
+      this._modo = 'compra';
+      this._tabCompra = this.add.text(CW / 2 - 70, 100, '🛒 Compra', {
+        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#ffcb05',
+        backgroundColor: '#28304a', padding: { x: 10, y: 4 },
+      }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+      this._tabVendi = this.add.text(CW / 2 + 70, 100, '💰 Vendi', {
+        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#888',
+        backgroundColor: '#1a2940', padding: { x: 10, y: 4 },
+      }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+      this._tabCompra.on('pointerdown', () => this._cambiaModo('compra'));
+      this._tabVendi.on('pointerdown', () => this._cambiaModo('vendi'));
+      this.input.keyboard.on('keydown-TAB', () => this._cambiaModo(this._modo === 'compra' ? 'vendi' : 'compra'));
+
       this._cursore = 0;
       // Contatore quantità (sess. 1 ott 2026, richiesta di Luca): "Compra"
       // non acquista subito un pezzo solo, apre un contatore (↑ aumenta,
       // ↓ diminuisce) sulla riga selezionata; un secondo [A]/clic conferma.
       this._modoQuantita = false;
       this._quantita = 1;
-      let daCaricare = 0;
-      this._merce.forEach(({ oggetto }) => {
-        if (!oggetto.img) return;
-        const key = `oggetto-icona-${oggetto.img}`;
-        if (!this.textures.exists(key)) { this.load.image(key, CARTELLA_ICONE_OGGETTI + oggetto.img); daCaricare++; }
-      });
-      if (daCaricare > 0) { this.load.once('complete', () => this._disegnaLista()); this.load.start(); }
-      else this._disegnaLista();
+      this._costruisciLista();
+      this._caricaECaricaLista();
 
       // Cursore a tastiera: ↑/↓ scelgono l'oggetto (o la quantità, se il
       // contatore è aperto), A/Invio apre il contatore e poi conferma.
@@ -11104,9 +11114,49 @@ const GameMap = (function () {
       this._collegaUscita();
     }
 
-    // Massimo pezzi acquistabili in un colpo: quanti te ne puoi permettere,
-    // comunque non più di 99 (come le Ball nella squadra/zaino).
-    _quantitaMassima(oggetto) {
+    // Ricostruisce _merce in base alla modalità: 'compra' = merce del
+    // market (come sempre), 'vendi' = tutto lo zaino con un prezzo (le
+    // chiavi/MN non vendibili non hanno "prezzo" in OGGETTI, escluse da sole).
+    _costruisciLista() {
+      if (this._modo === 'vendi') {
+        this._merce = Object.keys(stato.zaino || {})
+          .filter(chiave => (stato.zaino[chiave] || 0) > 0 && OGGETTI[chiave] && OGGETTI[chiave].prezzo)
+          .map(chiave => ({ chiave, oggetto: OGGETTI[chiave] }));
+      } else {
+        this._merce = (this._market ? this._market.merce : [])
+          .map(chiave => OGGETTI[chiave] ? { chiave, oggetto: OGGETTI[chiave] } : null).filter(Boolean);
+      }
+      this._cursore = Math.min(this._cursore || 0, Math.max(0, this._merce.length - 1));
+    }
+
+    _cambiaModo(modo) {
+      if (this._modo === modo) return;
+      this._modo = modo;
+      this._modoQuantita = false;
+      this._quantita = 1;
+      this._tabCompra.setStyle({ color: modo === 'compra' ? '#ffcb05' : '#888' })
+        .setBackgroundColor(modo === 'compra' ? '#28304a' : '#1a2940');
+      this._tabVendi.setStyle({ color: modo === 'vendi' ? '#ffcb05' : '#888' })
+        .setBackgroundColor(modo === 'vendi' ? '#28304a' : '#1a2940');
+      this._costruisciLista();
+      this._caricaECaricaLista();
+    }
+
+    _caricaECaricaLista() {
+      let daCaricare = 0;
+      (this._merce || []).forEach(({ oggetto }) => {
+        if (!oggetto.img) return;
+        const key = `oggetto-icona-${oggetto.img}`;
+        if (!this.textures.exists(key)) { this.load.image(key, CARTELLA_ICONE_OGGETTI + oggetto.img); daCaricare++; }
+      });
+      if (daCaricare > 0) { this.load.once('complete', () => this._disegnaLista()); this.load.start(); }
+      else this._disegnaLista();
+    }
+
+    // Massimo pezzi acquistabili/vendibili in un colpo: in compra quanti te
+    // ne puoi permettere, in vendi quanti ne hai — comunque non più di 99.
+    _quantitaMassima(oggetto, chiave) {
+      if (this._modo === 'vendi') return Math.max(1, Math.min(99, stato.zaino[chiave] || 1));
       const perPortafoglio = oggetto.prezzo > 0 ? Math.floor((stato.soldi || 0) / oggetto.prezzo) : 99;
       return Math.max(1, Math.min(99, perPortafoglio));
     }
@@ -11120,25 +11170,27 @@ const GameMap = (function () {
     _cambiaQuantita(delta) {
       const v = this._merce[this._cursore];
       if (!v) return;
-      const max = this._quantitaMassima(v.oggetto);
+      const max = this._quantitaMassima(v.oggetto, v.chiave);
       this._quantita = Phaser.Math.Clamp(this._quantita + delta, 1, max);
       this._disegnaLista();
     }
 
-    // Primo [A]/clic su "Compra": apre il contatore quantità (parte da 1).
-    // Secondo [A]/clic (contatore già aperto sulla stessa riga): acquista
-    // davvero quella quantità e richiude il contatore.
+    // Primo [A]/clic su "Compra"/"Vendi": apre il contatore quantità (parte
+    // da 1). Secondo [A]/clic (contatore già aperto sulla stessa riga):
+    // compra/vende davvero quella quantità e richiude il contatore.
     _confermaOAttivaQuantita() {
       const v = this._merce[this._cursore];
       if (!v) return;
-      if ((stato.soldi || 0) < v.oggetto.prezzo) return;
+      if (this._modo === 'compra' && (stato.soldi || 0) < v.oggetto.prezzo) return;
+      if (this._modo === 'vendi' && (stato.zaino[v.chiave] || 0) <= 0) return;
       if (!this._modoQuantita) {
         this._modoQuantita = true;
         this._quantita = 1;
         this._disegnaLista();
         return;
       }
-      compraOggetto(v.chiave, this._quantita);
+      if (this._modo === 'vendi') vendiOggetto(v.chiave, this._quantita);
+      else compraOggetto(v.chiave, this._quantita);
       this._modoQuantita = false;
       this._quantita = 1;
       this.scene.restart();
@@ -11165,8 +11217,14 @@ const GameMap = (function () {
     _disegnaLista() {
       if (this._elementiLista) this._elementiLista.forEach(e => e.destroy());
       this._elementiLista = [];
-      const CW = this.cameras.main.width;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const top = 110, righeAltezza = 64;
+      if (this._modo === 'vendi' && (!this._merce || this._merce.length === 0)) {
+        this._elementiLista.push(this.add.text(CW / 2, CH / 2, 'Non hai nulla da vendere nello zaino.', {
+          fontFamily: 'Arial', fontSize: '14px', color: '#ccc',
+        }).setOrigin(0.5).setDepth(3));
+        return;
+      }
       (this._merce || []).forEach(({ chiave, oggetto }, i) => {
         const y = top + i * righeAltezza;
         const conCursore = i === this._cursore;
@@ -11184,7 +11242,8 @@ const GameMap = (function () {
         }
 
         const posseduti = stato.zaino[chiave] || 0;
-        this._elementiLista.push(this.add.text(95, y - 16, `${oggetto.nome}   ₽ ${oggetto.prezzo.toLocaleString('it-IT')}`, {
+        const prezzoRiga = this._modo === 'vendi' ? prezzoVendita(chiave) : oggetto.prezzo;
+        this._elementiLista.push(this.add.text(95, y - 16, `${oggetto.nome}   ₽ ${prezzoRiga.toLocaleString('it-IT')}`, {
           fontFamily: 'Arial', fontSize: '13px', color: '#fff', fontStyle: 'bold',
         }).setOrigin(0, 0.5).setDepth(3));
         this._elementiLista.push(this.add.text(95, y + 4, oggetto.descrizione || '', {
@@ -11197,13 +11256,13 @@ const GameMap = (function () {
           }).setOrigin(0, 0.5).setDepth(3));
         }
 
-        const troppoCaro = (stato.soldi || 0) < oggetto.prezzo;
+        const troppoCaro = this._modo === 'vendi' ? posseduti <= 0 : (stato.soldi || 0) < oggetto.prezzo;
 
         // Riga col contatore quantità aperto: frecce −/+ cliccabili, numero
         // al centro, "Conferma" al posto di "Compra" (richiesta di Luca:
         // comprare più di un pezzo alla volta invece che uno per uno).
         if (inQuantita) {
-          const max = this._quantitaMassima(oggetto);
+          const max = this._quantitaMassima(oggetto, chiave);
           const btnMeno = this.add.text(CW - 150, y, '−', {
             fontFamily: 'Arial', fontSize: '18px', color: this._quantita > 1 ? '#ffcb05' : '#555',
             backgroundColor: '#28304a', padding: { x: 10, y: 2 },
@@ -11229,13 +11288,13 @@ const GameMap = (function () {
           btnConferma.on('pointerdown', () => this._confermaOAttivaQuantita());
           this._elementiLista.push(btnConferma);
 
-          this._elementiLista.push(this.add.text(95, y + 20, `Ne hai: ${posseduti}   ·   Totale: ₽ ${(oggetto.prezzo * this._quantita).toLocaleString('it-IT')}`, {
+          this._elementiLista.push(this.add.text(95, y + 20, `Ne hai: ${posseduti}   ·   Totale: ₽ ${(prezzoRiga * this._quantita).toLocaleString('it-IT')}`, {
             fontFamily: 'Arial', fontSize: '10px', color: '#ffcb05',
           }).setOrigin(0, 0.5).setDepth(3));
           return;
         }
 
-        const btn = this.add.text(CW - 90, y, 'Compra', {
+        const btn = this.add.text(CW - 90, y, this._modo === 'vendi' ? 'Vendi' : 'Compra', {
           fontFamily: 'Arial', fontSize: '13px',
           color: troppoCaro ? '#666' : '#ffcb05',
           backgroundColor: '#28304a', padding: { x: 12, y: 6 },

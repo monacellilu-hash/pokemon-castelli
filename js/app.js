@@ -2930,6 +2930,32 @@ function compraOggetto(chiave, qta) {
   if (typeof mostraSezioneMenu === 'function') mostraSezioneMenu('market'); // ridisegna il vecchio pannello DOM, se ancora attivo
 }
 
+// Prezzo di vendita di un oggetto: metà del prezzo d'acquisto, come nei
+// giochi veri (richiesta esplicita di Luca, 9 ott 2026 — "Vendita al
+// Market: non si può vendere. Introduci la vendita al valore dell'oggetto
+// ×0.5"). Minimo 1 Pokéyen per non svendere a zero gli oggetti già economici.
+function prezzoVendita(chiave) {
+  const oggetto = OGGETTI[chiave];
+  if (!oggetto || !oggetto.prezzo) return 0;
+  return Math.max(1, Math.floor(oggetto.prezzo * 0.5));
+}
+
+function vendiOggetto(chiave, qta) {
+  const oggetto = OGGETTI[chiave];
+  const posseduti = stato.zaino[chiave] || 0;
+  if (!oggetto || !oggetto.prezzo || posseduti <= 0) return;
+  qta = Math.max(1, Math.min(posseduti, parseInt(qta, 10) || 1));
+  const ricavo = prezzoVendita(chiave) * qta;
+
+  stato.zaino[chiave] -= qta;
+  if (stato.zaino[chiave] <= 0) delete stato.zaino[chiave];
+  stato.soldi = (stato.soldi || 0) + ricavo;
+  salvaPartita();
+  aggiornaHUD();
+  const messaggioQta = qta > 1 ? `${oggetto.nome} ×${qta}` : oggetto.nome;
+  mostraToast(`💰 Hai venduto ${messaggioQta}! (+₽${ricavo.toLocaleString('it-IT')})`);
+}
+
 /* ============================================================
    NPC DELLE CITTÀ (F9) — abitanti (colore locale) e donatori MN
    ============================================================ */
