@@ -788,7 +788,7 @@
   </object>
   <object id="20" name="market_door" type="warp" x="1088" y="1152" width="32" height="20">
    <properties>
-    <property name="destinazione" value="interno_market"/>
+    <property name="destinazione" value="mart_marino"/>
     <property name="note" value="market_door"/>
    </properties>
   </object>
@@ -1107,6 +1107,12 @@
    <properties>
     <property name="id" value="incontri marino"/>
     <property name="type" value="erba_alta"/>
+   </properties>
+  </object>
+  <object id="9007" name="spawn" type="spawn" x="1444" y="900" width="24" height="24">
+   <properties>
+    <property name="id" value="da_palestra_marino"/>
+    <property name="type" value="spawn"/>
    </properties>
   </object>
  </objectgroup>
