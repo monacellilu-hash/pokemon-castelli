@@ -4829,10 +4829,21 @@ const GameMap = (function () {
       else if (dy < 0) facciata = 'up';
       else facciata = 'down';
 
+      // "Passo 0" (richiesta esplicita di Luca, 9 ott 2026): girarsi sul
+      // posto senza spostarsi (bloccato da un ostacolo qualsiasi) conta
+      // comunque come se ci si fosse mossi, per far scattare gli stessi
+      // effetti di un passo vero (veleno, meteo, avanzamento del tempo...).
+      // Usata da OGNI "return" per blocco qui sotto, invece di duplicare
+      // l'animazione idle + la chiamata a onPassoCb in ognuno.
+      const giraSulPosto = () => {
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        if (onPassoCb) onPassoCb({ ...posLatLon });
+      };
+
       // 1) Collisione vera: blocca SEMPRE, in Surf o a piedi. Nessuna eccezione,
       // nessuna mutazione di collGrid da parte del Surf.
       if (collGrid && collGrid[newTy] && collGrid[newTy][newTx] === 1) {
-        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        giraSulPosto();
         return;
       }
 
@@ -4842,11 +4853,11 @@ const GameMap = (function () {
       // scendendo (dy>0) su quella di arrivo.
       if (muroNordTiles && muroNordTiles.size) {
         if (dy < 0 && muroNordTiles.has(posTile.tx + ',' + posTile.ty)) {
-          if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          giraSulPosto();
           return;
         }
         if (dy > 0 && muroNordTiles.has(newTx + ',' + newTy)) {
-          if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          giraSulPosto();
           return;
         }
       }
@@ -4858,7 +4869,7 @@ const GameMap = (function () {
       // (_gestisciTrigger), non dal movimento con le frecce.
       const inAcqua = acquaSurf && acquaSurf.has(newTx + ',' + newTy);
       if (inAcqua && !surfAttivo) {
-        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        giraSulPosto();
         return;
       }
       // 3) Terra: se si stava surfando, si scende dall'acqua automaticamente,
@@ -4871,7 +4882,7 @@ const GameMap = (function () {
       // NPC e trainer sono solidi: non ci si passa attraverso
       for (const o of npcStato) {
         if (o.tx === newTx && o.ty === newTy) {
-          if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          giraSulPosto();
           return;
         }
       }
@@ -4882,7 +4893,7 @@ const GameMap = (function () {
       // aperta, il tile è già stato rimosso da _applicaPorteScomparse al
       // caricamento mappa: qui basta non bloccare più il passaggio.
       if (this._portaScomparsaBlocca(newTx, newTy)) {
-        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        giraSulPosto();
         return;
       }
 
@@ -4893,7 +4904,7 @@ const GameMap = (function () {
       if (massoQui) {
         const spostato = this._provaSpingiMasso(massoQui, dx, dy);
         if (!spostato) {
-          if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          giraSulPosto();
           return;
         }
       }
@@ -5426,6 +5437,20 @@ const GameMap = (function () {
         const ftx2 = posTile.tx + (facciata === 'right' ? 2 : facciata === 'left' ? -2 : 0);
         const fty2 = posTile.ty + (facciata === 'down'  ? 2 : facciata === 'up'   ? -2 : 0);
         trovato = this._eventoInCasella(ftx2, fty2);
+        // Bancone raggiungibile anche arrivando di lato (richiesta esplicita
+        // di Luca, 9 ott 2026: "devo poterci parlare anche se arrivo da
+        // destra o da sinistra") — se il commesso/infermiera non è esattamente
+        // di fronte ma spostato di una cella sul lato del bancone (comune
+        // quando il bancone è più largo della cella da cui ci si affaccia),
+        // controlla anche le due celle scartate di un passo lateralmente,
+        // stessa profondità.
+        if (!trovato) {
+          const perpendicolare = (facciata === 'up' || facciata === 'down') ? [[-1, 0], [1, 0]] : [[0, -1], [0, 1]];
+          for (const [dx, dy] of perpendicolare) {
+            trovato = this._eventoInCasella(ftx2 + dx, fty2 + dy);
+            if (trovato) break;
+          }
+        }
       }
 
       // Il pulsante [A] ora è sempre visibile e senza etichetta (sess. 5 set
@@ -10941,7 +10966,8 @@ const GameMap = (function () {
   class BoxScene extends Phaser.Scene {
     constructor() { super({ key: 'BoxScene' }); }
 
-    create() {
+    create(dati) {
+      this._cursoreIniziale = (dati && dati.cursore) || 0;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x141420, 1).setDepth(0);
 
@@ -10975,8 +11001,8 @@ const GameMap = (function () {
         .on('pointerdown', () => { boxIndiceAttivo = (boxIndiceAttivo + 1) % 24; this.scene.restart(); });
 
       const nota = boxMano
-        ? `✋ Stai tenendo ${boxMano.pkm.nome}. Clicca uno slot (anche in squadra, qui sotto) per posarlo o scambiarlo.`
-        : 'Clicca un Pokémon per prenderlo (ℹ️ per la scheda), uno slot vuoto per depositare.';
+        ? `✋ Stai tenendo ${boxMano.pkm.nome}. Muovi il cursore su uno slot (anche in squadra, qui sotto) e premi A per posarlo o scambiarlo.`
+        : 'Freccette per muovere il cursore, A su un Pokémon per prenderlo, A su uno slot vuoto per depositare. ◀▶ sul bordo cambia Box.';
       this.add.text(CW / 2, CH - 90, nota, {
         fontFamily: 'Arial', fontSize: '12px', color: '#ccc', align: 'center', wordWrap: { width: CW - 80 },
       }).setOrigin(0.5).setDepth(2);
@@ -11017,9 +11043,41 @@ const GameMap = (function () {
       };
       this.input.keyboard.on('keydown-ESC', uscire);
       this.input.keyboard.on('keydown-B', uscire);
+
+      // Cursore a tastiera (richiesta esplicita di Luca, 9 ott 2026 — il Box
+      // era 100% dipendente dal mouse/tocco, l'unica schermata nativa senza
+      // nessuna navigazione a tastiera). Griglia logica unica 6 colonne × 6
+      // righe: righe 0-4 = i 30 slot del Box corrente, riga 5 = i 6 slot
+      // della Squadra (stesse colonne, si allineano perfettamente sotto).
+      // ←/→ sul bordo sinistro/destro cambiano pagina Box (stesso schema di
+      // overflow già usato in PokedexScene), non serve un tasto dedicato.
+      this._cursore = this._cursoreIniziale; // indice flat 0-35
+      const refPerCursore = (idx) => idx < 30
+        ? { tipo: 'box', box: boxIndiceAttivo, slot: idx }
+        : { tipo: 'squadra', idx: idx - 30 };
+      const muoviCursoreBox = (dRow, dCol) => {
+        let riga = Math.floor(this._cursore / 6), col = this._cursore % 6;
+        if (dCol !== 0) {
+          col += dCol;
+          if (col < 0) { boxIndiceAttivo = (boxIndiceAttivo + 23) % 24; col = 5; this.scene.restart({ cursore: riga * 6 + col }); return; }
+          if (col > 5) { boxIndiceAttivo = (boxIndiceAttivo + 1) % 24; col = 0; this.scene.restart({ cursore: riga * 6 + col }); return; }
+        }
+        riga = Phaser.Math.Clamp(riga + dRow, 0, 5);
+        this._cursore = riga * 6 + col;
+        this._disegnaGriglia();
+      };
+      this.input.keyboard.on('keydown-UP',    () => muoviCursoreBox(-1, 0));
+      this.input.keyboard.on('keydown-DOWN',  () => muoviCursoreBox(1, 0));
+      this.input.keyboard.on('keydown-LEFT',  () => muoviCursoreBox(0, -1));
+      this.input.keyboard.on('keydown-RIGHT', () => muoviCursoreBox(0, 1));
+      const confermaBox = () => this._clicCella(refPerCursore(this._cursore));
+      this.input.keyboard.on('keydown-ENTER', confermaBox);
+      this.input.keyboard.on('keydown-SPACE', confermaBox);
     }
 
     _disegnaGriglia() {
+      if (this._celle) this._celle.forEach(o => o.destroy());
+      this._celle = [];
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const COLS = 6, ROWS = 5;
       const cell = Math.min(70, (CW - 80) / COLS);
@@ -11030,34 +11088,35 @@ const GameMap = (function () {
         const col = slot % COLS, row = Math.floor(slot / COLS);
         const cx = startX + col * cell, cy = startY + row * cell;
         const pkm = stato.boxes[boxIndiceAttivo][slot];
-        this._disegnaCella(cx, cy, cell - 4, pkm, { tipo: 'box', box: boxIndiceAttivo, slot });
+        this._disegnaCella(cx, cy, cell - 4, pkm, { tipo: 'box', box: boxIndiceAttivo, slot }, slot === this._cursore);
       }
 
       // Striscia Squadra
       const dockY = startY + ROWS * cell + 30;
-      this.add.text(40, dockY - 22, '⚡ Squadra', {
+      this._celle.push(this.add.text(40, dockY - 22, '⚡ Squadra', {
         fontFamily: 'Arial', fontSize: '12px', color: '#ffcb05', fontStyle: 'bold',
-      }).setOrigin(0, 0.5).setDepth(2);
+      }).setOrigin(0, 0.5).setDepth(2));
       const dockCell = Math.min(64, (CW - 80) / 6);
       const dockStartX = CW / 2 - (dockCell * 6) / 2 + dockCell / 2;
       for (let i = 0; i < 6; i++) {
-        this._disegnaCella(dockStartX + i * dockCell, dockY + dockCell / 2, dockCell - 6, stato.squadra[i] || null, { tipo: 'squadra', idx: i });
+        this._disegnaCella(dockStartX + i * dockCell, dockY + dockCell / 2, dockCell - 6, stato.squadra[i] || null, { tipo: 'squadra', idx: i }, (30 + i) === this._cursore);
       }
     }
 
-    _disegnaCella(cx, cy, size, pkm, ref) {
+    _disegnaCella(cx, cy, size, pkm, ref, selezionata) {
       const sfondo = this.add.rectangle(cx, cy, size, size, pkm ? 0x1a2940 : 0x0d1220, 0.9)
-        .setStrokeStyle(1, 0x3a3a4a).setDepth(1).setInteractive({ useHandCursor: true });
+        .setStrokeStyle(selezionata ? 3 : 1, selezionata ? 0xffcb05 : 0x3a3a4a).setDepth(1).setInteractive({ useHandCursor: true });
       sfondo.on('pointerdown', () => this._clicCella(ref));
+      this._celle.push(sfondo);
 
       if (pkm) {
         const key = `pkm-icon-${chiaveIconaPokemon(pkm.nome)}`;
         if (this.textures.exists(key)) {
-          this.add.image(cx, cy - 6, key).setDisplaySize(size * 0.7, size * 0.7).setOrigin(0.5).setDepth(2);
+          this._celle.push(this.add.image(cx, cy - 6, key).setDisplaySize(size * 0.7, size * 0.7).setOrigin(0.5).setDepth(2));
         }
-        this.add.text(cx, cy + size / 2 - 8, `${pkm.livello}`, {
+        this._celle.push(this.add.text(cx, cy + size / 2 - 8, `${pkm.livello}`, {
           fontFamily: 'Arial', fontSize: '10px', color: '#fff', backgroundColor: '#000',
-        }).setOrigin(0.5).setDepth(2);
+        }).setOrigin(0.5).setDepth(2));
         const info = this.add.text(cx + size / 2 - 6, cy - size / 2 + 6, 'ℹ️', { fontSize: '11px' })
           .setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
         info.on('pointerdown', (pointer, x, y, event) => {
@@ -11065,6 +11124,7 @@ const GameMap = (function () {
           this.scene.stop();
           this.scene.launch('PartyDetailScene', { fonte: ref });
         });
+        this._celle.push(info);
       }
     }
 
@@ -11083,7 +11143,7 @@ const GameMap = (function () {
         if (ref.tipo === 'box') stato.boxes[ref.box][ref.slot] = null;
         else stato.squadra.splice(ref.idx, 1);
         boxMano = { origine: ref, pkm: pkmQui };
-        this.scene.restart();
+        this.scene.restart({ cursore: this._cursore });
         return;
       }
 
@@ -11103,7 +11163,7 @@ const GameMap = (function () {
       if (typeof mostraToast === 'function') {
         mostraToast(boxMano ? `🔄 Scambiati ${preso.nome} e ${pkmQui.nome}.` : `📦 ${preso.nome} sistemato.`);
       }
-      this.scene.restart();
+      this.scene.restart({ cursore: this._cursore });
     }
   }
 
@@ -11535,7 +11595,21 @@ const GameMap = (function () {
       this.input.keyboard.on('keydown-ENTER', conferma);
       this.input.keyboard.on('keydown-SPACE', conferma);
 
-      const tornaAlMenu = () => { this.scene.stop(); this.scene.launch('PauseMenuScene'); };
+      // Espansione "ℹ️" (dettagli MT/MN) anche da tastiera (richiesta
+      // esplicita di Luca, 9 ott 2026: niente più funzioni raggiungibili
+      // SOLO col mouse) — SHIFT apre/chiude l'info della MT/MN selezionata.
+      this.input.keyboard.on('keydown-SHIFT', () => {
+        const v = this._voci[this._cursoreLista];
+        if (!v || (v.oggetto.categoria !== 'mt' && v.oggetto.categoria !== 'mn')) return;
+        if (this._infoMossaBox) this._chiudiInfoMossa();
+        else this._mostraInfoMossa(v.chiave, v.oggetto);
+      });
+
+      const tornaAlMenu = () => {
+        if (this._infoMossaBox) { this._chiudiInfoMossa(); return; }
+        this.scene.stop();
+        this.scene.launch('PauseMenuScene');
+      };
       this.input.keyboard.on('keydown-ESC', tornaAlMenu);
       this.input.keyboard.on('keydown-B', tornaAlMenu);
     }
@@ -12311,6 +12385,28 @@ const GameMap = (function () {
       // (senza, update()/i tween non avanzano mai e il gioco resta bloccato).
       disableVisibilityChange: true,
     });
+
+    // Click/tocco disabilitato in TUTTE le schermate native coi menu
+    // (richiesta esplicita di Luca, 9 ott 2026: "clicco su una freccia o su
+    // A/B e mi prende il click sotto, non va bene" — tutto deve passare da
+    // freccette+A/B). Causa reale: input.windowEvents:true (sopra) fa
+    // ascoltare Phaser anche fuori dal canvas, quindi un tocco sul D-pad/
+    // A/B DOM finisce ANCHE nel hit-test di Phaser sulle stesse coordinate
+    // schermo — se lì sotto c'è un bottone di menu, scatta pure quello.
+    // Si disabilita SOLO l'input a puntatore (mouse/touch) di queste scene,
+    // non la tastiera: ogni schermata elencata qui ha già un cursore e
+    // A/Invio/Spazio=conferma, B/Esc=indietro completi. GameScene e
+    // InteriorScene (il mondo di gioco) NON sono in questo elenco: lì
+    // restano invariati il D-pad/A/B e il tocco per muoversi/interagire.
+    // Fa eccezione solo la schermata iniziale nome+difficoltà, che non è
+    // una Scene Phaser ma overlay DOM a parte — non tocca questo elenco.
+    const SCENE_SENZA_CLICK = ['PauseMenuScene', 'TrainerCardScene', 'PokedexScene',
+      'PokedexDetailScene', 'OpzioniScene', 'PartyScene', 'PartyDetailScene',
+      'ZainoScene', 'ZainoBersaglioScene', 'RecapScene', 'SalvaScene', 'BoxScene', 'MarketScene'];
+    for (const chiave of SCENE_SENZA_CLICK) {
+      const s = phaserGame.scene.keys[chiave];
+      if (s) s.events.on('create', () => { if (s.input) s.input.enabled = false; });
+    }
   }
 
   // Attiva l'interazione con l'evento che il giocatore sta guardando (tasto [A]).

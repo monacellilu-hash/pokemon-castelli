@@ -2235,6 +2235,15 @@ html, body {
 @media (hover: none) and (pointer: coarse) {
   .solo-mobile { display: flex; }
   #btn-interagisci.solo-mobile { display: flex; }
+
+  /* Richiesta esplicita di Luca (9 ott 2026): i pulsanti velocità/volo/
+     repellente erano troppo grandi su mobile — ridotti del 20%
+     (padding/font/border-radius), solo su touch (qui), desktop invariato. */
+  #controlli-rapidi button {
+    padding: 8px 13px;
+    font-size: 13px;
+    border-radius: 8px;
+  }
 }
 
 
