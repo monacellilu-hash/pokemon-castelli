@@ -8468,6 +8468,20 @@ const GameMap = (function () {
         mappaStack.push({ mappa: mappaCorrente, tx: ritorno.tx, ty: ritorno.ty, facciata });
       }
 
+      // Pad di teletrasporto (item 43 del mega-prompt, 10 ott 2026): stesso
+      // oggetto warp di sempre, solo con la proprietà Tiled "teletrasporto"
+      // in più — niente di nuovo da costruire per il blocco anti-rimbalzo
+      // (il giocatore arriva sul pad di destinazione come su QUALSIASI
+      // spawn, e spawnGuard — già esistente, riga ~2346 — impedisce già a
+      // ogni warp di riscattare finché non ti sposti via e torni: è
+      // ESATTAMENTE la regola "scatta solo rientrando dopo essere uscito"
+      // richiesta, già garantita gratis dal sistema spawn/warp di sempre,
+      // anche al caricamento di un salvataggio fermo su un pad). L'unica
+      // cosa davvero nuova è il lampo visivo, per sentirlo diverso da una
+      // porta normale.
+      const eTeletrasporto = ev.props.teletrasporto === true || ev.props.teletrasporto === 'true';
+      if (eTeletrasporto && this.cameras && this.cameras.main) this.cameras.main.flash(180, 255, 255, 255);
+
       await this.caricaMappa(chiaveDest, ax, ay, spawnId, sourceKey);
       transizioneAttiva = false;
     }
