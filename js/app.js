@@ -333,6 +333,36 @@ async function caricaPartita() {
           } catch (e) { /* offline: si ritenta al prossimo avvio */ }
         }
       })();
+      // Migrazione: squadra con più di 6 Pokémon o con duplicati (bug
+      // confermato da Luca, 10 ott 2026 — entrato in palestra con "6"
+      // Pokémon, il limite di modalità difficile ne ha contati 7 davvero).
+      // Causa più probabile: un vecchio bug del Box (prima che BoxScene
+      // avesse un cursore vero) lasciava occasionalmente un Pokémon sia in
+      // squadra sia referenziato altrove — invisibile finché qualcosa non
+      // doveva elencare TUTTA la squadra in una volta. Qui si ripulisce
+      // SEMPRE, non solo al prossimo bug: 1) tolti i duplicati (stesso
+      // oggetto Pokémon due volte), 2) se restano più di 6, i Pokémon in
+      // eccesso (dal 7° in poi) vanno nel primo Box libero, mai persi.
+      if (Array.isArray(stato.squadra)) {
+        const visti = new Set();
+        const senzaDuplicati = stato.squadra.filter(p => {
+          if (!p) return false;
+          if (visti.has(p)) return false;
+          visti.add(p);
+          return true;
+        });
+        const tolti = stato.squadra.length - senzaDuplicati.length;
+        stato.squadra = senzaDuplicati;
+        let spostati = 0;
+        while (stato.squadra.length > 6) {
+          const eccesso = stato.squadra.pop();
+          if (typeof depositaInBox === 'function' && depositaInBox(eccesso)) spostati++;
+        }
+        if (tolti > 0 || spostati > 0) {
+          console.warn(`[Migrazione squadra] Rimossi ${tolti} duplicati, spostati ${spostati} Pokémon in eccesso nel Box.`);
+          salvaPartita();
+        }
+      }
       // Migrazione Box PC: vecchio Box unico e piatto → 24 box da 30 slot.
       // Riempie i box in ordine, 30 Pokémon per box, mantenendo l'ordine originale.
       // NB: controlliamo il salvataggio grezzo (`salvato.boxes`), non
