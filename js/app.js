@@ -1250,16 +1250,12 @@ function _applicaLimiteSquadraPalestra(chiaveMappa) {
   const limite = LIMITE_SQUADRA_PALESTRA_DIFFICILE[chiaveMappa];
   if (stato.difficolta === 'difficile' && limite && stato.squadra.length > limite &&
       !stato.squadraStashataGym) {
-    const restano = stato.squadra.slice(0, limite);
-    const stashati = stato.squadra.slice(limite);
-    stato.squadra = restano;
-    stato.squadraStashataGym = { pokemon: stashati, mappa: chiaveMappa };
-    salvaPartita();
-    if (typeof mostraDialogo === 'function') {
-      mostraDialogo('', [
-        `⚔️ Modalità difficile: solo i primi ${limite} Pokémon della tua squadra possono affrontare questa palestra.`,
-        `${stashati.map(p => p.nome).join(', ')} ${stashati.length > 1 ? 'restano' : 'resta'} fuori finché non esci.`,
-      ]);
+    // Richiesta esplicita di Luca, 10 ott 2026: non si sceglie più in
+    // automatico i primi N — una schermata dedicata (come per le mosse) fa
+    // scegliere AL GIOCATORE quali portare.
+    if (typeof GameMap !== 'undefined' && GameMap.apriSelezioneSquadraPalestra) {
+      GameMap.bloccaMovimento();
+      GameMap.apriSelezioneSquadraPalestra(chiaveMappa, limite);
     }
   } else if (chiaveMappa !== (stato.squadraStashataGym && stato.squadraStashataGym.mappa) &&
              stato.squadraStashataGym) {
@@ -1269,6 +1265,24 @@ function _applicaLimiteSquadraPalestra(chiaveMappa) {
     stato.squadraStashataGym = null;
     salvaPartita();
     if (typeof mostraToast === 'function') mostraToast('⚔️ La tua squadra al completo ti aspettava fuori!', 2500);
+  }
+}
+
+// Richiamata da SelezionaSquadraPalestraScene (js/map.js) quando il
+// giocatore conferma quali Pokémon portare in palestra. idxScelti = indici
+// (nello stato.squadra ATTUALE) dei Pokémon scelti, in qualunque ordine li
+// abbia selezionati — la squadra viene riordinata mettendo prima quelli
+// scelti (stesso ordine relativo fra loro) e il resto va in stash.
+function confermaSelezioneSquadraPalestra(chiaveMappa, idxScelti) {
+  const scelti = idxScelti.map(i => stato.squadra[i]);
+  const stashati = stato.squadra.filter((p, i) => !idxScelti.includes(i));
+  stato.squadra = scelti;
+  stato.squadraStashataGym = { pokemon: stashati, mappa: chiaveMappa };
+  salvaPartita();
+  aggiornaHUD();
+  if (typeof GameMap !== 'undefined' && GameMap.sbloccaMovimento) GameMap.sbloccaMovimento();
+  if (typeof mostraToast === 'function') {
+    mostraToast(`⚔️ ${stashati.map(p => p.nome).join(', ')} ${stashati.length > 1 ? 'restano' : 'resta'} fuori finché non esci dalla palestra.`, 3500);
   }
 }
 
@@ -5998,8 +6012,19 @@ function terminaIncontro(esito) {
 
 // ── Callback per ogni passo ──────────────────────────────────
 
-function alPasso(nuovaPosizione) {
+// veroPasso=false: "passo 0" (richiesta esplicita di Luca, 10 ott 2026 —
+// girarsi sul posto senza spostarsi DEVE far avanzare il tempo, ma NON deve
+// contare come un passo vero per veleno/meteo/incontri selvatici/repellente/
+// uova — altrimenti bastava mashare contro un muro per far scattare tutto
+// quello, assurdo). Qui si fa solo la parte "tempo", il resto si salta.
+function alPasso(nuovaPosizione, veroPasso = true) {
   stato.posizione = nuovaPosizione;
+  if (!veroPasso) {
+    avanzaTempo();
+    controllaEventiTempo();
+    GameMap.aggiornaVeloTempo();
+    return;
+  }
   stato.passi += 1;
   stato.passiDaCheck += 1;
 

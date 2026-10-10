@@ -4832,15 +4832,16 @@ const GameMap = (function () {
       else if (dy < 0) facciata = 'up';
       else facciata = 'down';
 
-      // "Passo 0" (richiesta esplicita di Luca, 9 ott 2026): girarsi sul
-      // posto senza spostarsi (bloccato da un ostacolo qualsiasi) conta
-      // comunque come se ci si fosse mossi, per far scattare gli stessi
-      // effetti di un passo vero (veleno, meteo, avanzamento del tempo...).
+      // "Passo 0" (richiesta esplicita di Luca, 9-10 ott 2026): girarsi sul
+      // posto senza spostarsi (bloccato da un ostacolo qualsiasi) fa
+      // avanzare il TEMPO come un passo vero, ma NON veleno/meteo/incontri
+      // (secondo argomento "false" di onPassoCb/alPasso) — altrimenti
+      // bastava mashare contro un muro per far scattare tutto quanto.
       // Usata da OGNI "return" per blocco qui sotto, invece di duplicare
       // l'animazione idle + la chiamata a onPassoCb in ognuno.
       const giraSulPosto = () => {
         if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
-        if (onPassoCb) onPassoCb({ ...posLatLon });
+        if (onPassoCb) onPassoCb({ ...posLatLon }, false);
       };
 
       // 1) Collisione vera: blocca SEMPRE, in Surf o a piedi. Nessuna eccezione,
@@ -12088,6 +12089,103 @@ const GameMap = (function () {
   }
 
   /* ══════════════════════════════════════════════════════════
+     SELEZIONE SQUADRA PALESTRA (modalità difficile, item 10, richiesta
+     esplicita di Luca 10 ott 2026): lista con segno di spunta, come la
+     scelta delle mosse — il giocatore sceglie ESATTAMENTE "limite" Pokémon
+     da portare in palestra. A seleziona/deseleziona, B su un default
+     rapido (i primi "limite" in ordine) se non vuole scegliere a mano.
+     ══════════════════════════════════════════════════════════ */
+
+  class SelezionaSquadraPalestraScene extends Phaser.Scene {
+    constructor() { super({ key: 'SelezionaSquadraPalestraScene' }); }
+
+    init(data) { this._chiaveMappa = data.chiaveMappa; this._limite = data.limite; }
+
+    create() {
+      this.input.enabled = false;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
+      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
+      this.add.text(CW / 2, 24, '⚔️ SCEGLI LA SQUADRA', {
+        fontFamily: "'Press Start 2P', monospace", fontSize: '15px', color: '#ffcb05',
+        stroke: '#000', strokeThickness: 4,
+      }).setOrigin(0.5).setDepth(2);
+      this._testoConta = this.add.text(CW / 2, 54, '', {
+        fontFamily: 'Arial', fontSize: '14px', color: '#fff',
+      }).setOrigin(0.5).setDepth(2);
+      this.add.text(CW / 2, CH - 16, 'A seleziona/deseleziona · B = prendi i primi automaticamente', {
+        fontFamily: 'Arial', fontSize: '11px', color: '#888',
+      }).setOrigin(0.5).setDepth(2);
+
+      this._scelti = new Set();
+      this._cursore = 0;
+      this._righe = [];
+      const y0 = 90;
+      stato.squadra.forEach((pkm, i) => {
+        const y = y0 + i * 40;
+        const casella = this.add.text(70, y, '☐', { fontSize: '20px', color: '#fff' }).setOrigin(0, 0.5).setDepth(2);
+        const testo = this.add.text(105, y, `${pkm.nome}  Lv.${pkm.livello}`, {
+          fontFamily: 'Arial', fontSize: '14px', color: '#fff',
+        }).setOrigin(0, 0.5).setDepth(2);
+        this._righe.push({ casella, testo });
+      });
+      this._aggiorna();
+
+      this.input.keyboard.on('keydown-UP', () => {
+        this._cursore = (this._cursore - 1 + stato.squadra.length) % stato.squadra.length;
+        this._aggiorna();
+      });
+      this.input.keyboard.on('keydown-DOWN', () => {
+        this._cursore = (this._cursore + 1) % stato.squadra.length;
+        this._aggiorna();
+      });
+      const conferma = () => {
+        if (this._scelti.has(this._cursore)) {
+          this._scelti.delete(this._cursore);
+        } else {
+          if (this._scelti.size >= this._limite) {
+            if (typeof mostraToast === 'function') mostraToast(`Puoi portarne solo ${this._limite}: deselezionane uno prima.`, 2000);
+            return;
+          }
+          this._scelti.add(this._cursore);
+        }
+        this._aggiorna();
+        if (this._scelti.size === this._limite) this._confermaFinale();
+      };
+      this.input.keyboard.on('keydown-ENTER', conferma);
+      this.input.keyboard.on('keydown-SPACE', conferma);
+
+      const defaultRapido = () => {
+        const idx = stato.squadra.map((p, i) => i).slice(0, this._limite);
+        this._chiudi(idx);
+      };
+      this.input.keyboard.on('keydown-ESC', defaultRapido);
+      this.input.keyboard.on('keydown-B', defaultRapido);
+    }
+
+    _confermaFinale() {
+      this._chiudi(Array.from(this._scelti));
+    }
+
+    _chiudi(idx) {
+      this.scene.stop();
+      if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene();
+      if (typeof confermaSelezioneSquadraPalestra === 'function') {
+        confermaSelezioneSquadraPalestra(this._chiaveMappa, idx);
+      }
+    }
+
+    _aggiorna() {
+      this._testoConta.setText(`Selezionati: ${this._scelti.size}/${this._limite}`);
+      this._righe.forEach((r, i) => {
+        r.casella.setText(this._scelti.has(i) ? '☑' : '☐');
+        const conCursore = i === this._cursore;
+        r.testo.setColor(conCursore ? '#ffcb05' : '#fff');
+        r.casella.setColor(conCursore ? '#ffcb05' : (this._scelti.has(i) ? '#5be18a' : '#fff'));
+      });
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
      SALVA — quarta sotto-schermata nativa. Solo azioni, nessuna
      logica nuova: richiama le stesse funzioni di sempre
      (salvaPartitaOra/esportaSalvataggio/importaSalvataggio/
@@ -12315,6 +12413,17 @@ const GameMap = (function () {
     scena.scene.launch(sceneKey || 'PauseMenuScene');
   }
 
+  // Apre la schermata di scelta squadra all'ingresso di una palestra in
+  // modalità difficile (item 10) — vedi _applicaLimiteSquadraPalestra,
+  // js/app.js. Stesso meccanismo di apriMenuNativo, senza nascondere HUD/
+  // D-pad (il giocatore deve comunque poter navigare la lista).
+  function apriSelezioneSquadraPalestra(chiaveMappa, limite) {
+    if (!phaserGame || !scena) return;
+    menuNativoAperto = true;
+    scena.scene.pause();
+    scena.scene.launch('SelezionaSquadraPalestraScene', { chiaveMappa, limite });
+  }
+
   // Box del PC (modalità 'strumenti', aperto da un PC di un Centro Pokémon —
   // non fa parte della lista del menu Start): stesso ingresso nativo, ma
   // punta a BoxScene invece che a PauseMenuScene.
@@ -12389,7 +12498,7 @@ const GameMap = (function () {
       type:            Phaser.AUTO,
       parent:          'mappa',
       backgroundColor: '#000000',
-      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene],
+      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene, SelezionaSquadraPalestraScene],
       scale: {
         mode:       Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,
@@ -12715,7 +12824,7 @@ const GameMap = (function () {
     debugCutscene, avviaSfidaPorchettari, avviaSfidaParentiRocco, avviaLatiosLatiasScena,
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
-    apriMenuNativo, apriBoxNativo, apriMarketNativo, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
+    apriMenuNativo, apriBoxNativo, apriMarketNativo, apriSelezioneSquadraPalestra, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
     emitTastoSceneNative, fadeOutIn, rigeneraNpcMappa,
   };
 
