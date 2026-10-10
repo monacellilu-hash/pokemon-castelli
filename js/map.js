@@ -11154,12 +11154,23 @@ const GameMap = (function () {
       }
 
       const uscire = () => {
-        // Rete di sicurezza (come chiudiMenu() in app.js): se stavo tenendo
-        // un Pokémon in mano, torna da solo al suo slot originale.
+        // BUG VERO DEI 7 POKÉMON IN SQUADRA (trovato da Luca giocando, 10
+        // ott 2026): questa rete di sicurezza rimetteva il Pokémon in mano
+        // nel suo "slot di origine" — corretto SOLO se quello slot è
+        // ancora quello che hai lasciato vuoto quando l'hai preso. Ma se
+        // nel frattempo l'hai scambiato con un Pokémon preso dal Box,
+        // "origine" diventa quello slot di SQUADRA (ora già occupato dal
+        // Pokémon appena scambiato) — stato.squadra.splice(idx, 0, pkm)
+        // allora INSERIVA invece di sostituire, senza togliere nessuno:
+        // risultato, un Pokémon in più in squadra. Esempio: prendi A dal
+        // Box, lo scambi con X già in squadra (X ora in mano, A nello slot
+        // di X) — premendo B prima di posare X, "splice" lo infilava IN
+        // PIÙ accanto ad A invece di sostituirlo. Fix richiesto
+        // esplicitamente da Luca: il Pokémon in mano, qualunque sia la sua
+        // origine, va SEMPRE su una casella libera del Box, mai rimesso a
+        // forza in squadra.
         if (boxMano) {
-          const o = boxMano.origine;
-          if (o.tipo === 'box') stato.boxes[o.box][o.slot] = boxMano.pkm;
-          else stato.squadra.splice(o.idx, 0, boxMano.pkm);
+          if (typeof depositaInBox === 'function') depositaInBox(boxMano.pkm);
           boxMano = null;
         }
         this.scene.stop();

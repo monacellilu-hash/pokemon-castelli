@@ -38,6 +38,11 @@ sprites/NO/
 # mappa/codice, sess. 21 settembre 2026) — mai committati
 non_utilizzati/
 
+# Decompilazione completa di pret/pokeemerald (10 ott 2026, Luca): solo
+# materiale di STUDIO per le animazioni mosse, mai da pushare — codice
+# sorgente open source di terzi, non del progetto.
+pokeemerald-master/
+
 # Materiale grezzo/di riferimento, non caricato dal gioco (censimento
 # sess. 21 settembre 2026): sprite NPC originali già convertiti in
 # "sprites/npc e trainer per claude/", tileset RPG Maker campione mai usato,
