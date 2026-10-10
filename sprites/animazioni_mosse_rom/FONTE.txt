@@ -129,8 +129,35 @@ punch_impact.png — graphics/battle_anims/sprites/punch_impact.png (32×32,
 
 horn_hit.png — graphics/battle_anims/sprites/horn_hit.png (32×32, un
   frame). Stessa categoria IMPATTO di punch_impact.png, per mosse a
-  corno/becco/zanna (Cornonite, Beccata, Perforabecco, Attacco Furia,
-  Spilloscuro).
+  corno/becco/zanna (Cornonite, Perforabecco, Spilloscuro).
+
+--- Sess. 10 ott 2026: 3 coreografie dedicate (richiesta esplicita di
+Luca, "Raffica/Doppio Calcio/Beccata non sono fedeli") ---
+Prima Beccata e Attacco Furia riusavano il lampo singolo generico sopra
+(_giocaCornoRom) e Doppio Calcio il pugno generico (_giocaPugnoRom) —
+nessuno dei tre rifletteva davvero lo script originale. Ricontrollati gli
+script veri (data/battle_anim_scripts.s) e riscritti da zero:
+
+- Beccata (_giocaPeckRom, Move_PECK): un solo colpo, SEMPRE a sinistra
+  del bersaglio (x=-12 fisso, non casuale), con il bersaglio che si
+  inclina leggermente e torna dritto (AnimTask_RotateMonToSideAndRestore).
+  Stessa grafica horn_hit.png di prima, ma coreografia precisa.
+- Attacco Furia / Raffica (_giocaFuryAttackRom, Move_FURY_ATTACK): DUE
+  colpi alternati, uno a destra e uno a sinistra del bersaglio
+  (FuryAttackRight/FuryAttackLeft nello script originale, lato di
+  partenza casuale), ciascuno con il proprio scuotimento — non un
+  lampo solo.
+- Doppio Calcio (_giocaDoubleKickRom, Move_DOUBLE_KICK): DUE impatti in
+  posizione E fotogramma casuali vicino al bersaglio
+  (gFistFootRandomPosSpriteTemplate nello script originale) — nuovo file
+  hands_and_feet.png (graphics/battle_anims/sprites/hands_and_feet.png,
+  32×128, 4 fotogrammi: pugno/zampa/piede/mano), ripulito dal colore di
+  trasparenza come gli altri fogli.
+
+PECK/FURYATTACK/DOUBLEKICK tolti dal riuso generico in ANIMAZIONI_ROM e
+puntati alle 3 funzioni nuove. HORNATTACK/HORNDRILL/DRILLPECK/TWINEEDLE
+restano sul lampo generico (_giocaCornoRom) — non richiesti in questa
+sessione, da riprendere nel censimento completo delle 356 mosse.
 
 vine.png — graphics/battle_anims/sprites/vine.png (5 fotogrammi, vite che
   cresce). Frustata, Megaframza, Avvolgibotta, Legatutto, Costrizione.

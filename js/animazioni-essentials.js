@@ -611,6 +611,93 @@ const AnimazioniEssentials = (function () {
     await _giocaImpattoRom('horn_hit.png', attaccanteEl, bersaglioEl);
   }
 
+  // Attacco Furia / RAFFICA (richiesta esplicita di Luca, 10 ott 2026 —
+  // "Raffica prima era meglio", cioè il riuso generico di _giocaCornoRom
+  // qui sotto non bastava): nello script vero (Move_FURY_ATTACK,
+  // data/battle_anim_scripts.s) sono DUE colpi alternati, uno da destra e
+  // uno da sinistra del bersaglio (FuryAttackRight/FuryAttackLeft), non un
+  // singolo lampo centrato. Stessa grafica horn_hit.png, ma due impatti
+  // sfalsati a sinistra/destra con uno scuotimento per ciascuno.
+  async function _giocaFuryAttackRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('horn_hit.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const primoDestra = Math.random() < 0.5; // choosetwoturnanim: lato casuale, poi alterna
+    for (let i = 0; i < 2; i++) {
+      const destra = (i === 0) ? primoDestra : !primoDestra;
+      const offX = (destra ? 10 : -10) * scalaX;
+      _scuotiSpriteRom(bersaglioEl, 4, 160);
+      await new Promise(r => setTimeout(r, 120));
+      ctx.save();
+      ctx.translate(centro.x + offX, centro.y);
+      ctx.scale(scalaX, scalaY);
+      ctx.drawImage(img, -16, -16, 32, 32);
+      ctx.restore();
+      await new Promise(r => setTimeout(r, 140));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // DOPPIO CALCIO (richiesta esplicita di Luca, 10 ott 2026 — prima usava
+  // il pugno generico, nessuna voce dedicata): nello script vero
+  // (Move_DOUBLE_KICK) un piede/pugno appare a posizione CASUALE vicino al
+  // bersaglio (gFistFootRandomPosSpriteTemplate) — qui due impatti in
+  // posizione/fotogramma casuali, con lo scuotimento del bersaglio.
+  // hands_and_feet.png ha 4 fotogrammi (pugno/zampa/piede/mano).
+  async function _giocaDoubleKickRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('hands_and_feet.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    for (let i = 0; i < 2; i++) {
+      const frame = Math.floor(Math.random() * 4) * 32;
+      const offX = (Math.random() * 2 - 1) * 14 * scalaX;
+      const offY = (Math.random() * 2 - 1) * 10 * scalaY;
+      _scuotiSpriteRom(bersaglioEl, 4, 150);
+      ctx.save();
+      ctx.translate(centro.x + offX, centro.y + offY);
+      ctx.scale(scalaX, scalaY);
+      ctx.drawImage(img, 0, frame, 32, 32, -16, -16, 32, 32);
+      ctx.restore();
+      await new Promise(r => setTimeout(r, 180));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // BECCATA (richiesta esplicita di Luca, 10 ott 2026 — "Beccata era
+  // meglio [prima]", il riuso generico di _giocaCornoRom non bastava):
+  // nello script vero (Move_PECK) è un SOLO colpo, offset fisso a sinistra
+  // del bersaglio (x=-12) e il bersaglio si inclina leggermente e torna
+  // (AnimTask_RotateMonToSideAndRestore) — più semplice e diverso da
+  // Raffica, non un doppio colpo.
+  async function _giocaPeckRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('horn_hit.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const originale = bersaglioEl ? bersaglioEl.style.transform : '';
+    if (bersaglioEl) bersaglioEl.style.transform = `${originale} rotate(-6deg)`;
+    await new Promise(r => setTimeout(r, 90));
+    ctx.save();
+    ctx.translate(centro.x - 12 * scalaX, centro.y);
+    ctx.scale(scalaX, scalaY);
+    ctx.drawImage(img, -16, -16, 32, 32);
+    ctx.restore();
+    if (bersaglioEl) bersaglioEl.style.transform = originale;
+    await new Promise(r => setTimeout(r, 220));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Prepara canvas/scala/centri comuni a tutte le animazioni "a onda" (ogni
   // mossa poi lancia le sue particelle con _particellaOndaVersoTarget).
   async function _preparaAnimOnda(attaccanteEl, bersaglioEl) {
@@ -1185,8 +1272,12 @@ const AnimazioniEssentials = (function () {
     MACHPUNCH: _giocaPugnoRom, BULLETPUNCH: _giocaPugnoRom, DRAINPUNCH: _giocaPugnoRom,
     FOCUSPUNCH: _giocaPugnoRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
 
-    HORNATTACK: _giocaCornoRom, HORNDRILL: _giocaCornoRom, PECK: _giocaCornoRom,
-    DRILLPECK: _giocaCornoRom, FURYATTACK: _giocaCornoRom, TWINEEDLE: _giocaCornoRom,
+    // PECK/FURYATTACK ora hanno una coreografia dedicata (richiesta
+    // esplicita di Luca, 10 ott 2026): non più il lampo generico riusato
+    // da _giocaCornoRom, vedi _giocaPeckRom/_giocaFuryAttackRom sopra.
+    HORNATTACK: _giocaCornoRom, HORNDRILL: _giocaCornoRom, PECK: _giocaPeckRom,
+    DRILLPECK: _giocaCornoRom, FURYATTACK: _giocaFuryAttackRom, TWINEEDLE: _giocaCornoRom,
+    DOUBLEKICK: _giocaDoubleKickRom,
 
     VINEWHIP: _giocaViticciRom, POWERWHIP: _giocaViticciRom, WRAP: _giocaViticciRom,
     BIND: _giocaViticciRom, CONSTRICT: _giocaViticciRom,
