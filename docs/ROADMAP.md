@@ -4,6 +4,84 @@
 
 ---
 
+## Sessione 10 ottobre 2026 — 2 bug critici dei movesets risolti, cutscene due rivali, Antro Kyogre estratto, dialoghi Ariccia
+
+- **BUG CRITICO #1 (corretto, committato) — le mosse di STATO non venivano mai imparate al level-up**:
+  `controllaNuoveMosse()` e `caramellaRara()` in `js/battle.js` scartavano qualunque mossa senza potenza
+  (`if (!dettagli.potenza) continue`), invece di usare `mossaUtile()` come fa correttamente `scegliMosse()`
+  alla creazione/cattura. Qualunque Pokémon la cui prossima mossa di livello fosse di stato (Ruggito,
+  Rifletti, Ragnatela, Attacco Sabbia, Finta Energia...) non imparava NIENTE a quel livello — un Weedle
+  evoluto in Beedrill arrivato a Lv.20 senza mosse (segnalato da Luca) è il caso che ha fatto scoprire il
+  bug. Probabilmente il bug con più impatto mai trovato in questo progetto: toccava la maggioranza delle
+  specie del gioco, in silenzio, da sempre. **Fix**: entrambe le funzioni ora usano `mossaUtile()`.
+- **BUG CRITICO #2 (corretto, committato) — le mosse della specie EVOLUTA allo stesso livello
+  dell'evoluzione andavano perse per sempre**: caso reale, Torchic evolve in Combusken esattamente a
+  Lv.16 (`dati/evoluzioni.js`), e Doppio Calcio è una mossa di LIVELLO 16 di Combusken (non di Torchic).
+  `assegnaExp()`/`caramellaRara()` chiamavano `controllaNuoveMosse()` PRIMA di `controllaEvoluzione()`: il
+  controllo girava ancora con la specie vecchia (Torchic non impara Doppio Calcio), poi l'evoluzione
+  aggiornava `mosseImparabili` troppo tardi — quel livello non veniva mai più ricontrollato, la mossa
+  persa per sempre, senza nessun prompt. Successo "a macchia d'olio" ogni volta che un'evoluzione scatta
+  allo stesso livello di una mossa esclusiva della forma evoluta (comunissimo nei giochi veri). **Fix**:
+  `controllaEvoluzione()` ora ritorna `true`/`false`; se c'è stata evoluzione, `controllaNuoveMosse()`
+  viene rilanciata subito con la specie nuova, allo stesso livello.
+  - **Pokémon già colpiti da entrambi i bug (nelle partite salvate prima di questa sessione) restano
+    recuperabili senza altre patch**: il Maestro delle Mosse (Riapprendi Mosse, Albano Laziale, già
+    esistente, 1000₽/mossa) non applica nessuno dei due filtri difettosi — mostra qualunque mossa di
+    livello mai imparata per la specie ATTUALE del Pokémon.
+  - **Non ancora verificato dal vivo da Luca** dopo il fix — da controllare alla prossima sessione:
+    far salire di livello un Pokémon che impara sia mosse di stato sia un'evoluzione-con-mossa-coincidente.
+- **Cutscene "i due rivali" a Via Vittoria 5F** (`dati/cutscene.js`, due varianti facile/difficile):
+  risolve il vecchio placeholder `rivale2_via_vittoria` (TODO D13) — all'ultimo piano prima della Lega,
+  il rivale NON scelto al laboratorio sfida il giocatore (Lv.62, pari al primo Superquattro), poi il
+  rivale di sempre si congeda e sparisce ("mezzo schermo nero, sparisce solo lui"). Estesa
+  `_checkTriggerCutsceneEntra()` (js/map.js) con `cutscene_id_difficile`, stessa estensione già usata da
+  `_controllaCutsceneSpawn()` per i trigger "a rettangolo" dipendenti da `stato.difficolta` — riusabile
+  da qualunque cutscene futura. Oggetto Tiled (`via vittoria_5f.tmj`, id 10) cablato con
+  `quando:'entra'`/`cutscene_id`/`cutscene_id_difficile`/`condizione`/`flag_fine`.
+  - **Chiarito anche** il meccanismo del "warp-teleport stile Silph Co." richiesto da Luca: lo
+    `spawnGuard` già esistente in `js/map.js` implementa GIÀ tutto da solo (blocca il warp sulla casella
+    di spawn finché non ti muovi via, poi si riarma se torni) — nessun codice nuovo necessario.
+- **Dialoghi Ariccia/Learco** (Sfida dei Porchettari): aggiunto "È troppo presto, torna più tardi!!" al
+  messaggio fuori finestra oraria (23:00-02:00, `sfidaPorchettari()` in js/app.js); 3 nuovi NPC sparsi per
+  Ariccia che alludono a Learco ("organizza tutto lui") in modi diversi, piazzati in `Ariccia.tmj`.
+  - **Non risolto**: Luca ha chiesto di correggere dialoghi NPC che dicono "parla con Learco alle 23" /
+    "controlla la scheda allenatore per l'orologio" — cercato esaustivamente in tutto il codice
+    (dati/npc.js, dati/filler_npc.js, dati/trainer.js, js/app.js, js/map.js, docs/DIALOGHI-NPC.md), NON
+    TROVATO nulla che corrisponda. Serve che Luca indichi l'NPC esatto (nome/mappa) alla prossima sessione.
+- **NPC segnaposto Castel Gandolfo/Marino** (Tunnel Roccioso verso Monte Porzio, "tanto Snorlax non lo
+  svegli"): dialoghi esistevano nel codice da tempo (28 settembre) ma non erano mai stati piazzati su
+  nessuna mappa — aggiunti `npc_gigante_dormiente_gandolfo` (castel_gandolfo.tmj) e
+  `npc_gigante_dormiente_marino` (marino.tmj, vicino allo spawn "da_percorso 3").
+- **"Dormi fino alle..." nativo**: nuovo `PCMenuScene` (Box/Dormi/Esci) + `DormiScene` (orologio digitale
+  a frecce, UP/DOWN ±1 ora, LEFT/RIGHT ±6 ore) in js/map.js, lanciate con `GameMap.apriMenuNativo()`;
+  `apriMenuDormi()` in js/app.js semplificato (solo validazione distanza/squadra + lancio scena nativa);
+  riusa `eseguiDormi()` già esistente e autosufficiente. NPC nei Centri Pokémon ora ne parlano.
+- **Antro Kyogre — estratto e cablato** (ex SeafloorCavern di pokeemerald): 11 mappe estratte con
+  `strumenti/estrai_mappe_pret.py` (ingresso + 9 stanze + variante "underwater" esterna, layer
+  "edifici" invece di "sopra_testa" come richiesto, collisioni generate automaticamente). Warp interni
+  ricostruiti dai dati GREZZI di pokeemerald (`dest_warp_id`, non solo il nome mappa): il Seafloor Cavern
+  usa tante "buche" asimmetriche tra le stanze (un salto in una direzione non torna per lo stesso
+  percorso) — servono entrambi i dati per ricostruire la posizione ESATTA di arrivo. Ingresso collegato
+  al warp "verso_antro_abissale" che Luca aveva già piazzato in `Lago di Albano profondo.tmj` (mai
+  registrato prima d'ora) — rinominato e ricollegato a `antro_kyogre_entrance`, spawn reali in entrambe
+  le direzioni. Tutto registrato in `MAPPE`/`TILESET_IMMAGINI`/`TILESET_META` (js/map.js).
+  - **Ancora da fare** (non richiesto in questa sessione, segnalato esplicitamente): NPC/allenatori/zone
+    di incontro dell'Antro Kyogre sono SOLO segnaposto con `nota_origine` (il nome grafico originale pret),
+    da rifare a mano come da prassi del progetto. La variante "underwater" è estratta ma NON collegata a
+    nessun warp (nel gioco originale è un'area cosmetica separata, ruolo nel progetto da decidere con Luca).
+    Manca anche `SeafloorCavern_Room9_Lava` (404 su pret: non esiste come mappa a sé, solo come layout —
+    probabile swap dinamico di tile dopo aver drenato la lava, da investigare se/quando serve davvero).
+  - **Mai testato dal vivo** (nessun accesso browser in questa sessione): controllare in Tiled prima,
+    poi di persona in gioco (immersione da Lago di Albano profondo → ingresso → le 9 stanze).
+- **Promemoria tecnico**: bump `?v=` in `index.html` applicato ad ogni commit di questa sessione (fino a
+  `20261010t`) — continuare a farlo per ogni `.js` toccato.
+- **Prossimo passo**: testare dal vivo tutto quanto sopra (movesets, cutscene Via Vittoria, Antro Kyogre);
+  chiedere a Luca l'NPC esatto di Learco/23:00 ancora non trovato; eventualmente proseguire su NPC/
+  allenatori/incontri dell'Antro Kyogre, o tornare alle animazioni mosse (gruppi grandi ancora in
+  `docs/ANIMAZIONI-MOSSE-ROADMAP.md`).
+
+---
+
 ## Sessione 5 ottobre 2026 — Cutscene Maso/Zapdos (Percorso Monte Po 3) COMPLETA e testata dal vivo
 
 - **Cutscene finita e confermata funzionante da Luca**: Grunt gate (post-Lega, trainer normale a vista
