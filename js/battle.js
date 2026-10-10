@@ -1370,7 +1370,18 @@ const Battle = (function () {
     }
 
     if (typeof AnimazioniEssentials !== 'undefined' && AnimazioniEssentials.haAnimazione(mossa)) {
-      await AnimazioniEssentials.gioca(mossa, elementoSprite(att), elementoSprite(bersaglioReale));
+      // Rete di sicurezza (10 ott 2026, PRIORITARIO — Raffica di Vento
+      // bloccava il turno per davvero, danno mai calcolato): questo await
+      // non aveva MAI un try/catch, quindi un errore o un blocco dentro
+      // l'animazione interrompeva l'intero turno, danno compreso.
+      // AnimazioniEssentials ha già la sua rete interna (timeout 4s +
+      // try/catch), ma un'altra qui non costa nulla e protegge anche da
+      // problemi fuori da quel modulo.
+      try {
+        await AnimazioniEssentials.gioca(mossa, elementoSprite(att), elementoSprite(bersaglioReale));
+      } catch (e) {
+        console.error('[Battle] Errore nell\'animazione di', mossa.nome, '— turno NON bloccato:', e);
+      }
       tremaSprite(bersaglioReale);
       return;
     }

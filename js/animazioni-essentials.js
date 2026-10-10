@@ -1452,11 +1452,38 @@ const AnimazioniEssentials = (function () {
   // gioca() esistente rinominato internamente; il nuovo gioca() prova prima
   // la versione ROM (specifica o per tipo), altrimenti quella Essentials.
   const giocaEssentials = gioca;
+
+  // RETE DI SICUREZZA (10 ott 2026 — PRIORITARIO, segnalato da Luca: Raffica
+  // di Vento blocca il turno per davvero, danno mai calcolato). Prima un
+  // errore o un blocco DENTRO una qualunque animazione (ROM o Essentials)
+  // interrompeva la Promise che js/battle.js aspetta con un semplice
+  // "await animaMossa(...)" SENZA try/catch — qualunque eccezione o rAF
+  // mai arrivato a termine piantava l'intero turno per sempre, danno
+  // compreso. Ora ogni animazione gira dentro un try/catch (un errore
+  // interrotto diventa un log in console, non un turno bloccato) E in gara
+  // con un timeout di sicurezza di 4 secondi: se un'animazione non finisce
+  // da sola entro quel tempo, il turno riparte comunque. Non risolve la
+  // causa esatta di un singolo bug (continua la ricerca), ma garantisce
+  // che NESSUNA animazione, oggi o in futuro, possa bloccare il gioco.
+  async function _conReteDiSicurezza(promessa, nomeMossa) {
+    let timeoutId;
+    try {
+      await Promise.race([
+        promessa,
+        new Promise(resolve => { timeoutId = setTimeout(resolve, 4000); }),
+      ]);
+    } catch (e) {
+      console.error(`[AnimazioniEssentials] Errore nell'animazione di "${nomeMossa}" — turno NON bloccato, ignorato:`, e);
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  }
+
   async function giocaConPriorita(mossa, attaccanteEl, bersaglioEl) {
     const nomeMossa = (typeof mossa === 'string') ? mossa : (mossa && mossa.nome);
     const rom = trovaAnimazioneRom(mossa);
-    if (rom) { await rom(attaccanteEl, bersaglioEl); return; }
-    await giocaEssentials(nomeMossa, attaccanteEl, bersaglioEl);
+    if (rom) { await _conReteDiSicurezza(rom(attaccanteEl, bersaglioEl), nomeMossa); return; }
+    await _conReteDiSicurezza(giocaEssentials(nomeMossa, attaccanteEl, bersaglioEl), nomeMossa);
   }
 
   return { gioca: giocaConPriorita, haAnimazione };
