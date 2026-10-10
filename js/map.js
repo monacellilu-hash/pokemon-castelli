@@ -5897,7 +5897,16 @@ const GameMap = (function () {
           stato.cutsceneViste.includes(idUnivoco);
         if (unaTantum && giaVista) continue;
 
-        const cutsceneId = ev.props.cutscene_id || ev.props.cutscene;
+        // Variante per modalità difficile (richiesta esplicita di Luca,
+        // 10 ott 2026 — cutscene dei due rivali a Via Vittoria 5F: chi
+        // sfida e chi saluta cambia in base a stato.difficolta). Stessa
+        // logica già usata da flag_ripresa/cutscene_id_ripresa per i
+        // trigger a rettangolo, qui per quelli "allo spawn" — riusabile
+        // da qualunque futura cutscene che dipenda dalla difficoltà, non
+        // solo da questa.
+        const inDifficile = typeof stato !== 'undefined' && stato.difficolta === 'difficile';
+        const cutsceneId = (inDifficile && ev.props.cutscene_id_difficile) ||
+                            ev.props.cutscene_id || ev.props.cutscene;
         if (!cutsceneId) continue;
 
         this._giocaCutscene(cutsceneId).then(() => {
@@ -5931,7 +5940,7 @@ const GameMap = (function () {
         // Persa: comportamento normale del gioco (teletrasporto al Centro
         // Pokémon) e la scena si interrompe qui ('interrompi').
         case 'battaglia':
-          return this._cutscenaBattaglia(passo.trainer);
+          return this._cutscenaBattaglia(passo.trainer, passo);
         // Menu di scelta di UN oggetto tra più opzioni (con conferma Sì/No).
         // Vedi _cutscenaSceltaOggetto per le proprietà del passo.
         case 'scelta_oggetto':
@@ -6087,19 +6096,47 @@ const GameMap = (function () {
     // Passo 'battaglia' (vedi _eseguiPassoCutscena): lotta col trainer
     // DATI_TRAINER[trainerId]. Vinta -> applica flag/ricompense e prosegue;
     // persa -> 'interrompi' (il teletrasporto lo fa già la battaglia).
-    _cutscenaBattaglia(trainerId) {
+    // passoExtra (opzionale): { rivaleDinamico:true, tappa, assoLivello }
+    // — richiesta di Luca, 10 ott 2026 (cutscene dei due rivali a Via
+    // Vittoria 5F): invece della squadra statica di DATI_TRAINER, calcola
+    // quella vera del "rivale giusto" con costruisciSquadraRivale(),
+    // esattamente come fa già _avviaLottaTrainer per gli incontri normali
+    // col rivale sulla mappa — qui serve poterlo fare anche DENTRO una
+    // cutscene, dove prima non era possibile. rivaleRif va passato già
+    // risolto (es. via altroRivale() in js/app.js), questa funzione non
+    // decide da sola chi è "il rivale giusto".
+    _cutscenaBattaglia(trainerId, passoExtra) {
       const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[trainerId] : null;
       if (!dati) { console.warn('[Cutscene] trainer sconosciuto:', trainerId); return Promise.resolve(); }
+
+      let nomeLotta = dati.nome || trainerId;
+      let squadra = dati.squadra;
+      if (passoExtra && passoExtra.rivaleDinamico && typeof costruisciSquadraRivale === 'function') {
+        // rivaleRif passato come NOME DI FUNZIONE (stringa), non come
+        // riferimento diretto: dati/cutscene.js carica PRIMA di js/app.js
+        // (vedi index.html), quindi una funzione come altroRivale() non
+        // esiste ancora quando l'oggetto CUTSCENE viene costruito — si
+        // risolve qui, a runtime, quando serve davvero.
+        const rivaleRif = (typeof passoExtra.rivaleRif === 'string' && typeof window[passoExtra.rivaleRif] === 'function')
+          ? window[passoExtra.rivaleRif]()
+          : passoExtra.rivaleRif;
+        if (rivaleRif) {
+          nomeLotta = rivaleRif.nome || nomeLotta;
+          squadra = costruisciSquadraRivale(passoExtra.tappa || 6, passoExtra.assoLivello || null, rivaleRif);
+        }
+      }
+
       return new Promise(resolve => {
         stato.incontroAttivo = true;
         Battle.avvia({
           allenatore: {
-            nome: dati.nome || trainerId,
-            squadra: dati.squadra,
+            nome: nomeLotta,
+            squadra,
             dialogoSconfitta: dati.dialogo_dopo || '',
             premioSoldi: dati.premio || 100,
             oggettiCura: dati.oggettiCura || null,
           },
+          tipoMusica: 'rivale',
           stato,
           onFine: (esito) => {
             stato.incontroAttivo = false;
@@ -6157,7 +6194,14 @@ const GameMap = (function () {
         const dentro = posTile.tx >= ev.tx0 && posTile.tx <= ev.tx1 && posTile.ty >= ev.ty0 && posTile.ty <= ev.ty1;
         if (!dentro) continue;
         const ripresa = ev.props.flag_ripresa && stato.flags && stato.flags[ev.props.flag_ripresa];
-        const id = (ripresa && ev.props.cutscene_id_ripresa) || ev.props.cutscene_id;
+        // cutscene_id_difficile: stessa estensione già usata dal trigger
+        // "allo spawn" (vedi _controllaCutsceneSpawn) — riusabile da
+        // qualunque cutscene a rettangolo che debba cambiare in base a
+        // stato.difficolta (qui: i due rivali a Via Vittoria 5F, 10 ott 2026).
+        const inDifficile = stato.difficolta === 'difficile';
+        const id = (ripresa && ev.props.cutscene_id_ripresa) ||
+                   (inDifficile && ev.props.cutscene_id_difficile) ||
+                   ev.props.cutscene_id;
         if (!id) continue;
         this._giocaCutscene(id).then(() => {
           if (typeof salvaPartita === 'function') salvaPartita();

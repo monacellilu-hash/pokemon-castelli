@@ -364,3 +364,64 @@ CUTSCENE['museo_navi_intro'] = [
   // ...e poi Michela ti raggiunge (stesso pezzo che riparte dopo una sconfitta).
   ...CUTSCENE['museo_navi_sfida'],
 ];
+
+/* ══════════════════════════════════════════════════════════
+   VIA VITTORIA 5F — i due rivali (richiesta esplicita di Luca, 10 ott
+   2026): all'ultimo piano, PRIMA della Lega, l'ALTRO rivale (quello che
+   NON hai scelto/affrontato al laboratorio) ti sfida una volta sola, a
+   un livello alto quanto il primo membro del Superquattro (62, vedi
+   SUPERQUATTRO['sq-captain'].livMax in js/data.js). Dopo la vittoria, il
+   TUO rivale di sempre si congeda e sparisce — risolve anche l'identità
+   di "rivale2_via_vittoria" (D13 in TODO.md, prima un placeholder).
+
+   Due varianti perché cambia CHI sfida e CHI saluta (dipende da
+   stato.difficolta — scelta al laboratorio): quella giusta viene
+   selezionata dal trigger Tiled stesso via cutscene_id_difficile
+   (vedi _controllaCutsceneSpawn in js/map.js), NON da logica qui dentro.
+   rivaleRif: 'altroRivale' è una STRINGA (non un riferimento diretto:
+   dati/cutscene.js carica prima di js/app.js, dove altroRivale() vive),
+   risolta a runtime da _cutscenaBattaglia. ══════════════════════════════════════════════════════════ */
+
+// FACILE: hai scelto/affrontato Blue al laboratorio → qui ti sfida Red,
+// e alla fine è Blue (il tuo rivale di sempre) a salutarti e sparire.
+CUTSCENE['via_vittoria_due_rivali_facile'] = [
+  { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Red', testo: [
+    'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
+    'Blue mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenata per conto mio, lontano da tutti.',
+    'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
+  ] },
+  { tipo: 'battaglia', trainer: 'rivale2_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
+  { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Blue', testo: [
+    'Bene, sei pronto!',
+    'Ci vediamo presto, amico mio...',
+  ] },
+  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'nascondi_npc', npc: 'rivale_via_vittoria' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 500 },
+  { tipo: 'flag', nome: 'via_vittoria_rivale_finale_vista', valore: true },
+];
+
+// DIFFICILE: hai scelto/affrontato Red al laboratorio → qui ti sfida
+// Blue, e alla fine è Red (il tuo rivale di sempre) a salutarti e sparire.
+CUTSCENE['via_vittoria_due_rivali_difficile'] = [
+  { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Blue', testo: [
+    'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
+    'Red mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenato per conto mio, lontano da tutti.',
+    'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
+  ] },
+  { tipo: 'battaglia', trainer: 'rivale_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
+  { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Red', testo: [
+    'Bene, sei pronto!',
+    'Ci vediamo presto, amico mio...',
+  ] },
+  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'nascondi_npc', npc: 'rivale2_via_vittoria' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 500 },
+  { tipo: 'flag', nome: 'via_vittoria_rivale_finale_vista', valore: true },
+];

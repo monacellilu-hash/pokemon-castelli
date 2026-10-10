@@ -3500,16 +3500,21 @@ const DATI_TRAINER = {
     premio: 3000,
   },
 
-  /* ── Secondo rivale — dot piazzato, IDENTITÀ ANCORA DA DECIDERE (Luca,
-     domanda D13 in docs/TODO.md: nome/aspetto/carattere). Squadra e
-     dialoghi PLACEHOLDER, sprite temporaneo trainer_rivale_2.png già
-     presente negli asset. Da riscrivere quando Luca decide chi è. ── */
+  /* ── Secondo rivale — RISOLTO (richiesta esplicita di Luca, 10 ott
+     2026, D13 chiusa): non è un terzo personaggio, è l'ALTRO rivale
+     scelto al laboratorio (Blue o Red) che qui NON hai affrontato —
+     stesso identico meccanismo di rivale_via_vittoria, risolto
+     dinamicamente via altroRivale()/rivaleDinamico nella cutscene
+     'via_vittoria_due_rivali_facile'/'_difficile' (dati/cutscene.js).
+     nome/squadra qui sotto sono solo fallback se mai venisse combattuto
+     FUORI dalla cutscene (oggi non succede). ── */
   'rivale2_via_vittoria': {
     sprite: 'trainer_rivale_2', ritratto: 'trainer_rivale_2', vista: 6,
-    classe: '[DA DECIDERE]', nome: '[DA DECIDERE]',
+    classe: 'Rivale', nome: 'Red', rivale: true,
+    flagVittoria: 'rivale2_via_vittoria_battuto',
     squadra: [ { id: 302, livello: 58 }, { id: 359, livello: 59 }, { id: 248, livello: 60 } ],
-    dialogo_prima: '[Dialogo placeholder — identità del secondo rivale da decidere, vedi TODO.md D13]',
-    dialogo_dopo: '[Dialogo placeholder — identità del secondo rivale da decidere, vedi TODO.md D13]',
+    dialogo_prima: 'Allora, ci risentiamo prima della Lega. Non pensare che sia finita qui.',
+    dialogo_dopo: 'Forte. Davvero forte. Ci vediamo a Colonna.',
     premio: 2200,
   },
 

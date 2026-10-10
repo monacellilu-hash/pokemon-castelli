@@ -1463,6 +1463,24 @@ const DATI_NPC = {
     azione: 'sfidaPorchettari',
   },
 
+  // 3 NPC "pubblicitari" sparsi ad Ariccia (richiesta 10 ott 2026): fanno
+  // capire al giocatore, in 3 modi diversi, che deve tornare alle 23:00 a
+  // parlare con Learco per la Sfida dei Porchettari — nessuno dice l'ora
+  // in modo diretto come fa Learco stesso (quello resta il messaggio
+  // "ufficiale"), questi sono solo chiacchiere di paese.
+  'ariccia_learco_pubb1': {
+    sprite: 'NPC 10', nome: 'Oreste', direzione: 'sud', movimento: 'random',
+    dialogo: ["La Sfida dei Porchettari? Organizza tutto Learco, lui solo. Vallo a trovà verso le undici de sera, se vedi tutto."],
+  },
+  'ariccia_learco_pubb2': {
+    sprite: 'NPC 24', nome: 'Mafalda', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ["Ah, i Porchettari! Pe' quello devi parlà con Learco, è lui che tiene le fila de tutto. Ma solo a notte fonda, eh, prima nun te fa manco entrà."],
+  },
+  'ariccia_learco_pubb3': {
+    sprite: 'NPC 19', nome: 'Celestino', direzione: 'est', movimento: 'random',
+    dialogo: ["Vedi quello là? È Learco, organizza tutto lui pe' la sfida de stanotte. Prima de le 23 però è inutile che ce vai, te manda via."],
+  },
+
   // Sfida dei Parenti di Baso (Via dei Laghi): 5 lotte di fila, stesso
   // schema dei Porchettari ma senza finestra oraria. Vittoria a tutte e 5 →
   // stato.flags.famiglia_rocco_battuta e compare 'via_laghi_infermiera'

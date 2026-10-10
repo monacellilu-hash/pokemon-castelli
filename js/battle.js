@@ -2494,7 +2494,15 @@ const Battle = (function () {
       let dettagli;
       try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
       catch (e) { continue; }
-      if (!dettagli.potenza) continue; // per ora solo mosse offensive
+      // BUG CRITICO (segnalato 10 ott 2026): questo controllo scartava
+      // TUTTE le mosse di stato (Ruggito, Rifletti, Ragnatela, Finta
+      // Energia...), quindi qualunque Pokémon la cui prossima mossa di
+      // livello fosse di stato non imparava NULLA a quel livello — un
+      // Weedle/Beedrill arrivato a Lv.20 senza mosse è un caso reale di
+      // questo bug. scegliMosse() (creazione iniziale) usa già
+      // mossaUtile() correttamente: qui dobbiamo usare lo stesso filtro,
+      // non uno più restrittivo.
+      if (!mossaUtile(dettagli)) continue;
 
       if (ist.mosse.length < 4) {
         ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
@@ -3026,7 +3034,7 @@ const Battle = (function () {
       let dettagli;
       try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
       catch (e) { continue; }
-      if (!dettagli.potenza) continue;
+      if (!mossaUtile(dettagli)) continue; // stesso fix di controllaNuoveMosse
       if (ist.mosse.length < 4) {
         ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
         messaggi.push(`${ist.nome} impara ${dettagli.nomeIt}!`);

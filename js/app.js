@@ -2609,7 +2609,10 @@ function sfidaPorchettari() {
   const inFinestra = minuti >= 1380 || minuti < 120;   // 23:00–02:00
 
   if (!inFinestra) {
-    mostraDialogo(nome, ['Non vedi che stiamo ancora allestendo?!? Levati dai piedi!']);
+    mostraDialogo(nome, [
+      'Non vedi che stiamo ancora allestendo?!? Levati dai piedi!',
+      'È troppo presto, torna più tardi!!',
+    ]);
     return;
   }
   if (stato.flags && stato.flags.piuma_porchettari) {
@@ -3609,6 +3612,16 @@ function rivaleDaSprite(spriteProp) {
     if (chi === 'RIVALE_DONNA') return stato.duoRivali.forte;
   }
   return stato.rivale || (stato.duoRivali && (stato.duoRivali.debole || stato.duoRivali.forte)) || null;
+}
+
+// Il rivale che NON hai scelto/affrontato al laboratorio (richiesta
+// esplicita di Luca, 10 ott 2026 — cutscene dei due rivali a Via Vittoria
+// 5F): l'opposto di stato.rivale/stato.difficolta. Facile → hai scelto
+// Blue (debole): l'altro è Red (forte). Difficile → hai scelto Red: l'altro
+// è Blue.
+function altroRivale() {
+  if (!stato.duoRivali) return null;
+  return stato.difficolta === 'difficile' ? stato.duoRivali.debole : stato.duoRivali.forte;
 }
 
 // Squadra del Rivale per gli incontri sulla mappa, scalata per "tappa" (n. di
