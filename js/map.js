@@ -416,6 +416,74 @@ const GameMap = (function () {
       interno: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
+    // ── Antro Kyogre (10 ott 2026): ex SeafloorCavern di pokeemerald,
+    // estratta con strumenti/estrai_mappe_pret.py. Ingresso raggiungibile
+    // dal punto di immersione in lago_albano_profondo (warp
+    // 'verso_antro_kyogre'). Le 9 stanze replicano ESATTAMENTE il grafo di
+    // buche/corridoi del gioco originale (spesso asimmetrico: una stanza
+    // "cade" in un'altra senza che il ritorno sia lo stesso percorso),
+    // ricostruito dai dest_warp_id grezzi di pokeemerald, non solo dal nome
+    // mappa di destinazione. NPC/allenatori/incontri ancora tutti da fare
+    // (gli "npc_*" nelle mappe sono solo segnaposto con nota_origine).
+    'antro_kyogre_entrance': {
+      file: 'sprites/maps_tiled/antro_kyogre_entrance.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_1': {
+      file: 'sprites/maps_tiled/antro_kyogre_1.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_2': {
+      file: 'sprites/maps_tiled/antro_kyogre_2.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_3': {
+      file: 'sprites/maps_tiled/antro_kyogre_3.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_4': {
+      file: 'sprites/maps_tiled/antro_kyogre_4.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_5': {
+      file: 'sprites/maps_tiled/antro_kyogre_5.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_6': {
+      file: 'sprites/maps_tiled/antro_kyogre_6.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_7': {
+      file: 'sprites/maps_tiled/antro_kyogre_7.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_8': {
+      file: 'sprites/maps_tiled/antro_kyogre_8.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    'antro_kyogre_9': {
+      file: 'sprites/maps_tiled/antro_kyogre_9.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
+    // Variante "underwater" (l'esterno sommerso della caverna, visto in Sub):
+    // registrata per completezza ma NON collegata ad alcun warp — nel gioco
+    // originale è un'area cosmetica separata, il suo ruolo in questo
+    // progetto resta da decidere (vedi messaggio di fine sessione).
+    'antro_kyogre_underwater': {
+      file: 'sprites/maps_tiled/antro_kyogre_underwater.tmj',
+      interno: true, tema: 'cave',
+      latFissa: 41.7440, lonFissa: 12.6580,
+    },
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
     // Lago di Albano, registrata da Luca ma mai aggiunta qui — il warp
     // risultava "Zona non ancora disponibile".
@@ -1501,6 +1569,18 @@ const GameMap = (function () {
     'ts-dojo':               'sprites/saffroncity_dojo_tileset.png',
     'ts-lab-entrata':        'sprites/genzano_laboratorio_entrata_tileset.png',
     'ts-lab-lounge':         'sprites/genzano_laboratorio_lounge_tileset.png',
+    // ── Antro Kyogre (ex SeafloorCavern, 10 ott 2026) ──
+    'ts-antrokyogre-ent':    'sprites/antro_kyogre_entrance_tileset.png',
+    'ts-antrokyogre-1':      'sprites/antro_kyogre_1_tileset.png',
+    'ts-antrokyogre-2':      'sprites/antro_kyogre_2_tileset.png',
+    'ts-antrokyogre-3':      'sprites/antro_kyogre_3_tileset.png',
+    'ts-antrokyogre-4':      'sprites/antro_kyogre_4_tileset.png',
+    'ts-antrokyogre-5':      'sprites/antro_kyogre_5_tileset.png',
+    'ts-antrokyogre-6':      'sprites/antro_kyogre_6_tileset.png',
+    'ts-antrokyogre-7':      'sprites/antro_kyogre_7_tileset.png',
+    'ts-antrokyogre-8':      'sprites/antro_kyogre_8_tileset.png',
+    'ts-antrokyogre-9':      'sprites/antro_kyogre_9_tileset.png',
+    'ts-antrokyogre-uw':     'sprites/antro_kyogre_underwater_tileset.png',
     'ts-lab-ricerca':        'sprites/genzano_laboratorio_ricerca_tileset.png',
     'ts-lab-esperimenti':    'sprites/genzano_laboratorio_esperimenti_tileset.png',
     'ts-lega-entrata':       'sprites/lega_pokemon_entrata_tileset.png',
@@ -1563,6 +1643,20 @@ const GameMap = (function () {
     'lavaridgetown_herbshop_tileset': { key: 'ts-herbshop',       tw: 32, th: 32, cols: 16 },
     'powerplant_tileset':             { key: 'ts-powerplant',     tw: 32, th: 32, cols: 16 },
     'saffroncity_dojo_tileset':       { key: 'ts-dojo',           tw: 32, th: 32, cols: 16 },
+    // Antro Kyogre (ex SeafloorCavern di pokeemerald, 10 ott 2026): 10 mappe
+    // (ingresso + 9 stanze) + la variante "underwater" esterna, estratte con
+    // strumenti/estrai_mappe_pret.py (sopra_nome='edifici').
+    'antro_kyogre_entrance_tileset':  { key: 'ts-antrokyogre-ent', tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_1_tileset':         { key: 'ts-antrokyogre-1',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_2_tileset':         { key: 'ts-antrokyogre-2',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_3_tileset':         { key: 'ts-antrokyogre-3',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_4_tileset':         { key: 'ts-antrokyogre-4',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_5_tileset':         { key: 'ts-antrokyogre-5',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_6_tileset':         { key: 'ts-antrokyogre-6',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_7_tileset':         { key: 'ts-antrokyogre-7',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_8_tileset':         { key: 'ts-antrokyogre-8',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_9_tileset':         { key: 'ts-antrokyogre-9',   tw: 32, th: 32, cols: 16 },
+    'antro_kyogre_underwater_tileset':{ key: 'ts-antrokyogre-uw',  tw: 32, th: 32, cols: 16 },
     // Laboratorio Rianimazione Fossili di Genzano (da FireRed, 5 ott 2026).
     'genzano_laboratorio_entrata_tileset':     { key: 'ts-lab-entrata',     tw: 32, th: 32, cols: 16 },
     'genzano_laboratorio_lounge_tileset':      { key: 'ts-lab-lounge',      tw: 32, th: 32, cols: 16 },
