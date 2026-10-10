@@ -2587,6 +2587,25 @@ const GameMap = (function () {
     return LEG_NOME_ID[nome] || null;
   }
 
+  // Ruotare il telefono (mode RESIZE del gioco, vedi config più in basso)
+  // cambia davvero CW/CH, ma una schermata nativa calcola TUTTE le sue
+  // posizioni una volta sola in create(), con le dimensioni di QUEL
+  // momento — se ruoti dopo averla aperta resta quella vecchia e il
+  // cursore/i contenuti finiscono fuori schermo (bug segnalato da Luca,
+  // 10 ott 2026, su Box e Market in orizzontale). Fix generale: ogni
+  // schermata che lo richiama si ricostruisce da zero (scene.restart())
+  // appena la finestra cambia dimensione, ricalcolando tutto sulle
+  // misure vere. Il listener va rimosso alla chiusura della scena,
+  // altrimenti ad ogni restart se ne accumula uno in più.
+  function _collegaResizeRestart(scena, datiPerRestart) {
+    const handler = () => {
+      if (!scena.scene.isActive()) return;
+      scena.scene.restart(typeof datiPerRestart === 'function' ? datiPerRestart() : datiPerRestart);
+    };
+    scena.scale.on('resize', handler);
+    scena.events.once('shutdown', () => scena.scale.off('resize', handler));
+  }
+
   /* ══════════════════════════════════════════════════════════
      SCENA PHASER
      ══════════════════════════════════════════════════════════ */
@@ -2824,8 +2843,24 @@ const GameMap = (function () {
         const libero = () => !bloccato &&
           !(typeof stato !== 'undefined' && stato.incontroAttivo) &&
           !(typeof dialogoInCorso !== 'undefined' && dialogoInCorso);
-        btnB.addEventListener('pointerdown', () => { if (libero()) corsaTouchAttiva = true; });
-        const rilasciaB = () => {
+        // preventDefault+stopPropagation (bug reale trovato 10 ott 2026,
+        // segnalato da Luca: "le frecce cliccano sugli oggetti sotto"): il
+        // gioco usa windowEvents:true in Phaser (serve per il trascinamento
+        // nella schermata Squadra), quindi QUALUNQUE pointerdown/up non
+        // fermato qui risale fino a window — dove Phaser lo intercetta di
+        // nuovo e lo trasforma in un click sul proprio oggetto di gioco
+        // sotto quel punto dello schermo (una riga del Market, una cella
+        // del Box…), del tutto indipendente da "this.input.enabled" sulla
+        // scena (quello blocca solo la reazione della scena ai PROPRI
+        // eventi, non impedisce a window di riceverne una copia). Risultato
+        // visibile: toccare la freccetta "clicca" anche l'oggetto che si
+        // trova in quel punto dello schermo nel menu aperto sopra.
+        btnB.addEventListener('pointerdown', (e) => {
+          e.preventDefault(); e.stopPropagation();
+          if (libero()) corsaTouchAttiva = true;
+        });
+        const rilasciaB = (e) => {
+          if (e) { e.preventDefault(); e.stopPropagation(); }
           if (corsaTouchAttiva) { corsaTouchAttiva = false; return; }
           if (typeof premiB === 'function') premiB();
         };
@@ -4749,6 +4784,14 @@ const GameMap = (function () {
           // sul posto, non si muove ancora (esattamente come nei giochi Pokémon).
           facciata = dirPremuta;
           if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+          // VERA causa principale dell'item 25 (bancone/NPC non riconosciuto,
+          // 10 ott 2026): questo è il percorso PIÙ comune di "girarsi senza
+          // camminare" — scatta a OGNI primo tocco di una direzione da fermo,
+          // anche standosene già adiacenti al banco — e non passava MAI da
+          // _aggiornaEventoVicino(). _sposta()/giraSulPosto() (appena corretto
+          // più sotto) copre solo il caso di movimento bloccato da un
+          // ostacolo, non questo. Generale per tutti i NPC/banconi del gioco.
+          this._aggiornaEventoVicino();
         }
       } else {
         ultimaDirezionePremuta = null;
@@ -4842,6 +4885,17 @@ const GameMap = (function () {
       const giraSulPosto = () => {
         if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
         if (onPassoCb) onPassoCb({ ...posLatLon }, false);
+        // BUG VERO dell'item 25 (bancone/NPC dietro banco), trovato 10 ott
+        // 2026: _aggiornaEventoVicino() veniva richiamata SOLO dopo un passo
+        // VERO (vedi sotto, fine di _sposta), mai dopo un semplice giro sul
+        // posto. "facciata" invece cambia SEMPRE (riga sopra), anche quando
+        // il movimento è bloccato. Risultato: se sei già fermo adiacente al
+        // banco e ti limiti a girarti verso l'NPC (senza spostarti, perché
+        // non c'è dove andare), il gioco continuava a "vedere" la direzione
+        // vecchia finché non facevi un passo vero altrove e tornavi indietro.
+        // Questo è generale per TUTTI i banconi/NPC del gioco, non un caso
+        // singolo — un solo punto di correzione per tutti.
+        this._aggiornaEventoVicino();
       };
 
       // 1) Collisione vera: blocca SEMPRE, in Surf o a piedi. Nessuna eccezione,
@@ -9214,6 +9268,23 @@ const GameMap = (function () {
         const el = document.getElementById(id);
         if (!el) return;
         el.addEventListener('pointerdown', (e) => {
+          // preventDefault+stopPropagation (bug reale trovato 10 ott 2026,
+          // segnalato da Luca: "le frecce cliccano sugli oggetti sotto",
+          // es. al Market le freccette ↑↓ ti saltavano il cursore
+          // sull'oggetto in quel punto dello schermo): il gioco usa
+          // windowEvents:true in Phaser (serve per il trascinamento in
+          // Squadra), quindi ogni pointerdown/up/enter su questi bottoni
+          // che non viene fermato qui risale fino a window, dove Phaser lo
+          // intercetta ANCORA una volta e lo trasforma in un click sul suo
+          // oggetto di gioco in quel punto (una riga del Market, una
+          // cella del Box…) — del tutto indipendente da "input.enabled"
+          // sulla scena, che blocca solo la reazione della scena ai PROPRI
+          // eventi, non l'arrivo dell'evento a window. Rilasciare la
+          // cattura del puntatore (sotto) aggrava la cosa: appena la
+          // cattura è rilasciata, un piccolo scivolamento del dito può far
+          // sì che pointermove/pointerup "arrivino" direttamente al canvas
+          // sottostante invece che a questo bottone.
+          e.preventDefault(); e.stopPropagation();
           dpadPointerId = e.pointerId;
           attiva(id, dx, dy);
           // Sess. 1 ott 2026 (bug reale trovato: il trascinamento "smooth"
@@ -9227,9 +9298,11 @@ const GameMap = (function () {
           try { el.releasePointerCapture(e.pointerId); } catch (err) { /* non supportato: ignora */ }
         });
         el.addEventListener('pointerenter', (e) => {
+          e.preventDefault(); e.stopPropagation();
           if (dpadPointerId !== null && e.pointerId === dpadPointerId) attiva(id, dx, dy);
         });
         el.addEventListener('pointerup', (e) => {
+          e.preventDefault(); e.stopPropagation();
           if (e.pointerId === dpadPointerId) rilascia();
         });
       };
@@ -9239,8 +9312,10 @@ const GameMap = (function () {
       btn('btn-destra',    1,  0);
       // Rete di sicurezza: se il dito si stacca FUORI da tutti i tasti
       // (o il gesto viene annullato dal sistema), rilascia comunque.
-      window.addEventListener('pointerup', (e) => { if (e.pointerId === dpadPointerId) rilascia(); });
-      window.addEventListener('pointercancel', (e) => { if (e.pointerId === dpadPointerId) rilascia(); });
+      // Qui NON si può stopPropagation (l'evento è già su window), ma non
+      // serve: preventDefault basta a evitare ulteriori effetti di default.
+      window.addEventListener('pointerup', (e) => { if (e.pointerId === dpadPointerId) { e.preventDefault(); rilascia(); } });
+      window.addEventListener('pointercancel', (e) => { if (e.pointerId === dpadPointerId) { e.preventDefault(); rilascia(); } });
     }
   }
 
@@ -10987,6 +11062,7 @@ const GameMap = (function () {
     create(dati) {
       // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
       this.input.enabled = false;
+      _collegaResizeRestart(this, () => ({ cursore: this._cursore !== undefined ? this._cursore : this._cursoreIniziale }));
       this._cursoreIniziale = (dati && dati.cursore) || 0;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x141420, 1).setDepth(0);
@@ -11100,9 +11176,19 @@ const GameMap = (function () {
       this._celle = [];
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const COLS = 6, ROWS = 5;
-      const cell = Math.min(70, (CW - 80) / COLS);
-      const startX = CW / 2 - (cell * COLS) / 2 + cell / 2;
       const startY = 70;
+      // Fix "Box troppo grande in orizzontale" (10 ott 2026): la cella era
+      // dimensionata SOLO sulla larghezza (CW) — su un telefono ruotato CH
+      // crolla (es. ~360px) ma qui si continuava a disegnare 5 righe da
+      // 70px + la fila squadra, finendo abbondantemente fuori dallo
+      // schermo in basso. Ora la cella è vincolata anche dall'altezza
+      // disponibile (CH meno l'intestazione e i testi in fondo), così la
+      // griglia intera (box + squadra) entra sempre nello schermo.
+      const areaBassoRiservata = 110; // spazio per "nota" + "B esce dal PC"
+      const altezzaDisponibile = Math.max(100, CH - startY - 30 - areaBassoRiservata);
+      const cellPerAltezza = altezzaDisponibile / (ROWS + 1); // +1 riga per la squadra
+      const cell = Math.min(70, (CW - 80) / COLS, cellPerAltezza);
+      const startX = CW / 2 - (cell * COLS) / 2 + cell / 2;
 
       for (let slot = 0; slot < 30; slot++) {
         const col = slot % COLS, row = Math.floor(slot / COLS);
@@ -11116,7 +11202,7 @@ const GameMap = (function () {
       this._celle.push(this.add.text(40, dockY - 22, '⚡ Squadra', {
         fontFamily: 'Arial', fontSize: '12px', color: '#ffcb05', fontStyle: 'bold',
       }).setOrigin(0, 0.5).setDepth(2));
-      const dockCell = Math.min(64, (CW - 80) / 6);
+      const dockCell = Math.min(64, (CW - 80) / 6, cell);
       const dockStartX = CW / 2 - (dockCell * 6) / 2 + dockCell / 2;
       for (let i = 0; i < 6; i++) {
         this._disegnaCella(dockStartX + i * dockCell, dockY + dockCell / 2, dockCell - 6, stato.squadra[i] || null, { tipo: 'squadra', idx: i }, (30 + i) === this._cursore);
@@ -11205,6 +11291,7 @@ const GameMap = (function () {
     create() {
       // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
       this.input.enabled = false;
+      _collegaResizeRestart(this);
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       // Sfondo reale del Poké Market di Essentials (stesso trattamento di
       // ZainoScene: immagine a piena schermata + velo scuro per leggibilità).
@@ -11238,15 +11325,37 @@ const GameMap = (function () {
       // Compra/Vendi (richiesta esplicita di Luca, 9 ott 2026: "al Market
       // non si può vendere" — introdotta la vendita a metà prezzo). Due
       // scheda cliccabili in alto; TAB le alterna anche da tastiera.
+      //
+      // Fix overlap mobile (10 ott 2026): prima erano messe a ±70px fissi
+      // dal centro, senza guardare quanto sono larghe DAVVERO le due
+      // etichette (emoji+testo non hanno una larghezza fissa) né quanto è
+      // largo lo schermo — su mobile finivano per sovrapporsi. Ora si
+      // creano prima, si MISURA la loro larghezza reale (displayWidth) e
+      // si posizionano fianco a fianco con un margine garantito; se anche
+      // così non ci stanno nello schermo (CW troppo stretto), si impilano
+      // una sopra l'altra invece di sovrapporsi.
       this._modo = 'compra';
-      this._tabCompra = this.add.text(CW / 2 - 70, 100, '🛒 Compra', {
-        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#ffcb05',
-        backgroundColor: '#28304a', padding: { x: 10, y: 4 },
-      }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
-      this._tabVendi = this.add.text(CW / 2 + 70, 100, '💰 Vendi', {
-        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#888',
-        backgroundColor: '#1a2940', padding: { x: 10, y: 4 },
-      }).setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+      const stileTab = (attivo) => ({
+        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold',
+        color: attivo ? '#ffcb05' : '#888',
+        backgroundColor: attivo ? '#28304a' : '#1a2940', padding: { x: 10, y: 4 },
+      });
+      this._tabCompra = this.add.text(0, 100, '🛒 Compra', stileTab(true))
+        .setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+      this._tabVendi = this.add.text(0, 100, '💰 Vendi', stileTab(false))
+        .setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
+      const margineTab = 8;
+      const largTotale = this._tabCompra.displayWidth + margineTab + this._tabVendi.displayWidth;
+      if (largTotale <= CW - 20) {
+        this._tabCompra.setPosition(CW / 2 - (this._tabCompra.displayWidth + margineTab) / 2, 100);
+        this._tabVendi.setPosition(CW / 2 + (this._tabVendi.displayWidth + margineTab) / 2, 100);
+      } else {
+        // Schermo troppo stretto per stare fianco a fianco: una sopra
+        // l'altra, spostando giù anche tutto quello che viene dopo.
+        this._tabCompra.setPosition(CW / 2, 92);
+        this._tabVendi.setPosition(CW / 2, 92 + this._tabCompra.displayHeight + margineTab);
+      }
+      this._ySottoTab = Math.max(this._tabCompra.y, this._tabVendi.y) + this._tabCompra.displayHeight / 2 + 10;
       this._tabCompra.on('pointerdown', () => this._cambiaModo('compra'));
       this._tabVendi.on('pointerdown', () => this._cambiaModo('vendi'));
       this.input.keyboard.on('keydown-TAB', () => this._cambiaModo(this._modo === 'compra' ? 'vendi' : 'compra'));
@@ -11297,6 +11406,7 @@ const GameMap = (function () {
       this._modo = modo;
       this._modoQuantita = false;
       this._quantita = 1;
+      this._scrollLista = 0;
       this._tabCompra.setStyle({ color: modo === 'compra' ? '#ffcb05' : '#888' })
         .setBackgroundColor(modo === 'compra' ? '#28304a' : '#1a2940');
       this._tabVendi.setStyle({ color: modo === 'vendi' ? '#ffcb05' : '#888' })
@@ -11381,15 +11491,36 @@ const GameMap = (function () {
       if (this._elementiLista) this._elementiLista.forEach(e => e.destroy());
       this._elementiLista = [];
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
-      const top = 110, righeAltezza = 64;
+      const top = this._ySottoTab || 110, righeAltezza = 64;
       if (this._modo === 'vendi' && (!this._merce || this._merce.length === 0)) {
         this._elementiLista.push(this.add.text(CW / 2, CH / 2, 'Non hai nulla da vendere nello zaino.', {
           fontFamily: 'Arial', fontSize: '14px', color: '#ccc',
         }).setOrigin(0.5).setDepth(3));
         return;
       }
-      (this._merce || []).forEach(({ chiave, oggetto }, i) => {
-        const y = top + i * righeAltezza;
+      // Lista a finestra scorrevole (fix "cursore fuori schermo in
+      // orizzontale", 10 ott 2026): prima ogni riga veniva piazzata a
+      // un'altezza fissa (top + i*64) senza mai controllare se superava
+      // CH — su schermi bassi (telefono ruotato) le righe in fondo
+      // finivano semplicemente fuori dall'area visibile, cursore incluso.
+      // Ora si calcola quante righe entrano davvero nello spazio
+      // disponibile e si scorre la finestra per tenere sempre visibile
+      // quella selezionata.
+      const areaBassoMargine = 40; // spazio per "B esce dal Market"
+      const righeVisibili = Math.max(1, Math.floor((CH - areaBassoMargine - top) / righeAltezza));
+      if (this._scrollLista === undefined) this._scrollLista = 0;
+      if (this._cursore < this._scrollLista) this._scrollLista = this._cursore;
+      if (this._cursore >= this._scrollLista + righeVisibili) this._scrollLista = this._cursore - righeVisibili + 1;
+      this._scrollLista = Phaser.Math.Clamp(this._scrollLista, 0, Math.max(0, (this._merce || []).length - righeVisibili));
+      const merceVisibile = (this._merce || []).map((v, i) => ({ v, i }))
+        .slice(this._scrollLista, this._scrollLista + righeVisibili);
+      if ((this._merce || []).length > righeVisibili) {
+        this._elementiLista.push(this.add.text(CW - 14, top - 14, `${this._scrollLista + 1}-${Math.min(this._scrollLista + righeVisibili, this._merce.length)}/${this._merce.length}`, {
+          fontFamily: 'Arial', fontSize: '10px', color: '#888',
+        }).setOrigin(1, 0.5).setDepth(3));
+      }
+      merceVisibile.forEach(({ v: { chiave, oggetto }, i }) => {
+        const y = top + (i - this._scrollLista) * righeAltezza;
         const conCursore = i === this._cursore;
         const riga = this.add.rectangle(CW / 2, y, CW - 60, righeAltezza - 8, conCursore ? 0x2a3f66 : 0x1a2940, 0.9)
           .setStrokeStyle(conCursore ? 2 : 0, 0xffcb05).setDepth(2)

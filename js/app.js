@@ -1245,11 +1245,28 @@ const LIMITE_SQUADRA_PALESTRA_DIFFICILE = {
 // invece che nello zaino/box normale, per non confonderli con un
 // deposito vero. Tornano in squadra automaticamente appena si esce dalla
 // palestra (in qualunque modo: porta normale o sconfitta/teletrasporto).
+// Flag anti-doppio-scatto (bug dei "7 Pokémon in squadra", segnalato da
+// Luca 10 ott 2026): caricaMappa() chiama questa funzione ad OGNI
+// caricamento, e se per qualunque motivo scattasse due volte di fila per
+// la stessa mappa mentre la schermata di scelta è ancora aperta (prima
+// che il giocatore confermi, quindi prima che stato.squadraStashataGym
+// venga scritto), la guardia "!stato.squadraStashataGym" non bastava a
+// fermare una seconda apertura — da qui una possibile doppia conferma e
+// uno stato corrotto. Questo flag blocca categoricamente i reingressi
+// finché il giocatore non ha chiuso la schermata.
+let _selezioneSquadraPalestraInCorso = false;
+
 function _applicaLimiteSquadraPalestra(chiaveMappa) {
   if (!stato.flags) stato.flags = {};
   const limite = LIMITE_SQUADRA_PALESTRA_DIFFICILE[chiaveMappa];
   if (stato.difficolta === 'difficile' && limite && stato.squadra.length > limite &&
       !stato.squadraStashataGym) {
+    if (_selezioneSquadraPalestraInCorso) {
+      console.warn('[Squadra palestra] Richiamata _applicaLimiteSquadraPalestra mentre la selezione era già aperta — IGNORATA (era questo il bug dei 7 Pokémon?). chiave:', chiaveMappa, 'squadra:', stato.squadra.length);
+      return;
+    }
+    console.log('[Squadra palestra] Apro selezione:', chiaveMappa, 'squadra attuale:', stato.squadra.length, 'limite:', limite);
+    _selezioneSquadraPalestraInCorso = true;
     // Richiesta esplicita di Luca, 10 ott 2026: non si sceglie più in
     // automatico i primi N — una schermata dedicata (come per le mosse) fa
     // scegliere AL GIOCATORE quali portare.
@@ -1260,11 +1277,24 @@ function _applicaLimiteSquadraPalestra(chiaveMappa) {
   } else if (chiaveMappa !== (stato.squadraStashataGym && stato.squadraStashataGym.mappa) &&
              stato.squadraStashataGym) {
     // Usciti dalla palestra (per qualunque strada, anche sconfitta): la
-    // squadra torna come prima.
-    stato.squadra = stato.squadra.concat(stato.squadraStashataGym.pokemon);
+    // squadra torna come prima. Clamp difensivo: se per qualunque motivo
+    // il totale supererebbe 6 (non dovrebbe mai succedere, ma il bug dei
+    // 7 Pokémon dimostra che è già successo), l'eccesso va nel Box PC
+    // invece di gonfiare la squadra — non deve più essere possibile vedere
+    // "7 Pokémon in squadra".
+    const unione = stato.squadra.concat(stato.squadraStashataGym.pokemon);
+    console.log('[Squadra palestra] Restore:', chiaveMappa, 'squadra prima:', stato.squadra.length, '+ stash:', stato.squadraStashataGym.pokemon.length, '= totale:', unione.length);
+    stato.squadra = unione.slice(0, 6);
+    const eccesso = unione.slice(6);
+    eccesso.forEach(p => { if (typeof depositaInBox === 'function') depositaInBox(p); });
     stato.squadraStashataGym = null;
     salvaPartita();
-    if (typeof mostraToast === 'function') mostraToast('⚔️ La tua squadra al completo ti aspettava fuori!', 2500);
+    if (eccesso.length > 0) {
+      console.warn('[Squadra palestra] Overflow reale intercettato al restore:', eccesso.length, 'Pokémon spostati nel Box. Questa è la prova del bug — manda questo log a Claude.');
+      if (typeof mostraToast === 'function') mostraToast(`⚠️ Avevi più di 6 Pokémon: ${eccesso.map(p => p.nome).join(', ')} spostati nel Box per sicurezza.`, 4000);
+    } else if (typeof mostraToast === 'function') {
+      mostraToast('⚔️ La tua squadra al completo ti aspettava fuori!', 2500);
+    }
   }
 }
 
@@ -1274,10 +1304,21 @@ function _applicaLimiteSquadraPalestra(chiaveMappa) {
 // abbia selezionati — la squadra viene riordinata mettendo prima quelli
 // scelti (stesso ordine relativo fra loro) e il resto va in stash.
 function confermaSelezioneSquadraPalestra(chiaveMappa, idxScelti) {
-  const scelti = idxScelti.map(i => stato.squadra[i]);
+  // Anti-doppia-conferma (stesso bug dei 7 Pokémon): se questa funzione
+  // viene richiamata una seconda volta prima che il flag sia stato
+  // ripulito (es. scena duplicata/doppio evento), stato.squadra è già
+  // stato ridotto dalla prima chiamata — ignora la seconda invece di
+  // leggere indici che non corrispondono più a niente.
+  if (!_selezioneSquadraPalestraInCorso) {
+    console.warn('[Squadra palestra] confermaSelezioneSquadraPalestra richiamata due volte — seconda chiamata IGNORATA.', chiaveMappa, idxScelti);
+    return;
+  }
+  _selezioneSquadraPalestraInCorso = false;
+  const scelti = idxScelti.map(i => stato.squadra[i]).filter(Boolean);
   const stashati = stato.squadra.filter((p, i) => !idxScelti.includes(i));
   stato.squadra = scelti;
   stato.squadraStashataGym = { pokemon: stashati, mappa: chiaveMappa };
+  console.log('[Squadra palestra] Confermata:', chiaveMappa, 'in squadra:', scelti.length, 'in stash:', stashati.length);
   salvaPartita();
   aggiornaHUD();
   if (typeof GameMap !== 'undefined' && GameMap.sbloccaMovimento) GameMap.sbloccaMovimento();
