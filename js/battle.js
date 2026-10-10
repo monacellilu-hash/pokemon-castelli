@@ -1327,7 +1327,7 @@ const Battle = (function () {
 
     const tutteScariche = mio.mosse.every(m => m.pp <= 0);
 
-    for (const mossa of mio.mosse) {
+    mio.mosse.forEach((mossa, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-mossa';
       btn.innerHTML =
@@ -1335,9 +1335,9 @@ const Battle = (function () {
         `<span class="tipo-badge" style="background:${TIPO_COLORI[mossa.tipo] || '#888'}">${TIPO_NOMI[mossa.tipo] || mossa.tipo}</span>` +
         `<span class="mossa-pp">PP ${mossa.pp}/${mossa.ppMax}</span>`;
       btn.disabled = mossa.pp <= 0;
-      btn.addEventListener('click', () => turnoCompleto(mossa));
+      btn.addEventListener('click', () => { _ultimoCursoreMosse = idx; turnoCompleto(mossa); });
       menu.appendChild(btn);
-    }
+    });
 
     // Se tutti i PP sono finiti, resta solo "Scontro" (come nei giochi)
     if (tutteScariche) {
@@ -1350,7 +1350,7 @@ const Battle = (function () {
 
     menu.appendChild(bottoneIndietro());
     menu.classList.remove('nascosto');
-    resetCursore();
+    impostaCursore(_ultimoCursoreMosse);
   }
 
   function mostraMenuZaino() {
@@ -1430,6 +1430,12 @@ const Battle = (function () {
      una chiamata a resetCursore() a fine di ognuna delle mostraMenu*.
      ========================================================== */
   let cursoreIdx = 0;
+  // Memoria del cursore sul menu Mosse (richiesta esplicita di Luca, 10 ott
+  // 2026): se scegli la 3ª mossa, al turno dopo il cursore deve ripartire
+  // già sulla 3ª invece che tornare sempre alla 1ª — solo per il menu
+  // Mosse, gli altri menu (Zaino/Pokémon/principale) continuano a
+  // ripartire da 0 come prima.
+  let _ultimoCursoreMosse = 0;
 
   function _pannelloVisibile() {
     return document.querySelector('#battaglia-console .menu-battaglia:not(.nascosto)');
@@ -1445,6 +1451,11 @@ const Battle = (function () {
   }
   function resetCursore() {
     cursoreIdx = 0;
+    _ridisegnaCursore();
+  }
+  function impostaCursore(idx) {
+    const bottoni = _bottoniCursore();
+    cursoreIdx = (idx >= 0 && idx < bottoni.length) ? idx : 0;
     _ridisegnaCursore();
   }
   function spostaCursore(dx, dy) {
@@ -2539,10 +2550,17 @@ const Battle = (function () {
 
     if (scosseRiuscite >= 4) {
       await animaCatturaRiuscita(ball);
+      // Richiesta di Luca (10 ott 2026): dire esplicitamente quando è la
+      // PRIMA cattura di questa specie (voce.catturato era false/assente
+      // prima di segnaPokedex) — prima non si vedeva mai questa conferma.
+      const giaCatturatoPrima = !!(statoGioco.pokedex && statoGioco.pokedex[nemico.id] && statoGioco.pokedex[nemico.id].catturato);
       if (typeof segnaPokedex === 'function') {
         segnaPokedex(nemico.id, nemico.nome, nemico.sprite && nemico.sprite.fronte, true);
       }
       await di(`Gotcha! ${nemico.nome} è stato catturato! 🎉`);
+      if (!giaCatturatoPrima) {
+        await di(`${nemico.nome} è stato registrato nel Pokédex!`);
+      }
       if (statoGioco.squadra.length < 6) {
         statoGioco.squadra.push(nemico);
         await di(`${nemico.nome} si unisce alla squadra!`);
@@ -3360,13 +3378,14 @@ const Battle = (function () {
     resetCursore();
   }
 
+  let _ultimoCursoreMosseDoppia = [0, 0];
   function mostraMenuMosseDoppia(slot) {
     nascondiMenu();
     const m = doppiaMieiAttivi[slot];
     const menu = $('menu-mosse');
     menu.innerHTML = '';
     const tutteScariche = m.mosse.every(x => x.pp <= 0);
-    for (const mossa of m.mosse) {
+    m.mosse.forEach((mossa, idx) => {
       const btn = document.createElement('button');
       btn.className = 'btn-mossa';
       btn.innerHTML =
@@ -3374,9 +3393,9 @@ const Battle = (function () {
         `<span class="tipo-badge" style="background:${TIPO_COLORI[mossa.tipo] || '#888'}">${TIPO_NOMI[mossa.tipo] || mossa.tipo}</span>` +
         `<span class="mossa-pp">PP ${mossa.pp}/${mossa.ppMax}</span>`;
       btn.disabled = mossa.pp <= 0;
-      btn.addEventListener('click', () => _doppiaSceltaMossa(slot, mossa));
+      btn.addEventListener('click', () => { _ultimoCursoreMosseDoppia[slot] = idx; _doppiaSceltaMossa(slot, mossa); });
       menu.appendChild(btn);
-    }
+    });
     if (tutteScariche) {
       const btn = document.createElement('button');
       btn.className = 'btn-mossa';
@@ -3390,7 +3409,7 @@ const Battle = (function () {
     indietro.addEventListener('click', () => mostraMenuPrincipaleDoppia(slot));
     menu.appendChild(indietro);
     menu.classList.remove('nascosto');
-    resetCursore();
+    impostaCursore(_ultimoCursoreMosseDoppia[slot] || 0);
   }
 
   // Tutti i Pokémon in campo tranne "ist" (entrambi i lati, vivi): è il vero

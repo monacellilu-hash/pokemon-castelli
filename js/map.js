@@ -10714,7 +10714,7 @@ const GameMap = (function () {
 
       const testo = (x, y, str, opz = {}) => {
         const o = this.add.text(x, y, str, {
-          fontFamily: 'Arial', fontSize: '13px', color: '#f8f8f8', ...opz,
+          fontFamily: 'Arial', fontSize: '13px', color: '#606060', ...opz,
         }).setOrigin(opz.origin || 0, 0);
         this._layer.add(o);
         return o;
@@ -10763,7 +10763,7 @@ const GameMap = (function () {
 
     // Coordinate esatte di drawPageOne() in UI_Summary.rb.
     _disegnaPaginaInfo(pkm, testo) {
-      const base = { fontSize: '13px', color: '#f8f8f8' };
+      const base = { fontSize: '13px', color: '#606060' };
       const val  = { fontSize: '13px', color: '#484848', fontStyle: 'bold' };
       testo(238, 86, 'N. Dex', base);
       testo(435, 86, `${String(pkm.id).padStart(3, '0')}`, { ...val, origin: 0.5 });
@@ -10808,7 +10808,7 @@ const GameMap = (function () {
 
     // Coordinate esatte di drawPageThree() in UI_Summary.rb.
     _disegnaPaginaSkills(pkm, testo) {
-      const base = { fontSize: '13px', color: '#f8f8f8' };
+      const base = { fontSize: '13px', color: '#606060' };
       const val  = { fontSize: '13px', color: '#484848', fontStyle: 'bold' };
       testo(292, 82, 'HP', { ...base, origin: 0.5 });
       testo(462, 82, `${pkm.hpAttuale}/${pkm.hpMax}`, { ...val, origin: 1 });
@@ -10895,7 +10895,7 @@ const GameMap = (function () {
           this._layer.add(icona);
         }
         testo(316, yRiga, m.nomeIt, { fontSize: '13px', color: '#484848', fontStyle: 'bold' });
-        testo(342, yRiga + 30, 'PP', { fontSize: '11px', color: '#f8f8f8' });
+        testo(342, yRiga + 30, 'PP', { fontSize: '11px', color: '#606060' });
         const ppPct = m.ppMax > 0 ? m.pp / m.ppMax : 1;
         const colorePP = m.pp <= 0 ? '#f84848' : ppPct <= 0.25 ? '#f88820' : ppPct <= 0.5 ? '#f8c000' : '#484848';
         testo(460, yRiga + 30, `${m.pp}/${m.ppMax}`, { fontSize: '11px', color: colorePP, fontStyle: 'bold', origin: 1 });
@@ -10909,7 +10909,7 @@ const GameMap = (function () {
     // di posto con un'altra (stesso schema di Ordina in Squadra), B esce.
     _disegnaDettaglioMossa(pkm, testo) {
       const righe = pkm.mosse || [];
-      const base = { fontSize: '13px', color: '#f8f8f8' };
+      const base = { fontSize: '13px', color: '#606060' };
       testo(20, 128, 'Categoria', base);
       testo(20, 160, 'Potenza', base);
       testo(20, 192, 'Precisione', base);
@@ -10931,7 +10931,7 @@ const GameMap = (function () {
         if (presaPerScambio) {
           testo(460, yRiga, 'A', { fontSize: '12px', color: '#a06000', fontStyle: 'bold', origin: 1 });
         }
-        testo(342, yRiga + 30, 'PP', { fontSize: '11px', color: '#f8f8f8' });
+        testo(342, yRiga + 30, 'PP', { fontSize: '11px', color: '#606060' });
         const ppPct = m.ppMax > 0 ? m.pp / m.ppMax : 1;
         const colorePP = m.pp <= 0 ? '#f84848' : ppPct <= 0.25 ? '#f88820' : ppPct <= 0.5 ? '#f8c000' : '#484848';
         testo(460, yRiga + 30, `${m.pp}/${m.ppMax}`, { fontSize: '11px', color: colorePP, fontStyle: 'bold', origin: 1 });

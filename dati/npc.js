@@ -16,6 +16,77 @@ const SPRITE_CENCIARELS = 'Scenziato_donna';
 
 const DATI_NPC = {
 
+  /* ── NPC all'ingresso di ogni palestra (richiesta esplicita di Luca,
+     10 ott 2026): spiega il tipo della palestra (NON le superefficacie,
+     solo il tipo), racconta qualcosa sul Capopalestra in italiano corretto
+     (non in dialetto) e spiega la regola della palestra quando ce n'è una.
+     Posizionati provvisoriamente vicino all'ingresso — Luca li sposta lui
+     dove preferisce in Tiled. ── */
+  'npc_spiega_palestra_frascati': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Erba.',
+      'Donnie coltiva vigne e pescheti da una vita: dicono che parli ai suoi Pokémon come parla alle sue vigne.',
+      'Qui non ci sono trucchi: solo lotte vere, una dopo l\'altra. Fatti valere!',
+    ],
+  },
+  'npc_spiega_palestra_grottaferrata': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Psico.',
+      'Igino medita ogni alba tra questi chiostri: dice che una mente calma vince più lotte dei pugni.',
+      'Attenzione: nella palestra troverai delle barriere psichiche che bloccano il passaggio. Buona fortuna!',
+    ],
+  },
+  'npc_spiega_palestra_marino': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Acqua.',
+      'Matilde adora la fontana dei Quattro Mori: dice che alla Sagra dell\'Uva versa vino, ma i suoi Pokémon bevono solo acqua di sorgente.',
+      'Nessun enigma, qui: solo onde su onde di sfidanti. Preparati a bagnarti!',
+    ],
+  },
+  'npc_spiega_palestra_monteporzio': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Elettro.',
+      'Biretta passa le notti all\'Osservatorio: dice che l\'energia dei telescopi e quella dei suoi Pokémon vengono dalla stessa fonte.',
+      'Qui si procede dritti, un allenatore dopo l\'altro, fino a lei.',
+    ],
+  },
+  'npc_spiega_palestra_roccadipapa': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Lotta.',
+      'Baso si allena scalando la pietra viva del Vulcano Laziale: i suoi pugni sono duri come il peperino.',
+      'Il bersaglio è segnato: Baso sfida solo chi si dimostra abbastanza forte da spostare i massi.',
+    ],
+  },
+  'npc_spiega_palestra_albano': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Roccia.',
+      'Giorgia custodisce i Castra Albana da sempre: per lei la pietra viva di queste mura vale più di qualsiasi scudo.',
+      'Nessun enigma: solo la durezza della roccia contro la tua determinazione. Ave!',
+    ],
+  },
+  'npc_spiega_palestra_ariccia': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Buio.',
+      'Isa esce solo quando le fraschette si svuotano e il ponte resta deserto: la notte è il suo regno.',
+      'I vuoti tetri a volte nascondono un passaggio: stai attento a ogni passo e trova il sentiero giusto!',
+    ],
+  },
+  'npc_spiega_palestra_genzano': {
+    sprite: 'NPC 02', nome: 'Guida', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto! Questa palestra usa Pokémon di tipo Fuoco.',
+      'Camilla cura l\'Infiorata ogni giugno: dice che senza il calore del vulcano laziale i suoi fiori non sboccerebbero così belli.',
+      'Sei arrivato all\'ultima palestra dei Castelli: qui non si scherza più. In bocca al lupo!',
+    ],
+  },
+
   /* ── Casa del giocatore e casa del/della rivale, Borgata Tuscolana
      (sess. 2 ott 2026, richiesta di Luca) ── */
   // npc_casamia_1f_1 era "Mamma" (sess. 2 ott): Luca ha chiesto di
