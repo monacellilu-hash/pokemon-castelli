@@ -10816,10 +10816,28 @@ const GameMap = (function () {
         ['Attacco', pkm.attacco, 126], ['Difesa', pkm.difesa, 158], ['Att. Speciale', pkm.attSp, 190],
         ['Dif. Speciale', pkm.difSp, 222], ['Velocità', pkm.velocita, 254],
       ];
+      // Colore del valore in base alla Natura (richiesta di Luca, 10 ott
+      // 2026): verde se questa statistica è quella che la Natura alza,
+      // rosso se è quella che abbassa, altrimenti il colore normale.
+      const CHIAVE_STAT_PER_RIGA = { 'Attacco': 'attack', 'Difesa': 'defense', 'Att. Speciale': 'special-attack', 'Dif. Speciale': 'special-defense', 'Velocità': 'speed' };
+      const naturaDef = (typeof Battle !== 'undefined' && Battle.NATURE_DB) ? Battle.NATURE_DB[pkm.natura] : null;
       righe.forEach(([nome, valore, y]) => {
         testo(248, y, nome, base);
-        testo(456, y, `${valore}`, { ...val, origin: 1 });
+        const chiaveStat = CHIAVE_STAT_PER_RIGA[nome];
+        let coloreValore = val.color;
+        if (naturaDef && chiaveStat) {
+          if (naturaDef.boost === chiaveStat) coloreValore = '#1a9850'; // verde: alzata dalla Natura
+          else if (naturaDef.lower === chiaveStat) coloreValore = '#d6342c'; // rosso: abbassata dalla Natura
+        }
+        testo(456, y, `${valore}`, { ...val, color: coloreValore, origin: 1 });
       });
+      // Riga Natura (sotto le statistiche, sopra Abilità) — nome in inglese
+      // per ora, come le MT non ancora piazzate: la traduzione italiana
+      // ufficiale va confermata prima di scriverla.
+      if (pkm.natura) {
+        testo(248, 282, 'Natura', base);
+        testo(456, 282, pkm.natura, { ...val, origin: 1 });
+      }
       // Barra HP reale (crop su hp.png, 3 fasce colore come in Squadra).
       if (pkm.hpAttuale > 0 && pkm.hpMax > 0) {
         const hpPct = Phaser.Math.Clamp(pkm.hpAttuale / pkm.hpMax, 0, 1);
@@ -10829,17 +10847,19 @@ const GameMap = (function () {
         this._layer.add(barra);
       }
 
-      // Abilità (F9.4) — coordinate esatte di drawPageThree() in UI_Summary.rb.
-      testo(224, 282, 'Abilità', base);
+      // Abilità (F9.4) — spostata 32px più in basso per fare spazio alla
+      // riga Natura appena sopra (coordinate originali di drawPageThree()
+      // in UI_Summary.rb erano a y=282, qui non c'era la Natura).
+      testo(224, 314, 'Abilità', base);
       const info = this._abilitaInfo(pkm);
       if (info) {
-        testo(362, 282, info.nomeIt, val);
-        const descTxt = this.add.text(224, 310, info.descrizione, {
+        testo(362, 314, info.nomeIt, val);
+        const descTxt = this.add.text(224, 342, info.descrizione, {
           fontFamily: 'Arial', fontSize: '12px', color: '#484848', fontStyle: 'bold', wordWrap: { width: 282 },
         }).setOrigin(0, 0);
         this._layer.add(descTxt);
       } else {
-        testo(362, 282, '…', val);
+        testo(362, 314, '…', val);
       }
     }
 

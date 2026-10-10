@@ -233,8 +233,56 @@ const Battle = (function () {
      statistiche calcolate + mosse con PP + HP attuali.
      ========================================================== */
 
-  function calcolaStat(base, livello) {
-    return Math.floor(2 * base * livello / 100) + 5;
+  // Natura (richiesta esplicita di Luca, 10 ott 2026 — "altrimenti il
+  // Pokémon non si differenzia"): le 25 nature ufficiali, ciascuna alza
+  // una statistica del 10% e ne abbassa un'altra del 10% (5 sono neutre,
+  // boost===lower, nessun effetto). Nomi in inglese per ora, come le MT
+  // non ancora piazzate (convenzione già in uso nel progetto) — la
+  // traduzione italiana ufficiale va confermata prima di scriverla, per
+  // non rischiare nomi sbagliati.
+  const NATURE_DB = {
+    Hardy:   { boost: null,               lower: null },
+    Lonely:  { boost: 'attack',           lower: 'defense' },
+    Brave:   { boost: 'attack',           lower: 'speed' },
+    Adamant: { boost: 'attack',           lower: 'special-attack' },
+    Naughty: { boost: 'attack',           lower: 'special-defense' },
+    Bold:    { boost: 'defense',          lower: 'attack' },
+    Docile:  { boost: null,               lower: null },
+    Relaxed: { boost: 'defense',          lower: 'speed' },
+    Impish:  { boost: 'defense',          lower: 'special-attack' },
+    Lax:     { boost: 'defense',          lower: 'special-defense' },
+    Timid:   { boost: 'speed',            lower: 'attack' },
+    Hasty:   { boost: 'speed',            lower: 'defense' },
+    Serious: { boost: null,               lower: null },
+    Jolly:   { boost: 'speed',            lower: 'special-attack' },
+    Naive:   { boost: 'speed',            lower: 'special-defense' },
+    Modest:  { boost: 'special-attack',   lower: 'attack' },
+    Mild:    { boost: 'special-attack',   lower: 'defense' },
+    Quiet:   { boost: 'special-attack',   lower: 'speed' },
+    Bashful: { boost: null,               lower: null },
+    Rash:    { boost: 'special-attack',   lower: 'special-defense' },
+    Calm:    { boost: 'special-defense',  lower: 'attack' },
+    Gentle:  { boost: 'special-defense',  lower: 'defense' },
+    Sassy:   { boost: 'special-defense',  lower: 'speed' },
+    Careful: { boost: 'special-defense',  lower: 'special-attack' },
+    Quirky:  { boost: null,               lower: null },
+  };
+  const NOMI_NATURE = Object.keys(NATURE_DB);
+  function generaNatura() {
+    return NOMI_NATURE[Math.floor(Math.random() * NOMI_NATURE.length)];
+  }
+  // Moltiplicatore di natura per UNA statistica (1.1 se la natura la alza,
+  // 0.9 se la abbassa, 1 altrimenti/nature neutre).
+  function moltiplicatoreNatura(natura, chiaveStat) {
+    const n = NATURE_DB[natura];
+    if (!n) return 1;
+    if (n.boost === chiaveStat) return 1.1;
+    if (n.lower === chiaveStat) return 0.9;
+    return 1;
+  }
+
+  function calcolaStat(base, livello, moltiplicatore) {
+    return Math.floor((Math.floor(2 * base * livello / 100) + 5) * (moltiplicatore || 1));
   }
 
   function calcolaHpMax(baseHp, livello) {
@@ -292,12 +340,13 @@ const Battle = (function () {
 
   // Ricalcola le statistiche dal livello (usata anche al level-up)
   function ricalcolaStatistiche(ist) {
+    // HP non è mai influenzata dalla natura (come nei giochi veri).
     ist.hpMax    = calcolaHpMax(ist.basi.hp, ist.livello);
-    ist.attacco  = calcolaStat(ist.basi.attack, ist.livello);
-    ist.difesa   = calcolaStat(ist.basi.defense, ist.livello);
-    ist.attSp    = calcolaStat(ist.basi['special-attack'], ist.livello);
-    ist.difSp    = calcolaStat(ist.basi['special-defense'], ist.livello);
-    ist.velocita = calcolaStat(ist.basi.speed, ist.livello);
+    ist.attacco  = calcolaStat(ist.basi.attack,           ist.livello, moltiplicatoreNatura(ist.natura, 'attack'));
+    ist.difesa   = calcolaStat(ist.basi.defense,           ist.livello, moltiplicatoreNatura(ist.natura, 'defense'));
+    ist.attSp    = calcolaStat(ist.basi['special-attack'], ist.livello, moltiplicatoreNatura(ist.natura, 'special-attack'));
+    ist.difSp    = calcolaStat(ist.basi['special-defense'],ist.livello, moltiplicatoreNatura(ist.natura, 'special-defense'));
+    ist.velocita = calcolaStat(ist.basi.speed,             ist.livello, moltiplicatoreNatura(ist.natura, 'speed'));
   }
 
   // F9.3 — Sesso del Pokémon: 'M' | 'F' | 'N' (senza sesso: leggendari + poche
@@ -374,6 +423,7 @@ const Battle = (function () {
       genere: generaGenere(dati.id),   // F9.3: 'M' | 'F' | 'N'
       abilitaSlot,                     // F9.4: indice nella lista abilità della specie
       abilitaChiave: abilitaChiaveDaSlot(dati, abilitaSlot), // slug inglese (es. "static")
+      natura: generaNatura(),          // richiesta di Luca, 10 ott 2026: ±10% su due stat
     };
     ricalcolaStatistiche(ist);
     ist.hpAttuale = ist.hpMax;
@@ -4037,6 +4087,7 @@ const Battle = (function () {
     avvia, avviaDoppia, creaIstanza, caramellaRara, evolviIstanza, trovaEvoluzioneAuto, generaGenere, trovaSpecieBase,
     sceglieSlotAbilita, abilitaChiaveDaSlot,
     spostaCursore, confermaCursore, indietroCursore,
+    NATURE_DB, generaNatura, ricalcolaStatistiche,
   };
 
 })();

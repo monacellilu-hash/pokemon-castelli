@@ -279,6 +279,19 @@ async function caricaPartita() {
           p.genere = Battle.generaGenere(p.id);
         }
       });
+      // Migrazione (10 ott 2026): assegna la Natura ai Pokémon salvati prima
+      // della sua introduzione e ricalcola le statistiche, altrimenti
+      // resterebbero per sempre senza nessun effetto applicato.
+      [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
+        if (p && !p.uovo && p.natura === undefined && typeof Battle !== 'undefined' && Battle.generaNatura) {
+          p.natura = Battle.generaNatura();
+          if (Battle.ricalcolaStatistiche) {
+            const hpPrima = p.hpMax, pctHp = hpPrima > 0 ? p.hpAttuale / hpPrima : 1;
+            Battle.ricalcolaStatistiche(p);
+            p.hpAttuale = Math.max(1, Math.round(p.hpMax * pctHp));
+          }
+        }
+      });
       // Migrazione: mosse salvate PRIMA dell'aggiunta del campo "categoria"
       // (riduciMossa() in pokeapi.js) restano bloccate per sempre col bug
       // "Nitrocarica alza la velocità dell'avversario invece che la mia" —
