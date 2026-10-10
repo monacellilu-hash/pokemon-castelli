@@ -22466,6 +22466,40 @@
        "value": "spawn"
       }
      ]
+    },
+    {
+     "height": 21.3333333333333,
+     "id": 9008,
+     "name": "npc_gigante_dormiente_marino",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "nord"
+      },
+      {
+       "name": "movimento",
+       "type": "string",
+       "value": "fisso"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "npc_gigante_dormiente_marino"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "npc",
+     "visible": true,
+     "width": 21.3333333333333,
+     "x": 909,
+     "y": 1450
     }
    ],
    "opacity": 1,

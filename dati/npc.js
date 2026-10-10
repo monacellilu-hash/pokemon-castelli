@@ -408,7 +408,8 @@ const DATI_NPC = {
   },
   'pokecenter cliente 2': {
     sprite: 'NPC 03', nome: 'Visitatore', direzione: 'sud', movimento: 'random',
-    dialogo: ['Qui al Centro Pokémon ci si riposa sempre bene.'],
+    dialogo: ['Qui al Centro Pokémon ci si riposa sempre bene.',
+      'Lo sai che puoi "Dormi fino alle..." dal PC o dall\'infermiera? Scegli tu l\'ora con le freccette, come un orologio vero — comodo per saltare dritti alla notte!'],
   },
   'pokecenter cliente 3': {
     sprite: 'NPC 04', nome: 'Visitatrice', direzione: 'sud', movimento: 'random',
@@ -1576,6 +1577,16 @@ const DATI_NPC = {
       'Il Tunnel Roccioso, proprio qui davanti, è l\'unica strada rimasta per Monte Porzio.',
       'Quella sul Percorso 5 è bloccata da un colosso che dorme della grossa: nessuno ha il coraggio di svegliarlo.',
       'Dicono che serva qualcosa di speciale per farlo alzare. Io intanto vado di qua.',
+    ],
+  },
+  // Terzo cartello vivente (richiesta esplicita di Luca, 10 ott 2026):
+  // mancava a Marino, l'altra città che confina col Percorso 5.
+  'npc_gigante_dormiente_marino': {
+    sprite: 'NPC 08', nome: 'Pescatore', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Se vai verso Monte Porzio, lascia perdere il Percorso 5.',
+      'C\'è un Pokémon enorme che dorme in mezzo alla strada — nessuno è mai riuscito a svegliarlo.',
+      'Passa dal Tunnel Roccioso, oltre Via dei Laghi: più lungo, ma almeno ci arrivi.',
     ],
   },
 

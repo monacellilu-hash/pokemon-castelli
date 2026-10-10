@@ -16783,6 +16783,40 @@
      "width": 25,
      "x": 354.833333333333,
      "y": 964
+    },
+    {
+     "height": 21.3333333333333,
+     "id": 499,
+     "name": "npc_gigante_dormiente_gandolfo",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "movimento",
+       "type": "string",
+       "value": "fisso"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "npc_gigante_dormiente_gandolfo"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "npc",
+     "visible": true,
+     "width": 21.3333333333333,
+     "x": 650,
+     "y": 900
     }
    ],
    "opacity": 1,

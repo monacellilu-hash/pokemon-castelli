@@ -5780,7 +5780,11 @@ const GameMap = (function () {
       }
 
       if (tipo === 'pc') {
-        if (typeof apriBoxPC === 'function') apriBoxPC();
+        // Richiesta di Luca, 10 ott 2026: dal PC ora si sceglie prima tra
+        // Box e "Dormi fino alle" (con l'orologio digitale), non si va più
+        // dritti al Box come prima.
+        if (typeof GameMap !== 'undefined' && GameMap.apriMenuNativo) GameMap.apriMenuNativo('PCMenuScene');
+        else if (typeof apriBoxPC === 'function') apriBoxPC();
         return;
       }
 
@@ -11090,6 +11094,129 @@ const GameMap = (function () {
   }
 
   /* ══════════════════════════════════════════════════════════
+     PC MENU — scelta tra Box e "Dormi fino alle" (richiesta esplicita
+     di Luca, 10 ott 2026). Prima il PC andava dritto al Box; ora prima
+     sceglie cosa fare.
+     ══════════════════════════════════════════════════════════ */
+
+  class PCMenuScene extends Phaser.Scene {
+    constructor() { super({ key: 'PCMenuScene' }); }
+
+    create() {
+      this.input.enabled = false;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
+      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
+      this.add.text(CW / 2, CH * 0.28, '💻 PC', {
+        fontFamily: "'Press Start 2P', monospace", fontSize: '18px', color: '#ffcb05',
+        stroke: '#000', strokeThickness: 4,
+      }).setOrigin(0.5).setDepth(2);
+
+      this._voci = [
+        { etichetta: '📦 Box', azione: () => { this.scene.stop(); this.scene.launch('BoxScene'); } },
+        { etichetta: '🛏️ Dormi fino alle...', azione: () => { this.scene.stop(); this.scene.launch('DormiScene'); } },
+        { etichetta: '↩ Esci', azione: () => { this.scene.stop(); if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene(); } },
+      ];
+      this._cursore = 0;
+      const y0 = CH * 0.45;
+      this._righe = this._voci.map((v, i) => {
+        const y = y0 + i * 46;
+        const cursoreTxt = this.add.text(CW / 2 - 140, y, '▶', {
+          fontFamily: "'Press Start 2P', monospace", fontSize: '13px', color: '#ffcb05',
+        }).setOrigin(0, 0.5).setDepth(2).setVisible(i === 0);
+        const etichettaTxt = this.add.text(CW / 2 - 110, y, v.etichetta, {
+          fontFamily: 'Arial', fontSize: '15px', color: '#f0f4ff',
+        }).setOrigin(0, 0.5).setDepth(2);
+        return { cursoreTxt, etichettaTxt };
+      });
+
+      this.add.text(CW / 2, CH - 16, '↑↓ scegli · A conferma · B esce', {
+        fontFamily: 'Arial', fontSize: '12px', color: '#888',
+      }).setOrigin(0.5).setDepth(2);
+
+      const muovi = (d) => {
+        this._righe[this._cursore].cursoreTxt.setVisible(false);
+        this._cursore = (this._cursore + d + this._voci.length) % this._voci.length;
+        this._righe[this._cursore].cursoreTxt.setVisible(true);
+      };
+      this.input.keyboard.on('keydown-UP', () => muovi(-1));
+      this.input.keyboard.on('keydown-DOWN', () => muovi(1));
+      const conferma = () => this._voci[this._cursore].azione();
+      this.input.keyboard.on('keydown-ENTER', conferma);
+      this.input.keyboard.on('keydown-SPACE', conferma);
+      const esci = () => { this.scene.stop(); if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene(); };
+      this.input.keyboard.on('keydown-ESC', esci);
+      this.input.keyboard.on('keydown-B', esci);
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     DORMI — orologio digitale per scegliere l'ora del risveglio
+     (richiesta esplicita di Luca, 10 ott 2026: prima erano solo 4 orari
+     fissi in un pannello DOM — ora qualunque ora, con le freccette, come
+     un vero orologio). Cura la squadra e avanza il tempo richiamando la
+     stessa eseguiDormi() di sempre (js/app.js) — nessuna logica duplicata.
+     ══════════════════════════════════════════════════════════ */
+
+  class DormiScene extends Phaser.Scene {
+    constructor() { super({ key: 'DormiScene' }); }
+
+    create() {
+      this.input.enabled = false;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
+      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
+      this.add.text(CW / 2, CH * 0.22, '🛏️ Dormi fino alle...', {
+        fontFamily: "'Press Start 2P', monospace", fontSize: '14px', color: '#ffcb05',
+        stroke: '#000', strokeThickness: 4,
+      }).setOrigin(0.5).setDepth(2);
+
+      // Parte dall'ora attuale +1 (richiesta implicita: non ha senso
+      // proporre di default l'ora in cui ti trovi già).
+      const oraOra = (typeof stato !== 'undefined' && stato.tempo) ? Math.floor(stato.tempo.minuti / 60) : 8;
+      this._ora = (oraOra + 1) % 24;
+
+      this._orologioTxt = this.add.text(CW / 2, CH * 0.45, '', {
+        fontFamily: "'Press Start 2P', monospace", fontSize: '40px', color: '#ffffff',
+        stroke: '#000', strokeThickness: 5,
+      }).setOrigin(0.5).setDepth(2);
+      this._iconaTxt = this.add.text(CW / 2, CH * 0.6, '', {
+        fontSize: '28px',
+      }).setOrigin(0.5).setDepth(2);
+
+      this.add.text(CW / 2, CH - 16, '↑↓ cambia ora · A conferma · B annulla', {
+        fontFamily: 'Arial', fontSize: '12px', color: '#888',
+      }).setOrigin(0.5).setDepth(2);
+
+      this._aggiorna();
+
+      const cambia = (d) => { this._ora = (this._ora + d + 24) % 24; this._aggiorna(); };
+      this.input.keyboard.on('keydown-UP', () => cambia(1));
+      this.input.keyboard.on('keydown-DOWN', () => cambia(-1));
+      // ←/→ saltano di 6 ore, utile per non dover scorrere 23 volte.
+      this.input.keyboard.on('keydown-LEFT', () => cambia(-6));
+      this.input.keyboard.on('keydown-RIGHT', () => cambia(6));
+
+      const conferma = () => {
+        this.scene.stop();
+        if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene();
+        if (typeof eseguiDormi === 'function') eseguiDormi(this._ora * 60);
+      };
+      this.input.keyboard.on('keydown-ENTER', conferma);
+      this.input.keyboard.on('keydown-SPACE', conferma);
+      const annulla = () => { this.scene.stop(); if (typeof window.chiudiMenuNativoDaScene === 'function') window.chiudiMenuNativoDaScene(); };
+      this.input.keyboard.on('keydown-ESC', annulla);
+      this.input.keyboard.on('keydown-B', annulla);
+    }
+
+    _aggiorna() {
+      this._orologioTxt.setText(`${String(this._ora).padStart(2, '0')}:00`);
+      const notte = this._ora >= 21 || this._ora < 6;
+      const mattina = this._ora >= 6 && this._ora < 12;
+      const pomeriggio = this._ora >= 12 && this._ora < 18;
+      this._iconaTxt.setText(notte ? '🌙 Notte' : mattina ? '🌅 Mattina' : pomeriggio ? '☀️ Pomeriggio' : '🌆 Sera');
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
      BOX — PC del Centro Pokémon (modalità 'strumenti', non fa parte
      della lista del menu Start). 24 box × 30 slot, stessa interazione
      "prendi/posa/scambia" del vecchio pannello DOM (boxMano/
@@ -12682,7 +12809,7 @@ const GameMap = (function () {
       type:            Phaser.AUTO,
       parent:          'mappa',
       backgroundColor: '#000000',
-      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene, SelezionaSquadraPalestraScene],
+      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene, SelezionaSquadraPalestraScene, PCMenuScene, DormiScene],
       scale: {
         mode:       Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,

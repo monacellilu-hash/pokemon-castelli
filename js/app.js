@@ -611,7 +611,10 @@ function controllaEventiTempo() {
 
 // ── "Dormi" al Centro Pokémon ────────────────────────────────
 
-// Apre il pannello di scelta ora del risveglio
+// Apre la schermata di scelta ora del risveglio. Migrata alla schermata
+// nativa DormiScene (js/map.js, richiesta esplicita di Luca, 10 ott
+// 2026: orologio digitale con le freccette, non più 4 orari fissi in un
+// pannello DOM) — stesso ingresso sia da qui (infermiera) sia dal PC.
 function apriMenuDormi(idCentro) {
   if (stato.incontroAttivo || dialogoInCorso) return;
 
@@ -626,39 +629,7 @@ function apriMenuDormi(idCentro) {
     mostraToast('Non hai ancora nessun Pokémon!');
     return;
   }
-
-  // Crea l'overlay "Dormi"
-  let overlay = document.getElementById('overlay-dormi');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'overlay-dormi';
-    overlay.className = 'nascosto';
-    overlay.innerHTML = `
-      <div id="dormi-card">
-        <div id="dormi-titolo">🛏️ Dormi — scegli l'ora del risveglio</div>
-        <div id="dormi-opzioni">
-          <button class="btn-dormi-ora" data-minuti="480">🌅 Mattina (08:00)</button>
-          <button class="btn-dormi-ora" data-minuti="840">☀️ Pomeriggio (14:00)</button>
-          <button class="btn-dormi-ora" data-minuti="1140">🌆 Sera (19:00)</button>
-          <button class="btn-dormi-ora" data-minuti="1380">🌙 Notte (23:00)</button>
-        </div>
-        <button id="btn-dormi-chiudi">✖ Annulla</button>
-      </div>`;
-    document.body.appendChild(overlay);
-
-    overlay.querySelectorAll('.btn-dormi-ora').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const minutiTarget = parseInt(btn.dataset.minuti, 10);
-        eseguiDormi(minutiTarget);
-        overlay.classList.add('nascosto');
-      });
-    });
-    document.getElementById('btn-dormi-chiudi').addEventListener('click', () => {
-      overlay.classList.add('nascosto');
-    });
-  }
-
-  overlay.classList.remove('nascosto');
+  if (typeof GameMap !== 'undefined' && GameMap.apriMenuNativo) GameMap.apriMenuNativo('DormiScene');
 }
 
 // Esegue il "dormi": avanza il tempo, cura, salva
