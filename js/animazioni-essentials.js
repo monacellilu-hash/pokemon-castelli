@@ -611,9 +611,9 @@ const AnimazioniEssentials = (function () {
     await _giocaImpattoRom('horn_hit.png', attaccanteEl, bersaglioEl);
   }
 
-  // Attacco Furia / RAFFICA (richiesta esplicita di Luca, 10 ott 2026 —
-  // "Raffica prima era meglio", cioè il riuso generico di _giocaCornoRom
-  // qui sotto non bastava): nello script vero (Move_FURY_ATTACK,
+  // Attacco Furia (bonus del 10 ott 2026, non era quella che Luca
+  // intendeva con "Raffica" — vedi _giocaGustRom più sotto per quella
+  // vera, Raffica di Vento/Gust): nello script vero (Move_FURY_ATTACK,
   // data/battle_anim_scripts.s) sono DUE colpi alternati, uno da destra e
   // uno da sinistra del bersaglio (FuryAttackRight/FuryAttackLeft), non un
   // singolo lampo centrato. Stessa grafica horn_hit.png, ma due impatti
@@ -695,6 +695,62 @@ const AnimazioniEssentials = (function () {
     ctx.restore();
     if (bersaglioEl) bersaglioEl.style.transform = originale;
     await new Promise(r => setTimeout(r, 220));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // RAFFICA DI VENTO / GUST (richiesta esplicita di Luca, 10 ott 2026 —
+  // QUESTA è la "Raffica" che intendeva: l'attacco Volante base di
+  // Pidgey, non Attacco Furia). Nello script vero (Move_GUST,
+  // AnimEllipticalGust/_Step in src/battle_anim_flying.c) un mulinello
+  // orbita in ELLISSE sopra il bersaglio per ~71 fotogrammi GBA (~1,2s) —
+  // raggio orizzontale 32px, verticale 8px, come un tornado visto di
+  // lato — poi un lampo d'impatto con scuotimento. Prima riusava il
+  // proiettile generico Volante (_giocaVolanteRom); ora ha la sua vera
+  // animazione con la grafica vera gust.png.
+  async function _giocaGustRom(attaccanteEl, bersaglioEl) {
+    const { img: imgGust, pronta: prontaGust } = caricaImmagineRom('gust.png');
+    const { img: imgImpact, pronta: prontaImpact } = caricaImmagineRom('impact.png');
+    await Promise.all([prontaGust, prontaImpact]);
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+
+    await new Promise(resolve => {
+      const durataMs = 1190; // ~71 fotogrammi GBA a ~59,7fps
+      const inizio = performance.now();
+      function passo(ora) {
+        const t = ora - inizio;
+        if (t >= durataMs) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          resolve();
+          return;
+        }
+        // Angolo che avanza di 5/256 di giro per fotogramma GBA, come
+        // l'originale (sprite->data[1] += 5; &= 0xFF) — circa 1,4 giri
+        // completi nella durata totale.
+        const angolo = (t / durataMs) * Math.PI * 2 * 1.4;
+        const offX = Math.sin(angolo) * 32 * scalaX;
+        const offY = Math.cos(angolo) * 8 * scalaY;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.translate(centro.x + offX, centro.y + 20 * scalaY + offY);
+        ctx.scale(scalaX, scalaY);
+        ctx.drawImage(imgGust, -16, -32, 32, 64);
+        ctx.restore();
+        requestAnimationFrame(passo);
+      }
+      requestAnimationFrame(passo);
+    });
+
+    _scuotiSpriteRom(bersaglioEl, 3, 180);
+    ctx.save();
+    ctx.translate(centro.x, centro.y);
+    ctx.scale(scalaX, scalaY);
+    ctx.drawImage(imgImpact, -16, -16, 32, 32);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 200));
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -1248,8 +1304,11 @@ const AnimazioniEssentials = (function () {
     FLASHCANNON: _giocaAcciaioRom, MIRRORSHOT: _giocaAcciaioRom, MAGNETBOMB: _giocaAcciaioRom,
     GYROBALL: _giocaAcciaioRom, MIRRORCOAT: _giocaAcciaioRom,
 
-    AIRSLASH: _giocaVolanteRom, AIRCUTTER: _giocaVolanteRom, GUST: _giocaVolanteRom,
+    AIRSLASH: _giocaVolanteRom, AIRCUTTER: _giocaVolanteRom,
     HURRICANE: _giocaVolanteRom,
+    // Tolta dal riuso generico sopra: ha la sua coreografia vera (richiesta
+    // esplicita di Luca, 10 ott 2026 — questa è la "Raffica" di Pidgey).
+    GUST: _giocaGustRom,
 
     SWIFT: _giocaStellaRom,
 
