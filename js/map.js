@@ -9401,6 +9401,8 @@ const GameMap = (function () {
     constructor() { super({ key: 'PauseMenuScene' }); }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const femmina = typeof stato !== 'undefined' && stato.genere === 'F';
       // "Scheda Allenatore" in Essentials reale non è un'etichetta generica:
@@ -9515,6 +9517,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const scala = Math.min(CW / UI_CARD_W, CH / UI_CARD_H);
       const offX = (CW - UI_CARD_W * scala) / 2, offY = (CH - UI_CARD_H * scala) / 2;
@@ -9603,6 +9607,8 @@ const GameMap = (function () {
     // arriva da lì (scene.launch con quei dati), omesso al primo ingresso
     // dal menu (si parte da pagina 0/cursore 0 come sempre).
     create(datiRipristino) {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
       this.add.text(CW / 2, 26, 'POKÉDEX', {
@@ -9697,6 +9703,8 @@ const GameMap = (function () {
     init(dati) { this._id = dati.id; this._tornaA = dati.tornaA; }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
       const voce = stato.pokedex[this._id] || {};
@@ -9769,6 +9777,8 @@ const GameMap = (function () {
     constructor() { super({ key: 'OpzioniScene' }); }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0c1840, 1).setDepth(0);
       this.add.text(CW / 2, 26, 'OPZIONI', {
@@ -9902,6 +9912,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const scala = Math.min(CW / UI_PARTY_W, CH / UI_PARTY_H);
       const offX = (CW - UI_PARTY_W * scala) / 2, offY = (CH - UI_PARTY_H * scala) / 2;
@@ -10422,6 +10434,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this._barraAzioniH = 60;
       const scala = Math.min(CW / UI_PARTY_W, (CH - this._barraAzioniH) / UI_PARTY_H);
@@ -10970,6 +10984,8 @@ const GameMap = (function () {
     constructor() { super({ key: 'BoxScene' }); }
 
     create(dati) {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       this._cursoreIniziale = (dati && dati.cursore) || 0;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x141420, 1).setDepth(0);
@@ -11186,6 +11202,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       // Sfondo reale del Poké Market di Essentials (stesso trattamento di
       // ZainoScene: immagine a piena schermata + velo scuro per leggibilità).
@@ -11484,6 +11502,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       // Stessa tecnica di PartyScene/PartyDetailScene: risoluzione virtuale
       // = risoluzione reale dell'asset (512×384), scalata e centrata (mai
@@ -11880,6 +11900,8 @@ const GameMap = (function () {
     init(data) { this._chiave = data.chiave; }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x141420, 1).setDepth(0);
       const oggetto = OGGETTI[this._chiave];
@@ -12020,6 +12042,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       // Il Recap è una schermata custom di questo progetto (non esiste
       // nell'originale): riusa lo sfondo reale "Load" di Essentials, lo
@@ -12079,6 +12103,8 @@ const GameMap = (function () {
     }
 
     create() {
+      // Niente click/tocco qui (richiesta esplicita di Luca, 10 ott 2026): solo tastiera (freccette + A/Invio/Spazio = conferma, B/Esc = indietro). Causa del problema precedente: provare a farlo da FUORI (subito dopo new Phaser.Game) non funzionava perché le scene non sono ancora registrate in quel momento — va fatto qui, dentro ogni create().
+      this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       // Stesso sfondo reale di RecapScene (schermata custom di questo
       // progetto, non esiste nell'originale): sfondo "Load" + velo scuro, e
@@ -12389,27 +12415,6 @@ const GameMap = (function () {
       disableVisibilityChange: true,
     });
 
-    // Click/tocco disabilitato in TUTTE le schermate native coi menu
-    // (richiesta esplicita di Luca, 9 ott 2026: "clicco su una freccia o su
-    // A/B e mi prende il click sotto, non va bene" — tutto deve passare da
-    // freccette+A/B). Causa reale: input.windowEvents:true (sopra) fa
-    // ascoltare Phaser anche fuori dal canvas, quindi un tocco sul D-pad/
-    // A/B DOM finisce ANCHE nel hit-test di Phaser sulle stesse coordinate
-    // schermo — se lì sotto c'è un bottone di menu, scatta pure quello.
-    // Si disabilita SOLO l'input a puntatore (mouse/touch) di queste scene,
-    // non la tastiera: ogni schermata elencata qui ha già un cursore e
-    // A/Invio/Spazio=conferma, B/Esc=indietro completi. GameScene e
-    // InteriorScene (il mondo di gioco) NON sono in questo elenco: lì
-    // restano invariati il D-pad/A/B e il tocco per muoversi/interagire.
-    // Fa eccezione solo la schermata iniziale nome+difficoltà, che non è
-    // una Scene Phaser ma overlay DOM a parte — non tocca questo elenco.
-    const SCENE_SENZA_CLICK = ['PauseMenuScene', 'TrainerCardScene', 'PokedexScene',
-      'PokedexDetailScene', 'OpzioniScene', 'PartyScene', 'PartyDetailScene',
-      'ZainoScene', 'ZainoBersaglioScene', 'RecapScene', 'SalvaScene', 'BoxScene', 'MarketScene'];
-    for (const chiave of SCENE_SENZA_CLICK) {
-      const s = phaserGame.scene.keys[chiave];
-      if (s) s.events.on('create', () => { if (s.input) s.input.enabled = false; });
-    }
   }
 
   // Attiva l'interazione con l'evento che il giocatore sta guardando (tasto [A]).
