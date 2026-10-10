@@ -2442,7 +2442,16 @@ const Battle = (function () {
       }
 
       await controllaNuoveMosse(ist);
-      await controllaEvoluzione(ist);
+      const evoluto = await controllaEvoluzione(ist);
+      // BUG CRITICO (segnalato 10 ott 2026): se l'evoluzione scatta PROPRIO
+      // a questo livello (es. Torchic -> Combusken a Lv.16, e Doppio Calcio
+      // è una mossa di LIVELLO 16 di Combusken, non di Torchic), il
+      // controllo sopra girava ancora con lo specie VECCHIA (Torchic non
+      // impara Doppio Calcio) e poi l'evoluzione aggiornava mosseImparabili
+      // troppo tardi: quel livello non veniva mai più ricontrollato, la
+      // mossa andava persa per sempre. Dopo un'evoluzione bisogna
+      // riprovare SUBITO con la specie nuova, allo stesso livello.
+      if (evoluto) await controllaNuoveMosse(ist);
     }
 
     if (!mostraBarra) aggiornaPannelli();
@@ -2586,7 +2595,7 @@ const Battle = (function () {
     try {
       if (ist.felicita != null) ist.felicita = Math.min(255, ist.felicita + 5);  // sale coi livelli
       const evo = trovaEvoluzioneAuto(ist);
-      if (!evo) return;
+      if (!evo) return false;
 
       await di(`Cosa?! ${ist.nome} si sta evolvendo!`);
       const vecchioNome = ist.nome;
@@ -2594,10 +2603,12 @@ const Battle = (function () {
       aggiornaSprite();
       aggiornaPannelli();
       await di(`🎉 ${vecchioNome} si è evoluto in ${ist.nome}!`);
+      return true;
     } catch (err) {
       // Se la rete fallisce non blocchiamo la battaglia: l'evoluzione
       // verrà ritentata al prossimo level-up.
       console.warn('[Battle] Controllo evoluzione saltato:', err.message);
+      return false;
     }
   }
 
@@ -3027,21 +3038,26 @@ const Battle = (function () {
     ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - vecchioHpMax));
     messaggi.push(`✨ ${ist.nome} sale al livello ${ist.livello}!`);
 
-    // Nuove mosse imparate a questo livello
-    const nuove = (ist.mosseImparabili || []).filter(m => m.livello === ist.livello);
-    for (const voce of nuove) {
-      if (ist.mosse.some(s => s.nome === voce.nome)) continue;
-      let dettagli;
-      try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
-      catch (e) { continue; }
-      if (!mossaUtile(dettagli)) continue; // stesso fix di controllaNuoveMosse
-      if (ist.mosse.length < 4) {
-        ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
-        messaggi.push(`${ist.nome} impara ${dettagli.nomeIt}!`);
-      } else {
-        messaggi.push(`${ist.nome} vorrebbe imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`);
+    // Nuove mosse imparate a questo livello (anche qui: ricontrollata DOPO
+    // un'eventuale evoluzione, stesso bug/fix di assegnaExp — vedi commento
+    // lì, 10 ott 2026).
+    const controllaNuoveMosseCaramella = async () => {
+      const nuove = (ist.mosseImparabili || []).filter(m => m.livello === ist.livello);
+      for (const voce of nuove) {
+        if (ist.mosse.some(s => s.nome === voce.nome)) continue;
+        let dettagli;
+        try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
+        catch (e) { continue; }
+        if (!mossaUtile(dettagli)) continue; // stesso fix di controllaNuoveMosse
+        if (ist.mosse.length < 4) {
+          ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
+          messaggi.push(`${ist.nome} impara ${dettagli.nomeIt}!`);
+        } else {
+          messaggi.push(`${ist.nome} vorrebbe imparare ${dettagli.nomeIt}, ma conosce già 4 mosse.`);
+        }
       }
-    }
+    };
+    await controllaNuoveMosseCaramella();
 
     // Evoluzione per livello/felicità (EVOLUZIONI_DB)
     try {
@@ -3051,6 +3067,7 @@ const Battle = (function () {
         const vecchioNome = ist.nome;
         await evolviIstanza(ist, evo.idEvo);
         messaggi.push(`🎉 ${vecchioNome} si è evoluto in ${ist.nome}!`);
+        await controllaNuoveMosseCaramella();   // la specie nuova potrebbe imparare una mossa propria a QUESTO stesso livello
       }
     } catch (err) {
       console.warn('[Battle] Controllo evoluzione (caramella) saltato:', err.message);
