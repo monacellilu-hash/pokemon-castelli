@@ -238,13 +238,14 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Sess. 1 ott 2026: squadra portata a 6 (prima 4, troppo facile per
     // essere la prima palestra) + scorta di cura (richiesta di Luca).
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
       { id: 69,  livello: 9 },   // Bellsprout
-      { id: 187, livello: 10 },  // Hoppip
-      { id: 43,  livello: 11 },  // Oddish
-      { id: 285, livello: 12 },  // Shroomish
+      { id: 114, livello: 10 },  // Tangela
+      { id: 271, livello: 11 },  // Lombre
+      { id: 2,   livello: 12 },  // Ivysaur
       { id: 44,  livello: 13 },  // Gloom
-      { id: 315, livello: 14 },  // Roselia (l'asso)
+      { id: 253, livello: 14 },  // Grovyle (l'asso)
     ],
     oggettiCura: [{ chiave: 'pozione', quantita: 3 }],
     dialogo_prima: 'Sono Donnie, Capopalestra di Frascati. Cresciuto tra le pesche e le vigne di mio padre, ho allenato questi Pokémon Erba con le mie mani — e qualche erba l\'ho pure assaggiata. Odio solo una cosa quanto le gelate tardive: il Team GdF. Vediamo se reggi il confronto!',
@@ -297,14 +298,14 @@ const DATI_TRAINER = {
     sprite: 'Igino_Grottaferrata', ritratto: 'LEADER_Sabrina', vista: 0,
     classe: 'Capopalestra', nome: 'Igino',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
-    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 63,  livello: 16 },  // Abra
+      { id: 36,  livello: 16 },  // Clefable
       { id: 177, livello: 17 },  // Natu
-      { id: 325, livello: 18 },  // Spoink
+      { id: 326, livello: 18 },  // Grumpig
       { id: 64,  livello: 19 },  // Kadabra
       { id: 97,  livello: 20 },  // Hypno
-      { id: 326, livello: 21 },  // Grumpig (l'asso)
+      { id: 196, livello: 21 },  // Espeon (l'asso)
     ],
     oggettiCura: [{ chiave: 'pozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'Benvenuto all\'Abbazia di San Nilo, pellegrino. Sono Igino: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente. I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!',
@@ -418,12 +419,12 @@ const DATI_TRAINER = {
     sprite: 'Er_biretta_Capopalestra', ritratto: 'LEADER_Surge', vista: 0,
     classe: 'Capopalestra', nome: 'Biretta',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
-    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
       { id: 125, livello: 30 },  // Electabuzz
       { id: 26,  livello: 31 },  // Raichu
       { id: 101, livello: 32 },  // Electrode
-      { id: 82,  livello: 32 },  // Magneton
+      { id: 135, livello: 32 },  // Jolteon
       { id: 310, livello: 33 },  // Manectric
       { id: 181, livello: 34 },  // Ampharos (l'asso)
     ],
@@ -829,12 +830,12 @@ const DATI_TRAINER = {
     sprite: 'trainer_ELITEFOUR_Bruno', ritratto: 'ELITEFOUR_Bruno', vista: 0,
     classe: 'Capopalestra', nome: 'Baso',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
-    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
       { id: 297, livello: 35 },  // Hariyama
       { id: 107, livello: 36 },  // Hitmonchan
       { id: 106, livello: 37 },  // Hitmonlee
-      { id: 286, livello: 38 },  // Breloom
+      { id: 257, livello: 38 },  // Blaziken
       { id: 308, livello: 39 },  // Medicham
       { id: 68,  livello: 40 },  // Machamp (l'asso)
     ],
@@ -919,14 +920,17 @@ const DATI_TRAINER = {
     sprite: 'Giorgia_capopalestra', ritratto: 'LEADER_Brock', vista: 0,
     classe: 'Capopalestra', nome: 'Giorgia',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
-    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
+    // Nota: Luca ha scritto "Steelix (305)" nel documento — 305 è l'id di
+    // Lairon (il Pokémon che Steelix sostituisce), Steelix vero è 208.
+    // Corretto qui con l'id giusto per il nome scritto.
     squadra: [
       { id: 299, livello: 41 },  // Nosepass
-      { id: 28,  livello: 42 },  // Sandslash
-      { id: 305, livello: 43 },  // Lairon
+      { id: 306, livello: 42 },  // Aggron
+      { id: 208, livello: 43 },  // Steelix
       { id: 76,  livello: 44 },  // Golem
       { id: 112, livello: 45 },  // Rhydon
-      { id: 306, livello: 46 },  // Aggron (l'asso)
+      { id: 248, livello: 46 },  // Tyranitar (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'ALT! Chi entra nei Castra Albana deve dimostrare il proprio valore! Sono Giorgia: queste mura sono di pietra viva da duemila anni, e la mia palestra ne custodisce la durezza. Niente trucchi, niente scuse: solo pietra contro pietra. AVE!',
@@ -939,10 +943,10 @@ const DATI_TRAINER = {
     sprite: 'Capopalestra_Marino_Matilde', ritratto: 'LEADER_Misty', vista: 0,
     classe: 'Capopalestra', nome: 'Matilde',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
-    // Sess. 1 ott 2026: squadra portata a 6 + scorta di cura.
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
       { id: 61,  livello: 24 },  // Poliwhirl
-      { id: 279, livello: 25 },  // Pelipper
+      { id: 134, livello: 25 },  // Vaporeon
       { id: 119, livello: 26 },  // Seaking
       { id: 195, livello: 26 },  // Quagsire
       { id: 184, livello: 27 },  // Azumarill
@@ -1038,13 +1042,14 @@ const DATI_TRAINER = {
     sprite: 'Capopalestra_Ariccia', ritratto: 'LEADER_Koga', vista: 0,
     classe: 'Capopalestra', nome: 'Isa',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 262, livello: 48 },  // Mightyena
-      { id: 319, livello: 49 },  // Sharpedo
-      { id: 275, livello: 50 },  // Shiftry
-      { id: 342, livello: 50 },  // Crawdaunt
+      { id: 229, livello: 51 },  // Houndoom
+      { id: 319, livello: 51 },  // Sharpedo
+      { id: 275, livello: 51 },  // Shiftry
+      { id: 342, livello: 51 },  // Crawdaunt
       { id: 359, livello: 51 },  // Absol
-      { id: 229, livello: 52 },  // Houndoom (l'asso)
+      { id: 197, livello: 52 },  // Umbreon (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Isa. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
@@ -1143,19 +1148,21 @@ const DATI_TRAINER = {
     sprite: 'trainer_LEADER_Camilla', ritratto: 'LEADER_Blaine', vista: 0,
     classe: 'Capopalestra', nome: 'Camilla',
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
+    // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md):
+    // cap alzato da 58 a 63, aggiornato anche in js/data.js (PALESTRE['genzano'].levelCap).
     squadra: [
-      { id: 38,  livello: 54 },  // Ninetales
-      { id: 126, livello: 55 },  // Magmar
-      { id: 323, livello: 55 },  // Camerupt
-      { id: 324, livello: 56 },  // Torkoal
-      { id: 136, livello: 57 },  // Flareon
-      { id: 59,  livello: 58 },  // Arcanine (l'asso)
+      { id: 38,  livello: 62 },  // Ninetales
+      { id: 59,  livello: 62 },  // Arcanine
+      { id: 323, livello: 62 },  // Camerupt
+      { id: 157, livello: 62 },  // Typhlosion
+      { id: 136, livello: 62 },  // Flareon
+      { id: 6,   livello: 63 },  // Charizard (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Benvenuto a Genzano, dove ogni giugno la via si copre di petali per l\'Infiorata! Sono Camilla, l\'ultima Capopalestra dei Castelli. Sotto questi fiori scorre il calore del vulcano laziale: senza quel fuoco, l\'Infiorata non fiorirebbe così bella. I miei Pokémon di tipo Fuoco sono la stessa fiamma che nutre i miei fiori. Sei l\'ultimo quadro della mia Infiorata: vediamo di che colori sei fatto!',
     dialogo_dopo: 'Splendido… un capolavoro degno dell\'Infiorata! La Medaglia Lava è tua: ora la Via Vittoria e la Lega di Colonna ti aspettano!',
     premio: 5800,
-    palestraId: 'genzano',   // → assegna la Medaglia Lava e alza il level cap a 58
+    palestraId: 'genzano',   // → assegna la Medaglia Lava e alza il level cap a 63
   },
 
   /* ── TEAM GdF all'Abbazia di San Nilo (Grottaferrata) — 3 grunt (Lv 18-21) ──

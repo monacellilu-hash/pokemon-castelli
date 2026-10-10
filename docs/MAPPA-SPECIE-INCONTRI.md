@@ -277,7 +277,7 @@ Probabilita per casella: 18%
 | 60 | Poliwag | 18-23 | 22 |
 | 116 | Horsea | 19-24 | 22 |
 | 120 | Staryu | 18-22 | 16 |
-| 130 | Gyarados (raro, forte) | 25-28 | 3 |
+| 130 | Gyarados (raro, forte) | 25-28 | 0.5 |
 | 170 | Chinchou (Gen2) | 18-23 | 22 |
 | 370 | Luvdisc | 19-23 | 22 |
 
@@ -315,6 +315,25 @@ Probabilita per casella: 15%
 | ID | Nome | Lv | rate |
 |---|---|---|---|
 | 318 | Carvanha (Gen3, raro) | 19-23 | 22 |
+
+## incontri ACQUA_castel_gandolfo_surf e percorso 5 surf
+Probabilita per casella: 15%
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 54 | Psyduck | 12-16 | 22 |
+| 60 | Poliwag | 12-16 | 22 |
+| 61 | Poliwhirl (evoluto) | 14-17 | 16 |
+| 90 | Shellder | 14-18 | 22 |
+| 118 | Goldeen | 13-17 | 22 |
+| 270 | Lotad (Gen3) | 12-16 | 28 |
+| 183 | Marill (Gen2) | 12-16 | 28 |
+
+**Solo di notte (21:00-06:00):**
+
+| ID | Nome | Lv | rate |
+|---|---|---|---|
+| 298 | Azurill (cucciolo di Marill) | 12-14 | 28 |
 
 ## incontri percorso 5
 Probabilita per casella: 15%

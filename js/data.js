@@ -607,7 +607,7 @@ const PALESTRE = [
     luogo: 'Centro storico (Infiorata)',
     lat: 41.7068, lon: 12.6898,
     tipo: 'Fuoco',
-    levelCap: 58,
+    levelCap: 63,  // alzato da Luca, 10 ott 2026 (squadra di Camilla aggiornata)
     descrizione: "Sulla via dell'Infiorata, il calore che sale dal sottosuolo vulcanico fa sbocciare i fiori migliori: Camilla coltiva anche Pokémon di tipo Fuoco.",
     medaglia: 'Medaglia Lava',
     mtDonata: 'mt08',

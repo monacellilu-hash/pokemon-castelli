@@ -320,7 +320,7 @@ const DATI_INCONTRI = {
       { id: 60, min: 18, max: 23, rate: 22 },  // Poliwag
       { id: 116, min: 19, max: 24, rate: 22 },  // Horsea
       { id: 120, min: 18, max: 22, rate: 16 },  // Staryu
-      { id: 130, min: 25, max: 28, rate: 3 },  // Gyarados (raro, forte)
+      { id: 130, min: 25, max: 28, rate: 0.5 },  // Gyarados (raro, forte) — abbassato da Luca (10 ott 2026)
       { id: 170, min: 18, max: 23, rate: 22 },  // Chinchou (Gen2)
       { id: 370, min: 19, max: 23, rate: 22 },  // Luvdisc
 ],
@@ -333,6 +333,26 @@ const DATI_INCONTRI = {
       { id: 90, min: 20, max: 24, rate: 22 },  // Shellder
       { id: 194, min: 20, max: 25, rate: 28 },  // Wooper (Gen2)
       { id: 318, min: 24, max: 28, rate: 22 },  // Carvanha (Gen3)
+],
+  },
+
+  // ── CASTEL GANDOLFO (specchio d'acqua) + PERCORSO 5 — Surf (Lv 12-18) ──
+  // Tabella dedicata scritta da Luca (10 ott 2026, docs/MAPPA-SPECIE-INCONTRI.md):
+  // prima qui "prendeva da Marino" tramite un alias — ora ha una tabella vera,
+  // condivisa da Castel Gandolfo e Percorso 5 (stesso specchio d'acqua).
+  'acqua_castel_gandolfo_surf': {
+    probabilita: 15,
+    pokemon: [
+      { id: 54,  min: 12, max: 16, rate: 22 },  // Psyduck
+      { id: 60,  min: 12, max: 16, rate: 22 },  // Poliwag
+      { id: 61,  min: 14, max: 17, rate: 16 },  // Poliwhirl (evoluto)
+      { id: 90,  min: 14, max: 18, rate: 22 },  // Shellder
+      { id: 118, min: 13, max: 17, rate: 22 },  // Goldeen
+      { id: 270, min: 12, max: 16, rate: 28 },  // Lotad (Gen3)
+      { id: 183, min: 12, max: 16, rate: 28 },  // Marill (Gen2)
+],
+    pokemonNotte: [
+      { id: 298, min: 12, max: 14, rate: 28 },  // Azurill (cucciolo di Marill)
 ],
   },
 
@@ -975,8 +995,9 @@ DATI_INCONTRI['acqua profonda lago di albano'] = DATI_INCONTRI['incontri lago al
 
 // Alias (6 ott 2026, richiesta di Luca): Percorso 5 Surf riusa la STESSA
 // tabella del Surf di Castel Gandolfo ("prendi da lì" — stesso specchio
-// d'acqua, Castel Gandolfo sblocca il bivio verso Percorso 5).
-DATI_INCONTRI['acqua_percorso_5'] = DATI_INCONTRI['acqua_marino_surf'];
+// d'acqua, Castel Gandolfo sblocca il bivio verso Percorso 5). Aggiornato
+// 10 ott 2026: ora punta alla tabella dedicata vera, non più a Marino.
+DATI_INCONTRI['acqua_percorso_5'] = DATI_INCONTRI['acqua_castel_gandolfo_surf'];
 
 // Alias (6 ott 2026, richiesta di Luca: "Lago di Nemi fallo uguale a Lago
 // di Albano"): sia la zona Surf che quella a terra riusano le tabelle di
