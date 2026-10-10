@@ -292,6 +292,15 @@ async function caricaPartita() {
           }
         }
       });
+      // Migrazione (10 ott 2026): assegna EV azzerati ai Pokémon salvati
+      // prima dell'introduzione — senza questo, ricalcolaStatistiche() li
+      // leggerebbe come undefined ogni volta (funziona comunque, ma meglio
+      // avere il campo vero salvato invece di ricostruirlo ogni giro).
+      [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
+        if (p && !p.uovo && p.ev === undefined && typeof Battle !== 'undefined' && Battle.evAzzerati) {
+          p.ev = Battle.evAzzerati();
+        }
+      });
       // Migrazione: mosse salvate PRIMA dell'aggiunta del campo "categoria"
       // (riduciMossa() in pokeapi.js) restano bloccate per sempre col bug
       // "Nitrocarica alza la velocità dell'avversario invece che la mia" —
@@ -5377,6 +5386,40 @@ async function usaOggettoSu(chiave, idx) {
     const risultato = await Battle.caramellaRara(pkm, stato.levelCap);
     if (risultato.ok) stato.zaino[chiave] -= 1;
     mostraToast(risultato.messaggi.join(' '), 4000);
+  } else if (oggetto.categoria === 'vitamina') {
+    // Richiesta di Luca, 10 ott 2026: ora hanno un effetto vero (prima
+    // erano solo oggetti acquistabili senza meccanica, vedi commento sopra
+    // la loro definizione in OGGETTI). Regola dei giochi veri: +10 EV
+    // nella statistica, ma le vitamine si fermano da sole quando quella
+    // statistica arriva a 100 EV (oltre ci si arriva solo in lotta) — più
+    // i due tetti generali (252 per statistica, 510 in tutto).
+    const CHIAVE_EV_PER_VITAMINA = {
+      proteina: 'attack', ferro: 'defense', calcio: 'special-attack',
+      zinco: 'special-defense', carburante: 'speed', proteine_hp: 'hp',
+    };
+    const chiaveEv = CHIAVE_EV_PER_VITAMINA[chiave];
+    if (!chiaveEv || typeof Battle === 'undefined' || !Battle.evAzzerati) return;
+    if (!pkm.ev) pkm.ev = Battle.evAzzerati();
+    const SOGLIA_VITAMINA = 100;
+    if (pkm.ev[chiaveEv] >= SOGLIA_VITAMINA) {
+      mostraToast(`${pkm.nome} ha già preso troppe ${oggetto.nome}: non ha più effetto (serve allenarsi in lotta per andare oltre).`);
+      return;
+    }
+    const spazio = Math.min(10, SOGLIA_VITAMINA - pkm.ev[chiaveEv], (Battle.EV_MAX_SINGOLA || 252) - pkm.ev[chiaveEv]);
+    const totaleOra = Battle.evTotale(pkm.ev);
+    const effettivo = Math.max(0, Math.min(spazio, (Battle.EV_MAX_TOTALE || 510) - totaleOra));
+    if (effettivo <= 0) {
+      mostraToast(`${pkm.nome} ha già il massimo di EV possibile: la ${oggetto.nome} non ha più effetto.`);
+      return;
+    }
+    pkm.ev[chiaveEv] += effettivo;
+    const hpMaxPrima = pkm.hpMax;
+    Battle.ricalcolaStatistiche(pkm);
+    const delta = pkm.hpMax - hpMaxPrima;
+    if (delta > 0) pkm.hpAttuale = Math.min(pkm.hpMax, pkm.hpAttuale + delta);
+    stato.zaino[chiave] -= 1;
+    if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
+    mostraToast(`${oggetto.icona} ${pkm.nome} si sente più in forma! (+${effettivo} EV)`);
   } else if (oggetto.categoria === 'pietra') {
     const evo = trovaEvoluzionePietra(pkm.id, chiave);
     if (!evo) {

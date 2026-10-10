@@ -10831,12 +10831,20 @@ const GameMap = (function () {
         }
         testo(456, y, `${valore}`, { ...val, color: coloreValore, origin: 1 });
       });
-      // Riga Natura (sotto le statistiche, sopra Abilità) — nome in inglese
-      // per ora, come le MT non ancora piazzate: la traduzione italiana
-      // ufficiale va confermata prima di scriverla.
-      if (pkm.natura) {
+      // Riga Natura (sotto le statistiche, sopra Abilità), nome ufficiale
+      // italiano verificato il 10 ott 2026 su veekun.com.
+      if (pkm.natura && naturaDef) {
         testo(248, 282, 'Natura', base);
-        testo(456, 282, pkm.natura, { ...val, origin: 1 });
+        testo(456, 282, naturaDef.nomeIt || pkm.natura, { ...val, origin: 1 });
+      }
+      // Totale EV (richiesta di Luca, 10 ott 2026) — riga compatta tra
+      // Natura e Abilità, solo il totale per non affollare la pagina: il
+      // dettaglio per statistica si vede dal colore/valore delle righe
+      // sopra solo indirettamente, non c'è ancora una vista EV per EV.
+      if (pkm.ev && typeof Battle !== 'undefined' && Battle.evTotale) {
+        const totEv = Battle.evTotale(pkm.ev);
+        testo(248, 300, 'EV totali', { ...base, fontSize: '11px' });
+        testo(456, 300, `${totEv}/${Battle.EV_MAX_TOTALE || 510}`, { ...val, fontSize: '11px', origin: 1 });
       }
       // Barra HP reale (crop su hp.png, 3 fasce colore come in Squadra).
       if (pkm.hpAttuale > 0 && pkm.hpMax > 0) {
@@ -11845,7 +11853,7 @@ const GameMap = (function () {
     }
 
     _voceDa(chiave, oggetto, quanti) {
-      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'held', 'curatotale', 'pp', 'raracandy'].includes(oggetto.categoria);
+      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina'].includes(oggetto.categoria);
       const diretto = oggetto.categoria === 'repellente';
       return { chiave, oggetto, quanti, img: oggetto.img, usabile: suBersaglio || diretto, diretto };
     }

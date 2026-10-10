@@ -236,36 +236,36 @@ const Battle = (function () {
   // Natura (richiesta esplicita di Luca, 10 ott 2026 — "altrimenti il
   // Pokémon non si differenzia"): le 25 nature ufficiali, ciascuna alza
   // una statistica del 10% e ne abbassa un'altra del 10% (5 sono neutre,
-  // boost===lower, nessun effetto). Nomi in inglese per ora, come le MT
-  // non ancora piazzate (convenzione già in uso nel progetto) — la
-  // traduzione italiana ufficiale va confermata prima di scriverla, per
-  // non rischiare nomi sbagliati.
+  // boost===lower, nessun effetto). nomeIt verificato il 10 ott 2026 su
+  // veekun.com (database multilingua) una per una — non da una singola
+  // tabella trovata già pronta, quindi se qualcuna ti sembra sbagliata
+  // dimmelo e la ricontrollo.
   const NATURE_DB = {
-    Hardy:   { boost: null,               lower: null },
-    Lonely:  { boost: 'attack',           lower: 'defense' },
-    Brave:   { boost: 'attack',           lower: 'speed' },
-    Adamant: { boost: 'attack',           lower: 'special-attack' },
-    Naughty: { boost: 'attack',           lower: 'special-defense' },
-    Bold:    { boost: 'defense',          lower: 'attack' },
-    Docile:  { boost: null,               lower: null },
-    Relaxed: { boost: 'defense',          lower: 'speed' },
-    Impish:  { boost: 'defense',          lower: 'special-attack' },
-    Lax:     { boost: 'defense',          lower: 'special-defense' },
-    Timid:   { boost: 'speed',            lower: 'attack' },
-    Hasty:   { boost: 'speed',            lower: 'defense' },
-    Serious: { boost: null,               lower: null },
-    Jolly:   { boost: 'speed',            lower: 'special-attack' },
-    Naive:   { boost: 'speed',            lower: 'special-defense' },
-    Modest:  { boost: 'special-attack',   lower: 'attack' },
-    Mild:    { boost: 'special-attack',   lower: 'defense' },
-    Quiet:   { boost: 'special-attack',   lower: 'speed' },
-    Bashful: { boost: null,               lower: null },
-    Rash:    { boost: 'special-attack',   lower: 'special-defense' },
-    Calm:    { boost: 'special-defense',  lower: 'attack' },
-    Gentle:  { boost: 'special-defense',  lower: 'defense' },
-    Sassy:   { boost: 'special-defense',  lower: 'speed' },
-    Careful: { boost: 'special-defense',  lower: 'special-attack' },
-    Quirky:  { boost: null,               lower: null },
+    Hardy:   { nomeIt: 'Ardita',   boost: null,               lower: null },
+    Lonely:  { nomeIt: 'Schiva',   boost: 'attack',           lower: 'defense' },
+    Brave:   { nomeIt: 'Audace',   boost: 'attack',           lower: 'speed' },
+    Adamant: { nomeIt: 'Decisa',   boost: 'attack',           lower: 'special-attack' },
+    Naughty: { nomeIt: 'Birbona',  boost: 'attack',           lower: 'special-defense' },
+    Bold:    { nomeIt: 'Sicura',   boost: 'defense',          lower: 'attack' },
+    Docile:  { nomeIt: 'Docile',   boost: null,               lower: null },
+    Relaxed: { nomeIt: 'Placida',  boost: 'defense',          lower: 'speed' },
+    Impish:  { nomeIt: 'Scaltra',  boost: 'defense',          lower: 'special-attack' },
+    Lax:     { nomeIt: 'Fiacca',   boost: 'defense',          lower: 'special-defense' },
+    Timid:   { nomeIt: 'Timida',   boost: 'speed',            lower: 'attack' },
+    Hasty:   { nomeIt: 'Lesta',    boost: 'speed',            lower: 'defense' },
+    Serious: { nomeIt: 'Seria',    boost: null,               lower: null },
+    Jolly:   { nomeIt: 'Allegra',  boost: 'speed',            lower: 'special-attack' },
+    Naive:   { nomeIt: 'Ingenua',  boost: 'speed',            lower: 'special-defense' },
+    Modest:  { nomeIt: 'Modesta',  boost: 'special-attack',   lower: 'attack' },
+    Mild:    { nomeIt: 'Mite',     boost: 'special-attack',   lower: 'defense' },
+    Quiet:   { nomeIt: 'Quieta',   boost: 'special-attack',   lower: 'speed' },
+    Bashful: { nomeIt: 'Ritrosa',  boost: null,               lower: null },
+    Rash:    { nomeIt: 'Ardente',  boost: 'special-attack',   lower: 'special-defense' },
+    Calm:    { nomeIt: 'Calma',    boost: 'special-defense',  lower: 'attack' },
+    Gentle:  { nomeIt: 'Gentile',  boost: 'special-defense',  lower: 'defense' },
+    Sassy:   { nomeIt: 'Vivace',   boost: 'special-defense',  lower: 'speed' },
+    Careful: { nomeIt: 'Cauta',    boost: 'special-defense',  lower: 'special-attack' },
+    Quirky:  { nomeIt: 'Furba',    boost: null,               lower: null },
   };
   const NOMI_NATURE = Object.keys(NATURE_DB);
   function generaNatura() {
@@ -281,12 +281,56 @@ const Battle = (function () {
     return 1;
   }
 
-  function calcolaStat(base, livello, moltiplicatore) {
-    return Math.floor((Math.floor(2 * base * livello / 100) + 5) * (moltiplicatore || 1));
+  // EV (richiesta di Luca, 10 ott 2026): bonus di +1 ogni 4 EV nella
+  // statistica, come nei giochi veri (floor(EV/4), max EV 252 → max
+  // bonus 63 punti pre-livello). Nessun sistema IV in questo progetto
+  // (mai richiesto): formula semplificata senza quel termine, IV=0.
+  function calcolaStat(base, livello, moltiplicatore, ev) {
+    const bonusEv = Math.floor((ev || 0) / 4);
+    return Math.floor((Math.floor((2 * base + bonusEv) * livello / 100) + 5) * (moltiplicatore || 1));
   }
 
-  function calcolaHpMax(baseHp, livello) {
-    return Math.floor(2 * baseHp * livello / 100) + livello + 10;
+  function calcolaHpMax(baseHp, livello, ev) {
+    const bonusEv = Math.floor((ev || 0) / 4);
+    return Math.floor((2 * baseHp + bonusEv) * livello / 100) + livello + 10;
+  }
+
+  // Un Pokémon senza EV assegnati (oggetto vuoto o mancante).
+  function evAzzerati() {
+    return { hp: 0, attack: 0, defense: 0, 'special-attack': 0, 'special-defense': 0, speed: 0 };
+  }
+  // Totale EV già distribuiti (il tetto ufficiale è 510 in tutto).
+  function evTotale(ev) {
+    if (!ev) return 0;
+    return Object.values(ev).reduce((s, v) => s + (v || 0), 0);
+  }
+  const EV_MAX_TOTALE = 510;
+  const EV_MAX_SINGOLA = 252;
+
+  // Assegna gli EV in premio per aver sconfitto "yield_" (evYield della
+  // specie nemica), rispettando i due tetti (252 per statistica, 510 in
+  // tutto), poi ricalcola le statistiche vere — l'HP attuale sale della
+  // stessa quantità di cui sale l'HP massimo, come nei giochi veri, non
+  // in proporzione.
+  function assegnaEv(ist, yield_) {
+    if (!yield_ || !ist) return;
+    if (!ist.ev) ist.ev = evAzzerati();
+    let totale = evTotale(ist.ev);
+    if (totale >= EV_MAX_TOTALE) return;
+    for (const chiave of Object.keys(ist.ev)) {
+      const guadagno = yield_[chiave] || 0;
+      if (guadagno <= 0) continue;
+      const spazioStat = EV_MAX_SINGOLA - ist.ev[chiave];
+      const spazioTotale = EV_MAX_TOTALE - totale;
+      const effettivo = Math.max(0, Math.min(guadagno, spazioStat, spazioTotale));
+      if (effettivo <= 0) continue;
+      ist.ev[chiave] += effettivo;
+      totale += effettivo;
+    }
+    const hpMaxPrima = ist.hpMax;
+    ricalcolaStatistiche(ist);
+    const delta = ist.hpMax - hpMaxPrima;
+    if (delta > 0) ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + delta);
   }
 
   function nomeBello(nome) {
@@ -340,13 +384,14 @@ const Battle = (function () {
 
   // Ricalcola le statistiche dal livello (usata anche al level-up)
   function ricalcolaStatistiche(ist) {
-    // HP non è mai influenzata dalla natura (come nei giochi veri).
-    ist.hpMax    = calcolaHpMax(ist.basi.hp, ist.livello);
-    ist.attacco  = calcolaStat(ist.basi.attack,           ist.livello, moltiplicatoreNatura(ist.natura, 'attack'));
-    ist.difesa   = calcolaStat(ist.basi.defense,           ist.livello, moltiplicatoreNatura(ist.natura, 'defense'));
-    ist.attSp    = calcolaStat(ist.basi['special-attack'], ist.livello, moltiplicatoreNatura(ist.natura, 'special-attack'));
-    ist.difSp    = calcolaStat(ist.basi['special-defense'],ist.livello, moltiplicatoreNatura(ist.natura, 'special-defense'));
-    ist.velocita = calcolaStat(ist.basi.speed,             ist.livello, moltiplicatoreNatura(ist.natura, 'speed'));
+    const ev = ist.ev || evAzzerati();
+    // HP non è mai influenzata dalla natura (come nei giochi veri), ma SÌ dagli EV.
+    ist.hpMax    = calcolaHpMax(ist.basi.hp, ist.livello, ev.hp);
+    ist.attacco  = calcolaStat(ist.basi.attack,            ist.livello, moltiplicatoreNatura(ist.natura, 'attack'),           ev.attack);
+    ist.difesa   = calcolaStat(ist.basi.defense,           ist.livello, moltiplicatoreNatura(ist.natura, 'defense'),          ev.defense);
+    ist.attSp    = calcolaStat(ist.basi['special-attack'], ist.livello, moltiplicatoreNatura(ist.natura, 'special-attack'),   ev['special-attack']);
+    ist.difSp    = calcolaStat(ist.basi['special-defense'],ist.livello, moltiplicatoreNatura(ist.natura, 'special-defense'),  ev['special-defense']);
+    ist.velocita = calcolaStat(ist.basi.speed,             ist.livello, moltiplicatoreNatura(ist.natura, 'speed'),            ev.speed);
   }
 
   // F9.3 — Sesso del Pokémon: 'M' | 'F' | 'N' (senza sesso: leggendari + poche
@@ -410,6 +455,7 @@ const Battle = (function () {
       sprite: dati.sprite,
       baseExp: dati.baseExp || 64,
       basi: dati.statistiche,
+      evYield: dati.evYield,           // quanti EV regala in premio chi lo sconfigge
       catchRate: (typeof dati.catchRate === 'number') ? dati.catchRate : 45,
       livello: livello,
       exp: Math.pow(livello, 3),       // curva di crescita: Lv^3
@@ -424,6 +470,7 @@ const Battle = (function () {
       abilitaSlot,                     // F9.4: indice nella lista abilità della specie
       abilitaChiave: abilitaChiaveDaSlot(dati, abilitaSlot), // slug inglese (es. "static")
       natura: generaNatura(),          // richiesta di Luca, 10 ott 2026: ±10% su due stat
+      ev: evAzzerati(),                // Punti Effort: iniziano sempre a 0, si guadagnano in lotta
     };
     ricalcolaStatistiche(ist);
     ist.hpAttuale = ist.hpMax;
@@ -2810,6 +2857,10 @@ const Battle = (function () {
     if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
     else exp = Math.floor(exp * 0.75);
     await assegnaExp(mio, exp);
+    // EV (richiesta di Luca, 10 ott 2026): solo a chi è sceso in campo
+    // davvero, NON a chi riceve solo l'EXP condivisa — stessa regola dei
+    // giochi veri (l'Esperienza Condivisa non condivide gli EV).
+    assegnaEv(mio, nemico.evYield);
 
     // EXP condivisa con il resto della squadra (sess. 29 set 2026: diventata
     // un'opzione, proposta la prima volta insieme alla scelta della
@@ -3799,6 +3850,7 @@ const Battle = (function () {
     let exp = Math.max(10, Math.floor(n.baseExp * n.livello / 7));
     exp = Math.floor(exp * 1.5);
     await assegnaExp(vincitore, exp);
+    assegnaEv(vincitore, n.evYield);
   }
 
   async function _doppiaGestisciEventualiKO() {
@@ -4088,6 +4140,7 @@ const Battle = (function () {
     sceglieSlotAbilita, abilitaChiaveDaSlot,
     spostaCursore, confermaCursore, indietroCursore,
     NATURE_DB, generaNatura, ricalcolaStatistiche,
+    evAzzerati, evTotale, assegnaEv, EV_MAX_TOTALE, EV_MAX_SINGOLA,
   };
 
 })();

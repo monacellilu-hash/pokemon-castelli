@@ -75,6 +75,12 @@ const PokeAPI = (function () {
       statistiche: Object.fromEntries(
         dati.stats.map(s => [s.stat.name, s.base_stat])
       ),
+      // Punti Effort (EV) guadagnati sconfiggendo questa specie (richiesta
+      // di Luca, 10 ott 2026) — PokéAPI li fornisce già nello stesso
+      // campo "stats" (s.effort), stessi valori dei giochi veri.
+      evYield: Object.fromEntries(
+        dati.stats.map(s => [s.stat.name, s.effort])
+      ),
       // Sprite fronte (avversario) e retro (proprio Pokémon in battaglia)
       sprite: {
         fronte: dati.sprites.front_default,
@@ -88,6 +94,10 @@ const PokeAPI = (function () {
       // sopra) — senza questo, chi aveva già salvato in locale le mosse
       // "sbagliate" (es. Mudkip Spaccaroccia lv6) se le terrebbe per sempre.
       schemaMosseGen123: true,
+      // Marcatore di schema (10 ott 2026): forza il riscarico delle voci in
+      // cache salvate PRIMA dell'introduzione di evYield — altrimenti quei
+      // Pokémon non darebbero mai EV finché la cache non si svuota da sola.
+      schemaEvYield: true,
       // Abilità della specie: [{ nome, nascosta }] (nome = slug inglese, es.
       // "static"). Assegnata a caso alla creazione dell'istanza (vedi
       // creaIstanza in battle.js) — solo lo SLUG qui, nome/descrizione in
@@ -184,6 +194,7 @@ const PokeAPI = (function () {
     const inCache = leggiCache("pokemon_" + id);
     if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined &&
         inCache.abilita !== undefined && inCache.schemaMosseGen123 === true &&
+        inCache.schemaEvYield === true &&
         inCache.sprite && inCache.sprite.fronte && inCache.sprite.retro) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);
       return inCache;
