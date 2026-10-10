@@ -589,8 +589,25 @@ const AnimazioniEssentials = (function () {
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
 
-    // (lungeAttaccante vive nel modulo Battle, non qui: lo scuotimento
-    // dell'attaccante basta a dare il senso del colpo in arrivo).
+    // Balzo dell'attaccante verso il bersaglio (richiesta di Luca, 10 ott
+    // 2026, "procedi col gruppo grosso"): ricontrollati gli script veri di
+    // Testata/Pestone/Schianto/Megapugno/Megacalcio e simili — quasi TUTTI
+    // hanno l'attaccante che si piega/balza in avanti (gBowMonSpriteTemplate/
+    // gMegaPunchKickSpriteTemplate) prima dell'impatto, cosa che qui mancava
+    // del tutto (solo il lampo sul bersaglio). Aggiunto qui una volta sola:
+    // migliora insieme TUTTE le mosse della categoria IMPATTO (pugno e
+    // corno), non serve una funzione a parte per ciascuna.
+    if (attaccanteEl) {
+      const versoDestra = attaccanteEl.id === 'giocatore-sprite'; // giocatore balza a dx, nemico a sx (stessa convenzione di lungeAttaccante in battle.js)
+      const originale = attaccanteEl.style.transform;
+      const dx = versoDestra ? 14 : -14;
+      attaccanteEl.style.transition = 'transform 90ms ease-out';
+      attaccanteEl.style.transform = `${originale} translateX(${dx}px)`;
+      await new Promise(r => setTimeout(r, 90));
+      attaccanteEl.style.transform = originale;
+      attaccanteEl.style.transition = '';
+    }
+
     _scuotiSpriteRom(attaccanteEl, 2, 180);
     await new Promise(r => setTimeout(r, 180));
     ctx.save();
@@ -635,6 +652,32 @@ const AnimazioniEssentials = (function () {
     await _giocaPugnoElementaleRom('spark.png',
       { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 },
       attaccanteEl, bersaglioEl);
+  }
+
+  // Centripugno (richiesta di Luca, 10 ott 2026 — gruppo Pugno): nello
+  // script vero (Move_FOCUS_PUNCH) non è un lampo solo ma una vera raffica
+  // di TRE colpi in rapida successione, ciascuno in una posizione diversa
+  // vicino al bersaglio — molto diverso dal resto del gruppo, merita una
+  // coreografia a parte invece del lampo singolo condiviso.
+  async function _giocaFocusPunchRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('punch_impact.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const offsets = [{ x: -10, y: -8 }, { x: 10, y: 2 }, { x: 10, y: -6 }];
+    for (const off of offsets) {
+      _scuotiSpriteRom(bersaglioEl, 5, 130);
+      ctx.save();
+      ctx.translate(centro.x + off.x * scalaX, centro.y + off.y * scalaY);
+      ctx.scale(scalaX, scalaY);
+      ctx.drawImage(img, -16, -16, 32, 32);
+      ctx.restore();
+      await new Promise(r => setTimeout(r, 130));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
   }
   // Mosse a corno/zanna (Cornonite, Attacco Zanna...): grafica vera
   // horn_hit.png, stessa logica del pugno.
@@ -1362,7 +1405,7 @@ const AnimazioniEssentials = (function () {
     MEGAPUNCH: _giocaPugnoRom, FIREPUNCH: _giocaFirePunchRom, ICEPUNCH: _giocaIcePunchRom,
     THUNDERPUNCH: _giocaThunderPunchRom, DYNAMICPUNCH: _giocaPugnoRom, MEGAKICK: _giocaPugnoRom,
     MACHPUNCH: _giocaPugnoRom, BULLETPUNCH: _giocaPugnoRom, DRAINPUNCH: _giocaPugnoRom,
-    FOCUSPUNCH: _giocaPugnoRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
+    FOCUSPUNCH: _giocaFocusPunchRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
 
     // PECK/FURYATTACK ora hanno una coreografia dedicata (richiesta
     // esplicita di Luca, 10 ott 2026): non più il lampo generico riusato

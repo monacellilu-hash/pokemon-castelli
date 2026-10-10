@@ -175,10 +175,21 @@ lanciano anche la particella vera del loro elemento (small_ember.png/
 ice_crystals.png/spark.png, già estratte per altre mosse) prima del
 lampo d'impatto del pugno — stesso helper collaudato
 _particellaOndaVersoTarget di Lanciafiamme/Idrocannone, nessun canvas
-scritto da zero. Roadmap completa di cosa manca ancora, gruppo per
-gruppo: docs/ANIMAZIONI-MOSSE-ROADMAP.md (nel progetto, non qui — questo
-file resta il registro delle GRAFICHE, quello è il registro delle
-MOSSE).
+scritto da zero.
+
+Centripugno (FOCUSPUNCH) tolto dal gruppo: nello script vero
+(Move_FOCUS_PUNCH) sono 3 colpi in rapida successione a posizioni
+diverse, non un lampo solo — coreografia dedicata.
+
+_giocaImpattoRom (l'helper condiviso dai gruppi PUGNO e CORNO) ora fa
+balzare l'attaccante verso il bersaglio prima del lampo (gBowMonSpriteTemplate
+nello script vero) — prima mancava, solo il lampo sul bersaglio. Migliora
+insieme tutte le mosse rimaste in entrambi i gruppi, non serve una
+funzione a parte per ciascuna.
+
+Roadmap completa di cosa manca ancora, gruppo per gruppo:
+docs/ANIMAZIONI-MOSSE-ROADMAP.md (nel progetto, non qui — questo file
+resta il registro delle GRAFICHE, quello è il registro delle MOSSE).
 
 vine.png — graphics/battle_anims/sprites/vine.png (5 fotogrammi, vite che
   cresce). Frustata, Megaframza, Avvolgibotta, Legatutto, Costrizione.

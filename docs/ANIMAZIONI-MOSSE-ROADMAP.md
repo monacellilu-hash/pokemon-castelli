@@ -24,20 +24,32 @@ Legenda: ✅ coreografia vera dedicata · 🔶 ancora sul riuso generico del gru
 - ✅ Pugnofuoco (FIREPUNCH) — 10 ott 2026 (particella small_ember + impatto)
 - ✅ Pugnogelo (ICEPUNCH) — 10 ott 2026 (particella ice_crystals + impatto)
 - ✅ Tuonopugno (THUNDERPUNCH) — 10 ott 2026 (particella spark + impatto)
+- ✅ Centripugno (FOCUSPUNCH) — 10 ott 2026 (3 colpi in rapida successione, coreografia vera)
+
+### Miglioria condivisa (non una voce a parte, ma vale per TUTTO il gruppo sotto)
+- ✅ 10 ott 2026 — `_giocaImpattoRom` (l'helper condiviso da Pugno E Corno)
+  ora fa balzare l'attaccante verso il bersaglio prima del lampo, come
+  fa lo script vero (gBowMonSpriteTemplate) — prima mancava del tutto,
+  solo il lampo sul bersaglio. Migliora insieme TUTTE le mosse dei due
+  gruppi sotto, anche quelle ancora 🔶.
 
 ---
 
 ## Gruppi ancora sul riuso generico, in ordine di quante mosse coprono
 (il numero è quante mosse diventano fedeli se/quando si fa la coreografia vera di quel gruppo)
 
-### 🔶 17 — Pugno/impatto generico (_giocaPugnoRom)
+### 🔶 16 — Pugno/impatto generico (_giocaPugnoRom, ora col balzo — vedi sopra)
 Megapugno, Megacalcio, Comandopugno (DYNAMICPUNCH), Attacco Rapido Pugno
 (MACHPUNCH), Proiettile (BULLETPUNCH), Prosciugopugno (DRAINPUNCH),
-Centripugno (FOCUSPUNCH), Sferza Cielo (SKYUPPERCUT), Braccio Martello
-(HAMMERARM), Testata (HEADBUTT), Pestone (STOMP), Schianto (BODYSLAM),
-Colpo di Corpo (SLAM), Doppio Fendente (DOUBLEEDGE), Pressing (TAKEDOWN),
-Smelling Salts, Pugno Confuso (DIZZYPUNCH)
-*(era 20, tolti i 3 pugni elementali sopra)*
+Sferza Cielo (SKYUPPERCUT), Braccio Martello (HAMMERARM), Testata
+(HEADBUTT), Pestone (STOMP), Schianto (BODYSLAM), Colpo di Corpo (SLAM),
+Doppio Fendente (DOUBLEEDGE), Pressing (TAKEDOWN), Smelling Salts,
+Pugno Confuso (DIZZYPUNCH)
+*(era 20, tolti i 3 pugni elementali + Centripugno sopra)*
+⚠️ Proiettile (BULLETPUNCH)/Prosciugopugno (DRAINPUNCH)/Braccio Martello
+(HAMMERARM) sono mosse Gen 4+: NON esistono in pret/pokeemerald (è
+Smeraldo, Gen 3) — nessuno script vero da copiare per queste 3, resteranno
+per sempre sul riuso generico (comunque migliorato dal balzo).
 
 ### 🔶 13 — Suono (_giocaSuonoRom)
 Urlo (SCREECH), Rumorsuono (METALSOUND), Scarica Rumorosa (HYPERVOICE),
