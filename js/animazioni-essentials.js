@@ -605,6 +605,37 @@ const AnimazioniEssentials = (function () {
   async function _giocaPugnoRom(attaccanteEl, bersaglioEl) {
     await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl);
   }
+
+  // Pugni elementali (richiesta di Luca, 10 ott 2026 — "procedi con le più
+  // frequenti", qui il gruppo più numeroso: 20 mosse sullo stesso impatto
+  // generico _giocaPugnoRom). Fuoco/Gelo/Tuono sono i più riconoscibili:
+  // ora lanciano anche la particella vera del loro elemento (stesso
+  // helper collaudato _particellaOndaVersoTarget già usato da Lanciafiamme/
+  // Idrocannone/Raggio di Ghiaccio/Fulmine, non codice nuovo da zero) prima
+  // del lampo d'impatto del pugno — li distingue dai pugni "neutri"
+  // (Megapugno, Attacco Rapido Pugno...) che restano sul lampo semplice.
+  async function _giocaPugnoElementaleRom(nomeFileElemento, optsElemento, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom(nomeFileElemento);
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, optsElemento);
+    await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl);
+  }
+  async function _giocaFirePunchRom(attaccanteEl, bersaglioEl) {
+    await _giocaPugnoElementaleRom('small_ember.png',
+      { frameW: 32, frameH: 32, righeY: [32, 64, 96], frameMs: 60, durataMs: 350, ampiezzaPx: 10 },
+      attaccanteEl, bersaglioEl);
+  }
+  async function _giocaIcePunchRom(attaccanteEl, bersaglioEl) {
+    await _giocaPugnoElementaleRom('ice_crystals.png',
+      { frameW: 16, frameH: 16, righeY: [0], frameMs: 9999, durataMs: 320, ampiezzaPx: 0 },
+      attaccanteEl, bersaglioEl);
+  }
+  async function _giocaThunderPunchRom(attaccanteEl, bersaglioEl) {
+    await _giocaPugnoElementaleRom('spark.png',
+      { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 },
+      attaccanteEl, bersaglioEl);
+  }
   // Mosse a corno/zanna (Cornonite, Attacco Zanna...): grafica vera
   // horn_hit.png, stessa logica del pugno.
   async function _giocaCornoRom(attaccanteEl, bersaglioEl) {
@@ -1326,8 +1357,10 @@ const AnimazioniEssentials = (function () {
     CROSSPOISON: _giocaSlashRom,
 
     // Categoria IMPATTO (overlay sul bersaglio, un solo lampo).
-    MEGAPUNCH: _giocaPugnoRom, FIREPUNCH: _giocaPugnoRom, ICEPUNCH: _giocaPugnoRom,
-    THUNDERPUNCH: _giocaPugnoRom, DYNAMICPUNCH: _giocaPugnoRom, MEGAKICK: _giocaPugnoRom,
+    // Fuoco/Gelo/Tuono tolti da qui (10 ott 2026): ora hanno la particella
+    // vera del loro elemento, vedi _giocaPugnoElementaleRom sopra.
+    MEGAPUNCH: _giocaPugnoRom, FIREPUNCH: _giocaFirePunchRom, ICEPUNCH: _giocaIcePunchRom,
+    THUNDERPUNCH: _giocaThunderPunchRom, DYNAMICPUNCH: _giocaPugnoRom, MEGAKICK: _giocaPugnoRom,
     MACHPUNCH: _giocaPugnoRom, BULLETPUNCH: _giocaPugnoRom, DRAINPUNCH: _giocaPugnoRom,
     FOCUSPUNCH: _giocaPugnoRom, SKYUPPERCUT: _giocaPugnoRom, HAMMERARM: _giocaPugnoRom,
 
