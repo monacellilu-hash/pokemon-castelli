@@ -2494,7 +2494,7 @@ const Battle = (function () {
       let dettagli;
       try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
       catch (e) { continue; }
-      if (!dettagli.potenza) continue; // per ora solo mosse offensive
+      if (!mossaUtile(dettagli)) continue; // per ora proviamo a metterle tutte ancje status
 
       if (ist.mosse.length < 4) {
         ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
