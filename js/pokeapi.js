@@ -93,7 +93,7 @@ const PokeAPI = (function () {
       // cache calcolate PRIMA del fix Gen 1-3 di estraiMosseLivello (vedi
       // sopra) — senza questo, chi aveva già salvato in locale le mosse
       // "sbagliate" (es. Mudkip Spaccaroccia lv6) se le terrebbe per sempre.
-      schemaMosseGen123: true,
+      schemaMosseGen123: 2,
       // Marcatore di schema (10 ott 2026): forza il riscarico delle voci in
       // cache salvate PRIMA dell'introduzione di evYield — altrimenti quei
       // Pokémon non darebbero mai EV finché la cache non si svuota da sola.
@@ -191,7 +191,7 @@ const PokeAPI = (function () {
     // cache per niente.
     const inCache = leggiCache("pokemon_" + id);
     if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined &&
-        inCache.abilita !== undefined && inCache.schemaMosseGen123 === true &&
+        inCache.abilita !== undefined && inCache.schemaMosseGen123 === 2 &&
         inCache.schemaEvYield === true &&
         inCache.sprite && inCache.sprite.fronte && inCache.sprite.retro) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);
