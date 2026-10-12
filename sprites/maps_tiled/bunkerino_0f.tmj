@@ -7305,59 +7305,6 @@
      "y": 1434.66666666667
     },
     {
-     "height": 20,
-     "id": 9026,
-     "name": "spawn_da_teletrasporto_0f_1",
-     "opacity": 1,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "da_teletrasporto_0f_1"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "spawn"
-      }
-     ],
-     "rotation": 0,
-     "type": "spawn",
-     "visible": true,
-     "width": 24,
-     "x": 708,
-     "y": 1604
-    },
-    {
-     "height": 17.25,
-     "id": 9027,
-     "name": "warp_teletrasporto_0f_1",
-     "opacity": 1,
-     "properties": [
-      {
-       "name": "destinazione",
-       "type": "string",
-       "value": "bunkerino_0f_1"
-      },
-      {
-       "name": "spawn_id",
-       "type": "string",
-       "value": "da_bunkerino_0f"
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "warp"
-      }
-     ],
-     "rotation": 0,
-     "type": "warp",
-     "visible": true,
-     "width": 24.6666666666666,
-     "x": 708.333333333333,
-     "y": 1605.04166666667
-    },
-    {
      "height": 32,
      "id": 9031,
      "name": "spawn_da_bunkerino_0f",
@@ -7384,7 +7331,7 @@
     {
      "height": 0,
      "id": 9032,
-     "name": "TEST_warp_pad_1",
+     "name": "warp_pad_1",
      "opacity": 1,
      "point": true,
      "properties": [
@@ -7396,17 +7343,12 @@
       {
        "name": "spawn_id",
        "type": "string",
-       "value": "da_TEST_pad_2"
+       "value": "da_pad_2"
       },
       {
        "name": "teletrasporto",
        "type": "bool",
        "value": true
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "SEGNAPOSTO DI TEST (10 ott 2026) - sposta o elimina, posizione mai verificata"
       },
       {
        "name": "type",
@@ -7418,25 +7360,20 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 200,
-     "y": 150
+     "x": 177,
+     "y": 377.666666666667
     },
     {
      "height": 0,
      "id": 9033,
-     "name": "TEST_spawn_pad_1",
+     "name": "spawn_pad_1",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "da_TEST_pad_1"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "SEGNAPOSTO DI TEST (10 ott 2026) - sposta o elimina"
+       "value": "da_pad_1"
       },
       {
        "name": "type",
@@ -7448,13 +7385,13 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 200,
-     "y": 150
+     "x": 177,
+     "y": 376
     },
     {
      "height": 0,
      "id": 9034,
-     "name": "TEST_warp_pad_2",
+     "name": "warp_pad_2",
      "opacity": 1,
      "point": true,
      "properties": [
@@ -7466,17 +7403,12 @@
       {
        "name": "spawn_id",
        "type": "string",
-       "value": "da_TEST_pad_1"
+       "value": "da_pad_1"
       },
       {
        "name": "teletrasporto",
        "type": "bool",
        "value": true
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "SEGNAPOSTO DI TEST (10 ott 2026) - sposta o elimina, posizione mai verificata"
       },
       {
        "name": "type",
@@ -7488,25 +7420,20 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 700,
-     "y": 150
+     "x": 914,
+     "y": 1621
     },
     {
      "height": 0,
      "id": 9035,
-     "name": "TEST_spawn_pad_2",
+     "name": "spawn_pad_2",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "da_TEST_pad_2"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "SEGNAPOSTO DI TEST (10 ott 2026) - sposta o elimina"
+       "value": "da_pad_2"
       },
       {
        "name": "type",
@@ -7518,8 +7445,2448 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 700,
-     "y": 150
+     "x": 913,
+     "y": 1624
+    },
+    {
+     "height": 0,
+     "id": 9034,
+     "name": "warp_pad_3",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_4"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 466,
+     "y": 374
+    },
+    {
+     "height": 0,
+     "id": 9035,
+     "name": "spawn_pad_3",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_3"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 464.666666666667,
+     "y": 375.666666666667
+    },
+    {
+     "height": 0,
+     "id": 9036,
+     "name": "warp_pad_4",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_3"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 84,
+     "y": 1298
+    },
+    {
+     "height": 0,
+     "id": 9037,
+     "name": "spawn_pad_4",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_4"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 78.1818181818182,
+     "y": 1297.54545454545
+    },
+    {
+     "id": 9038,
+     "name": "warp_pad_5_a",
+     "type": "pad_05",
+     "x": 48,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_5_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9039,
+     "name": "spawn_pad_5_a",
+     "type": "pad_05",
+     "x": 48,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_5_a"
+      }
+     ]
+    },
+    {
+     "id": 9040,
+     "name": "warp_pad_5_b",
+     "type": "pad_05",
+     "x": 176,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_5_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9041,
+     "name": "spawn_pad_5_b",
+     "type": "pad_05",
+     "x": 176,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_5_b"
+      }
+     ]
+    },
+    {
+     "id": 9042,
+     "name": "warp_pad_6_a",
+     "type": "pad_06",
+     "x": 272,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_6_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9043,
+     "name": "spawn_pad_6_a",
+     "type": "pad_06",
+     "x": 272,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_6_a"
+      }
+     ]
+    },
+    {
+     "id": 9044,
+     "name": "warp_pad_6_b",
+     "type": "pad_06",
+     "x": 368,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_6_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9045,
+     "name": "spawn_pad_6_b",
+     "type": "pad_06",
+     "x": 368,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_6_b"
+      }
+     ]
+    },
+    {
+     "id": 9046,
+     "name": "warp_pad_7_a",
+     "type": "pad_07",
+     "x": 464,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_7_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9047,
+     "name": "spawn_pad_7_a",
+     "type": "pad_07",
+     "x": 464,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_7_a"
+      }
+     ]
+    },
+    {
+     "id": 9048,
+     "name": "warp_pad_7_b",
+     "type": "pad_07",
+     "x": 560,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_7_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9049,
+     "name": "spawn_pad_7_b",
+     "type": "pad_07",
+     "x": 560,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_7_b"
+      }
+     ]
+    },
+    {
+     "id": 9050,
+     "name": "warp_pad_8_a",
+     "type": "pad_08",
+     "x": 656,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_8_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9051,
+     "name": "spawn_pad_8_a",
+     "type": "pad_08",
+     "x": 656,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_8_a"
+      }
+     ]
+    },
+    {
+     "id": 9052,
+     "name": "warp_pad_8_b",
+     "type": "pad_08",
+     "x": 752,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_8_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9053,
+     "name": "spawn_pad_8_b",
+     "type": "pad_08",
+     "x": 752,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_8_b"
+      }
+     ]
+    },
+    {
+     "id": 9054,
+     "name": "warp_pad_9_a",
+     "type": "pad_09",
+     "x": 848,
+     "y": 64,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_9_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9055,
+     "name": "spawn_pad_9_a",
+     "type": "pad_09",
+     "x": 848,
+     "y": 62,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_9_a"
+      }
+     ]
+    },
+    {
+     "id": 9056,
+     "name": "warp_pad_9_b",
+     "type": "pad_09",
+     "x": 912,
+     "y": 96,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_9_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9057,
+     "name": "spawn_pad_9_b",
+     "type": "pad_09",
+     "x": 912,
+     "y": 94,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_9_b"
+      }
+     ]
+    },
+    {
+     "id": 9058,
+     "name": "warp_pad_10_a",
+     "type": "pad_10",
+     "x": 80,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_10_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9059,
+     "name": "spawn_pad_10_a",
+     "type": "pad_10",
+     "x": 80,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_10_a"
+      }
+     ]
+    },
+    {
+     "id": 9060,
+     "name": "warp_pad_10_b",
+     "type": "pad_10",
+     "x": 208,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_10_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9061,
+     "name": "spawn_pad_10_b",
+     "type": "pad_10",
+     "x": 208,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_10_b"
+      }
+     ]
+    },
+    {
+     "id": 9062,
+     "name": "warp_pad_11_a",
+     "type": "pad_11",
+     "x": 304,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_11_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9063,
+     "name": "spawn_pad_11_a",
+     "type": "pad_11",
+     "x": 304,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_11_a"
+      }
+     ]
+    },
+    {
+     "id": 9064,
+     "name": "warp_pad_11_b",
+     "type": "pad_11",
+     "x": 400,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_11_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9065,
+     "name": "spawn_pad_11_b",
+     "type": "pad_11",
+     "x": 400,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_11_b"
+      }
+     ]
+    },
+    {
+     "id": 9066,
+     "name": "warp_pad_12_a",
+     "type": "pad_12",
+     "x": 496,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_12_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9067,
+     "name": "spawn_pad_12_a",
+     "type": "pad_12",
+     "x": 496,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_12_a"
+      }
+     ]
+    },
+    {
+     "id": 9068,
+     "name": "warp_pad_12_b",
+     "type": "pad_12",
+     "x": 592,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_12_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9069,
+     "name": "spawn_pad_12_b",
+     "type": "pad_12",
+     "x": 592,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_12_b"
+      }
+     ]
+    },
+    {
+     "id": 9070,
+     "name": "warp_pad_13_a",
+     "type": "pad_13",
+     "x": 688,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_13_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9071,
+     "name": "spawn_pad_13_a",
+     "type": "pad_13",
+     "x": 688,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_13_a"
+      }
+     ]
+    },
+    {
+     "id": 9072,
+     "name": "warp_pad_13_b",
+     "type": "pad_13",
+     "x": 784,
+     "y": 128,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_13_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9073,
+     "name": "spawn_pad_13_b",
+     "type": "pad_13",
+     "x": 784,
+     "y": 126,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_13_b"
+      }
+     ]
+    },
+    {
+     "id": 9074,
+     "name": "warp_pad_14_a",
+     "type": "pad_14",
+     "x": 144,
+     "y": 160,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_14_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9075,
+     "name": "spawn_pad_14_a",
+     "type": "pad_14",
+     "x": 144,
+     "y": 158,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_14_a"
+      }
+     ]
+    },
+    {
+     "id": 9076,
+     "name": "warp_pad_14_b",
+     "type": "pad_14",
+     "x": 848,
+     "y": 160,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_14_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9077,
+     "name": "spawn_pad_14_b",
+     "type": "pad_14",
+     "x": 848,
+     "y": 158,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_14_b"
+      }
+     ]
+    },
+    {
+     "id": 9078,
+     "name": "warp_pad_15_a",
+     "type": "pad_15",
+     "x": 48,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_15_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9079,
+     "name": "spawn_pad_15_a",
+     "type": "pad_15",
+     "x": 48,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_15_a"
+      }
+     ]
+    },
+    {
+     "id": 9080,
+     "name": "warp_pad_15_b",
+     "type": "pad_15",
+     "x": 240,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_15_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9081,
+     "name": "spawn_pad_15_b",
+     "type": "pad_15",
+     "x": 240,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_15_b"
+      }
+     ]
+    },
+    {
+     "id": 9082,
+     "name": "warp_pad_16_a",
+     "type": "pad_16",
+     "x": 336,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_16_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9083,
+     "name": "spawn_pad_16_a",
+     "type": "pad_16",
+     "x": 336,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_16_a"
+      }
+     ]
+    },
+    {
+     "id": 9084,
+     "name": "warp_pad_16_b",
+     "type": "pad_16",
+     "x": 432,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_16_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9085,
+     "name": "spawn_pad_16_b",
+     "type": "pad_16",
+     "x": 432,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_16_b"
+      }
+     ]
+    },
+    {
+     "id": 9086,
+     "name": "warp_pad_17_a",
+     "type": "pad_17",
+     "x": 528,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_17_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9087,
+     "name": "spawn_pad_17_a",
+     "type": "pad_17",
+     "x": 528,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_17_a"
+      }
+     ]
+    },
+    {
+     "id": 9088,
+     "name": "warp_pad_17_b",
+     "type": "pad_17",
+     "x": 624,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_17_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9089,
+     "name": "spawn_pad_17_b",
+     "type": "pad_17",
+     "x": 624,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_17_b"
+      }
+     ]
+    },
+    {
+     "id": 9090,
+     "name": "warp_pad_18_a",
+     "type": "pad_18",
+     "x": 720,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_18_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9091,
+     "name": "spawn_pad_18_a",
+     "type": "pad_18",
+     "x": 720,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_18_a"
+      }
+     ]
+    },
+    {
+     "id": 9092,
+     "name": "warp_pad_18_b",
+     "type": "pad_18",
+     "x": 912,
+     "y": 192,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_18_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9093,
+     "name": "spawn_pad_18_b",
+     "type": "pad_18",
+     "x": 912,
+     "y": 190,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_18_b"
+      }
+     ]
+    },
+    {
+     "id": 9094,
+     "name": "warp_pad_19_a",
+     "type": "pad_19",
+     "x": 112,
+     "y": 224,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_19_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9095,
+     "name": "spawn_pad_19_a",
+     "type": "pad_19",
+     "x": 112,
+     "y": 222,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_19_a"
+      }
+     ]
+    },
+    {
+     "id": 9096,
+     "name": "warp_pad_19_b",
+     "type": "pad_19",
+     "x": 784,
+     "y": 224,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_19_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9097,
+     "name": "spawn_pad_19_b",
+     "type": "pad_19",
+     "x": 784,
+     "y": 222,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_19_b"
+      }
+     ]
+    },
+    {
+     "id": 9098,
+     "name": "warp_pad_20_a",
+     "type": "pad_20",
+     "x": 176,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_20_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9099,
+     "name": "spawn_pad_20_a",
+     "type": "pad_20",
+     "x": 176,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_20_a"
+      }
+     ]
+    },
+    {
+     "id": 9100,
+     "name": "warp_pad_20_b",
+     "type": "pad_20",
+     "x": 272,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_20_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9101,
+     "name": "spawn_pad_20_b",
+     "type": "pad_20",
+     "x": 272,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_20_b"
+      }
+     ]
+    },
+    {
+     "id": 9102,
+     "name": "warp_pad_21_a",
+     "type": "pad_21",
+     "x": 368,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_21_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9103,
+     "name": "spawn_pad_21_a",
+     "type": "pad_21",
+     "x": 368,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_21_a"
+      }
+     ]
+    },
+    {
+     "id": 9104,
+     "name": "warp_pad_21_b",
+     "type": "pad_21",
+     "x": 464,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_21_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9105,
+     "name": "spawn_pad_21_b",
+     "type": "pad_21",
+     "x": 464,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_21_b"
+      }
+     ]
+    },
+    {
+     "id": 9106,
+     "name": "warp_pad_22_a",
+     "type": "pad_22",
+     "x": 560,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_22_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9107,
+     "name": "spawn_pad_22_a",
+     "type": "pad_22",
+     "x": 560,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_22_a"
+      }
+     ]
+    },
+    {
+     "id": 9108,
+     "name": "warp_pad_22_b",
+     "type": "pad_22",
+     "x": 656,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_22_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9109,
+     "name": "spawn_pad_22_b",
+     "type": "pad_22",
+     "x": 656,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_22_b"
+      }
+     ]
+    },
+    {
+     "id": 9110,
+     "name": "warp_pad_23_a",
+     "type": "pad_23",
+     "x": 848,
+     "y": 256,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_23_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9111,
+     "name": "spawn_pad_23_a",
+     "type": "pad_23",
+     "x": 848,
+     "y": 254,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_23_a"
+      }
+     ]
+    },
+    {
+     "id": 9112,
+     "name": "warp_pad_23_b",
+     "type": "pad_23",
+     "x": 48,
+     "y": 288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_23_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9113,
+     "name": "spawn_pad_23_b",
+     "type": "pad_23",
+     "x": 48,
+     "y": 286,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_23_b"
+      }
+     ]
+    },
+    {
+     "id": 9114,
+     "name": "warp_pad_24_a",
+     "type": "pad_24",
+     "x": 720,
+     "y": 288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_24_b"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9115,
+     "name": "spawn_pad_24_a",
+     "type": "pad_24",
+     "x": 720,
+     "y": 286,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_24_a"
+      }
+     ]
+    },
+    {
+     "id": 9116,
+     "name": "warp_pad_24_b",
+     "type": "pad_24",
+     "x": 912,
+     "y": 288,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "warp"
+      },
+      {
+       "name": "destinazione",
+       "type": "string",
+       "value": "bunkerino_0f"
+      },
+      {
+       "name": "spawn_id",
+       "type": "string",
+       "value": "da_pad_24_a"
+      },
+      {
+       "name": "teletrasporto",
+       "type": "bool",
+       "value": true
+      }
+     ]
+    },
+    {
+     "id": 9117,
+     "name": "spawn_pad_24_b",
+     "type": "pad_24",
+     "x": 912,
+     "y": 286,
+     "width": 0,
+     "height": 0,
+     "rotation": 0,
+     "visible": true,
+     "point": true,
+     "properties": [
+      {
+       "name": "type",
+       "type": "string",
+       "value": "spawn"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_pad_24_b"
+      }
+     ]
     }
    ],
    "opacity": 1,
@@ -7530,7 +9897,7 @@
   }
  ],
  "nextlayerid": 6,
- "nextobjectid": 9032,
+ "nextobjectid": 9118,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

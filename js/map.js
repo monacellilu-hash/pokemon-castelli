@@ -1446,6 +1446,11 @@ const GameMap = (function () {
     // Fiori animati (sostituzione id 956 di outside.tsx + colori di Genzano) —
     // mai registrati: stesso problema già visto per 'chiesa'/'palestre'/ecc.
     'fiori_rossi_animati_v2':  { key: 'ts-fiori-rossi-v2',  tw: 32, th: 32, cols: 8 },
+    // Versione precedente (senza "_v2") rimasta nel tileset di Percorso_5.tmj
+    // insieme alla v2 — segnalata da Luca come "Tileset sconosciuto" in
+    // console (12 ott 2026): l'immagine esiste davvero (Tile_nuovi/
+    // Fiori_rossi_animati.png), semplicemente non era mai stata registrata.
+    'Fiori_rossi_animati':     { key: 'ts-fiori-rossi-old',  tw: 32, th: 32, cols: 8 },
     'fiori_bianchi_animati':   { key: 'ts-fiori-bianchi',   tw: 32, th: 32, cols: 8 },
     'fiori_blu_animati':       { key: 'ts-fiori-blu',       tw: 32, th: 32, cols: 8 },
     'fiori_gialli_animati':    { key: 'ts-fiori-gialli',    tw: 32, th: 32, cols: 8 },
@@ -1525,6 +1530,7 @@ const GameMap = (function () {
     'ts-mansion-int': 'sprites/tiles/Mansion interior.png',
     'ts-museum-int':  'sprites/tiles/Museum interior.png',
     'ts-fiori-rossi-v2': 'sprites/Tile_nuovi/fiori_rossi_animati_v2.png',
+    'ts-fiori-rossi-old': 'sprites/Tile_nuovi/Fiori_rossi_animati.png',
     'ts-fiori-bianchi':  'sprites/Tile_nuovi/fiori_bianchi_animati.png',
     'ts-fiori-blu':      'sprites/Tile_nuovi/fiori_blu_animati.png',
     'ts-fiori-gialli':   'sprites/Tile_nuovi/fiori_gialli_animati.png',
@@ -2574,7 +2580,7 @@ const GameMap = (function () {
   // varianti di forma (vedi _registraFioriAnimati). fiori_rossi_animati_v2
   // sostituisce il vecchio fiore statico (id 956 di outside.tsx); gli altri
   // colori sono usati a Genzano.
-  const FIORI_TILESETS = ['fiori_rossi_animati_v2', 'fiori_bianchi_animati', 'fiori_blu_animati', 'fiori_gialli_animati', 'fiori_rosa_animati', 'fiori_viola_animati'];
+  const FIORI_TILESETS = ['fiori_rossi_animati_v2', 'Fiori_rossi_animati', 'fiori_bianchi_animati', 'fiori_blu_animati', 'fiori_gialli_animati', 'fiori_rosa_animati', 'fiori_viola_animati'];
 
   // Cutscene che partono da sole al primo caricamento di una mappa (vedi
   // _controllaCutsceneSpawn), SENZA passare da un oggetto Tiled — utile per
