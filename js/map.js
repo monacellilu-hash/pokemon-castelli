@@ -6717,6 +6717,71 @@ const GameMap = (function () {
       }
     }
 
+    // Variante "a prossimità" di trigger_lotta_prossimita, ma per DUE
+    // allenatori insieme (lotta in doppio) invece di uno solo — richiesta
+    // esplicita di Luca (12 ott 2026, palestra di Marino): il meccanismo a
+    // "vista" (due trainer che guardano in linea retta e vedono il
+    // giocatore nello STESSO istante, vedi _controllaTrainerVista) richiede
+    // che esista davvero una casella calpestabile vista da entrambi — nella
+    // palestra di Marino, Lello e Giada sono su due isolotti separati
+    // dall'acqua, senza nessuna casella in comune: la doppia non poteva
+    // scattare MAI, a prescindere da dove si cammina (non un bug di
+    // codice, un vincolo geometrico della stanza). Stesso principio già
+    // usato per le stanze larghe dove "vista" non basta (vedi sopra):
+    // un rettangolo Tiled type:'trigger_lotta_doppia_prossimita' con le
+    // proprietà trainer_id_a/trainer_id_b fa scattare la doppia vera
+    // (_avviaLottaTrainerDoppia, la stessa usata dal percorso a vista) a
+    // chiunque entri nella zona, da qualunque lato — riusabile da
+    // qualunque altra coppia di allenatori "isolati" in futuro, non solo
+    // questo caso.
+    _checkTriggerDoppiaProssimita() {
+      if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'trigger_lotta_doppia_prossimita') continue;
+        const cond = ev.props.condizione || ev.props.richiede;
+        if (cond && verificaCondizione(cond).ok) continue;   // già risolto, non ritriggerare
+        let dentro;
+        if (ev.w > 0 && ev.h > 0) {
+          dentro = posTile.tx >= ev.tx0 && posTile.tx <= ev.tx1 && posTile.ty >= ev.ty0 && posTile.ty <= ev.ty1;
+        } else {
+          const raggio = parseInt(ev.props.raggio || '5', 10);
+          dentro = Math.max(Math.abs(posTile.tx - ev.tx), Math.abs(posTile.ty - ev.ty)) <= raggio;
+        }
+        if (!dentro) continue;
+        const idA = ev.props.trainer_id_a, idB = ev.props.trainer_id_b;
+        const datiA = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[idA] : null;
+        const datiB = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[idB] : null;
+        if (!datiA || !datiB) continue;
+        // Nessuno dei due deve essere già stato battuto (stessa logica
+        // "niente lotta fantasma" di _checkTriggerProssimita): se uno dei
+        // due è sparito/già vinto, questo trigger non scatta più.
+        if (trainerBattuti.has(idA) || trainerBattuti.has(idB)) continue;
+        const stA = npcStato.find(s => s.id === idA);
+        const stB = npcStato.find(s => s.id === idB);
+        if (!stA || !stB) continue;
+        this._prossimitaSpottaDoppia(stA, idA, datiA, stB, idB, datiB);
+        return;
+      }
+    }
+
+    // Stesso "cinematico" di _prossimitaSpotta ma per DUE allenatori insieme:
+    // entrambi mostrano "!" e camminano verso il giocatore da qualunque
+    // lato, poi parte la lotta in doppio vera (_avviaLottaTrainerDoppia).
+    async _prossimitaSpottaDoppia(stA, idA, datiA, stB, idB, datiB) {
+      if (trainerSpotting) return;
+      trainerSpotting = true;
+      bloccaMovimento();
+      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      await Promise.all([this._mostraEsclamazione(stA), this._mostraEsclamazione(stB)]);
+      // _camminaVersoGiocatore (stesso helper di _prossimitaSpotta, il
+      // singolo): gestisce da solo l'avvicinamento da qualunque angolo,
+      // non solo in linea retta come il percorso "a vista".
+      await Promise.all([this._camminaVersoGiocatore(stA, 20), this._camminaVersoGiocatore(stB, 20)]);
+
+      trainerSpotting = false;
+      this._avviaLottaTrainerDoppia({ st: stA, id: idA, dati: datiA }, { st: stB, id: idB, dati: datiB });
+    }
+
     // Coppie di grunt CoTrAL all'Osservatorio (sess. 15 set 2026): ogni
     // rettangolo Tiled type:'trigger_cotral_coppia' (props trainer_id +
     // trainer_id_2) fa scattare, quando ci si entra, una lotta in doppia
@@ -8375,6 +8440,7 @@ const GameMap = (function () {
       this._checkCamillaInvitoTrigger();
       this._checkOsservatorioConfrontoTrigger();
       this._checkTriggerProssimita();
+      this._checkTriggerDoppiaProssimita();
       this._checkTriggerCutsceneEntra();
     }
 
