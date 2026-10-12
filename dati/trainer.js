@@ -455,6 +455,70 @@ const DATI_TRAINER = {
     premio: 300,
   },
 
+  /* ── PERCORSO 5 (Castel Gandolfo → radura Forza → Rocca di Papa, via
+     Spaccaroccia) — 6 oggetti "trainer_1".."trainer_6" già piazzati da Luca
+     in Percorso_5.tmj ma SENZA proprietà "id": l'engine ripiegava sul nome
+     Tiled dell'oggetto ("trainer_1" ecc.), che però collideva con gli
+     OMONIMI oggetti di via_dei_laghi.tmj — causa reale del "non mi parlano,
+     non mi vedono" (10 ott 2026): senza una voce DATI_TRAINER corrispondente
+     (nessuna delle due mappe ne aveva una scritta per quel nome), il motore
+     semplicemente non trovava alcun allenatore. Risolto aggiungendo id
+     univoci "percorso5_trainer_N" ai 6 oggetti Tiled + le voci qui sotto.
+     Livelli: raggiungibili da Castel Gandolfo (trainer_1/3/4/6, sentiero
+     principale) → tra 3ª e 4ª palestra (Marino cap 28 / Monte Porzio cap
+     34). Dentro la radura Forza, oltre il masso (trainer_2, "in fondo alla
+     radura, vicino oggetto") e nell'acqua (trainer_5, "nuotatore" — serve
+     Surf, sbloccato solo con/dopo la 5ª palestra) → tra 5ª e 6ª palestra
+     (Rocca di Papa cap 40 / Albano cap 46). ── */
+  'percorso5_trainer_1': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Tullio',
+    squadra: [{ id: 66, livello: 29 }, { id: 74, livello: 30 }],
+    dialogo_prima: 'Fermo lì! Questa radura la guardo io, e nessuno passa senza una lotta.',
+    dialogo_dopo: 'Vabbè, passa pure... ma stavolta sei stato fortunato.',
+    premio: 300,
+  },
+  'percorso5_trainer_2': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Scalatore', nome: 'Erminio',
+    squadra: [{ id: 304, livello: 42 }, { id: 246, livello: 43 }, { id: 74, livello: 44 }],
+    dialogo_prima: 'Sei arrivato fin qui in fondo alla radura? Allora te la sei meritata, questa lotta tosta.',
+    dialogo_dopo: 'Accidenti, i miei Pokémon di roccia non bastano mai...',
+    premio: 880,
+  },
+  'percorso5_trainer_3': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
+    classe: 'Escursionista', nome: 'Rodolfo',
+    squadra: [{ id: 231, livello: 30 }, { id: 216, livello: 31 }],
+    dialogo_prima: 'Sto ponte lo attraverso tutti i giorni. Famo du\' lotte pe\' scaldacce?',
+    dialogo_dopo: 'Mo\' me ritiro a vede\' l\'acqua scorre\' sotto \'r ponte.',
+    premio: 310,
+  },
+  'percorso5_trainer_4': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Celestino',
+    squadra: [{ id: 66, livello: 31 }, { id: 17, livello: 32 }],
+    dialogo_prima: 'Sei arrivato fin quassù? Bella salita, eh! Ma mo\' tocca sudà pure in lotta.',
+    dialogo_dopo: 'Che fatica... sia la salita che \'sta sconfitta.',
+    premio: 320,
+  },
+  'percorso5_trainer_5': {
+    sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 4,
+    classe: 'Nuotatore', nome: 'Learco',
+    squadra: [{ id: 341, livello: 42 }, { id: 341, livello: 44 }],
+    dialogo_prima: 'Nell\'acqua nessuno mi batte! Fatti sotto, se hai il coraggio di nuotare fin qui.',
+    dialogo_dopo: 'Bella lotta, complimenti! Stavolta la corrente era contro di me.',
+    premio: 440,
+  },
+  'percorso5_trainer_6': {
+    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
+    classe: 'Campeggiatore', nome: 'Learco',
+    squadra: [{ id: 216, livello: 29 }, { id: 231, livello: 30 }],
+    dialogo_prima: 'Campeggio qui da giorni, e mi sono allenato un bel po\'. Vediamo come te la cavi!',
+    dialogo_dopo: 'Mo\' me rimetto a smontà la tenda, tranquillo.',
+    premio: 300,
+  },
+
   /* ── LAGO DI ALBANO — spiaggia (6 allenatori, sprite da spiaggia) ──
      Piazzati al centro della mappa: l'utente li sposterà lungo la riva. */
   // Il nipote di Nonna Assunta (dentro casa_sul_lago): la custodisce, va
