@@ -2692,8 +2692,18 @@ const Battle = (function () {
         statoGioco.squadra.push(nemico);
         await di(`${nemico.nome} si unisce alla squadra!`);
       } else {
+        // Richiesta esplicita di Luca (12 ott 2026): un Pokémon catturato
+        // che va dritto al Box (squadra piena) arriva curato al 100%, come
+        // fosse passato dal Centro Pokémon — stessa logica di
+        // curaSquadraDaCentro() in app.js (HP pieni, nessuna condizione,
+        // PP ripristinati), evitando che resti bloccato a pochi HP residui
+        // (quelli con cui l'hai indebolito per catturarlo) fino a quando
+        // non lo ripeschi dal Box e lo curi a parte.
+        nemico.hpAttuale = nemico.hpMax;
+        nemico.condizione = null;
+        nemico.mosse.forEach(m => { m.pp = m.ppMax; });
         depositaInBox(nemico);
-        await di(`La squadra è al completo: ${nemico.nome} è stato inviato al Box.`);
+        await di(`La squadra è al completo: ${nemico.nome} è stato inviato al Box, già curato e in piena forma!`);
       }
       fineBattaglia('cattura');
     } else {
@@ -3625,25 +3635,27 @@ const Battle = (function () {
       const btn = document.createElement('button');
       btn.innerHTML = `${oggetto.icona} ${oggetto.nome} <span class="mossa-pp">×${quanti}</span>`;
       btn.addEventListener('click', () => {
-        // Richiesta esplicita di Luca (12 ott 2026): usare lo Zaino nel turno
-        // di UN Pokémon deve poter curare/potenziare l'ALTRO alleato in
-        // campo, non sempre e solo chi ha aperto il menu — esattamente come
-        // nei giochi veri. Se l'altro slot è vivo, si chiede prima "su chi?"
-        // (riusa lo stesso selettore delle mosse); "slot" resta comunque chi
-        // STA AGENDO (consuma il turno), "bersaglioSlot" è solo l'effetto.
-        const vivi = [0, 1]
-          .map(i => doppiaMieiAttivi[i])
-          .filter(m => m && m.hpAttuale > 0);
-        if (vivi.length > 1) {
-          _mostraSelettoreBersaglio(vivi, (scelto) => {
-            const bersaglioSlot = doppiaMieiAttivi.indexOf(scelto);
-            if (oggetto.categoria === 'cura') _doppiaUsaPozione(slot, chiave, bersaglioSlot);
-            else _doppiaUsaXItem(slot, chiave, bersaglioSlot);
+        // Richiesta esplicita di Luca (12 ott 2026, poi corretta): usare lo
+        // Zaino nel turno di UN Pokémon deve poter curare QUALUNQUE Pokémon
+        // della squadra — anche quelli in riserva, non solo i 2 in campo —
+        // esattamente come il menu Zaino 1v1 (mostraMenuSquadraOggetto,
+        // richiesta di Luca del 6 ott 2026: "ora anche sui Pokémon in
+        // riserva"). Gli X Item restano SOLO sui 2 in campo: modificano gli
+        // sbalzi di statistica (mod), che contano solo per la lotta in
+        // corso — su un Pokémon in riserva sarebbero sprecati/senza senso
+        // (nei giochi veri non è mai permesso).
+        if (oggetto.categoria === 'cura') {
+          _mostraSelettoreSquadraDoppia(slot, chiave);
+          return;
+        }
+        const viviInCampo = [0, 1].map(i => doppiaMieiAttivi[i]).filter(m => m && m.hpAttuale > 0);
+        if (viviInCampo.length > 1) {
+          _mostraSelettoreBersaglio(viviInCampo, (scelto) => {
+            _doppiaUsaXItem(slot, chiave, doppiaMieiIndici[doppiaMieiAttivi.indexOf(scelto)]);
           });
           return;
         }
-        if (oggetto.categoria === 'cura') _doppiaUsaPozione(slot, chiave);
-        else _doppiaUsaXItem(slot, chiave);
+        _doppiaUsaXItem(slot, chiave, doppiaMieiIndici[slot]);
       });
       menu.appendChild(btn);
     }
@@ -3663,15 +3675,51 @@ const Battle = (function () {
     resetCursore();
   }
 
-  // "slot" = chi sta agendo (consuma il turno); "bersaglioSlot" = su chi
-  // ricade l'effetto (di default lo stesso "slot", vedi mostraMenuZainoDoppia
-  // per quando l'utente sceglie l'alleato).
-  async function _doppiaUsaPozione(slot, chiave, bersaglioSlot) {
-    const targetSlot = bersaglioSlot !== undefined ? bersaglioSlot : slot;
-    const m = doppiaMieiAttivi[targetSlot];
+  // Lista dell'INTERA squadra (non solo i 2 in campo) per scegliere il
+  // bersaglio di una Pozione/X Item usata in doppia — stesso principio di
+  // mostraMenuSquadraDoppia (etichette "in campo"/"in campo, alleato"),
+  // riusato qui invece del vecchio selettore limitato ai soli 2 attivi.
+  function _mostraSelettoreSquadraDoppia(slot, chiave) {
+    nascondiMenu();
+    const altro = slot === 0 ? 1 : 0;
+    const menu = $('menu-squadra');
+    menu.innerHTML = '';
+    const oggetto = OGGETTI[chiave];
+    statoGioco.squadra.forEach((pkm, idx) => {
+      const inQuestoSlot = idx === doppiaMieiIndici[slot];
+      const inAltroSlot = idx === doppiaMieiIndici[altro];
+      const ko = pkm.hpAttuale <= 0;
+      const btn = document.createElement('button');
+      let extra = ko ? ' (KO)' : inQuestoSlot ? ' (in campo)' : inAltroSlot ? ' (in campo, alleato)' : '';
+      btn.innerHTML =
+        `<span class="mossa-nome">${pkm.nome}${extra}</span>` +
+        `<span class="mossa-pp">Lv.${pkm.livello} · ${pkm.hpAttuale}/${pkm.hpMax} HP</span>`;
+      btn.disabled = ko;
+      btn.addEventListener('click', () => {
+        if (oggetto.categoria === 'cura') _doppiaUsaPozione(slot, chiave, idx);
+        else _doppiaUsaXItem(slot, chiave, idx);
+      });
+      menu.appendChild(btn);
+    });
+    const indietro = document.createElement('button');
+    indietro.className = 'btn-indietro';
+    indietro.textContent = '↩ Indietro';
+    indietro.addEventListener('click', () => mostraMenuZainoDoppia(slot));
+    menu.appendChild(indietro);
+    menu.classList.remove('nascosto');
+    resetCursore();
+  }
+
+  // "slot" = chi sta agendo (consuma il turno); "idxSquadra" = indice nella
+  // squadra COMPLETA del bersaglio (in campo o in riserva, vedi
+  // _mostraSelettoreSquadraDoppia).
+  async function _doppiaUsaPozione(slot, chiave, idxSquadra) {
+    const m = statoGioco.squadra[idxSquadra];
+    const etichetta = (idxSquadra === doppiaMieiIndici[slot] || idxSquadra === doppiaMieiIndici[slot === 0 ? 1 : 0])
+      ? m.nome : `${m.nome} (riserva)`;
     if (m.hpAttuale >= m.hpMax) {
-      await di(`Gli HP di ${m.nome} sono già al massimo!`);
-      mostraMenuZainoDoppia(slot);
+      await di(`Gli HP di ${etichetta} sono già al massimo!`);
+      _mostraSelettoreSquadraDoppia(slot, chiave);
       return;
     }
     nascondiMenu();
@@ -3679,13 +3727,14 @@ const Battle = (function () {
     const cura = Math.min(OGGETTI[chiave].cura, m.hpMax - m.hpAttuale);
     m.hpAttuale += cura;
     aggiornaPannelli();
-    await di(`${m.nome} recupera ${cura} HP! 🧪`);
+    await di(`${etichetta} recupera ${cura} HP! 🧪`);
     _doppiaSceltaAzione(slot, { tipo: 'nessuna' });
   }
 
-  async function _doppiaUsaXItem(slot, chiave, bersaglioSlot) {
-    const targetSlot = bersaglioSlot !== undefined ? bersaglioSlot : slot;
-    const m = doppiaMieiAttivi[targetSlot];
+  async function _doppiaUsaXItem(slot, chiave, idxSquadra) {
+    const m = statoGioco.squadra[idxSquadra];
+    const etichetta = (idxSquadra === doppiaMieiIndici[slot] || idxSquadra === doppiaMieiIndici[slot === 0 ? 1 : 0])
+      ? m.nome : `${m.nome} (riserva)`;
     nascondiMenu();
     statoGioco.zaino[chiave] -= 1;
     const stat = OGGETTI[chiave].stat;
@@ -3693,8 +3742,8 @@ const Battle = (function () {
     const prima = m.mod[stat] || 0;
     m.mod[stat] = Math.max(-6, Math.min(6, prima + 1));
     aggiornaPannelli();
-    if (m.mod[stat] === prima) await di(`${nome} di ${m.nome} non può aumentare ancora!`);
-    else await di(`${nome} di ${m.nome} è aumentato! ${OGGETTI[chiave].icona}`);
+    if (m.mod[stat] === prima) await di(`${nome} di ${etichetta} non può aumentare ancora!`);
+    else await di(`${nome} di ${etichetta} è aumentato! ${OGGETTI[chiave].icona}`);
     _doppiaSceltaAzione(slot, { tipo: 'nessuna' });
   }
 
