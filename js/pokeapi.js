@@ -93,7 +93,7 @@ const PokeAPI = (function () {
       // cache calcolate PRIMA del fix Gen 1-3 di estraiMosseLivello (vedi
       // sopra) — senza questo, chi aveva già salvato in locale le mosse
       // "sbagliate" (es. Mudkip Spaccaroccia lv6) se le terrebbe per sempre.
-      schemaMosseGen123: true,
+      schemaMosseGen123: 2,
       // Marcatore di schema (10 ott 2026): forza il riscarico delle voci in
       // cache salvate PRIMA dell'introduzione di evYield — altrimenti quei
       // Pokémon non darebbero mai EV finché la cache non si svuota da sola.
@@ -149,22 +149,20 @@ const PokeAPI = (function () {
     }
     if (!gruppoScelto) return []; // non dovrebbe succedere (ID ≤ 386, sempre dati Gen 1-3)
 
-    const risultato = [];
-    for (const voce of mosse) {
-      const dettaglio = voce.version_group_details.find(d =>
-        d.move_learn_method.name === "level-up" && d.version_group.name === gruppoScelto);
-      if (dettaglio) {
-        risultato.push({
+    const risultato = mosse.flatMap(voce =>
+      voce.version_group_details
+        .filter(d => d.move_learn_method.name === "level-up"
+                  && d.version_group.name === gruppoScelto)
+        .map(d => ({
           nome: voce.move.name,
           url: voce.move.url,
-          livello: dettaglio.level_learned_at
-        });
-      }
-    }
-    // Ordiniamo per livello di apprendimento crescente
+          livello: d.level_learned_at
+        }))
+    );
     risultato.sort((a, b) => a.livello - b.livello);
     return risultato;
   }
+
 
   // ---- Funzione principale: scarica (o legge da cache) un Pokémon ----
 
@@ -193,7 +191,7 @@ const PokeAPI = (function () {
     // cache per niente.
     const inCache = leggiCache("pokemon_" + id);
     if (inCache && inCache.baseExp !== undefined && inCache.catchRate !== undefined &&
-        inCache.abilita !== undefined && inCache.schemaMosseGen123 === true &&
+        inCache.abilita !== undefined && inCache.schemaMosseGen123 === 2 &&
         inCache.schemaEvYield === true &&
         inCache.sprite && inCache.sprite.fronte && inCache.sprite.retro) {
       console.log(`[PokeAPI] Pokémon #${id} (${inCache.nome}) letto dalla CACHE ✔`);

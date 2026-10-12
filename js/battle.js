@@ -2503,14 +2503,14 @@ const Battle = (function () {
       let dettagli;
       try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
       catch (e) { continue; }
-      // BUG CRITICO (segnalato 10 ott 2026): questo controllo scartava
-      // TUTTE le mosse di stato (Ruggito, Rifletti, Ragnatela, Finta
-      // Energia...), quindi qualunque Pokémon la cui prossima mossa di
-      // livello fosse di stato non imparava NULLA a quel livello — un
-      // Weedle/Beedrill arrivato a Lv.20 senza mosse è un caso reale di
-      // questo bug. scegliMosse() (creazione iniziale) usa già
-      // mossaUtile() correttamente: qui dobbiamo usare lo stesso filtro,
-      // non uno più restrittivo.
+      // BUG CRITICO (segnalato 10 ott 2026, corretto in parallelo anche da
+      // Luca via GitHub): questo controllo scartava TUTTE le mosse di stato
+      // (Ruggito, Rifletti, Ragnatela, Finta Energia...), quindi qualunque
+      // Pokémon la cui prossima mossa di livello fosse di stato non
+      // imparava NULLA a quel livello — un Weedle/Beedrill arrivato a
+      // Lv.20 senza mosse è un caso reale di questo bug. scegliMosse()
+      // (creazione iniziale) usa già mossaUtile() correttamente: qui
+      // dobbiamo usare lo stesso filtro, non uno più restrittivo.
       if (!mossaUtile(dettagli)) continue;
 
       if (ist.mosse.length < 4) {
