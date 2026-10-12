@@ -3625,6 +3625,23 @@ const Battle = (function () {
       const btn = document.createElement('button');
       btn.innerHTML = `${oggetto.icona} ${oggetto.nome} <span class="mossa-pp">×${quanti}</span>`;
       btn.addEventListener('click', () => {
+        // Richiesta esplicita di Luca (12 ott 2026): usare lo Zaino nel turno
+        // di UN Pokémon deve poter curare/potenziare l'ALTRO alleato in
+        // campo, non sempre e solo chi ha aperto il menu — esattamente come
+        // nei giochi veri. Se l'altro slot è vivo, si chiede prima "su chi?"
+        // (riusa lo stesso selettore delle mosse); "slot" resta comunque chi
+        // STA AGENDO (consuma il turno), "bersaglioSlot" è solo l'effetto.
+        const vivi = [0, 1]
+          .map(i => doppiaMieiAttivi[i])
+          .filter(m => m && m.hpAttuale > 0);
+        if (vivi.length > 1) {
+          _mostraSelettoreBersaglio(vivi, (scelto) => {
+            const bersaglioSlot = doppiaMieiAttivi.indexOf(scelto);
+            if (oggetto.categoria === 'cura') _doppiaUsaPozione(slot, chiave, bersaglioSlot);
+            else _doppiaUsaXItem(slot, chiave, bersaglioSlot);
+          });
+          return;
+        }
         if (oggetto.categoria === 'cura') _doppiaUsaPozione(slot, chiave);
         else _doppiaUsaXItem(slot, chiave);
       });
@@ -3646,8 +3663,12 @@ const Battle = (function () {
     resetCursore();
   }
 
-  async function _doppiaUsaPozione(slot, chiave) {
-    const m = doppiaMieiAttivi[slot];
+  // "slot" = chi sta agendo (consuma il turno); "bersaglioSlot" = su chi
+  // ricade l'effetto (di default lo stesso "slot", vedi mostraMenuZainoDoppia
+  // per quando l'utente sceglie l'alleato).
+  async function _doppiaUsaPozione(slot, chiave, bersaglioSlot) {
+    const targetSlot = bersaglioSlot !== undefined ? bersaglioSlot : slot;
+    const m = doppiaMieiAttivi[targetSlot];
     if (m.hpAttuale >= m.hpMax) {
       await di(`Gli HP di ${m.nome} sono già al massimo!`);
       mostraMenuZainoDoppia(slot);
@@ -3662,8 +3683,9 @@ const Battle = (function () {
     _doppiaSceltaAzione(slot, { tipo: 'nessuna' });
   }
 
-  async function _doppiaUsaXItem(slot, chiave) {
-    const m = doppiaMieiAttivi[slot];
+  async function _doppiaUsaXItem(slot, chiave, bersaglioSlot) {
+    const targetSlot = bersaglioSlot !== undefined ? bersaglioSlot : slot;
+    const m = doppiaMieiAttivi[targetSlot];
     nascondiMenu();
     statoGioco.zaino[chiave] -= 1;
     const stat = OGGETTI[chiave].stat;

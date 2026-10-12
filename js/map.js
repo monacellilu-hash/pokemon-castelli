@@ -11602,6 +11602,14 @@ const GameMap = (function () {
   class MarketScene extends Phaser.Scene {
     constructor() { super({ key: 'MarketScene' }); }
 
+    init(data) {
+      // modoIniziale: impostato da apriMarketNativo() dopo la scelta
+      // "acquistare o vendere?" fatta all'NPC — vedi apriMarketVenditore in
+      // app.js. Letto una volta sola qui (non in create(), che può girare
+      // più volte con scene.restart() cambiando scheda da dentro).
+      this._modoIniziale = (data && data.modoIniziale) || 'compra';
+    }
+
     preload() {
       if (!this.textures.exists('ui-mart-bg')) this.load.image('ui-mart-bg', 'sprites/ui/mart/bg.png');
     }
@@ -11652,15 +11660,15 @@ const GameMap = (function () {
       // si posizionano fianco a fianco con un margine garantito; se anche
       // così non ci stanno nello schermo (CW troppo stretto), si impilano
       // una sopra l'altra invece di sovrapporsi.
-      this._modo = 'compra';
+      this._modo = this._modoIniziale;
       const stileTab = (attivo) => ({
         fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold',
         color: attivo ? '#ffcb05' : '#888',
         backgroundColor: attivo ? '#28304a' : '#1a2940', padding: { x: 10, y: 4 },
       });
-      this._tabCompra = this.add.text(0, 100, '🛒 Compra', stileTab(true))
+      this._tabCompra = this.add.text(0, 100, '🛒 Compra', stileTab(this._modo === 'compra'))
         .setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
-      this._tabVendi = this.add.text(0, 100, '💰 Vendi', stileTab(false))
+      this._tabVendi = this.add.text(0, 100, '💰 Vendi', stileTab(this._modo === 'vendi'))
         .setOrigin(0.5).setDepth(3).setInteractive({ useHandCursor: true });
       const margineTab = 8;
       const largTotale = this._tabCompra.displayWidth + margineTab + this._tabVendi.displayWidth;
@@ -12060,9 +12068,21 @@ const GameMap = (function () {
         if (v.diretto) {
           usaRepellente(v.chiave);
           this.scene.restart();
-        } else {
+          return;
+        }
+        // Stesso comportamento del click su "Usa" (vedi _disegnaLista più in
+        // basso): il popup descrizione della MT/MN va mostrato SEMPRE prima
+        // di scegliere il Pokémon, anche confermando da tastiera — bug reale
+        // (12 ott 2026): questo percorso duplicava la logica del bottone e
+        // saltava dritto a ZainoBersaglioScene, ignorando il popup.
+        const vaiAlBersaglio = () => {
           this.scene.stop();
           this.scene.launch('ZainoBersaglioScene', { chiave: v.chiave });
+        };
+        if (v.oggetto.categoria === 'mt' || v.oggetto.categoria === 'mn') {
+          this._mostraInfoMossa(v.chiave, v.oggetto, vaiAlBersaglio);
+        } else {
+          vaiAlBersaglio();
         }
       };
       this.input.keyboard.on('keydown-ENTER', conferma);
@@ -12227,9 +12247,21 @@ const GameMap = (function () {
               if (v.diretto) {
                 usaRepellente(v.chiave);
                 this.scene.restart();
-              } else {
+                return;
+              }
+              const vaiAlBersaglio = () => {
                 this.scene.stop();
                 this.scene.launch('ZainoBersaglioScene', { chiave: v.chiave });
+              };
+              // Richiesta esplicita di Luca (12 ott 2026): insegnando una MT/MN
+              // la descrizione della mossa (tipo/categoria/PP/effetto) deve
+              // comparire SEMPRE, non solo premendo l'ℹ️ a parte — poi si passa
+              // alla scelta del Pokémon. Stesso popup già usato da _mostraInfoMossa,
+              // ora richiudibile anche da tastiera (A/Invio/Spazio), non solo ✕.
+              if (v.oggetto.categoria === 'mt' || v.oggetto.categoria === 'mn') {
+                this._mostraInfoMossa(v.chiave, v.oggetto, vaiAlBersaglio);
+              } else {
+                vaiAlBersaglio();
               }
             });
           }
@@ -12269,7 +12301,10 @@ const GameMap = (function () {
     // Overlay coi dettagli di una mossa (MT/MN): nome, tipo, categoria,
     // potenza/precisione/PP, effetto in italiano — stessi dati/stesse frasi
     // di descriviEffettoMossa() in app.js (riusata, non riscritta).
-    async _mostraInfoMossa(chiave, oggetto) {
+    // onChiudi (opzionale): richiamata quando l'overlay si chiude, in
+    // qualunque modo (✕, A/Invio/Spazio, B/Esc) — usata dal pulsante "Usa"
+    // per passare automaticamente alla scelta del Pokémon dopo aver letto.
+    async _mostraInfoMossa(chiave, oggetto, onChiudi) {
       this._chiudiInfoMossa();
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const box = [];
@@ -12279,8 +12314,17 @@ const GameMap = (function () {
       const chiudi = this.add.text(CW / 2 + (CW - 100) / 2 - 20, CH / 2 - 90, '✕', {
         fontSize: '18px', color: '#fff',
       }).setOrigin(0.5).setDepth(11).setInteractive({ useHandCursor: true });
-      chiudi.on('pointerdown', () => this._chiudiInfoMossa());
+      const chiudiEProsegui = () => { this._chiudiInfoMossa(); if (onChiudi) onChiudi(); };
+      chiudi.on('pointerdown', chiudiEProsegui);
       box.push(chiudi);
+      const continua = this.add.text(CW / 2, CH / 2 + 85, 'A / Invio per continuare', {
+        fontFamily: 'Arial', fontSize: '11px', color: '#999',
+      }).setOrigin(0.5).setDepth(11);
+      box.push(continua);
+      const tastiChiudi = ['keydown-ENTER', 'keydown-SPACE', 'keydown-ESC', 'keydown-B'];
+      const handlerTasti = () => chiudiEProsegui();
+      tastiChiudi.forEach(ev => this.input.keyboard.once(ev, handlerTasti));
+      this._infoMossaTasti = { eventi: tastiChiudi, handler: handlerTasti };
       const caricamento = this.add.text(CW / 2, CH / 2, 'Caricamento…', {
         fontFamily: 'Arial', fontSize: '13px', color: '#ccc',
       }).setOrigin(0.5).setDepth(11);
@@ -12331,6 +12375,15 @@ const GameMap = (function () {
 
     _chiudiInfoMossa() {
       if (this._infoMossaBox) { this._infoMossaBox.forEach(e => e.destroy()); this._infoMossaBox = null; }
+      // Rimuove gli ascoltatori .once ancora in sospeso (es. se si è chiuso
+      // con ✕ invece che da tastiera, gli altri 3 tasti registrati
+      // resterebbero altrimenti in attesa e scatterebbero più tardi, fuori
+      // contesto, su una pressione qualunque).
+      if (this._infoMossaTasti) {
+        const { eventi, handler } = this._infoMossaTasti;
+        eventi.forEach(ev => this.input.keyboard.off(ev, handler));
+        this._infoMossaTasti = null;
+      }
     }
   }
 
@@ -12412,6 +12465,15 @@ const GameMap = (function () {
       const startX = CW / 2 - (cellW * COLS) / 2 + cellW / 2, startY = 110;
       let riga = 0;
 
+      // Schede verdi/rosse per compatibilità MT (richiesta esplicita di
+      // Luca, 12 ott 2026): SOLO per le MT (le MN sono sempre insegnabili,
+      // niente controllo compatibilità — vedi usaOggettoSu in app.js). Se
+      // manca il dato di compatibilità per qualche motivo, nessun colore
+      // (stesso comportamento permissivo del controllo vero in app.js:
+      // meglio non colorare che dare un'informazione sbagliata).
+      const oggettoCorrente = OGGETTI[this._chiave];
+      const controllaCompat = oggettoCorrente.categoria === 'mt' && typeof MT_COMPATIBILITA !== 'undefined';
+
       squadra.forEach((pkm, idx) => {
         if (pkm.uovo) return;
         const col = riga % COLS, rowN = Math.floor(riga / COLS);
@@ -12419,8 +12481,16 @@ const GameMap = (function () {
         const cx = startX + col * cellW, cy = startY + rowN * (cellH + 10);
 
         const conCursore = idx === this._cursore;
+        let coloreBordo = conCursore ? 0xffcb05 : 0x3a3a4a;
+        let spessoreBordo = conCursore ? 3 : 2;
+        if (controllaCompat) {
+          const compatibili = MT_COMPATIBILITA[pkm.id];
+          const compatibile = !compatibili || compatibili.includes(oggettoCorrente.mossa);
+          if (!conCursore) { coloreBordo = compatibile ? 0x3ecf4a : 0xe5484d; spessoreBordo = 2; }
+          else coloreBordo = compatibile ? 0x6bff78 : 0xff6b6b;   // cursore sopra: stessa info, più chiara
+        }
         const sfondo = this.add.rectangle(cx, cy, cellW - 10, cellH, conCursore ? 0x2a3f66 : 0x1a2940, 0.9)
-          .setStrokeStyle(conCursore ? 3 : 2, conCursore ? 0xffcb05 : 0x3a3a4a).setDepth(1).setInteractive({ useHandCursor: true });
+          .setStrokeStyle(spessoreBordo, coloreBordo).setDepth(1).setInteractive({ useHandCursor: true });
         sfondo.on('pointerover', () => { if (!conCursore) sfondo.setFillStyle(0x2a3f66, 0.9); });
         sfondo.on('pointerout',  () => { if (!conCursore) sfondo.setFillStyle(0x1a2940, 0.9); });
         sfondo.on('pointerdown', () => { this._cursore = idx; this._scegli(idx); });
@@ -12843,7 +12913,7 @@ const GameMap = (function () {
   // schermo intero. Nasconde anche l'HUD/i pulsanti fluttuanti, che
   // altrimenti resterebbero disegnati sopra la Scene (sono DOM, non
   // Phaser — stesso trattamento già riservato a InteriorScene).
-  function apriMenuNativo(sceneKey) {
+  function apriMenuNativo(sceneKey, dati) {
     if (!phaserGame || !scena) return;
     menuNativoAperto = true;
     // Il D-pad NON va nascosto: su mobile è l'unico modo per muovere il
@@ -12859,7 +12929,7 @@ const GameMap = (function () {
     // (probabile problema di timing/contesto sull'oggetto SceneManager
     // globale; scena.scene è garantito valido perché scena è la GameScene
     // attiva in questo momento).
-    scena.scene.launch(sceneKey || 'PauseMenuScene');
+    scena.scene.launch(sceneKey || 'PauseMenuScene', dati);
   }
 
   // Apre la schermata di scelta squadra all'ingresso di una palestra in
@@ -12879,7 +12949,13 @@ const GameMap = (function () {
   function apriBoxNativo() { apriMenuNativo('BoxScene'); }
 
   // Poké Market (modalità 'strumenti', aperto da un venditore/marker Tiled).
-  function apriMarketNativo() { apriMenuNativo('MarketScene'); }
+  // modoIniziale ('compra'|'vendi', opzionale): richiesta esplicita di Luca
+  // (12 ott 2026) — l'NPC del market chiede prima "acquistare o vendere?"
+  // (vedi apriMarketVenditore in app.js), poi il Market nativo si apre già
+  // sulla scheda giusta invece di partire sempre da "Compra".
+  function apriMarketNativo(modoIniziale) {
+    apriMenuNativo('MarketScene', modoIniziale ? { modoIniziale } : undefined);
+  }
 
   // Richiamata da app.js quando si esce del tutto dal menu (native B
   // dalla lista principale, o chiusura del pannello DOM di una sezione

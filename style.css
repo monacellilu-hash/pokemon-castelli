@@ -1301,7 +1301,13 @@ html, body {
 
 /* hpNumbers: BitmapSprite.new(124,16), x=value+spriteBaseX+80, y=value+52
    (solo lato giocatore — il nemico non mostra i numeri, solo la barra). */
-#giocatore-hp-testo {
+/* "-2" unita alla stessa regola (bug reale, 12 ott 2026): aveva coordinate
+   proprie slegate (left:300px) dentro un pannello largo solo 260px nativi —
+   il testo HP del secondo slot finiva fuori dal proprio databox. Stessa
+   posizione RELATIVA al pannello di #giocatore-hp-testo, che la eredita
+   gratis anche in doppia (il pannello intero è già scalato/spostato da
+   #schermata-battaglia.doppia #info-giocatore-2). */
+#giocatore-hp-testo, #giocatore-hp-testo-2 {
   position: absolute;
   left: 114px;
   top: 52px;
@@ -1386,35 +1392,51 @@ html, body {
 }
 .sprite-zona.nascosto, .pannello-info.nascosto { display: none; }
 
-#giocatore-hp-testo-2 {
-  position: absolute;
-  left: 300px;
-  top: 96px;
-  width: 200px;
-  text-align: right;
-  font-size: 16px;
-  font-weight: bold;
+/* BUG REALE (segnalato da Luca, 12 ott 2026, palestra di Marino — doppia):
+   verificato dal vivo coi DevTools, non solo a occhio. 3 cause concrete,
+   tutte nella stessa famiglia di errore (proprietà di posizionamento che si
+   SOMMAVANO invece di sostituirsi):
+   1) #zona-nemico aveva "top:3%" ma ereditava ANCHE il transform
+      "translate(-50%,-50%)" della regola base (#zona-nemico senza .doppia) —
+      il centro dello sprite finiva a un'altezza (3% dall'alto) troppo vicina
+      al bordo per un elemento centrato: metà sprite spariva sopra lo schermo
+      (misurato: top reale -111px). #zona-nemico-2 invece aveva un transform
+      diverso (solo translateX, niente translateY) quindi i due nemici non
+      erano nemmeno allineati allo stesso modo tra loro.
+   2) #zona-giocatore/-2 mescolavano "left" ereditato dalla regola base
+      (percentuale) con "bottom" nuovo della doppia, SENZA annullare "top"
+      della base: con top E bottom attivi insieme il browser risolve la
+      posizione in modo imprevedibile (misurato: zona-giocatore tagliata di
+      64px a sinistra, fuori schermo).
+   3) #info-giocatore/-2 avevano TUTTI E QUATTRO top+left (dalla base) E
+      bottom+right (dalla doppia) attivi insieme sullo stesso elemento: con
+      anche width/height fissi questo è "sovra-vincolato" (CSS 2.1 §10.3.7) e
+      il risultato dipende dal browser — misurato: il pannello giocatore
+      sbordava di 40px oltre il bordo destro dello schermo di lotta.
+   Fix: ogni zona/pannello della doppia ora imposta SEMPRE E SOLO top+left
+   (mai bottom/right insieme), con lo STESSO transform su entrambi gli slot
+   (translate(-50%,-50%) per le zone sprite, transform-origin:top-left fisso
+   per i pannelli) — niente più proprietà ereditate in conflitto. */
+#schermata-battaglia.doppia #zona-nemico {
+  top: 24%; left: 30%; bottom: auto; right: auto;
+  transform: translate(-50%, -50%) scale(0.82);
 }
-
-/* Riposiziona anche lo slot 1 (id normali) per far spazio allo slot 2:
-   nemici affiancati in alto, alleati affiancati in basso — invece dell'unico
-   nemico/alleato centrato della lotta singola. */
-#schermata-battaglia.doppia #zona-nemico    { top: 3%; left: 36%; }
-/* Sess. 1 ott 2026: #zona-giocatore (base, lotta singola) ora usa
-   transform:translate(-50%,-50%) per la posizione autentica da pokeemerald
-   — qui in doppia serve ancora SOLO l'orizzontale (bottom-anchored come
-   prima), altrimenti erediterebbe anche il -50% verticale non voluto. */
-#schermata-battaglia.doppia #zona-giocatore { bottom: 1%; left: 20%; transform: translateX(-50%); }
+#schermata-battaglia.doppia #zona-giocatore {
+  top: 74%; left: 25%; bottom: auto; right: auto;
+  transform: translate(-50%, -50%) scale(0.82);
+}
 
 #schermata-battaglia.doppia #zona-nemico-2:not(.nascosto),
 #schermata-battaglia.doppia #zona-giocatore-2:not(.nascosto) {
   display: block;
 }
 #schermata-battaglia.doppia #zona-nemico-2 {
-  top: 3%; left: 80%; transform: translateX(-50%) scale(0.82);
+  top: 24%; left: 70%; bottom: auto; right: auto;
+  transform: translate(-50%, -50%) scale(0.82);
 }
 #schermata-battaglia.doppia #zona-giocatore-2 {
-  bottom: 1%; left: 64%; transform: translateX(-50%) scale(0.82);
+  top: 74%; left: 60%; bottom: auto; right: auto;
+  transform: translate(-50%, -50%) scale(0.82);
 }
 
 #schermata-battaglia.doppia #info-nemico-2:not(.nascosto),
@@ -1422,16 +1444,20 @@ html, body {
   display: block;
 }
 #schermata-battaglia.doppia #info-nemico {
-  top: 2%; left: 1%; transform: scale(0.56); transform-origin: top left;
+  top: 8px; left: 8px; bottom: auto; right: auto;
+  transform: scale(0.56); transform-origin: top left;
 }
 #schermata-battaglia.doppia #info-nemico-2 {
-  top: 2%; left: 46%; transform: scale(0.56); transform-origin: top left;
+  top: 8px; left: 358px; bottom: auto; right: auto;
+  transform: scale(0.56); transform-origin: top left;
 }
 #schermata-battaglia.doppia #info-giocatore {
-  bottom: 20%; right: 46%; transform: scale(0.56); transform-origin: bottom right;
+  top: 329px; left: 8px; bottom: auto; right: auto;
+  transform: scale(0.56); transform-origin: top left;
 }
 #schermata-battaglia.doppia #info-giocatore-2 {
-  bottom: 20%; right: 1%; transform: scale(0.56); transform-origin: bottom right;
+  top: 329px; left: 358px; bottom: auto; right: auto;
+  transform: scale(0.56); transform-origin: top left;
 }
 
 /* Titolo del selettore bersaglio ("Chi bersagli?"), stesso trattamento del

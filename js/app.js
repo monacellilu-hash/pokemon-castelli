@@ -1994,11 +1994,19 @@ function marketVicino() {
 }
 
 // Apre il Poké Market parlando col venditore (NPC dentro la mappa del negozio).
-function apriMarketVenditore(idMarket) {
+// Richiesta esplicita di Luca (12 ott 2026): prima di entrare nell'interfaccia
+// si chiede "acquistare o vendere?" — il commesso ha già detto "Benvenuto!"
+// nel suo dialogo in dati/npc.js, qui aggiungiamo solo la scelta vera e
+// propria (stesso mostraScelta usato ovunque nel gioco per i Sì/No).
+async function apriMarketVenditore(idMarket) {
   if (stato.incontroAttivo || dialogoInCorso) return;
   marketTiledForzato = idMarket;
   // Market migrato a Scene nativa (MarketScene, map.js) — vedi apriMarketNativo().
-  if (typeof GameMap !== 'undefined' && GameMap.apriMarketNativo) { GameMap.apriMarketNativo(); return; }
+  if (typeof GameMap !== 'undefined' && GameMap.apriMarketNativo) {
+    const scelta = await mostraScelta('Vuoi acquistare o vendere?', 'Acquista', 'Vendi');
+    GameMap.apriMarketNativo(scelta === 2 ? 'vendi' : 'compra');
+    return;
+  }
   impostaModalitaMenu('strumenti');
   GameMap.bloccaMovimento();
   document.getElementById('pannello-menu').classList.remove('nascosto');
