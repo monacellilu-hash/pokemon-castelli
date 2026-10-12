@@ -1840,7 +1840,7 @@ const DATI_TRAINER = {
   },
 
   /* ── RIVALI IN GIRO PER IL MONDO (sess. 28 set 2026) ── Luca ha piazzato
-     ENTRAMBI i rivali (Blue/uomo, Red/donna) su più mappe lungo il path, ognuno
+     ENTRAMBI i rivali (Green/uomo, Blue/donna) su più mappe lungo il path, ognuno
      con la propria sequenza di "tappa" (1=primo incontro, 2=secondo, …) —
      restano tutti e due sfidabili per tutta la partita, non solo quello scelto
      come difficoltà nel laboratorio. Niente `sprite`/`nome`/`classe` fissi qui:
@@ -3551,7 +3551,7 @@ const DATI_TRAINER = {
      e diverso da rivale_tuscolo_battuto: è un incontro distinto. ── */
   'rivale_via_vittoria': {
     sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 6,
-    classe: 'Rivale', nome: 'Remo',
+    classe: 'Rivale', nome: 'Green',
     rivale: true,
     flagVittoria: 'rivale_via_vittoria_battuto',
     squadra: [                  // fallback se manca la prop "tappa"
@@ -3566,7 +3566,7 @@ const DATI_TRAINER = {
 
   /* ── Secondo rivale — RISOLTO (richiesta esplicita di Luca, 10 ott
      2026, D13 chiusa): non è un terzo personaggio, è l'ALTRO rivale
-     scelto al laboratorio (Blue o Red) che qui NON hai affrontato —
+     scelto al laboratorio (Green o Blue) che qui NON hai affrontato —
      stesso identico meccanismo di rivale_via_vittoria, risolto
      dinamicamente via altroRivale()/rivaleDinamico nella cutscene
      'via_vittoria_due_rivali_facile'/'_difficile' (dati/cutscene.js).
@@ -3574,7 +3574,7 @@ const DATI_TRAINER = {
      FUORI dalla cutscene (oggi non succede). ── */
   'rivale2_via_vittoria': {
     sprite: 'trainer_rivale_2', ritratto: 'trainer_rivale_2', vista: 6,
-    classe: 'Rivale', nome: 'Red', rivale: true,
+    classe: 'Rivale', nome: 'Blue', rivale: true,
     flagVittoria: 'rivale2_via_vittoria_battuto',
     squadra: [ { id: 302, livello: 58 }, { id: 359, livello: 59 }, { id: 248, livello: 60 } ],
     dialogo_prima: 'Allora, ci risentiamo prima della Lega. Non pensare che sia finita qui.',
@@ -3630,7 +3630,7 @@ const DATI_TRAINER = {
     // Stesso sprite del Remo "rivale" (rivale_via_vittoria sopra): è lo
     // stesso personaggio, non un allenatore generico — deve sembrare lui.
     sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
-    classe: 'Campione', nome: 'Remo',
+    classe: 'Campione', nome: 'Green',
     campioneLega: true,
     flagVittoria: 'campione_remo_battuto',
     squadra: [ { id: 6, livello: 65 } ],     // fallback: solo un core plausibile
@@ -3791,6 +3791,237 @@ const DATI_TRAINER = {
     premio: 6000,
   },
 
+  // ── Grunt CoTrAL del Bunkerino 0F (richiesta esplicita di Luca, 12 ott
+  //    2026): post-Lega, sorveglianza del piano superiore. Sprite/ritratto
+  //    stesso trattamento Osservatorio (Grunt_Cotral_uomo/donna). ──
+  'cotral_bunkerino_0f_1': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 248, livello: 61 } ],
+    dialogo_prima: 'Questo piano è sorvegliato. Fermati dove sei.',
+    dialogo_dopo: 'Impossibile... richiamo rinforzi.',
+    premio: 2300,
+  },
+  'cotral_bunkerino_0f_2': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 229, livello: 62 } ],
+    dialogo_prima: 'Nessuno doveva arrivare fin qui dopo la Lega. Pazienza, tanto peggio per te.',
+    dialogo_dopo: 'Vai pure avanti. Ma non sarà facile come con me.',
+    premio: 2400,
+  },
+  'cotral_bunkerino_0f_3': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 89, livello: 63 } ],
+    dialogo_prima: 'Il progetto 150 non riguarda i curiosi come te.',
+    dialogo_dopo: 'Mo\' je lo dico al capo che sei passato.',
+    premio: 2500,
+  },
+  'cotral_bunkerino_0f_4': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 248, livello: 60 } ],
+    dialogo_prima: 'Qui sotto non c\'è niente da vedere. Tornatene da dove sei venuto.',
+    dialogo_dopo: 'Tsk. Non era questo il piano.',
+    premio: 2600,
+  },
+  'cotral_bunkerino_0f_5': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 76, livello: 61 } ],
+    dialogo_prima: 'Ordini dall\'alto: nessun passaggio senza autorizzazione.',
+    dialogo_dopo: 'Fin qui ci sei arrivato. Vediamo più avanti.',
+    premio: 2700,
+  },
+  'cotral_bunkerino_0f_6': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 68, livello: 62 }, { id: 208, livello: 63 } ],
+    dialogo_prima: 'Non dovevi trovare l\'entrata. Ora è un problema mio.',
+    dialogo_dopo: 'Il laboratorio ti aspetta. Se ci arrivi.',
+    premio: 2800,
+  },
+  'cotral_bunkerino_0f_7': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 248, livello: 63 }, { id: 229, livello: 64 } ],
+    dialogo_prima: 'Pensavi che finisse con la Lega? Ingenuo.',
+    dialogo_dopo: 'Bella lotta. Ma qui sotto ce ne sono altri come me.',
+    premio: 2900,
+  },
+  'cotral_bunkerino_0f_8': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 306, livello: 60 }, { id: 248, livello: 61 } ],
+    dialogo_prima: 'Daje, famo veloce: io vinco e te ne vai.',
+    dialogo_dopo: 'Va bene, va bene... passa.',
+    premio: 3000,
+  },
+  'cotral_bunkerino_0f_9': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 359, livello: 61 }, { id: 94, livello: 62 } ],
+    dialogo_prima: 'Sei bravo ad arrivare fin qui. Vediamo se sei bravo pure a lottare.',
+    dialogo_dopo: 'Non dire a nessuno che hai battuto anche me.',
+    premio: 3100,
+  },
+  'cotral_bunkerino_0f_10': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 262, livello: 62 }, { id: 227, livello: 63 } ],
+    dialogo_prima: 'Anche dopo la Lega, il Bunkerino resta cosa nostra.',
+    dialogo_dopo: 'Il Progetto 150 non si ferma per una sconfitta.',
+    premio: 3200,
+  },
+
+  // ── Grunt CoTrAL del Bunkerino 1F (richiesta esplicita di Luca, 12 ott
+  //    2026): sorveglianza rinforzata, livello sopra quelli del 0F. ──
+  'cotral_bunkerino_1f_1': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 110, livello: 65 }, { id: 89, livello: 66 } ],
+    dialogo_prima: 'Secondo piano, sorveglianza rinforzata. Non passi senza lottare.',
+    dialogo_dopo: 'Rinforzi inutili. Vai, ma stai attento oltre questa porta.',
+    premio: 3100,
+  },
+  'cotral_bunkerino_1f_2': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 94, livello: 66 }, { id: 65, livello: 67 } ],
+    dialogo_prima: 'Chi ti ha fatto entrare quaggiù? Non importa, esci lottando.',
+    dialogo_dopo: 'Tsk. Nemmeno io sono riuscito a fermarti.',
+    premio: 3200,
+  },
+  'cotral_bunkerino_1f_3': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 68, livello: 67 }, { id: 302, livello: 68 } ],
+    dialogo_prima: 'Qui si avvicina al nucleo del Progetto 150. Fermo.',
+    dialogo_dopo: 'Il nucleo centrale ti aspetta. Buona fortuna, ne avrai bisogno.',
+    premio: 3300,
+  },
+  'cotral_bunkerino_1f_4': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 332, livello: 64 }, { id: 89, livello: 65 } ],
+    dialogo_prima: 'Pensavi che il primo piano fosse l\'ultimo ostacolo?',
+    dialogo_dopo: 'Hai superato la sorveglianza rinforzata. Non succederà di nuovo.',
+    premio: 3400,
+  },
+  'cotral_bunkerino_1f_5': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 359, livello: 65 }, { id: 65, livello: 66 } ],
+    dialogo_prima: 'Mo\' basta curiosità: o lotti o te ne vai.',
+    dialogo_dopo: 'Vai. Ma quello che c\'è oltre non lo batti con un indovinello.',
+    premio: 3500,
+  },
+  'cotral_bunkerino_1f_6': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 376, livello: 66 }, { id: 248, livello: 67 } ],
+    dialogo_prima: 'Il livello di sicurezza qui è doppio. Scoprirai perché.',
+    dialogo_dopo: 'Impressionante. Ma qui sotto siamo tanti.',
+    premio: 3600,
+  },
+  'cotral_bunkerino_1f_7': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 376, livello: 67 }, { id: 359, livello: 68 } ],
+    dialogo_prima: 'Nemmeno il Campione della Lega è mai arrivato fin qui.',
+    dialogo_dopo: 'Mo\' lo dico al comando che sei passato pure da me.',
+    premio: 3700,
+  },
+  'cotral_bunkerino_1f_8': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 227, livello: 64 }, { id: 68, livello: 65 } ],
+    dialogo_prima: 'Fermo. Da qui in poi si lotta sul serio.',
+    dialogo_dopo: 'Va bene, va bene! Passa, ma stai in guardia.',
+    premio: 3800,
+  },
+  'cotral_bunkerino_1f_9': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 197, livello: 65 }, { id: 262, livello: 66 } ],
+    dialogo_prima: 'Gli indovinelli non bastano, qui ci vuole anche la forza.',
+    dialogo_dopo: 'Nessuno mi aveva mai battuto su questo piano.',
+    premio: 3900,
+  },
+  'cotral_bunkerino_1f_10': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 76, livello: 66 }, { id: 89, livello: 67 } ],
+    dialogo_prima: 'Sei arrivato al piano sbagliato per fare il turista.',
+    dialogo_dopo: 'Il Progetto 150 ha riserve che non hai ancora visto.',
+    premio: 4000,
+  },
+  'cotral_bunkerino_1f_11': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 82, livello: 67 }, { id: 376, livello: 68 } ],
+    dialogo_prima: 'Il nucleo centrale è vicino. Non un passo di più.',
+    dialogo_dopo: 'Vai avanti. Il resto non dipende più da me.',
+    premio: 4100,
+  },
+  'cotral_bunkerino_1f_12': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 227, livello: 64 }, { id: 212, livello: 65 } ],
+    dialogo_prima: 'Resisti qui fino a quando non arrivano i rinforzi veri.',
+    dialogo_dopo: 'Bella lotta davvero. Ma non è ancora finita.',
+    premio: 4200,
+  },
+  'cotral_bunkerino_1f_13': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 76, livello: 65 }, { id: 208, livello: 65 }, { id: 65, livello: 66 } ],
+    dialogo_prima: 'Pensavo fossi solo un\'altra guardia distratta. Mi sbagliavo su di te.',
+    dialogo_dopo: 'Tornerò più forte. Il bunkerino non si arrende così.',
+    premio: 4300,
+  },
+  'cotral_bunkerino_1f_14': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 212, livello: 66 }, { id: 229, livello: 66 }, { id: 94, livello: 67 } ],
+    dialogo_prima: 'Hai risolto gli indovinelli? Bravo. Ma la guardia non si supera con la logica.',
+    dialogo_dopo: 'Hai vinto. Resta solo il nucleo, ora.',
+    premio: 4400,
+  },
+  'cotral_bunkerino_1f_15': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 205, livello: 67 }, { id: 229, livello: 67 }, { id: 168, livello: 68 } ],
+    dialogo_prima: 'Qui dentro si decide chi può vedere Mewtwo. E non sei tu.',
+    dialogo_dopo: 'Mo\' vai, prima che cambi idea.',
+    premio: 4500,
+  },
+  'cotral_bunkerino_1f_16': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 168, livello: 64 }, { id: 332, livello: 64 }, { id: 76, livello: 65 } ],
+    dialogo_prima: 'Il secondo piano non perdona gli intrusi.',
+    dialogo_dopo: 'La sorveglianza fallisce. Il nucleo no.',
+    premio: 4600,
+  },
+  'cotral_bunkerino_1f_17': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 110, livello: 65 }, { id: 248, livello: 65 }, { id: 197, livello: 66 } ],
+    dialogo_prima: 'Vai avanti se vuoi, ma prima passa su di me.',
+    dialogo_dopo: 'Passa. Ma guardati le spalle oltre questa porta.',
+    premio: 4700,
+  },
+  'cotral_bunkerino_1f_18': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 359, livello: 66 }, { id: 229, livello: 66 }, { id: 205, livello: 67 } ],
+    dialogo_prima: 'Mo\' vediamo di che pasta sei fatto davvero.',
+    dialogo_dopo: 'Impossibile... nemmeno la mia squadra è bastata.',
+    premio: 4800,
+  },
+
   /* ── Grande Magazzino (ex CeladonCity_DepartmentStore, estratto da
      FireRed il 5 ott 2026) — 3 allenatori al 3°F, 2 sul tetto. Livelli
      generici medio-alti: Luca deciderà in quale punto del percorso
@@ -3854,6 +4085,27 @@ const DATI_TRAINER = {
     dialogo_prima: 'Ah, sei tu. Ora che la Lega è alle spalle possiamo giocare a carte scoperte. Fatti sotto, se vuoi passare.',
     dialogo_dopo: '...Va bene, hai vinto. Passa pure, tanto ormai non importa più niente.',
     premio: 2600,
+  },
+
+  /* ── MEWTWO — scontro finale del Bunkerino (3F), richiesta esplicita di
+     Luca, 12 ott 2026. Non compare come "leggendario" classico: è un
+     trainer vero, gestito dalla cutscene 'bunkerino_finale_mewtwo' (dati/
+     cutscene.js) — sprite/nome/squadra qui sotto valgono SOLO per la
+     lotta (il travestimento da "Grunt CoTrAL" prima della rivelazione è
+     puramente visivo, gestito dal passo 'cambia_sprite' della cutscene,
+     non da questa voce). "squadra" resta vuota qui: viene SEMPRE
+     ricalcolata al volo da costruisciSquadraMewtwoFinale() (js/app.js,
+     stesso schema di costruisciSquadraMaso) subito prima della battaglia,
+     perché dipende dalla tua squadra attuale e dalla scelta Mew sì/no. ── */
+  'mewtwo_bunkerino_finale': {
+    // sprite = il travestimento INIZIALE (Grunt CoTrAL): è quello che si
+    // vede entrando nella stanza, prima che la cutscene lo cambi in
+    // Mewtwo vero con 'cambia_sprite'. Non è un errore.
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Leggendario', nome: 'Mewtwo',
+    squadra: [],
+    dialogo_dopo: 'Impossibile... la mia stessa creazione, sconfitta da una creatura imperfetta come te.',
+    premio: 25000,
   },
 
   /* ── Maso — battaglia finale post-Lega (Percorso Monte Po 3, sess. 6 ott

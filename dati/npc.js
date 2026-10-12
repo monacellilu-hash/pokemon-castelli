@@ -249,6 +249,68 @@ const DATI_NPC = {
     sprite: 'trainer_SUPERNERD', nome: 'Direttore Lucio', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciBunkerino',
   },
+  // ── Scena finale Bunkerino 3F (richiesta esplicita di Luca, 12 ott 2026):
+  // Tom e Maso NON si lottano qui (già battuti altrove, Osservatorio/
+  // Percorso Monte Po 3) — compaiono solo per essere rimproverati da
+  // Mewtwo, poi si fanno da parte. Tipo "npc" apposta: niente combattimento
+  // possibile premendo [A] su di loro, prima o dopo la cutscene. Stesso
+  // sprite "clone" già usato per entrambi altrove (trainer_RIVAL).
+  'capo_cotral_tom_cameo': {
+    sprite: 'trainer_RIVAL', nome: 'Tom', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Tom è troppo scosso per parlare con te ora.'],
+  },
+  'capo_cotral_maso_cameo': {
+    sprite: 'trainer_RIVAL', nome: 'Maso', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Maso evita il tuo sguardo.'],
+  },
+  // Mewtwo PRIMA della rivelazione: travestito da semplice Addetto CoTrAL
+  // (tipo "npc", non "trainer" — niente lotta possibile interagendo a
+  // caso; la lotta vera parte SOLO dal passo 'battaglia' della cutscene,
+  // che pesca direttamente da DATI_TRAINER['mewtwo_bunkerino_finale']
+  // indipendentemente da questo). Sprite/nome/direzione iniziali: cambiano
+  // dal vivo coi passi 'cambia_sprite'/'guarda' della cutscene.
+  'mewtwo_bunkerino_finale_npc': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['...'],
+  },
+  // Mew: invisibile finché non scatta la cutscene (condizione sull'oggetto
+  // Tiled), poi rivelato con 'rigenera_npc' + 'cambia_sprite'. Non è
+  // catturabile/combattibile qui: Mew si incontra per davvero solo dopo,
+  // a Villa Aldobrandini (vedi CLAUDE.md) — qui è solo un attore scriptato,
+  // "tipo" apposta npc e non leggendario per evitare che resti un wild
+  // encounter interagibile a fine scena.
+  'mew_bunkerino_finale': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Mew', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['...'],
+  },
+
+  // I 10 Grunt CoTrAL di scenografia intorno alla stanza finale del
+  // Bunkerino 3F (richiesta esplicita di Luca, 12 ott 2026): SOLO
+  // scenografia, non si lottano — rendono piena/minacciosa la stanza
+  // durante il rimprovero e lo scontro, fermi sull'attenti.
+  'bunkerino_3f_guardia_1': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'fisso', dialogo: ['L\'addetto resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_2': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'fisso', dialogo: ['L\'addetta resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_3': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'fisso', dialogo: ['L\'addetto resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_4': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud', movimento: 'fisso', dialogo: ['L\'addetta resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_5': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'est', movimento: 'fisso', dialogo: ['L\'addetto resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_6': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'est', movimento: 'fisso', dialogo: ['L\'addetta resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_7': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'est', movimento: 'fisso', dialogo: ['L\'addetto resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_8': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'ovest', movimento: 'fisso', dialogo: ['L\'addetta resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_9': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'ovest', movimento: 'fisso', dialogo: ['L\'addetto resta immobile, sull\'attenti.'] },
+  'bunkerino_3f_guardia_10': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'ovest', movimento: 'fisso', dialogo: ['L\'addetta resta immobile, sull\'attenti.'] },
+
+  // Grunt CoTrAL infiltrato al 0F (richiesta esplicita di Luca, 12 ott 2026):
+  // NON si lotta — è una "talpa" che aiuta il giocatore spiegando che ogni
+  // stanza/piano del Bunkerino ha le sue regole (indovinelli al 1F, guardie
+  // sparse, ecc.), senza svelare troppo.
+  'cotral_bunkerino_infiltrato': {
+    sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Psst. Non dirlo a nessuno, ma non sono tutti come credi, qui dentro.',
+      'Ogni stanza del Bunkerino ha le sue regole. Al piano di sopra, per esempio, certe porte si aprono solo rispondendo bene a una domanda.',
+      'Occhi aperti. E buona fortuna.',
+    ],
+  },
   // Giovanni è FISICAMENTE già nella stanza fin dall'inizio (come lo
   // scienziato) — non compare dal nulla dopo la lotta con Levantino, ci
   // sta già, fermo, in disparte (richiesta esplicita di Luca: "non è che
@@ -357,13 +419,16 @@ const DATI_NPC = {
     azione: 'interagisciLaboratorio',
   },
 
-  // DUE rivali nel laboratorio (sess. 22 set 2026): destra = uomo/Blue,
+  // DUE rivali nel laboratorio (sess. 22 set 2026): destra = uomo/Green,
   // starter DEBOLE contro il tuo → sfidarlo imposta la modalità FACILE.
-  // Sinistra = donna/Red, starter FORTE contro il tuo → modalità DIFFICILE.
+  // Sinistra = donna/Blue, starter FORTE contro il tuo → modalità DIFFICILE.
   // dialogo:[] perché tutto il testo lo gestisce l'azione (spiegazione +
-  // doppia conferma Sì/No + lotta), non un semplice saluto fisso.
+  // doppia conferma Sì/No + lotta), non un semplice saluto fisso. Il campo
+  // "nome" qui sotto non è mai mostrato a schermo (l'azione usa sempre
+  // stato.duoRivali[chi].nome, cioè RIVALE_NOME/RIVALE_NOME_FORTE in
+  // js/data.js) — lasciato comunque coerente per chi legge il file.
   'rivale_debole': {
-    sprite: 'RIVALE_1', nome: 'Remo',   // il rivale debole (Blue) è Brendan
+    sprite: 'RIVALE_1', nome: 'Green',   // il rivale debole (Green) è Brendan
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -371,7 +436,7 @@ const DATI_NPC = {
   },
 
   'rivale_forte': {
-    sprite: 'Rivale_2', nome: 'Remo',   // il rivale forte (Red) è May
+    sprite: 'Rivale_2', nome: 'Blue',   // il rivale forte (Blue) è May
     direzione: 'sud',
     movimento: 'fisso',
     dialogo: [],
@@ -558,7 +623,7 @@ const DATI_NPC = {
   },
   'npc_lega_entrata_superquattro_6': {
     sprite: 'NPC 14', nome: 'Visitatore', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Il Campione è l\'unico che non cambia mai: qui è Remo. Buona fortuna, ne avrai bisogno.'],
+    dialogo: ['Il Campione è l\'unico che non cambia mai: è il tuo rivale di sempre, quello che hai scelto al laboratorio. Buona fortuna, ne avrai bisogno.'],
   },
   'npc_lega_entrata_superquattro_7': {
     sprite: 'NPC 10', nome: 'Allenatore', direzione: 'est', movimento: 'fisso',

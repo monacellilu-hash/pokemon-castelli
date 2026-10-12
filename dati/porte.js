@@ -31,7 +31,7 @@ const DATI_PORTE = {
 
   'casa_rivale': {
     mappa: null,
-    nome: 'Casa di Remo',
+    nome: 'Casa del rivale',
   },
 
 };

@@ -16,6 +16,11 @@
        Pausa (utile per dare respiro tra un'azione e l'altra).
    - { tipo: 'flag', nome: 'remo_intro_vista', valore: true }
        Scrive su stato.flags — usalo per condizioni successive (gate).
+   - { tipo: 'salva_giorno', nome: 'bunkerino_mewtwo_vuoto_giorno' }
+       Scrive su stato.flags IL GIORNO DI GIOCO ATTUALE (numero, non
+       booleano). Usalo insieme alla condizione Tiled "giorni_passati:
+       <stesso_nome>:<N>" su un oggetto 'leggendario'/'npc' per farlo
+       (ri)apparire solo dopo N giorni da questo momento.
    - { tipo: 'nascondi_npc', npc: 'id_npc_tiled' } / { tipo: 'mostra_npc', npc: '...' }
        Nasconde/mostra lo sprite di un NPC già piazzato su Tiled.
    - { tipo: 'camera', npc: 'id_npc_tiled', durata: 800 }  (oppure { tipo:'camera', tx, ty, durata })
@@ -54,6 +59,33 @@
        appena diventata vera (tile Poké Ball nascosto fino a quel momento).
    - { tipo: 'fade_out'/'fade_in', ms } e { tipo: 'rigenera_npc' }: schermo nero
        e rilettura di gate/condizioni degli NPC (vedi museo_navi_sfida).
+   - { tipo: 'trema', ms: 350, intensita: 0.012 }
+       Scuote la camera (es. un boss che rivela la sua vera natura).
+   - { tipo: 'cambia_sprite', npc: 'id_npc_tiled', sprite: 'NomeSprite' }
+       Cambia LIVE lo sprite di un NPC già piazzato (es. un travestimento che
+       si rivela). Prova prima il foglio NPC/trainer normale, poi ripiega sul
+       foglio follower/leggendario — funziona sia per un NPC che diventa un
+       altro NPC, sia per un NPC che si rivela un Pokémon leggendario.
+   - { tipo: 'scelta_si_no', messaggio, testoSi, testoNo, salva_flag: 'campo' }
+       Bivio Sì/No: salva il booleano in stato.flags[salva_flag].
+   - { tipo: 'sostituisci_squadra_temporaneo', messaggio, pokemon: idSpecie,
+       richiede_flag: 'campo' }
+       Il giocatore scegli quale Pokémon della squadra mettere da parte per
+       un alleato "in prestito" (eredita il livello del tuo Pokémon più alto),
+       SOLO per la prossima battaglia della cutscene. Annullabile. Il
+       ripristino è automatico e garantito a fine lotta (vittoria O sconfitta).
+       richiede_flag (opzionale): esegue il passo solo se stato.flags[campo]
+       è vero (es. dopo una 'scelta_si_no' precedente) — comodo per renderlo
+       condizionale senza un vero "if" nel motore.
+   - Test rapido: `stato.flags.debug_skip_lotta = true` in console PRIMA di far
+       partire la cutscene salta la lotta vera di QUALUNQUE passo 'battaglia'
+       e passa dritto all'esito di vittoria (vedi _cutscenaBattaglia).
+   - { tipo: 'battaglia', trainer: '...', squadraAsync: 'nomeFunzioneGlobale' }
+       Oltre al trainer statico, la squadra puó essere costruita al volo da
+       una funzione ASINCRONA globale (passata per NOME-stringa, stesso motivo
+       di rivaleRif sotto: dati/cutscene.js carica prima di js/app.js) — utile
+       per boss la cui squadra dipende dallo stato attuale del giocatore
+       (es. Mewtwo finale del Bunkerino, costruisciSquadraMewtwoFinale).
    - Nei testi dei dialoghi: {maschile|femminile} sceglie in base al genere del
        giocatore ("{ragazzino|ragazzina}"), {nome} è il nome del personaggio.
 
@@ -382,18 +414,18 @@ CUTSCENE['museo_navi_intro'] = [
    dati/cutscene.js carica prima di js/app.js, dove altroRivale() vive),
    risolta a runtime da _cutscenaBattaglia. ══════════════════════════════════════════════════════════ */
 
-// FACILE: hai scelto/affrontato Blue al laboratorio → qui ti sfida Red,
-// e alla fine è Blue (il tuo rivale di sempre) a salutarti e sparire.
+// FACILE: hai scelto/affrontato Green al laboratorio → qui ti sfida Blue,
+// e alla fine è Green (il tuo rivale di sempre) a salutarti e sparire.
 CUTSCENE['via_vittoria_due_rivali_facile'] = [
   { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
-  { tipo: 'dialogo', nome: 'Red', testo: [
+  { tipo: 'dialogo', nome: 'Blue', testo: [
     'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
-    'Blue mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenata per conto mio, lontano da tutti.',
+    'Green mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenata per conto mio, lontano da tutti.',
     'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
   ] },
   { tipo: 'battaglia', trainer: 'rivale2_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
   { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
-  { tipo: 'dialogo', nome: 'Blue', testo: [
+  { tipo: 'dialogo', nome: 'Green', testo: [
     'Bene, sei pronto!',
     'Ci vediamo presto, amico mio...',
   ] },
@@ -404,18 +436,18 @@ CUTSCENE['via_vittoria_due_rivali_facile'] = [
   { tipo: 'flag', nome: 'via_vittoria_rivale_finale_vista', valore: true },
 ];
 
-// DIFFICILE: hai scelto/affrontato Red al laboratorio → qui ti sfida
-// Blue, e alla fine è Red (il tuo rivale di sempre) a salutarti e sparire.
+// DIFFICILE: hai scelto/affrontato Blue al laboratorio → qui ti sfida
+// Green, e alla fine è Blue (il tuo rivale di sempre) a salutarti e sparire.
 CUTSCENE['via_vittoria_due_rivali_difficile'] = [
   { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
-  { tipo: 'dialogo', nome: 'Blue', testo: [
+  { tipo: 'dialogo', nome: 'Green', testo: [
     'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
-    'Red mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenato per conto mio, lontano da tutti.',
+    'Blue mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenato per conto mio, lontano da tutti.',
     'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
   ] },
   { tipo: 'battaglia', trainer: 'rivale_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
   { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
-  { tipo: 'dialogo', nome: 'Red', testo: [
+  { tipo: 'dialogo', nome: 'Blue', testo: [
     'Bene, sei pronto!',
     'Ci vediamo presto, amico mio...',
   ] },
@@ -424,4 +456,160 @@ CUTSCENE['via_vittoria_due_rivali_difficile'] = [
   { tipo: 'aspetta', ms: 300 },
   { tipo: 'fade_in', ms: 500 },
   { tipo: 'flag', nome: 'via_vittoria_rivale_finale_vista', valore: true },
+];
+
+/* ══════════════════════════════════════════════════════════
+   SCONTRO FINALE DEL BUNKERINO (3F) — Mewtwo (richiesta esplicita di
+   Luca, 12 ott 2026): Tom e Maso (già battuti altrove) vengono
+   rimproverati da un capo misterioso ("xxxx" finché non si rivela) per
+   non essere riusciti a fermarti — si scopre essere Mewtwo stesso,
+   travestito da semplice Addetto CoTrAL. Dopo il monologo sui suoi piani
+   (clonazione/potenziamento/controllo dei Castelli), si rivela anche Mew
+   (omaggio al primo film): puoi scegliere di portarlo in squadra, al
+   posto di un tuo Pokémon, SOLO per questa lotta (vedi
+   'sostituisci_squadra_temporaneo' — il ripristino a fine lotta è
+   automatico). Mewtwo ha moveset fisso (Psichico/Fulmine/
+   Lanciafiamme/Ricarica, IA dedicata in js/battle.js) + fino a 5 cloni
+   della tua squadra reale (esclude Mew se l'hai portato con te), tutti
+   6 livelli sopra il tuo più forte — vedi costruisciSquadraMewtwoFinale
+   in js/app.js.
+   ══════════════════════════════════════════════════════════ */
+
+// Epilogo condiviso da entrambe le varianti (normale e "ripresa"), subito
+// dopo la battaglia vinta (richiesta esplicita di Luca, 12 ott 2026):
+// Mewtwo non riesce a credere alla sconfitta, Mew ti ringrazia
+// telepaticamente e se ne va con lui, Tom e Maso si danno per vinti e se ne
+// vanno (anche loro, comico), infine una voce fuori campo avverte che
+// nella stanza resta ancora energia psichica — Mewtwo torna DAVVERO
+// catturabile (lotta selvatica normale) dopo 2 giorni di gioco da questo
+// momento, vedi la condizione "giorni_passati:" sull'oggetto Tiled
+// 'leggendario' piazzato nella stessa stanza (sprites/maps_tiled/
+// bunkerino_3f.tmj) e il passo 'salva_giorno' qui sotto.
+const EPILOGO_BUNKERINO_MEWTWO = [
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    '...Non ci posso credere.',
+    'Come diavolo è possibile?! Il mio piano era perfetto. PERFETTO.',
+    'Ogni calcolo, ogni variabile, ogni possibilità... e tu, un semplice allenatore, le hai ignorate tutte, una dopo l\'altra.',
+    '...',
+    'Forse non sono poi così superiore come credevo di essere. O forse tu sei semplicemente qualcosa che nessun calcolo poteva prevedere.',
+  ] },
+  { tipo: 'guarda', npc: 'mew_bunkerino_finale', direzione: 'sud' },
+  { tipo: 'dialogo', nome: 'Mew (telepaticamente)', testo: [
+    'Grazie per aver salvato il mondo insieme a me.',
+  ] },
+  { tipo: 'guarda', npc: 'mew_bunkerino_finale', direzione: 'ovest' },
+  { tipo: 'guarda', npc: 'mewtwo_bunkerino_finale_npc', direzione: 'est' },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'nascondi_npc', npc: 'mew_bunkerino_finale' },
+  { tipo: 'nascondi_npc', npc: 'mewtwo_bunkerino_finale_npc' },
+  { tipo: 'aspetta', ms: 200 },
+  { tipo: 'fade_in', ms: 1000 },
+  { tipo: 'guarda', npc: 'capo_cotral_tom_cameo', direzione: 'est' },
+  { tipo: 'guarda', npc: 'capo_cotral_maso_cameo', direzione: 'ovest' },
+  { tipo: 'dialogo', nome: 'Tom', testo: ['Maledetta... possibile che perda anche stavolta?'] },
+  { tipo: 'dialogo', nome: 'Maso', testo: [
+    'E mo\' che famo?',
+    'Proviamo da Lele Burger: quello apre un locale nuovo ogni due anni, magari cerca gente.',
+  ] },
+  { tipo: 'dialogo', nome: 'Tom', testo: ['Daje, annamo via da qui prima che arriva qualcun altro.'] },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'nascondi_npc', npc: 'capo_cotral_tom_cameo' },
+  { tipo: 'nascondi_npc', npc: 'capo_cotral_maso_cameo' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_1' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_2' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_3' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_4' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_5' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_6' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_7' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_8' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_9' },
+  { tipo: 'nascondi_npc', npc: 'bunkerino_3f_guardia_10' },
+  { tipo: 'aspetta', ms: 200 },
+  { tipo: 'fade_in', ms: 1000 },
+  { tipo: 'dialogo', nome: '???', testo: [
+    'Qui c\'è ancora energia psichica. Torna tra un po\' a ricontrollare.',
+  ] },
+  { tipo: 'salva_giorno', nome: 'bunkerino_mewtwo_vuoto_giorno' },
+  { tipo: 'flag', nome: 'bunkerino_mewtwo_sconfitto', valore: true },
+  // flag_fine del trigger Tiled "INIZIO CUTSCENE": da QUI in poi il
+  // rettangolo non fa più ripartire nessuna cutscene (si è vinto per
+  // davvero) — settato a mano perché _checkTriggerCutsceneEntra lo
+  // controlla ma non lo scrive mai da sola.
+  { tipo: 'flag', nome: 'bunkerino_finale_mewtwo_vista', valore: true },
+];
+
+CUTSCENE['bunkerino_finale_mewtwo'] = [
+  { tipo: 'dialogo', nome: 'xxxx', testo: [
+    'Due capisquadra. Due Pokémon donati personalmente da me. E nemmeno così siete riusciti a fermare un solo intruso.',
+    'Tom. Maso. Vi avevo chiesto una cosa sola: non farlo arrivare fin qui.',
+    'Non importa. Come sempre, se una cosa deve essere fatta per bene, la faccio io.',
+  ] },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'cambia_sprite', npc: 'mewtwo_bunkerino_finale_npc', sprite: 'mewtwo' },
+  { tipo: 'aspetta', ms: 200 },
+  { tipo: 'fade_in', ms: 1000 },
+  { tipo: 'guarda', npc: 'mewtwo_bunkerino_finale_npc', direzione: 'sud' },
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: ['Avvicinati.'] },
+  { tipo: 'muovi_player', direzione: 'nord', passi: 4 },
+  { tipo: 'guarda', npc: 'capo_cotral_tom_cameo', direzione: 'est' },
+  { tipo: 'guarda', npc: 'capo_cotral_maso_cameo', direzione: 'ovest' },
+  { tipo: 'aspetta', ms: 1000 },
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    'Ti osservo da quando hai messo piede in questo posto.',
+    'Un ragazzino che attraversa palestre, Lega, Superquattro... e crede che la storia finisca con una medaglia e un trono.',
+    'Io sono stato creato per essere più di questo. Più di loro. Più di chiunque.',
+  ] },
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    'Il Progetto 150 non si è fermato quando sono nato io. Ho solo capito cosa farne, da solo, mentre i miei creatori litigavano su cosa fossi davvero.',
+    'Clonazione. La stessa tecnologia che ha dato vita a me. Non la sprecherò per creare un\'altra copia imperfetta come me: la userò per potenziare ogni Pokémon, ogni allenatore, ogni creatura di questi Castelli.',
+    'Non saranno più sé stessi. Saranno strumenti. Lotteranno per me, convinti di lottare per sé stessi.',
+  ] },
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    'Controllare il meteo, come hanno provato a fare i tuoi amici del GdF con Kyogre e Groudon, con tutta la loro ambizione minuscola... è stato solo l\'inizio. Un esperimento. E nemmeno mio.',
+    'Io controllerò tutto. I Castelli, le persone, i Pokémon. E nessuno — nessuno — potrà fermarmi.',
+    'Niente potrà fermare questo piano. Nemmeno io, se anche volessi tornare indietro adesso. E non voglio.',
+  ] },
+  { tipo: 'trema', ms: 400, intensita: 0.012 },
+  { tipo: 'flag', nome: 'bunkerino_finale_mew_rivelato', valore: true },
+  { tipo: 'fade_out', ms: 800 },
+  { tipo: 'rigenera_npc' },
+  { tipo: 'cambia_sprite', npc: 'mew_bunkerino_finale', sprite: 'mew' },
+  // 'rigenera_npc' ricostruisce TUTTI gli NPC da zero (rilegge le
+  // condizioni per far spuntare Mew), quindi Mewtwo torna temporaneamente
+  // al suo sprite di travestimento di default — va ri-applicato qui,
+  // altrimenti si "smaschera" da solo appena Mew si rivela (bug segnalato
+  // da Luca, 12 ott 2026).
+  { tipo: 'cambia_sprite', npc: 'mewtwo_bunkerino_finale_npc', sprite: 'mewtwo' },
+  { tipo: 'fade_in', ms: 800 },
+  { tipo: 'esclamativo', npc: 'mewtwo_bunkerino_finale_npc', durata: 700 },
+  { tipo: 'guarda', npc: 'mewtwo_bunkerino_finale_npc', direzione: 'est' },
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    '...Tu.',
+    'Pensavo che Villa Aldobrandini ti avesse nascosto meglio. O forse è solo perché hai voluto farti trovare, proprio ora.',
+    'Ci incontriamo di nuovo, dopo tutto questo tempo. L\'originale e la copia, ancora una volta nella stessa stanza.',
+    'Sei venuto a fermarmi? O sei venuto solo a guardare, come hai sempre fatto?',
+    'Non importa. Qualunque cosa tu sia venuto a fare, non cambierà quello che sta per succedere qui.',
+    'Resta pure a guardare, se vuoi. Oppure...',
+  ] },
+  { tipo: 'guarda_reciproco', npc: 'mew_bunkerino_finale' },
+  { tipo: 'flag', nome: 'bunkerino_finale_mewtwo_intro_vista', valore: true },
+  { tipo: 'scelta_si_no', messaggio: 'Vuoi Mew in squadra per questa lotta?', testoSi: 'Sì', testoNo: 'No', salva_flag: 'bunkerino_finale_usa_mew' },
+  { tipo: 'sostituisci_squadra_temporaneo', messaggio: 'Quale Pokémon metti da parte per Mew?', pokemon: 151, richiede_flag: 'bunkerino_finale_usa_mew' },
+  { tipo: 'battaglia', trainer: 'mewtwo_bunkerino_finale', squadraAsync: 'costruisciSquadraMewtwoFinale' },
+  ...EPILOGO_BUNKERINO_MEWTWO,
+];
+
+// Versione "ripresa" (dopo una sconfitta): salta dritta al faccia a faccia
+// con Mew e alla scelta, senza rifare rimprovero/trasformazione/monologo —
+// vedi flag_ripresa/cutscene_id_ripresa sull'oggetto Tiled "INIZIO CUTSCENE".
+CUTSCENE['bunkerino_finale_mewtwo_ripresa'] = [
+  { tipo: 'dialogo', nome: 'Mewtwo', testo: [
+    'Sei tornato. Non mi aspettavo niente di diverso, in realtà.',
+    'Riprendiamo da dove avevamo lasciato.',
+  ] },
+  { tipo: 'scelta_si_no', messaggio: 'Vuoi Mew in squadra per questa lotta?', testoSi: 'Sì', testoNo: 'No', salva_flag: 'bunkerino_finale_usa_mew' },
+  { tipo: 'sostituisci_squadra_temporaneo', messaggio: 'Quale Pokémon metti da parte per Mew?', pokemon: 151, richiede_flag: 'bunkerino_finale_usa_mew' },
+  { tipo: 'battaglia', trainer: 'mewtwo_bunkerino_finale', squadraAsync: 'costruisciSquadraMewtwoFinale' },
+  ...EPILOGO_BUNKERINO_MEWTWO,
 ];

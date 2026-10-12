@@ -97,9 +97,10 @@ const STARTER_IDS = new Set(
 // 2026): uno a destra (uomo, RIVALE_NOME, starter DEBOLE contro il tuo —
 // modalità FACILE se lo sfidi), uno a sinistra (donna, RIVALE_NOME_FORTE,
 // starter FORTE contro il tuo — modalità DIFFICILE). Nomi in inglese, come
-// nei giochi originali (Luca, sess. 22 set 2026): Blue a destra, Red a sinistra.
-const RIVALE_NOME = 'Blue';      // uomo, a destra, starter debole → modalità facile
-const RIVALE_NOME_FORTE = 'Red'; // donna, a sinistra, starter forte → modalità difficile
+// nei giochi originali, poi rinominati su richiesta di Luca (12 ott 2026):
+// Green a destra (uomo), Blue a sinistra (donna).
+const RIVALE_NOME = 'Green';      // uomo, a destra, starter debole → modalità facile
+const RIVALE_NOME_FORTE = 'Blue'; // donna, a sinistra, starter forte → modalità difficile
 const CONTRO_TIPO = { grass: 'fire', fire: 'water', water: 'grass' };
 // Inverso di CONTRO_TIPO: il tipo che IL TUO starter batte (Erba→lui Acqua,
 // Fuoco→lui Erba, Acqua→lui Fuoco) — usato per il rivale "debole" a destra.
@@ -2394,7 +2395,7 @@ const ALLENATORI = [
     squadra: [{ id: 149, livello: 60 }, { id: 68, livello: 59 }, { id: 128, livello: 59 }], // Dragonite, Machamp, Tauros
     dialogoIntro: ['Ho vinto trecento incontri consecutivi nell\'arena. Qui è il trecentounesiomo.'],
     dialogoSconfitta: 'Trecentouno sconfitte. Perfetto.',
-    dialogoDopo: ['Dragonite è il più forte che abbia mai allenato. Remo ne ha uno pure lui.'],
+    dialogoDopo: ['Dragonite è il più forte che abbia mai allenato. Green ne ha uno pure lui.'],
   },
   {
     id: 'all-vv-13', classe: 'Duellante', nome: 'Lucrezio', zona: 'Via Vittoria',
@@ -2410,7 +2411,7 @@ const ALLENATORI = [
     squadra: [{ id: 94, livello: 60 }, { id: 65, livello: 60 }, { id: 121, livello: 60 }], // Gengar, Alakazam, Starmie
     dialogoIntro: ['Il penultimo ostacolo. Sono qui dal primo giorno della Lega. Pochi arrivano fin qui.'],
     dialogoSconfitta: 'Tu sì che sei arrivato.',
-    dialogoDopo: ['L\'uscita è lì. Poi la Lega. Poi Remo.'],
+    dialogoDopo: ['L\'uscita è lì. Poi la Lega. Poi Green.'],
   },
   {
     id: 'all-vv-15', classe: 'Custode della Via', nome: 'Tullio', zona: 'Via Vittoria',
@@ -2760,7 +2761,7 @@ const STARTER_FINALE = {
 
 const REMO_LEGA = {
   id: 'campione-remo',
-  nome: 'Remo',
+  nome: 'Green',
   classe: 'Campione',
   livMin: 64, livMax: 66,
   premioSoldi: 20000,
@@ -2780,7 +2781,7 @@ const REMO_LEGA = {
     '…',
     'Ok. Hai vinto TU. Sei il nuovo Campione dei Castelli Romani.',
     'Porterò questa sconfitta con me per un bel po\'.',
-    '(Remo distoglie lo sguardo per un momento, poi ti stringe la mano)',
+    '(Green distoglie lo sguardo per un momento, poi ti stringe la mano)',
     'Complimenti, campione. Sul serio.'
   ],
 };

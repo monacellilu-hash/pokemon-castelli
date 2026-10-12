@@ -815,6 +815,16 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/bunkerino_1f.tmj',
       interno: true, latFissa: 41.8110, lonFissa: 12.7607,
     },
+    // -- 2F/3F del Bunkerino (richiesta esplicita di Luca, 12 ott 2026):
+    // tarati e collegati appena ora, stesso trattamento di 0F/1F. --
+    'bunkerino_2f': {
+      file: 'sprites/maps_tiled/bunkerino_2f.tmj',
+      interno: true, latFissa: 41.8110, lonFissa: 12.7607,
+    },
+    'bunkerino_3f': {
+      file: 'sprites/maps_tiled/bunkerino_3f.tmj',
+      interno: true, latFissa: 41.8110, lonFissa: 12.7607,
+    },
     // -- Treno per Monte Cavo/Lugia (sess. 5 ott 2026): "viaggio a lungo
     // raggio" richiesto da Luca, mai esistito prima (Monte Cavo era
     // irraggiungibile, nessun warp puntava lì) — vagone minimale creato a
@@ -1889,6 +1899,20 @@ const GameMap = (function () {
       }
     }
 
+    // Requisito "giorni_passati:<flagGiorno>:<N>" — es. Mewtwo che "si
+    // ricarica" nel Bunkerino dopo la lotta finale (richiesta esplicita di
+    // Luca, 12 ott 2026): <flagGiorno> è un flag NUMERICO (non booleano,
+    // vedi passo cutscene 'salva_giorno') scritto col giorno di gioco in
+    // cui è successo qualcosa; vero da quando sono passati almeno N giorni.
+    const gp = s.match(/giorni_passati:([a-z0-9_]+):(\d+)/);
+    if (gp) {
+      const flagGiorno = gp[1], soglia = parseInt(gp[2], 10);
+      const giornoSalvato = flags[flagGiorno];
+      const giornoAttuale = (typeof stato !== 'undefined' && stato.tempo) ? stato.tempo.giorno : 0;
+      const ok = typeof giornoSalvato === 'number' && (giornoAttuale - giornoSalvato) >= soglia;
+      return ok ? { ok: true } : { ok: false, messaggio: '🔒 Non è ancora passato abbastanza tempo.' };
+    }
+
     // Token-flag semplice (una sola parola senza "lega"/tipo): controlla stato.flags.
     // Nota: "s" è già minuscolo, ma i flag possono essere camelCase (es.
     // "documentoVillaOttenuto") — si prova prima la stringa originale (case esatto),
@@ -2618,7 +2642,7 @@ const GameMap = (function () {
   const ALIAS_SPRITE = {
     // Rivali piazzati in giro per il mondo (sess. 28 set 2026): Luca usa lo
     // sprite generico per genere sull'oggetto Tiled, il motore lo traduce
-    // sullo sprite vero — Blue (uomo) è ancora Brendan, Red (donna) è May.
+    // sullo sprite vero — Green (uomo) è ancora Brendan, Blue (donna) è May.
     'RIVALE_UOMO': 'RIVALE_1',
     'RIVALE_DONNA': 'Rivale_2',
     'ARQUEOLOGA': 'trainer_RUINMANIAC',   // archeologo delle rovine
@@ -2640,6 +2664,52 @@ const GameMap = (function () {
     'NPC_MONACO': 'NPC 16',                       // monaco dell'Abbazia
     'NPC_50': 'NPC 19', 'NPC_51': 'NPC 24', 'NPC_52': 'NPC 25',
     'NPC_53': 'NPC 26', 'NPC_54': 'NPC 27',
+  };
+
+  // Il rivale "di sempre" (rivale_via_vittoria) e il Campione finale
+  // (campione_remo) hanno nei dati uno sprite FISSO (sempre Green/Brendan),
+  // ma devono invece mostrare chi hai DAVVERO scelto al laboratorio — vedi
+  // stato.rivale (richiesta esplicita di Luca, 12 ott 2026: "il campione
+  // della lega è il rivale che ho scelto all'inizio"). Applicato in
+  // _creaSpritesNPC qui sotto, SOLO per i trainer con sprite fisso
+  // rivale/campioneLega: i rivali piazzati in giro per il mondo con sprite
+  // Tiled "RIVALE_UOMO"/"RIVALE_DONNA" restano invece sempre entrambi
+  // visibili com'è oggi, non li tocca.
+  const SPRITE_RIVALE_SCELTO = {
+    Green: 'RIVALE_1',
+    Blue: 'trainer_rivale_2',
+  };
+
+  // Indovinelli del Bunkerino 1F (richiesta esplicita di Luca, 12 ott 2026):
+  // stesso meccanismo della statua-interruttore dell'Osservatorio (porta a
+  // scomparsa, vedi _nascondiTileOstacolo/_portaScomparsaApertaEv), ma
+  // sbloccata rispondendo a una domanda a 4 risposte invece che con una
+  // chiave. "celle" sono le coordinate TILE (non pixel) dei tile da far
+  // sparire, trovate scandendo i layer del .tmj per i gid che Luca aveva
+  // indicato (locali 184-192 su Interior_general_32 per il primo, 264-268
+  // e 288-292 su Gyms interior per il secondo — porte già disegnate sulla
+  // mappa, qui si trovano e si rimuovono una volta risolto).
+  const INDOVINELLI_BUNKERINO = {
+    Indovinello_1: {
+      domanda: 'Quale di questi starter NON è della regione di Kanto (1ª generazione)?',
+      opzioni: ['Bulbasaur', 'Charmander', 'Totodile', 'Squirtle'],
+      corretta: 2,   // Totodile è di Johto (2ª generazione)
+      flag: 'bunkerino_indovinello_1_risolto',
+      layer: 'edifici',
+      celle: [[54, 31], [55, 31], [56, 31], [54, 32], [55, 32], [56, 32]],
+    },
+    Indovinello_2: {
+      domanda: 'Quale leggendario è stato creato dall\'uomo tramite clonazione?',
+      opzioni: ['Mew', 'Lugia', 'Mewtwo', 'Celebi'],
+      corretta: 2,   // Mewtwo
+      flag: 'bunkerino_indovinello_2_risolto',
+      layer: 'deco_sotto',
+      celle: (() => {
+        const c = [];
+        for (let tx = 28; tx <= 37; tx++) { c.push([tx, 43]); c.push([tx, 44]); }
+        return c;
+      })(),
+    },
   };
 
   // Sprite riservati a GdF e CoTrAL (mai usati dal fallback casuale).
@@ -3109,6 +3179,7 @@ const GameMap = (function () {
 
       this._ripristinaOggettiRaccolti();
       this._applicaPorteScomparse();
+      this._applicaIndovinelliBunkerino();
 
       // ── Scelta del punto di spawn (Fix 3) ──
       // Priorità: spawn che combacia (per spawn_id o per mappa di provenienza)
@@ -3326,6 +3397,7 @@ const GameMap = (function () {
 
       this._ripristinaOggettiRaccolti();
       this._applicaPorteScomparse();
+      this._applicaIndovinelliBunkerino();
 
       clusterAttivo = nomeCluster;   // da qui in poi il cluster è "attivo" a tutti gli effetti
 
@@ -4538,6 +4610,16 @@ const GameMap = (function () {
         } else if (st.tipo === 'trainer') {
           const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[id] : null;
           if (dati && dati.sprite) spriteFile = dati.sprite;
+          // Rivale di sempre/Campione (sprite FISSO nei dati, es. rivale_via_vittoria
+          // e campione_remo): sprite dinamico su chi hai scelto al laboratorio, non
+          // quello fisso scritto nei dati (vedi SPRITE_RIVALE_SCELTO). NON tocca i
+          // rivali piazzati in giro per il mondo (dati.sprite assente, sprite letto
+          // da ev.props "RIVALE_UOMO"/"RIVALE_DONNA" — quelli restano entrambi
+          // sempre visibili, per design).
+          if (dati && dati.sprite && (dati.rivale || dati.campioneLega) && typeof stato !== 'undefined' &&
+              stato.rivale && stato.rivale.nome && SPRITE_RIVALE_SCELTO[stato.rivale.nome]) {
+            spriteFile = SPRITE_RIVALE_SCELTO[stato.rivale.nome];
+          }
         }
         // Fallback: se non c'è in DATI_*, usa la proprietà "sprite" messa in Tiled.
         if (!spriteFile && ev.props && ev.props.sprite) spriteFile = ev.props.sprite;
@@ -5879,6 +5961,33 @@ const GameMap = (function () {
         return;
       }
 
+      // Indovinelli Bunkerino 1F (richiesta esplicita di Luca, 12 ott 2026):
+      // domanda a 4 risposte, corretta = porta a scomparsa (vedi
+      // INDOVINELLI_BUNKERINO sopra); sbagliata = si può riprovare subito.
+      if (tipo === 'indovinello') {
+        const cfg = INDOVINELLI_BUNKERINO[ev.id];
+        if (!cfg) { console.warn('[Indovinello] configurazione non trovata:', ev.id); return; }
+        (async () => {
+          if (!stato.flags) stato.flags = {};
+          if (stato.flags[cfg.flag]) {
+            if (typeof mostraDialogo === 'function') await mostraDialogo('', ['Hai già risolto questo indovinello.']);
+            return;
+          }
+          if (typeof mostraSceltaLista !== 'function') return;
+          const i = await mostraSceltaLista(cfg.domanda, cfg.opzioni);
+          if (i < 0) return;   // annullato
+          if (i === cfg.corretta) {
+            stato.flags[cfg.flag] = true;
+            if (typeof mostraToast === 'function') mostraToast('✅ Esatto! Qualcosa si è mosso nella stanza...', 3000);
+            for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
+            if (typeof salvaPartita === 'function') salvaPartita();
+          } else if (typeof mostraDialogo === 'function') {
+            await mostraDialogo('', ['Risposta sbagliata. Puoi riprovare quando vuoi.']);
+          }
+        })();
+        return;
+      }
+
       if (tipo === 'pc') {
         // Richiesta di Luca, 10 ott 2026: dal PC ora si sceglie prima tra
         // Box e "Dormi fino alle" (con l'orologio digitale), non si va più
@@ -6058,6 +6167,16 @@ const GameMap = (function () {
             stato.flags[passo.nome] = passo.valore;
           }
           return Promise.resolve();
+        // Salva il giorno di gioco ATTUALE (numero, non booleano) in
+        // stato.flags[nome] — usato insieme alla condizione "giorni_passati:"
+        // (vedi verificaCondizione) per far ricomparire qualcosa solo dopo
+        // N giorni da questo momento (es. Mewtwo che "si ricarica").
+        case 'salva_giorno':
+          if (typeof stato !== 'undefined') {
+            if (!stato.flags) stato.flags = {};
+            stato.flags[passo.nome] = (stato.tempo && stato.tempo.giorno) || 0;
+          }
+          return Promise.resolve();
         // Regala un oggetto dentro una cutscene (es. la Pietra Rubino dello
         // scienziato liberato, Grotta del Vulcano). Con `chiave: true` va in
         // stato.inventario.chiave[contenuto] = true (oggetti-chiave non
@@ -6133,6 +6252,34 @@ const GameMap = (function () {
         // fa sparire i trainer sugli altri piani mentre lo schermo è nero.
         case 'rigenera_npc':
           return this._rigeneraNpc();
+        // Scuote la camera (es. un boss che rivela la sua vera natura).
+        // Stessa intensità già usata altrove nel motore per le scosse.
+        case 'trema':
+          if (this.cameras && this.cameras.main) this.cameras.main.shake(passo.ms || 350, passo.intensita || 0.012);
+          return new Promise(r => setTimeout(r, passo.ms || 350));
+        // Cambia LIVE lo sprite di un NPC già piazzato (es. un travestimento
+        // che si rivela — "Grunt CoTrAL" che diventa Mewtwo). Prova prima il
+        // foglio NPC/trainer normale (_caricaTexNpc); se non esiste come
+        // personaggio "umano", ripiega sul foglio follower/leggendario
+        // (_caricaTexFollower, stesso usato per i Pokémon al fianco) — così
+        // lo stesso passo funziona sia per cambiare un NPC in un altro NPC,
+        // sia per farlo diventare un Pokémon leggendario.
+        case 'cambia_sprite':
+          return this._cutscenaCambiaSprite(passo.npc, passo.sprite);
+        // Scelta Sì/No generica dentro una cutscene: salva un booleano in
+        // stato.flags[salva_flag] e prosegue — usata per bivi narrativi
+        // (es. "vuoi Mew in squadra per questa lotta?").
+        case 'scelta_si_no':
+          return this._cutscenaSceltaSiNo(passo);
+        // Sostituisce TEMPORANEAMENTE uno slot della squadra con un
+        // Pokémon "in prestito" per una sola battaglia (es. Mew prestato
+        // per la lotta con Mewtwo): il giocatore scegli QUALE Pokémon
+        // metter da parte, quello preso in prestito eredita il livello del
+        // Pokémon più alto in squadra. Il ripristino è automatico a fine
+        // battaglia (vedi _cutscenaBattaglia/_ripristinaSquadraTemp), sia
+        // in caso di vittoria che di sconfitta.
+        case 'sostituisci_squadra_temporaneo':
+          return this._cutscenaSostituisciSquadraTemp(passo);
         default:
           console.warn('[Cutscene] tipo di passo sconosciuto:', passo.tipo);
           return Promise.resolve();
@@ -6159,7 +6306,11 @@ const GameMap = (function () {
     // acqua/Surf/massi — per quei casi va scritta una cutscene ad hoc più avanti).
     async _cutscenaMuoviPlayer(direzione, passi) {
       const { dx, dy } = this._dirDelta(direzione);
-      facciata = direzione;
+      // facciata deve essere in inglese (up/down/left/right, vedi
+      // _animKeyPlayer/_faceAnim) — assegnare direttamente "direzione"
+      // (nord/sud/est/ovest) produceva chiavi di animazione inesistenti
+      // (es. "boy-normale-idle-nord", bug segnalato da Luca, 12 ott 2026).
+      facciata = this._faceAnim(direzione);
       for (let i = 0; i < passi; i++) {
         const nx = posTile.tx + dx, ny = posTile.ty + dy;
         if (nx < 0 || ny < 0 || nx >= mapW || ny >= mapH) break;
@@ -6184,7 +6335,8 @@ const GameMap = (function () {
 
     _cutscenaGuarda(chi, direzione) {
       if (chi === 'player') {
-        facciata = direzione;
+        // Stessa correzione di _cutscenaMuoviPlayer: facciata va in inglese.
+        facciata = this._faceAnim(direzione);
         if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
         return Promise.resolve();
       }
@@ -6205,9 +6357,21 @@ const GameMap = (function () {
     // cutscene, dove prima non era possibile. rivaleRif va passato già
     // risolto (es. via altroRivale() in js/app.js), questa funzione non
     // decide da sola chi è "il rivale giusto".
-    _cutscenaBattaglia(trainerId, passoExtra) {
+    async _cutscenaBattaglia(trainerId, passoExtra) {
       const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[trainerId] : null;
-      if (!dati) { console.warn('[Cutscene] trainer sconosciuto:', trainerId); return Promise.resolve(); }
+      if (!dati) { console.warn('[Cutscene] trainer sconosciuto:', trainerId); return; }
+
+      // Scorciatoia di TEST generica (console: stato.flags.debug_skip_lotta =
+      // true, PRIMA di far partire la cutscene): salta la lotta vera di
+      // QUALUNQUE passo 'battaglia' dentro una cutscene e passa dritto
+      // all'esito di vittoria — comodo per boss lunghi (es. Mewtwo finale
+      // del Bunkerino) quando si vuole testare solo quello che viene dopo.
+      if (typeof stato !== 'undefined' && stato.flags && stato.flags.debug_skip_lotta) {
+        stato.incontroAttivo = false;
+        this._ripristinaSquadraTemp();
+        this._applicaEsitoTrainer(trainerId, dati, null);
+        return;
+      }
 
       let nomeLotta = dati.nome || trainerId;
       let squadra = dati.squadra;
@@ -6225,6 +6389,15 @@ const GameMap = (function () {
           squadra = costruisciSquadraRivale(passoExtra.tappa || 6, passoExtra.assoLivello || null, rivaleRif);
         }
       }
+      // squadraAsync (stesso motivo stringa di rivaleRif sopra): boss con
+      // squadra calcolata da una funzione ASINCRONA (es. Mewtwo finale del
+      // Bunkerino, che deve scaricare via PokeAPI il suo moveset fisso
+      // prima di poter scendere in campo — vedi costruisciSquadraMewtwoFinale
+      // in js/app.js). Richiesta esplicita di Luca, 12 ott 2026.
+      if (passoExtra && passoExtra.squadraAsync && typeof window[passoExtra.squadraAsync] === 'function') {
+        try { squadra = await window[passoExtra.squadraAsync](); }
+        catch (e) { console.warn('[Cutscene] squadraAsync fallita:', trainerId, e); }
+      }
 
       return new Promise(resolve => {
         stato.incontroAttivo = true;
@@ -6240,15 +6413,104 @@ const GameMap = (function () {
           stato,
           onFine: (esito) => {
             stato.incontroAttivo = false;
+            // Ripristina SEMPRE (vittoria O sconfitta) un eventuale scambio
+            // temporaneo di squadra fatto da 'sostituisci_squadra_temporaneo'
+            // (es. Mew prestato per la lotta con Mewtwo): altrimenti perdendo
+            // la scena si interromperebbe con l'alleato preso in prestito
+            // ancora in squadra al posto del Pokémon vero del giocatore.
+            this._ripristinaSquadraTemp();
             if (esito === 'vittoria') {
               this._applicaEsitoTrainer(trainerId, dati, null);
-              resolve();
+              // _dissolviBattaglia() (js/battle.js) nasconde #schermata-battaglia
+              // (z-index 2000) solo DOPO 500ms di dissolvenza, ma onFine() scatta
+              // subito: senza aspettare, il prossimo passo della cutscene (il
+              // dialogo finale) veniva scritto ma restava coperto dalla schermata
+              // di battaglia ancora visibile per quella mezza frazione di secondo
+              // (z-index 1900 del dialogo è sotto — bug segnalato da Luca, 12 ott
+              // 2026, "i dialoghi non si possono vedere" a fine Via Vittoria).
+              setTimeout(resolve, 550);
             } else {
               resolve('interrompi');
             }
           },
         });
       });
+    }
+
+    // Passo 'cambia_sprite': prova prima il foglio NPC/trainer normale
+    // (personaggio umano), poi ripiega sul foglio follower/leggendario
+    // (Pokémon) — vedi commento sul case nello switch sopra.
+    async _cutscenaCambiaSprite(npcId, spriteNome) {
+      const st = npcStato.find(s => s.id === npcId);
+      if (!st || !st.sprite) { console.warn('[Cutscene] NPC non trovato per cambia_sprite:', npcId); return; }
+      let texKey = await this._caricaTexNpc(spriteNome);
+      if (texKey) {
+        const frame = this._npcFrameBase(st.dir || 'sud') + 1;
+        st.sprite.setTexture(texKey, frame);
+        st.sprite.setScale(tileSize < 32 ? tileSize / 32 : 1);
+        return;
+      }
+      texKey = await this._caricaTexFollower(spriteNome);
+      if (texKey) {
+        st.sprite.setTexture(texKey, 1);
+        const frameW = this.textures.get(texKey).get(0).width || 64;
+        st.sprite.setScale((tileSize * 1.4) / frameW);
+        return;
+      }
+      console.warn('[Cutscene] Sprite non trovato per cambia_sprite:', spriteNome);
+    }
+
+    // Passo 'scelta_si_no': { messaggio, testoSi, testoNo, salva_flag }.
+    // Salva un booleano in stato.flags[salva_flag] (true = Sì, false = No).
+    async _cutscenaSceltaSiNo(passo) {
+      if (typeof mostraScelta !== 'function') return;
+      const scelta = await mostraScelta(passo.messaggio || 'Sei sicuro?', passo.testoSi || 'Sì', passo.testoNo || 'No');
+      if (typeof stato !== 'undefined' && passo.salva_flag) {
+        if (!stato.flags) stato.flags = {};
+        stato.flags[passo.salva_flag] = (scelta === 1);
+      }
+    }
+
+    // Passo 'sostituisci_squadra_temporaneo': { messaggio, pokemon:idSpecie }.
+    // Il giocatore scegli QUALE Pokémon della squadra mettere da parte; quello
+    // preso "in prestito" eredita il livello del Pokémon più alto in squadra.
+    // Annullabile (scelta -1): in quel caso nessuna sostituzione, la scena
+    // prosegue normalmente. Il ripristino è automatico e SEMPRE garantito a
+    // fine battaglia (vedi _cutscenaBattaglia/_ripristinaSquadraTemp), sia in
+    // vittoria che in sconfitta.
+    async _cutscenaSostituisciSquadraTemp(passo) {
+      if (typeof stato === 'undefined' || !Array.isArray(stato.squadra) || !stato.squadra.length) return;
+      // richiede_flag (opzionale): esegue il passo solo se quel flag è vero
+      // (es. dopo una 'scelta_si_no' precedente) — altrimenti non fa nulla,
+      // comodo per rendere condizionale questo passo senza bisogno di un
+      // vero "if" nel motore delle cutscene.
+      if (passo.richiede_flag && !(stato.flags && stato.flags[passo.richiede_flag])) return;
+      if (typeof mostraSceltaLista !== 'function' || typeof Battle === 'undefined' || !Battle.creaIstanza) return;
+
+      const nomi = stato.squadra.map(p => `${p.nome} (Lv.${p.livello}${p.hpAttuale <= 0 ? ' - KO' : ''})`);
+      const i = await mostraSceltaLista(passo.messaggio || 'Quale Pokémon metti da parte?', nomi);
+      if (i < 0) return;
+
+      const livelloMax = Math.max(5, ...stato.squadra.map(p => p.livello || 5));
+      const prestito = await Battle.creaIstanza(passo.pokemon, livelloMax);
+
+      stato._squadraTempSwap = { indice: i, originale: stato.squadra[i] };
+      stato.squadra[i] = prestito;
+      if (typeof aggiornaHUD === 'function') aggiornaHUD();
+      if (typeof mostraToast === 'function') mostraToast(`${prestito.nome} si unisce a te per questa lotta!`, 3000);
+    }
+
+    // Ripristina un eventuale scambio temporaneo di squadra (vedi sopra).
+    // Chiamata automaticamente da _cutscenaBattaglia a fine lotta — non va
+    // mai richiamata manualmente da una cutscene.
+    _ripristinaSquadraTemp() {
+      if (typeof stato === 'undefined' || !stato._squadraTempSwap) return;
+      const { indice, originale } = stato._squadraTempSwap;
+      if (Array.isArray(stato.squadra) && stato.squadra[indice] !== undefined) {
+        stato.squadra[indice] = originale;
+      }
+      delete stato._squadraTempSwap;
+      if (typeof aggiornaHUD === 'function') aggiornaHUD();
     }
 
     // Passo 'scelta_oggetto': menu con più oggetti (chiavi di OGGETTI), se ne
@@ -6329,7 +6591,9 @@ const GameMap = (function () {
       const dirPlayerVersoNpc = this._direzioneTraCaselle(posTile.tx, posTile.ty, st.tx, st.ty);
       st.dir = dirNpcVersoPlayer;
       this._setNpcFrame(st.sprite, dirNpcVersoPlayer, false);
-      facciata = dirPlayerVersoNpc;
+      // Stessa correzione di _cutscenaMuoviPlayer: facciata va in inglese,
+      // _direzioneTraCaselle restituisce nord/sud/est/ovest.
+      facciata = this._faceAnim(dirPlayerVersoNpc);
       if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
       return Promise.resolve();
     }
@@ -7774,7 +8038,8 @@ const GameMap = (function () {
         baso.dir = dirVersoPlayer;
         if (baso.sprite) this._setNpcFrame(baso.sprite, dirVersoPlayer, false);
         const dirPlayerVersoBaso = this._direzioneTraCaselle(posTile.tx, posTile.ty, baso.tx, baso.ty);
-        facciata = dirPlayerVersoBaso;
+        // Stessa correzione di _cutscenaMuoviPlayer: facciata va in inglese.
+        facciata = this._faceAnim(dirPlayerVersoBaso);
         if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
       }
       if (typeof mostraDialogo === 'function') {
@@ -7919,7 +8184,8 @@ const GameMap = (function () {
         // collisione via _liberoPerNPC, non un teletrasporto).
         await this._camminaVersoGiocatore(baso, 15);
         const dirPlayerVersoBaso = this._direzioneTraCaselle(posTile.tx, posTile.ty, baso.tx, baso.ty);
-        facciata = dirPlayerVersoBaso;
+        // Stessa correzione di _cutscenaMuoviPlayer: facciata va in inglese.
+        facciata = this._faceAnim(dirPlayerVersoBaso);
         if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
       }
       if (typeof mostraDialogo === 'function') {
@@ -8258,6 +8524,19 @@ const GameMap = (function () {
         const ty0 = ev.h > 0 ? ev.ty0 : ev.ty, ty1 = ev.h > 0 ? ev.ty1 : ev.ty;
         for (let ty = ty0; ty <= ty1; ty++)
           for (let tx = tx0; tx <= tx1; tx++) this._nascondiTileOstacolo(tx, ty);
+      }
+    }
+
+    // Stesso schema di _applicaPorteScomparse ma per gli Indovinelli del
+    // Bunkerino (vedi INDOVINELLI_BUNKERINO): quelli già risolti rimuovono
+    // di nuovo i loro tile ad ogni caricamento mappa.
+    _applicaIndovinelliBunkerino() {
+      if (typeof stato === 'undefined' || !stato.flags) return;
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'indovinello') continue;
+        const cfg = INDOVINELLI_BUNKERINO[ev.id];
+        if (!cfg || !stato.flags[cfg.flag]) continue;
+        for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
       }
     }
 
@@ -9286,7 +9565,10 @@ const GameMap = (function () {
       // tutta la partita, non solo quello scelto come difficoltà nel
       // laboratorio. rivaleDaSprite (js/app.js) risolve quale dei due è
       // questo, leggendo stato.duoRivali; ripiega su stato.rivale se manca.
-      const rivaleGiusto = dati.rivale && typeof rivaleDaSprite === 'function' ? rivaleDaSprite(ev.props.sprite) : null;
+      // Il Campione (campioneLega) non ha "rivale:true" ma è la STESSA persona
+      // scelta al laboratorio (richiesta esplicita di Luca, 12 ott 2026): entra
+      // anche lui nella risoluzione dinamica del nome/squadra.
+      const rivaleGiusto = (dati.rivale || dati.campioneLega) && typeof rivaleDaSprite === 'function' ? rivaleDaSprite(ev.props.sprite) : null;
       const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) || dati.nome || ev.nome || id;
       const dialogo = dati.dialogo_prima || 'Preparati a lottare!';
       // Rivale: squadra scalata in base alla "tappa" (n. incontro) con l'asso = starter

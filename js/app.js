@@ -1177,8 +1177,8 @@ async function interagisciLaboratorio() {
     stato.flags.pokedexRicevuto = true;
 
     // DUE rivali (richiesta esplicita di Luca, sess. 22 set 2026): uno a
-    // destra (uomo, Blue — starter DEBOLE contro il tuo → modalità FACILE se
-    // lo sfidi), uno a sinistra (donna, Red — starter FORTE contro il tuo →
+    // destra (uomo, Green — starter DEBOLE contro il tuo → modalità FACILE se
+    // lo sfidi), uno a sinistra (donna, Blue — starter FORTE contro il tuo →
     // modalità DIFFICILE). Le due generazioni "avanzate" (quelle diverse
     // dalla tua) vanno una a testa, così risultano sempre 3 Pokémon di 3
     // generazioni diverse in totale. Niente più lotta automatica qui: il
@@ -1338,7 +1338,7 @@ async function spiegaDifficoltaOak() {
 
 // Doppia conferma Sì/No (richiesta esplicita di Luca) prima di sfidare uno
 // dei due rivali: blocca per sempre la scelta di difficoltà e avvia la lotta.
-// chi: 'debole' (Blue, destra → FACILE) oppure 'forte' (Red, sinistra → DIFFICILE).
+// chi: 'debole' (Green, destra → FACILE) oppure 'forte' (Blue, sinistra → DIFFICILE).
 async function _sceltaRivale(chi) {
   if (stato.incontroAttivo || dialogoInCorso) return;
 
@@ -1484,7 +1484,7 @@ async function interagisciPalestra(idPalestra) {
     t.primaDiOrdine === palestra.ordine && !(stato.flags && stato.flags[t.flag]));
   if (tappa) {
     // Il nome mostrato segue chi hai scelto di sfidare nel laboratorio
-    // (Blue o Red, sess. 22 set 2026): stato.rivale.nome è quello vero,
+    // (Green o Blue, sess. 22 set 2026): stato.rivale.nome è quello vero,
     // RIVALE_NOME resta solo un fallback difensivo (partite vecchie/salvataggi
     // creati prima di questa modifica, dove stato.rivale.nome non c'era ancora).
     const nomeRivale = (stato.rivale && stato.rivale.nome) || RIVALE_NOME;
@@ -3606,7 +3606,7 @@ function estraiTeamRemo() {
   return estraiTeamSuperquattro({ ...REMO_LEGA, coreId });
 }
 
-// Risolve quale dei due rivali (Blue/Red, sess. 22 set 2026) corrisponde a uno
+// Risolve quale dei due rivali (Green/Blue, sess. 22 set 2026) corrisponde a uno
 // sprite "RIVALE_UOMO"/"RIVALE_DONNA" piazzato su una mappa (sess. 28 set
 // 2026): ENTRAMBI restano sfidabili in giro per il mondo per tutta la
 // partita, non solo quello scelto nel laboratorio come difficoltà — vedi
@@ -3625,8 +3625,8 @@ function rivaleDaSprite(spriteProp) {
 // Il rivale che NON hai scelto/affrontato al laboratorio (richiesta
 // esplicita di Luca, 10 ott 2026 — cutscene dei due rivali a Via Vittoria
 // 5F): l'opposto di stato.rivale/stato.difficolta. Facile → hai scelto
-// Blue (debole): l'altro è Red (forte). Difficile → hai scelto Red: l'altro
-// è Blue.
+// Green (debole): l'altro è Blue (forte). Difficile → hai scelto Blue: l'altro
+// è Green.
 function altroRivale() {
   if (!stato.duoRivali) return null;
   return stato.difficolta === 'difficile' ? stato.duoRivali.debole : stato.duoRivali.forte;
@@ -3676,6 +3676,50 @@ function costruisciSquadraMaso() {
   const livelloMax = Math.min(100, Math.max(5, ...squadraGiocatore.map(p => p.livello || 5)) + 5);
   const team = [{ id: 145, livello: livelloMax }];   // Zapdos, sempre primo
   const cloni = squadraGiocatore.slice(0, 5);
+  for (const pkm of cloni) {
+    team.push({
+      id: pkm.id,
+      livello: livelloMax,
+      mosseOverride: (pkm.mosse || []).map(m => ({ ...m })),
+    });
+  }
+  return team;
+}
+
+// Moveset FISSO di Mewtwo per lo scontro finale del Bunkerino (richiesta
+// esplicita di Luca, 12 ott 2026): Psichico, Fulmine, Lanciafiamme,
+// Ricarica — scaricate una volta per nome tecnico PokéAPI (restano poi in
+// cache come qualunque altra mossa). L'IA che le usa (scegliMossaNemico in
+// js/battle.js, gated su nemico.id===150) preferisce Psichico di base ma
+// passa a Fulmine/Lanciafiamme se più efficaci, e usa Ricarica solo
+// sotto il 40% HP (max 2 volte in tutta la lotta) — vedi _scegliMossaMewtwoFinale.
+async function costruisciMosseFisseMewtwo() {
+  const slug = ['psychic', 'thunderbolt', 'flamethrower', 'recover'];
+  const mosse = [];
+  for (const nome of slug) {
+    try {
+      const m = await PokeAPI.getMossa(nome);
+      mosse.push({ ...m, pp: m.ppMax });
+    } catch (e) {
+      console.warn('[Mewtwo] mossa non caricata:', nome, e.message);
+    }
+  }
+  return mosse;
+}
+
+// Squadra di Mewtwo per lo scontro finale del Bunkerino (richiesta esplicita
+// di Luca, 12 ott 2026): Mewtwo stesso per primo (con il moveset fisso sopra),
+// poi fino a 5 cloni della squadra ATTUALE del giocatore (stesse mosse,
+// mosseOverride — stesso schema di costruisciSquadraMaso), tutti 6 livelli
+// sopra il Pokémon più forte del giocatore. Se il giocatore ha scelto Mew per
+// questa lotta (stato._squadraTempSwap, vedi _cutscenaSostituisciSquadraTemp
+// in js/map.js), Mew NON viene clonato — Mewtwo non clonerebbe mai se stesso
+// o un suo "fratello": i cloni sono SOLO gli altri membri della squadra.
+async function costruisciSquadraMewtwoFinale() {
+  const squadraGiocatore = stato.squadra || [];
+  const livelloMax = Math.min(100, Math.max(5, ...squadraGiocatore.map(p => p.livello || 5)) + 6);
+  const team = [{ id: 150, livello: livelloMax, mosseOverride: await costruisciMosseFisseMewtwo() }];
+  const cloni = squadraGiocatore.filter(p => p.id !== 151).slice(0, 5);
   for (const pkm of cloni) {
     team.push({
       id: pkm.id,
@@ -4115,9 +4159,10 @@ async function interagisciLega() {
   }
 
   if (stato.flags.legaCompletata) {
+    const nomeCampione = (stato.rivale && stato.rivale.nome) || RIVALE_NOME;
     await mostraDialogo('🏆 Lega di Colonna', [
       'Sei il Campione in carica dei Castelli Romani.',
-      'La Hall of Fame conserva il tuo nome. Remo è ancora qui, se vuoi rivedertela.',
+      `La Hall of Fame conserva il tuo nome. ${nomeCampione} è ancora qui, se vuoi rivedertela.`,
     ]);
     return;
   }
@@ -4195,13 +4240,16 @@ async function avviaPassoLega() {
     });
 
   } else {
-    // passo === 4: Campione Remo
+    // passo === 4: Campione — stesso personaggio scelto al laboratorio
+    // (Green o Blue, richiesta esplicita di Luca 12 ott 2026): il nome
+    // fisso in REMO_LEGA.nome è solo un fallback difensivo.
+    const nomeCampione = (stato.rivale && stato.rivale.nome) || REMO_LEGA.nome;
     const teamRemo = estraiTeamRemo();
-    await mostraDialogo(`🏆 Campione ${REMO_LEGA.nome}`, REMO_LEGA.dialogoIntro);
+    await mostraDialogo(`🏆 Campione ${nomeCampione}`, REMO_LEGA.dialogoIntro);
 
     Battle.avvia({
       allenatore: {
-        nome:             `Campione ${REMO_LEGA.nome}`,
+        nome:             `Campione ${nomeCampione}`,
         squadra:          teamRemo,
         premioSoldi:      REMO_LEGA.premioSoldi,
         dialogoSconfitta: Array.isArray(REMO_LEGA.dialogoSconfitta)
@@ -4216,7 +4264,7 @@ async function avviaPassoLega() {
           terminaIncontro(esito);
           salvaPartita();
           await mostraDialogo('💀 Sconfitto dal Campione', [
-            'Remo ha difeso il titolo. La tua squadra è stata curata.',
+            `${nomeCampione} ha difeso il titolo. La tua squadra è stata curata.`,
             'Riparti dal primo Superquattro quando sei pronto.',
           ]);
           return;

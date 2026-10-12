@@ -2162,7 +2162,44 @@ const Battle = (function () {
   // SEMPRE la migliore: resta una scelta pesata random, non un calcolo
   // perfetto, altrimenti diventerebbe un avversario "risolto" e prevedibile.
   function scegliMossaNemico() {
+    // IA dedicata a Mewtwo (scontro finale del Bunkerino, richiesta esplicita
+    // di Luca, 12 ott 2026) — Mewtwo (id 150) non è mai la squadra di nessun
+    // altro allenatore in questo gioco, quindi questo controllo per ID basta
+    // a isolarla senza bisogno di flag aggiuntivi. Vedi _scegliMossaMewtwoFinale.
+    if (nemico && nemico.id === 150) return _scegliMossaMewtwoFinale();
     return _scegliMossaPesata(nemico, [mio]);
+  }
+
+  // IA di Mewtwo per lo scontro finale: di base usa Psichico (STAB), ma se
+  // Fulmine o Lanciafiamme sono più efficaci di Psichico sul bersaglio
+  // attuale preferisce la più efficace delle due. Usa Ricarica SOLO sotto il
+  // 40% HP, massimo 2 volte in tutta la lotta (nemico._ricaricheMewtwo).
+  function _scegliMossaMewtwoFinale() {
+    if (nemico.inCarica) return nemico.inCarica;
+    if (nemico.furia) return nemico.mosse.find(m => m.nome === nemico.furia.nome) || mossaFallback();
+
+    const percentHP = nemico.hpAttuale / nemico.hpMax;
+    const ricarica = nemico.mosse.find(m => m.nome === 'recover' && m.pp > 0);
+    if (ricarica && percentHP < 0.4 && (nemico._ricaricheMewtwo || 0) < 2) {
+      nemico._ricaricheMewtwo = (nemico._ricaricheMewtwo || 0) + 1;
+      return ricarica;
+    }
+
+    const psichico = nemico.mosse.find(m => m.nome === 'psychic' && m.pp > 0);
+    const alternative = ['thunderbolt', 'flamethrower']
+      .map(n => nemico.mosse.find(m => m.nome === n && m.pp > 0))
+      .filter(Boolean);
+    const mieiTipi = mio.tipi || [];
+    let scelta = psichico;
+    let migliorEff = psichico ? efficacia(psichico.tipo, mieiTipi) : -1;
+    for (const alt of alternative) {
+      const eff = efficacia(alt.tipo, mieiTipi);
+      if (eff > migliorEff) { scelta = alt; migliorEff = eff; }
+    }
+    if (scelta && scelta.pp > 0) return scelta;
+
+    const utilizzabili = nemico.mosse.filter(m => m.pp > 0);
+    return utilizzabili.length ? utilizzabili[0] : mossaFallback();
   }
 
   // Generalizzata per 1v1 e doppia (stesso principio, bersagli possibili
