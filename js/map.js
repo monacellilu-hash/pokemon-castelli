@@ -3529,7 +3529,7 @@ const GameMap = (function () {
         if (ts.tw !== tileSize) layer.setScale(tileSize / ts.tw);
         if (offPxX || offPxY) layer.setPosition(offPxX, offPxY);
         layer.setDepth(depth);
-        layerObjects.push({ layer, lo: 0, depth });
+        layerObjects.push({ layer, lo: 0, depth, offPxX, offPxY });
         if (ts.name === 'Sea') this._registraAcquaAnimata(layer, data2d);
         else if (CASCATA_TILESETS.includes(ts.name)) this._registraCascataAnimata(layer, data2d);
         else if (FIORI_TILESETS.includes(ts.name)) this._registraFioriAnimati(layer, data2d);
@@ -4027,18 +4027,27 @@ const GameMap = (function () {
     // (tx,ty) DICHIARATA in Tiled per l'oggetto masso — coordinate globali,
     // convertite in locali-al-layer se la mappa fa parte di un cluster.
     _pulisciTileFantasmaMasso(tx, ty, mappaChiave) {
-      let lx = tx, ly = ty;
+      let lx = tx, ly = ty, offPxX = 0, offPxY = 0;
       if (clusterAttivo && mappaChiave && clusterBoxes[mappaChiave]) {
         const box = clusterBoxes[mappaChiave];
         lx = tx - box.offsetX; ly = ty - box.offsetY;
+        offPxX = box.offsetX * tileSize; offPxY = box.offsetY * tileSize;
       }
       // Sess. 13 ott 2026 (bug segnalato da Luca: "rimane una copia del masso
       // sul posto"): prima puliva SOLO il layer "edifici" (depth 2), ma i
       // massi vengono spesso dipinti su "ground"/"deco_sotto" (un macigno su
       // un sentiero, non un edificio) — in quel caso il tile fantasma non
       // veniva mai trovato/rimosso. Ora pulisce TUTTI i layer di tile alla
-      // cella del masso, qualunque sia il layer su cui è stato dipinto.
+      // cella del masso, qualunque sia il layer su cui è stato dipinto —
+      // MA SOLO quelli della stessa mappa (offPxX/offPxY corrispondenti):
+      // un primo tentativo (poi corretto, bug grave segnalato da Luca) non
+      // filtrava per mappa e cancellava tile a caso su TUTTE le mappe del
+      // cluster (Percorso 2/Frascati/Grottaferrata ecc.), visibili come
+      // "buchi neri" sparsi ovunque — ogni mappa condivide le stesse
+      // coordinate LOCALI 0..larghezza-1, quindi senza questo filtro si
+      // toccava la cella "lx,ly" di OGNI mappa caricata, non solo la propria.
       for (const o of layerObjects) {
+        if ((o.offPxX || 0) !== offPxX || (o.offPxY || 0) !== offPxY) continue;
         if (o.layer && typeof o.layer.removeTileAt === 'function') o.layer.removeTileAt(lx, ly);
       }
     }
@@ -4802,7 +4811,7 @@ const GameMap = (function () {
           if (ts.tw !== tileSize) layer.setScale(tileSize / ts.tw);
           if (offPxX || offPxY) layer.setPosition(offPxX, offPxY);
           layer.setDepth(depth);
-          layerObjects.push({ layer, lo, depth });
+          layerObjects.push({ layer, lo, depth, offPxX, offPxY });
         }
       }
     }
