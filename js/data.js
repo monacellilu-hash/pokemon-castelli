@@ -3345,7 +3345,7 @@ const POKE_MARKET = [
     merce: ['rivestimetallo', 'upgrade'] },
 
   { id: 'mk-monte-porzio', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
-    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo'] },
+    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo','repellente'] },
 
   // Venditore speciale del Market di Monte Porzio (NPC dedicato, oggetti evo rari)
   { id: 'mk-monte-porzio-speciale', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
@@ -3353,7 +3353,7 @@ const POKE_MARKET = [
 
   { id: 'mk-rocca-di-papa', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
     merce: ['superball', 'ultraball', 'repeatball', 'netball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot',
-            'xattacco', 'xdifesa', 'xspatk', 'xspdef', 'xvelocita', 'xprecisione'] },
+            'xattacco', 'xdifesa', 'xspatk', 'xspdef', 'xvelocita', 'xprecisione', 'repellente'] },
 
   // Venditore speciale del Market di Rocca di Papa (NPC dedicato, oggetti evo rari)
   { id: 'mk-rocca-di-papa-speciale', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
