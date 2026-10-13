@@ -2747,6 +2747,14 @@ const GameMap = (function () {
     },
   };
 
+  // Tile LOCALI (sul tileset "outside"/"tileset-outside") degli ostacoli MN
+  // dipinti a mano su deco_sotto/edifici/sopra_testa — MAI su "ground" (il
+  // terreno sotto non va MAI toccato) e MAI su un layer diverso da quello
+  // dove il tile è DAVVERO dipinto (regole esplicite di Luca, 13 ott 2026,
+  // dopo un bug grave: una prima versione cancellava tile a caso su TUTTE
+  // le mappe del cluster). Vedi _rimuoviTileOstacoloMN in GameScene.
+  const TILE_OSTACOLO_MN = { forza: [945], spaccaroccia: [944], taglio: [947] };
+
   // Sprite riservati a GdF e CoTrAL (mai usati dal fallback casuale).
   const SPRITE_GDF = 'NPC 20';
   const SPRITE_COTRAL = 'NPC 24';
@@ -4016,7 +4024,7 @@ const GameMap = (function () {
         // dipinto sulla cella originale ogni volta che la mappa si ricarica
         // (entrando/uscendo dalla stanza), indipendentemente da dove si trova
         // davvero il masso adesso.
-        this._pulisciTileFantasmaMasso(ev.tx, ev.ty, ev._mappaChiave);
+        this._rimuoviTileOstacoloMN(ev.tx, ev.ty, ev._mappaChiave, 'forza');
       }
       if (massiStato.length > 0) {
         console.log('[Masso] ricreati (posizione originale):', massiStato.map(m => `${m.id}@${m.tx},${m.ty}`));
@@ -4026,29 +4034,31 @@ const GameMap = (function () {
     // Rimuove il GID dipinto a mano nel layer "edifici" (depth 2) alla cella
     // (tx,ty) DICHIARATA in Tiled per l'oggetto masso — coordinate globali,
     // convertite in locali-al-layer se la mappa fa parte di un cluster.
-    _pulisciTileFantasmaMasso(tx, ty, mappaChiave) {
+    // Rimuove il tile-ostacolo (vedi TILE_OSTACOLO_MN) alla cella (tx,ty)
+    // della mappa "mappaChiave": cerca SOLO tra i layer non-ground di QUELLA
+    // STESSA mappa (mai altre mappe dello stesso cluster — bug grave trovato
+    // in sessione: senza questo filtro per offset si cancellavano tile a
+    // caso su TUTTE le mappe del cluster, "buchi neri" sparsi ovunque), e
+    // SOLO dal layer dove il tile combacia esattamente con quello atteso —
+    // mai da un altro layer solo perché un tile qualunque c'è.
+    _rimuoviTileOstacoloMN(tx, ty, mappaChiave, chiaveOstacolo) {
+      const attesi = TILE_OSTACOLO_MN[chiaveOstacolo];
+      if (!attesi) return;
       let lx = tx, ly = ty, offPxX = 0, offPxY = 0;
       if (clusterAttivo && mappaChiave && clusterBoxes[mappaChiave]) {
         const box = clusterBoxes[mappaChiave];
         lx = tx - box.offsetX; ly = ty - box.offsetY;
         offPxX = box.offsetX * tileSize; offPxY = box.offsetY * tileSize;
       }
-      // Sess. 13 ott 2026 (bug segnalato da Luca: "rimane una copia del masso
-      // sul posto"): prima puliva SOLO il layer "edifici" (depth 2), ma i
-      // massi vengono spesso dipinti su "ground"/"deco_sotto" (un macigno su
-      // un sentiero, non un edificio) — in quel caso il tile fantasma non
-      // veniva mai trovato/rimosso. Ora pulisce TUTTI i layer di tile alla
-      // cella del masso, qualunque sia il layer su cui è stato dipinto —
-      // MA SOLO quelli della stessa mappa (offPxX/offPxY corrispondenti):
-      // un primo tentativo (poi corretto, bug grave segnalato da Luca) non
-      // filtrava per mappa e cancellava tile a caso su TUTTE le mappe del
-      // cluster (Percorso 2/Frascati/Grottaferrata ecc.), visibili come
-      // "buchi neri" sparsi ovunque — ogni mappa condivide le stesse
-      // coordinate LOCALI 0..larghezza-1, quindi senza questo filtro si
-      // toccava la cella "lx,ly" di OGNI mappa caricata, non solo la propria.
       for (const o of layerObjects) {
-        if ((o.offPxX || 0) !== offPxX || (o.offPxY || 0) !== offPxY) continue;
-        if (o.layer && typeof o.layer.removeTileAt === 'function') o.layer.removeTileAt(lx, ly);
+        if (!o.depth) continue;   // depth 0/undefined = "ground": mai toccarlo
+        if ((o.offPxX || 0) !== offPxX || (o.offPxY || 0) !== offPxY) continue;   // solo questa mappa
+        if (!o.layer || typeof o.layer.getTileAt !== 'function') continue;
+        const tile = o.layer.getTileAt(lx, ly);
+        if (tile && attesi.includes(tile.index)) {
+          o.layer.removeTileAt(lx, ly);
+          return;   // trovato sul layer giusto: fatto, non tocca gli altri
+        }
       }
     }
 
@@ -8505,8 +8515,11 @@ const GameMap = (function () {
 
       // Taglio/Spaccaroccia: l'albero/roccia sparisce anche VISIVAMENTE (solo
       // per questa sessione, stesso motivo — nessuna persistenza voluta).
+      // Stessa regola precisa di Forza (richiesta esplicita di Luca, 13 ott
+      // 2026): mai "ground", solo il layer dove il tile atteso (944/947) è
+      // davvero dipinto, mai di un'altra mappa dello stesso cluster.
       if (chiave === 'taglio' || chiave === 'spaccaroccia') {
-        for (const [cx, cy] of celle) this._nascondiTileOstacolo(cx, cy);
+        for (const [cx, cy] of celle) this._rimuoviTileOstacoloMN(cx, cy, ev._mappaChiave, chiave);
       }
     }
 
