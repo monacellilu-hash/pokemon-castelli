@@ -15,7 +15,7 @@ const STATO_ITA_A_ENG = {
 };
 
 const CHIAVE_SALVATAGGIO  = 'pkc_salvataggio';
-const PASSI_PER_CHECK     = 20;   // ogni quanti passi si fa il check incontro
+const PASSI_PER_CHECK     = 15;   // ogni quanti passi si fa il check incontro
 const MINUTI_PER_PASSO    = 1;    // minuti di gioco per ogni passo
 
 /* ----------------------------------------------------------
