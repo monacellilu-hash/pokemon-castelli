@@ -15,7 +15,7 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "image": "../albano_scuola_tileset.png",
+   "image": "../PNG/albano_scuola_tileset.png",
    "imagewidth": 512,
    "imageheight": 192,
    "columns": 16,

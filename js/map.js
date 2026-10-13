@@ -1586,17 +1586,17 @@ const GameMap = (function () {
     'ts-lab-entrata':        'sprites/genzano_laboratorio_entrata_tileset.png',
     'ts-lab-lounge':         'sprites/genzano_laboratorio_lounge_tileset.png',
     // ── Antro Kyogre (ex SeafloorCavern, 10 ott 2026) ──
-    'ts-antrokyogre-ent':    'sprites/antro_kyogre_entrance_tileset.png',
-    'ts-antrokyogre-1':      'sprites/antro_kyogre_1_tileset.png',
-    'ts-antrokyogre-2':      'sprites/antro_kyogre_2_tileset.png',
-    'ts-antrokyogre-3':      'sprites/antro_kyogre_3_tileset.png',
-    'ts-antrokyogre-4':      'sprites/antro_kyogre_4_tileset.png',
-    'ts-antrokyogre-5':      'sprites/antro_kyogre_5_tileset.png',
-    'ts-antrokyogre-6':      'sprites/antro_kyogre_6_tileset.png',
-    'ts-antrokyogre-7':      'sprites/antro_kyogre_7_tileset.png',
-    'ts-antrokyogre-8':      'sprites/antro_kyogre_8_tileset.png',
-    'ts-antrokyogre-9':      'sprites/antro_kyogre_9_tileset.png',
-    'ts-antrokyogre-uw':     'sprites/antro_kyogre_underwater_tileset.png',
+    'ts-antrokyogre-ent':    'sprites/PNG/antro_kyogre_entrance_tileset.png',
+    'ts-antrokyogre-1':      'sprites/PNG/antro_kyogre_1_tileset.png',
+    'ts-antrokyogre-2':      'sprites/PNG/antro_kyogre_2_tileset.png',
+    'ts-antrokyogre-3':      'sprites/PNG/antro_kyogre_3_tileset.png',
+    'ts-antrokyogre-4':      'sprites/PNG/antro_kyogre_4_tileset.png',
+    'ts-antrokyogre-5':      'sprites/PNG/antro_kyogre_5_tileset.png',
+    'ts-antrokyogre-6':      'sprites/PNG/antro_kyogre_6_tileset.png',
+    'ts-antrokyogre-7':      'sprites/PNG/antro_kyogre_7_tileset.png',
+    'ts-antrokyogre-8':      'sprites/PNG/antro_kyogre_8_tileset.png',
+    'ts-antrokyogre-9':      'sprites/PNG/antro_kyogre_9_tileset.png',
+    'ts-antrokyogre-uw':     'sprites/PNG/antro_kyogre_underwater_tileset.png',
     'ts-lab-ricerca':        'sprites/genzano_laboratorio_ricerca_tileset.png',
     'ts-lab-esperimenti':    'sprites/genzano_laboratorio_esperimenti_tileset.png',
     'ts-lega-entrata':       'sprites/lega_pokemon_entrata_tileset.png',
@@ -1626,9 +1626,9 @@ const GameMap = (function () {
     // Tileset orfani trovati col censimento del 6 ott 2026: usati davvero
     // da almeno una mappa (120 e 696 tile rispettivamente) ma mai registrati
     // qui — risultato: tile invisibili/mancanti a schermo.
-    'ts-soccer-field':       'sprites/pokemon_soccer_field.png',
+    'ts-soccer-field':       'sprites/PNG/pokemon_soccer_field.png',
     'ts-stazione-treno':     'sprites/PNG/Stazione_treno.png',
-    'ts-albano-scuola':      'sprites/albano_scuola_tileset.png',
+    'ts-albano-scuola':      'sprites/PNG/albano_scuola_tileset.png',
   };
   Object.assign(TILESET_META, {
     'sub':        { key: 'ts-sub',        tw: 32, th: 32, cols: 4  },
@@ -2810,7 +2810,7 @@ const GameMap = (function () {
       // (Graphics/Characters/base_surf di Essentials — stessa griglia 4x4 del
       // personaggio: colonna = fotogramma, riga = direzione down/left/right/up
       // nello stesso ordine di SPRITE_PLAYER). Vedi _aggiornaMountSurf().
-      this.load.spritesheet('base-surf', 'sprites/base_surf.png', { frameWidth: 64, frameHeight: 64 });
+      this.load.spritesheet('base-surf', 'sprites/PNG/base_surf.png', { frameWidth: 64, frameHeight: 64 });
     }
 
     // Carica un tileset "diviso" (Outside.png, Emerald_Outside.png) a fette da

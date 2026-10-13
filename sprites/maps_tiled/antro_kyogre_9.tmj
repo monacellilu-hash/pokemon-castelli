@@ -15,7 +15,7 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "image": "../antro_kyogre_9_tileset.png",
+   "image": "../PNG/antro_kyogre_9_tileset.png",
    "imagewidth": 512,
    "imageheight": 192,
    "columns": 16,
