@@ -1175,6 +1175,10 @@ async function interagisciLaboratorio() {
     stato.zaino.pozione  = (stato.zaino.pozione  || 0) + 5;
     stato.flags.starterScelto   = true;
     stato.flags.pokedexRicevuto = true;
+    // Sess. 13 ott 2026 (Villa Torlonia): ricordiamo l'id BASE dello starter
+    // originale — serve a infoStarterGiocatore() per sapere gen/tipo senza
+    // dover indovinare dalla squadra attuale (che può aver cambiato ordine).
+    stato.starterBaseId = scelto.id;
 
     // DUE rivali (richiesta esplicita di Luca, sess. 22 set 2026): uno a
     // destra (uomo, Green — starter DEBOLE contro il tuo → modalità FACILE se
@@ -1208,6 +1212,169 @@ async function interagisciLaboratorio() {
     // al primo passo che farai (vedi il trigger in alPasso, app.js).
   } finally {
     interagisciLaboratorio._inCorso = false;
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
+  }
+}
+
+/* ============================================================
+   VILLA TORLONIA (Frascati Est) — Signor Torlonia (sess. 13 ott 2026)
+   Richiesta esplicita di Luca: dopo aver battuto tutti e 6 gli allenatori
+   della villa, Torlonia chiede di vedere lo starter. Se è al suo stadio
+   finale (3°), regala un secondo starter LIVELLO 5, PRESO DALLA STESSA
+   GENERAZIONE scelta all'inizio:
+     - se lo starter originale NON era di Fuoco → regala direttamente quello
+       di Fuoco della stessa generazione (unico candidato, nessuna scelta).
+     - se lo starter originale ERA di Fuoco → lascia scegliere tra gli
+       ALTRI DUE della stessa generazione (a Torlonia il Fuoco non serve).
+   ============================================================ */
+
+const VILLA_TORLONIA_TRAINER_IDS = [
+  'villa_torlonia_1', 'villa_torlonia_2', 'villa_torlonia_3',
+  'villa_torlonia_4', 'villa_torlonia_5', 'villa_torlonia_6',
+];
+
+// Ricostruisce gen/tipo/stadio dello starter originale del giocatore.
+// Usa stato.starterBaseId (salvataggi nuovi); sui salvataggi vecchi (senza
+// quel campo) lo ricostruisce scandendo la squadra contro STARTER_PER_GEN.
+function infoStarterGiocatore() {
+  let baseId = stato.starterBaseId;
+  if (!baseId) {
+    for (const g of [1, 2, 3]) {
+      for (const s of STARTER_PER_GEN[g]) {
+        const finale = STARTER_FINALE[s.id];
+        if ((stato.squadra || []).some(p => p.id === s.id || p.id === s.id + 1 || p.id === finale)) {
+          baseId = s.id;
+          break;
+        }
+      }
+      if (baseId) break;
+    }
+  }
+  if (!baseId) return null;
+  let gen = null, tipo = null;
+  for (const g of [1, 2, 3]) {
+    const s = STARTER_PER_GEN[g].find(x => x.id === baseId);
+    if (s) { gen = g; tipo = s.tipo; break; }
+  }
+  if (!gen) return null;
+  const finale = STARTER_FINALE[baseId];
+  const evoluto = (stato.squadra || []).some(p => p.id === finale);
+  return { baseId, gen, tipo, finale, evoluto };
+}
+
+// Variante di scegliStarter() che accetta un elenco di opzioni esplicito
+// invece di derivarlo da una generazione — serve alla scelta tra i due
+// starter non-Fuoco regalati da Torlonia (stesso overlay, stesso stile).
+function scegliStarterOpzioni(opzioni, titoloTesto) {
+  return new Promise(resolve => {
+    const overlay = document.getElementById('overlay-starter');
+    const titolo = document.getElementById('starter-titolo');
+    const cont = document.getElementById('starter-scelte');
+
+    titolo.textContent = titoloTesto || 'Scegli il tuo regalo!';
+    cont.innerHTML = '<p class="menu-vuoto">Il Signor Torlonia prepara le Poké Ball…</p>';
+    overlay.classList.remove('nascosto');
+
+    (async () => {
+      try {
+        const dati = [];
+        for (const s of opzioni) dati.push(await PokeAPI.getPokemon(s.id));
+        cont.innerHTML = '';
+        opzioni.forEach((opzione, i) => {
+          const d = dati[i];
+          const nome = d.nome.charAt(0).toUpperCase() + d.nome.slice(1);
+          const tipi = d.tipi.map(t =>
+            `<span class="tipo-badge" style="background:${TIPO_COLORI[t] || '#888'}">${TIPO_NOMI[t] || t}</span>`
+          ).join(' ');
+          const card = document.createElement('button');
+          card.className = 'card-starter';
+          card.innerHTML = `<img src="${d.sprite.fronte}" alt="${nome}"><b>${nome}</b><div>${tipi}</div>`;
+          card.addEventListener('click', () => {
+            overlay.classList.add('nascosto');
+            resolve(opzione);
+          });
+          cont.appendChild(card);
+        });
+      } catch (err) {
+        console.error('[Torlonia] Errore nel caricare le opzioni:', err);
+        overlay.classList.add('nascosto');
+        resolve(null);
+      }
+    })();
+  });
+}
+
+async function regalaStarterTorlonia(opzione, righeFinali) {
+  if (stato.squadra.length >= 6) {
+    mostraToast('⚠️ La tua squadra è piena: libera un posto e torna a parlare col Signor Torlonia.');
+    return;
+  }
+  let mostro;
+  try {
+    mostro = await Battle.creaIstanza(opzione.id, LIVELLO_STARTER);
+    segnaPokedex(mostro.id, mostro.nome, mostro.sprite && mostro.sprite.fronte, true);
+  } catch (err) {
+    console.error('[Torlonia] Errore nel creare il regalo:', err);
+    mostraToast('⚠️ Errore di connessione: riprova a riparlare col Signor Torlonia.');
+    return;
+  }
+  stato.squadra.push(mostro);
+  if (!stato.flags) stato.flags = {};
+  stato.flags.torloniaRegaloRicevuto = true;
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo('Signor Torlonia', righeFinali);
+}
+
+async function interagisciSignorTorlonia() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  GameMap.bloccaMovimento();
+  try {
+    const battuti = stato.allenatoriBattuti || [];
+    const tuttiBattuti = VILLA_TORLONIA_TRAINER_IDS.every(id => battuti.includes(id));
+    if (!tuttiBattuti) {
+      await mostraDialogo('Signor Torlonia', [
+        'Ho sentito dire che ti alleni nei miei giardini.',
+        'Prima di parlare, però, voglio vedere come te la cavi: sconfiggi tutti gli ospiti che si allenano qui alla villa!',
+      ]);
+      return;
+    }
+
+    if (stato.flags && stato.flags.torloniaRegaloRicevuto) {
+      await mostraDialogo('Signor Torlonia', [
+        'Spero che il mio piccolo dono ti sia stato utile. Torna a trovarmi quando vuoi!',
+      ]);
+      return;
+    }
+
+    await mostraDialogo('Signor Torlonia', [
+      'Complimenti, hai sconfitto tutti i miei ospiti! Fammi un po\' vedere il tuo Pokémon starter...',
+    ]);
+
+    const info = infoStarterGiocatore();
+    if (!info || !info.evoluto) {
+      await mostraDialogo('Signor Torlonia', [
+        'Mh, non è ancora al suo stadio finale. Fatti rivedere quando sarà cresciuto del tutto!',
+      ]);
+      return;
+    }
+
+    if (info.tipo !== 'fire') {
+      const fuocoBase = STARTER_PER_GEN[info.gen].find(s => s.tipo === 'fire');
+      await regalaStarterTorlonia(fuocoBase, [
+        `Visto che hai già scelto bene, qui a Villa Torlonia ho anche degli esemplari di ${fuocoBase.nome}: prendine uno, a me non serve!`,
+      ]);
+    } else {
+      const altri = STARTER_PER_GEN[info.gen].filter(s => s.tipo !== 'fire');
+      await mostraDialogo('Signor Torlonia', [
+        'Visto che hai già uno starter di Fuoco, scegli pure uno di questi due: a me non servono.',
+      ]);
+      const scelto = await scegliStarterOpzioni(altri, 'Scegli il tuo regalo!');
+      if (scelto) {
+        await regalaStarterTorlonia(scelto, ['Ottima scelta, portalo con cura!']);
+      }
+    }
+  } finally {
     if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   }
 }

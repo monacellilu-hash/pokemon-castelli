@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="1">
- <tileset firstgid="1" source="Mansion interior.tsj"/>
- <tileset firstgid="233" source="Factory interior.tsj"/>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="35" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="35">
+ <tileset firstgid="1" source="../../Tsj/caves/Mansion interior.tsj"/>
+ <tileset firstgid="233" source="../../Tsj/interni/Factory interior.tsj"/>
  <layer id="1" name="ground" width="35" height="35">
   <data encoding="csv">
 89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,89,
@@ -158,6 +158,41 @@
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
 </data>
  </layer>
- <objectgroup id="5" name="collisioni"/>
+ <objectgroup id="5" name="collisioni">
+  <object id="1" x="5.29015" y="3.77868" width="1114.71" height="73.3063"/>
+  <object id="2" x="1100.35" y="16.6262" width="8.31309" height="1089.77"/>
+  <object id="3" x="689.231" y="1017.22" width="420.189" height="89.1768"/>
+  <object id="4" x="643.887" y="677.895" width="19.6491" height="30.9852"/>
+  <object id="5" x="646.154" y="780.675" width="12.8475" height="32.4966"/>
+  <object id="6" x="653.711" y="881.188" width="12.8475" height="43.0769"/>
+  <object id="7" x="651.444" y="971.12" width="11.336" height="34.0081"/>
+  <object id="8" x="649.933" y="1070.88" width="21.1606" height="23.4278"/>
+  <object id="9" x="458.731" y="1080.7" width="15.8704" height="24.1835"/>
+  <object id="10" x="454.953" y="983.968" width="18.1377" height="26.4507"/>
+  <object id="11" x="460.243" y="886.478" width="6.80162" height="30.9852"/>
+  <object id="12" x="454.197" y="784.453" width="9.06883" height="27.2065"/>
+  <object id="13" x="457.22" y="694.521" width="9.06883" height="21.9163"/>
+  <object id="14" x="11.336" y="1017.98" width="392.227" height="89.1768"/>
+  <object id="15" x="3.02294" y="17.3819" width="12.8475" height="1014.95"/>
+  <object id="16" x="35.5196" y="49.8785" width="126.208" height="50.6343"/>
+  <object id="17" x="65.749" y="142.078" width="21.1606" height="38.5425"/>
+  <object id="18" x="99.7571" y="202.537" width="17.3819" height="37.031"/>
+  <object id="19" x="77.085" y="331.768" width="8.31309" height="610.634"/>
+  <object id="20" x="233.522" y="251.66" width="77.8408" height="40.054"/>
+  <object id="21" x="238.057" y="232.767" width="10.5803" height="9.06883"/>
+  <object id="22" x="205.56" y="271.309" width="11.336" height="3.77868"/>
+  <object id="23" x="301.538" y="236.545" width="6.80162" height="10.5803"/>
+  <object id="24" x="542.618" y="234.278" width="21.1606" height="50.6343"/>
+  <object id="25" x="849.447" y="61.9703" width="0.755735" height="55.1687"/>
+  <object id="26" x="943.158" y="61.9703" width="6.80162" height="45.3441"/>
+  <object id="27" x="966.586" y="60.4588" width="41.5655" height="53.6572"/>
+  <object id="28" x="999.082" y="118.65" width="14.359" height="324.211"/>
+  <object id="29" x="1002.11" y="439.838" width="91.444" height="269.042"/>
+  <object id="30" x="999.838" y="701.323" width="18.1377" height="247.126"/>
+  <object id="31" x="934.089" y="619.703" width="71.0391" height="18.1377"/>
+  <object id="32" x="191.201" y="71.7949" width="12.8475" height="52.1457"/>
+  <object id="33" x="290.202" y="60.4588" width="18.8934" height="63.4818"/>
+  <object id="34" x="36.2753" y="73.3063" width="1075.41" height="14.359"/>
+ </objectgroup>
  <objectgroup id="6" name="eventi"/>
 </map>

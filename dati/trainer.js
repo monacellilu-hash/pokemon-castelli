@@ -249,7 +249,11 @@ const DATI_TRAINER = {
     ],
     oggettiCura: [{ chiave: 'pozione', quantita: 3 }],
     dialogo_prima: 'Sono Donnie, Capopalestra di Frascati. Cresciuto tra le pesche e le vigne di mio padre, ho allenato questi Pokémon Erba con le mie mani — e qualche erba l\'ho pure assaggiata. Odio solo una cosa quanto le gelate tardive: il Team GdF. Vediamo se reggi il confronto!',
-    dialogo_dopo: 'Che lotta! Hai la stoffa di un vino d\'annata. La Medaglia Vigna è tua, te la sei meritata!',
+    // Sess. 13 ott 2026 (richiesta esplicita di Luca): seconda frase aggiunta
+    // DOPO la medaglia, stessa riga (dialogo_dopo è unico, ripetuto identico
+    // ogni volta che riparli a Donnie) — annuncia l'apertura di Villa
+    // Torlonia (gate NPC a medaglia:frascati, vedi dati/npc.js).
+    dialogo_dopo: 'Che lotta! Hai la stoffa di un vino d\'annata. La Medaglia Vigna è tua, te la sei meritata! Ora ti permetto di allenarti anche a Villa Torlonia: lì troverai Pokémon forti contro di me.',
     premio: 1400,
     palestraId: 'frascati',   // → assegna la Medaglia Vigna e alza il level cap
   },
@@ -504,7 +508,7 @@ const DATI_TRAINER = {
   },
   'percorso5_trainer_5': {
     sprite: 'trainer_SWIMMER_M', ritratto: 'SWIMMER_M', vista: 4,
-    classe: 'Nuotatore', nome: 'Learco',
+    classe: 'Nuotatore', nome: 'Valerio',
     squadra: [{ id: 341, livello: 42 }, { id: 341, livello: 44 }],
     dialogo_prima: 'Nell\'acqua nessuno mi batte! Fatti sotto, se hai il coraggio di nuotare fin qui.',
     dialogo_dopo: 'Bella lotta, complimenti! Stavolta la corrente era contro di me.',
@@ -512,7 +516,7 @@ const DATI_TRAINER = {
   },
   'percorso5_trainer_6': {
     sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
-    classe: 'Campeggiatore', nome: 'Learco',
+    classe: 'Campeggiatore', nome: 'Osvaldo',
     squadra: [{ id: 216, livello: 29 }, { id: 231, livello: 30 }],
     dialogo_prima: 'Campeggio qui da giorni, e mi sono allenato un bel po\'. Vediamo come te la cavi!',
     dialogo_dopo: 'Mo\' me rimetto a smontà la tenda, tranquillo.',
@@ -797,31 +801,35 @@ const DATI_TRAINER = {
   // luogotenente) — vedi prossimaLotta per il collegamento allo stadio 2.
   'gdf_grotta_vulcano_luogotenente': {
     // Questo è il trainer FISICAMENTE sulla mappa (marcatore "boss" in
-    // Tiled): il primo che il giocatore incontra e affronta, sprite da
-    // grunt (voluto — è solo il luogotenente, non il vero comandante).
-    // Giovanni in persona entra in scena SOLO dopo, camminando verso il
-    // giocatore, vedi _arrivoGiovanniGrottaVulcano in js/map.js.
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 6,
-    classe: 'Luogotenente GdF', nome: 'Levantino',
+    // Tiled): il primo che il giocatore incontra e affronta. Levantino è
+    // stato eliminato come personaggio (richiesta esplicita di Luca, 13
+    // ott 2026): i 3 luogotenenti GdF sono SOLO Fernando/Michela/Ginevra,
+    // qui tocca a Ginevra tornare una seconda volta per dare man forte a
+    // Lorenzo. Lorenzo in persona entra in scena SOLO dopo, camminando
+    // verso il giocatore, vedi _arrivoGiovanniGrottaVulcano in js/map.js
+    // (nome interno invariato, non è più "Giovanni" per il giocatore).
+    sprite: 'Luogotenente_GdF_3', ritratto: 'Luogotenente_GdF_3', vista: 6,
+    classe: 'Luogotenente GdF', nome: 'Ginevra',
     squadra: [{ id: 112, livello: 57 }, { id: 229, livello: 58 }],
-    // Il vero discorso da cattivo lo fa Giovanni PRIMA di questa lotta (vedi
+    // Il vero discorso da cattivo lo fa Lorenzo PRIMA di questa lotta (vedi
     // _prossimitaSpotta in js/map.js, che mostra un dialogo multi-pagina
     // apposito prima di chiamare _avviaLottaTrainer) — qui resta solo la
-    // battuta di passaggio di consegne a Levantino, breve apposta.
+    // battuta di passaggio di consegne a Ginevra, breve apposta.
     dialogo_prima: 'Come ordinato, Comandante. Vediamo di cosa sei capace...',
     dialogo_dopo: 'Il Comandante non sarà contento... ma sei più forte di quanto pensassi.',
     premio: 2200,
     prossimaLotta: 'gdf_boss_grotta_vulcano',
   },
-  // Stadio 2 (finale) della catena: il vero Comandante GdF, Giovanni (sprite
-  // trainer_LEADER_Giovanni, richiesta esplicita di Luca). Sconfiggerlo
-  // (vedi _applicaEsitoTrainer in js/map.js, blocco "id === 'gdf_boss_grotta_vulcano'")
-  // fa scattare in automatico la seconda parte della cutscene (ritirata +
-  // scienziato liberato + Pietra Rubino), CUTSCENE['grotta_vulcano_boss_dopo']
-  // in dati/cutscene.js.
+  // Stadio 2 (finale) della catena: il vero Comandante GdF, ora Lorenzo
+  // (prima "Giovanni", rinominato su richiesta esplicita di Luca, 13 ott
+  // 2026 — sprite dedicato "Lorenzo", non più il placeholder generico).
+  // Sconfiggerlo (vedi _applicaEsitoTrainer in js/map.js, blocco
+  // "id === 'gdf_boss_grotta_vulcano'") fa scattare in automatico la
+  // seconda parte della cutscene (ritirata + scienziato liberato + Pietra
+  // Rubino), CUTSCENE['grotta_vulcano_boss_dopo'] in dati/cutscene.js.
   'gdf_boss_grotta_vulcano': {
-    sprite: 'NPC', ritratto: 'trainer_LEADER_Giovanni', vista: 0,
-    classe: 'Comandante GdF', nome: 'Giovanni',
+    sprite: 'Lorenzo', ritratto: 'Lorenzo', vista: 0,
+    classe: 'Comandante GdF', nome: 'Lorenzo',
     squadra: [{ id: 306, livello: 60 }, { id: 373, livello: 61 }, { id: 376, livello: 62 }],
     dialogo_prima: 'Basta così. Adesso vengo io di persona — e questa volta non ti sbaglierai due volte.',
     dialogo_dopo: 'Impossibile... IMPOSSIBILE!',
@@ -1296,8 +1304,8 @@ const DATI_TRAINER = {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [{ id: 24, livello: 42 }, { id: 110, livello: 43 }],
-    dialogo_prima: 'Fulvia dice che sei tu quello che ci dà fastidio da Frascati. Ora ci penso io!',
-    dialogo_dopo: 'Fulvia me l\'aveva detto che eri forte... e mo\' me tocca ammette che aveva ragione.',
+    dialogo_prima: 'Fernando dice che sei tu quello che ci dà fastidio da Frascati. Ora ci penso io!',
+    dialogo_dopo: 'Fernando me l\'aveva detto che eri forte... e mo\' me tocca ammette che aveva ragione.',
     premio: 1720,
   },
   'gdf-villa-6': {
@@ -1460,7 +1468,7 @@ const DATI_TRAINER = {
     premio: 2160,
   },
   'gdf_sannilo_ginevra': {
-    sprite: 'Luogotenente_Cotral_Rifugio_rocca_di_papa', ritratto: 'Luogotenente_Cotral_Rifugio_rocca_di_papa',
+    sprite: 'Luogotenente_GdF_3', ritratto: 'Luogotenente_GdF_3',
     classe: 'Luogotenente GdF', nome: 'Ginevra',
     squadra: [
       { id: 302, livello: 50 },
@@ -1563,8 +1571,8 @@ const DATI_TRAINER = {
     premio: 1560,
   },
   'gdf_capo_marino': {
-    sprite: 'NPC', ritratto: 'trainer_LEADER_Giovanni',
-    classe: 'Comandante GdF', nome: 'Giovanni',
+    sprite: 'Lorenzo', ritratto: 'Lorenzo',
+    classe: 'Comandante GdF', nome: 'Lorenzo',
     squadra: [
       { id: 195, livello: 36 },
       { id: 73, livello: 38 },
@@ -2048,7 +2056,7 @@ const DATI_TRAINER = {
     premio: 420,
   },
   'all-fg-4': {
-    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
+    sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 5,
     classe: 'Ciclista', nome: 'Pia',
     squadra: [{ id: 163, livello: 10 }, { id: 16, livello: 10 }],
     dialogo_prima: 'Scendo in bici! Non frenare, sfida!',
@@ -2518,7 +2526,7 @@ const DATI_TRAINER = {
     premio: 460,
   },
   'tunnel-2f-6': {
-    sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 4,
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
     classe: 'Escursionista', nome: 'Ottorino',
     squadra: [ { id: 41, livello: 29 }, { id: 66, livello: 30 } ],
     dialogo_prima: 'Tra pipistrelli e macigni, ce sto benissimo qua sotto!',
@@ -2674,7 +2682,7 @@ const DATI_TRAINER = {
     premio: 700,
   },
   'all-p7-7': {
-    sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 5,
+    sprite: 'trainer_ENGINEER', ritratto: 'ENGINEER', vista: 5,
     classe: 'Elettricista', nome: 'Genesio',
     squadra: [ { id: 101, livello: 42 }, { id: 82, livello: 43 } ],
     dialogo_prima: 'Elettricità pura, fatte sotto se ce la fai!',
@@ -3149,7 +3157,7 @@ const DATI_TRAINER = {
   // se in futuro serve anche un 1v1 "normale" contro di lui, questa stessa
   // squadra intera resta comunque utilizzabile.
   'cotral_marcello_rocca': {
-    sprite: 'Luogotenente_Cotral_Osservatorio', ritratto: 'trainer_SCIENTIST', vista: 5,
+    sprite: 'Luogotenente_Cotral_rifugio_Rocca_di_papa', ritratto: 'trainer_SCIENTIST', vista: 5,
     classe: 'Ammiraglio CoTrAL', nome: 'Marcello',
     squadra: [
       { id: 75,  livello: 40 },  // Graveler
@@ -3745,10 +3753,11 @@ const DATI_TRAINER = {
   // Luogotenente CoTrAL (3F, SOLO — nessuna guardia): sconfitto, lascia la
   // Chiave Segreta. Squadra da 6, tenore boss di piano: Flygon e Steelix
   // sono SOLO suoi (nessun grunt li schiera), livelli 57-60 chiaramente
-  // sopra tutto il resto del roster CoTrAL dell'Osservatorio.
+  // sopra tutto il resto del roster CoTrAL dell'Osservatorio. Nome
+  // "Francesca" assegnato il 13 ott 2026 (prima era senza nome).
   'cotral_osservatorio_luogotenente': {
-    sprite: 'Capo_Cotral', ritratto: 'trainer_CoTral_F', vista: 0,
-    classe: 'Luogotenente CoTrAL', nome: 'Luogotenente',
+    sprite: 'Luogotenente_Cotral_Osservatorio', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Luogotenente CoTrAL', nome: 'Francesca',
     squadra: [
       { id: 75,  livello: 57 },   // Graveler
       { id: 105, livello: 57 },   // Marowak
@@ -4020,6 +4029,172 @@ const DATI_TRAINER = {
     dialogo_prima: 'Mo\' vediamo di che pasta sei fatto davvero.',
     dialogo_dopo: 'Impossibile... nemmeno la mia squadra è bastata.',
     premio: 4800,
+  },
+
+  /* ── BUNKERINO 2F — 20 Addetti CoTrAL (sess. 13 ott 2026): prima erano 20
+     oggetti Tiled che riusavano tutti per errore l'id di cotral_bunkerino_1f_4
+     (segnalato da Luca) — ognuno ha ora il suo id dedicato e la sua squadra,
+     livelli un gradino sopra il 1F (64-68) per restare in scala verso il 3F. ── */
+
+  'cotral_bunkerino_2f_1': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 94, livello: 67 }, { id: 376, livello: 68 } ],
+    dialogo_prima: 'Terzo piano, massima sorveglianza. Nessun passaggio gratis.',
+    dialogo_dopo: 'Impossibile... segnalo tutto ai superiori.',
+    premio: 3300,
+  },
+  'cotral_bunkerino_2f_2': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 68, livello: 67 }, { id: 212, livello: 68 } ],
+    dialogo_prima: 'Non dovevi arrivare così lontano.',
+    dialogo_dopo: 'Avanti così... ma non durerà.',
+    premio: 3300,
+  },
+  'cotral_bunkerino_2f_3': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 197, livello: 67 }, { id: 262, livello: 67 }, { id: 76, livello: 68 } ],
+    dialogo_prima: 'Qui si allenano i migliori. Fatti onore, se riesci.',
+    dialogo_dopo: 'Tre contro uno e hai vinto comunque... complimenti.',
+    premio: 3450,
+  },
+  'cotral_bunkerino_2f_4': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 208, livello: 68 }, { id: 227, livello: 68 } ],
+    dialogo_prima: 'Acciaio contro carne e ossa. Indovina chi vince di solito.',
+    dialogo_dopo: 'Oggi no, a quanto pare.',
+    premio: 3350,
+  },
+  'cotral_bunkerino_2f_5': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 302, livello: 67 }, { id: 65, livello: 68 } ],
+    dialogo_prima: 'Il Capo non vuole visite. Fermati qui.',
+    dialogo_dopo: 'Passa pure... ma sei avvisato, più avanti è peggio.',
+    premio: 3300,
+  },
+  'cotral_bunkerino_2f_6': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 332, livello: 67 }, { id: 168, livello: 67 }, { id: 89, livello: 68 } ],
+    dialogo_prima: 'Spine e veleno, un bel biglietto da visita.',
+    dialogo_dopo: 'Che squadra... va bene, va bene.',
+    premio: 3450,
+  },
+  'cotral_bunkerino_2f_7': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 248, livello: 68 }, { id: 376, livello: 69 } ],
+    dialogo_prima: 'Dinosauro contro robot, scegli tu chi affrontare prima.',
+    dialogo_dopo: 'Non me l\'aspettavo. Rispetto.',
+    premio: 3400,
+  },
+  'cotral_bunkerino_2f_8': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 82, livello: 68 }, { id: 229, livello: 69 } ],
+    dialogo_prima: 'Qui dentro ci alleniamo sul serio, non è un gioco.',
+    dialogo_dopo: 'Sul serio... lo dicevo sul serio.',
+    premio: 3400,
+  },
+  'cotral_bunkerino_2f_9': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 359, livello: 68 }, { id: 110, livello: 68 }, { id: 65, livello: 69 } ],
+    dialogo_prima: 'Non ti conviene proseguire. Ma fai come vuoi.',
+    dialogo_dopo: 'Vai avanti. Se ce la fai, almeno.',
+    premio: 3500,
+  },
+  'cotral_bunkerino_2f_10': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 94, livello: 68 }, { id: 68, livello: 69 } ],
+    dialogo_prima: 'Ombre e pugni, una combinazione che non perdona.',
+    dialogo_dopo: 'Mi hai sorpreso, non capita spesso.',
+    premio: 3400,
+  },
+  'cotral_bunkerino_2f_11': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 212, livello: 68 }, { id: 208, livello: 69 } ],
+    dialogo_prima: 'Metallo su metallo, vediamo se resisti.',
+    dialogo_dopo: 'Resistito eccome. Vai.',
+    premio: 3450,
+  },
+  'cotral_bunkerino_2f_12': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 227, livello: 68 }, { id: 262, livello: 68 }, { id: 76, livello: 69 } ],
+    dialogo_prima: 'Acciaio, zanne e roccia: scegli con cura la tua prossima mossa.',
+    dialogo_dopo: 'Scelta azzeccata, a quanto pare.',
+    premio: 3550,
+  },
+  'cotral_bunkerino_2f_13': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 197, livello: 69 }, { id: 376, livello: 70 } ],
+    dialogo_prima: 'Siamo quasi in cima. Ma non con te in squadra, pare.',
+    dialogo_dopo: 'Quasi in cima... togliti tu, piuttosto.',
+    premio: 3500,
+  },
+  'cotral_bunkerino_2f_14': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 302, livello: 69 }, { id: 229, livello: 70 } ],
+    dialogo_prima: 'Fantasmi e fuoco infernale. Spaventato?',
+    dialogo_dopo: 'Macché spaventato... bella lotta però.',
+    premio: 3500,
+  },
+  'cotral_bunkerino_2f_15': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 89, livello: 69 }, { id: 332, livello: 69 }, { id: 168, livello: 70 } ],
+    dialogo_prima: 'Veleno su veleno, non è un bel biglietto di ritorno.',
+    dialogo_dopo: 'Il mio biglietto di ritorno è timbrato "sconfitta".',
+    premio: 3600,
+  },
+  'cotral_bunkerino_2f_16': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 248, livello: 69 }, { id: 65, livello: 70 } ],
+    dialogo_prima: 'Qui sotto il Capo non vuole sorprese. Tu sei una sorpresa.',
+    dialogo_dopo: 'Sorpresa riuscita, direi.',
+    premio: 3550,
+  },
+  'cotral_bunkerino_2f_17': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 82, livello: 69 }, { id: 212, livello: 70 } ],
+    dialogo_prima: 'Siamo gli ultimi prima delle scale per il 3° piano.',
+    dialogo_dopo: 'Ultimi... e battuti. Vai, ti aspettano sopra.',
+    premio: 3600,
+  },
+  'cotral_bunkerino_2f_18': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 359, livello: 70 }, { id: 227, livello: 70 }, { id: 205, livello: 70 } ],
+    dialogo_prima: 'Dopo di me solo le scale, e non è un bel posto.',
+    dialogo_dopo: 'Vai pure... ma quello che trovi sopra è peggio di me.',
+    premio: 3700,
+  },
+  'cotral_bunkerino_2f_19': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
+    squadra: [ { id: 376, livello: 70 }, { id: 94, livello: 71 } ],
+    dialogo_prima: 'Il Capo sa che sei arrivato fin qui. Non sarà contento.',
+    dialogo_dopo: 'Il Capo saprà anche questo, fidati.',
+    premio: 3700,
+  },
+  'cotral_bunkerino_2f_20': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
+    squadra: [ { id: 68, livello: 70 }, { id: 208, livello: 70 }, { id: 376, livello: 71 } ],
+    dialogo_prima: 'Ultima guardia prima delle scale. Qui finisce la fortuna.',
+    dialogo_dopo: 'La fortuna non c\'entrava, eri davvero preparato.',
+    premio: 3800,
   },
 
   /* ── Grande Magazzino (ex CeladonCity_DepartmentStore, estratto da
@@ -4295,5 +4470,61 @@ const DATI_TRAINER = {
     // Scelta tra Hitmonchan(107) e Hitmonlee(106), Lv45, richiesta di Luca.
     scelteVittoriaPokemon: [107, 106],
     livelloVittoriaPokemon: 45,
+  },
+
+  /* ── VILLA TORLONIA (Frascati Est, interno) — sess. 13 ott 2026, richiesta
+     esplicita di Luca: dungeon post-1ª palestra (gate a medaglia:frascati),
+     solo allenatori con Pokémon di tipo Fuoco, livelli tarati sul level cap
+     della 2ª palestra (Grottaferrata, cap 21) — 3 al piano terra (p0), 3 al
+     primo piano (p1). Oggetti Tiled da piazzare: Luca li sposta lui
+     ("mettili poi li sposto io"), le chiavi sotto sono gli id da usare. ── */
+
+  'villa_torlonia_1': {
+    sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 4,
+    classe: 'Villeggiante', nome: 'Celeste',
+    squadra: [ { id: 58, livello: 15 }, { id: 37, livello: 16 } ],   // Growlithe, Vulpix
+    dialogo_prima: 'Il Signor Torlonia ci lascia allenare qui nei giardini. Dai, proviamo le fiamme!',
+    dialogo_dopo: 'Che caldo... in tutti i sensi.',
+    premio: 320,
+  },
+  'villa_torlonia_2': {
+    sprite: 'trainer_AROMALADY', ritratto: 'AROMALADY', vista: 4,
+    classe: 'Giardiniera', nome: 'Fiammetta',
+    squadra: [ { id: 218, livello: 16 }, { id: 37, livello: 17 } ],   // Slugma, Vulpix
+    dialogo_prima: 'Cura le piante della villa chi vuole, io curo questi carboni ardenti.',
+    dialogo_dopo: 'Il mio Slugma lascia sempre un filo di lava sui sentieri, scusa il disordine.',
+    premio: 340,
+  },
+  'villa_torlonia_3': {
+    sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 5,
+    classe: 'Gentiluomo', nome: 'Alessandro',
+    squadra: [ { id: 77, livello: 17 }, { id: 58, livello: 17 } ],   // Ponyta, Growlithe
+    dialogo_prima: 'Ospite della villa, al Signor Torlonia piace vedere chi si allena sul serio.',
+    dialogo_dopo: 'Elegante sconfitta, devo ammetterlo.',
+    premio: 360,
+  },
+  'villa_torlonia_4': {
+    sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
+    classe: 'Nobildonna', nome: 'Beatrice',
+    squadra: [ { id: 240, livello: 18 }, { id: 77, livello: 19 } ],   // Magby, Ponyta
+    dialogo_prima: 'Al primo piano si allenano solo gli ospiti più... appassionati.',
+    dialogo_dopo: 'Non è da tutti reggere il calore di Villa Torlonia.',
+    premio: 400,
+  },
+  'villa_torlonia_5': {
+    sprite: 'trainer_COOLTRAINER_M', ritratto: 'COOLTRAINER_M', vista: 5,
+    classe: 'Fuoriclasse', nome: 'Edoardo',
+    squadra: [ { id: 228, livello: 18 }, { id: 322, livello: 19 }, { id: 58, livello: 19 } ],   // Houndour, Numel, Growlithe
+    dialogo_prima: 'Se vuoi arrivare al Signor Torlonia, prima passi da me.',
+    dialogo_dopo: 'Tre contro una squadra ben allenata: non facile, eh?',
+    premio: 440,
+  },
+  'villa_torlonia_6': {
+    sprite: 'trainer_BEAUTY', ritratto: 'BEAUTY', vista: 5,
+    classe: 'Elegante', nome: 'Serena',
+    squadra: [ { id: 37, livello: 20 }, { id: 77, livello: 20 } ],   // Vulpix, Ponyta
+    dialogo_prima: 'L\'ultima prima del Signor Torlonia. Non deluderlo, ma nemmeno me.',
+    dialogo_dopo: 'Vai, ti aspetta in fondo alla sala.',
+    premio: 460,
   },
 };

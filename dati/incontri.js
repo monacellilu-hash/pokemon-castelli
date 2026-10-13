@@ -163,6 +163,23 @@ const DATI_INCONTRI = {
 ],
   },
 
+  // ── VILLA TORLONIA (interno, Frascati Est) — richiesta esplicita di Luca
+  // (13 ott 2026): dungeon post-1ª palestra, SOLO Pokémon di tipo Fuoco,
+  // livelli un po' sopra Percorso 2 (zona "premio", non di passaggio).
+  // Zona da disegnare sui due .tmj (villa_torlonia_p0/p1) con questo id.
+  'incontri villa torlonia': {
+    probabilita: 15,
+    pokemon: [
+      { id: 37,  min: 10, max: 14, rate: 26 },  // Vulpix
+      { id: 58,  min: 10, max: 14, rate: 26 },  // Growlithe
+      { id: 77,  min: 11, max: 15, rate: 22 },  // Ponyta
+      { id: 218, min: 10, max: 13, rate: 18 },  // Slugma
+      { id: 228, min: 11, max: 15, rate: 14 },  // Houndour (Gen2, un po' più rara)
+      { id: 322, min: 12, max: 15, rate: 10 },  // Numel (Gen3, rara)
+      { id: 240, min: 9,  max: 12, rate: 6  },  // Magby (Gen2, baby, molto rara)
+],
+  },
+
   // ── PERCORSO 2 — castagneti collinari (Frascati→Grottaferrata) Lv 9-13 ──
   'incontri percorso 2': {
     probabilita: 15,

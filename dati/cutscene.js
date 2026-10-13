@@ -179,12 +179,12 @@ const CUTSCENE = {
      sconfitta. Solo dialogo, nessun'azione — la lotta parte da sola subito
      dopo l'ultima riga. */
   'grotta_vulcano_boss_intro': [
-    { tipo: 'dialogo', nome: 'Giovanni', testo: [
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Ci risiamo. L\'ultima volta, al Rifugio di Marino, mi hai portato via la Pietra Zaffiro. Non ripeterai il colpo.',
-      'Io sono Giovanni, comandante della Grande di Frascati — e quello che dorme nel nucleo di questo vulcano presto risponderà solo a me.',
+      'Io sono Lorenzo, comandante della Grande di Frascati — e quello che dorme nel nucleo di questo vulcano presto risponderà solo a me.',
       'Con Groudon E Kyogre sotto controllo, altro che pioggia sulle vigne della concorrenza: rimodellerò il clima di tutti i Castelli Romani come e quando voglio. Nessuno potrà fermarmi, capisci? NESSUNO.',
-      'Ma stavolta ho imparato la lezione: niente eroismi, niente rischi inutili. Prima di arrivare a me, ti scalderai i muscoli con Levantino.',
-      'Levantino! Tocca a te. Stavolta non deludermi come l\'ultima volta.',
+      'Ma stavolta ho imparato la lezione: niente eroismi, niente rischi inutili. Prima di arrivare a me, ti scalderai i muscoli con Ginevra.',
+      'Ginevra! Tocca a te. Stavolta non deludermi come l\'ultima volta.',
     ] },
   ],
 
@@ -212,7 +212,7 @@ const CUTSCENE = {
     { tipo: 'dialogo', nome: '', testo: [
       'Un boato scuote la grotta: qualcosa, da qualche parte più in profondità, si è appena mosso.',
     ] },
-    { tipo: 'dialogo', nome: 'Giovanni', testo: [
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Impossibile... IMPOSSIBILE! Due volte. Mi hai battuto DUE volte.',
       'Maledetto ragazzino... ma non finisce qui. Non ti illudere.',
       'Torneremo più forti di prima. Abbiamo appoggi che nemmeno immagini — fondi veri, subito, senza fare una piega. Grazie alla destra italiana, vedrai.',
@@ -242,15 +242,16 @@ const CUTSCENE = {
     { tipo: 'flag', nome: 'grotta_vulcano_scienziato_partito', valore: true },
   ],
 
-  /* ── Rifugio di Marino — dopo Giovanni (sess. 8 set 2026, arco GdF
-     riscritto): PRIMO incontro col comandante GdF, prima della Grotta del
-     Vulcano — vedi js/map.js, _applicaEsitoTrainer, blocco "id ===
-     'gdf_capo_marino'", e docs/STORIA_COMPLETA.md. A differenza della Grotta,
-     qui è Giovanni stesso a consegnare la pietra (non c'è uno scienziato da
-     liberare): la perde a malincuore, promette la rivincita che poi tiene
-     fede alla Grotta del Vulcano. */
+  /* ── Rifugio di Marino — dopo Lorenzo (sess. 8 set 2026, arco GdF
+     riscritto; rinominato da "Giovanni" a "Lorenzo" il 13 ott 2026): PRIMO
+     incontro col comandante GdF, prima della Grotta del Vulcano — vedi
+     js/map.js, _applicaEsitoTrainer, blocco "id === 'gdf_capo_marino'", e
+     docs/STORIA_COMPLETA.md. A differenza della Grotta, qui è Lorenzo
+     stesso a consegnare la pietra (non c'è uno scienziato da liberare): la
+     perde a malincuore, promette la rivincita che poi tiene fede alla
+     Grotta del Vulcano. */
   'rifugio_marino_boss_dopo': [
-    { tipo: 'dialogo', nome: 'Giovanni', testo: [
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Quest\'isola era mia... o almeno lo era, fino a un minuto fa.',
       'Non hai idea di cosa hai appena rimandato, ragazzino. Ma la Pietra Zaffiro a mani vuote non mi serve a niente: tienila pure, ne troverò un\'altra strada.',
     ] },
@@ -261,7 +262,7 @@ const CUTSCENE = {
     // momento della storia ci si può solo avvicinare e battere le guardie
     // fuori, non entrare (richiesta esplicita di Luca).
     { tipo: 'flag', nome: 'pietra_zaffiro_ottenuta', valore: true },
-    { tipo: 'dialogo', nome: 'Giovanni', testo: [
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Ma questa non è una sconfitta: è solo un rinvio. Ci rivedremo — e la prossima volta non sarai così fortunato.',
     ] },
   ],

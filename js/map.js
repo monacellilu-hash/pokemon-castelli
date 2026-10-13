@@ -336,6 +336,19 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/frascati_ovest.tmj',
       latC: 41.8090, lonC: 12.6690,
     },
+    // ── Villa Torlonia (interno, Frascati Est) — sess. 13 ott 2026, richiesta
+    // esplicita di Luca: dungeon post-1ª palestra, solo Pokémon di tipo Fuoco
+    // (allenamento "contro Donnie"), accessibile tramite gate NPC con Medaglia
+    // Vigna (richiede(=medaglia:frascati), vedi dati/npc.js). 2 piani, i warp
+    // tra piani e verso frascati_est sono già disegnati nel .tmj da Luca.
+    'villa_torlonia_p0': {
+      file: 'sprites/maps_tiled/villa_torlonia_p0.tmj',
+      interno: true, latFissa: 41.8090, lonFissa: 12.6850,
+    },
+    'villa_torlonia_p1': {
+      file: 'sprites/maps_tiled/villa_torlonia_p1.tmj',
+      interno: true, latFissa: 41.8090, lonFissa: 12.6850,
+    },
     'frascati_nord': {
       file: 'sprites/maps_tiled/frascati_nord.tmj',
       latC: 41.8150, lonC: 12.6770,
@@ -1887,6 +1900,17 @@ const GameMap = (function () {
       return { ok: true };
     }
 
+    // Requisito "medaglia:<id>" — UNA medaglia precisa (es. "medaglia:frascati"),
+    // diverso da "medaglie>=N" che conta solo il totale. Pensato per gate/NPC
+    // che dipendono da una palestra specifica, non dal numero totale di
+    // medaglie (sess. 13 ott 2026, Villa Torlonia a Frascati Est).
+    const medSingola = s.match(/^medaglia:([a-z0-9_\-]+)$/);
+    if (medSingola) {
+      const idMed = medSingola[1];
+      const ha = typeof stato !== 'undefined' && Array.isArray(stato.medaglie) && stato.medaglie.includes(idMed);
+      return ha ? { ok: true } : { ok: false, messaggio: '🔒 Devi prima ottenere quella medaglia.' };
+    }
+
     // Requisito "N pokemon <tipo> in squadra"
     const m = s.match(/(\d+|un|uno|una|due|tre|quattro|cinque|sei)\s+pok[eé]?mon\s+([a-zàèéìòù]+)/);
     if (m) {
@@ -2635,7 +2659,18 @@ const GameMap = (function () {
   let spaceWasDown     = false;
   let btnInteragisci   = null;
 
-  const NPC_SPRITE_DIR = 'sprites/npc e trainer per claude/';
+  // Sess. 13 ott 2026: Luca ha riordinato la cartella piatta "per claude" in
+  // sottocartelle per categoria (Civili/Donne, Civili/Uomini, Civili/Bambini,
+  // Trainer, "Gdf & Cotral", Unici) — nessun file duplicato tra sottocartelle
+  // (verificato), quindi si provano tutte in ordine finché una non risponde.
+  const NPC_SPRITE_DIRS = [
+    'sprites/npc e trainer/Civili/Uomini/',
+    'sprites/npc e trainer/Civili/Donne/',
+    'sprites/npc e trainer/Civili/Bambini/',
+    'sprites/npc e trainer/Trainer/',
+    'sprites/npc e trainer/Gdf & Cotral/',
+    'sprites/npc e trainer/Unici/',
+  ];
 
   // Alias per nomi sprite usati nelle mappe ma senza file dedicato: li mappiamo
   // su sprite già esistenti (sostituibili quando ci sarà l'arte definitiva).
@@ -4358,16 +4393,18 @@ const GameMap = (function () {
       const SPRITE_LARGHI = /^trainer_(BIKER|CUEBALL)$/i;
       const frameW = SPRITE_LARGHI.test(spriteFile) ? 48 : 32;
       for (const nomeFile of candidati) {
-        try {
-          await new Promise((ok, ko) => {
-            this.load.spritesheet(texKey, NPC_SPRITE_DIR + nomeFile + '.png',
-              { frameWidth: frameW, frameHeight: 48 });
-            this.load.once('complete', ok);
-            this.load.once('loaderror', ko);
-            this.load.start();
-          });
-          return texKey;
-        } catch (e) { /* prova il prossimo candidato */ }
+        for (const dir of NPC_SPRITE_DIRS) {
+          try {
+            await new Promise((ok, ko) => {
+              this.load.spritesheet(texKey, dir + nomeFile + '.png',
+                { frameWidth: frameW, frameHeight: 48 });
+              this.load.once('complete', ok);
+              this.load.once('loaderror', ko);
+              this.load.start();
+            });
+            return texKey;
+          } catch (e) { /* prova la prossima cartella/variante */ }
+        }
       }
       return null;
     }

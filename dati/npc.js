@@ -1,6 +1,6 @@
 /* dati/npc.js — Dati NPC dalle mappe Tiled
    Ogni chiave = id dell'oggetto nel layer "eventi" del .tmj
-   sprite: nome file in sprites/npc e trainer per claude/ (senza estensione)
+   sprite: nome file in sprites/npc e trainer/{Civili,Trainer,Gdf & Cotral,Unici}/ (senza estensione)
    direzione: nord | sud | est | ovest
    movimento: fisso | random
    dialogo: array di righe
@@ -311,16 +311,18 @@ const DATI_NPC = {
       'Occhi aperti. E buona fortuna.',
     ],
   },
-  // Giovanni è FISICAMENTE già nella stanza fin dall'inizio (come lo
-  // scienziato) — non compare dal nulla dopo la lotta con Levantino, ci
-  // sta già, fermo, in disparte (richiesta esplicita di Luca: "non è che
-  // deve comparire, deve stare già lì"). Cammina verso il giocatore solo
-  // dopo che Levantino è stato sconfitto — vedi _arrivoGiovanniGrottaVulcano
-  // in js/map.js, che lo pesca da npcStato per id, esattamente come
-  // qualunque altro NPC già piazzato su Tiled.
+  // Lorenzo (prima "Giovanni", rinominato su richiesta esplicita di Luca,
+  // 13 ott 2026 — ha ora un suo sprite dedicato, "Lorenzo") è FISICAMENTE
+  // già nella stanza fin dall'inizio (come lo scienziato) — non compare
+  // dal nulla dopo la lotta con Ginevra, ci sta già, fermo, in disparte
+  // (richiesta esplicita di Luca: "non è che deve comparire, deve stare
+  // già lì"). Cammina verso il giocatore solo dopo che Ginevra è stata
+  // sconfitta — vedi _arrivoGiovanniGrottaVulcano in js/map.js (nome
+  // interno della funzione invariato), che lo pesca da npcStato per id,
+  // esattamente come qualunque altro NPC già piazzato su Tiled.
   'gdf_grotta_vulcano_giovanni': {
-    sprite: 'trainer_LEADER_Giovanni', nome: 'Giovanni', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Giovanni non sembra ancora essersi accorto di te.'],
+    sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Lorenzo non sembra ancora essersi accorto di te.'],
   },
   // Gate palestra Rocca di Papa: sparisce quando stato.flags.baso_tornato è
   // vero (sessione 8 agosto, cutscene "Baso è via").
@@ -533,7 +535,7 @@ const DATI_NPC = {
     dialogo: ['I Pokémon Erba sono forti contro Acqua e Terra, ma occhio al Fuoco!'],
   },
   'fra_est_npc4': {
-    sprite: 'NPC 20', nome: 'Primo', direzione: 'ovest', movimento: 'random',
+    sprite: 'NPC 03', nome: 'Primo', direzione: 'ovest', movimento: 'random',
     dialogo: ['Riposati al Centro Pokémon prima di sfidare la Palestra.'],
   },
 
@@ -1148,6 +1150,26 @@ const DATI_NPC = {
     dialogo: ['🚧 Lavori in corso, non si passa! Prova a tornare più avanti.'],
   },
 
+  /* ── Villa Torlonia (Frascati Est) — sess. 13 ott 2026, richiesta esplicita
+     di Luca. Gate NPC: su Tiled va piazzato con le proprietà "gate":true e
+     "condizione":"medaglia:frascati" (nuovo token di verificaCondizione) —
+     sparisce da solo appena hai la Medaglia Vigna, nessun codice ulteriore. */
+  'villa_torlonia_guardiano': {
+    sprite: 'NPC 12_capitano', nome: 'Custode', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Villa Torlonia è riservata a chi ha già dimostrato il proprio valore. Fatti rivedere con una Medaglia in tasca!'],
+  },
+
+  /* Il Signor Torlonia in persona, in fondo al primo piano (villa_torlonia_p1):
+     NON è un allenatore (nessuna lotta) — tutta la logica (verifica dei 6
+     allenatori battuti, stadio evolutivo dello starter, regalo condizionato)
+     è in interagisciSignorTorlonia(), js/app.js. Su Tiled: type "npc",
+     azione "interagisciSignorTorlonia", NESSUN campo "dialogo" qui (la
+     funzione mostra lei stessa tutti i messaggi, condizione per condizione). */
+  'signor_torlonia': {
+    sprite: 'trainer_PROFESSOR', nome: 'Signor Torlonia', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciSignorTorlonia',
+  },
+
   'venditore speciale genzano': {
     sprite: 'NPC 07', nome: 'Anselmo', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Pietre evolutive, qui a due passi dall\'Infiorata. Prezzi da vera fiera, eh.'],
@@ -1350,7 +1372,7 @@ const DATI_NPC = {
     direzione: 'nord',
     movimento: 'fisso',
     dialogo: [
-      'Fermo lì! Il Museo è "chiuso per inventario". Ordini della Fulvia.',
+      'Fermo lì! Il Museo è "chiuso per inventario". Ordini della Michela.',
       'Le navi de Nemi nasconnono quarcosa che ce serve. Nun te fa i cazzi tua e vattene.',
     ],
   },
@@ -1552,7 +1574,7 @@ const DATI_NPC = {
   // (condizione, vedi sotto) che cura la squadra ogni volta che le parli.
   // (nomi tecnici flag/azione/chiave lasciati invariati, invisibili al giocatore)
   'via_laghi_sfida_rocco': {
-    sprite: 'NPC 20', nome: 'Ilario', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 07', nome: 'Ilario', direzione: 'sud', movimento: 'fisso',
     azione: 'sfidaParentiRocco',
   },
   // Guaritore vicino al motel di Lilycove su Via dei Laghi: dà il "buono
@@ -1934,7 +1956,7 @@ const DATI_NPC = {
   // non NPC interagibili. Compaiono/spariscono insieme al boss stesso (stesso
   // flag sintetico 'osservatorio_boss_area_attiva', vedi map.js).
   'osservatorio_boss_ricercatore_1': { sprite: 'NPC 19', nome: 'Ricercatore', direzione: 'sud' },
-  'osservatorio_boss_ricercatore_2': { sprite: 'NPC 20', nome: 'Ricercatrice', direzione: 'sud' },
+  'osservatorio_boss_ricercatore_2': { sprite: 'NPC 11', nome: 'Ricercatrice', direzione: 'sud' },
   'osservatorio_boss_ricercatore_3': { sprite: 'NPC 21', nome: 'Ricercatore', direzione: 'sud' },
   'osservatorio_boss_grunt_1': { sprite: 'Grunt_Cotral_uomo', nome: 'Addetto CoTrAL', direzione: 'sud' },
   'osservatorio_boss_grunt_2': { sprite: 'Grunt_Cotral_donna', nome: 'Addetta CoTrAL', direzione: 'sud' },

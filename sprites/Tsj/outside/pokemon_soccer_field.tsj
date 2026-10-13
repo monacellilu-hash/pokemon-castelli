@@ -1,14 +1,15 @@
-{ "columns":15,
- "image":"..\/pokemon_soccer_field.png",
- "imageheight":256,
- "imagewidth":480,
- "margin":0,
- "name":"pokemon_soccer_field",
- "spacing":0,
- "tilecount":480,
- "tiledversion":"1.12.2",
- "tileheight":32,
- "tilewidth":32,
- "type":"tileset",
- "version":"1.10"
+{
+ "columns": 15,
+ "image": "../../PNG/pokemon_soccer_field.png",
+ "imageheight": 256,
+ "imagewidth": 480,
+ "margin": 0,
+ "name": "pokemon_soccer_field",
+ "spacing": 0,
+ "tilecount": 480,
+ "tiledversion": "1.12.2",
+ "tileheight": 32,
+ "tilewidth": 32,
+ "type": "tileset",
+ "version": "1.10"
 }
