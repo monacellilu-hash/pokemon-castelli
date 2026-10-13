@@ -3,10 +3,10 @@
  <editorsettings>
   <export target="gdf_marino_2f_a.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../Factory interior.tsj"/>
- <tileset firstgid="1817" source="../../outside.tsx"/>
- <tileset firstgid="5833" source="../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/interni/Factory interior.tsj"/>
+ <tileset firstgid="1817" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="5833" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="30" height="30">
   <data encoding="csv">
 227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,

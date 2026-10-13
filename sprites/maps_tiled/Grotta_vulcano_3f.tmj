@@ -19706,11 +19706,11 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 1593,
-   "source": "../lava_animata_v2.tsj"
+   "source": "../Tsj/caves/lava_animata_v2.tsj"
   }
  ],
  "tilewidth": 32,

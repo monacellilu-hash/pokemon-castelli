@@ -3883,19 +3883,19 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 1593,
-   "source": "../Factory interior.tsj"
+   "source": "../Tsj/interni/Factory interior.tsj"
   },
   {
    "firstgid": 1817,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 5833,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

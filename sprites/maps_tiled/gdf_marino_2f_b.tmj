@@ -6884,23 +6884,23 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 1593,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 5609,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 9625,
-   "source": "../Sea.tsj"
+   "source": "../Tsj/outside/Sea.tsj"
   },
   {
    "firstgid": 9721,
-   "source": "../../Emerald_Outside.tsx"
+   "source": "../Tsj/outside/Emerald_Outside.tsx"
   }
  ],
  "tilewidth": 32,

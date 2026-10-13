@@ -1303,7 +1303,7 @@
   },
   {
    "firstgid": 113,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

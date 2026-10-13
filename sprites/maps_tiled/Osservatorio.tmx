@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="90" height="46" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="78">
- <tileset firstgid="1" source="../outside.tsx"/>
- <tileset firstgid="4017" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/outside.tsx"/>
  <layer id="3" name="ground" width="90" height="46">
   <data encoding="csv">
 798,798,809,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,805,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,4821,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="15" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="../house1.tsj"/>
- <tileset firstgid="755" source="../house2.tsj"/>
+ <tileset firstgid="1" source="../Tsj/casa/house1.tsj"/>
+ <tileset firstgid="755" source="../Tsj/casa/house2.tsj"/>
  <layer id="1" name="ground" width="15" height="15">
   <data encoding="csv">
 755,756,757,758,759,760,761,762,763,764,765,766,767,768,804,

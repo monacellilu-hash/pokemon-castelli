@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="80" height="92" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="73">
- <tileset firstgid="1" source="../outside.tsx"/>
- <tileset firstgid="4017" source="../fiori_rossi_animati_v2.tsj"/>
- <tileset firstgid="4025" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="4025" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="80" height="92">
   <data encoding="csv">
 437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,437,438,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="23" height="24" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="../Stazione_treno.tsj"/>
- <tileset firstgid="1618" source="../Interior_general_32.tsj"/>
+ <tileset firstgid="1" source="../Tsj/interni/Stazione_treno.tsj"/>
+ <tileset firstgid="1618" source="../Tsj/interni/Interior_general_32.tsj"/>
  <layer id="1" name="ground" width="23" height="24">
   <data encoding="csv">
 85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,85,

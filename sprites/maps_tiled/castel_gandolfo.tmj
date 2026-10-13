@@ -16835,31 +16835,31 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../Sea.tsj"
+   "source": "../Tsj/outside/Sea.tsj"
   },
   {
    "firstgid": 4115,
-   "source": "../Outside_pallet.tsx"
+   "source": "../Tsj/outside/Outside_pallet.tsx"
   },
   {
    "firstgid": 8131,
-   "source": "../pokemon_emerald_exterior_32.tsj"
+   "source": "../Tsj/outside/pokemon_emerald_exterior_32.tsj"
   },
   {
    "firstgid": 14203,
-   "source": "../fiori_rossi_animati_v2.tsj"
+   "source": "../Tsj/outside/fiori_rossi_animati_v2.tsj"
   },
   {
    "firstgid": 14211,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 18227,
-   "source": "../fiori_blu_animati.tsj"
+   "source": "../Tsj/outside/fiori_blu_animati.tsj"
   }
  ],
  "tilewidth": 32,

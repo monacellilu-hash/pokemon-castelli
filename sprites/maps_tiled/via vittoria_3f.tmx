@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="35" height="45" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="37">
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="35" height="45">
   <data encoding="csv">
 227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,

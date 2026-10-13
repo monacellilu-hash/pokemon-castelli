@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="17" height="18" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="4">
- <tileset firstgid="1" source="../interni_lega_2.tsj"/>
- <tileset firstgid="2653" source="../interno lega acc.tsj"/>
- <tileset firstgid="3677" source="../interno lega psico.tsj"/>
- <tileset firstgid="4701" source="../lega_acc_psico.tsj"/>
- <tileset firstgid="5725" source="../rifugi nemici 3.tsj"/>
- <tileset firstgid="6749" source="../RIFUGIO.tsj"/>
- <tileset firstgid="7773" source="../Tiled/Gyms interior.tsx"/>
+ <tileset firstgid="1" source="../Tsj/interni/interni_lega_2.tsj"/>
+ <tileset firstgid="2653" source="../Tsj/interni/interno lega acc.tsj"/>
+ <tileset firstgid="3677" source="../Tsj/interni/interno lega psico.tsj"/>
+ <tileset firstgid="4701" source="../Tsj/interni/lega_acc_psico.tsj"/>
+ <tileset firstgid="5725" source="../Tsj/interni/rifugi nemici 3.tsj"/>
+ <tileset firstgid="6749" source="../Tsj/interni/RIFUGIO.tsj"/>
+ <tileset firstgid="7773" source="../Tsj/interni/Gyms interior.tsx"/>
  
  <layer id="1" name="ground" width="17" height="18">
   <data encoding="csv">

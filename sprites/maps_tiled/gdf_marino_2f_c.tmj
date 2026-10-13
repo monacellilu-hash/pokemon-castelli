@@ -7207,11 +7207,11 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 1593,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

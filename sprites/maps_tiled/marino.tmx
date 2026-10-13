@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="88" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="437">
- <tileset firstgid="1" source="../Sea.tsj"/>
- <tileset firstgid="99" source="../Outside_pallet.tsx"/>
- <tileset firstgid="4115" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="99" source="../Tsj/outside/Outside_pallet.tsx"/>
+ <tileset firstgid="4115" source="../Tsj/outside/outside.tsx"/>
  <tileset firstgid="8131" source=":/automap-tiles.tsx"/>
- <tileset firstgid="8136" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="13384" source="../outside.tsx"/>
- <tileset firstgid="17400" source="../fontana.tsj"/>
- <tileset firstgid="17430" source="../fiori_rossi_animati_v2.tsj"/>
- <tileset firstgid="17438" source="../fiori_rosa_animati.tsj"/>
- <tileset firstgid="17446" source="../fiori_gialli_animati.tsj"/>
- <tileset firstgid="17454" source="../fiori_blu_animati.tsj"/>
+ <tileset firstgid="8136" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="13384" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="17400" source="../Tsj/outside/fontana.tsj"/>
+ <tileset firstgid="17430" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="17438" source="../Tsj/outside/fiori_rosa_animati.tsj"/>
+ <tileset firstgid="17446" source="../Tsj/outside/fiori_gialli_animati.tsj"/>
+ <tileset firstgid="17454" source="../Tsj/outside/fiori_blu_animati.tsj"/>
  <layer id="1" name="ground" width="60" height="88">
   <data encoding="csv">
 101,102,102,102,102,104,104,102,102,102,104,102,102,102,102,101,104,102,101,101,104,103,102,102,103,102,104,102,102,101,103,103,101,103,101,104,102,102,103,101,101,104,104,103,102,104,103,104,102,102,102,103,4119,4119,4119,4119,4119,4119,4119,4119,

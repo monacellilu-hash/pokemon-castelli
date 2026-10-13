@@ -13378,15 +13378,15 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Interior_general_32.tsj"
+   "source": "../Tsj/interni/Interior_general_32.tsj"
   },
   {
    "firstgid": 2009,
-   "source": "../Factory interior.tsj"
+   "source": "../Tsj/interni/Factory interior.tsj"
   },
   {
    "firstgid": 2233,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   }
  ],
  "tilewidth": 32,

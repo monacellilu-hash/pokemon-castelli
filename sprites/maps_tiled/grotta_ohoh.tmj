@@ -5470,7 +5470,7 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   }
  ],
  "tilewidth": 32,

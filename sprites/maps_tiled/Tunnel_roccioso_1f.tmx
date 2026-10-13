@@ -3,14 +3,14 @@
  <editorsettings>
   <export target="Tunnel_roccioso_1f.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../Sea.tsj"/>
- <tileset firstgid="1691" source="../Waterfall.tsj"/>
- <tileset firstgid="1698" source="../Waterfall bottom.tsj"/>
- <tileset firstgid="1702" source="../Waterfall crest.tsj"/>
- <tileset firstgid="1706" source="../../outside.tsx"/>
- <tileset firstgid="5722" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="10970" source="../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="1691" source="../Tsj/caves/Waterfall.tsj"/>
+ <tileset firstgid="1698" source="../Tsj/caves/Waterfall bottom.tsj"/>
+ <tileset firstgid="1702" source="../Tsj/caves/Waterfall crest.tsj"/>
+ <tileset firstgid="1706" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="5722" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="10970" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1641,1645,1645,1645,1645,1645,1645,1645,1645,1649,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,1243,

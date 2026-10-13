@@ -15834,11 +15834,11 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../../Emerald_Outside.tsx"
+   "source": "../Tsj/outside/Emerald_Outside.tsx"
   }
  ],
  "tilewidth": 32,

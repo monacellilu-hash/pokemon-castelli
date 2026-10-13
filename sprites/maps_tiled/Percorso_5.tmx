@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="106" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="503">
- <tileset firstgid="1" source="../Outside_pallet.tsx"/>
- <tileset firstgid="4017" source="../Sea.tsj"/>
- <tileset firstgid="4115" source="../Waterfall crest.tsj"/>
- <tileset firstgid="4119" source="../Waterfall.tsj"/>
- <tileset firstgid="4126" source="../Waterfall bottom.tsj"/>
- <tileset firstgid="4130" source="../../outside.tsx"/>
- <tileset firstgid="8146" source="../outside.tsx"/>
- <tileset firstgid="12162" source="../fiori_rossi_animati_v2.tsj"/>
- <tileset firstgid="12170" source="../Fiori_rossi_animati.tsj"/>
- <tileset firstgid="12266" source="../fiori.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/Outside_pallet.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="4115" source="../Tsj/caves/Waterfall crest.tsj"/>
+ <tileset firstgid="4119" source="../Tsj/caves/Waterfall.tsj"/>
+ <tileset firstgid="4126" source="../Tsj/caves/Waterfall bottom.tsj"/>
+ <tileset firstgid="4130" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="8146" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="12162" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="12170" source="../Tsj/outside/Fiori_rossi_animati.tsj"/>
+ <tileset firstgid="12266" source="../Tsj/outside/fiori.tsj"/>
  <layer id="1" name="ground" width="106" height="60">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,3,5,4,4,4,3,3,6,154,155,156,4,4,3,4,6,4,6,5,3,4,6,5,5,4,4,5,3,3,6,3,5,5,5,3,6,3,6,3,4134,4925,4925,4925,4925,4925,4925,4925,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,4132,

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="36" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="30">
- <tileset firstgid="1" source="../Sea.tsj"/>
- <tileset firstgid="99" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="5347" source="../spiaggia_animata_onde.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="99" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="5347" source="../Tsj/outside/spiaggia_animata_onde.tsj"/>
  <layer id="1" name="ground" width="55" height="36">
   <data encoding="csv">
 53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,53,

@@ -3,9 +3,9 @@
  <editorsettings>
   <export target="via vittoria_4f.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="6841" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="6841" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="45" height="45">
   <data encoding="csv">
 227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,227,

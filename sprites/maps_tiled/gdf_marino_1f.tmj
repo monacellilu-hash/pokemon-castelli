@@ -14913,7 +14913,7 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"
+   "source": "../Tsj/interni/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"
   },
   {
    "firstgid": 973,
@@ -14921,27 +14921,27 @@
   },
   {
    "firstgid": 973,
-   "source": "../Dungeon wall.tsj"
+   "source": "../Tsj/caves/Dungeon wall.tsj"
   },
   {
    "firstgid": 977,
-   "source": "../Dungeon floor.tsj"
+   "source": "../Tsj/caves/Dungeon floor.tsj"
   },
   {
    "firstgid": 981,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 2573,
-   "source": "../Factory interior.tsj"
+   "source": "../Tsj/interni/Factory interior.tsj"
   },
   {
    "firstgid": 2797,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 6813,
-   "source": "../laboratorio_interno.tsj"
+   "source": "../Tsj/interni/laboratorio_interno.tsj"
   }
  ],
  "tilewidth": 32,

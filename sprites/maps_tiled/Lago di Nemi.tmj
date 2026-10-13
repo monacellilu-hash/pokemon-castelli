@@ -30350,23 +30350,23 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Sea.tsj"
+   "source": "../Tsj/outside/Sea.tsj"
   },
   {
    "firstgid": 99,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4115,
-   "source": "../pokemon_emerald_exterior_32.tsj"
+   "source": "../Tsj/outside/pokemon_emerald_exterior_32.tsj"
   },
   {
    "firstgid": 10187,
-   "source": "../Outside_pallet.tsx"
+   "source": "../Tsj/outside/Outside_pallet.tsx"
   },
   {
    "firstgid": 14203,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 18219,
@@ -30374,7 +30374,7 @@
   },
   {
    "firstgid": 18224,
-   "source": "../spiaggia_animata_onde.tsj"
+   "source": "../Tsj/outside/spiaggia_animata_onde.tsj"
   }
  ],
  "tilewidth": 32,

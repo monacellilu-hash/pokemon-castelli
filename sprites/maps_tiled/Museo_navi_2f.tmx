@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="77">
- <tileset firstgid="1" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
- <tileset firstgid="991" source="../Mansion interior.tsj"/>
- <tileset firstgid="1223" source="../Museum interior.tsj"/>
- <tileset firstgid="1407" source="../outside.tsx"/>
- <tileset firstgid="5423" source="../RIFUGIO.tsj"/>
- <tileset firstgid="6447" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/interni/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
+ <tileset firstgid="991" source="../Tsj/caves/Mansion interior.tsj"/>
+ <tileset firstgid="1223" source="../Tsj/interni/Museum interior.tsj"/>
+ <tileset firstgid="1407" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="5423" source="../Tsj/interni/RIFUGIO.tsj"/>
+ <tileset firstgid="6447" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="40" height="40">
   <data encoding="csv">
 1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,1226,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="73">
- <tileset firstgid="1" source="../Tiled/Gyms interior.tsx"/>
- <tileset firstgid="1153" source="../Interior_general_32.tsj"/>
- <tileset firstgid="3161" source="../Factory interior.tsj"/>
- <tileset firstgid="3385" source="../RIFUGIO.tsj"/>
+ <tileset firstgid="1" source="../Tsj/interni/Gyms interior.tsx"/>
+ <tileset firstgid="1153" source="../Tsj/interni/Interior_general_32.tsj"/>
+ <tileset firstgid="3161" source="../Tsj/interni/Factory interior.tsj"/>
+ <tileset firstgid="3385" source="../Tsj/interni/RIFUGIO.tsj"/>
  <layer id="1" name="ground" width="60" height="50">
   <data encoding="csv">
 302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,302,

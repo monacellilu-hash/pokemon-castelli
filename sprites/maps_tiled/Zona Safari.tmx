@@ -3,9 +3,9 @@
  <editorsettings>
   <export target="Zona Safari.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../Sea.tsj"/>
- <tileset firstgid="4115" source="../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="4115" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="100" height="50">
   <data encoding="csv">
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,

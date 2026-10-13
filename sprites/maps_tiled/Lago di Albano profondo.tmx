@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="36" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="81">
- <tileset firstgid="1" source="../Sea.tsj"/>
- <tileset firstgid="99" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="5347" source="../outside.tsx"/>
- <tileset firstgid="9363" source="../sub.tsj"/>
- <tileset firstgid="9447" source="../Underwater.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="99" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="5347" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="9363" source="../Tsj/caves/sub.tsj"/>
+ <tileset firstgid="9447" source="../Tsj/caves/Underwater.tsj"/>
  <layer id="1" name="ground" width="55" height="36">
   <data encoding="csv">
 9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,9496,

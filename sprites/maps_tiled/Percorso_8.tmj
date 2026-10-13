@@ -10759,7 +10759,7 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

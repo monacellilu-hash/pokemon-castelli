@@ -835,7 +835,7 @@
   },
   {
    "firstgid": 81,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

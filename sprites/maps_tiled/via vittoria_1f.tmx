@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="71">
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="6841" source="../outside.tsx"/>
- <tileset firstgid="10857" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="6841" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="10857" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="55" height="55">
   <data encoding="csv">
 130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,

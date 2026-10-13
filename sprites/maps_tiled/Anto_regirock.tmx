@@ -3,9 +3,9 @@
  <editorsettings>
   <export format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="5249" source="../Tiled/Gyms interior.tsx"/>
- <tileset firstgid="6401" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="5249" source="../Tsj/interni/Gyms interior.tsx"/>
+ <tileset firstgid="6401" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="16" height="16">
   <data encoding="csv">
 2853,2854,2853,2854,2853,2854,2853,2854,2853,2854,2853,2854,2853,2854,2853,2854,

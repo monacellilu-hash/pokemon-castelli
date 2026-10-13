@@ -22518,15 +22518,15 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Sea.tsj"
+   "source": "../Tsj/outside/Sea.tsj"
   },
   {
    "firstgid": 99,
-   "source": "../Outside_pallet.tsx"
+   "source": "../Tsj/outside/Outside_pallet.tsx"
   },
   {
    "firstgid": 4115,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 8131,
@@ -22534,31 +22534,31 @@
   },
   {
    "firstgid": 8136,
-   "source": "../../Emerald_Outside.tsx"
+   "source": "../Tsj/outside/Emerald_Outside.tsx"
   },
   {
    "firstgid": 13384,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 17400,
-   "source": "../fontana.tsj"
+   "source": "../Tsj/outside/fontana.tsj"
   },
   {
    "firstgid": 17430,
-   "source": "../fiori_rossi_animati_v2.tsj"
+   "source": "../Tsj/outside/fiori_rossi_animati_v2.tsj"
   },
   {
    "firstgid": 17438,
-   "source": "../fiori_rosa_animati.tsj"
+   "source": "../Tsj/outside/fiori_rosa_animati.tsj"
   },
   {
    "firstgid": 17446,
-   "source": "../fiori_gialli_animati.tsj"
+   "source": "../Tsj/outside/fiori_gialli_animati.tsj"
   },
   {
    "firstgid": 17454,
-   "source": "../fiori_blu_animati.tsj"
+   "source": "../Tsj/outside/fiori_blu_animati.tsj"
   }
  ],
  "tilewidth": 32,

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="46" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="83">
- <tileset firstgid="1" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="60" height="46">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

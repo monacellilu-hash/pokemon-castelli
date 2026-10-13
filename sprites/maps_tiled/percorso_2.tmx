@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="40" height="132" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="124">
- <tileset firstgid="1" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
  <tileset firstgid="4017" name="professor Castagno" tilewidth="16" tileheight="16" tilecount="96" columns="8">
   <image source="../../Essentials FRLG/Graphics/Characters/NPC_ProfOak.png" trans="000000" width="128" height="192"/>
  </tileset>
- <tileset firstgid="4113" source="../../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion.tsx"/>
- <tileset firstgid="5634" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="10882" source="../outside.tsx"/>
- <tileset firstgid="14898" source="../Sea.tsj"/>
- <tileset firstgid="14996" source="../Waterfall crest.tsj"/>
- <tileset firstgid="15000" source="../Waterfall bottom.tsj"/>
- <tileset firstgid="15004" source="../Waterfall.tsj"/>
+ <tileset firstgid="4113" source="../Tsj/caves/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion.tsx"/>
+ <tileset firstgid="5634" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="10882" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="14898" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="14996" source="../Tsj/caves/Waterfall crest.tsj"/>
+ <tileset firstgid="15000" source="../Tsj/caves/Waterfall bottom.tsj"/>
+ <tileset firstgid="15004" source="../Tsj/caves/Waterfall.tsj"/>
  <layer id="1" name="ground" width="40" height="132">
   <data encoding="csv">
 10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,10886,

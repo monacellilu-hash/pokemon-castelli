@@ -5578,11 +5578,11 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Interior_general_32.tsj"
+   "source": "../Tsj/interni/Interior_general_32.tsj"
   },
   {
    "firstgid": 2009,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

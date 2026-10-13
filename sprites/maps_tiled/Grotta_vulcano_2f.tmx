@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="700">
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../lava_animata_v2.tsj"/>
- <tileset firstgid="1785" source="../Waterfalllava.tsj"/>
- <tileset firstgid="1789" source="../Waterfall bottomLava.tsj"/>
- <tileset firstgid="1793" source="../Waterfall crestLava.tsj"/>
- <tileset firstgid="1797" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
- <tileset firstgid="2769" source="../Interior_general_32.tsj"/>
- <tileset firstgid="4777" source="../Dungeon floor.tsj"/>
- <tileset firstgid="4781" source="../Dungeon wall.tsj"/>
- <tileset firstgid="4785" source="../Factory interior.tsj"/>
- <tileset firstgid="5009" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/caves/lava_animata_v2.tsj"/>
+ <tileset firstgid="1785" source="../Tsj/caves/Waterfalllava.tsj"/>
+ <tileset firstgid="1789" source="../Tsj/caves/Waterfall bottomLava.tsj"/>
+ <tileset firstgid="1793" source="../Tsj/caves/Waterfall crestLava.tsj"/>
+ <tileset firstgid="1797" source="../Tsj/interni/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
+ <tileset firstgid="2769" source="../Tsj/interni/Interior_general_32.tsj"/>
+ <tileset firstgid="4777" source="../Tsj/caves/Dungeon floor.tsj"/>
+ <tileset firstgid="4781" source="../Tsj/caves/Dungeon wall.tsj"/>
+ <tileset firstgid="4785" source="../Tsj/interni/Factory interior.tsj"/>
+ <tileset firstgid="5009" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="55" height="100">
   <data encoding="csv">
 491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,

@@ -3,13 +3,13 @@
  <editorsettings>
   <export target="Ariccia.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../pokemon_emerald_exterior_32.tsj"/>
- <tileset firstgid="10089" source="../outside.tsx"/>
- <tileset firstgid="14105" source="../party2.tsj"/>
- <tileset firstgid="14241" source="../party.tsj"/>
- <tileset firstgid="14409" source="party3.tsj"/>
- <tileset firstgid="14457" source="../porchetta.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/pokemon_emerald_exterior_32.tsj"/>
+ <tileset firstgid="10089" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="14105" source="../Tsj/altro/party2.tsj"/>
+ <tileset firstgid="14241" source="../Tsj/altro/party.tsj"/>
+ <tileset firstgid="14409" source="../Tsj/altro/party3.tsj"/>
+ <tileset firstgid="14457" source="../Tsj/outside/porchetta.tsj"/>
  <layer id="1" name="ground" width="60" height="70">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,

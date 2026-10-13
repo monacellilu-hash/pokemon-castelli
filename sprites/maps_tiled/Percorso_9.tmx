@@ -3,10 +3,10 @@
  <editorsettings>
   <export target="Percorso_9.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../outside.tsx"/>
- <tileset firstgid="8033" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="13281" source="../fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="8033" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="13281" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
  <layer id="1" name="ground" width="50" height="150">
   <data encoding="csv">
 4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,162,163,164,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,4019,

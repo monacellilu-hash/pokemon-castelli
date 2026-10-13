@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="63">
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../Tiled/Gyms interior.tsx"/>
- <tileset firstgid="5169" source="../../Emerald_Outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/interni/Gyms interior.tsx"/>
+ <tileset firstgid="5169" source="../Tsj/outside/Emerald_Outside.tsx"/>
  <layer id="1" name="ground" width="28" height="28">
   <data encoding="csv">
 4105,4106,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4107,4110,4111,

@@ -4039,15 +4039,15 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   },
   {
    "firstgid": 5169,
-   "source": "../../Emerald_Outside.tsx"
+   "source": "../Tsj/outside/Emerald_Outside.tsx"
   }
  ],
  "tilewidth": 32,

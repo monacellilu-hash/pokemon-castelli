@@ -3,13 +3,13 @@
  <properties>
   <property name="zone_id" value="lago_di_albano-spiaggia"/>
  </properties>
- <tileset firstgid="1" source="../Sea.tsj"/>
- <tileset firstgid="99" source="../../outside.tsx"/>
- <tileset firstgid="4115" source="../pokemon_emerald_exterior_32.tsj"/>
- <tileset firstgid="10187" source="../Outside_pallet.tsx"/>
- <tileset firstgid="14203" source="../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="99" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4115" source="../Tsj/outside/pokemon_emerald_exterior_32.tsj"/>
+ <tileset firstgid="10187" source="../Tsj/outside/Outside_pallet.tsx"/>
+ <tileset firstgid="14203" source="../Tsj/outside/outside.tsx"/>
  <tileset firstgid="18219" source=":/automap-tiles.tsx"/>
- <tileset firstgid="18224" source="../spiaggia_animata_onde.tsj"/>
+ <tileset firstgid="18224" source="../Tsj/outside/spiaggia_animata_onde.tsj"/>
  <layer id="1" name="ground" width="66" height="109">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,15079,0,0,0,0,0,0,0,0,0,

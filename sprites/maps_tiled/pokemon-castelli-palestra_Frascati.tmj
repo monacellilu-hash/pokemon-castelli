@@ -1204,23 +1204,23 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Tiled/Interior general.tsx"
+   "source": "../Tsj/interni/Interior general.tsx"
   },
   {
    "firstgid": 8033,
-   "source": "../professor Castagno.tsx"
+   "source": "../Tsj/interni/professor Castagno.tsx"
   },
   {
    "firstgid": 8129,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 12145,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   },
   {
    "firstgid": 13297,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   }
  ],
  "tilewidth": 32,

@@ -17109,19 +17109,19 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 8033,
-   "source": "../chiesa.tsj"
+   "source": "../Tsj/interni/chiesa.tsj"
   },
   {
    "firstgid": 8165,
-   "source": "../church.tsj"
+   "source": "../Tsj/interni/church.tsj"
   }
  ],
  "tilewidth": 32,

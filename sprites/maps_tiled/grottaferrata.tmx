@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" backgroundcolor="#000000" nextlayerid="21" nextobjectid="150">
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="9265" source="../outside.tsx"/>
- <tileset firstgid="13281" source="../pokemon_emerald_exterior_32.tsj"/>
- <tileset firstgid="19353" source="../chiesa.tsj"/>
- <tileset firstgid="19485" source="../church.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="9265" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="13281" source="../Tsj/outside/pokemon_emerald_exterior_32.tsj"/>
+ <tileset firstgid="19353" source="../Tsj/interni/chiesa.tsj"/>
+ <tileset firstgid="19485" source="../Tsj/interni/church.tsj"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9602,9371,9371,9371,9371,9371,9371,9371,9371,9371,9371,9602,9602,9602,

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="66" height="51" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="11">
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../pokemon_soccer_field.tsj"/>
- <tileset firstgid="4137" source="../outside.tsx"/>
- <tileset firstgid="8153" source="../fiori_blu_animati.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/pokemon_soccer_field.tsj"/>
+ <tileset firstgid="4137" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="8153" source="../Tsj/outside/fiori_blu_animati.tsj"/>
  <layer id="1" name="ground" width="66" height="51">
   <data encoding="csv">
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,

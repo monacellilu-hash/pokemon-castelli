@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="50" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="69">
- <tileset firstgid="1" source="../rifugi_nemici2.tsj"/>
- <tileset firstgid="1025" source="../rifugio_rocket.tsj"/>
- <tileset firstgid="2049" source="../rifugi nemici 3.tsj"/>
- <tileset firstgid="3073" source="../Interior_general_32.tsj"/>
- <tileset firstgid="5081" source="../RIFUGIO.tsj"/>
+ <tileset firstgid="1" source="../Tsj/interni/rifugi_nemici2.tsj"/>
+ <tileset firstgid="1025" source="../Tsj/interni/rifugio_rocket.tsj"/>
+ <tileset firstgid="2049" source="../Tsj/interni/rifugi nemici 3.tsj"/>
+ <tileset firstgid="3073" source="../Tsj/interni/Interior_general_32.tsj"/>
+ <tileset firstgid="5081" source="../Tsj/interni/RIFUGIO.tsj"/>
  <layer id="1" name="ground" width="50" height="50">
   <data encoding="csv">
 3156,3146,3146,3146,3146,3146,3146,3146,3146,3146,3169,3170,3171,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,4705,4705,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,3146,3169,3170,3171,3146,3146,3146,3146,3146,3146,3146,3156,

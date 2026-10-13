@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="66" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="67">
- <tileset firstgid="1" source="../outside.tsx"/>
- <tileset firstgid="4017" source="../Sea.tsj"/>
- <tileset firstgid="4115" source="../Outside_pallet.tsx"/>
- <tileset firstgid="8131" source="../pokemon_emerald_exterior_32.tsj"/>
- <tileset firstgid="14203" source="../fiori_rossi_animati_v2.tsj"/>
- <tileset firstgid="14211" source="../../outside.tsx"/>
- <tileset firstgid="18227" source="../fiori_blu_animati.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="4115" source="../Tsj/outside/Outside_pallet.tsx"/>
+ <tileset firstgid="8131" source="../Tsj/outside/pokemon_emerald_exterior_32.tsj"/>
+ <tileset firstgid="14203" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="14211" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="18227" source="../Tsj/outside/fiori_blu_animati.tsj"/>
  <layer id="1" name="ground" width="55" height="66">
   <data encoding="csv">
 6,4,5,5,5,3,6,6,3,6,3,6,5,4,5,3,4,4,5,4,4,4,5,6,3,5,154,155,155,156,4,6,4,4,3,5,6,3,6,6,4,6,4,3,6,3,5,6,4,4,4,3,6,3,6,

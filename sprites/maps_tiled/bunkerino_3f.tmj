@@ -9176,15 +9176,15 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   },
   {
    "firstgid": 5169,
-   "source": "../Interior_general_32.tsj"
+   "source": "../Tsj/interni/Interior_general_32.tsj"
   }
  ],
  "tilewidth": 32,

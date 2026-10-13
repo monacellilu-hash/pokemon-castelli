@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="24" height="22" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="56">
- <tileset firstgid="1" source="../Tiled/Interior general.tsx"/>
- <tileset firstgid="8033" source="../professor Castagno.tsx"/>
- <tileset firstgid="8129" source="../../outside.tsx"/>
- <tileset firstgid="12145" source="../Tiled/Gyms interior.tsx"/>
- <tileset firstgid="13297" source="../Interior_general_32.tsj"/>
+ <tileset firstgid="1" source="../Tsj/interni/Interior general.tsx"/>
+ <tileset firstgid="8033" source="../Tsj/interni/professor Castagno.tsx"/>
+ <tileset firstgid="8129" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="12145" source="../Tsj/interni/Gyms interior.tsx"/>
+ <tileset firstgid="13297" source="../Tsj/interni/Interior_general_32.tsj"/>
  <layer id="1" name="ground" width="24" height="22">
   <data encoding="csv">
 13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,13537,

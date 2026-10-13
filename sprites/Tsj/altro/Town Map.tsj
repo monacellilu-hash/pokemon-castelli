@@ -1,0 +1,15 @@
+{
+ "columns": 30,
+ "image": "../../PNG/Game Boy Advance - Pokemon FireRed _ LeafGreen - Miscellaneous - Town Map.png",
+ "imageheight": 1256,
+ "imagewidth": 988,
+ "margin": 0,
+ "name": "Game Boy Advance - Pokemon FireRed _ LeafGreen - Miscellaneous - Town Map",
+ "spacing": 0,
+ "tilecount": 1170,
+ "tiledversion": "1.12.2",
+ "tileheight": 32,
+ "tilewidth": 32,
+ "type": "tileset",
+ "version": "1.10"
+}

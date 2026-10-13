@@ -24198,43 +24198,43 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../Outside_pallet.tsx"
+   "source": "../Tsj/outside/Outside_pallet.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../Sea.tsj"
+   "source": "../Tsj/outside/Sea.tsj"
   },
   {
    "firstgid": 4115,
-   "source": "../Waterfall crest.tsj"
+   "source": "../Tsj/caves/Waterfall crest.tsj"
   },
   {
    "firstgid": 4119,
-   "source": "../Waterfall.tsj"
+   "source": "../Tsj/caves/Waterfall.tsj"
   },
   {
    "firstgid": 4126,
-   "source": "../Waterfall bottom.tsj"
+   "source": "../Tsj/caves/Waterfall bottom.tsj"
   },
   {
    "firstgid": 4130,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 8146,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 12162,
-   "source": "../fiori_rossi_animati_v2.tsj"
+   "source": "../Tsj/outside/fiori_rossi_animati_v2.tsj"
   },
   {
    "firstgid": 12170,
-   "source": "../Fiori_rossi_animati.tsj"
+   "source": "../Tsj/outside/Fiori_rossi_animati.tsj"
   },
   {
    "firstgid": 12266,
-   "source": "../fiori.tsj"
+   "source": "../Tsj/outside/fiori.tsj"
   }
  ],
  "tilewidth": 32,

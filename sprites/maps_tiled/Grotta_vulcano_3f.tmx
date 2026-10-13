@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="50" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="106">
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../lava_animata_v2.tsj"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/caves/lava_animata_v2.tsj"/>
  <layer id="1" name="ground" width="50" height="90">
   <data encoding="csv">
 491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,491,

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="66" height="66" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="18">
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../Interior_general_32.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/interni/Interior_general_32.tsj"/>
  <layer id="1" name="ground" width="66" height="66">
   <data encoding="csv">
 2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,

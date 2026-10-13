@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="28" height="28" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="162">
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../Tiled/Gyms interior.tsx"/>
- <tileset firstgid="5169" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="10417" source="../outside.tsx"/>
- <tileset firstgid="14433" source="../palestre.tsj"/>
- <tileset firstgid="15457" source="../palestre2.tsj"/>
- <tileset firstgid="16481" source="../palestre3.tsj"/>
- <tileset firstgid="17505" source="../Caves.tsj"/>
- <tileset firstgid="19097" source="../lava_animata_v2.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/interni/Gyms interior.tsx"/>
+ <tileset firstgid="5169" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="10417" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="14433" source="../Tsj/interni/palestre.tsj"/>
+ <tileset firstgid="15457" source="../Tsj/interni/palestre2.tsj"/>
+ <tileset firstgid="16481" source="../Tsj/interni/palestre3.tsj"/>
+ <tileset firstgid="17505" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="19097" source="../Tsj/caves/lava_animata_v2.tsj"/>
  <layer id="1" name="ground" width="28" height="28">
   <data encoding="csv">
 10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,10417,

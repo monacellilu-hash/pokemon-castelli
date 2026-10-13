@@ -3,8 +3,8 @@
  <editorsettings>
   <export target="collegamento_Cotral.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
  <layer id="1" name="ground" width="40" height="40">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,

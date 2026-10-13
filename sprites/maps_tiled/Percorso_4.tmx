@@ -3,7 +3,7 @@
  <editorsettings>
   <export target="Percorso_4.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../Outside_pallet.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/Outside_pallet.tsx"/>
  <layer id="1" name="ground" width="25" height="25">
   <data encoding="csv">
 3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,

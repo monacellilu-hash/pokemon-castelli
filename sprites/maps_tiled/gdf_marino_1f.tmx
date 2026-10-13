@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="17">
- <tileset firstgid="1" source="../Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
+ <tileset firstgid="1" source="../Tsj/interni/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Towns, Buildings, Etc.) - Rocket Hideout.tsj"/>
  <tileset firstgid="973" source="hideout.tsj"/>
- <tileset firstgid="973" source="../Dungeon wall.tsj"/>
- <tileset firstgid="977" source="../Dungeon floor.tsj"/>
- <tileset firstgid="981" source="../Caves.tsj"/>
- <tileset firstgid="2573" source="../Factory interior.tsj"/>
- <tileset firstgid="2797" source="../../outside.tsx"/>
- <tileset firstgid="6813" source="../laboratorio_interno.tsj"/>
+ <tileset firstgid="973" source="../Tsj/caves/Dungeon wall.tsj"/>
+ <tileset firstgid="977" source="../Tsj/caves/Dungeon floor.tsj"/>
+ <tileset firstgid="981" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="2573" source="../Tsj/interni/Factory interior.tsj"/>
+ <tileset firstgid="2797" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="6813" source="../Tsj/interni/laboratorio_interno.tsj"/>
  <layer id="1" name="ground" width="60" height="60">
   <data encoding="csv">
 978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,978,

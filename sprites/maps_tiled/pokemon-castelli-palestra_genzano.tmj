@@ -4292,39 +4292,39 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 4017,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   },
   {
    "firstgid": 5169,
-   "source": "../../Emerald_Outside.tsx"
+   "source": "../Tsj/outside/Emerald_Outside.tsx"
   },
   {
    "firstgid": 10417,
-   "source": "../outside.tsx"
+   "source": "../Tsj/outside/outside.tsx"
   },
   {
    "firstgid": 14433,
-   "source": "../palestre.tsj"
+   "source": "../Tsj/interni/palestre.tsj"
   },
   {
    "firstgid": 15457,
-   "source": "../palestre2.tsj"
+   "source": "../Tsj/interni/palestre2.tsj"
   },
   {
    "firstgid": 16481,
-   "source": "../palestre3.tsj"
+   "source": "../Tsj/interni/palestre3.tsj"
   },
   {
    "firstgid": 17505,
-   "source": "../Caves.tsj"
+   "source": "../Tsj/caves/Caves.tsj"
   },
   {
    "firstgid": 19097,
-   "source": "../lava_animata_v2.tsj"
+   "source": "../Tsj/caves/lava_animata_v2.tsj"
   }
  ],
  "tilewidth": 32,

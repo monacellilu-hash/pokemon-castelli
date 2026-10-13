@@ -1351,31 +1351,31 @@
  "tilesets": [
   {
    "firstgid": 1,
-   "source": "../interni_lega_2.tsj"
+   "source": "../Tsj/interni/interni_lega_2.tsj"
   },
   {
    "firstgid": 2653,
-   "source": "../interno lega acc.tsj"
+   "source": "../Tsj/interni/interno lega acc.tsj"
   },
   {
    "firstgid": 3677,
-   "source": "../interno lega psico.tsj"
+   "source": "../Tsj/interni/interno lega psico.tsj"
   },
   {
    "firstgid": 4701,
-   "source": "../lega_acc_psico.tsj"
+   "source": "../Tsj/interni/lega_acc_psico.tsj"
   },
   {
    "firstgid": 5725,
-   "source": "../rifugi nemici 3.tsj"
+   "source": "../Tsj/interni/rifugi nemici 3.tsj"
   },
   {
    "firstgid": 6749,
-   "source": "../RIFUGIO.tsj"
+   "source": "../Tsj/interni/RIFUGIO.tsj"
   },
   {
    "firstgid": 7773,
-   "source": "../Tiled/Gyms interior.tsx"
+   "source": "../Tsj/interni/Gyms interior.tsx"
   }
  ],
  "tilewidth": 32,

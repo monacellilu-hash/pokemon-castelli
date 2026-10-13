@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="15" height="19" tilewidth="32" tileheight="32" infinite="0" nextlayerid="3" nextobjectid="1">
- <tileset firstgid="1" source="../house1.tsj"/>
- <tileset firstgid="811" source="../house2.tsj"/>
- <tileset firstgid="991" source="../interno_edificio.tsj"/>
- <tileset firstgid="2360" source="../Interior_general_32.tsj"/>
+ <tileset firstgid="1" source="../Tsj/casa/house1.tsj"/>
+ <tileset firstgid="811" source="../Tsj/casa/house2.tsj"/>
+ <tileset firstgid="991" source="../Tsj/interni/interno_edificio.tsj"/>
+ <tileset firstgid="2360" source="../Tsj/interni/Interior_general_32.tsj"/>
  <layer id="1" name="ground" width="15" height="19">
   <data encoding="csv">
 1011,1012,1013,1014,1015,1016,1017,1018,1019,1020,1021,1022,1023,1024,1025,

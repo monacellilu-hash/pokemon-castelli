@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="55" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="14">
- <tileset firstgid="1" source="../Caves.tsj"/>
- <tileset firstgid="1593" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="6841" source="../outside.tsx"/>
- <tileset firstgid="10857" source="../Waterfall bottom.tsj"/>
- <tileset firstgid="10861" source="../Waterfall crest.tsj"/>
- <tileset firstgid="10865" source="../Waterfall.tsj"/>
- <tileset firstgid="10872" source="../Sea.tsj"/>
- <tileset firstgid="10970" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1593" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="6841" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="10857" source="../Tsj/caves/Waterfall bottom.tsj"/>
+ <tileset firstgid="10861" source="../Tsj/caves/Waterfall crest.tsj"/>
+ <tileset firstgid="10865" source="../Tsj/caves/Waterfall.tsj"/>
+ <tileset firstgid="10872" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="10970" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="55" height="55">
   <data encoding="csv">
 127,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,138,128,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,130,

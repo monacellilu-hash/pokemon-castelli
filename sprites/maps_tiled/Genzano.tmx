@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="98" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="87">
- <tileset firstgid="1" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
  <tileset firstgid="4017" name="Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion" tilewidth="32" tileheight="32" tilecount="1521" columns="39">
   <image source="../Tile_nuovi/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion.png" trans="000000" width="1248" height="1248"/>
  </tileset>
- <tileset firstgid="5538" source="../../Emerald_Outside.tsx"/>
- <tileset firstgid="10786" source="../outside.tsx"/>
- <tileset firstgid="14802" source="../fiori_bianchi_animati.tsj"/>
- <tileset firstgid="14810" source="../fiori_blu_animati.tsj"/>
- <tileset firstgid="14818" source="../fiori_gialli_animati.tsj"/>
- <tileset firstgid="14826" source="../fiori_rosa_animati.tsj"/>
- <tileset firstgid="14834" source="../fiori_viola_animati.tsj"/>
- <tileset firstgid="14842" source="../fiori_rossi_animati_v2.tsj"/>
+ <tileset firstgid="5538" source="../Tsj/outside/Emerald_Outside.tsx"/>
+ <tileset firstgid="10786" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="14802" source="../Tsj/outside/fiori_bianchi_animati.tsj"/>
+ <tileset firstgid="14810" source="../Tsj/outside/fiori_blu_animati.tsj"/>
+ <tileset firstgid="14818" source="../Tsj/outside/fiori_gialli_animati.tsj"/>
+ <tileset firstgid="14826" source="../Tsj/outside/fiori_rosa_animati.tsj"/>
+ <tileset firstgid="14834" source="../Tsj/outside/fiori_viola_animati.tsj"/>
+ <tileset firstgid="14842" source="../Tsj/outside/fiori_rossi_animati_v2.tsj"/>
  <layer id="1" name="ground" width="60" height="98">
   <data encoding="csv">
 10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,10789,

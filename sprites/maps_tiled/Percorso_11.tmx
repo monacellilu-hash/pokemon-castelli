@@ -3,10 +3,10 @@
  <editorsettings>
   <export target="Percorso_11.tmj" format="json"/>
  </editorsettings>
- <tileset firstgid="1" source="../../outside.tsx"/>
- <tileset firstgid="4017" source="../outside.tsx"/>
- <tileset firstgid="8033" source="../chiesa.tsj"/>
- <tileset firstgid="8165" source="../church.tsj"/>
+ <tileset firstgid="1" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4017" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="8033" source="../Tsj/interni/chiesa.tsj"/>
+ <tileset firstgid="8165" source="../Tsj/interni/church.tsj"/>
  <layer id="1" name="ground" width="50" height="80">
   <data encoding="csv">
 4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,

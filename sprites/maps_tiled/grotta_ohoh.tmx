@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="25" height="105" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="10">
- <tileset firstgid="1" source="../Caves.tsj"/>
+ <tileset firstgid="1" source="../Tsj/caves/Caves.tsj"/>
  
  <layer id="1" name="ground" width="25" height="105">
   <data encoding="csv">

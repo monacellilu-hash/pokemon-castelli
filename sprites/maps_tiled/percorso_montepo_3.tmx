@@ -3,9 +3,9 @@
  <tileset firstgid="1" name="percorso_montepo_3_tileset" tilewidth="32" tileheight="32" tilecount="352" columns="16">
   <image source="../percorso_montepo_3_tileset.png" width="512" height="704"/>
  </tileset>
- <tileset firstgid="353" source="../../outside.tsx"/>
- <tileset firstgid="4369" source="../Sea.tsj"/>
- <tileset firstgid="4467" source="../outside.tsx"/>
+ <tileset firstgid="353" source="../Tsj/outside/outside.tsx"/>
+ <tileset firstgid="4369" source="../Tsj/outside/Sea.tsj"/>
+ <tileset firstgid="4467" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="24" height="175">
   <data encoding="csv">
 1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,1146,

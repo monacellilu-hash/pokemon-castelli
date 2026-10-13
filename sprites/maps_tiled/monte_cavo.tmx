@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="60" height="90" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="147">
- <tileset firstgid="1" source="../snow tiles.tsj"/>
- <tileset firstgid="73" source="../Caves.tsj"/>
- <tileset firstgid="1665" source="../../outside.tsx"/>
+ <tileset firstgid="1" source="../Tsj/outside/snow tiles.tsj"/>
+ <tileset firstgid="73" source="../Tsj/caves/Caves.tsj"/>
+ <tileset firstgid="1665" source="../Tsj/outside/outside.tsx"/>
  <layer id="1" name="ground" width="60" height="90">
   <data encoding="csv">
 31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,31,
