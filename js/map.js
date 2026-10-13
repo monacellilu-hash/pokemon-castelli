@@ -1496,7 +1496,7 @@ const GameMap = (function () {
     // erano invisibili (sfondo nero) sul sito pubblico. Esistevano già
     // copie tracciate da git in sprites/, bastava puntare lì (bug trovato
     // da Luca: "Pokemon Center Borgata Tuscolana ha sfondo nero").
-    'ts-pc-int':      'sprites/tiles/Poke Centre interior.png',
+    'ts-pc-int':      'sprites/PNG/Poke Centre interior.png',
     'ts-int-gen':     'sprites/PNG/Interior general.png',
     'ts-gyms-int':    'sprites/PNG/Gyms interior.png',
     'ts-mart-int':    'sprites/PNG/Mart interior.png',
