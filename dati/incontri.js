@@ -405,7 +405,7 @@ const DATI_INCONTRI = {
       { id: 74, min: 16, max: 20, rate: 22 },  // Geodude
       { id: 216, min: 17, max: 21, rate: 22 },  // Teddiursa (Gen2)
       { id: 231, min: 16, max: 20, rate: 22 },  // Phanpy (Gen2)
-      { id: 246, min: 20, max: 24, rate: 22 },  // Larvitar (rarissimo di montagna)
+      { id: 246, min: 20, max: 24, rate: 2 },  // Larvitar (rarissimo di montagna)
       { id: 304, min: 18, max: 22, rate: 22 },  // Aron (Gen3)
       { id: 325, min: 17, max: 21, rate: 22 },  // Spoink (Gen3)
       { id: 331, min: 16, max: 20, rate: 22 },  // Cacnea
@@ -695,7 +695,7 @@ const DATI_INCONTRI = {
     probabilita: 7,
     pokemon: [
       { id: 354, min: 29, max: 31, rate: 20 },  // Banette (Gen3)
-      { id: 247, min: 30, max: 32, rate: 18 },  // Pupitar (Gen2)
+      { id: 247, min: 30, max: 32, rate: 1 },  // Pupitar (Gen2)
       { id: 208, min: 32, max: 32, rate: 6 },   // Steelix (evoluto rarissimo)
       { id: 371, min: 29, max: 31, rate: 1 },   // Bagon (rarissimo, draghi solo nei dungeon)
       { id: 372, min: 31, max: 32, rate: 1 },   // Shelgon (rarissimo, evoluto)
