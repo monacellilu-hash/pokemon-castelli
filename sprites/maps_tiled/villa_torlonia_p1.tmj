@@ -584,8 +584,8 @@
                  "type":"",
                  "visible":true,
                  "width":87.6653171390013,
-                 "x":997.570850202429,
-                 "y":171.551956815115
+                 "x":997.320850202429,
+                 "y":170.301956815115
                 }, 
                 {
                  "height":78.5964912280702,
@@ -608,65 +608,12 @@
                  "type":"",
                  "visible":true,
                  "width":86.1538461538462,
-                 "x":1016.46423751687,
-                 "y":240.323886639676
-                },
-            
-                {
-                 "height":33.5114,
-                 "id":36,
-                 "name":"warp",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"destinazione",
-                         "type":"string",
-                         "value":"villa_torlonia_p0"
-                        }, 
-                        {
-                         "name":"spawn_id",
-                         "type":"string",
-                         "value":"da_villa_torlonia_p1"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"warp"
-                        }],
-                 "rotation":0,
-                 "type":"warp",
-                 "visible":true,
-                 "width":32,
-                 "x":1042.78542510121,
-                 "y":201.651857354926
-                }, 
-                {
-                 "height":0,
-                 "id":37,
-                 "name":"spawn_frascati_est_villa_torlonia",
-                 "opacity":1,
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"id",
-                         "type":"string",
-                         "value":"da_villa_torlonia_p0"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"spawn"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":997.604251012146,
-                 "y":225.373231174089
+                 "x":1012.71423751687,
+                 "y":247.823886639676
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "x":0,
          "y":0
         }, 
@@ -681,8 +628,29 @@
                  "name":"mt_lanciafiamme",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"contenuto",
+                         "type":"string",
+                         "value":"mt_flamethrower"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"mt_lanciafiamme"
+                        }, 
+                        {
+                         "name":"quantita",
+                         "type":"string",
+                         "value":"1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"oggetto"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"oggetto",
                  "visible":true,
                  "width":0,
                  "x":111.093117408907,
@@ -694,8 +662,29 @@
                  "name":"pietrafuoco",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"contenuto",
+                         "type":"string",
+                         "value":"pietra_fuoco"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"pietrafuoco"
+                        }, 
+                        {
+                         "name":"quantita",
+                         "type":"string",
+                         "value":"1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"oggetto"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"oggetto",
                  "visible":true,
                  "width":0,
                  "x":334.790823211876,
@@ -707,8 +696,29 @@
                  "name":"caramella rara",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"contenuto",
+                         "type":"string",
+                         "value":"rarecandy"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"caramella_rara"
+                        }, 
+                        {
+                         "name":"quantita",
+                         "type":"string",
+                         "value":"1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"oggetto"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"oggetto",
                  "visible":true,
                  "width":0,
                  "x":48.3670715249663,
@@ -720,15 +730,36 @@
                  "name":"pietra_sole",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"contenuto",
+                         "type":"string",
+                         "value":"pietra_sole"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"pietra_sole"
+                        }, 
+                        {
+                         "name":"quantita",
+                         "type":"string",
+                         "value":"1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"oggetto"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"oggetto",
                  "visible":true,
                  "width":0,
                  "x":686.207827260459,
                  "y":1007.39541160594
                 }, 
                 {
-                 "height":32,
+                 "height":22.9311740890688,
                  "id":42,
                  "name":"villa_torlonia_4",
                  "opacity":1,
@@ -756,9 +787,9 @@
                  "rotation":0,
                  "type":"trainer",
                  "visible":true,
-                 "width":32,
-                 "x":950.283400809717,
-                 "y":990.337381916329
+                 "width":25.1983805668017,
+                 "x":961.619433198381,
+                 "y":996.38326585695
                 }, 
                 {
                  "height":32,
@@ -794,7 +825,7 @@
                  "y":146.180836707153
                 }, 
                 {
-                 "height":32,
+                 "height":21.4197031039137,
                  "id":44,
                  "name":"villa_torlonia_6",
                  "opacity":1,
@@ -822,9 +853,9 @@
                  "rotation":0,
                  "type":"trainer",
                  "visible":true,
-                 "width":32,
-                 "x":544,
-                 "y":576
+                 "width":25.1983805668016,
+                 "x":290.072874493927,
+                 "y":743.773279352227
                 }, 
                 {
                  "height":32,
@@ -881,6 +912,58 @@
                  "width":1084.80431848853,
                  "x":34.0944669365722,
                  "y":94.3805668016194
+                }, 
+                {
+                 "height":38.5947333333333,
+                 "id":36,
+                 "name":"warp",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"villa_torlonia_p0"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_villa_torlonia_p1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"warp",
+                 "visible":true,
+                 "width":32,
+                 "x":993.03542510121,
+                 "y":193.068524021593
+                }, 
+                {
+                 "height":0,
+                 "id":37,
+                 "name":"spawn_frascati_est_villa_torlonia",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"da_villa_torlonia_p0"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":984.604251012146,
+                 "y":213.123231174089
                 }],
          "opacity":1,
          "type":"objectgroup",

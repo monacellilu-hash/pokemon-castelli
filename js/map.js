@@ -4032,8 +4032,13 @@ const GameMap = (function () {
         const box = clusterBoxes[mappaChiave];
         lx = tx - box.offsetX; ly = ty - box.offsetY;
       }
+      // Sess. 13 ott 2026 (bug segnalato da Luca: "rimane una copia del masso
+      // sul posto"): prima puliva SOLO il layer "edifici" (depth 2), ma i
+      // massi vengono spesso dipinti su "ground"/"deco_sotto" (un macigno su
+      // un sentiero, non un edificio) — in quel caso il tile fantasma non
+      // veniva mai trovato/rimosso. Ora pulisce TUTTI i layer di tile alla
+      // cella del masso, qualunque sia il layer su cui è stato dipinto.
       for (const o of layerObjects) {
-        if (o.depth !== 2) continue; // 2 = depth del layer "edifici" (vedi LAYER_DEPTHS)
         if (o.layer && typeof o.layer.removeTileAt === 'function') o.layer.removeTileAt(lx, ly);
       }
     }

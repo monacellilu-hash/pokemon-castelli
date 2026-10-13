@@ -352,7 +352,7 @@ const Battle = (function () {
   // nel set mosse del tutto inutili.
   function mossaUtile(m) {
     if (m.potenza && m.potenza > 0) return true;            // fa danno
-    if (m.statoEffetto && STATI[m.statoEffetto]) return true; // infligge uno stato gestito
+    if (m.statoEffetto && (STATI[m.statoEffetto] || m.statoEffetto === 'confusion')) return true; // infligge uno stato gestito
     if (m.cambiStat && m.cambiStat.length > 0) return true;   // modifica le statistiche
     if (MOSSE_METEO[m.nome]) return true;                     // imposta il meteo
     return false;
@@ -561,6 +561,14 @@ const Battle = (function () {
     'bounce': 'salta in alto', 'solar-beam': 'assorbe la luce', 'razor-wind': 'crea un turbine',
     'skull-bash': 'abbassa la testa', 'sky-attack': "si avvolge d'energia",
   };
+  // Sess. 13 ott 2026 (richiesta esplicita di Luca): SOLO queste 4 (non
+  // Vampata Solare/Turbine/Testata/Attacco Celere, che si caricano "a vista"
+  // e restano colpibili) rendono il Pokémon non colpibile al turno 1 — vola
+  // in aria, scava sottoterra o si immerge, letteralmente irraggiungibile.
+  const MOSSE_SEMINVULNERABILI = new Set(['fly', 'dig', 'dive', 'bounce']);
+  // Unica eccezione reale: Terremoto/Magnitudo colpiscono comunque chi è
+  // sottoterra con Fossa (non chi vola/è immerso), a potenza raddoppiata.
+  const MOSSE_ANTI_FOSSA = new Set(['earthquake', 'magnitude']);
 
   /* MOD 6B — Mosse di FURIA: bloccano il Pokémon per 2-3 turni colpendo ogni
      turno; alla fine lo lasciano confuso. Chiavi = nome PokéAPI (inglese). */
@@ -709,8 +717,12 @@ const Battle = (function () {
     // termine di livello va arrotondato per difetto PRIMA di moltiplicarlo
     // per potenza/attacco/difesa, non alla fine insieme al resto — prima
     // qui si perdeva un pizzico di precisione ai livelli non multipli di 5.
+    const bonusSeminvulnerabile = !!mossa._bonusSeminvulnerabile;
+    mossa._bonusSeminvulnerabile = false;   // letto una tantum, non deve restare attivo al turno dopo
+    const potenzaEff = bonusSeminvulnerabile ? mossa.potenza * 2 : mossa.potenza;
+
     const terminelivello = Math.floor(2 * attaccante.livello / 5 + 2);
-    const base = Math.floor(terminelivello * mossa.potenza * A / D / 50) + 2;
+    const base = Math.floor(terminelivello * potenzaEff * A / D / 50) + 2;
 
     // Tutti i moltiplicatori (STAB, oggetto, meteo, critico, efficacia,
     // variazione casuale) si combinano in UN SOLO fattore, arrotondato una
@@ -1620,6 +1632,23 @@ const Battle = (function () {
 
   // Applica uno stato alterato al bersaglio (se possibile)
   async function applicaStato(bersaglio, tipoStato, etichetta) {
+    // CONFUSIONE (sess. 13 ott 2026, bug segnalato da Luca: non si attivava
+    // MAI): è uno stato VOLATILE separato (bersaglio.confusione), non uno dei
+    // 5 STATI "maggiori" — prima di questo fix mosse come Confusione/
+    // Supersuono/Sguardo Languido arrivavano qui con tipoStato:'confusion' e
+    // uscivano subito al controllo "STATI[tipoStato]" senza fare nulla.
+    // Può coesistere con un altro stato maggiore (paralisi+confusione è
+    // normale), quindi bypassa il controllo "ne ha già uno".
+    if (tipoStato === 'confusion') {
+      if (bersaglio.confusione > 0) {
+        await di(`Ma ${etichetta} è già confuso!`);
+        return;
+      }
+      bersaglio.confusione = 2 + Math.floor(Math.random() * 3);   // 2-4 turni
+      aggiornaPannelli();
+      await di(`${etichetta} è confuso!`);
+      return;
+    }
     if (!STATI[tipoStato]) return;            // stato non gestito: ignora
     if (bersaglio.condizione) {               // ne ha già uno
       await di(`Ma ${etichetta} ha già un problema di stato!`);
@@ -1691,6 +1720,18 @@ const Battle = (function () {
 
   // Tiro di precisione, tenendo conto degli sbalzi di Precisione/Elusione
   function colpisce(att, dif, mossa) {
+    // Seminvulnerabilità (Volo/Fossa/Sub/Rimbalzo, sess. 13 ott 2026): il
+    // bersaglio non è raggiungibile da NESSUNA mossa mentre è in aria/
+    // sottoterra/immerso — unica eccezione reale, Terremoto/Magnitudo
+    // colpiscono comunque chi è sottoterra con Fossa, a potenza raddoppiata
+    // (il raddoppio è letto una tantum da calcolaDanno e poi azzerato qui).
+    if (dif.seminvulnerabile) {
+      if (dif.seminvulnerabile === 'dig' && MOSSE_ANTI_FOSSA.has(mossa.nome)) {
+        mossa._bonusSeminvulnerabile = true;
+        return true;
+      }
+      return false;
+    }
     if (mossa.precisione === null || mossa.precisione === undefined) return true; // colpisce sempre
     const acc = moltiplicatoreStage(att.mod.accuracy || 0);
     const eva = moltiplicatoreStage(dif.mod.evasion || 0);
@@ -1864,7 +1905,8 @@ const Battle = (function () {
       // riga ~1721). Prima qui mancava: Troppoforte/Vampata/Meteora di Draco
       // (cambiStatProbabilita=0 su PokéAPI = sempre) non riducevano MAI le
       // statistiche di chi le usa — bug segnalato da Luca, 6 ott 2026.
-      if (mossa.statoEffetto && STATI[mossa.statoEffetto] && !dif.condizione &&
+      if (mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion') &&
+          (mossa.statoEffetto === 'confusion' || !dif.condizione) &&
           (mossa.statoProbabilita === 0 || Math.random() * 100 < mossa.statoProbabilita)) {
         await applicaStato(dif, mossa.statoEffetto, etichettaDif);
       }
@@ -1886,7 +1928,7 @@ const Battle = (function () {
       aggiornaMeteoUI();
       await di(info.messaggio);
     }
-    if (mossa.statoEffetto && STATI[mossa.statoEffetto]) {
+    if (mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion')) {
       qualcosa = true;
       // Mosse come Riposo hanno bersaglio "user": lo stato va a chi la usa,
       // non all'avversario (bug corretto punto 4, sess. 16 set 2026 — prima
@@ -2034,11 +2076,12 @@ const Battle = (function () {
     const inCaricaQuesta = att.inCarica && att.inCarica.nome === mossa.nome;
     if (MOSSE_DUE_TURNI[mossa.nome] && !inCaricaQuesta) {
       att.inCarica = mossa;
+      if (MOSSE_SEMINVULNERABILI.has(mossa.nome)) att.seminvulnerabile = mossa.nome;
       if (mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
       await di(`${etichettaAtt} ${MOSSE_DUE_TURNI[mossa.nome]}!`);
       return;
     }
-    if (inCaricaQuesta) att.inCarica = null;
+    if (inCaricaQuesta) { att.inCarica = null; att.seminvulnerabile = null; }
 
     // MOD 6B: FURIA — alla prima esecuzione blocca il Pokémon per 2-3 turni
     if (MOSSE_FURIA[mossa.nome] && !(att.furia && att.furia.nome === mossa.nome)) {
@@ -2867,7 +2910,7 @@ const Battle = (function () {
     indiceAttivo = idx;
     mio = statoGioco.squadra[idx];
     azzeraModificatori(mio); // gli sbalzi di statistica si resettano al cambio
-    mio.inCarica = null; mio.deveRicaricare = false; // il cambio annulla carica/ricarica
+    mio.inCarica = null; mio.deveRicaricare = false; mio.seminvulnerabile = null; // il cambio annulla carica/ricarica
     mio.furia = null; mio.confusione = 0; mio.protetto = false; mio.protConsecutivi = 0; // MOD 6B
     aggiornaSprite(true);
     aggiornaPannelli();
@@ -3351,7 +3394,7 @@ const Battle = (function () {
     }
     mio = statoGioco.squadra[indiceAttivo];
     azzeraModificatori(mio); // sbalzi di statistica freschi a inizio lotta
-    mio.inCarica = null; mio.deveRicaricare = false; // niente carica/ricarica residue
+    mio.inCarica = null; mio.deveRicaricare = false; mio.seminvulnerabile = null; // niente carica/ricarica residue
     mio.furia = null; mio.confusione = 0; mio.protetto = false; mio.protConsecutivi = 0; // MOD 6B: stati volatili freschi
 
     // Mostriamo subito la schermata con un messaggio di caricamento
@@ -3820,7 +3863,7 @@ const Battle = (function () {
     doppiaMieiAttivi[slot] = nuovo;
     _registraSlotDoppia(nuovo, 'giocatore', slot);
     azzeraModificatori(nuovo);
-    nuovo.inCarica = null; nuovo.deveRicaricare = false;
+    nuovo.inCarica = null; nuovo.deveRicaricare = false; nuovo.seminvulnerabile = null;
     nuovo.furia = null; nuovo.confusione = 0; nuovo.protetto = false; nuovo.protConsecutivi = 0;
     aggiornaSprite();
     aggiornaPannelli();
@@ -4185,7 +4228,7 @@ const Battle = (function () {
     doppiaMieiAttivi.forEach((m, i) => {
       if (!m) return;
       azzeraModificatori(m);
-      m.inCarica = null; m.deveRicaricare = false;
+      m.inCarica = null; m.deveRicaricare = false; m.seminvulnerabile = null;
       m.furia = null; m.confusione = 0; m.protetto = false; m.protConsecutivi = 0;
       _registraSlotDoppia(m, 'giocatore', i);
     });
