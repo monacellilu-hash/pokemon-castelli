@@ -3481,6 +3481,15 @@ const MISSIONI_CENCIARELS = [
 ];
 
 const OGGETTI_CHIAVE = {
+  // Mappa Regionale (sess. 14 ott 2026, richiesta esplicita di Luca):
+  // sempre posseduta fin dall'inizio — apre MappaRegioneScene (js/map.js)
+  // con tutte le città/percorsi/dungeon dei Castelli Romani, cursore a
+  // frecce, nome del punto d'interesse sotto al cursore.
+  'mappa_regione': {
+    nome: 'Mappa Regionale',
+    icona: '🗺️',
+    descrizione: 'La mappa di tutti i Castelli Romani. Premi A per consultarla.',
+  },
   // Ricompensa per aver battuto la famiglia del ristorante di Via dei Laghi
   // (4 lotte consecutive, sess. 5 ott 2026) — si scambia con la bici vera da
   // uno degli NPC del negozio di bici di Albano (dati/npc.js).

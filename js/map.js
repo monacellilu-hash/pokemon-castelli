@@ -12729,6 +12729,11 @@ const GameMap = (function () {
           this._voci = this._raccogliVoci(); this._disegnaLista();
           return;
         }
+        if (v.apriMappaRegione) {
+          this.scene.stop();
+          this.scene.launch('MappaRegioneScene');
+          return;
+        }
         if (!v.usabile) return;
         const disabilitato = (!v.diretto && stato.squadra.length === 0);
         if (disabilitato) return;
@@ -12829,7 +12834,11 @@ const GameMap = (function () {
           for (const [id, posseduto] of Object.entries(stato.inventario.chiave)) {
             if (!posseduto) continue;
             const def = OGGETTI_CHIAVE[id] || {};
-            voci.push({ chiave: id, oggetto: { nome: def.nome || id, descrizione: def.descrizione || '', icona: def.icona || '🔑' }, quanti: null, img: null, usabile: false, diretto: false });
+            // La Mappa Regionale (sess. 14 ott 2026) è l'unico oggetto
+            // chiave "usabile" con A: apre MappaRegioneScene invece di
+            // restare un semplice promemoria come gli altri documenti.
+            const apriMappa = id === 'mappa_regione';
+            voci.push({ chiave: id, oggetto: { nome: def.nome || id, descrizione: def.descrizione || '', icona: def.icona || '🔑' }, quanti: null, img: null, usabile: apriMappa, diretto: false, apriMappaRegione: apriMappa });
           }
         }
         // Voce-contenitore "MT/MN" (solo se ne possiedi almeno una): apre la
@@ -12922,8 +12931,8 @@ const GameMap = (function () {
         }
 
         if (v.usabile) {
-          const disabilitato = (!v.diretto && !v.apriMtMn && stato.squadra.length === 0);
-          const btn = this.add.text(xUsa, y, v.apriMtMn ? 'Apri' : 'Usa', {
+          const disabilitato = (!v.diretto && !v.apriMtMn && !v.apriMappaRegione && stato.squadra.length === 0);
+          const btn = this.add.text(xUsa, y, (v.apriMtMn || v.apriMappaRegione) ? 'Apri' : 'Usa', {
             fontFamily: 'Arial', fontSize: '11px', fontStyle: 'bold',
             color: disabilitato ? '#bbb' : '#a8375a',
           }).setOrigin(1, 0.5).setDepth(3).setMask(mask);
@@ -12933,6 +12942,11 @@ const GameMap = (function () {
               if (v.apriMtMn) {
                 this._mtMnAperto = true; this._cursoreLista = 0; this._scroll = 0;
                 this._voci = this._raccogliVoci(); this._disegnaLista();
+                return;
+              }
+              if (v.apriMappaRegione) {
+                this.scene.stop();
+                this.scene.launch('MappaRegioneScene');
                 return;
               }
               if (v.diretto) {
@@ -13075,6 +13089,167 @@ const GameMap = (function () {
         eventi.forEach(ev => this.input.keyboard.off(ev, handler));
         this._infoMossaTasti = null;
       }
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     MAPPA REGIONALE (sess. 14 ott 2026, richiesta esplicita di Luca):
+     oggetto chiave "mappa_regione" (sempre posseduto, vedi ZainoScene) che
+     apre la mappa disegnata a mano da Luca (sprites/maps_tiled/
+     mappa_regione.tmj, layer object "posizioni" con tutti i luoghi — punti
+     per le città, rettangoli per percorsi/laghi). Cursore a frecce (un
+     pallino rosso scuro), un'etichetta in basso mostra il nome del punto
+     d'interesse quando il cursore ci si trova sopra — altrimenti resta vuota.
+     Caricamento a runtime via fetch() (stesso pattern di caricaMappa, mai
+     cache: i dati vengono letti una volta sola qui, non serve "no-store"
+     per un file che non cambia mentre si gioca, ma lo manteniamo per
+     coerenza con tutto il resto del progetto).
+     ══════════════════════════════════════════════════════════ */
+  class MappaRegioneScene extends Phaser.Scene {
+    constructor() { super({ key: 'MappaRegioneScene' }); }
+
+    async create() {
+      this.input.enabled = false;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
+      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x101018, 1).setDepth(0);
+
+      const testoCaricamento = this.add.text(CW / 2, CH / 2, 'Caricamento mappa…', {
+        fontFamily: 'Arial', fontSize: '13px', color: '#ccc',
+      }).setOrigin(0.5).setDepth(5);
+
+      let tmj;
+      try {
+        const resp = await fetch('sprites/maps_tiled/mappa_regione.tmj', { cache: 'no-store' });
+        tmj = await resp.json();
+      } catch (e) {
+        testoCaricamento.setText('Impossibile caricare la mappa regionale.');
+        this.input.enabled = true;
+        this.input.keyboard.once('keydown-B', () => { this.scene.stop(); this.scene.launch('ZainoScene'); });
+        this.input.keyboard.once('keydown-ESC', () => { this.scene.stop(); this.scene.launch('ZainoScene'); });
+        return;
+      }
+      testoCaricamento.destroy();
+
+      const mapW = tmj.width, mapH = tmj.height, tw = tmj.tilewidth, th = tmj.tileheight;
+      const larghezzaPx = mapW * tw, altezzaPx = mapH * th;
+      const scala = Math.min((CW - 24) / larghezzaPx, (CH - 56) / altezzaPx);
+      const offX = (CW - larghezzaPx * scala) / 2;
+      const offY = (CH - altezzaPx * scala) / 2 - 10;
+      this._scala = scala; this._offX = offX; this._offY = offY; this._tw = tw; this._th = th;
+      this._mapW = mapW; this._mapH = mapH;
+
+      const layerMappa = this.add.container(offX, offY).setScale(scala).setDepth(1);
+
+      // Carica le immagini dei 3 tileset usati (una sola volta ciascuna,
+      // riconosciute dal "source" — stesso principio di TILESET_IMMAGINI).
+      // I riferimenti a tileset ESTERNI (source) nella mappa NON portano il
+      // tilecount (solo quelli embedded, es. gli sfondi .jpg, lo hanno) —
+      // va preso dal file .tsj/.tsx reale (censito qui una volta, letto a
+      // mano dai 3 file). NON si può dedurre dal firstgid del tileset
+      // successivo: ci sono tileset embedded "intrusi" in mezzo che
+      // spezzano la sequenza (es. due sfondi .jpg tra map.tsj e outside.tsx).
+      const TILESET_SRC = {
+        'Town Map.tsj': { img: 'sprites/PNG/Game Boy Advance - Pokemon FireRed _ LeafGreen - Miscellaneous - Town Map.png', tilecount: 1170 },
+        'map.tsj': { img: 'sprites/PNG/map.png', tilecount: 240 },
+        'outside.tsx': { img: 'sprites/PNG/Outside.png', tilecount: 4016 },
+      };
+      const tilesetsInfo = (tmj.tilesets || []).map(t => {
+        const src = String(t.source || '').replace(/\\/g, '/');
+        const nomeFile = src.split('/').pop();
+        const info = TILESET_SRC[nomeFile];
+        return info ? { firstgid: t.firstgid, nextGid: t.firstgid + info.tilecount, nomeFile, tw: t.tilewidth || tw, th: t.tileheight || th } : null;
+      }).filter(Boolean);
+
+      let daCaricare = 0;
+      for (const t of tilesetsInfo) {
+        const key = 'rm-' + t.nomeFile;
+        if (!this.textures.exists(key)) { this.load.image(key, TILESET_SRC[t.nomeFile].img); daCaricare++; }
+      }
+      if (daCaricare > 0) {
+        await new Promise(ok => { this.load.once('complete', ok); this.load.start(); });
+      }
+
+      for (const layer of (tmj.layers || [])) {
+        if (layer.type !== 'tilelayer' || !layer.data) continue;
+        for (const t of tilesetsInfo) {
+          const data2d = [];
+          let haTile = false;
+          for (let r = 0; r < mapH; r++) {
+            const riga = [];
+            for (let c = 0; c < mapW; c++) {
+              const gid = layer.data[r * mapW + c];
+              if (gid >= t.firstgid && gid < t.nextGid) { riga.push(gid - t.firstgid); haTile = true; }
+              else riga.push(-1);
+            }
+            data2d.push(riga);
+          }
+          if (!haTile) continue;
+          const key = 'rm-' + t.nomeFile;
+          const tm = this.make.tilemap({ data: data2d, tileWidth: t.tw, tileHeight: t.th });
+          const tileset = tm.addTilesetImage('ts', key, t.tw, t.th, 0, 0);
+          const tl = tm.createLayer(0, tileset);
+          if (tl) layerMappa.add(tl);
+        }
+      }
+
+      // Punti d'interesse: dal layer object "posizioni", in celle (tile).
+      const layerPosizioni = (tmj.layers || []).find(l => l.name === 'posizioni' && l.type === 'objectgroup');
+      this._posizioni = (layerPosizioni ? layerPosizioni.objects : []).map(o => ({
+        nome: o.name || '',
+        tx0: Math.floor(o.x / tw), ty0: Math.floor(o.y / th),
+        tx1: Math.floor((o.x + Math.max(o.width, 1) - 1) / tw),
+        ty1: Math.floor((o.y + Math.max(o.height, 1) - 1) / th),
+      })).filter(p => p.nome);
+
+      // Cursore: un pallino rosso scuro, un tile alla volta.
+      this._cx = Math.floor(mapW / 2);
+      this._cy = Math.floor(mapH / 2);
+      // Punto di partenza più sensato: su Borgata Tuscolana se la troviamo.
+      const partenza = this._posizioni.find(p => /tuscolana/i.test(p.nome));
+      if (partenza) { this._cx = partenza.tx0; this._cy = partenza.ty0; }
+
+      this._cursore = this.add.circle(0, 0, tw * 0.3, 0x8b0000, 1)
+        .setStrokeStyle(2, 0xffffff).setDepth(2);
+      layerMappa.add(this._cursore);
+
+      this.add.text(CW / 2, Math.max(4, offY - 6), '🗺️ MAPPA REGIONALE', {
+        fontFamily: "'Press Start 2P', monospace", fontSize: '12px', color: '#ffcb05',
+        stroke: '#000', strokeThickness: 4,
+      }).setOrigin(0.5, 1).setDepth(3);
+
+      this._etichetta = this.add.text(CW / 2, offY + altezzaPx * scala + 18, '', {
+        fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#fff8d8',
+        backgroundColor: '#1a2940', padding: { x: 10, y: 4 },
+      }).setOrigin(0.5, 0).setDepth(3);
+
+      this.add.text(CW / 2, CH - 6, 'Frecce per muoverti · B per uscire', {
+        fontFamily: 'Arial', fontSize: '11px', color: '#888',
+      }).setOrigin(0.5, 1).setDepth(3);
+
+      this._aggiornaCursore();
+
+      this.input.enabled = true;
+      const muovi = (dx, dy) => {
+        this._cx = Phaser.Math.Clamp(this._cx + dx, 0, mapW - 1);
+        this._cy = Phaser.Math.Clamp(this._cy + dy, 0, mapH - 1);
+        this._aggiornaCursore();
+      };
+      this.input.keyboard.on('keydown-UP',    () => muovi(0, -1));
+      this.input.keyboard.on('keydown-DOWN',  () => muovi(0, 1));
+      this.input.keyboard.on('keydown-LEFT',  () => muovi(-1, 0));
+      this.input.keyboard.on('keydown-RIGHT', () => muovi(1, 0));
+      const esci = () => { this.scene.stop(); this.scene.launch('ZainoScene'); };
+      this.input.keyboard.on('keydown-B', esci);
+      this.input.keyboard.on('keydown-ESC', esci);
+    }
+
+    _aggiornaCursore() {
+      const px = this._cx * this._tw + this._tw / 2;
+      const py = this._cy * this._th + this._th / 2;
+      this._cursore.setPosition(px, py);
+      const qui = this._posizioni.find(p =>
+        this._cx >= p.tx0 && this._cx <= p.tx1 && this._cy >= p.ty0 && this._cy <= p.ty1);
+      this._etichetta.setText(qui ? qui.nome : '');
     }
   }
 
@@ -13714,7 +13889,7 @@ const GameMap = (function () {
       type:            Phaser.AUTO,
       parent:          'mappa',
       backgroundColor: '#000000',
-      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene, SelezionaSquadraPalestraScene, PCMenuScene, DormiScene],
+      scene:           [GameScene, InteriorScene, PauseMenuScene, TrainerCardScene, PokedexScene, PokedexDetailScene, OpzioniScene, PartyScene, PartyDetailScene, ZainoScene, ZainoBersaglioScene, RecapScene, SalvaScene, BoxScene, MarketScene, SelezionaSquadraPalestraScene, PCMenuScene, DormiScene, MappaRegioneScene],
       scale: {
         mode:       Phaser.Scale.RESIZE,
         autoCenter: Phaser.Scale.CENTER_BOTH,

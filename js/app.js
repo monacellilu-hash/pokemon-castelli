@@ -117,7 +117,9 @@ let stato = {
   // la famiglia del ristorante di Via dei Laghi, prendi il "buono bici" dal
   // guaritore lì vicino, scambialo con uno degli NPC del negozio di bici di
   // Albano — vedi 'npc_negozio_di_bici_1' in dati/npc.js.
-  inventario:        { chiave: { bicicletta: false, cannaPesca: true } },
+  // mappa_regione: Mappa Regionale (sess. 14 ott 2026, richiesta esplicita
+  // di Luca), sempre posseduta fin dall'inizio — vedi apriMappaRegione().
+  inventario:        { chiave: { bicicletta: false, cannaPesca: true, mappa_regione: true } },
   flags:             {
     starterScelto:    false,
     pokedexRicevuto:  false,
@@ -211,6 +213,9 @@ async function caricaPartita() {
       // gratis qui, deve guadagnarsela come tutti.
       if (stato.inventario.chiave.bicicletta === undefined) stato.inventario.chiave.bicicletta = false;
       if (stato.inventario.chiave.cannaPesca === undefined) stato.inventario.chiave.cannaPesca = true;
+      // Mappa Regionale (sess. 14 ott 2026): sempre posseduta, anche sui
+      // salvataggi già esistenti prima di questa sessione.
+      if (stato.inventario.chiave.mappa_regione === undefined) stato.inventario.chiave.mappa_regione = true;
       // Migrazione F9.2: vecchi salvataggi senza economia
       if (stato.soldi === undefined) stato.soldi = SOLDI_INIZIALI;
       if (stato.repellentePassi === undefined) stato.repellentePassi = 0;
