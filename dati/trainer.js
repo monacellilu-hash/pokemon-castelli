@@ -1570,6 +1570,76 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Vai pure, tanto l\'acqua profonda te ferma uguale...',
     premio: 1560,
   },
+  // 3 grunt aggiunti da Luca al 1F (copie piazzate senza id proprio,
+  // corrette sess. 14 ott 2026: erano tutte sovrapposte sull'id _1).
+  'gdf_grunt_marino_1f_5': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 88, livello: 30 }, { id: 42, livello: 31 }],
+    dialogo_prima: 'Chi t\'ha fatto entrà? Qui nun se passa!',
+    dialogo_dopo: 'Vabbè, mo\' me ne vado a riposà.',
+    premio: 1200,
+  },
+  'gdf_grunt_marino_1f_6': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 24, livello: 31 }, { id: 73, livello: 32 }],
+    dialogo_prima: 'Er Capo m\'ha detto de nun fà passà nessuno. Mi dispiace per te.',
+    dialogo_dopo: 'Ahó, nun me l\'aspettavo proprio.',
+    premio: 1240,
+  },
+  'gdf_grunt_marino_1f_7': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 20, livello: 32 }, { id: 89, livello: 33 }],
+    dialogo_prima: 'Ancora uno e sei davanti all\'isola der Capo. Ma nun ce arriverai.',
+    dialogo_dopo: 'Mo\' me sa che er Capo se preoccupa davero.',
+    premio: 1280,
+  },
+  // 1 grunt aggiunto da Luca al 2F_A (stesso problema del 1F).
+  'gdf_grunt_marino_2fa_3': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 73, livello: 33 }, { id: 31, livello: 34 }],
+    dialogo_prima: 'Er caveau è sorvegliato giorno e notte. Nun passi de qui.',
+    dialogo_dopo: 'Vabbè, só cose che càpitano...',
+    premio: 1400,
+  },
+  // 4 grunt aggiunti da Luca al 2F_B, intorno all'isola del Capo (stesso
+  // problema: 3 copie sovrapposte sull'id _1, più uno con id orfano "_5"
+  // senza dati — corretti sess. 14 ott 2026).
+  'gdf_grunt_marino_2fb_2': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 89, livello: 36 }, { id: 73, livello: 37 }],
+    dialogo_prima: 'L\'isola der Capo è protetta da tutti i lati. Nun passi.',
+    dialogo_dopo: 'E vabbè, mo\' lo dico ar Capo...',
+    premio: 1580,
+  },
+  'gdf_grunt_marino_2fb_3': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 110, livello: 37 }, { id: 195, livello: 36 }],
+    dialogo_prima: 'Quest\'acqua nasconde più guardie de quelle che vedi.',
+    dialogo_dopo: 'Ahó, nun ce credo.',
+    premio: 1600,
+  },
+  'gdf_grunt_marino_2fb_4': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 24, livello: 37 }, { id: 230, livello: 36 }],
+    dialogo_prima: 'Er Capo sta a preparà quarcosa de grosso. Nun te ce voglio tra i piedi.',
+    dialogo_dopo: 'Vabbè, passa pure, ma nun dì che t\'ho fatto passà io.',
+    premio: 1600,
+  },
+  'gdf_grunt_marino_2fb_5': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 42, livello: 38 }, { id: 88, livello: 37 }],
+    dialogo_prima: 'Ultima guardia prima der Capo. Qui finisce la fortuna.',
+    dialogo_dopo: 'La fortuna nun c\'entrava, eri davero preparato.',
+    premio: 1620,
+  },
   'gdf_capo_marino': {
     sprite: 'Lorenzo', ritratto: 'Lorenzo',
     classe: 'Comandante GdF', nome: 'Lorenzo',
@@ -4526,5 +4596,59 @@ const DATI_TRAINER = {
     dialogo_prima: 'L\'ultima prima del Signor Torlonia. Non deluderlo, ma nemmeno me.',
     dialogo_dopo: 'Vai, ti aspetta in fondo alla sala.',
     premio: 460,
+  },
+
+  /* ── I Castagnoli di Rocca di Papa (sess. 14 ott 2026, piazzati da Luca
+     su rocca_di_papa.tmj): 5 raccoglitori + il capo organizzatore della
+     Sagra delle Castagne, tipi diversi (Terra/Erba/Volante/Lotta/Coleottero).
+     Sconfiggerli tutti è una delle 3 condizioni per lo sblocco del consiglio
+     di Baso su Monte Cavo (vedi interagisciBaso, js/app.js). ── */
+  'Rocca_di_papa_1': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
+    classe: 'Castagnolo', nome: 'Castagnolo',
+    squadra: [ { id: 75, livello: 34 }, { id: 31, livello: 35 } ],   // Graveler, Nidoqueen
+    dialogo_prima: 'Raccogliere castagne sulla Rocca non è mica una passeggiata, con questi sentieri di pietra!',
+    dialogo_dopo: 'Alla Sagra ci sarà anche un angolo caldarroste, non mancare.',
+    premio: 340,
+  },
+  'Rocca_di_papa_2': {
+    sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 4,
+    classe: 'Castagnola', nome: 'Castagnola',
+    squadra: [ { id: 71, livello: 34 }, { id: 357, livello: 35 } ],   // Victreebel, Tropius
+    dialogo_prima: 'Ogni castagno qui è segnato con un nastro colorato: così sappiamo di chi è il raccolto.',
+    dialogo_dopo: 'La Sagra delle Castagne è la festa più sentita di Rocca di Papa, lo sai?',
+    premio: 340,
+  },
+  'Rocca_di_papa_3': {
+    sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 5,
+    classe: 'Castagnolo', nome: 'Castagnolo',
+    squadra: [ { id: 22, livello: 34 }, { id: 277, livello: 35 } ],   // Fearow, Swellow
+    dialogo_prima: 'I miei Pokémon volano in cima ai castagni più alti, dove nessuno arriva a mano.',
+    dialogo_dopo: 'Quest\'anno il raccolto è buono, ma non basterà mai per la richiesta di Baso!',
+    premio: 340,
+  },
+  'Rocca_di_papa_4': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 4,
+    classe: 'Castagnolo', nome: 'Castagnolo',
+    squadra: [ { id: 237, livello: 34 }, { id: 67, livello: 35 } ],   // Hitmontop, Machoke
+    dialogo_prima: 'Spacco i ricci con un calcio solo, niente guanti. Mani d\'acciaio, come Baso.',
+    dialogo_dopo: 'Devi allenarti tanto per fare questo lavoro, credimi.',
+    premio: 340,
+  },
+  'Rocca_di_papa_5': {
+    sprite: 'trainer_BUGCATCHER', ritratto: 'BUGCATCHER', vista: 4,
+    classe: 'Castagnolo', nome: 'Castagnolo',
+    squadra: [ { id: 123, livello: 34 }, { id: 214, livello: 35 } ],   // Scyther, Heracross
+    dialogo_prima: 'Tra i ricci ci vivono un sacco di insetti: i miei Pokémon li tengono alla larga mentre raccolgo.',
+    dialogo_dopo: 'Occhio ai ricci, pungono più dei miei Pokémon!',
+    premio: 340,
+  },
+  'Rocca_di_papa_capo': {
+    sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 5,
+    classe: 'Organizzatore', nome: 'Castagnolo Capo',
+    squadra: [ { id: 232, livello: 36 }, { id: 286, livello: 37 }, { id: 277, livello: 37 } ],   // Donphan, Breloom, Swellow
+    dialogo_prima: 'Sono io che organizzo la Sagra delle Castagne ogni anno. Vediamo se sai apprezzarla come si deve!',
+    dialogo_dopo: 'Complimenti! Sai, ogni anno dobbiamo raccogliere MIGLIAIA di chili di castagne solo per sfamare Baso durante l\'inverno. Quell\'uomo ha un appetito da Capopalestra vero!',
+    premio: 600,
   },
 };

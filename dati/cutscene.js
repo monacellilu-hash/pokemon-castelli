@@ -250,21 +250,66 @@ const CUTSCENE = {
      stesso a consegnare la pietra (non c'è uno scienziato da liberare): la
      perde a malincuore, promette la rivincita che poi tiene fede alla
      Grotta del Vulcano. */
+  /* ── Rifugio di Marino, 2F_B — discorso da cattivo PRIMA della lotta
+     (sess. 14 ott 2026, richiesta esplicita di Luca): parte da sola entrando
+     nel rettangolo "inizio_cutscene_gdf_marino_boss" (trigger_cutscene
+     quando:'entra', condizione '!gdf_marino_boss_sconfitto' — non si rifà
+     una volta battuto). Lorenzo e i 3 luogotenenti (Ginevra/Fernando/
+     Michela, cameo type:'npc' solo per questa scena — non si combattono
+     qui, hanno già le loro lotte vere altrove in città) festeggiano il
+     piano riuscito per la Pietra Zaffiro, poi notano il giocatore e si
+     girano verso di lui. La lotta vera parte da sola all'ultima battuta
+     (passo 'battaglia'): l'esito (vittoria/sconfitta) è gestito come
+     sempre da _applicaEsitoTrainer (js/map.js, blocco "gdf_capo_marino"),
+     che a vittoria fa partire 'rifugio_marino_boss_dopo' qui sotto. */
+  'rifugio_marino_boss_intro': [
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
+      'Ottimo lavoro, davvero. Con voi tre al mio fianco, questo piano poteva solo riuscire.',
+    ] },
+    { tipo: 'dialogo', nome: 'Ginevra', testo: ['Il più difficile è stato distrarre la security del Museo, Capo. Ma ce l\'abbiamo fatta.'] },
+    { tipo: 'dialogo', nome: 'Fernando', testo: ['Io mi sono occupato dei documenti a Castel Gandolfo: nessuno si è accorto di niente.'] },
+    { tipo: 'dialogo', nome: 'Michela', testo: ['E io ho tenuto buoni i Grunt di guardia tutta la notte. Il risultato è questo.'] },
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
+      'La Pietra Zaffiro, finalmente nelle nostre mani. Con questa possiamo riattivare il guardiano dell\'acqua: Kyogre risponderà solo a noi.',
+      'Il Team GdF ha appena fatto un passo che nessuno potrà più fermare...',
+    ] },
+    { tipo: 'guarda_reciproco', npc: 'Luogotenente Ginevra' },
+    { tipo: 'guarda_reciproco', npc: 'Luogotenente Fernando' },
+    { tipo: 'guarda_reciproco', npc: 'Luogotenente Michela' },
+    { tipo: 'guarda_reciproco', npc: 'gdf_capo_marino' },
+    { tipo: 'dialogo', nome: '', testo: [
+      'Ecco il problema incontrato lungo la via, Capo: non si riesce a liberarsi di questa spina nel fianco.',
+    ] },
+    { tipo: 'muovi_player', direzione: 'nord', passi: 6 },
+    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
+      'Bene. Hai dato filo da torcere al nostro gruppo fin troppo a lungo: adesso basta.',
+      'Questa storia finisce qui, ragazzino. Nessuno rovina i piani del Team GdF e se ne va a piede libero.',
+    ] },
+    { tipo: 'battaglia', trainer: 'gdf_capo_marino' },
+  ],
+
+  /* ── Rifugio di Marino, 2F_B — dopo il boss (sess. 14 ott 2026): parte da
+     sola a vittoria (vedi js/map.js, _applicaEsitoTrainer, blocco
+     "gdf_capo_marino"). Lorenzo, i 3 luogotenenti e TUTTI i Grunt del
+     rifugio (1F/2F_A/2F_B/2F_C) spariscono insieme, coperti da un fade —
+     stessa tecnica di 'grotta_vulcano_boss_dopo' (gate:true/condizione
+     sulla flag "gdf_marino_boss_sconfitto" sui loro oggetti Tiled). A
+     differenza di prima, la Pietra Zaffiro NON si regala più in automatico
+     durante il dialogo: resta a terra (oggetto type:'oggetto', chiave:true,
+     flag_raccolta:'pietra_zaffiro_ottenuta', condizione sulla stessa flag
+     di sparizione) e va raccolta a piedi come una Poké Ball — rivelata
+     subito dopo il fade col passo 'rivela_oggetti'. */
   'rifugio_marino_boss_dopo': [
     { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Quest\'isola era mia... o almeno lo era, fino a un minuto fa.',
-      'Non hai idea di cosa hai appena rimandato, ragazzino. Ma la Pietra Zaffiro a mani vuote non mi serve a niente: tienila pure, ne troverò un\'altra strada.',
+      'Non pensare che finisca qui: il piano del Team GdF continua, con o senza questa pietra.',
     ] },
-    { tipo: 'oggetto', contenuto: 'pietra_zaffiro', chiave: true },
-    // Flag semplice (verificaCondizione, js/map.js, capisce solo singoli
-    // flag, non il possesso di un oggetto-chiave): usato per sbloccare
-    // l'accesso ai piani profondi della Grotta del Vulcano — prima di questo
-    // momento della storia ci si può solo avvicinare e battere le guardie
-    // fuori, non entrare (richiesta esplicita di Luca).
-    { tipo: 'flag', nome: 'pietra_zaffiro_ottenuta', valore: true },
-    { tipo: 'dialogo', nome: 'Lorenzo', testo: [
-      'Ma questa non è una sconfitta: è solo un rinvio. Ci rivedremo — e la prossima volta non sarai così fortunato.',
-    ] },
+    { tipo: 'aspetta', ms: 300 },
+    { tipo: 'flag', nome: 'gdf_marino_boss_sconfitto', valore: true },
+    { tipo: 'fade_out', ms: 600 },
+    { tipo: 'rigenera_npc' },
+    { tipo: 'rivela_oggetti' },
+    { tipo: 'fade_in', ms: 600 },
   ],
 
 };

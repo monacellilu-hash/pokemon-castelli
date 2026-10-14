@@ -2121,4 +2121,31 @@ const DATI_NPC = {
     sprite: 'NPC 11', nome: 'Settimia', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Baso e Gianluca si conoscono da quando erano bambini. Quando uno dei due è nei guai, l\'altro non lo lascia mai solo.'],
   },
+
+  // Baso "fuori dal ring" (sess. 14 ott 2026, richiesta esplicita di Luca):
+  // NPC a sé, separato dal trainer della palestra — consiglio su Monte Cavo
+  // + secondo regalo starter, tutta la logica in interagisciBaso (js/app.js).
+  // Piazzalo vicino alla palestra di Rocca di Papa (fuori o nell'atrio).
+  'baso_consiglio': {
+    sprite: 'trainer_ELITEFOUR_Bruno', nome: 'Baso', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciBaso',
+  },
+
+  // I 3 luogotenenti in cameo al Rifugio di Marino (sess. 14 ott 2026,
+  // cutscene 'rifugio_marino_boss_intro'): qui NON si combattono, hanno già
+  // le loro lotte vere altrove in città (Castel Gandolfo/Museo di Nemi/
+  // Abbazia di San Nilo) — type:'npc' apposta, non 'trainer'. Spariscono
+  // insieme a Lorenzo e ai Grunt a fine scena (gate su gdf_marino_boss_sconfitto).
+  'Luogotenente Ginevra': {
+    sprite: 'Luogotenente_GdF_3', nome: 'Ginevra', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Il Capo è impegnato in questo momento.'],
+  },
+  'Luogotenente Fernando': {
+    sprite: 'Luogotenente_GdF_1', nome: 'Fernando', direzione: 'nord', movimento: 'fisso',
+    dialogo: ['Il Capo è impegnato in questo momento.'],
+  },
+  'Luogotenente Michela': {
+    sprite: 'Luogotenente_GdF_2', nome: 'Michela', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Il Capo è impegnato in questo momento.'],
+  },
 };

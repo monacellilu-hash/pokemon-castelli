@@ -1321,6 +1321,11 @@ async function regalaStarterTorlonia(opzione, righeFinali) {
   stato.squadra.push(mostro);
   if (!stato.flags) stato.flags = {};
   stato.flags.torloniaRegaloRicevuto = true;
+  // Sess. 14 ott 2026 (quest Castagnoli/Baso a Rocca di Papa): serve
+  // ricordare QUALE tipo ha dato Torlonia, insieme al tipo dello starter
+  // originale — Baso userà i due per capire il terzo tipo "mancante" da
+  // offrire lui stesso (vedi interagisciBaso).
+  stato.torloniaTipoDato = opzione.tipo;
   salvaPartita();
   aggiornaHUD();
   await mostraDialogo('Signor Torlonia', righeFinali);
@@ -1377,6 +1382,118 @@ async function interagisciSignorTorlonia() {
   } finally {
     if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   }
+}
+
+/* ============================================================
+   BASO — consiglio su Monte Cavo + secondo regalo starter
+   (sess. 14 ott 2026, richiesta esplicita di Luca)
+   Tre condizioni, in ordine:
+     1) tutti i Castagnoli di Rocca di Papa (+ il capo) sconfitti
+     2) lo starter del Signor Torlonia già ricevuto
+     3) Articuno già catturato (scoperto andando a Monte Cavo dietro il
+        suo consiglio) — finché non lo è, ripete/rinforza il suggerimento
+   A quel punto si comporta come Torlonia: offre lo starter del TERZO tipo
+   (quello che non hai già tra l'originale e quello di Torlonia), stavolta
+   a scelta tra tutte e 3 le generazioni per quel tipo.
+   ============================================================ */
+
+const CASTAGNOLI_TRAINER_IDS = [
+  'Rocca_di_papa_1', 'Rocca_di_papa_2', 'Rocca_di_papa_3',
+  'Rocca_di_papa_4', 'Rocca_di_papa_5', 'Rocca_di_papa_capo',
+];
+
+async function interagisciBaso() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  GameMap.bloccaMovimento();
+  try {
+    const battuti = stato.allenatoriBattuti || [];
+    const castagnoliFatti = CASTAGNOLI_TRAINER_IDS.every(id => battuti.includes(id));
+    const haStarterTorlonia = !!(stato.flags && stato.flags.torloniaRegaloRicevuto);
+
+    if (!castagnoliFatti || !haStarterTorlonia) {
+      await mostraDialogo('Baso', [
+        'Qui a Rocca di Papa ci si allena sodo, sulla pietra viva del Vulcano Laziale.',
+      ]);
+      return;
+    }
+
+    const articunoCatturato = !!(stato.pokedex && stato.pokedex[144] && stato.pokedex[144].catturato);
+    if (!articunoCatturato) {
+      if (!stato.flags.baso_consiglio_montecavo_dato) {
+        stato.flags.baso_consiglio_montecavo_dato = true;
+        salvaPartita();
+        await mostraDialogo('Baso', [
+          'Hai dato una mano ai Castagnoli e hai già uno starter in più: mi sa che sei pronto.',
+          'Fatti un giro a Monte Cavo, se ne hai il coraggio. Lassù ci sono Pokémon che non vedrai da nessun\'altra parte.',
+        ]);
+      } else {
+        await mostraDialogo('Baso', [
+          'Cerca meglio a Monte Cavo: ci sono Pokémon unici, ma bisogna saperli trovare.',
+        ]);
+      }
+      return;
+    }
+
+    if (stato.flags.baso_regalo_ricevuto) {
+      await mostraDialogo('Baso', [
+        'Allora ce l\'hai fatta davvero, eh? Monte Cavo non perdona i deboli. Sono fiero di te.',
+      ]);
+      return;
+    }
+
+    const info = infoStarterGiocatore();
+    if (!info || !stato.torloniaTipoDato) {
+      // Salvataggi vecchi senza queste informazioni: niente regalo, solo complimenti.
+      await mostraDialogo('Baso', [
+        'Sei tornato da Monte Cavo tutto intero: vuol dire che sei forte sul serio. Complimenti!',
+      ]);
+      return;
+    }
+    const TIPI = ['fire', 'grass', 'water'];
+    const tipoMancante = TIPI.find(t => t !== info.tipo && t !== stato.torloniaTipoDato);
+    if (!tipoMancante) {
+      await mostraDialogo('Baso', [
+        'Sei tornato da Monte Cavo tutto intero: vuol dire che sei forte sul serio. Complimenti!',
+      ]);
+      return;
+    }
+
+    await mostraDialogo('Baso', [
+      'Sei tornato vivo da Monte Cavo: hai dimostrato quello che dovevi dimostrare.',
+      'Anche a me piace premiare chi se lo merita, come fa il Signor Torlonia. Dai un\'occhiata a questi tre, scegline uno: sono tutti forti a modo loro.',
+    ]);
+    const opzioni = TIPI_PER_STARTER_TUTTE_GEN(tipoMancante);
+    const scelto = await scegliStarterOpzioni(opzioni, 'Scegli il tuo regalo!');
+    if (!scelto) return;
+    if (stato.squadra.length >= 6) {
+      mostraToast('⚠️ La tua squadra è piena: libera un posto e torna a parlare con Baso.');
+      return;
+    }
+    let mostro;
+    try {
+      mostro = await Battle.creaIstanza(scelto.id, LIVELLO_STARTER);
+      segnaPokedex(mostro.id, mostro.nome, mostro.sprite && mostro.sprite.fronte, true);
+    } catch (err) {
+      console.error('[Baso] Errore nel creare il regalo:', err);
+      mostraToast('⚠️ Errore di connessione: riprova a riparlare con Baso.');
+      return;
+    }
+    stato.squadra.push(mostro);
+    stato.flags.baso_regalo_ricevuto = true;
+    salvaPartita();
+    aggiornaHUD();
+    await mostraDialogo('Baso', ['Portalo con te, e fanne buon uso!']);
+  } finally {
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
+  }
+}
+
+// Le 3 varianti (una per generazione) di un tipo di starter specifico —
+// usata da interagisciBaso per il terzo regalo, l'unico che permette la
+// scelta tra TUTTE e 3 le generazioni invece che la sola generazione del
+// giocatore (Torlonia) — serve a coprire il tipo che davvero manca.
+function TIPI_PER_STARTER_TUTTE_GEN(tipo) {
+  return [1, 2, 3].map(g => STARTER_PER_GEN[g].find(s => s.tipo === tipo)).filter(Boolean);
 }
 
 // Spiegazione della difficoltà, data dal Prof. Castagno (richiesta esplicita

@@ -8568,6 +8568,24 @@ const GameMap = (function () {
         return;
       }
 
+      if (chiave === 'sub') {
+        // Punto d'immersione (sessione 10 agosto, richiesta esplicita): un
+        // oggetto "trigger_sub" piazzato dentro una zona Surf, con le stesse
+        // proprietà di un warp normale (destinazione/spawn_id/arrivo_x/y) —
+        // avendo la MN Sub, ti immerge teletrasportandoti alla mappa "sott'acqua"
+        // indicata, riusando la stessa logica di transizione dei warp/porte.
+        // NON libera collGrid: non è un ostacolo da rimuovere, è un ingresso.
+        // Conferma Sì/No (richiesta esplicita di Luca, 14 ott 2026): prima
+        // immergeva SUBITO premendo [A] — capitava di tuffarsi per sbaglio
+        // nuotando sopra un punto d'immersione. Gestito PRIMA del toast
+        // generico "usa Sub!" qui sotto (niente MN "usata" se si risponde no).
+        (async () => {
+          const risposta = await mostraScelta('Vuoi immergerti?', 'Sì', 'No');
+          if (risposta === 1) this._transizioneMappa(ev);
+        })();
+        return;
+      }
+
       if (typeof mostraToast === 'function') {
         mostraToast(`${this._nomeGiocatore()} usa ${nome}!`, 1800);
       }
@@ -8595,18 +8613,7 @@ const GameMap = (function () {
         return;
       }
 
-      if (chiave === 'sub') {
-        // Punto d'immersione (sessione 10 agosto, richiesta esplicita): un
-        // oggetto "trigger_sub" piazzato dentro una zona Surf, con le stesse
-        // proprietà di un warp normale (destinazione/spawn_id/arrivo_x/y) —
-        // avendo la MN Sub, ti immerge teletrasportandoti alla mappa "sott'acqua"
-        // indicata, riusando la stessa logica di transizione dei warp/porte.
-        // NON libera collGrid: non è un ostacolo da rimuovere, è un ingresso.
-        this._transizioneMappa(ev);
-        return;
-      }
-
-      // Altri ostacoli MN (taglio/spaccaroccia/forza "semplice"/sub): oggetti
+      // Altri ostacoli MN (taglio/spaccaroccia/forza "semplice"): oggetti
       // singoli, si liberano in collGrid. NOTA: questo NON persiste da solo
       // (collGrid si ricostruisce da zero dal .tmj ad ogni caricamento mappa)
       // — per taglio/spaccaroccia è il comportamento voluto (albero/roccia
