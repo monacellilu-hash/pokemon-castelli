@@ -6992,6 +6992,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7027,6 +7032,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7097,6 +7107,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7137,6 +7152,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7177,6 +7197,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7217,6 +7242,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7508,6 +7538,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7548,6 +7583,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
@@ -7588,6 +7628,11 @@
        "name":"condizione",
        "type":"string",
        "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"noTestBypass",
+       "type":"bool",
+       "value":true
       }
      ],
      "rotation":0,
