@@ -1422,66 +1422,6 @@ const DATI_TRAINER = {
     flagVittoria: 'museoLuogotenenteSconfitto',
   },
 
-  /* ── TEAM GdF — Interno dell'Abbazia di San Nilo (Grottaferrata, sess. 8
-     set 2026): accessibile solo con ≥7 medaglie (gate sul warp in
-     grottaferrata.tmj). 5 grunt + Ginevra, terza e ultima luogotenente —
-     sconfitta dà la 3ª parte della password del Rifugio GdF di Marino (vedi
-     _controllaPasswordRifugio in js/map.js e docs/STORIA_COMPLETA.md). ── */
-  'gdf_sannilo_1': {
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
-    classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 302, livello: 49 }, { id: 51, livello: 50 }],
-    dialogo_prima: 'Ginevra ci ha detto di non far passare nessuno oltre le panche. Fatti sotto!',
-    dialogo_dopo: 'Vabbè... ma tanto oltre di me c\'è chi è molto più tosto.',
-    premio: 2000,
-  },
-  'gdf_sannilo_2': {
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
-    classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 268, livello: 49 }, { id: 267, livello: 50 }],
-    dialogo_prima: 'Quest\'Abbazia nasconde più segreti di quanto pensi. Ma tu non li scoprirai.',
-    dialogo_dopo: 'Ao, sei forte... ma Ginevra è un\'altra storia.',
-    premio: 2040,
-  },
-  'gdf_sannilo_3': {
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
-    classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 227, livello: 50 }, { id: 31, livello: 51 }],
-    dialogo_prima: 'Il Comandante conta su di noi per proteggere l\'ultima parte della password.',
-    dialogo_dopo: 'Mo\' te tocca passà da Ginevra. Buona fortuna, ne avrai bisogno.',
-    premio: 2080,
-  },
-  'gdf_sannilo_4': {
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
-    classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 302, livello: 50 }, { id: 354, livello: 51 }],
-    dialogo_prima: 'Fernando e Michela sono già stati sconfitti. Ginevra non farà lo stesso errore.',
-    dialogo_dopo: 'Nun ce posso crede... sei arrivato fin qui davvero.',
-    premio: 2120,
-  },
-  'gdf_sannilo_5': {
-    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
-    classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 267, livello: 51 }, { id: 268, livello: 51 }],
-    dialogo_prima: 'Ultimo ostacolo prima dell\'altare. Ginevra ti sta aspettando lì davanti.',
-    dialogo_dopo: 'Vai pure avanti... tanto per te è comunque finita.',
-    premio: 2160,
-  },
-  'gdf_sannilo_ginevra': {
-    sprite: 'Luogotenente_GdF_3', ritratto: 'Luogotenente_GdF_3',
-    classe: 'Luogotenente GdF', nome: 'Ginevra',
-    squadra: [
-      { id: 302, livello: 50 },
-      { id: 354, livello: 51 },  // Banette
-      { id: 227, livello: 52 },  // Skarmory
-    ],
-    dialogo_prima: 'Fernando ha trovato il documento, Michela ha protetto il museo. A me tocca l\'ultima parte — e non la cedo facilmente.',
-    dialogo_dopo: 'Tié... la terza e ultima parte della password. Ora il Rifugio è tutto vostro, se ci arrivate.',
-    premio: 3600,
-    flagVittoria: 'abbazia_password',
-    oggettoChiaveVittoria: 'password_3',   // l'oggetto-chiave della 3ª parte (vedi OGGETTI_CHIAVE)
-  },
-
   /* ── TEAM GdF — Rifugio di Marino (dungeon 4 piani: 1F + 2F_A/B/C) ──
      sessione 10 agosto. Livelli 60-61 (rilivellato sess. 14 ott 2026,
      richiesta esplicita di Luca: raggiungibile solo DOPO la 7ª palestra,
@@ -4866,5 +4806,145 @@ const DATI_TRAINER = {
     dialogo_prima: 'Er Comandante è qui davanti. Nun te ce fo passà.',
     dialogo_dopo: 'Mo\' fa quello che vuoi, tanto ormai è fatta.',
     premio: 2600,
+  },
+
+  /* ── ABBAZIA DI SAN NILO (Interno_San_Nilo.tmj, sess. 14 ott 2026) ──
+     3ª e ultima password del Rifugio GdF di Marino. Accessibile solo dopo
+     la 7ª palestra (Ariccia). 14 grunt + Ginevra (capped all'ottava
+     palestra/Genzano, 58 — più debole del capo di Marino, 60-61, richiesta
+     esplicita di Luca). Igino (il monaco) e il "grunt_traditore" sono
+     type:'npc' (dati/npc.js): nessuno dei due si combatte davvero, vedi
+     cutscene 'abbazia_sannilo_ginevra_igino' in dati/cutscene.js. Trovati e
+     corretti 2 giri di id duplicati su questa mappa (Igino condivideva
+     l'id con Ginevra; 8 grunt diversi condividevano tutti "gdf_sannilo_1") —
+     stesso tipo di bug copia-incolla già visto più volte questa sessione. */
+  'gdf_sannilo_1': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 42, livello: 54 }, { id: 89, livello: 55 }],
+    dialogo_prima: 'Nessuno disturba Ginevra durante il rito. Fatti sotto.',
+    dialogo_dopo: 'Vabbè... tanto qui dentro è tutto blindato lo stesso.',
+    premio: 2160,
+  },
+  'gdf_sannilo_2': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 24, livello: 54 }, { id: 110, livello: 55 }],
+    dialogo_prima: 'L\'Abbazia è sacra, dici? Mo\' lo è ancora de più pe\' noi.',
+    dialogo_dopo: 'Mo\' te lascio passà, ma nun dì che t\'ho aiutato io.',
+    premio: 2160,
+  },
+  'gdf_sannilo_3': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 72, livello: 54 }, { id: 31, livello: 55 }],
+    dialogo_prima: 'Ginevra ha detto de nun fa passà nessuno. Nessuno!',
+    dialogo_dopo: 'Va be\', hai vinto. Ma lei te sta già a aspettà.',
+    premio: 2160,
+  },
+  'gdf_sannilo_4': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 95, livello: 54 }, { id: 111, livello: 55 }],
+    dialogo_prima: 'St\'abbazia nasconde più segreti de quello che pensi.',
+    dialogo_dopo: 'Uffa, passa pure. Tanto qui nun cambia niente.',
+    premio: 2160,
+  },
+  'gdf_sannilo_5': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 100, livello: 54 }, { id: 109, livello: 55 } ],
+    dialogo_prima: 'Fermo lì. Er rito de Ginevra nun se interrompe.',
+    dialogo_dopo: 'E vabbè, so\' cose che càpitano...',
+    premio: 2160,
+  },
+  'gdf_sannilo_6': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 81, livello: 55 }, { id: 74, livello: 56 } ],
+    dialogo_prima: 'Un\'altra monaca curiosa? Nun me pare proprio.',
+    dialogo_dopo: 'Bah... Ginevra nun sarà contenta de sta falla.',
+    premio: 2200,
+  },
+  'gdf_sannilo_7': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 27, livello: 55 }, { id: 41, livello: 56 } ],
+    dialogo_prima: 'Nun se passa senza la benedizione der Comandante.',
+    dialogo_dopo: 'Mo\' però sei stato proprio bravo, eh.',
+    premio: 2200,
+  },
+  'gdf_sannilo_8': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 218, livello: 55 }, { id: 76, livello: 56 } ],
+    dialogo_prima: 'Quest\'abbazia è la nostra, ormai. Levate dai piedi!',
+    dialogo_dopo: 'Va bene... ma Ginevra nun molla facile.',
+    premio: 2200,
+  },
+  'gdf_sannilo_9': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 42, livello: 55 }, { id: 88, livello: 56 } ],
+    dialogo_prima: 'Un altro? Ma quanti siete venuti fin qua sopra?',
+    dialogo_dopo: 'Vai pure avanti... Ginevra t\'aspetta comunque.',
+    premio: 2200,
+  },
+  'gdf_sannilo_10': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 24, livello: 55 }, { id: 110, livello: 56 } ],
+    dialogo_prima: 'Er chiostro è sorvegliato a vista. Nun fai un passo de più.',
+    dialogo_dopo: 'Bah... il grosso della squadra è ancora davanti a te.',
+    premio: 2200,
+  },
+  'gdf_sannilo_11': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 72, livello: 56 }, { id: 31, livello: 57 } ],
+    dialogo_prima: 'Quasi alla sala del rito. Ultima prova prima de Ginevra: io.',
+    dialogo_dopo: 'Passa pure, tanto er Comandante lo sa già che sei qui.',
+    premio: 2240,
+  },
+  'gdf_sannilo_12': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 95, livello: 56 }, { id: 111, livello: 57 } ],
+    dialogo_prima: 'Siamo in tanti, eh? Ginevra ce tiene proprio a st\'abbazia.',
+    dialogo_dopo: 'Vabbè... sei tosto, ma lei è un\'altra storia.',
+    premio: 2240,
+  },
+  'gdf_sannilo_13': {
+    sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 100, livello: 56 }, { id: 109, livello: 57 } ],
+    dialogo_prima: 'Qua dentro nessuno ci trova. O almeno, così credevamo.',
+    dialogo_dopo: 'Uffa... vabbè, tienitelo per te quello che hai visto.',
+    premio: 2240,
+  },
+  'gdf_sannilo_14': {
+    sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    classe: 'Recluta GdF', nome: 'Grunt',
+    squadra: [{ id: 81, livello: 56 }, { id: 74, livello: 57 } ],
+    dialogo_prima: 'Ultima linea prima della sala del rito. Fatte sotto.',
+    dialogo_dopo: 'Ao, sei tosto... ma Ginevra è un\'altra storia.',
+    premio: 2240,
+  },
+  // Boss della scena: squadra Psico/Spettro (richiesta esplicita di Luca),
+  // capped all'ottava palestra (58) ma un po' più debole del capo di Marino
+  // (60-61) — vedi dati/cutscene.js 'abbazia_sannilo_ginevra_igino' per la
+  // lotta vera, che parte da sola alla fine del faccia a faccia con Igino.
+  'gdf_sannilo_ginevra': {
+    sprite: 'Luogotenente_GdF_3', ritratto: 'Luogotenente_GdF_3', vista: 0,
+    classe: 'Luogotenente GdF', nome: 'Ginevra',
+    squadra: [
+      { id: 200, livello: 56 },  // Misdreavus
+      { id: 65,  livello: 56 },  // Alakazam
+      { id: 94,  livello: 57 },  // Gengar
+      { id: 282, livello: 58 },  // Gardevoir (l'asso)
+    ],
+    dialogo_prima: 'Vieni pure, provaci a fermarmi.',
+    dialogo_dopo: 'Impossibile... va bene, va bene! Lasciami andare, ti prego...',
+    premio: 5600,
   },
 };

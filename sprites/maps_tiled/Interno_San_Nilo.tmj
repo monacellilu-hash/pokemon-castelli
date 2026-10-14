@@ -848,7 +848,7 @@
                  "name":"Ginevra",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -887,7 +887,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -921,7 +921,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -955,7 +955,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -989,7 +989,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1023,7 +1023,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1202,7 +1202,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_ginevra"
+                         "value":"gdf_sannilo_igino"
                         }, 
                         {
                          "name":"speciale",
@@ -1212,7 +1212,7 @@
                         {
                          "name":"type",
                          "type":"string",
-                         "value":"trainer"
+                         "value":"npc"
                         }, 
                         {
                          "name":"vista",
@@ -1231,6 +1231,7 @@
                  "id":56,
                  "name":"inizio cutscene",
                  "opacity":1,
+                 "properties":[{"name":"type","type":"string","value":"trigger_cutscene"}, {"name":"quando","type":"string","value":"entra"}, {"name":"cutscene_id","type":"string","value":"abbazia_sannilo_ginevra_igino"}, {"name":"flag_fine","type":"string","value":"abbazia_sannilo_ginevra_sconfitta"}],
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -1244,7 +1245,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1253,7 +1254,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_5"
+                         "value":"gdf_sannilo_6"
                         }, 
                         {
                          "name":"type",
@@ -1278,7 +1279,7 @@
                  "name":"grunt_traditore",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_traditore_partito"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1287,12 +1288,12 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_5"
+                         "value":"gdf_sannilo_traditore"
                         }, 
                         {
                          "name":"type",
                          "type":"string",
-                         "value":"trainer"
+                         "value":"npc"
                         }, 
                         {
                          "name":"vista",
@@ -1312,7 +1313,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1321,7 +1322,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_5"
+                         "value":"gdf_sannilo_7"
                         }, 
                         {
                          "name":"type",
@@ -1346,7 +1347,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1355,7 +1356,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_8"
                         }, 
                         {
                          "name":"type",
@@ -1380,7 +1381,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1389,7 +1390,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_9"
                         }, 
                         {
                          "name":"type",
@@ -1414,7 +1415,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1423,7 +1424,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_10"
                         }, 
                         {
                          "name":"type",
@@ -1448,7 +1449,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1457,7 +1458,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_11"
                         }, 
                         {
                          "name":"type",
@@ -1482,7 +1483,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1491,7 +1492,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_12"
                         }, 
                         {
                          "name":"type",
@@ -1516,7 +1517,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1525,7 +1526,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_13"
                         }, 
                         {
                          "name":"type",
@@ -1550,7 +1551,7 @@
                  "name":"grunt",
                  "opacity":1,
                  "point":true,
-                 "properties":[
+                 "properties":[{"name":"condizione","type":"string","value":"gdf_sannilo_ginevra_sconfitta"}, {"name":"gate","type":"bool","value":true}, {"name":"noTestBypass","type":"bool","value":true}, 
                         {
                          "name":"direzione",
                          "type":"string",
@@ -1559,7 +1560,7 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"gdf_sannilo_1"
+                         "value":"gdf_sannilo_14"
                         }, 
                         {
                          "name":"type",

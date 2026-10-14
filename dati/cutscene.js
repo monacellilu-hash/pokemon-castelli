@@ -739,3 +739,98 @@ CUTSCENE['antro_kyogre_9_matilde_isa'] = [
   { tipo: 'aspetta', ms: 200 },
   { tipo: 'fade_in', ms: 800 },
 ];
+
+/* ── ABBAZIA DI SAN NILO (sess. 14 ott 2026, staging di Luca) ──
+   Trigger: oggetto Tiled "inizio cutscene" (trigger_cutscene, quando:'entra',
+   flag_fine:'abbazia_sannilo_ginevra_sconfitta') su Interno_San_Nilo.tmj.
+   Terza e ultima password del Rifugio GdF di Marino. Igino (il monaco che ha
+   cresciuto Ginevra, dati/npc.js 'gdf_sannilo_igino') la affronta a parole,
+   poi nota il giocatore, racconta di essere stato ingannato (le ha detto
+   lui dove trovare Zaffiro e Rubino), e la lotta vera parte da sola. A
+   vittoria Ginevra NON si arrende davvero — finta promessa, poi fugge con
+   tutti i grunt (gate su 'gdf_sannilo_ginevra_sconfitta', tutti i loro
+   oggetti Tiled). Resta solo il "grunt_traditore" (ex allievo di Igino
+   anche lui, gate separato su 'gdf_sannilo_traditore_partito'): consegna
+   LUI la password a Igino, che a sua volta la dà al giocatore — imposta
+   'abbazia_password' (controllato da _controllaPasswordRifugio, js/map.js,
+   che a sua volta scrive 'password_rifugio_completa' quando anche le altre
+   due parti sono vere). */
+CUTSCENE['abbazia_sannilo_ginevra_igino'] = [
+  { tipo: 'guarda', npc: 'gdf_sannilo_ginevra', direzione: 'est' },
+  { tipo: 'guarda', npc: 'gdf_sannilo_igino', direzione: 'ovest' },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    'Ginevra... eri la mia più grande allieva. Il mio orgoglio.',
+    'Come puoi fare questo? Come puoi violare la sacralità di quest\'Abbazia e schierarti con questa gente?!',
+  ] },
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'La sacralità? Ho passato anni chinata su questi libri, Igino, a pregare per un mondo che non ascoltava mai nessuno di noi.',
+    'Il GdF ascolta. Il GdF agisce. E io sono stanca di aspettare un miracolo che non arriva.',
+  ] },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    'Non è questa la via! Controllare il meteo, manovrare l\'economia dei Castelli con la paura... non è potere, è un tradimento verso tutto ciò che ti ho insegnato.',
+  ] },
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'Tu mi hai insegnato la pazienza, maestro. Loro mi hanno dato uno scopo. Non confondere le due cose.',
+  ] },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    'Uno scopo costruito su pietre rubate e minacce velate non è uno scopo: è una condanna. E tu lo sai bene, in fondo.',
+  ] },
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'Forse. Ma è una condanna che ho scelto io, con le mie mani — non una vita intera a servire qualcosa di più grande di me senza mai contare niente.',
+  ] },
+  { tipo: 'aspetta', ms: 500 },
+  { tipo: 'esclamativo', npc: 'gdf_sannilo_igino', durata: 700 },
+  { tipo: 'guarda', npc: 'gdf_sannilo_igino', direzione: 'sud' },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    'Ah, {nome}, sei tu! Sentivo dei frastuoni fin dal chiostro — hai sconfitto tu tutti questi scagnozzi, da solo?',
+  ] },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    'Ginevra io la conosco bene, forse troppo bene: mi ha ingannato. Non pensavo fosse un\'infiltrata del GdF, mai.',
+    'Sono stato io, senza saperlo, a dirle dove trovare la Pietra Zaffiro e la Pietra Rubino. Un errore che porterò sulla coscienza per molto tempo.',
+    'Ma ora l\'ho scoperta. E vanno fermati, lei e tutto il suo Team, il più presto possibile.',
+  ] },
+  { tipo: 'guarda', npc: 'gdf_sannilo_igino', direzione: 'ovest' },
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'Vieni pure, allora. Provaci a fermarmi.',
+  ] },
+  { tipo: 'battaglia', trainer: 'gdf_sannilo_ginevra' },
+
+  // ── Solo se hai VINTO (con una sconfitta la scena si è già interrotta) ──
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'Va bene... va bene! Lasciami andare, ti prego. In cambio ti do la password del Rifugio, parola mia.',
+  ] },
+  { tipo: 'aspetta', ms: 1000 },
+  { tipo: 'dialogo', nome: 'Ginevra', testo: [
+    'Ahahah! Illusi, davvero pensavate che mi sarei arresa così facilmente?',
+    'Me ne vado. Non riuscirete mai a fermare il GdF!',
+  ] },
+  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'flag', nome: 'gdf_sannilo_ginevra_sconfitta', valore: true },
+  { tipo: 'rigenera_npc' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 500 },
+
+  // Resta solo il grunt_traditore (non era gated sulla stessa flag): cammina
+  // verso Igino e si rivela.
+  { tipo: 'muovi_npc', npc: 'gdf_sannilo_traditore', direzione: 'sud', passi: 2 },
+  { tipo: 'muovi_npc', npc: 'gdf_sannilo_traditore', direzione: 'ovest', passi: 2 },
+  { tipo: 'guarda', npc: 'gdf_sannilo_traditore', direzione: 'est' },
+  { tipo: 'guarda', npc: 'gdf_sannilo_igino', direzione: 'ovest' },
+  { tipo: 'dialogo', nome: '???', testo: [
+    'Maestro Igino... non so se vi ricordate di me. Ero anche io un vostro allievo, tanto tempo fa.',
+    'Non riconosco più il Team che ho servito. Quello che hanno fatto a quest\'Abbazia, quello che stanno per fare ai Castelli... non è per questo che mi ero unito a loro.',
+    'Voglio aiutarvi a fermarli. In nome dei vecchi tempi, vi consegno l\'ultima password per accedere al Rifugio di Marino.',
+  ] },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'flag', nome: 'gdf_sannilo_traditore_partito', valore: true },
+  { tipo: 'rigenera_npc' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 1000 },
+
+  { tipo: 'guarda', npc: 'gdf_sannilo_igino', direzione: 'sud' },
+  { tipo: 'dialogo', nome: 'Igino', testo: [
+    '{nome}, te la consegno io, a questo punto. Mi raccomando: fanne buon uso.',
+  ] },
+  { tipo: 'oggetto', contenuto: 'password_3', chiave: true },
+  { tipo: 'flag', nome: 'abbazia_password', valore: true },
+];

@@ -6455,6 +6455,14 @@ const GameMap = (function () {
           if (typeof stato !== 'undefined') {
             if (!stato.flags) stato.flags = {};
             stato.flags[passo.nome] = passo.valore;
+            // Le 3 parti della password del Rifugio GdF di Marino possono
+            // arrivare da un passo 'flag' diretto dentro una cutscene (non
+            // solo dal vecchio flagVittoria/oggettoChiaveVittoria di un
+            // trainer) — es. 'abbazia_password' data da Igino a fine scena,
+            // sess. 14 ott 2026. Ricontrolla sempre dopo averla impostata.
+            if (['baso_tornato', 'museo_nemi_password', 'abbazia_password'].includes(passo.nome)) {
+              this._controllaPasswordRifugio();
+            }
           }
           return Promise.resolve();
         // Salva il giorno di gioco ATTUALE (numero, non booleano) in

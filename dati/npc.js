@@ -2169,4 +2169,21 @@ const DATI_NPC = {
     sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Tutto come previsto.'],
   },
+
+  // Abbazia di San Nilo (sess. 14 ott 2026, staging di Luca): Igino, il
+  // monaco che ha allevato Ginevra come sua migliore allieva prima che si
+  // schierasse col GdF — vedi cutscene 'abbazia_sannilo_ginevra_igino' in
+  // dati/cutscene.js. Dialogo_dopo generico, la vera scena parte una sola
+  // volta dal trigger "inizio cutscene".
+  'gdf_sannilo_igino': {
+    sprite: 'trainer_GENTLEMAN', nome: 'Igino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Fai buon uso di quella password. Fermiamoli, prima che sia troppo tardi.'],
+  },
+  // Il grunt che tradisce il GdF a fine scena: era anche lui un allievo di
+  // Igino, non riconosce più il Team. Invisibile finché la cutscene non lo
+  // mostra (mostra_npc), sparisce per sempre subito dopo aver parlato.
+  'gdf_sannilo_traditore': {
+    sprite: 'GdF_grunt_uomo', nome: '???', direzione: 'est', movimento: 'fisso',
+    dialogo: ['...'],
+  },
 };
