@@ -13259,6 +13259,32 @@ const GameMap = (function () {
         await new Promise(ok => { this.load.once('complete', ok); this.load.start(); });
       }
 
+      // Sfondo fotografico "opaco" (14 ott 2026, richiesta esplicita di
+      // Luca): i due rettangoli Tiled nel layer "opaco" (uno per "sfondo",
+      // uno per "sfondo 2" — stesso ordine di dichiarazione dei due
+      // tileset) NON hanno nessun gid: l'immagine va presa PER INTERO
+      // (non affettata a tile) e stirata sul rettangolo. Depth 0.5, sotto
+      // ai layer di terreno (depth 1): funziona come un "decolorante" —
+      // si vede ovunque TRANNE dove ci sono le strade vere, che vengono
+      // disegnate sopra e lo coprono.
+      const opacoLayers = (tmj.layers || []).filter(l => l.name === 'opaco' && l.type === 'objectgroup');
+      const NOMI_SFONDO_OPACO = ['sfondo', 'sfondo 2'];
+      opacoLayers.forEach((layer, idxLayer) => {
+        const rect = layer.objects && layer.objects[0];
+        const nomeTileset = NOMI_SFONDO_OPACO[idxLayer];
+        if (!rect || !nomeTileset) return;
+        const idxTs = (tmj.tilesets || []).findIndex(t => t.name === nomeTileset);
+        if (idxTs === -1) return;
+        const key = 'rm-embedded-' + idxTs;
+        if (!this.textures.exists(key)) return;
+        // Alpha ridotta (su sfondo nero della scena): Luca lo voleva proprio
+        // "decolorante" — le strade vere (depth 1, sopra) restano a colori
+        // pieni, il resto si vede smorzato/più scuro sotto.
+        this.add.image(offX + rect.x * scala, offY + rect.y * scala, key)
+          .setOrigin(0, 0).setDepth(0.5).setAlpha(0.45)
+          .setDisplaySize(rect.width * scala, rect.height * scala);
+      });
+
       for (const layer of (tmj.layers || [])) {
         if (layer.type !== 'tilelayer' || !layer.data) continue;
         for (const t of tilesetsInfo) {

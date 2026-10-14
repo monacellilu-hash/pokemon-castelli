@@ -2478,23 +2478,9 @@
          "source":"..\/Tsj\/outside\/outside.tsx"
         }, 
         {
-         "columns":8,
-         "firstgid":4017,
-         "image":"..\/..\/Essentials FRLG\/Graphics\/Characters\/NPC_ProfOak.png",
-         "imageheight":192,
-         "imagewidth":128,
-         "margin":0,
-         "name":"professor Castagno",
-         "spacing":0,
-         "tilecount":0,
-         "tileheight":16,
-         "tilewidth":16,
-         "transparentcolor":"#000000"
-        }, 
-        {
          "firstgid":4017,
          "source":"..\/Tsj\/caves\/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion.tsx"
-        }, 
+        },
         {
          "firstgid":5538,
          "source":"..\/Tsj\/outside\/Emerald_Outside.tsx"
