@@ -1,11 +1,17 @@
-{ "columns":16,
- "image":"..\/..\/PNG\/map.png",
- "imageheight":120,
- "imagewidth":128,
+{ "columns":123,
+ "grid":
+    {
+     "height":32,
+     "orientation":"orthogonal",
+     "width":32
+    },
+ "image":"..\/..\/PNG\/mappa.png",
+ "imageheight":1256,
+ "imagewidth":988,
  "margin":0,
  "name":"map",
  "spacing":0,
- "tilecount":240,
+ "tilecount":19311,
  "tiledversion":"1.12.2",
  "tileheight":8,
  "tilewidth":8,

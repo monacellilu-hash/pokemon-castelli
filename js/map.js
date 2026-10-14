@@ -1420,6 +1420,12 @@ const GameMap = (function () {
     'Waterfall crest':       { key: 'ts-wfall-crest', tw: 32, th: 32, cols: 4  },
     'Waterfall':             { key: 'ts-wfall',       tw: 32, th: 32, cols: 4  },
     'Waterfall bottom':      { key: 'ts-wfall-bot',   tw: 32, th: 32, cols: 4  },
+    // Tileset caverna "Pokemon Mansion" (usato da Percorso 2, sess. 14 ott
+    // 2026): mai registrato, causava "Tileset sconosciuto" in console ogni
+    // volta che si carica il cluster di Frascati/Percorso 2 (segnalato da
+    // Luca). 1521 tile, 39 colonne, immagine 1248×1248 (39×32 esatto).
+    'Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion':
+                             { key: 'ts-pkmn-mansion', tw: 32, th: 32, cols: 39 },
     'Poke Centre interior':  { key: 'ts-pc-int',     tw: 32, th: 32, cols: 8  },
     'Interior general':      { key: 'ts-int-gen',    tw: 16, th: 16, cols: 16 },
     'Gyms interior':         { key: 'ts-gyms-int',   tw: 32, th: 32, cols: 8  },
@@ -1548,6 +1554,7 @@ const GameMap = (function () {
     'ts-wfall-crest': 'sprites/PNG/Waterfall crest.png',
     'ts-wfall':       'sprites/PNG/Waterfall.png',
     'ts-wfall-bot':   'sprites/PNG/Waterfall bottom.png',
+    'ts-pkmn-mansion': 'sprites/PNG/Game Boy Advance - Pokemon FireRed _ LeafGreen - Maps (Caves, Forests, Oceans, Etc.) - Pokemon Mansion.png',
     'ts-fontana':     'sprites/PNG/fontana.webp',
     'ts-veicoli':     'sprites/PNG/veicoli.webp',
     'ts-int-gen-32':  'sprites/PNG/Interior general.png',
@@ -13280,9 +13287,22 @@ const GameMap = (function () {
         // Alpha ridotta (su sfondo nero della scena): Luca lo voleva proprio
         // "decolorante" — le strade vere (depth 1, sopra) restano a colori
         // pieni, il resto si vede smorzato/più scuro sotto.
-        this.add.image(offX + rect.x * scala, offY + rect.y * scala, key)
-          .setOrigin(0, 0).setDepth(0.5).setAlpha(0.45)
-          .setDisplaySize(rect.width * scala, rect.height * scala);
+        // "sfondo 2" ruotato di 90° verso sinistra (richiesta esplicita di
+        // Luca, 14 ott 2026, lo vede così anche in Tiled): origine al
+        // centro del rettangolo, angolo -90°, e larghezza/altezza SCAMBIATE
+        // prima della rotazione (lo spazio locale è ruotato, serve
+        // "portrait" perché dopo i -90° diventi "landscape" sullo schermo).
+        if (nomeTileset === 'sfondo 2') {
+          const cx = offX + (rect.x + rect.width / 2) * scala;
+          const cy = offY + (rect.y + rect.height / 2) * scala;
+          this.add.image(cx, cy, key)
+            .setOrigin(0.5, 0.5).setDepth(0.5).setAlpha(0.45).setAngle(-90)
+            .setDisplaySize(rect.height * scala, rect.width * scala);
+        } else {
+          this.add.image(offX + rect.x * scala, offY + rect.y * scala, key)
+            .setOrigin(0, 0).setDepth(0.5).setAlpha(0.45)
+            .setDisplaySize(rect.width * scala, rect.height * scala);
+        }
       });
 
       for (const layer of (tmj.layers || [])) {

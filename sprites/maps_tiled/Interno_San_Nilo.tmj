@@ -83,9 +83,9 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2147, 0, 0, 0, 2147, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2147, 2155, 2147, 0, 2147, 2155, 2147, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2155, 0, 2155, 0, 2155, 0, 2155, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2097, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2097, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3749, 0, 0, 0, 2105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2105, 0, 0, 2097, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2113, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2113, 2097, 0, 2105, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -753,6 +753,30 @@
                  "width":23,
                  "x":1094.5,
                  "y":763.5
+                }, 
+                {
+                 "height":77.6666666666667,
+                 "id":67,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":111.666666666667,
+                 "x":651,
+                 "y":622.333333333333
+                }, 
+                {
+                 "height":85,
+                 "id":68,
+                 "name":"",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":118.666666666667,
+                 "x":809.333333333333,
+                 "y":616.333333333333
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1199,8 +1223,8 @@
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":851,
-                 "y":531
+                 "x":847.5,
+                 "y":510.5
                 }, 
                 {
                  "height":27.5,
@@ -1210,9 +1234,349 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":265,
-                 "x":655.5,
+                 "width":29,
+                 "x":769.833333333333,
                  "y":638
+                }, 
+                {
+                 "height":0,
+                 "id":57,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"est"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_5"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":626,
+                 "y":535.5
+                }, 
+                {
+                 "height":0,
+                 "id":58,
+                 "name":"grunt_traditore",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"est"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_5"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":723,
+                 "y":463
+                }, 
+                {
+                 "height":0,
+                 "id":59,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"est"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_5"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":593,
+                 "y":555
+                }, 
+                {
+                 "height":0,
+                 "id":60,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1040.5,
+                 "y":1383.5
+                }, 
+                {
+                 "height":0,
+                 "id":61,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":492,
+                 "y":1357.5
+                }, 
+                {
+                 "height":0,
+                 "id":62,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1036.5,
+                 "y":1133.5
+                }, 
+                {
+                 "height":0,
+                 "id":63,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1033.5,
+                 "y":910
+                }, 
+                {
+                 "height":0,
+                 "id":64,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":816,
+                 "y":880
+                }, 
+                {
+                 "height":0,
+                 "id":65,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"OVEST"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":5
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":854.5,
+                 "y":784.5
+                }, 
+                {
+                 "height":0,
+                 "id":66,
+                 "name":"grunt",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"NORD"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"gdf_sannilo_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"int",
+                         "value":7
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":817.5,
+                 "y":1112
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1221,7 +1585,7 @@
          "y":0
         }],
  "nextlayerid":5,
- "nextobjectid":57,
+ "nextobjectid":69,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",
