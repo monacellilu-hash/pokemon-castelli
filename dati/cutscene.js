@@ -665,3 +665,77 @@ CUTSCENE['bunkerino_finale_mewtwo_ripresa'] = [
   { tipo: 'battaglia', trainer: 'mewtwo_bunkerino_finale', squadraAsync: 'costruisciSquadraMewtwoFinale' },
   ...EPILOGO_BUNKERINO_MEWTWO,
 ];
+
+/* ── ANTRO KYOGRE, piano 9 (sess. 14 ott 2026, staging di Luca) ──
+   Trigger: oggetto Tiled "inizio cutscene" (trigger_cutscene, quando:'entra',
+   flag_fine:'antro9_kyogre_rapito') su antro_kyogre_9.tmj. Matilde e Isa
+   (cameo, dati/npc.js 'npc_antro_kyogre_9_5'/'_6') e "boss gdf" (Lorenzo,
+   dati/npc.js) discutono, poi il Comandante GdF ruba Kyogre con una
+   Masterball e sparisce con tutti i Grunt del piano — stessa tecnica già
+   vista al Rifugio di Marino/Grotta del Vulcano (fade_out dopo l'ultima
+   battuta, non prima). La scelta sì/no con Matilde è VOLUTAMENTE fittizia
+   (Luca: "qualsiasi cosa premi, lo prendo per un sì"): il flag salvato non
+   viene mai letto da nessuna parte, si procede sempre uguale. Alla fine si
+   imposta 'pietra_zaffiro_ottenuta' — lo STESSO flag che già apre i piani
+   interni della Grotta del Vulcano (vedi 'gdf_gate_grotta_vulcano' in
+   dati/npc.js): così il "poliziotto" di Rocca di Papa fa passare anche
+   arrivando da questa strada, senza bisogno di toccare quel gate. */
+CUTSCENE['antro_kyogre_9_matilde_isa'] = [
+  { tipo: 'guarda', npc: 'npc_antro_kyogre_9_5', direzione: 'est' },
+  { tipo: 'guarda', npc: 'npc_antro_kyogre_9_6', direzione: 'est' },
+  { tipo: 'guarda', npc: 'boss gdf', direzione: 'ovest' },
+  { tipo: 'dialogo', nome: 'Matilde', testo: [
+    'Isa, dimmelo tu: hanno davvero intenzione di prendere Kyogre?',
+    'Il lago si sta già ritirando anno dopo anno, con questo clima impazzito. Se gli tolgono anche il suo guardiano, è finita.',
+  ] },
+  { tipo: 'dialogo', nome: 'Isa', testo: [
+    'Lo so bene. Kyogre non è un trofeo: è l\'unica speranza che resta a questi laghi, alle vigne, a tutti i Castelli.',
+    'Senza di lui i Castelli Romani smettono di essere la perla che sono sempre stati. E al GdF non importa niente di tutto questo.',
+  ] },
+  { tipo: 'aspetta', ms: 400 },
+  { tipo: 'esclamativo', npc: 'npc_antro_kyogre_9_5', durata: 700 },
+  { tipo: 'esclamativo', npc: 'npc_antro_kyogre_9_6', durata: 700 },
+  { tipo: 'esclamativo', npc: 'boss gdf', durata: 700 },
+  { tipo: 'guarda', npc: 'npc_antro_kyogre_9_5', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'npc_antro_kyogre_9_6', direzione: 'sud' },
+  { tipo: 'guarda', npc: 'boss gdf', direzione: 'sud' },
+  { tipo: 'trema', ms: 400, intensita: 0.012 },
+  { tipo: 'dialogo', nome: 'Lorenzo', testo: [
+    'Ah ah ah! Tutto come previsto.',
+    'Solo un vero castellano, con il cuore puro e la Pietra Zaffiro, può risvegliare Kyogre. Grazie, {nome}.',
+    'Da qui ci penso io. Grazie alla mia Masterball.',
+  ] },
+  { tipo: 'guarda', npc: 'boss gdf', direzione: 'nord' },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'flag', nome: 'antro9_kyogre_rapito', valore: true },
+  { tipo: 'nascondi_npc', npc: 'kyogre_antro9_cutscene' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 600 },
+  { tipo: 'dialogo', nome: 'Lorenzo', testo: [
+    'Ah ah ah! Grazie a voi possiedo il re del lago!',
+    'Addio... non mi prenderete mai!',
+  ] },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'nascondi_npc', npc: 'boss gdf' },
+  { tipo: 'rigenera_npc' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 600 },
+  { tipo: 'guarda_reciproco', npc: 'npc_antro_kyogre_9_5' },
+  { tipo: 'dialogo', nome: 'Matilde', testo: [
+    'Manco con un 20 critico lo prendevi, sai? Ci è riuscito solo con quella Masterball.',
+  ] },
+  { tipo: 'dialogo', nome: 'Isa', testo: [
+    'Kyogre va riportato dove deve stare. I Castelli vanno salvati, prima che sia davvero troppo tardi.',
+  ] },
+  { tipo: 'dialogo', nome: 'Matilde', testo: ['{nome}, ci aiuterai?'] },
+  { tipo: 'scelta_si_no', messaggio: 'Ci aiuterai?', testoSi: 'Sì', testoNo: 'No', salva_flag: 'antro9_matilde_risposta' },
+  { tipo: 'dialogo', nome: 'Matilde', testo: [
+    'Come hai detto? Con questo casino e l\'acqua scrosciante non riesco a sentirti... lo prendo per un sì.',
+  ] },
+  { tipo: 'flag', nome: 'pietra_zaffiro_ottenuta', valore: true },
+  { tipo: 'fade_out', ms: 800 },
+  { tipo: 'nascondi_npc', npc: 'npc_antro_kyogre_9_5' },
+  { tipo: 'nascondi_npc', npc: 'npc_antro_kyogre_9_6' },
+  { tipo: 'aspetta', ms: 200 },
+  { tipo: 'fade_in', ms: 800 },
+];

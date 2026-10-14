@@ -2364,6 +2364,32 @@ const GameMap = (function () {
     return set;
   }
 
+  // Direzione cardinale → vettore (dx,dy), in italiano com'è scritto nel
+  // nome degli oggetti "collisione speciale" piazzati a mano da Luca.
+  const DIR_IT_VETTORE = { nord: { dx: 0, dy: -1 }, sud: { dx: 0, dy: 1 }, est: { dx: 1, dy: 0 }, ovest: { dx: -1, dy: 0 } };
+
+  // Costruisce l'elenco delle zone "collisione_direzionale" (Antro Kyogre):
+  // legge il TESTO del nome dell'oggetto, es. "collisione speciale, si passa
+  // da nord verso sud ma da sud verso nord è una collisione!" — l'ULTIMA
+  // coppia "da X verso Y" (quella dopo il "ma...") è la direzione BLOCCATA:
+  // il vettore di movimento del giocatore corrispondente a "verso Y" non può
+  // attraversare il rettangolo. Riusabile da qualunque mappa futura con lo
+  // stesso tipo di oggetto, non solo Antro Kyogre.
+  function _buildCollisioniDirezionali(eventi) {
+    const zone = [];
+    for (const ev of eventi) {
+      if (ev.tipo !== 'collisione_direzionale') continue;
+      if (!(ev.w > 0 && ev.h > 0)) continue;
+      const coppie = [...String(ev.nome).matchAll(/da\s+(nord|sud|est|ovest)\s+verso\s+(nord|sud|est|ovest)/gi)];
+      if (coppie.length === 0) continue;
+      const ultima = coppie[coppie.length - 1];
+      const dirBloccata = DIR_IT_VETTORE[ultima[2].toLowerCase()];
+      if (!dirBloccata) continue;
+      zone.push({ tx0: ev.tx0, ty0: ev.ty0, tx1: ev.tx1, ty1: ev.ty1, dx: dirBloccata.dx, dy: dirBloccata.dy });
+    }
+    return zone;
+  }
+
   // L'"id" di incontro condiviso da tutte le zone erba_alta disegnate a mano
   // su questa mappa (verificato: ogni mappa ne usa uno solo, es. tutti i
   // rettangoli di percorso_2 hanno id "incontri percorso 2"). Usato per dare
@@ -2661,6 +2687,13 @@ const GameMap = (function () {
   // direzioni (né salendo da sud, né scendendo da nord). Vedi
   // _buildMuroNordTiles/_sposta.
   let muroNordTiles    = null;
+  // Zone "collisione_direzionale" (Antro Kyogre, 14 ott 2026): rettangoli
+  // Tiled con nome parlante "collisione speciale, si passa da X verso Y ma
+  // da Y verso X è una collisione!" — un dislivello/corrente a senso unico,
+  // come i dirupi di Essentials. Si cammina liberamente nella direzione
+  // libera; muoversi nella direzione opposta DENTRO quel rettangolo è
+  // bloccato come un muro. Vedi _buildCollisioniDirezionali/_sposta.
+  let collisioniDirezionali = [];
   let mapW = 0, mapH = 0, tileSize = 32;
   let layerObjects     = [];
   let tilePokeballNascosti = {};   // 'tx,ty' -> {layer, index}: serve a rimetterli (oggetti a comparsa)
@@ -3304,6 +3337,7 @@ const GameMap = (function () {
       erbaAltaIdPerMappa = { [chiave]: _erbaAltaIdMappa(eventiMappa) };
       ghiaccioTiles = _buildIceTiles(tmj);
       muroNordTiles = _buildMuroNordTiles(tmj);
+      collisioniDirezionali = _buildCollisioniDirezionali(eventiMappa);
       // Di norma si riparte sempre "a terra" — l'eccezione è la ripresa da
       // salvataggio fatto in Surf (PROBLEMA 4a): stavaSurfando è un flag
       // "una tantum", consumato subito così i prossimi warp/porte tornano al
@@ -3520,6 +3554,7 @@ const GameMap = (function () {
       mappeConErbaRilevabile = mappeRilevabiliSet;
       ghiaccioTiles = ghiaccioSetGlobale;
       muroNordTiles = new Set();   // feature solo interni (Grotta del Vulcano), mai nei cluster outdoor
+      collisioniDirezionali = [];  // idem: feature solo interni (Antro Kyogre), mai nei cluster outdoor
       // Vedi _caricaMappaSingola: stessa logica, stavaSurfando "una tantum"
       // per la ripresa da salvataggio in Surf (PROBLEMA 4a).
       surfAttivo   = stavaSurfando;
@@ -5305,6 +5340,18 @@ const GameMap = (function () {
         if (dy > 0 && muroNordTiles.has(newTx + ',' + newTy)) {
           giraSulPosto();
           return;
+        }
+      }
+
+      // 1c) Collisione direzionale (dirupo a senso unico, Antro Kyogre — vedi
+      // collisioniDirezionali/_buildCollisioniDirezionali): la casella di
+      // arrivo è normalmente calpestabile, ma se il movimento richiesto va
+      // nella direzione "bloccata" di una zona che la copre, si comporta
+      // come un muro.
+      if (collisioniDirezionali && collisioniDirezionali.length) {
+        for (const z of collisioniDirezionali) {
+          if (newTx < z.tx0 || newTx > z.tx1 || newTy < z.ty0 || newTy > z.ty1) continue;
+          if (dx === z.dx && dy === z.dy) { giraSulPosto(); return; }
         }
       }
 

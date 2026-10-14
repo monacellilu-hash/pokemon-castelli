@@ -1692,8 +1692,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":576,
-                 "y":800
+                 "x":718.5,
+                 "y":1011.5
                 }, 
                 {
                  "height":0,
@@ -1716,8 +1716,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":672,
-                 "y":736
+                 "x":716,
+                 "y":881.5
                 }, 
                 {
                  "height":0,
@@ -1740,8 +1740,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":768,
-                 "y":800
+                 "x":785,
+                 "y":880
                 }, 
                 {
                  "height":0,
@@ -1764,8 +1764,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":608,
-                 "y":864
+                 "x":785.5,
+                 "y":982
                 }, 
                 {
                  "height":0,
@@ -1788,8 +1788,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":736,
-                 "y":864
+                 "x":754,
+                 "y":888
                 }, 
                 {
                  "height":0,
@@ -1812,8 +1812,8 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":608,
-                 "y":928
+                 "x":720,
+                 "y":982
                 }, 
                 {
                  "height":0,
@@ -1836,17 +1836,41 @@
                  "type":"masso",
                  "visible":true,
                  "width":0,
-                 "x":736,
-                 "y":928
+                 "x":784.5,
+                 "y":1010
+                }, 
+                {
+                 "height":0,
+                 "id":107,
+                 "name":"masso_2fc_8",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"masso_2fc_8"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"masso"
+                        }],
+                 "rotation":0,
+                 "type":"masso",
+                 "visible":true,
+                 "width":0,
+                 "x":400,
+                 "y":302
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "x":0,
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":107,
+ "nextobjectid":108,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

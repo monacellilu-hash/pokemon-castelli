@@ -2148,4 +2148,25 @@ const DATI_NPC = {
     sprite: 'Luogotenente_GdF_2', nome: 'Michela', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Il Capo è impegnato in questo momento.'],
   },
+
+  // Piano 9 di Antro Kyogre (sess. 14 ott 2026): Matilde e Isa (già
+  // Capopalestra altrove, qui solo cameo — stessi sprite dei loro
+  // trainer_id 'gym_leader_palestra marino'/'gym_leader_palestra ariccia')
+  // discutono col giocatore mentre il Comandante GdF ("boss gdf" = Lorenzo,
+  // stesso sprite del suo trainer_id 'gdf_capo_marino'/'gdf_boss_grotta_
+  // vulcano') ruba Kyogre con una Masterball — vedi cutscene
+  // 'antro_kyogre_9_matilde_isa' in dati/cutscene.js. Tutti e tre type:'npc'
+  // apposta (nessuna lotta in questa scena, solo dialogo).
+  'npc_antro_kyogre_9_5': {
+    sprite: 'Capopalestra_Marino_Matilde', nome: 'Matilde', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Il lago sta già morendo. Kyogre è l\'unica speranza che resti.'],
+  },
+  'npc_antro_kyogre_9_6': {
+    sprite: 'Capopalestra_Ariccia', nome: 'Isa', direzione: 'est', movimento: 'fisso',
+    dialogo: ['Il GdF non capisce cosa rischia di distruggere.'],
+  },
+  'boss gdf': {
+    sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Tutto come previsto.'],
+  },
 };
