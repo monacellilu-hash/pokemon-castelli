@@ -2080,4 +2080,45 @@ const DATI_NPC = {
     sprite: 'NPC 13', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
     dialogo: ["Matilde organizza ogni anno una festa sul lago. Se sei fortunato capiti proprio in quel periodo."],
   },
+
+  /* ── 3 case di Rocca di Papa (sess. 14 ott 2026, richiesta esplicita di
+     Luca): 7 NPC su leggendario di ghiaccio/Baso e Gianluca/scavatori
+     sospetti — vedi MAPPE in js/map.js per le 3 mappe clonate. ── */
+  'npc_rocca_di_papa_casa2_1_1': {
+    sprite: 'NPC 08', nome: 'Pierina', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Di notte, in cima alla Rocca, a volte si vede un\'ombra bianco-azzurra sfiorare le nuvole.',
+      'I vecchi dicono che è un guardiano di ghiaccio che veglia su questo posto da sempre.',
+    ],
+  },
+  'npc_rocca_di_papa_casa2_1_2': {
+    sprite: 'NPC 10', nome: 'Osvaldo', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il Capopalestra Baso allena i ragazzi del paese gratis, la domenica. Un pezzo d\'uomo, altro che Medaglia.'],
+  },
+  'npc_rocca_di_papa_casa2_2_1': {
+    sprite: 'NPC 07', nome: 'Guido', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Gianluca è tornato a far funzionare la funivia, finalmente. Dopo quello che gli è successo, ci voleva coraggio.'],
+  },
+  'npc_rocca_di_papa_casa2_2_2': {
+    sprite: 'NPC 09', nome: 'Amerigo', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Da qualche settimana si sentono rumori strani di notte, dalla montagna. Scavi, pare.',
+      'Ho visto tipi con tute mimetiche salire verso la Grotta del Vulcano. Non mi è piaciuto per niente.',
+    ],
+  },
+  'npc_rocca_di_papa_casadoppia_luxury_1_1': {
+    sprite: 'NPC 14', nome: 'Palmira', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Mio nonno giurava di aver visto un uccello di ghiaccio sopra il lago gelato della funivia. Nessuno gli ha mai creduto.'],
+  },
+  'npc_rocca_di_papa_casadoppia_luxury_1_2': {
+    sprite: 'NPC 12', nome: 'Ruggero', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Chiunque stia scavando nella montagna, non lo fa per hobby. Troppi camion, troppo silenzio su cosa trasportano.',
+      'Se fossi in te, starei alla larga da certe zone finché non si capisce di cosa si tratta.',
+    ],
+  },
+  'npc_rocca_di_papa_casadoppia_luxury_1_3': {
+    sprite: 'NPC 11', nome: 'Settimia', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Baso e Gianluca si conoscono da quando erano bambini. Quando uno dei due è nei guai, l\'altro non lo lascia mai solo.'],
+  },
 };

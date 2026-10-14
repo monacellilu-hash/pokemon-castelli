@@ -4147,6 +4147,17 @@ const Battle = (function () {
     setTimeout(() => {
       el.classList.add('nascosto');
       el.classList.remove('dissolvenza-uscita', 'doppia');
+      // Bug segnalato da Luca (14 ott 2026, "la doppia fa saltare la
+      // grafica delle lotte successive"): gli elementi del 2° slot
+      // (zona/info-nemico-2, zona/info-giocatore-2) perdono "nascosto" in
+      // aggiornaPannelliDoppia() mentre la doppia è in corso, ma nessuno lo
+      // rimetteva qui alla fine — restavano "svelati" per sempre. La
+      // prossima lotta (anche singola) non tocca mai questi id, quindi
+      // restavano visibili, sovrapposti allo schermo normale.
+      ['zona-nemico-2', 'zona-giocatore-2', 'info-nemico-2', 'info-giocatore-2'].forEach(id => {
+        const e2 = $(id);
+        if (e2) e2.classList.add('nascosto');
+      });
     }, 500);
     const cb = doppiaOnFine;
     doppiaOnFine = null;

@@ -655,6 +655,27 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/rocca_di_papa.tmj',
       latC: 41.7608, lonC: 12.7096,
     },
+    // ── 3 case di Rocca di Papa (sess. 14 ott 2026, richiesta esplicita di
+    // Luca): 2 cloni di casa2 + 1 di casadoppia_luxury, NPC che parlano del
+    // leggendario di ghiaccio che veglia sulla Rocca (Articuno, Monte Cavo/
+    // dungeon innevato), di Baso e Gianluca, e di tipi loschi che scavano la
+    // montagna (presagio Team GdF/CoTrAL). Entrate piazzate in alto a
+    // sinistra sulla mappa esterna — Luca le sposta dove preferisce. ──
+    'rocca_di_papa_casa2_1': {
+      file: 'sprites/maps_tiled/rocca_di_papa_casa2_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7608, lonFissa: 12.7096,
+    },
+    'rocca_di_papa_casa2_2': {
+      file: 'sprites/maps_tiled/rocca_di_papa_casa2_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7608, lonFissa: 12.7096,
+    },
+    'rocca_di_papa_casadoppia_luxury_1': {
+      file: 'sprites/maps_tiled/rocca_di_papa_casadoppia_luxury_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.7608, lonFissa: 12.7096,
+    },
     // ── Interno palestra Rocca di Papa (Baso) — chiave = destinazione esatta
     // scritta sulla porta in rocca_di_papa.tmj (palestra_rocco_door). ──
     'interno_palestra_rocco': {
@@ -4537,8 +4558,20 @@ const GameMap = (function () {
       try {
         await new Promise((ok, ko) => {
           this.load.image(texKey, `sprites/follower/${fileKey}.png`);
-          this.load.once('complete', ok);
-          this.load.once('loaderror', ko);
+          // Sess. 14 ott 2026 (bug segnalato da Luca: "vedo 16 copie dello
+          // stesso follower, una per ogni frame/direzione", sempre più
+          // spesso con Pokémon "grossi"): 'complete' è un evento GLOBALE del
+          // loader, scatta quando TUTTO il lotto in corso finisce — non solo
+          // questo file. Se un altro caricamento parte nello stesso momento
+          // (es. un leggendario ambientale mentre il follower del giocatore
+          // cambia specie), i due '.once(complete)' potevano risolversi nel
+          // momento sbagliato, con la texture ancora a metà o i frame
+          // ritagliati più di una volta sulla stessa immagine — file più
+          // grandi (specie "grosse") impiegano più a caricare, allargando la
+          // finestra in cui può succedere. Fix: eventi specifici DI QUESTO
+          // file, non il generico 'complete' dell'intero lotto.
+          this.load.once('filecomplete-image-' + texKey, ok);
+          this.load.once('loaderror', (file) => { if (file && file.key === texKey) ko(file); });
           this.load.start();
         });
       } catch (e) {
@@ -4548,16 +4581,22 @@ const GameMap = (function () {
       // Ritaglia i 16 frame (4×4) DENTRO la stessa texture appena caricata
       // (Texture.add, numerati 0-15 come farebbe load.spritesheet) — evita
       // di doverla ricaricare due volte con dimensione nota in anticipo,
-      // visto che qui la scopriamo solo DOPO il caricamento.
+      // visto che qui la scopriamo solo DOPO il caricamento. Guardia
+      // idempotente aggiunta nella stessa sessione: se per qualunque motivo
+      // questa funzione viene richiamata due volte per la stessa specie
+      // prima che la prima chiamata abbia finito, non si ritagliano i frame
+      // una seconda volta sulla stessa texture.
       const tex = this.textures.get(texKey);
-      const img = tex.getSourceImage();
-      const fw = Math.floor((img.width || 256) / 4);
-      const fh = Math.floor((img.height || 256) / 4);
-      let i = 0;
-      for (let riga = 0; riga < 4; riga++) {
-        for (let col = 0; col < 4; col++) {
-          tex.add(i, 0, col * fw, riga * fh, fw, fh);
-          i++;
+      if (!tex.has(0)) {
+        const img = tex.getSourceImage();
+        const fw = Math.floor((img.width || 256) / 4);
+        const fh = Math.floor((img.height || 256) / 4);
+        let i = 0;
+        for (let riga = 0; riga < 4; riga++) {
+          for (let col = 0; col < 4; col++) {
+            tex.add(i, 0, col * fw, riga * fh, fw, fh);
+            i++;
+          }
         }
       }
       return texKey;
@@ -7812,7 +7851,10 @@ const GameMap = (function () {
       // chiave (Luogotenente) vanno mostrate DOPO, a schermo di battaglia
       // già chiuso — non sovrapposte alla schermata di lotta (richiesta
       // esplicita di Luca, punto 5).
-      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 } ] };
+      // Sess. 14 ott 2026 (richiesta esplicita di Luca): l'alleato deve
+      // avere SEMPRE almeno 3 Pokémon da far lottare, non 2 — rischiava di
+      // restarti a combattere da solo troppo presto in una doppia lunga.
+      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 }, { id: 157, livello: 54 } ] };
       const esito = await this._battagliaDoppiaAlleato(alleatoCamilla, [
         { nome: dati.nome, squadra: dati.squadra, premioSoldi: dati.premio || 0 },
       ]);
@@ -8001,7 +8043,10 @@ const GameMap = (function () {
         await mostraDialogo('Camilla', ['Mi dai una mano? Non mi va di affrontarli da sola, e la situazione non mi convince affatto.']);
       }
 
-      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 } ] };
+      // Sess. 14 ott 2026 (richiesta esplicita di Luca): l'alleato deve
+      // avere SEMPRE almeno 3 Pokémon da far lottare, non 2 — rischiava di
+      // restarti a combattere da solo troppo presto in una doppia lunga.
+      const alleatoCamilla = { nome: 'Camilla', squadra: [ { id: 59, livello: 55 }, { id: 38, livello: 54 }, { id: 157, livello: 54 } ] };
       let esito = 'vittoria';
       if (grunt1 && grunt2) {
         // Niente dialogoSconfitta qui (punto 5, stesso motivo del
@@ -8191,7 +8236,8 @@ const GameMap = (function () {
       // 3) Prima battaglia in doppia: Baso (alleato, la sua squadra vera) +
       //    giocatore VS i 2 grunt "forti" (più tosti dei 6 gregari già in
       //    giro per la stanza).
-      const alleatoBaso = { nome: 'Baso', squadra: [ { id: 68, livello: 40 }, { id: 308, livello: 39 } ] };
+      // Sess. 14 ott 2026 (richiesta esplicita di Luca): almeno 3 Pokémon.
+      const alleatoBaso = { nome: 'Baso', squadra: [ { id: 68, livello: 40 }, { id: 308, livello: 39 }, { id: 297, livello: 39 } ] };
       const grunt1 = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER['cotral_grunt_forte_1'] : null;
       const grunt2 = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER['cotral_grunt_forte_2'] : null;
       if (grunt1 && grunt2) {
