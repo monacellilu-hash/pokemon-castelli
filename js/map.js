@@ -2275,6 +2275,15 @@ const GameMap = (function () {
   // rettangoli esistente, non lo sostituisce: _getTileType usa prima le zone
   // disegnate a mano (che possono avere probabilità/id specifici), e ricade
   // su questo solo per le caselle non coperte da nessun rettangolo.
+  // true se questa mappa usa il tileset "outside"/"outside_pallet" da
+  // qualche parte (vedi mappeConErbaRilevabile sopra).
+  function _usaTilesetOutside(tmj) {
+    return (tmj.tilesets || []).some(t => {
+      const src = String(t.source || '').toLowerCase().replace(/\\/g, '/');
+      return src.endsWith('outside.tsx') || src.endsWith('outside_pallet.tsx');
+    });
+  }
+
   function _buildErbaAltaTiles(tmj) {
     const set = new Set();
     const gidErba = [];
@@ -2630,6 +2639,13 @@ const GameMap = (function () {
   // prima. Impostato in create() da stato.mappaSalvata.surfando.
   let stavaSurfando    = false;
   let erbaAltaAuto     = null;   // Set "tx,ty": caselle erba alta riconosciute dal TILE (non da rettangolo)
+  // Set delle chiavi-mappa (membro del cluster, o mappaCorrente se singola)
+  // che usano DAVVERO il tileset "outside"/"outside_pallet" (quello con
+  // l'erba alta riconoscibile dal tile locale 6) — sess. 14 ott 2026, vedi
+  // _getTileType: su una mappa che non lo usa (es. Zona Safari, interni)
+  // non c'è nessun segnale tile-per-tile affidabile, quindi i rettangoli
+  // 'erba_alta' restano "pieni" come prima, senza il filtro extra.
+  let mappeConErbaRilevabile = null;
   let erbaAltaIdPerMappa = {};   // chiave mappa membro → id incontri da usare per le sue caselle erbaAltaAuto
   let ghiaccioTiles    = null;   // Set "tx,ty": caselle di ghiaccio scivoloso (Caves.tsj, tile locale 944)
   let scivolandoGhiaccio = false; // true mentre è in corso uno scivolamento automatico: blocca l'input manuale
@@ -3278,6 +3294,7 @@ const GameMap = (function () {
       luciMappa     = parseLuci(tmj);
       acquaSurf     = _buildSurfTiles(tmj, eventiMappa);
       erbaAltaAuto  = _buildErbaAltaTiles(tmj);
+      mappeConErbaRilevabile = _usaTilesetOutside(tmj) ? new Set([chiave]) : new Set();
       erbaAltaIdPerMappa = { [chiave]: _erbaAltaIdMappa(eventiMappa) };
       ghiaccioTiles = _buildIceTiles(tmj);
       muroNordTiles = _buildMuroNordTiles(tmj);
@@ -3420,6 +3437,7 @@ const GameMap = (function () {
       const surfSetGlobale = new Set();
       const erbaSetGlobale = new Set();
       const ghiaccioSetGlobale = new Set();
+      const mappeRilevabiliSet = new Set();
       erbaAltaIdPerMappa = {};
       const tuttiTilesets  = new Set();
       const infoPerChiave  = {};
@@ -3448,6 +3466,7 @@ const GameMap = (function () {
         const erbaLocale   = _buildErbaAltaTiles(tmj);
         const ghiaccioLocale = _buildIceTiles(tmj);
         erbaAltaIdPerMappa[k] = _erbaAltaIdMappa(eventiLocali);
+        if (_usaTilesetOutside(tmj)) mappeRilevabiliSet.add(k);
 
         for (let r = 0; r < tmj.height; r++) {
           const rigaGlob = collGrid[offY + r];
@@ -3492,6 +3511,7 @@ const GameMap = (function () {
 
       acquaSurf    = surfSetGlobale;
       erbaAltaAuto = erbaSetGlobale;
+      mappeConErbaRilevabile = mappeRilevabiliSet;
       ghiaccioTiles = ghiaccioSetGlobale;
       muroNordTiles = new Set();   // feature solo interni (Grotta del Vulcano), mai nei cluster outdoor
       // Vedi _caricaMappaSingola: stessa logica, stavaSurfando "una tantum"
@@ -5630,6 +5650,23 @@ const GameMap = (function () {
       };
     }
 
+    // Chiave della mappa membro (del cluster attivo, o mappaCorrente se
+    // mappa singola) a cui appartiene la cella (tx,ty) in coordinate
+    // cluster-globali. Riusata da _getTileType sia per l'id incontri sia
+    // per sapere se QUESTA mappa ha un tileset "outside" rilevabile.
+    _chiaveMappaPerCella(tx, ty) {
+      let chiaveMappa = mappaCorrente;
+      if (clusterAttivo) {
+        for (const kk of Object.keys(clusterBoxes)) {
+          const b = clusterBoxes[kk];
+          if (tx >= b.offsetX && tx < b.offsetX + b.w && ty >= b.offsetY && ty < b.offsetY + b.h) {
+            chiaveMappa = kk; break;
+          }
+        }
+      }
+      return chiaveMappa;
+    }
+
     // Fix 2 — tipo di terreno sotto una casella, letto dalle zone del layer eventi.
     // Restituisce l'oggetto zona ('erba_alta' | 'acqua' | 'incontri') o null.
     _getTileType(tx, ty) {
@@ -5637,6 +5674,26 @@ const GameMap = (function () {
         if (ev.tipo !== 'erba_alta' && ev.tipo !== 'acqua' && ev.tipo !== 'incontri') continue;
         if (ev.w > 0 && ev.h > 0 &&
             tx >= ev.tx0 && tx <= ev.tx1 && ty >= ev.ty0 && ty <= ev.ty1) {
+          // Sess. 14 ott 2026 (richiesta esplicita di Luca): un rettangolo
+          // 'erba_alta' spesso copre una zona INTERA (sentieri, decorazioni
+          // comprese), ma gli incontri veri scattano solo dove c'è DAVVERO
+          // erba alta o acqua — mai sul resto del rettangolo. Il rettangolo
+          // resta comunque chi decide QUALE tabella usare (il suo "id"),
+          // solo che ora deve anche combaciare col tile vero sotto i piedi.
+          // 'acqua'/'incontri' restano come prima (già pensati per essere
+          // precisi, niente filtro aggiuntivo).
+          if (ev.tipo === 'erba_alta') {
+            const chiaveMappaQui = this._chiaveMappaPerCella(tx, ty);
+            const rilevabile = mappeConErbaRilevabile && mappeConErbaRilevabile.has(chiaveMappaQui);
+            if (rilevabile) {
+              const suAcqua = acquaSurf && acquaSurf.has(tx + ',' + ty);
+              const suErbaVera = erbaAltaAuto && erbaAltaAuto.has(tx + ',' + ty);
+              if (!suAcqua && !suErbaVera) continue;
+            }
+            // Mappa senza tileset "outside" rilevabile (es. Zona Safari,
+            // interni): nessun segnale tile-per-tile affidabile, il
+            // rettangolo resta "pieno" come prima di questa sessione.
+          }
           return ev;
         }
       }
@@ -5661,15 +5718,7 @@ const GameMap = (function () {
       // membro (ogni mappa ne usa uno solo). Se la mappa non ne ha nessuno,
       // niente incontro automatico "indovinato".
       if (erbaAltaAuto && erbaAltaAuto.has(tx + ',' + ty)) {
-        let chiaveMappa = mappaCorrente;
-        if (clusterAttivo) {
-          for (const kk of Object.keys(clusterBoxes)) {
-            const b = clusterBoxes[kk];
-            if (tx >= b.offsetX && tx < b.offsetX + b.w && ty >= b.offsetY && ty < b.offsetY + b.h) {
-              chiaveMappa = kk; break;
-            }
-          }
-        }
+        const chiaveMappa = this._chiaveMappaPerCella(tx, ty);
         const id = erbaAltaIdPerMappa[chiaveMappa];
         if (id) return { tipo: 'erba_alta', id, props: { id }, w: 0, h: 0, tx, ty };
       }
@@ -9596,6 +9645,21 @@ const GameMap = (function () {
         // overlay (mostraSceltaLista), non serve bloccare questa funzione.
         if (dati.scelteVittoriaPokemon && dati.scelteVittoriaPokemon.length > 0) {
           this._offriSceltaPokemon(dati.scelteVittoriaPokemon, dati.livelloVittoriaPokemon || 5);
+        }
+      }
+      // Permesso MN in premio alla vittoria (es. il Trainer della Casa
+      // Segreta nella Zona Safari dona il permesso Volo — sess. 14 ott
+      // 2026, richiesta esplicita di Luca). Campo generico riusabile da
+      // qualunque trainer futuro che debba sbloccare una MN fuori da una
+      // palestra (vinciPalestra/mnDonata gestisce già il caso palestra).
+      if (dati.mnVittoria && typeof stato !== 'undefined') {
+        if (!stato.mn) stato.mn = {};
+        if (!stato.mn[dati.mnVittoria]) {
+          stato.mn[dati.mnVittoria] = true;
+          const NOMI_MN = { surf: 'Surf', taglio: 'Taglio', volo: 'Volo', forza: 'Forza',
+                             spaccaroccia: 'Spaccaroccia', cascata: 'Cascata', sub: 'Sub' };
+          if (typeof mostraToast === 'function')
+            mostraToast(`🎁 Hai ottenuto il permesso di usare la MN ${NOMI_MN[dati.mnVittoria] || dati.mnVittoria}!`, 3500);
         }
       }
       // Campione della Lega sconfitto: fine del gioco principale, sblocca il

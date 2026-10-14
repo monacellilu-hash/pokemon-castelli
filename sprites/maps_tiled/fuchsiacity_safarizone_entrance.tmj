@@ -780,11 +780,6 @@
                          "value":"albano"
                         }, 
                         {
-                         "name":"nota_origine",
-                         "type":"string",
-                         "value":"in originale portava a MAP_FUCHSIA_CITY (Fuchsia City) - decidere dove in Castelli Romani"
-                        }, 
-                        {
                          "name":"spawn_id",
                          "type":"string",
                          "value":"da_zona_safari_ingresso"

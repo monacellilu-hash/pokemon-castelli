@@ -1643,6 +1643,21 @@ const DATI_TRAINER = {
     dialogo_dopo: 'La fortuna nun c\'entrava, eri davero preparato.',
     premio: 2800,
   },
+  // Casa Segreta della Zona Safari (sess. 14 ott 2026, richiesta esplicita
+  // di Luca): sconfiggerlo regala il permesso d'uso della MN Volo
+  // (campo generico mnVittoria, vedi _applicaEsitoTrainer in js/map.js) —
+  // oggetto Tiled da convertire da "npc" a "trainer" (nota_origine
+  // dell'estrazione pret diceva già "Dona Volo se lo batti").
+  'npc_safarizone_secrethouse_1': {
+    sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 4,
+    classe: 'Guardiano', nome: 'Policarpo',
+    squadra: [ { id: 18, livello: 42 }, { id: 169, livello: 43 } ],   // Pidgeot, Crobat
+    dialogo_prima: 'Pochi sanno di questa casa nascosta nella Zona Safari. Tu però ci sei arrivato: dimostrami che te lo meriti.',
+    dialogo_dopo: 'Niente male. Tieni, è giusto che tu possa volare fin qui ogni volta che vuoi.',
+    premio: 1800,
+    mnVittoria: 'volo',
+  },
+
   // Rilivellato sess. 14 ott 2026 (richiesta esplicita di Luca): il dungeon
   // è raggiungibile solo dopo la 7ª palestra (cap 58), tarato 2-3 livelli
   // sopra = 60-61, come tutti i Grunt del rifugio. Squadra portata a 5.
@@ -4652,7 +4667,7 @@ const DATI_TRAINER = {
     premio: 340,
   },
   'Rocca_di_papa_capo': {
-    sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 5,
+    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
     classe: 'Organizzatore', nome: 'Castagnolo Capo',
     squadra: [ { id: 232, livello: 36 }, { id: 286, livello: 37 }, { id: 277, livello: 37 } ],   // Donphan, Breloom, Swellow
     dialogo_prima: 'Sono io che organizzo la Sagra delle Castagne ogni anno. Vediamo se sai apprezzarla come si deve!',
