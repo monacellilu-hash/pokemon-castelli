@@ -2172,6 +2172,19 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Almeno ho trovato un\'altra cosa.',
     premio: 480,
   },
+  // 7° allenatore aggiunto da Luca più avanti sul percorso (sess. 14 ott
+  // 2026): l'oggetto Tiled era un copia-incolla di "all-fg-1" con l'id MAI
+  // aggiornato (stesso tipo di bug già capitato più volte questa sessione:
+  // due allenatori diversi che condividevano id → stato/visibilità
+  // mischiati) — corretto in "all-fg-7" sull'oggetto Tiled, voce nuova qui.
+  'all-fg-7': {
+    sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 4,
+    classe: 'Escursionista', nome: 'Romildo',
+    squadra: [{ id: 19, livello: 11 }, { id: 16, livello: 12 }],
+    dialogo_prima: 'Quasi a Grottaferrata! Un\'ultima sfida prima di arrivare?',
+    dialogo_dopo: 'Ci vediamo in città, allora.',
+    premio: 480,
+  },
 
   /* ── PERCORSO 3 — campagna verso il lago (Grottaferrata → Marino), Lv 9-14 ──
      8 allenatori sul tracciato + 2 nella zona laterale sbloccabile con MN Forza
