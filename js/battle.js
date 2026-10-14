@@ -811,7 +811,7 @@ const Battle = (function () {
     const giaPosseduto = modalita === 'selvatico' && statoGioco &&
       statoGioco.pokedex && statoGioco.pokedex[nemico.id] && statoGioco.pokedex[nemico.id].catturato;
     $('nemico-nome').innerHTML = nemico.nome + siglaCondizione(nemico) +
-      (giaPosseduto ? ' <img src="sprites/NO/Graphics/UI/Battle/icon_ball.png" alt="" style="height:1em;vertical-align:middle;">' : '');
+      (giaPosseduto ? ' <img src="sprites/Oggetti/icon_ball.png" alt="" style="height:1em;vertical-align:middle;">' : '');
     $('nemico-lv').textContent = 'Lv.' + nemico.livello;
     aggiornaBarraHp('nemico-hp', nemico.hpAttuale, nemico.hpMax);
 
@@ -823,7 +823,7 @@ const Battle = (function () {
         let html = '';
         for (let i = 0; i < squadraNemica.length; i++) {
           const sconfitto = i >= rimasti;
-          html += `<img src="sprites/NO/Graphics/UI/Battle/icon_ball${sconfitto ? '_faint' : ''}.png" alt="">`;
+          html += `<img src="sprites/Oggetti/icon_ball${sconfitto ? '_faint' : ''}.png" alt="">`;
         }
         elContatore.innerHTML = html;
         elContatore.style.display = '';

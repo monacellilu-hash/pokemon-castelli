@@ -2950,8 +2950,8 @@ function creaUovo(speciePadreId) {
     nome: 'Uovo',
     tipi: [],
     sprite: {
-      fronte: 'sprites/NO/Graphics/Pokemon/Eggs/000.png',
-      retro:  'sprites/NO/Graphics/Pokemon/Eggs/000.png',
+      fronte: 'sprites/Oggetti/000.png',
+      retro:  'sprites/Oggetti/000.png',
     },
     livello: 0,
     hpMax: 0,

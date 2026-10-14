@@ -2662,7 +2662,7 @@ const GameMap = (function () {
   // Sess. 13 ott 2026: Luca ha riordinato la cartella piatta "per claude" in
   // sottocartelle per categoria (Civili/Donne, Civili/Uomini, Civili/Bambini,
   // Trainer, "Gdf & Cotral", Unici) — nessun file duplicato tra sottocartelle
-  // (verificato), quindi si provano tutte in ordine finché una non risponde.
+  // (verificato). Usate come fallback (vedi NPC_SPRITE_INDEX sotto).
   const NPC_SPRITE_DIRS = [
     'sprites/npc e trainer/Civili/Uomini/',
     'sprites/npc e trainer/Civili/Donne/',
@@ -2671,6 +2671,65 @@ const GameMap = (function () {
     'sprites/npc e trainer/Gdf & Cotral/',
     'sprites/npc e trainer/Unici/',
   ];
+  // Sess. 14 ott 2026 (bug segnalato da Luca: "da ieri tutto più lento a
+  // caricare"): il fix di ieri provava le 6 cartelle una alla volta IN
+  // SEQUENZA, aspettando un errore di rete completo prima di provare la
+  // prossima — nel caso comune (un solo file) significava 1-6 richieste
+  // fallite e attese PRIMA di trovare quella giusta, per OGNI sprite NPC
+  // caricato per la prima volta. Indice precalcolato (nome file → cartella
+  // esatta, dalla struttura reale su disco) per andare dritti al file giusto
+  // al primo tentativo — NPC_SPRITE_DIRS resta solo come fallback per nomi
+  // non in elenco (sprite aggiunti dopo questo censimento).
+  const NPC_SPRITE_INDEX = {
+    'Capitano': 'Unici/', 'Capopalestra_Ariccia': 'Unici/', 'Capopalestra_Marino_Matilde': 'Unici/',
+    'Dema_superquattro': 'Unici/', 'Donna': 'Civili/Donne/', 'Er_biretta_Capopalestra': 'Unici/',
+    'Er_pres_superquattro': 'Unici/', 'Erborista_colonna': 'Unici/', 'GdF_grunt_donna': 'Gdf & Cotral/',
+    'GdF_grunt_uomo': 'Gdf & Cotral/', 'Gianluca Funivia': 'Unici/', 'Giorgia_capopalestra': 'Unici/',
+    'Grunt_Cotral_donna': 'Gdf & Cotral/', 'Grunt_Cotral_uomo': 'Gdf & Cotral/', 'Igino_Grottaferrata': 'Unici/',
+    'Lorenzo': 'Gdf & Cotral/', 'Luogotenente_Cotral_Osservatorio': 'Gdf & Cotral/',
+    'Luogotenente_Cotral_rifugio_Rocca_di_papa': 'Gdf & Cotral/', 'Luogotenente_GdF_1': 'Gdf & Cotral/',
+    'Luogotenente_GdF_2': 'Gdf & Cotral/', 'Luogotenente_GdF_3': 'Gdf & Cotral/', 'Mamma_Baso': 'Civili/Donne/',
+    'Marcus_superquattro': 'Unici/', 'Marinaio_spiaggia': 'Civili/Uomini/', 'NPC': 'Civili/Donne/',
+    'NPC 01': 'Trainer/', 'NPC 02': 'Civili/Bambini/', 'NPC 03': 'Civili/Uomini/', 'NPC 04': 'Civili/Donne/',
+    'NPC 05': 'Civili/Uomini/', 'NPC 06': 'Civili/Uomini/', 'NPC 07': 'Civili/Uomini/', 'NPC 08': 'Civili/Donne/',
+    'NPC 09': 'Civili/Uomini/', 'NPC 10': 'Civili/Uomini/', 'NPC 11': 'Civili/Donne/', 'NPC 12': 'Civili/Uomini/',
+    'NPC 13': 'Civili/Uomini/', 'NPC 14': 'Civili/Donne/', 'NPC 15': 'Civili/Uomini/', 'NPC 16': 'Civili/Donne/',
+    'NPC 17': 'Civili/Uomini/', 'NPC 18': 'Civili/Uomini/', 'NPC 19': 'Civili/Uomini/',
+    'NPC 20_guards': 'Civili/Uomini/', 'NPC 21': 'Civili/Uomini/', 'NPC 22': 'Civili/Donne/',
+    'NPC 24': 'Civili/Uomini/', 'NPC 25': 'Civili/Uomini/', 'NPC 26': 'Civili/Donne/', 'NPC 27': 'Civili/Uomini/',
+    'NPC 28': 'Civili/Donne/', 'NPC 29': 'Civili/Uomini/', 'NPC 30': 'Civili/Donne/',
+    'NPC_RAGAZZA': 'Civili/Donne/', 'NPC_in città': 'Civili/Donne/',
+    'Nuotatore_spiaggia_fuori_acqua': 'Trainer/', 'Nuovo_professor_oak': 'Unici/',
+    'Primapalestra_capopalestra': 'Unici/', 'RIVALE_1': 'Unici/', 'Rivale_2': 'Unici/',
+    'Scenziato': 'Civili/Uomini/', 'Scenziato_donna': 'Unici/', 'Simone': 'Unici/',
+    'alta montagna montecavo': 'Trainer/', 'donna': 'Trainer/', 'npc joy': 'Unici/',
+    'nuotatore_dentro_acqua(solo testa)': 'Trainer/', 'trainer_AROMALADY': 'Trainer/', 'trainer_BEAUTY': 'Trainer/',
+    'trainer_BIKER': 'Trainer/', 'trainer_BIRDKEEPER': 'Trainer/', 'trainer_BLACKBELT': 'Trainer/',
+    'trainer_BUGCATCHER': 'Trainer/', 'trainer_BURGLAR': 'Trainer/', 'trainer_CAMPER': 'Trainer/',
+    'trainer_CHAMPION': 'Unici/', 'trainer_CHANNELER': 'Trainer/', 'trainer_COOLTRAINER_F': 'Trainer/',
+    'trainer_COOLTRAINER_M': 'Trainer/', 'trainer_CRUSHGIRL': 'Trainer/', 'trainer_CUEBALL': 'Trainer/',
+    'trainer_ELITEFOUR_Agatha': 'Trainer/', 'trainer_ELITEFOUR_Bruno': 'Unici/',
+    'trainer_ELITEFOUR_Lance': 'Trainer/', 'trainer_ELITEFOUR_Lorelei': 'Trainer/', 'trainer_ENGINEER': 'Trainer/',
+    'trainer_F': 'Trainer/', 'trainer_FISHERMAN': 'Trainer/', 'trainer_GAMBLER': 'Trainer/',
+    'trainer_GENTLEMAN': 'Trainer/', 'trainer_HIKER': 'Trainer/', 'trainer_JUGGLER': 'Trainer/',
+    'trainer_LADY': 'Trainer/', 'trainer_LASS': 'Trainer/', 'trainer_LEADER_Blaine': 'Trainer/',
+    'trainer_LEADER_Brock': 'Trainer/', 'trainer_LEADER_Camilla': 'Unici/', 'trainer_LEADER_Erika': 'Trainer/',
+    'trainer_LEADER_Giovanni': 'Trainer/', 'trainer_LEADER_Koga': 'Trainer/', 'trainer_LEADER_Misty': 'Trainer/',
+    'trainer_LEADER_Sabrina': 'Trainer/', 'trainer_LEADER_Surge': 'Trainer/', 'trainer_M': 'Trainer/',
+    'trainer_PAINTER': 'Trainer/', 'trainer_PICNICKER': 'Trainer/', 'trainer_POKEMANIAC': 'Trainer/',
+    'trainer_POKEMONBREEDER': 'Trainer/', 'trainer_POKEMONRANGER_F': 'Trainer/',
+    'trainer_POKEMONRANGER_M': 'Trainer/', 'trainer_POKEMONTRAINER_Brendan': 'Trainer/',
+    'trainer_POKEMONTRAINER_Leaf': 'Trainer/', 'trainer_POKEMONTRAINER_Red': 'Trainer/',
+    'trainer_PROFESSOR': 'Trainer/', 'trainer_PSYCHIC_F': 'Trainer/', 'trainer_PSYCHIC_M': 'Trainer/',
+    'trainer_RIVAL': 'Unici/', 'trainer_ROCKER': 'Trainer/', 'trainer_ROCKETBOSS': 'Trainer/',
+    'trainer_RUINMANIAC': 'Trainer/', 'trainer_SAILOR': 'Trainer/', 'trainer_SCIENTIST': 'Trainer/',
+    'trainer_SUPERNERD': 'Trainer/', 'trainer_SWIMMER2_F': 'Trainer/', 'trainer_SWIMMER2_M': 'Trainer/',
+    'trainer_SWIMMER_F': 'Trainer/', 'trainer_SWIMMER_M': 'Trainer/', 'trainer_TAMER': 'Trainer/',
+    'trainer_TUBER2_F': 'Trainer/', 'trainer_TUBER2_M': 'Trainer/', 'trainer_TUBER_F': 'Trainer/',
+    'trainer_TUBER_M': 'Trainer/', 'trainer_TWINS': 'Trainer/', 'trainer_YOUNGCOUPLE': 'Trainer/',
+    'trainer_YOUNGCOUPLE_2': 'Trainer/', 'trainer_YOUNGSTER': 'Trainer/', 'trainer_rivale_2': 'Trainer/',
+    'uomo_città': 'Civili/Uomini/',
+  };
 
   // Alias per nomi sprite usati nelle mappe ma senza file dedicato: li mappiamo
   // su sprite già esistenti (sostituibili quando ci sarà l'arte definitiva).
@@ -2847,7 +2906,7 @@ const GameMap = (function () {
       }
       // Masso spingibile (puzzle MN Forza): un solo frame statico, si sposta
       // di casella in casella quando il giocatore ci cammina contro con la MN.
-      this.load.spritesheet('obj-masso', 'sprites/NO/Characters/Object boulder.png',
+      this.load.spritesheet('obj-masso', 'sprites/Oggetti/Object boulder.png',
         { frameWidth: 32, frameHeight: 32 });
       // PROBLEMA 4b: "cavalcatura" sotto il personaggio durante il Surf
       // (Graphics/Characters/base_surf di Essentials — stessa griglia 4x4 del
@@ -4416,19 +4475,31 @@ const GameMap = (function () {
       // affettava a metà, la moto sforava nel tile accanto (segnalato da Luca).
       const SPRITE_LARGHI = /^trainer_(BIKER|CUEBALL)$/i;
       const frameW = SPRITE_LARGHI.test(spriteFile) ? 48 : 32;
+
+      // Prova prima la cartella ESATTA dall'indice precalcolato (una sola
+      // richiesta, niente tentativi a vuoto) per ogni variante del nome;
+      // solo se nessuna è indicizzata (sprite non ancora censito) ripiega
+      // sul vecchio giro completo delle 6 cartelle.
+      const tentativi = [];
       for (const nomeFile of candidati) {
-        for (const dir of NPC_SPRITE_DIRS) {
-          try {
-            await new Promise((ok, ko) => {
-              this.load.spritesheet(texKey, dir + nomeFile + '.png',
-                { frameWidth: frameW, frameHeight: 48 });
-              this.load.once('complete', ok);
-              this.load.once('loaderror', ko);
-              this.load.start();
-            });
-            return texKey;
-          } catch (e) { /* prova la prossima cartella/variante */ }
-        }
+        const dirIndicizzata = NPC_SPRITE_INDEX[nomeFile];
+        if (dirIndicizzata) tentativi.push({ nomeFile, dir: 'sprites/npc e trainer/' + dirIndicizzata });
+      }
+      for (const nomeFile of candidati) {
+        for (const dir of NPC_SPRITE_DIRS) tentativi.push({ nomeFile, dir });
+      }
+
+      for (const { nomeFile, dir } of tentativi) {
+        try {
+          await new Promise((ok, ko) => {
+            this.load.spritesheet(texKey, dir + nomeFile + '.png',
+              { frameWidth: frameW, frameHeight: 48 });
+            this.load.once('complete', ok);
+            this.load.once('loaderror', ko);
+            this.load.start();
+          });
+          return texKey;
+        } catch (e) { /* prova il prossimo tentativo */ }
       }
       return null;
     }
@@ -11794,18 +11865,28 @@ const GameMap = (function () {
 
       // Sfondo reale del Box (richiesta di Luca, 9 ott 2026 — "sfondi
       // grafiche Box" non erano in realtà mai state fatte, solo un colore
-      // piatto): 40 varianti disponibili (sprites/NO/Graphics/UI/Storage/
-      // box_N.png), una diversa per ciascuno dei 24 box così si riconoscono
-      // a colpo d'occhio. Velo scuro sopra per leggibilità, stesso
-      // trattamento di SalvaScene/MarketScene.
+      // piatto): 40 varianti disponibili (sprites/Oggetti/box_N.png — prima
+      // in sprites/NO/, cartella NON versionata su GitHub: su GitHub Pages
+      // l'immagine dava sempre 404, quadrato nero/diagonale verde, segnalato
+      // da Luca il 14 ott 2026), una diversa per ciascuno dei 24 box così si
+      // riconoscono a colpo d'occhio. Velo scuro sopra per leggibilità,
+      // stesso trattamento di SalvaScene/MarketScene.
+      // Allineato/centrato "cover" (richiesta di Luca, 14 ott 2026): prima
+      // setDisplaySize(CW,CH) stirava l'immagine esattamente al rettangolo
+      // dello schermo, deformandola se l'aspect ratio non combaciava — ora
+      // si scala UNIFORMEMENTE (come il min dei due rapporti) e si centra,
+      // mai deformata, con bordi "a coprire" invece che stirati.
       const chiaveSfondoBox = `ui-box-bg-${boxIndiceAttivo % 40}`;
       const sfondoGiaPronto = this.textures.exists(chiaveSfondoBox);
       const disegnaSfondoBox = () => {
-        this.add.image(CW / 2, CH / 2, chiaveSfondoBox).setDisplaySize(CW, CH).setDepth(0.4);
+        const img = this.add.image(CW / 2, CH / 2, chiaveSfondoBox).setDepth(0.4);
+        const src = this.textures.get(chiaveSfondoBox).getSourceImage();
+        const scala = Math.max(CW / (src.width || CW), CH / (src.height || CH));
+        img.setScale(scala);
         this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x0a0e18, 0.45).setDepth(0.5);
       };
       if (sfondoGiaPronto) disegnaSfondoBox();
-      else this.load.image(chiaveSfondoBox, `sprites/NO/Graphics/UI/Storage/box_${boxIndiceAttivo % 40}.png`);
+      else this.load.image(chiaveSfondoBox, `sprites/Oggetti/box_${boxIndiceAttivo % 40}.png`);
 
       // Intestazione con frecce pagina
       this.add.text(CW / 2 - 90, 26, '◀', {
