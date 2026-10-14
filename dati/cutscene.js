@@ -277,10 +277,16 @@ const CUTSCENE = {
     { tipo: 'guarda_reciproco', npc: 'Luogotenente Fernando' },
     { tipo: 'guarda_reciproco', npc: 'Luogotenente Michela' },
     { tipo: 'guarda_reciproco', npc: 'gdf_capo_marino' },
+    { tipo: 'aspetta', ms: 700 },
     { tipo: 'dialogo', nome: '', testo: [
       'Ecco il problema incontrato lungo la via, Capo: non si riesce a liberarsi di questa spina nel fianco.',
     ] },
-    { tipo: 'muovi_player', direzione: 'nord', passi: 6 },
+    // Richiesta esplicita di Luca (14 ott 2026, dopo aver spostato "inizio
+    // cutscene"): il percorso non è più una linea dritta ma uno "zig-zag" —
+    // avanti, un passo a sinistra, ancora avanti.
+    { tipo: 'muovi_player', direzione: 'nord', passi: 1 },
+    { tipo: 'muovi_player', direzione: 'ovest', passi: 1 },
+    { tipo: 'muovi_player', direzione: 'nord', passi: 1 },
     { tipo: 'dialogo', nome: 'Lorenzo', testo: [
       'Bene. Hai dato filo da torcere al nostro gruppo fin troppo a lungo: adesso basta.',
       'Questa storia finisce qui, ragazzino. Nessuno rovina i piani del Team GdF e se ne va a piede libero.',

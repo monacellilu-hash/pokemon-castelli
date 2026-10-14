@@ -16075,10 +16075,6 @@
   },
   {
    "firstgid":991,
-   "source":"hideout.tsj"
-  },
-  {
-   "firstgid":991,
    "source":"../Tsj/caves/Dungeon wall.tsj"
   },
   {
@@ -16096,10 +16092,6 @@
   {
    "firstgid":2815,
    "source":"../Tsj/outside/outside.tsx"
-  },
-  {
-   "firstgid":6831,
-   "source":"../Tsj/interni/laboratorio_interno.tsj"
   }
  ],
  "tilewidth":32,

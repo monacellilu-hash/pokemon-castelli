@@ -4290,7 +4290,7 @@
     0,
     0,
     0,
-    0,
+    2408,
     178,
     179,
     0,
@@ -5823,7 +5823,9 @@
     0,
     0,
     0,
+    2408,
     0,
+    2408,
     0,
     0,
     0,
@@ -5861,7 +5863,9 @@
     0,
     0,
     0,
+    2408,
     0,
+    2408,
     0,
     0,
     0,
@@ -5901,6 +5905,7 @@
     0,
     0,
     0,
+    2408,
     0,
     0,
     0,
@@ -5938,7 +5943,9 @@
     0,
     0,
     0,
+    2408,
     0,
+    2408,
     0,
     0,
     0,
@@ -5976,7 +5983,9 @@
     0,
     0,
     0,
+    2408,
     0,
+    2408,
     0,
     0,
     0,
@@ -6014,18 +6023,9 @@
     0,
     0,
     0,
+    2408,
     0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
-    0,
+    2408,
     0,
     0,
     0,
@@ -6879,6 +6879,30 @@
      "width":16.6666666666666,
      "x":682,
      "y":964.666666666667
+    },
+    {
+     "height":206,
+     "id":67,
+     "name":"",
+     "opacity":1,
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":12.3333333333334,
+     "x":617.333333333333,
+     "y":776.666666666667
+    },
+    {
+     "height":205.666666666667,
+     "id":68,
+     "name":"",
+     "opacity":1,
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":15.3333333333334,
+     "x":682.666666666667,
+     "y":779.666666666667
     }
    ],
    "opacity":1,
@@ -6969,19 +6993,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"est"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_grunt_marino_2fb_5"
-      },
-      {
-       "name":"vista",
-       "type":"string",
-       "value":"5"
       },
       {
        "name":"gate",
@@ -6989,14 +7008,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_grunt_marino_2fb_5"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"vista",
+       "type":"string",
+       "value":"5"
       }
      ],
      "rotation":0,
@@ -7014,14 +7038,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"est"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_capo_marino"
       },
       {
        "name":"gate",
@@ -7029,9 +7053,9 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_capo_marino"
       },
       {
        "name":"noTestBypass",
@@ -7084,19 +7108,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"nord"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_grunt_marino_2fb_1"
-      },
-      {
-       "name":"vista",
-       "type":"string",
-       "value":"5"
       },
       {
        "name":"gate",
@@ -7104,14 +7123,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_grunt_marino_2fb_1"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"vista",
+       "type":"string",
+       "value":"5"
       }
      ],
      "rotation":0,
@@ -7129,19 +7153,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"nord"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_grunt_marino_2fb_2"
-      },
-      {
-       "name":"vista",
-       "type":"string",
-       "value":"5"
       },
       {
        "name":"gate",
@@ -7149,14 +7168,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_grunt_marino_2fb_2"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"vista",
+       "type":"string",
+       "value":"5"
       }
      ],
      "rotation":0,
@@ -7174,19 +7198,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"nord"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_grunt_marino_2fb_3"
-      },
-      {
-       "name":"vista",
-       "type":"string",
-       "value":"5"
       },
       {
        "name":"gate",
@@ -7194,14 +7213,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_grunt_marino_2fb_3"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"vista",
+       "type":"string",
+       "value":"5"
       }
      ],
      "rotation":0,
@@ -7219,19 +7243,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"nord"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"gdf_grunt_marino_2fb_4"
-      },
-      {
-       "name":"vista",
-       "type":"string",
-       "value":"5"
       },
       {
        "name":"gate",
@@ -7239,14 +7258,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"gdf_grunt_marino_2fb_4"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"vista",
+       "type":"string",
+       "value":"5"
       }
      ],
      "rotation":0,
@@ -7281,17 +7305,11 @@
      "id":16,
      "name":"inizio_cutscene_gdf_marino_boss",
      "opacity":1,
-     "rotation":0,
-     "type":"",
-     "visible":true,
-     "width":20.6666666666667,
-     "x":645.666666666667,
-     "y":941,
      "properties":[
       {
-       "name":"type",
+       "name":"condizione",
        "type":"string",
-       "value":"trigger_cutscene"
+       "value":"!gdf_marino_boss_sconfitto"
       },
       {
        "name":"cutscene_id",
@@ -7304,16 +7322,22 @@
        "value":"entra"
       },
       {
+       "name":"type",
+       "type":"string",
+       "value":"trigger_cutscene"
+      },
+      {
        "name":"una_tantum",
        "type":"bool",
        "value":true
-      },
-      {
-       "name":"condizione",
-       "type":"string",
-       "value":"!gdf_marino_boss_sconfitto"
       }
-     ]
+     ],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":20.6666666666667,
+     "x":644.333333333334,
+     "y":777.666666666667
     },
     {
      "height":151.058,
@@ -7515,19 +7539,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"ovest"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"Luogotenente Ginevra"
-      },
-      {
-       "name":"type",
-       "type":"string",
-       "value":"npc"
       },
       {
        "name":"gate",
@@ -7535,14 +7554,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"Luogotenente Ginevra"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"type",
+       "type":"string",
+       "value":"npc"
       }
      ],
      "rotation":0,
@@ -7560,19 +7584,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"nord"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"Luogotenente Fernando"
-      },
-      {
-       "name":"type",
-       "type":"string",
-       "value":"npc"
       },
       {
        "name":"gate",
@@ -7580,14 +7599,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"Luogotenente Fernando"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"type",
+       "type":"string",
+       "value":"npc"
       }
      ],
      "rotation":0,
@@ -7605,19 +7629,14 @@
      "point":true,
      "properties":[
       {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
        "name":"direzione",
        "type":"string",
        "value":"ovest"
-      },
-      {
-       "name":"id",
-       "type":"string",
-       "value":"Luogotenente Michela"
-      },
-      {
-       "name":"type",
-       "type":"string",
-       "value":"npc"
       },
       {
        "name":"gate",
@@ -7625,14 +7644,19 @@
        "value":true
       },
       {
-       "name":"condizione",
+       "name":"id",
        "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
+       "value":"Luogotenente Michela"
       },
       {
        "name":"noTestBypass",
        "type":"bool",
        "value":true
+      },
+      {
+       "name":"type",
+       "type":"string",
+       "value":"npc"
       }
      ],
      "rotation":0,
@@ -7648,13 +7672,27 @@
      "name":"pietra_zaffiro_marino",
      "opacity":1,
      "point":true,
-     "rotation":0,
-     "type":"",
-     "visible":true,
-     "width":0,
-     "x":624,
-     "y":620.666666666667,
      "properties":[
+      {
+       "name":"chiave",
+       "type":"bool",
+       "value":true
+      },
+      {
+       "name":"condizione",
+       "type":"string",
+       "value":"gdf_marino_boss_sconfitto"
+      },
+      {
+       "name":"contenuto",
+       "type":"string",
+       "value":"pietra_zaffiro"
+      },
+      {
+       "name":"flag_raccolta",
+       "type":"string",
+       "value":"pietra_zaffiro_ottenuta"
+      },
       {
        "name":"id",
        "type":"string",
@@ -7666,26 +7704,17 @@
        "value":"oggetto"
       },
       {
-       "name":"contenuto",
-       "type":"string",
-       "value":"pietra_zaffiro"
-      },
-      {
-       "name":"chiave",
+       "name":"blocca",
        "type":"bool",
        "value":true
-      },
-      {
-       "name":"flag_raccolta",
-       "type":"string",
-       "value":"pietra_zaffiro_ottenuta"
-      },
-      {
-       "name":"condizione",
-       "type":"string",
-       "value":"gdf_marino_boss_sconfitto"
       }
-     ]
+     ],
+     "rotation":0,
+     "type":"",
+     "visible":true,
+     "width":0,
+     "x":624,
+     "y":620.666666666667
     }
    ],
    "opacity":1,
@@ -7696,7 +7725,7 @@
   }
  ],
  "nextlayerid":7,
- "nextobjectid":67,
+ "nextobjectid":69,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

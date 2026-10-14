@@ -1483,127 +1483,130 @@ const DATI_TRAINER = {
   },
 
   /* ── TEAM GdF — Rifugio di Marino (dungeon 4 piani: 1F + 2F_A/B/C) ──
-     sessione 10 agosto. Livelli 28-37 (contenuto raggiungibile solo a password
-     completa, quindi più avanti nel gioco di quanto suggerisca la sola città di
-     Marino). Capo GdF su 2F_B (isola) = **Giovanni** (sess. 8 set 2026, arco GdF
-     riscritto — vedi docs/STORIA_COMPLETA.md): è lo STESSO comandante che poi
-     ritrovi alla Grotta del Vulcano, qui lo incontri PRIMA. Sconfiggerlo qui dà
-     la Pietra Zaffiro (Kyogre) — vedi blocco "id === 'gdf_capo_marino'" in
-     _applicaEsitoTrainer, js/map.js. */
+     sessione 10 agosto. Livelli 60-61 (rilivellato sess. 14 ott 2026,
+     richiesta esplicita di Luca: raggiungibile solo DOPO la 7ª palestra,
+     cap 58 — molto più avanti nel gioco di quanto suggerisca la sola città
+     di Marino). Capo GdF su 2F_B (isola) = **Lorenzo** (rinominato da
+     "Giovanni" il 13 ott 2026): è lo STESSO comandante che poi ritrovi alla
+     Grotta del Vulcano, qui lo incontri PRIMA — vedi cutscene
+     'rifugio_marino_boss_intro'/'rifugio_marino_boss_dopo' in
+     dati/cutscene.js e blocco "id === 'gdf_capo_marino'" in
+     _applicaEsitoTrainer, js/map.js. Sconfiggerlo libera la Pietra Zaffiro
+     (Kyogre) a terra, da raccogliere a piedi. */
   'gdf_grunt_marino_1f_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 28 }, { id: 88, livello: 29 }],
+    squadra: [{ id: 42, livello: 60 }, { id: 88, livello: 61 }],
     dialogo_prima: 'Fermo là! Questo rifugio non è mica un parco giochi.',
     dialogo_dopo: 'Vabbè... ma tanto qui dentro è tutto blindato lo stesso.',
-    premio: 1160,
+    premio: 2800,
   },
   'gdf_grunt_marino_1f_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 29 }, { id: 20, livello: 30 }],
+    squadra: [{ id: 24, livello: 60 }, { id: 20, livello: 61 }],
     dialogo_prima: 'Come hai fatto ad entrà? La password mica se trova per strada!',
     dialogo_dopo: 'Ao, sei pure forte... ma qui il piano va avanti uguale.',
-    premio: 1220,
+    premio: 2800,
   },
   'gdf_grunt_marino_1f_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 72, livello: 30 }, { id: 89, livello: 31 }],
+    squadra: [{ id: 72, livello: 60 }, { id: 89, livello: 61 }],
     dialogo_prima: 'Il Capo non vuole visite. Levate dai piedi!',
     dialogo_dopo: 'Mo\' te lascio passà, ma non dì che t\'ho aiutato io.',
-    premio: 1280,
+    premio: 2800,
   },
   'gdf_grunt_marino_1f_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 31 }, { id: 24, livello: 32 }],
+    squadra: [{ id: 42, livello: 60 }, { id: 24, livello: 61 }],
     dialogo_prima: 'Quest\'acqua nasconde più cose de quello che pensi.',
     dialogo_dopo: 'Va be\', hai vinto. Ma il Capo se sta a preparà da tempo.',
-    premio: 1340,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fa_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 33 }, { id: 110, livello: 32 }],
+    squadra: [{ id: 89, livello: 60 }, { id: 110, livello: 61 }],
     dialogo_prima: 'Er caveau è roba nostra. Nun se tocca!',
     dialogo_dopo: 'E vabbè, so\' cose che càpitano...',
-    premio: 1380,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fa_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 31, livello: 34 }, { id: 42, livello: 33 }],
+    squadra: [{ id: 31, livello: 60 }, { id: 42, livello: 61 }],
     dialogo_prima: 'Qui dentro c\'è più refurtiva che a un mercato de Porta Portese.',
     dialogo_dopo: 'Mo\' me sa che devo cambià lavoro...',
-    premio: 1420,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fc_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 34 }, { id: 73, livello: 35 }],
+    squadra: [{ id: 24, livello: 60 }, { id: 73, livello: 61 }],
     dialogo_prima: 'Perso in questo labirinto de rocce? Te ce faccio perde pe\' davero!',
     dialogo_dopo: 'Non è ancora finita, ma vabbè, avanti così.',
-    premio: 1460,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fc_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 35 }, { id: 20, livello: 34 }],
+    squadra: [{ id: 89, livello: 60 }, { id: 20, livello: 61 }],
     dialogo_prima: 'Questi massi nun se spostano da soli, sai?',
     dialogo_dopo: 'Uffa, mo\' devo pure rifà er turno de guardia.',
-    premio: 1480,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fc_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 110, livello: 36 }, { id: 34, livello: 35 }],
+    squadra: [{ id: 110, livello: 60 }, { id: 34, livello: 61 }],
     dialogo_prima: 'Ancora un po\' e sei davanti al Capo. Peccato che nun ce arriverai.',
     dialogo_dopo: 'Boh, mo\' famme capì come te lo dico ar Capo...',
-    premio: 1520,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fb_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 73, livello: 37 }, { id: 89, livello: 36 }],
+    squadra: [{ id: 73, livello: 60 }, { id: 89, livello: 61 }],
     dialogo_prima: 'Da qui in poi c\'è solo l\'isola del Capo. Nun se passa!',
     dialogo_dopo: 'Vai pure, tanto l\'acqua profonda te ferma uguale...',
-    premio: 1560,
+    premio: 2800,
   },
   // 3 grunt aggiunti da Luca al 1F (copie piazzate senza id proprio,
   // corrette sess. 14 ott 2026: erano tutte sovrapposte sull'id _1).
   'gdf_grunt_marino_1f_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 88, livello: 30 }, { id: 42, livello: 31 }],
+    squadra: [{ id: 88, livello: 60 }, { id: 42, livello: 61 }],
     dialogo_prima: 'Chi t\'ha fatto entrà? Qui nun se passa!',
     dialogo_dopo: 'Vabbè, mo\' me ne vado a riposà.',
-    premio: 1200,
+    premio: 2800,
   },
   'gdf_grunt_marino_1f_6': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 31 }, { id: 73, livello: 32 }],
+    squadra: [{ id: 24, livello: 60 }, { id: 73, livello: 61 }],
     dialogo_prima: 'Er Capo m\'ha detto de nun fà passà nessuno. Mi dispiace per te.',
     dialogo_dopo: 'Ahó, nun me l\'aspettavo proprio.',
-    premio: 1240,
+    premio: 2800,
   },
   'gdf_grunt_marino_1f_7': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 20, livello: 32 }, { id: 89, livello: 33 }],
+    squadra: [{ id: 20, livello: 60 }, { id: 89, livello: 61 }],
     dialogo_prima: 'Ancora uno e sei davanti all\'isola der Capo. Ma nun ce arriverai.',
     dialogo_dopo: 'Mo\' me sa che er Capo se preoccupa davero.',
-    premio: 1280,
+    premio: 2800,
   },
   // 1 grunt aggiunto da Luca al 2F_A (stesso problema del 1F).
   'gdf_grunt_marino_2fa_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 73, livello: 33 }, { id: 31, livello: 34 }],
+    squadra: [{ id: 73, livello: 60 }, { id: 31, livello: 61 }],
     dialogo_prima: 'Er caveau è sorvegliato giorno e notte. Nun passi de qui.',
     dialogo_dopo: 'Vabbè, só cose che càpitano...',
-    premio: 1400,
+    premio: 2800,
   },
   // 4 grunt aggiunti da Luca al 2F_B, intorno all'isola del Capo (stesso
   // problema: 3 copie sovrapposte sull'id _1, più uno con id orfano "_5"
@@ -1611,46 +1614,51 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 36 }, { id: 73, livello: 37 }],
+    squadra: [{ id: 89, livello: 60 }, { id: 73, livello: 61 }],
     dialogo_prima: 'L\'isola der Capo è protetta da tutti i lati. Nun passi.',
     dialogo_dopo: 'E vabbè, mo\' lo dico ar Capo...',
-    premio: 1580,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fb_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 110, livello: 37 }, { id: 195, livello: 36 }],
+    squadra: [{ id: 110, livello: 60 }, { id: 195, livello: 61 }],
     dialogo_prima: 'Quest\'acqua nasconde più guardie de quelle che vedi.',
     dialogo_dopo: 'Ahó, nun ce credo.',
-    premio: 1600,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fb_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 37 }, { id: 230, livello: 36 }],
+    squadra: [{ id: 24, livello: 60 }, { id: 230, livello: 61 }],
     dialogo_prima: 'Er Capo sta a preparà quarcosa de grosso. Nun te ce voglio tra i piedi.',
     dialogo_dopo: 'Vabbè, passa pure, ma nun dì che t\'ho fatto passà io.',
-    premio: 1600,
+    premio: 2800,
   },
   'gdf_grunt_marino_2fb_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 38 }, { id: 88, livello: 37 }],
+    squadra: [{ id: 42, livello: 60 }, { id: 88, livello: 61 }],
     dialogo_prima: 'Ultima guardia prima der Capo. Qui finisce la fortuna.',
     dialogo_dopo: 'La fortuna nun c\'entrava, eri davero preparato.',
-    premio: 1620,
+    premio: 2800,
   },
+  // Rilivellato sess. 14 ott 2026 (richiesta esplicita di Luca): il dungeon
+  // è raggiungibile solo dopo la 7ª palestra (cap 58), tarato 2-3 livelli
+  // sopra = 60-61, come tutti i Grunt del rifugio. Squadra portata a 5.
   'gdf_capo_marino': {
     sprite: 'Lorenzo', ritratto: 'Lorenzo',
     classe: 'Comandante GdF', nome: 'Lorenzo',
     squadra: [
-      { id: 195, livello: 36 },
-      { id: 73, livello: 38 },
-      { id: 230, livello: 40 },
+      { id: 195, livello: 60 },  // Quagsire
+      { id: 134, livello: 60 },  // Vaporeon
+      { id: 342, livello: 60 },  // Crawdaunt
+      { id: 73,  livello: 61 },  // Tentacruel
+      { id: 230, livello: 61 },  // Kingdra (l'asso)
     ],
     dialogo_prima: 'Quest\'isola è mia, e presto lo sarà pure quello che dorme sott\'acqua.',
     dialogo_dopo: 'Nun è finita qui... quello che ho svegliato nun se riaddormenta tanto facile.',
-    premio: 3200,
+    premio: 6000,
   },
 
   /* ── BOSCHI DEL TUSCOLO — 18 allenatori (da ALLENATORI in data.js) ──

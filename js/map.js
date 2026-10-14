@@ -2259,6 +2259,13 @@ const GameMap = (function () {
   // oggetto raccoglibile: sparisce quando l'oggetto viene raccolto (vedi
   // _nascondiTilePokeball). Non è mai un tile di terreno legittimo.
   const TILE_ID_POKEBALL = 948;
+  // Altri tile "a terra, raccoglibile come una Poké Ball" oltre al solito
+  // 948 (sess. 14 ott 2026, richiesta esplicita di Luca — Pietra Zaffiro
+  // del Rifugio di Marino): tile locale 68 del tileset Caves. Controllato
+  // SOLO alla cella esatta dell'oggetto 'oggetto' corrispondente (mai in
+  // giro per la mappa), quindi non rischia di confondersi con un 68
+  // qualunque di un altro tileset usato altrove per tutt'altro.
+  const TILE_ID_POKEBALL_EXTRA = [948, 68];
 
   // Insieme "tx,ty" di tutte le caselle il cui tile GROUND/DECO è "erba alta"
   // per GRAFICA (non per rettangolo disegnato a mano): verificato che, in
@@ -3303,6 +3310,7 @@ const GameMap = (function () {
       this._ripristinaOggettiRaccolti();
       this._applicaPorteScomparse();
       this._applicaIndovinelliBunkerino();
+      this._applicaCollisioniOggettiTerra();
 
       // ── Scelta del punto di spawn (Fix 3) ──
       // Priorità: spawn che combacia (per spawn_id o per mappa di provenienza)
@@ -3521,6 +3529,7 @@ const GameMap = (function () {
       this._ripristinaOggettiRaccolti();
       this._applicaPorteScomparse();
       this._applicaIndovinelliBunkerino();
+      this._applicaCollisioniOggettiTerra();
 
       clusterAttivo = nomeCluster;   // da qui in poi il cluster è "attivo" a tutti gli effetti
 
@@ -6329,6 +6338,7 @@ const GameMap = (function () {
         // appena diventata vera (es. la Poké Ball che compare a fine scena).
         case 'rivela_oggetti':
           this._rivelaOggettiCondizionati();
+          this._applicaCollisioniOggettiTerra();   // es. Pietra Zaffiro: torna "materiale" appena rivelata
           return Promise.resolve();
         case 'aspetta':
           return new Promise(r => setTimeout(r, passo.ms || 500));
@@ -8786,13 +8796,17 @@ const GameMap = (function () {
       const worldX = tx * tileSize + tileSize / 2;
       const worldY = ty * tileSize + tileSize / 2;
       for (const o of layerObjects) {
-        const atteso = TILE_ID_POKEBALL - (o.lo || 0);
         const tile = o.layer.getTileAtWorldXY(worldX, worldY, true);
-        if (tile && tile.index === atteso) {
-          tilePokeballNascosti[tx + ',' + ty] = { layer: o.layer, index: atteso };
+        if (!tile) continue;
+        // Qualunque dei tile "a terra, raccoglibile" (948 Poké Ball, 68
+        // Pietra Zaffiro) combaci, tenendo conto dello shift delle fette
+        // divise (vedi commento sopra la funzione).
+        const match = TILE_ID_POKEBALL_EXTRA.some(id => tile.index === id - (o.lo || 0));
+        if (match) {
+          tilePokeballNascosti[tx + ',' + ty] = { layer: o.layer, index: tile.index };
           o.layer.removeTileAtWorldXY(worldX, worldY, true);
-          // La Ball a terra è "materiale" finché non viene raccolta (vedi
-          // buildCollGrid, blocco "outside.tsx"/948): raccolta, la libera.
+          // È "materiale" finché non viene raccolto (vedi _applicaCollisioniOggettiTerra
+          // per chi lo rende solido all'inizio): raccolto, la collisione si libera.
           if (collGrid && collGrid[ty]) collGrid[ty][tx] = 0;
         }
       }
@@ -8832,6 +8846,24 @@ const GameMap = (function () {
       const cond = ev.props && (ev.props.condizione || ev.props.richiede);
       if (!cond) return true;
       return verificaCondizione(cond).ok;
+    }
+
+    // Oggetti a terra "materiali" (proprietà Tiled blocca:true, es. la
+    // Pietra Zaffiro del Rifugio di Marino, sess. 14 ott 2026): finché non
+    // sono stati raccolti E la loro condizione è vera, bloccano il
+    // passaggio come un macigno — niente ci si cammina sopra. La raccolta
+    // (_nascondiTilePokeball, richiamata dal gestore generico 'oggetto')
+    // libera già da sola la cella una volta presa.
+    _applicaCollisioniOggettiTerra() {
+      if (!collGrid) return;
+      for (const ev of eventiMappa) {
+        if (ev.tipo !== 'oggetto' && ev.tipo !== 'object') continue;
+        if (!(ev.props && (ev.props.blocca === true || ev.props.blocca === 'true'))) continue;
+        if (!this._oggettoVisibile(ev)) continue;
+        const mappaEv = ev._mappaChiave || mappaCorrente;
+        if (stato && stato.oggettiRaccolti && stato.oggettiRaccolti.includes(`${mappaEv}:${ev.tx},${ev.ty}`)) continue;
+        if (collGrid[ev.ty]) collGrid[ev.ty][ev.tx] = 1;
+      }
     }
 
     // Rimette il tile dell'oggetto (nascosto al caricamento) quando la sua
