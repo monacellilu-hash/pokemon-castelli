@@ -1427,6 +1427,11 @@ const GameMap = (function () {
     'professor Castagno':    { key: 'ts-prof-cast',  tw: 16, th: 16, cols: 8  },
     // Fontana decorativa (Marino, sessione 10 agosto).
     'fontana':                { key: 'ts-fontana',    tw: 32, th: 32, cols: 6  },
+    // Tileset "veicoli" (Rocca di Papa, sess. 14 ott 2026): embedded
+    // direttamente nel .tmj (niente file .tsj a sé), image veicoli.webp,
+    // 240 tile, 15 colonne — mancava qui, quindi la texture non veniva mai
+    // precaricata e il gioco non trovava il tileset (segnalato da Luca).
+    'veicoli':                { key: 'ts-veicoli',    tw: 32, th: 32, cols: 15 },
     // Tileset arredi 32×32 del laboratorio (v2, sessione 10 agosto): il file si
     // chiama "Interior general.tsj" in Tiled ma qui è stato rinominato in
     // "Interior_general_32" per non collidere col nome dell'altro tileset
@@ -1544,6 +1549,7 @@ const GameMap = (function () {
     'ts-wfall':       'sprites/PNG/Waterfall.png',
     'ts-wfall-bot':   'sprites/PNG/Waterfall bottom.png',
     'ts-fontana':     'sprites/PNG/fontana.webp',
+    'ts-veicoli':     'sprites/PNG/veicoli.webp',
     'ts-int-gen-32':  'sprites/PNG/Interior general.png',
     'ts-palestra-roccia': 'palestra_roccia.webp',
     'ts-palestre':   'sprites/PNG/palestre.png',
