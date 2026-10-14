@@ -13140,30 +13140,47 @@ const GameMap = (function () {
 
       const layerMappa = this.add.container(offX, offY).setScale(scala).setDepth(1);
 
-      // Carica le immagini dei 3 tileset usati (una sola volta ciascuna,
-      // riconosciute dal "source" — stesso principio di TILESET_IMMAGINI).
-      // I riferimenti a tileset ESTERNI (source) nella mappa NON portano il
-      // tilecount (solo quelli embedded, es. gli sfondi .jpg, lo hanno) —
-      // va preso dal file .tsj/.tsx reale (censito qui una volta, letto a
-      // mano dai 3 file). NON si può dedurre dal firstgid del tileset
-      // successivo: ci sono tileset embedded "intrusi" in mezzo che
-      // spezzano la sequenza (es. due sfondi .jpg tra map.tsj e outside.tsx).
-      const TILESET_SRC = {
-        'Town Map.tsj': { img: 'sprites/PNG/Game Boy Advance - Pokemon FireRed _ LeafGreen - Miscellaneous - Town Map.png', tilecount: 1170 },
-        'map.tsj': { img: 'sprites/PNG/map.png', tilecount: 240 },
-        'outside.tsx': { img: 'sprites/PNG/Outside.png', tilecount: 4016 },
+      // Carica le immagini di TUTTI i tileset usati dalla mappa, sia quelli
+      // ESTERNI (source, es. Town Map.tsj/map.tsj/outside.tsx — il loro
+      // tilecount NON è scritto nel riferimento della mappa, solo nel file
+      // vero, censito qui a mano una volta) sia quelli EMBEDDED (image +
+      // tilecount già scritti direttamente nel riferimento, es. i due
+      // sfondi .jpg e un secondo "map" interno — segnalati da Luca,
+      // mancavano nella prima versione di questa scena). Il percorso
+      // dell'immagine embedded è relativo a sprites/maps_tiled/, va risolto.
+      const TILECOUNT_ESTERNI = { 'Town Map.tsj': 1170, 'map.tsj': 240, 'outside.tsx': 4016 };
+      const IMG_ESTERNI = {
+        'Town Map.tsj': 'sprites/PNG/Game Boy Advance - Pokemon FireRed _ LeafGreen - Miscellaneous - Town Map.png',
+        'map.tsj': 'sprites/PNG/map.png',
+        'outside.tsx': 'sprites/PNG/Outside.png',
       };
-      const tilesetsInfo = (tmj.tilesets || []).map(t => {
-        const src = String(t.source || '').replace(/\\/g, '/');
-        const nomeFile = src.split('/').pop();
-        const info = TILESET_SRC[nomeFile];
-        return info ? { firstgid: t.firstgid, nextGid: t.firstgid + info.tilecount, nomeFile, tw: t.tilewidth || tw, th: t.tileheight || th } : null;
+      const risolviPercorso = (rel) => {
+        // "../PNG/sfondo.jpg" relativo a sprites/maps_tiled/ → sprites/PNG/sfondo.jpg
+        const parti = ('sprites/maps_tiled/' + rel).replace(/\\/g, '/').split('/');
+        const out = [];
+        for (const p of parti) {
+          if (p === '..') out.pop();
+          else if (p !== '.') out.push(p);
+        }
+        return out.join('/');
+      };
+      const tilesetsInfo = (tmj.tilesets || []).map((t, idxTs) => {
+        if (t.source) {
+          const nomeFile = String(t.source).replace(/\\/g, '/').split('/').pop();
+          const tilecount = TILECOUNT_ESTERNI[nomeFile];
+          if (!tilecount) return null;
+          return { firstgid: t.firstgid, nextGid: t.firstgid + tilecount, chiave: nomeFile, img: IMG_ESTERNI[nomeFile], tw: t.tilewidth || tw, th: t.tileheight || th };
+        }
+        if (t.image) {
+          return { firstgid: t.firstgid, nextGid: t.firstgid + (t.tilecount || 0), chiave: 'embedded-' + idxTs, img: risolviPercorso(t.image), tw: t.tilewidth || tw, th: t.tileheight || th };
+        }
+        return null;
       }).filter(Boolean);
 
       let daCaricare = 0;
       for (const t of tilesetsInfo) {
-        const key = 'rm-' + t.nomeFile;
-        if (!this.textures.exists(key)) { this.load.image(key, TILESET_SRC[t.nomeFile].img); daCaricare++; }
+        const key = 'rm-' + t.chiave;
+        if (!this.textures.exists(key)) { this.load.image(key, t.img); daCaricare++; }
       }
       if (daCaricare > 0) {
         await new Promise(ok => { this.load.once('complete', ok); this.load.start(); });
@@ -13184,7 +13201,7 @@ const GameMap = (function () {
             data2d.push(riga);
           }
           if (!haTile) continue;
-          const key = 'rm-' + t.nomeFile;
+          const key = 'rm-' + t.chiave;
           const tm = this.make.tilemap({ data: data2d, tileWidth: t.tw, tileHeight: t.th });
           const tileset = tm.addTilesetImage('ts', key, t.tw, t.th, 0, 0);
           const tl = tm.createLayer(0, tileset);
@@ -13208,9 +13225,12 @@ const GameMap = (function () {
       const partenza = this._posizioni.find(p => /tuscolana/i.test(p.nome));
       if (partenza) { this._cx = partenza.tx0; this._cy = partenza.ty0; }
 
-      this._cursore = this.add.circle(0, 0, tw * 0.3, 0x8b0000, 1)
-        .setStrokeStyle(2, 0xffffff).setDepth(2);
-      layerMappa.add(this._cursore);
+      // Il cursore vive FUORI dal container scalato (coordinate schermo
+      // vere, non quelle della mappa) e ha un raggio fisso in pixel: così
+      // resta sempre ben visibile anche quando la mappa è scalata piccola
+      // per entrare nello schermo (segnalato da Luca: "ridicolmente piccolo").
+      this._cursore = this.add.circle(0, 0, 9, 0x8b0000, 1)
+        .setStrokeStyle(2, 0xffffff).setDepth(4);
 
       this.add.text(CW / 2, Math.max(4, offY - 6), '🗺️ MAPPA REGIONALE', {
         fontFamily: "'Press Start 2P', monospace", fontSize: '12px', color: '#ffcb05',
@@ -13244,9 +13264,12 @@ const GameMap = (function () {
     }
 
     _aggiornaCursore() {
-      const px = this._cx * this._tw + this._tw / 2;
-      const py = this._cy * this._th + this._th / 2;
-      this._cursore.setPosition(px, py);
+      // Centro del tile in coordinate MAPPA, convertito in coordinate
+      // SCHERMO vere (il cursore non è dentro il container scalato,
+      // vedi sopra) con lo stesso offset/scala usati per la mappa.
+      const mapPx = this._cx * this._tw + this._tw / 2;
+      const mapPy = this._cy * this._th + this._th / 2;
+      this._cursore.setPosition(this._offX + mapPx * this._scala, this._offY + mapPy * this._scala);
       const qui = this._posizioni.find(p =>
         this._cx >= p.tx0 && this._cx <= p.tx1 && this._cy >= p.ty0 && this._cy <= p.ty1);
       this._etichetta.setText(qui ? qui.nome : '');
