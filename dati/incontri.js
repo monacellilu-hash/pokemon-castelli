@@ -555,8 +555,6 @@ const DATI_INCONTRI = {
       { id: 112, min: 36, max: 38, rate: 6 },  // Rhydon (evoluto, rarissimo)
       { id: 207, min: 33, max: 36, rate: 10 },  // Gligar (raro)
       { id: 328, min: 32, max: 35, rate: 22 },  // Trapinch (Gen3)
-      { id: 345, min: 32, max: 35, rate: 16 },  // Lileep
-      { id: 346, min: 35, max: 38, rate: 6 },  // Cradily (evoluto, raro)
 ],
     pokemonNotte: [
       { id: 185, min: 33, max: 36, rate: 10 },  // Sudowoodo (Gen2)
