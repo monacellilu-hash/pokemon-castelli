@@ -340,7 +340,7 @@ const DATI_NPC = {
   // (stessa condizione del gate). Primo dialogo una tantum, poi ripetibile
   // con scelta Sì/No per salire a Monte Cavo (interagisciGianluca, app.js).
   'gianluca_liberato': {
-    sprite: 'NPC 26', nome: 'Gianluca', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Gianluca Funivia', nome: 'Gianluca', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciGianluca',
   },
 

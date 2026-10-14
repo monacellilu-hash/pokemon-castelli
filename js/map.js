@@ -8666,12 +8666,20 @@ const GameMap = (function () {
     // Bunkerino (vedi INDOVINELLI_BUNKERINO): quelli già risolti rimuovono
     // di nuovo i loro tile ad ogni caricamento mappa.
     _applicaIndovinelliBunkerino() {
-      if (typeof stato === 'undefined' || !stato.flags) return;
       for (const ev of eventiMappa) {
         if (ev.tipo !== 'indovinello') continue;
         const cfg = INDOVINELLI_BUNKERINO[ev.id];
-        if (!cfg || !stato.flags[cfg.flag]) continue;
-        for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
+        if (!cfg) continue;
+        const risolto = typeof stato !== 'undefined' && stato.flags && stato.flags[cfg.flag];
+        if (risolto) {
+          for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
+        } else {
+          // Bug segnalato da Luca (14 ott 2026): la porta non ancora risolta
+          // era solo VISIVA, nessuna collisione la bloccava davvero — si
+          // poteva attraversare a piedi prima di rispondere. Finché il flag
+          // non è vero, ogni cella della porta è solida.
+          for (const [tx, ty] of cfg.celle) { if (collGrid[ty]) collGrid[ty][tx] = 1; }
+        }
       }
     }
 
@@ -12521,6 +12529,11 @@ const GameMap = (function () {
 
       this._scroll = 0;
       this._cursoreLista = 0;
+      // Sess. 14 ott 2026 (richiesta esplicita di Luca): nella tasca Chiave,
+      // gli oggetti chiave veri e le MT/MN non stanno più mischiati nella
+      // stessa lista — le MT/MN vivono in una sotto-schermata propria,
+      // raggiunta da una voce "📀 MT/MN" (vedi _raccogliVoci/conferma qui sotto).
+      this._mtMnAperto = false;
       this._voci = this._raccogliVoci();
 
       // Carica le icone reali (stessa cartella/nomi già usati altrove) prima
@@ -12561,7 +12574,13 @@ const GameMap = (function () {
       this.input.keyboard.on('keydown-DOWN', () => this._muoviCursoreLista(1));
       const conferma = () => {
         const v = this._voci[this._cursoreLista];
-        if (!v || !v.usabile) return;
+        if (!v) return;
+        if (v.apriMtMn) {
+          this._mtMnAperto = true; this._cursoreLista = 0; this._scroll = 0;
+          this._voci = this._raccogliVoci(); this._disegnaLista();
+          return;
+        }
+        if (!v.usabile) return;
         const disabilitato = (!v.diretto && stato.squadra.length === 0);
         if (disabilitato) return;
         if (v.diretto) {
@@ -12599,6 +12618,11 @@ const GameMap = (function () {
 
       const tornaAlMenu = () => {
         if (this._infoMossaBox) { this._chiudiInfoMossa(); return; }
+        if (this._mtMnAperto) {
+          this._mtMnAperto = false; this._cursoreLista = 0; this._scroll = 0;
+          this._voci = this._raccogliVoci(); this._disegnaLista();
+          return;
+        }
         this.scene.stop();
         this.scene.launch('PauseMenuScene');
       };
@@ -12643,19 +12667,33 @@ const GameMap = (function () {
           if (quanti <= 0) continue;
           voci.push({ chiave, oggetto, quanti, img: oggetto.img, usabile: false, diretto: false });
         }
-      } else {
+      } else if (this._mtMnAperto) {
+        // Sotto-schermata MT/MN (solo loro, niente oggetti chiave).
         for (const [chiave, oggetto] of Object.entries(OGGETTI)) {
           if (!categoriaInTasca2(oggetto.categoria)) continue;
           const quanti = stato.zaino[chiave] || 0;
           if (quanti <= 0) continue;
           voci.push(this._voceDa(chiave, oggetto, quanti));
         }
+      } else {
         if (typeof OGGETTI_CHIAVE !== 'undefined' && stato.inventario && stato.inventario.chiave) {
           for (const [id, posseduto] of Object.entries(stato.inventario.chiave)) {
             if (!posseduto) continue;
             const def = OGGETTI_CHIAVE[id] || {};
             voci.push({ chiave: id, oggetto: { nome: def.nome || id, descrizione: def.descrizione || '', icona: def.icona || '🔑' }, quanti: null, img: null, usabile: false, diretto: false });
           }
+        }
+        // Voce-contenitore "MT/MN" (solo se ne possiedi almeno una): apre la
+        // sotto-schermata invece di mischiarle con gli oggetti chiave veri.
+        const nMtMn = Object.entries(OGGETTI).filter(
+          ([chiave, o]) => categoriaInTasca2(o.categoria) && (stato.zaino[chiave] || 0) > 0
+        ).length;
+        if (nMtMn > 0) {
+          voci.push({
+            chiave: '__mtmn__',
+            oggetto: { nome: 'MT/MN', descrizione: 'Le Macchine Tecniche/Nascoste che possiedi. Premi A per aprire.', icona: '📀' },
+            quanti: nMtMn, img: null, usabile: true, diretto: false, apriMtMn: true,
+          });
         }
       }
       return voci;
@@ -12676,7 +12714,7 @@ const GameMap = (function () {
       if (this._voci.length === 0) {
         const tasca = typeof zainoTascaAttiva !== 'undefined' ? zainoTascaAttiva : 1;
         const msg = tasca === 3 ? 'Non hai nessuna Ball.\nComprale al Poké Market.'
-          : tasca === 2 ? 'Non hai oggetti chiave\no MT/MN.'
+          : tasca === 2 ? (this._mtMnAperto ? 'Non hai nessuna MT/MN.' : 'Non hai oggetti chiave.')
           : 'Nessun oggetto.\nCompra al Poké Market\ndi un comune.';
         const t = this.add.text((P.x0 + P.x1) / 2, (P.y0 + P.y1) / 2, msg, {
           fontFamily: 'Arial', fontSize: '11px', color: '#555', align: 'center', wordWrap: { width: P.x1 - P.x0 - 16 },
@@ -12735,14 +12773,19 @@ const GameMap = (function () {
         }
 
         if (v.usabile) {
-          const disabilitato = (!v.diretto && stato.squadra.length === 0);
-          const btn = this.add.text(xUsa, y, 'Usa', {
+          const disabilitato = (!v.diretto && !v.apriMtMn && stato.squadra.length === 0);
+          const btn = this.add.text(xUsa, y, v.apriMtMn ? 'Apri' : 'Usa', {
             fontFamily: 'Arial', fontSize: '11px', fontStyle: 'bold',
             color: disabilitato ? '#bbb' : '#a8375a',
           }).setOrigin(1, 0.5).setDepth(3).setMask(mask);
           if (!disabilitato) {
             btn.setInteractive({ useHandCursor: true });
             btn.on('pointerdown', () => {
+              if (v.apriMtMn) {
+                this._mtMnAperto = true; this._cursoreLista = 0; this._scroll = 0;
+                this._voci = this._raccogliVoci(); this._disegnaLista();
+                return;
+              }
               if (v.diretto) {
                 usaRepellente(v.chiave);
                 this.scene.restart();
