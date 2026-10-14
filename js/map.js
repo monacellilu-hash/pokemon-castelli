@@ -13117,7 +13117,7 @@ const GameMap = (function () {
     async create() {
       this.input.enabled = false;
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
-      this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x101018, 1).setDepth(0);
+      const sfondoScena = this.add.rectangle(CW / 2, CH / 2, CW, CH, 0x101018, 1).setDepth(0);
 
       const testoCaricamento = this.add.text(CW / 2, CH / 2, 'Caricamento mappa…', {
         fontFamily: 'Arial', fontSize: '13px', color: '#ccc',
@@ -13138,13 +13138,33 @@ const GameMap = (function () {
 
       const mapW = tmj.width, mapH = tmj.height, tw = tmj.tilewidth, th = tmj.tileheight;
       const larghezzaPx = mapW * tw, altezzaPx = mapH * th;
-      const scala = Math.min((CW - 24) / larghezzaPx, (CH - 56) / altezzaPx);
-      const offX = (CW - larghezzaPx * scala) / 2;
-      const offY = (CH - altezzaPx * scala) / 2 - 10;
+      // IMPORTANTE: NON riusare la CW/CH lette all'inizio di create(). Con
+      // Phaser.Scale.RESIZE la camera non ha ancora le dimensioni finali nel
+      // primo istante di create() (si assesta dopo un frame) — leggerle solo
+      // ORA, dopo i due await sopra (fetch + caricamento texture), che hanno
+      // già dato tempo al resize di completarsi. Era la causa del cursore
+      // "scollegato" dalla mappa segnalata da Luca (14 ott 2026): offX/offY/
+      // scala calcolati su una camera più piccola di quella vera, usata poi
+      // per il rendering reale → mappa e cursore su due scale diverse.
+      const CW2 = this.cameras.main.width, CH2 = this.cameras.main.height;
+      sfondoScena.setPosition(CW2 / 2, CH2 / 2).setSize(CW2, CH2);
+      const scala = Math.min((CW2 - 24) / larghezzaPx, (CH2 - 56) / altezzaPx);
+      const offX = (CW2 - larghezzaPx * scala) / 2;
+      const offY = (CH2 - altezzaPx * scala) / 2 - 10;
       this._scala = scala; this._offX = offX; this._offY = offY; this._tw = tw; this._th = th;
       this._mapW = mapW; this._mapH = mapH;
 
-      const layerMappa = this.add.container(offX, offY).setScale(scala).setDepth(1);
+      // NOTA (14 ott 2026): NON usare un Container con setScale() per
+      // raggruppare i layer — Phaser.Tilemaps.TilemapLayer NON eredita
+      // correttamente lo scale di un Container antenato per il proprio
+      // disegno/culling (limite noto del motore): la POSIZIONE viene
+      // trasformata ma l'ESTENSIONE disegnata resta a scala 1, risultando
+      // in una mappa minuscola in alto a sinistra mentre il cursore (che
+      // usa la stessa scala ma calcolata a mano) restava "giusto" ma
+      // sembrava scollegato — era la mappa ad essere piccola, non il
+      // cursore fuori posto. Fix: scala e posiziona OGNI TilemapLayer
+      // direttamente (niente container).
+      const layersCreati = [];
 
       // Carica le immagini di TUTTI i tileset usati dalla mappa, sia quelli
       // ESTERNI (source, es. Town Map.tsj/map.tsj/outside.tsx — il loro
@@ -13211,7 +13231,10 @@ const GameMap = (function () {
           const tm = this.make.tilemap({ data: data2d, tileWidth: t.tw, tileHeight: t.th });
           const tileset = tm.addTilesetImage('ts', key, t.tw, t.th, 0, 0);
           const tl = tm.createLayer(0, tileset);
-          if (tl) layerMappa.add(tl);
+          if (tl) {
+            tl.setPosition(offX, offY).setScale(scala).setDepth(1);
+            layersCreati.push(tl);
+          }
         }
       }
 
@@ -13238,17 +13261,17 @@ const GameMap = (function () {
       this._cursore = this.add.circle(0, 0, 9, 0x8b0000, 1)
         .setStrokeStyle(2, 0xffffff).setDepth(4);
 
-      this.add.text(CW / 2, Math.max(4, offY - 6), '🗺️ MAPPA REGIONALE', {
+      this.add.text(CW2 / 2, Math.max(4, offY - 6), '🗺️ MAPPA REGIONALE', {
         fontFamily: "'Press Start 2P', monospace", fontSize: '12px', color: '#ffcb05',
         stroke: '#000', strokeThickness: 4,
       }).setOrigin(0.5, 1).setDepth(3);
 
-      this._etichetta = this.add.text(CW / 2, offY + altezzaPx * scala + 18, '', {
+      this._etichetta = this.add.text(CW2 / 2, offY + altezzaPx * scala + 18, '', {
         fontFamily: 'Arial', fontSize: '13px', fontStyle: 'bold', color: '#fff8d8',
         backgroundColor: '#1a2940', padding: { x: 10, y: 4 },
       }).setOrigin(0.5, 0).setDepth(3);
 
-      this.add.text(CW / 2, CH - 6, 'Frecce per muoverti · B per uscire', {
+      this.add.text(CW2 / 2, CH2 - 6, 'Frecce per muoverti · B per uscire', {
         fontFamily: 'Arial', fontSize: '11px', color: '#888',
       }).setOrigin(0.5, 1).setDepth(3);
 
