@@ -4620,7 +4620,7 @@ const DATI_TRAINER = {
     premio: 340,
   },
   'Rocca_di_papa_capo': {
-    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
+    sprite: 'trainer_PROFESSOR', ritratto: 'CAMPER', vista: 5,
     classe: 'Organizzatore', nome: 'Castagnolo Capo',
     squadra: [ { id: 232, livello: 36 }, { id: 286, livello: 37 }, { id: 277, livello: 37 } ],   // Donphan, Breloom, Swellow
     dialogo_prima: 'Sono io che organizzo la Sagra delle Castagne ogni anno. Vediamo se sai apprezzarla come si deve!',
