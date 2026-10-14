@@ -265,8 +265,12 @@
        in js/map.js — il click controlla eventoVicino, a vuoto non fa nulla). -->
   <button id="btn-interagisci" class="tasto-gb solo-mobile">A</button>
 
-  <!-- Phaser 3 (motore grafico F14 — sostituisce Leaflet) -->
-  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"></script>
+  <!-- Phaser 3 (motore grafico F14 — sostituisce Leaflet). integrity/crossorigin
+       (14 ott 2026): se jsDelivr servisse mai un file diverso da questa esatta
+       versione (CDN compromesso o dirottato), il browser rifiuta di eseguirlo. -->
+  <script src="https://cdn.jsdelivr.net/npm/phaser@3.60.0/dist/phaser.min.js"
+          integrity="sha384-bcpiSslshEqIfUoxXWFNw7kqGDrRhwSYbr2IHOzGmD5dX3pDoM89ZGkqW9qFP0Ks"
+          crossorigin="anonymous"></script>
 
   <!-- Dati mappe Tiled (NPC, trainer, porte, incontri, cartelli) -->
   <script src="dati/npc.js?v=20261014r"></script>
