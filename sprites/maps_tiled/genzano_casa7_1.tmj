@@ -224,8 +224,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 11,
-   "x": 224,
-   "y": 128
+   "x":  0,
+   "y":  0
   },
   {
    "data": [
@@ -845,7 +845,7 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 208,
+     "x": 224,
      "y": 128
     },
     {

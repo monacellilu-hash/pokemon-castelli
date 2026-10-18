@@ -11093,8 +11093,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 60,
-   "x": 512,
-   "y": 928
+   "x":  0,
+   "y":  0
   },
   {
    "draworder": "topdown",
@@ -11450,8 +11450,8 @@
      "type": "trainer",
      "visible": true,
      "width": 32,
-     "x": 511.416903929065,
-     "y": 932.922476205971
+     "x": 512,
+     "y": 928
     },
     {
      "height": 24.9716098592695,

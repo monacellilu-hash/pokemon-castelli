@@ -1378,7 +1378,7 @@
    <property name="movimento" value="random"/>
   </properties>
  </object>
- <object id="229" name="trainer_14" type="trainer" x="2200" y="2750" width="32" height="32">
+ <object id="229" name="trainer_14" type="trainer" x="2048" y="2720" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_14"/>

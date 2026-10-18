@@ -4347,8 +4347,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 48,
-   "x": 384,
-   "y": 992
+   "x":  0,
+   "y":  0
   },
   {
    "data": [
@@ -9038,8 +9038,8 @@
      "type": "trainer",
      "visible": true,
      "width": 32,
-     "x": 382.877,
-     "y": 1022.88
+     "x": 384,
+     "y": 992
     },
     {
      "height": 32,

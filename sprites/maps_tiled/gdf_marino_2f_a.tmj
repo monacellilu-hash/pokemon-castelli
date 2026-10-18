@@ -3652,8 +3652,8 @@
    "type":"tilelayer",
    "visible":true,
    "width":30,
-   "x":736,
-   "y":480
+   "x": 0,
+   "y": 0
   },
   {
    "draworder":"topdown",
@@ -4110,8 +4110,8 @@
      "type":"trainer",
      "visible":true,
      "width":0,
-     "x":768,
-     "y":480
+     "x": 736,
+     "y": 480
     },
     {
      "height":0,

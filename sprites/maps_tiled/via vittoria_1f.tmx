@@ -452,7 +452,7 @@
     <property name="type" value="erba_alta"/>
    </properties>
   </object>
-  <object id="101" name="via_vittoria_1" x="300" y="1400">
+  <object id="101" name="via_vittoria_1" x="384" y="1376">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="via_vittoria_1"/>

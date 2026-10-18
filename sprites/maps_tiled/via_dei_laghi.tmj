@@ -5060,8 +5060,8 @@
                  "type":"trainer",
                  "visible":true,
                  "width":32,
-                 "x":2200,
-                 "y":2750
+                 "x":2048,
+                 "y":2720
                 }, 
                 {
                  "height":32,
