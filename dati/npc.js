@@ -157,11 +157,21 @@ const DATI_NPC = {
   'museo_grunt_a': { sprite: 'GDF_GRUNT_SPRITE', nome: 'Recluta GdF', direzione: 'sud', movimento: 'fisso', dialogo: [] },
   'museo_grunt_b': { sprite: 'GDF_GRUNT_SPRITE', nome: 'Recluta GdF', direzione: 'sud', movimento: 'fisso', dialogo: [] },
 
+  // Sess. 18 ott 2026 (bug segnalato da Luca): "museo_cenciarels" qui sotto
+  // (quella con le missioni) non ha MAI avuto un oggetto Tiled corrispondente
+  // sulla mappa — un NPC scritto ma mai piazzato, quindi irraggiungibile.
+  // Invece di aggiungerne uno nuovo, questa stessa prigioniera ora smista da
+  // sola (interagisciCenciarelsCuratrice, js/app.js): prigioniera finché il
+  // museo non è liberato, poi le missioni. Un solo oggetto sulla mappa, un
+  // solo personaggio — non due sprite sovrapposti.
   'museo_cenciarels_prigioniera': {
     sprite: SPRITE_CENCIARELS, nome: 'Cenciarels',
     direzione: 'ovest', movimento: 'fisso',
-    dialogo: ['Sono la curatrice del museo... mi costringono a collaborare.', 'Vi prego, fermateli prima che portino via le pietre!'],
+    azione: 'interagisciCenciarelsCuratrice',
   },
+  // Entry mantenuta per compatibilità (altri riferimenti nel codice usavano
+  // già questo id in passato), ma orfana: nessun oggetto Tiled la usa più,
+  // tutto passa dalla prigioniera qui sopra.
   'museo_cenciarels': {
     sprite: SPRITE_CENCIARELS, nome: 'Cenciarels',
     direzione: 'sud', movimento: 'fisso', dialogo: [],

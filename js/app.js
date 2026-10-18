@@ -2082,6 +2082,12 @@ async function interagisciRianimaFossiliGenzano() {
     if (pkm) depositaInBox(pkm);
     const nomePkm = (typeof NOMI_POKEMON !== 'undefined' && NOMI_POKEMON[q.idPokemon]) || `n.${q.idPokemon}`;
     stato.fossileRianimazione = null;
+    // Bug segnalato da Luca (18 ott 2026): questo flag non veniva MAI
+    // impostato da nessuna parte — Cenciarels (interagisciCenciarels, legge
+    // fossileRianimato()) restava bloccata per sempre su "torna quando avrai
+    // rianimato il fossile", anche dopo averlo rianimato davvero qui.
+    if (!stato.flags) stato.flags = {};
+    stato.flags.fossileRianimato = true;
     salvaPartita();
     await mostraDialogo(nome, [
       'Ce l\'abbiamo fatta! La rianimazione è un successo!',
@@ -2611,6 +2617,24 @@ function missioneCenciarelsAttiva(id) {
   const fatte = stato.flags.cenciarelsMissioni || {};
   const daFare = MISSIONI_CENCIARELS.filter(m => !fatte[m.id]);
   return daFare.length > 0 && daFare[0].id === id;
+}
+
+// Smista l'unico NPC "Cenciarels" piazzato sulla mappa (museo_cenciarels_
+// prigioniera): prima della liberazione mostra solo il dialogo da ostaggio,
+// dopo (museoLiberato) passa alle missioni vere (interagisciCenciarels).
+// Bug segnalato da Luca, 18 ott 2026: prima esisteva un secondo NPC
+// "museo_cenciarels" con le missioni ma senza nessun oggetto Tiled sulla
+// mappa — irraggiungibile in gioco, a prescindere da tutto il resto.
+async function interagisciCenciarelsCuratrice() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!(stato.flags && stato.flags.museoLiberato)) {
+    await mostraDialogo('Cenciarels', [
+      'Sono la curatrice del museo... mi costringono a collaborare.',
+      'Vi prego, fermateli prima che portino via le pietre!',
+    ]);
+    return;
+  }
+  await interagisciCenciarels();
 }
 
 // Cenciarels, curatrice del Museo delle Navi (versione "liberata"): riceve il
@@ -4976,13 +5000,13 @@ function premiStart() {
   if (typeof GameMap !== 'undefined' && GameMap.apriMenuNativo) GameMap.apriMenuNativo();
 }
 
-// Select: riservato alla Bicicletta (si otterrà più avanti in partita).
-// Per ora solo il collegamento del tasto, come richiesto esplicitamente:
-// nessuna meccanica reale finché la Bicicletta non è ottenibile in gioco.
+// Select: riservato alla Bicicletta. Bug segnalato da Luca (18 ott 2026):
+// diceva sempre "non hai la bicicletta" anche quando ce l'hai — il toggle
+// vero esisteva solo sul tasto B dentro map.js, qui non veniva mai chiamato.
 function premiSelect() {
   if (stato.incontroAttivo || !nascostoEl('overlay-dialogo') || !nascostoEl('pannello-menu')) return;
   if (typeof GameMap !== 'undefined' && GameMap.menuNativoAttivo && GameMap.menuNativoAttivo()) return;
-  if (typeof mostraToast === 'function') mostraToast('🚲 Non hai ancora la Bicicletta.');
+  if (typeof GameMap !== 'undefined' && GameMap.attivaBiciDaSelect) GameMap.attivaBiciDaSelect();
 }
 
 function initTastiera() {

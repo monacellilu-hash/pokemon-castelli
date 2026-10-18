@@ -548,6 +548,12 @@ const Battle = (function () {
      STATI ALTERATI E MODIFICATORI DI STATISTICA
      ========================================================== */
 
+  // Abilità "di contatto" (richiesta Luca, 18 ott 2026): 30% di infliggere
+  // uno stato a chi colpisce con una mossa fisica. Approssimazione nota:
+  // "contatto" = mossa fisica (PokéAPI non espone un flag di contatto vero,
+  // ma è vero per la stragrande maggioranza delle mosse fisiche Gen 1-3).
+  const ABILITA_CONTATTO_STATO = { static: 'paralysis', 'poison-point': 'poison', 'flame-body': 'burn' };
+
   // Stati alterati gestiti (chiave API → nome italiano breve)
   const STATI = {
     paralysis: { sigla: 'PAR', nome: 'paralizzato' },
@@ -711,6 +717,12 @@ const Battle = (function () {
     // devono essere solo estetiche): immunità totale alle mosse Terra,
     // come nei giochi veri.
     if (mossa.tipo === 'ground' && difensore.abilitaChiave === 'levitate') eff = 0;
+    // Idroassorbenza (water-absorb, richiesta Luca, 18 ott 2026): niente
+    // danno dalle mosse Acqua, il difensore recupera il 25% degli HP massimi.
+    // "assorbito" letto dal chiamante (eseguiMossa) per curare invece di colpire.
+    if (mossa.tipo === 'water' && difensore.abilitaChiave === 'water-absorb') {
+      return { danno: 0, eff: 0, critico: false, assorbito: true };
+    }
     if (eff === 0) return { danno: 0, eff: 0, critico: false };
 
     // Mosse fisiche usano Attacco/Difesa, speciali Att.Sp./Dif.Sp.
@@ -723,12 +735,17 @@ const Battle = (function () {
       ? statEffettiva(difensore, difensore.difesa, 'defense')
       : statEffettiva(difensore, difensore.difSp, 'special-defense');
 
-    // Scottatura: dimezza il danno delle mosse fisiche di chi ne soffre
-    if (fisica && attaccante.condizione && attaccante.condizione.tipo === 'burn') {
+    // Attitudine (guts, richiesta Luca): Attacco ×1.5 se chi attacca ha uno
+    // stato alterato, e NON subisce il dimezzamento da scottatura (gioca
+    // comunque a piena potenza). Senza Attitudine resta la scottatura normale.
+    if (fisica && attaccante.abilitaChiave === 'guts' && attaccante.condizione) {
+      A = A * 1.5;
+    } else if (fisica && attaccante.condizione && attaccante.condizione.tipo === 'burn') {
       A = A * 0.5;
     }
 
-    const critico = tiraCritico(mossa);
+    // Guscioprotettivo (shell-armor, richiesta Luca): niente colpi critici subiti.
+    const critico = (difensore.abilitaChiave === 'shell-armor') ? false : tiraCritico(mossa);
 
     // Formula reale (0174_Move_UsageCalculations.rb#pbCalcDamage): il
     // termine di livello va arrotondato per difetto PRIMA di moltiplicarlo
@@ -1662,6 +1679,10 @@ const Battle = (function () {
     // Può coesistere con un altro stato maggiore (paralisi+confusione è
     // normale), quindi bypassa il controllo "ne ha già uno".
     if (tipoStato === 'confusion') {
+      if (bersaglio.abilitaChiave === 'own-tempo') {
+        await di(`${etichetta} non si lascia confondere!`);
+        return;
+      }
       if (bersaglio.confusione > 0) {
         await di(`Ma ${etichetta} è già confuso!`);
         return;
@@ -1754,12 +1775,18 @@ const Battle = (function () {
       }
       return false;
     }
+    // No Guard (richiesta Luca, 18 ott 2026): nessuna mossa manca mai, da
+    // nessuno dei due lati, se uno dei due Pokémon in campo ce l'ha.
+    if (att.abilitaChiave === 'no-guard' || dif.abilitaChiave === 'no-guard') return true;
     if (mossa.precisione === null || mossa.precisione === undefined) return true; // colpisce sempre
     const acc = moltiplicatoreStage(att.mod.accuracy || 0);
     const eva = moltiplicatoreStage(dif.mod.evasion || 0);
     let soglia = mossa.precisione * (acc / eva);
     // Polvere Abbaglio: rende il portatore più difficile da colpire
     if (dif.oggetto === 'polvere_abbaglio') soglia *= 0.9;
+    // Occhioveglia (sand-veil, richiesta Luca): più difficile da colpire
+    // nella tempesta di sabbia.
+    if (dif.abilitaChiave === 'sand-veil' && meteoBattaglia === 'sandstorm') soglia *= 0.8;
     return Math.random() * 100 <= soglia;
   }
 
@@ -1795,8 +1822,15 @@ const Battle = (function () {
     // "silenzioso" = seconda (o successiva) risoluzione di una mossa ad area
     // già annunciata/scalata sui PP per il primo bersaglio (vedi eseguiMossaMultiBersaglio).
     if (!opzioni.silenzioso) {
-      // I PP si consumano al turno di carica, non al turno del colpo (giaCaricata)
-      if (!giaCaricata && mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
+      // I PP si consumano al turno di carica, non al turno del colpo (giaCaricata).
+      // Pressione (pressure, richiesta Luca, 18 ott 2026): chi la usa contro
+      // il portatore paga 2 PP invece di 1. "dif" può essere un array
+      // (mossa ad area in doppia): basta che UNO dei bersagli vivi l'abbia.
+      if (!giaCaricata && mossa.pp !== undefined && mossa.pp < 900) {
+        const bersagliPressione = Array.isArray(dif) ? dif : [dif];
+        const conPressione = bersagliPressione.some(b => b && b.hpAttuale > 0 && b.abilitaChiave === 'pressure');
+        mossa.pp = Math.max(0, mossa.pp - (conPressione ? 2 : 1));
+      }
       await di(`${etichettaAtt} usa ${mossa.nomeIt}!`);
     }
 
@@ -1839,7 +1873,19 @@ const Battle = (function () {
       // --- MOSSA OFFENSIVA (ha potenza) ---
       if (!(mossa.potenza && mossa.potenza > 0)) break; // mossa di stato: niente ciclo, esce subito
 
-      let { danno, eff, critico } = calcolaDanno(att, dif, mossa);
+      let { danno, eff, critico, assorbito } = calcolaDanno(att, dif, mossa);
+      // Idroassorbenza (water-absorb): niente danno, il difensore recupera
+      // il 25% HP massimi — gli effetti secondari della mossa non scattano
+      // (colpiAndati resta 0, stessa logica di "mossa senza effetto").
+      if (assorbito) {
+        const guarigione = Math.max(1, Math.round(dif.hpMax * 0.25));
+        const primaHp = dif.hpAttuale;
+        dif.hpAttuale = Math.min(dif.hpMax, dif.hpAttuale + guarigione);
+        aggiornaPannelli();
+        await testoFluttuante(dif, `+${dif.hpAttuale - primaHp}`, '#5cd65c');
+        await di(`${etichettaDif} assorbe l'acqua e recupera energia!`);
+        break;
+      }
       if (eff === 0) {
         await di(`Non ha alcun effetto su ${etichettaDif}!`);
         break;
@@ -1861,6 +1907,13 @@ const Battle = (function () {
         } else if (dif.oggetto === 'benda_focus' && Math.random() < 0.1) {
           sopravvive = true;
           await di(`${etichettaDif} si aggrappa con la Benda Focus!`);
+        } else if (dif.abilitaChiave === 'sturdy' && eraPieno) {
+          // Tenacia (sturdy, richiesta Luca, 18 ott 2026): sopravvive a 1 HP
+          // a un colpo altrimenti letale, se era a HP pieni. Versione
+          // semplificata (Gen 5+): qui non esistono mosse OHKO (Fissure/
+          // Guillottina/Supergelo) da gestire come caso separato.
+          sopravvive = true;
+          await di(`${etichettaDif} resiste all'attacco grazie alla Tenacia!`);
         }
       }
       dif.hpAttuale = sopravvive ? 1 : Math.max(0, dif.hpAttuale - danno);
@@ -1869,6 +1922,14 @@ const Battle = (function () {
       ultimoDanno = danno;
       lampeggia(dif);
       aggiornaPannelli();
+      // Abilità di contatto del difensore (Statica/Velenopunto/Corpofiamma):
+      // 30% di stato a chi attacca con una mossa fisica, se può ancora
+      // combattere e non ha già un problema di stato.
+      const statoContatto = ABILITA_CONTATTO_STATO[dif.abilitaChiave];
+      if (statoContatto && mossa.classe !== 'special' && att.hpAttuale > 0 &&
+          !att.condizione && Math.random() < 0.3) {
+        await applicaStato(att, statoContatto, etichettaAtt);
+      }
       // Efficacia mostrata una volta sola per sequenza multi-colpo (come il
       // gioco vero: "Colpito N volte!" + efficacia, non ripetuta a ogni colpo).
       if (numColpi === 1) {
@@ -1891,7 +1952,8 @@ const Battle = (function () {
             await testoFluttuante(att, `+${recuperati}`, '#5cd65c');
             await di(`${etichettaAtt} ha drenato energia da ${etichettaDif}!`);
           }
-        } else {
+        } else if (att.abilitaChiave !== 'rock-head') {
+          // Testaquadra (rock-head, richiesta Luca): niente contraccolpo, punto.
           att.hpAttuale = Math.max(0, att.hpAttuale - variazione);
           lampeggia(att);
           aggiornaPannelli();
@@ -2450,6 +2512,10 @@ const Battle = (function () {
   function velocitaEffettiva(ist) {
     let v = statEffettiva(ist, ist.velocita, 'speed');
     if (ist.condizione && ist.condizione.tipo === 'paralysis') v *= 0.25;
+    // Nuotafrode/Clorofilla (richiesta Luca, 18 ott 2026): raddoppiano la
+    // Velocità nel meteo giusto, a prescindere dagli sbalzi di statistica.
+    if (ist.abilitaChiave === 'swift-swim' && meteoBattaglia === 'rain') v *= 2;
+    if (ist.abilitaChiave === 'chlorophyll' && meteoBattaglia === 'sun') v *= 2;
     return v;
   }
 
@@ -3021,11 +3087,15 @@ const Battle = (function () {
       return;
     }
 
+    // Fuga/Vigore (run-away, richiesta Luca, 18 ott 2026): fuga garantita
+    // dai selvatici (qui siamo già certi non sia un allenatore, vedi sopra).
+    const fugaGarantita = mio.abilitaChiave === 'run-away';
+
     // Più sei veloce del nemico, più è facile scappare
     let prob = 0.55 + (mio.velocita - nemico.velocita) / 150;
     prob = Math.min(0.95, Math.max(0.25, prob));
 
-    if (Math.random() < prob) {
+    if (fugaGarantita || Math.random() < prob) {
       await di('Fuga riuscita! 🏃');
       fineBattaglia('fuga');
     } else {

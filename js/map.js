@@ -2265,6 +2265,43 @@ const GameMap = (function () {
         set.add(ev.tx + ',' + ev.ty);
       }
     }
+    for (const rc of _buildSeaAutoSurfTiles(tmj)) set.add(rc);
+    return set;
+  }
+
+  // Specchi d'acqua "per grafica" nell'Antro di Kyogre (richiesta Luca, 18
+  // ott 2026: "ogni tile preso da tileset sea diventa una zona surf"). Ogni
+  // mappa antro_kyogre_N ha il proprio tileset INCORPORATO (ritagliato dalla
+  // mappa pret originale, niente file condiviso "Sea.tsj" da riconoscere per
+  // nome): gli id locali dei tile acqua sono stati individuati analizzando
+  // pixel per pixel ciascun tileset (dominante blu) — stessa idea di
+  // _buildErbaAltaTiles/_buildIceTiles, riconosciuto dal tile grafico senza
+  // dover disegnare un rettangolo trigger_surf a mano su ogni cella.
+  // antro_kyogre_1/2/3/4/8 e il resto del gioco non hanno acqua in questi
+  // tileset: nessun impatto altrove.
+  const TILE_ACQUA_PER_TILESET = {
+    antro_kyogre_5_tileset:        [24, 26, 28, 32, 34, 36, 44, 62, 64],
+    antro_kyogre_6_tileset:        [22, 24, 26, 28, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 50, 52, 54, 56, 58, 66, 68, 70, 72, 74, 78],
+    antro_kyogre_7_tileset:        [20, 26, 28, 30, 34, 36, 38, 40, 42, 44, 46, 48, 50, 58, 76],
+    antro_kyogre_9_tileset:        [60, 62, 64, 66, 68, 70, 72, 74, 76, 78, 80, 82, 88],
+    antro_kyogre_entrance_tileset: [42, 46, 48, 50, 52, 54, 56, 58, 60, 62, 64, 66, 68, 70, 76, 78, 86, 88, 90],
+  };
+  function _buildSeaAutoSurfTiles(tmj) {
+    const set = new Set();
+    const w = tmj.width, h = tmj.height;
+    for (const t of (tmj.tilesets || [])) {
+      const idsAcqua = TILE_ACQUA_PER_TILESET[t.name];
+      if (!idsAcqua) continue;
+      const gidAcqua = idsAcqua.map(id => t.firstgid + id);
+      for (const layer of tmj.layers) {
+        if (layer.type !== 'tilelayer' || !layer.data) continue;
+        for (let ty = 0; ty < h; ty++) {
+          for (let tx = 0; tx < w; tx++) {
+            if (gidAcqua.includes(layer.data[ty * w + tx])) set.add(tx + ',' + ty);
+          }
+        }
+      }
+    }
     return set;
   }
 
@@ -2670,7 +2707,7 @@ const GameMap = (function () {
   let collGrid         = null;   // collisione VERA, immutabile dopo il caricamento (mai scritta da Surf)
   let eventiMappa      = [];
   let luciMappa        = [];    // oggetti type:luce del layer "luci" (finestre/lampioni), coord. pixel
-  let acquaSurf        = null;   // Set "tx,ty": SOLO le celle dei rettangoli trigger_surf (l'acqua)
+  let acquaSurf        = null;   // Set "tx,ty": celle dei rettangoli trigger_surf, + (18 ott 2026) i tile "acqua" rilevati per grafica nell'Antro di Kyogre (vedi _buildSeaAutoSurfTiles)
   let surfAttivo       = false;  // stato del player: sta surfando sì/no (non è una proprietà delle celle)
   // PROBLEMA 4a (salvataggio Surf): flag "una tantum", letto e consumato solo
   // dal PRIMO caricamento mappa dopo l'avvio (ripresa da salvataggio) — mai
@@ -14143,6 +14180,36 @@ const GameMap = (function () {
 
   function impostaVelocita(v) { velocita = v; }
 
+  // Bug segnalato da Luca (18 ott 2026): il tasto Select era "riservato alla
+  // Bicicletta" solo nel commento (premiSelect in js/app.js mostrava sempre
+  // "Non hai ancora la Bicicletta", a prescindere da averla o no) — il
+  // toggle vero esisteva già, ma SOLO dentro il tasto B di _sposta/update()
+  // (this.biciKey), irraggiungibile da fuori map.js. Stessa identica logica
+  // di quel blocco, richiamabile da qualunque punto (Select da tastiera,
+  // bottone touch, "Usa" dallo zaino).
+  function attivaBiciDaSelect() {
+    if (typeof stato === 'undefined' || bloccato) return;
+    const haBici = stato.inventario && stato.inventario.chiave && stato.inventario.chiave.bicicletta;
+    if (!haBici) {
+      if (typeof mostraToast === 'function') mostraToast('🚲 Non hai ancora la Bicicletta.', 1800);
+      return;
+    }
+    if (surfAttivo) {
+      if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici in acqua.', 1800);
+      return;
+    }
+    if (mappaInfo && mappaInfo.interno) {
+      if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici qui dentro.', 1800);
+      return;
+    }
+    biciAttiva = !biciAttiva;
+    if (playerSprite && scena && scena._animKeyPlayer) {
+      playerSprite.anims.play(scena._animKeyPlayer('idle', facciata), true);
+    }
+    if (scena && scena._aggiornaVisibilitaFollower) scena._aggiornaVisibilitaFollower();
+    if (typeof mostraToast === 'function') mostraToast(biciAttiva ? '🚲 Sali in bici!' : '🚲 Scendi dalla bici.', 1500);
+  }
+
   function teleporta(pos) {
     posLatLon = { lat: pos.lat, lon: pos.lon };
     if (typeof stato !== 'undefined') stato.posizione = { ...posLatLon };
@@ -14408,7 +14475,7 @@ const GameMap = (function () {
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, apriSelezioneSquadraPalestra, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,
-    emitTastoSceneNative, fadeOutIn, rigeneraNpcMappa,
+    emitTastoSceneNative, fadeOutIn, rigeneraNpcMappa, attivaBiciDaSelect,
   };
 
 })();
