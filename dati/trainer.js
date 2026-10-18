@@ -4620,11 +4620,11 @@ const DATI_TRAINER = {
     premio: 340,
   },
   'Rocca_di_papa_capo': {
-    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
+    sprite: 'trainer_PROFESSOR', ritratto: 'CAMPER', vista: 5,
     classe: 'Organizzatore', nome: 'Castagnolo Capo',
     squadra: [ { id: 232, livello: 36 }, { id: 286, livello: 37 }, { id: 277, livello: 37 } ],   // Donphan, Breloom, Swellow
     dialogo_prima: 'Sono io che organizzo la Sagra delle Castagne ogni anno. Vediamo se sai apprezzarla come si deve!',
-    dialogo_dopo: 'Complimenti! Sai, ogni anno dobbiamo raccogliere MIGLIAIA di chili di castagne solo per sfamare Baso durante l\'inverno. Quell\'uomo ha un appetito da Capopalestra vero!',
+    dialogo_dopo: 'Complimenti! Sai, ogni anno dobbiamo raccogliere MIGLIAIA di chili di castagne solo per sfamare Baso durante l\'inverno. Quell\'uomo ha un appetito da Capopalestra vero! Perchè non torni a parlare con lui di tanto in tanto è generoso e fa regali importanti!!',
     premio: 600,
   },
 
