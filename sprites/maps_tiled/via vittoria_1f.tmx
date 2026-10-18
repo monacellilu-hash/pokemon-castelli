@@ -482,7 +482,7 @@
    </properties>
    <point/>
   </object>
-  <object id="104" name="via_vittoria_4" x="1500" y="1350">
+  <object id="104" name="via_vittoria_4" x="1408" y="1344">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="via_vittoria_4"/>

@@ -354,7 +354,7 @@
    </properties>
    <point/>
   </object>
-  <object id="109" name="trainer percorso 1b- numero 8" x="13.6667" y="404">
+  <object id="109" name="trainer percorso 1b- numero 8" x="32" y="384">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="trainer path 1b_8"/>

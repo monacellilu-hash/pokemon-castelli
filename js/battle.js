@@ -196,6 +196,13 @@ const Battle = (function () {
   // nei giochi originali), oppure impostato da una mossa (5 turni).
   let meteoBattaglia = null;
   let meteoBattagliaTurni = 0;
+  // Coda delle mosse "ritardate" (Divinazione/Doom Desire, vedi MOSSE_RITARDATE):
+  // { turni, danno, nomeMossa, nomeAttaccante, latoColpito: 'giocatore'|'nemico' }.
+  // Lavora per LATO (via latoBattler), non per istanza fissa: funziona
+  // identica in singola e in doppia, e colpisce chiunque sia in campo sul
+  // lato bersaglio al momento dello scatto, non necessariamente chi era lì
+  // al momento dell'uso. Azzerata a ogni nuova lotta (vedi avvia/avviaDoppia).
+  let attacchiRitardati = [];
 
   // Mosse che impostano il meteo (nome = slug inglese PokeAPI, uguale a mossa.nome).
   const MOSSE_METEO = {
@@ -581,6 +588,16 @@ const Battle = (function () {
   const MOSSE_AUTODISTRUZIONE = new Set(['explosion', 'self-destruct', 'selfdestruct']);
   // MOD 6B — Mosse di protezione: annullano la mossa avversaria per quel turno.
   const MOSSE_PROTEZIONE = new Set(['protect', 'detect']);
+  // Sess. 18 ott 2026 (richiesta esplicita di Luca) — Divinazione/Doom
+  // Desire: nessun danno subito, colpiscono 2 turni dopo chiunque sia in
+  // campo sul lato colpito in quel momento (vedi attacchiRitardati sotto).
+  const MOSSE_RITARDATE = new Set(['future-sight', 'doom-desire']);
+  // Rotolamento/Palla Rapida: potenza che raddoppia a ogni uso consecutivo
+  // della STESSA mossa (×1,×2,×4,×8,×16), si azzera cambiando mossa.
+  // Semplificazione nota: non resetta su un colpo mancato (richiederebbe
+  // sapere se il colpo è andato a segno, informazione che eseguiMossa non
+  // restituisce) — resta comunque corretta per l'uso tipico (ripetuta).
+  const MOSSE_ROTOLAMENTO = new Set(['rollout', 'ice-ball']);
 
   // Nomi italiani delle statistiche modificabili (per i messaggi)
   const STAT_NOMI = {
@@ -719,7 +736,12 @@ const Battle = (function () {
     // qui si perdeva un pizzico di precisione ai livelli non multipli di 5.
     const bonusSeminvulnerabile = !!mossa._bonusSeminvulnerabile;
     mossa._bonusSeminvulnerabile = false;   // letto una tantum, non deve restare attivo al turno dopo
-    const potenzaEff = bonusSeminvulnerabile ? mossa.potenza * 2 : mossa.potenza;
+    // Moltiplicatore extra generico (Rotolamento/Palla Rapida, vedi
+    // MOSSE_ROTOLAMENTO in eseguiTurno) — stesso principio "letto una
+    // tantum" del bonus seminvulnerabile qui sopra.
+    const moltExtra = mossa._moltiplicatorePotenza || 1;
+    mossa._moltiplicatorePotenza = 1;
+    const potenzaEff = (bonusSeminvulnerabile ? mossa.potenza * 2 : mossa.potenza) * moltExtra;
 
     const terminelivello = Math.floor(2 * attaccante.livello / 5 + 2);
     const base = Math.floor(terminelivello * potenzaEff * A / D / 50) + 2;
@@ -1990,16 +2012,20 @@ const Battle = (function () {
     if (!c) return true;
 
     if (c.tipo === 'sleep') {
-      // Richiesta esplicita di Luca: 50% di svegliarsi ai primi 2 turni di
-      // sonno, sveglia GARANTITA al 3° turno (turniDormito arrivato a 2).
-      const sveglia = c.turniDormito >= 2 || Math.random() < 0.5;
+      // Richiesta esplicita di Luca (18 ott 2026): probabilità di sveglia
+      // crescente turno per turno invece di un 50/50 fisso — 1°:25%, 2°:35%,
+      // 3°:45%, 4°:70%, 5°:100% (garantita).
+      const SOGLIE_RISVEGLIO = [0.25, 0.35, 0.45, 0.70, 1.0];
+      const turno = (c.turniDormito || 0) + 1;   // turno di sonno che sta per tentare
+      const soglia = SOGLIE_RISVEGLIO[Math.min(turno, SOGLIE_RISVEGLIO.length) - 1];
+      const sveglia = Math.random() < soglia;
       if (sveglia) {
         att.condizione = null;
         aggiornaPannelli();
         await di(`${etichetta} si è svegliato!`);
         return true;
       }
-      c.turniDormito = (c.turniDormito || 0) + 1;
+      c.turniDormito = turno;
       await di(`${etichetta} sta dormendo profondamente...`);
       return false;
     }
@@ -2082,6 +2108,32 @@ const Battle = (function () {
       return;
     }
     if (inCaricaQuesta) { att.inCarica = null; att.seminvulnerabile = null; }
+
+    // Sess. 18 ott 2026 (richiesta esplicita di Luca) — Divinazione/Doom
+    // Desire: niente danno subito, il colpo (calcolato ORA) arriva 2 turni
+    // dopo su chi sarà in campo allora (vedi attacchiRitardati/fineTurnoStati).
+    if (MOSSE_RITARDATE.has(mossa.nome)) {
+      if (mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
+      const bersaglioCalc = Array.isArray(dif) ? dif.find(b => b && b.hpAttuale > 0) : dif;
+      await di(`${etichettaAtt} intravede il futuro!`);
+      if (bersaglioCalc) {
+        const { danno } = calcolaDanno(att, bersaglioCalc, mossa);
+        const latoColpito = latoBattler(att) === 'giocatore' ? 'nemico' : 'giocatore';
+        attacchiRitardati.push({ turni: 2, danno, nomeMossa: mossa.nome, nomeAttaccante: etichettaAtt, latoColpito });
+      }
+      return;
+    }
+
+    // Rotolamento/Palla Rapida: potenza ×2 a ogni uso consecutivo della
+    // stessa mossa (max ×16 al 5° colpo), azzerata cambiando mossa.
+    if (MOSSE_ROTOLAMENTO.has(mossa.nome)) {
+      const stessaMossa = att.rotolamento && att.rotolamento.nome === mossa.nome;
+      const turno = stessaMossa ? Math.min(att.rotolamento.turno + 1, 4) : 0;
+      att.rotolamento = { nome: mossa.nome, turno };
+      mossa._moltiplicatorePotenza = Math.pow(2, turno);
+    } else if (att.rotolamento) {
+      att.rotolamento = null;   // ha usato un'altra mossa: la catena si interrompe
+    }
 
     // MOD 6B: FURIA — alla prima esecuzione blocca il Pokémon per 2-3 turni
     if (MOSSE_FURIA[mossa.nome] && !(att.furia && att.furia.nome === mossa.nome)) {
@@ -2182,6 +2234,32 @@ const Battle = (function () {
       ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + cura);
       aggiornaPannelli();
       await di(`${etich} recupera un po' di HP grazie ai Rimasugli! 🍂`);
+    }
+    await _elaboraAttacchiRitardati(
+      () => (mio.hpAttuale > 0 ? { ist: mio, etichetta: mio.nome } : null),
+      () => (nemico.hpAttuale > 0 ? { ist: nemico, etichetta: etichettaNemico() } : null),
+    );
+  }
+
+  // Fa scattare le mosse "ritardate" (Divinazione/Doom Desire) il cui
+  // contatore è arrivato a 0 — generica per singola e doppia: ciascun
+  // motore passa due funzioni che restituiscono { ist, etichetta } per il
+  // bersaglio attuale sul lato giocatore/nemico (null se nessuno vivo lì).
+  async function _elaboraAttacchiRitardati(trovaMio, trovaNemico) {
+    for (let i = attacchiRitardati.length - 1; i >= 0; i--) {
+      const a = attacchiRitardati[i];
+      a.turni -= 1;
+      if (a.turni > 0) continue;
+      attacchiRitardati.splice(i, 1);
+      const bersaglio = a.latoColpito === 'giocatore' ? trovaMio() : trovaNemico();
+      if (!bersaglio) {
+        await di(`${a.nomeAttaccante} ha mancato col futuro: non c'è nessuno da colpire!`);
+        continue;
+      }
+      await di(`La premonizione di ${a.nomeAttaccante} si abbatte su ${bersaglio.etichetta}!`);
+      bersaglio.ist.hpAttuale = Math.max(0, bersaglio.ist.hpAttuale - a.danno);
+      lampeggia(bersaglio.ist);
+      aggiornaPannelli();
     }
   }
 
@@ -3373,6 +3451,7 @@ const Battle = (function () {
     // sess. 18 set 2026 — non bastava solo la classe CSS "doppia", andava
     // anche il flag). Una lotta singola parte SEMPRE pulita da questo stato.
     modoDoppia = false;
+    attacchiRitardati = [];   // nessuna "premonizione" residua da una lotta precedente
     collegaUI();
 
     // Meteo di mappa ereditato in battaglia (come nei giochi originali): se
@@ -4022,14 +4101,22 @@ const Battle = (function () {
       aggiornaPannelli();
       await di(`${etichettaDi(ist)} recupera un po' di HP grazie ai Rimasugli! 🍂`);
     }
+    await _elaboraAttacchiRitardati(
+      () => { const b = doppiaMieiAttivi.find(m => m && m.hpAttuale > 0); return b ? { ist: b, etichetta: etichettaDi(b) } : null; },
+      () => { const b = doppiaNemiciAttivi.find(m => m && m.hpAttuale > 0); return b ? { ist: b, etichetta: etichettaDi(b) } : null; },
+    );
   }
 
   /* ---------- KO, sostituzioni, EXP, fine lotta ---------- */
 
   async function _doppiaExpKO(n) {
-    const vincitore = (n._datoDaMe && n._datoDaMe.hpAttuale > 0)
-      ? n._datoDaMe
-      : doppiaMieiAttivi.find(m => m && m.hpAttuale > 0);
+    // Bug segnalato da Luca (18 ott 2026): se chi ha sferrato il colpo di
+    // grazia è svenuto nello stesso istante (es. Autodistruzione/Esplosione
+    // che manda KO anche l'avversario), il vecchio controllo "hpAttuale > 0"
+    // scartava il merito e, se nessun altro Pokémon era in campo, l'EXP
+    // andava persa del tutto. Chi ha dato il colpo lo riceve comunque, a
+    // prescindere dai suoi HP residui (coerente coi giochi veri).
+    const vincitore = n._datoDaMe || doppiaMieiAttivi.find(m => m && m.hpAttuale > 0);
     if (!vincitore) return;
     // Stessa formula corretta del 1v1 (vedi nemicoSconfitto): baseExp*livello/7,
     // ×1.5 perché in doppia è sempre lotta tra allenatori. Niente moltiplicatore
@@ -4181,6 +4268,7 @@ const Battle = (function () {
     if (inCorso) return;
     inCorso = true;
     modoDoppia = true;
+    attacchiRitardati = [];   // nessuna "premonizione" residua da una lotta precedente
     statoGioco = opzioni.stato;
     doppiaOnFine = opzioni.onFine || null;
     doppiaAllenatori = opzioni.allenatori;

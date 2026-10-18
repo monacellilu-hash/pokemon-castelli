@@ -11093,8 +11093,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 60,
-   "x": 0,
-   "y": 0
+   "x": 512,
+   "y": 928
   },
   {
    "draworder": "topdown",

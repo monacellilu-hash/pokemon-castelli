@@ -299,7 +299,7 @@
    <property name="movimento" value="fisso"/>
   </properties>
  </object>
- <object id="10" name="trainer" type="trainer" x="668" y="244" width="32" height="32">
+ <object id="10" name="trainer" type="trainer" x="672" y="224" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="direzione_ciclo" value="EO"/>

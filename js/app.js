@@ -1901,6 +1901,20 @@ async function interagisciPalestra(idPalestra) {
   });
 }
 
+// Bug segnalato da Luca (18 ott 2026): ottenere il PERMESSO di una MN
+// (stato.mn.<nome> = true, usato per gli ostacoli sul campo) non metteva
+// MAI l'oggetto corrispondente (mn_<nome>) nello zaino — quindi "Zaino →
+// Insegna" non la trovava mai e non si poteva insegnare a nessun Pokémon.
+// Da chiamare SEMPRE insieme a "stato.mn.<nome> = true", per ogni MN che ha
+// una voce in OGGETTI (oggi: taglio/surf/volo/forza/cascata/spaccaroccia —
+// Sub non è ancora implementata, CLAUDE.md).
+function _concediOggettoMN(nomeMN) {
+  const chiave = 'mn_' + nomeMN;
+  if (typeof OGGETTI !== 'undefined' && OGGETTI[chiave] && !stato.zaino[chiave]) {
+    stato.zaino[chiave] = 1;
+  }
+}
+
 async function vinciPalestra(palestra) {
   if (!stato.medaglie.includes(palestra.id)) stato.medaglie.push(palestra.id);
 
@@ -1925,6 +1939,7 @@ async function vinciPalestra(palestra) {
   // Permesso MN concesso direttamente dalla palestra (Cascata/Sub, sessione 12 agosto).
   if (palestra.mnDonata && !stato.mn[palestra.mnDonata]) {
     stato.mn[palestra.mnDonata] = true;
+    _concediOggettoMN(palestra.mnDonata);
     const nomiMN = { cascata: 'Cascata', sub: 'Sub' };
     messaggi.push(`${palestra.capopalestra.nome} ti dà anche il permesso di usare la MN ${nomiMN[palestra.mnDonata] || palestra.mnDonata}!`);
   }
@@ -2417,6 +2432,7 @@ async function interagisciRoccaNpc1() {
     ]);
     await mostraDialogo(nome, ['Ti prego, aiutaci. Prendi questo, ti servirà.']);
     stato.mn.forza = true;
+    _concediOggettoMN('forza');
     stato.flags.rocca_cutscene2_vista = true;
     salvaPartita();
     aggiornaHUD();
@@ -6306,6 +6322,10 @@ async function inizializzaSquadraTest() {
   stato.mn.cascata      = true;
   stato.mn.sub          = true;
   stato.mn.vittoria     = true;
+  // Bug segnalato da Luca (18 ott 2026): questo shortcut di test dava solo
+  // il PERMESSO d'uso sul campo, mai l'oggetto nello zaino — quindi "Insegna"
+  // non trovava mai Surf/Volo/ecc. da insegnare. Vedi _concediOggettoMN sopra.
+  ['taglio', 'surf', 'volo', 'forza', 'cascata', 'spaccaroccia'].forEach(_concediOggettoMN);
   // Level cap max
   stato.levelCap = 66;
 

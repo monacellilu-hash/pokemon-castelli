@@ -225,7 +225,7 @@
   <object id="58" x="-159" y="818"/>
  </objectgroup>
  <objectgroup color="#ff0000" id="6" name="eventi">
-  <object id="2" name="trainer" type="trainer" x="382.877" y="1022.88" width="32" height="32">
+  <object id="2" name="trainer" type="trainer" x="384" y="992" width="32" height="32">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="all-boschetto-1"/>
@@ -254,7 +254,7 @@
     <property name="vista" type="int" value="4"/>
    </properties>
   </object>
-  <object id="5" name="trainer" type="trainer" x="668.632" y="990.877" width="32" height="32">
+  <object id="5" name="trainer" type="trainer" x="672" y="960" width="32" height="32">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="direzione_ciclo" value="EO"/>

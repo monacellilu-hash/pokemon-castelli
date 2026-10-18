@@ -13499,8 +13499,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 70,
-   "x": 0,
-   "y": 0
+   "x": 480,
+   "y": 384
   },
   {
    "draworder": "topdown",

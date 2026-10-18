@@ -234,7 +234,7 @@
     <property name="type" value="trigger_forza"/>
    </properties>
   </object>
-  <object id="4" name="trainer" type="trainer" x="511.417" y="932.922" width="32" height="32">
+  <object id="4" name="trainer" type="trainer" x="512" y="928" width="32" height="32">
    <properties>
     <property name="direzione" value="nord"/>
     <property name="id" value="all-gm-extra-1"/>

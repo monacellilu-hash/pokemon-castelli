@@ -463,7 +463,7 @@
     <property name="type" value="trainer"/>
    </properties>
   </object>
-  <object id="13" name="all-p11-6" type="trainer" x="539" y="715" width="32" height="32">
+  <object id="13" name="all-p11-6" type="trainer" x="480" y="704" width="32" height="32">
    <properties>
     <property name="id" value="all-p11-6"/>
     <property name="type" value="trainer"/>

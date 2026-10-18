@@ -679,53 +679,74 @@
   </object>
   <object id="35" name="gdf-villa-1" type="trainer" x="1316.76" y="611.712" width="21.5" height="20">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Ehi tu! Questa e' zona riservata. La Villa e' sotto il nostro controllo!"/>
     <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="40"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="36" name="gdf-villa-2" type="trainer" x="1443.78" y="648.288" width="24.5" height="22">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Un ragazzino? Il Comandante Crasso ci ha detto di non far passare NESSUNO."/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="41"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="37" name="gdf-villa-3" type="trainer" x="1445.52" y="579.585" width="20.6667" height="22.6667">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Cerchiamo un documento negli archivi pontifici. Ma tu non hai visto niente, chiaro?"/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="42"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="38" name="gdf-villa-4" type="trainer" x="1322.84" y="516.587" width="17.3333" height="22.6667">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Il meteo dei Castelli sara' nostro! Immagina: pioggia a comando sulle vigne dei concorrenti..."/>
     <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="42"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="39" name="gdf-villa-5" type="trainer" x="1442.11" y="484.178" width="28.6667" height="23.3333">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Fulvia dice che sei tu quello che ci da' fastidio da Frascati. Ora ci penso io!"/>
     <property name="direzione" value="ovest"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="43"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="40" name="gdf-villa-6" type="trainer" x="1321.35" y="424.169" width="19.3333" height="20.6667">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Sei arrivato fin qui? Non importa. Quello che cercavamo l'abbiamo gia' trovato."/>
     <property name="direzione" value="est"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="44"/>
+    <property name="noTestBypass" type="bool" value="true"/>
    </properties>
   </object>
   <object id="41" name="gdf-villa-7" type="trainer" x="1379.31" y="355.303" width="21.3333" height="24.6667">
    <properties>
+    <property name="condizione" value="documentoVillaOttenuto"/>
     <property name="dialogo_intro" value="Grunt GdF: Vuoi il documento? Tieni, tanto non serve piu'... gia' ci siamo diretti li'!"/>
     <property name="dialogo_vittoria" value="Il documento dice: 'Le pietre riposano al Museo delle Barche di Nemi'. ...Aspetta, se ve ne siete gia' andati li'... devo correre a Nemi!"/>
     <property name="direzione" value="sud"/>
     <property name="flagVittoria" value="documentoVillaOttenuto"/>
+    <property name="gate" type="bool" value="true"/>
     <property name="livello_max" type="int" value="45"/>
+    <property name="noTestBypass" type="bool" value="true"/>
     <property name="oggetto_ricompensa" value="documento_navi"/>
    </properties>
   </object>

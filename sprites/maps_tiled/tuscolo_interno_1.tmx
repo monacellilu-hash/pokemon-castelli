@@ -432,7 +432,7 @@
     <property name="vista" type="int" value="4"/>
    </properties>
   </object>
-  <object id="14" name="trainer" type="trainer" x="834.321" y="1343.56" width="32" height="32">
+  <object id="14" name="trainer" type="trainer" x="864" y="1312" width="32" height="32">
    <properties>
     <property name="direzione" value="est"/>
     <property name="id" value="all-bosco-9"/>

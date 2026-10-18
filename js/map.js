@@ -4147,6 +4147,18 @@ const GameMap = (function () {
           inMovimento: false,
         });
       }
+      // Assuntina (gdf_gate_nemi) si scansa una volta per sempre dopo la
+      // cutscene 'gdf_gate_nemi_passa' (18 ott 2026): niente campo generico
+      // per "NPC spostato in modo permanente" nel motore, caso singolo
+      // gestito qui a mano come gli altri self-heal sopra.
+      if (typeof stato !== 'undefined' && stato.cutsceneViste &&
+          stato.cutsceneViste.includes('cutscene_npc:gdf_gate_nemi')) {
+        const stAssuntina = npcStato.find(s => s.id === 'gdf_gate_nemi');
+        if (stAssuntina) {
+          stAssuntina.tx += 1; stAssuntina.homeTx += 1;
+          stAssuntina.dir = 'ovest';
+        }
+      }
     }
 
     /* ══════════════════════════════════════════════════════════
@@ -6099,11 +6111,14 @@ const GameMap = (function () {
         const giaBattuto = trainerBattuti.has(id) ||
           (typeof stato !== 'undefined' && stato.allenatoriBattuti && stato.allenatoriBattuti.includes(id));
         if (giaBattuto) {
-          // Risfida (sessione 12 agosto): solo allenatori "normali" — niente
-          // capipalestra (palestraId), boss di storia (flagVittoria) o rivale
-          // (rivale, ha già la sua logica di scaling dedicata). Serve che siano
-          // passati 7 giorni di gioco dall'ultima sconfitta.
-          const risfidabile = dati && !dati.palestraId && !dati.flagVittoria && !dati.rivale;
+          // Risfida (sessione 12 agosto, corretta 18 ott 2026 su richiesta
+          // di Luca): i gregari di palestra (id "gregario N palestra X") NON
+          // sono MAI risfidabili — solo il Capopalestra (palestraId) lo è,
+          // dopo 7 giorni di gioco dall'ultima sconfitta. Boss di storia
+          // (flagVittoria) e rivale restano esclusi come prima (logica di
+          // scaling propria).
+          const isGregarioPalestra = /^gregario \d+ palestra /i.test(id);
+          const risfidabile = dati && !dati.flagVittoria && !dati.rivale && !isGregarioPalestra;
           if (risfidabile && typeof stato !== 'undefined') {
             const giornoSconfitta = (stato.allenatoriBattutiGiorno && stato.allenatoriBattutiGiorno[id]) || 0;
             const giornoAttuale = (stato.tempo && stato.tempo.giorno) || 0;
@@ -9658,11 +9673,22 @@ const GameMap = (function () {
     // fare lui stesso sbloccaMovimento()/salvaPartita() (caso palestraId: il
     // dialogo della medaglia gestisce da sé blocco/sblocco e salva già lui).
     _applicaEsitoTrainer(id, dati, ev) {
-      trainerBattuti.add(id);
+      // Bug segnalato da Luca (18 ott 2026): le "catene" (prossimaLotta, es.
+      // famiglia_laghi_1→2→3→4) arrivano qui con "id" = ULTIMO della catena
+      // (famiglia_laghi_4), ma il giocatore ha interagito con l'oggetto
+      // Tiled "famiglia_laghi_1" (ev.id, resta lo stesso per tutta la
+      // catena perché ev non cambia mai tra una lotta e la successiva).
+      // Segnando "battuto" solo l'ultimo anello, il primo (quello vero,
+      // controllato all'interazione via ev.id) non risultava MAI battuto
+      // → risfida infinita di tutta la catena. Si segna battuto l'id
+      // FISICO (ev.id se c'è, altrimenti id per le lotte senza un oggetto
+      // sulla mappa, es. dentro una cutscene).
+      const idFisico = (ev && ev.id) || id;
+      trainerBattuti.add(idFisico);
       if (!stato.allenatoriBattuti) stato.allenatoriBattuti = [];
-      if (!stato.allenatoriBattuti.includes(id)) stato.allenatoriBattuti.push(id);
+      if (!stato.allenatoriBattuti.includes(idFisico)) stato.allenatoriBattuti.push(idFisico);
       if (!stato.allenatoriBattutiGiorno) stato.allenatoriBattutiGiorno = {};
-      stato.allenatoriBattutiGiorno[id] = (stato.tempo && stato.tempo.giorno) || 0;
+      stato.allenatoriBattutiGiorno[idFisico] = (stato.tempo && stato.tempo.giorno) || 0;
       // Capopalestra: assegna medaglia + alza il level cap (logica in app.js).
       // Il dialogo della medaglia gestisce da sé il blocco/sblocco movimento.
       if (dati.palestraId && typeof vinciPalestraTiled === 'function') {
@@ -9793,6 +9819,19 @@ const GameMap = (function () {
       // mantiene alla Grotta.
       if (id === 'gdf_capo_marino') {
         this._giocaCutscene('rifugio_marino_boss_dopo').then(() => {
+          if (typeof salvaPartita === 'function') salvaPartita();
+        });
+        return true;
+      }
+      // 7 grunt GdF di Castel Gandolfo (sess. 18 ott 2026, richiesta Luca):
+      // Fernando è l'ultimo della fila. Appena ha parlato (dialogo_dopo già
+      // mostrato DENTRO la battaglia appena finita), tutti e 7 scompaiono
+      // insieme — vedi gate:true + condizione:documentoVillaOttenuto sui 7
+      // oggetti "gdf-villa-*" in castel_gandolfo.tmj/.tmx (flagVittoria qui
+      // sopra ha già settato documentoVillaOttenuto un istante fa).
+      if (id === 'gdf-villa-7') {
+        this._rigeneraNpc().then(() => {
+          sbloccaMovimento();
           if (typeof salvaPartita === 'function') salvaPartita();
         });
         return true;

@@ -166,7 +166,7 @@
    </properties>
    <point/>
   </object>
-  <object id="4" name="gdf_grunt_marino_2fa_2" type="trainer" x="768" y="480">
+  <object id="4" name="gdf_grunt_marino_2fa_2" type="trainer" x="736" y="480">
    <properties>
     <property name="direzione" value="sud"/>
     <property name="id" value="gdf_grunt_marino_2fa_2"/>

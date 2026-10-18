@@ -1371,7 +1371,7 @@
    <property name="movimento" value="fisso"/>
   </properties>
  </object>
- <object id="228" name="trainer_13" type="trainer" x="2600" y="2450" width="32" height="32">
+ <object id="228" name="trainer_13" type="trainer" x="2592" y="2368" width="32" height="32">
   <properties>
    <property name="direzione" value="sud"/>
    <property name="id" value="via_laghi_trainer_13"/>

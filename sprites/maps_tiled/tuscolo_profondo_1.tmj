@@ -4373,8 +4373,8 @@
    "type": "tilelayer",
    "visible": true,
    "width": 36,
-   "x": 0,
-   "y": 0
+   "x": 672,
+   "y": 480
   },
   {
    "draworder": "topdown",

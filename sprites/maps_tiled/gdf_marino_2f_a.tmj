@@ -3652,8 +3652,8 @@
    "type":"tilelayer",
    "visible":true,
    "width":30,
-   "x":0,
-   "y":0
+   "x":736,
+   "y":480
   },
   {
    "draworder":"topdown",

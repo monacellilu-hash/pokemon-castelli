@@ -511,7 +511,7 @@
     <property name="vista" type="int" value="6"/>
    </properties>
   </object>
-  <object id="94" name="trainer" type="trainer" x="1455.5" y="474" width="32" height="32">
+  <object id="94" name="trainer" type="trainer" x="1472" y="448" width="32" height="32">
    <properties>
     <property name="direzione" value="nord"/>
     <property name="id" value="all-ariccia-3"/>

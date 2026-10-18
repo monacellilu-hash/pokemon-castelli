@@ -1375,6 +1375,12 @@ const DATI_NPC = {
       'Fermo lì! Il Museo è "chiuso per inventario". Ordini della Michela.',
       'Le navi de Nemi nasconnono quarcosa che ce serve. Nun te fa i cazzi tua e vattene.',
     ],
+    // Sess. 18 ott 2026 (richiesta Luca): col documento di Fernando in mano,
+    // Assuntina si scansa UNA VOLTA (cutscene 'gdf_gate_nemi_passa' in
+    // dati/cutscene.js) per lasciare libero il passaggio verso il Museo.
+    // Da quel momento in poi, parlandole, dice solo dialogo_dopo.
+    cutscene: 'gdf_gate_nemi_passa',
+    dialogo_dopo: 'Passa, và. Ma Michela lo viene a sapé...',
   },
 
   /* ── Castel Gandolfo (angolo nord-est, davanti alla Villa Pontificia occupata dal GdF) ── */

@@ -449,6 +449,20 @@ CUTSCENE['museo_navi_intro'] = [
   ...CUTSCENE['museo_navi_sfida'],
 ];
 
+/* ── Lago di Nemi — Assuntina (gdf_gate_nemi) si scansa (18 ott 2026) ──
+   Parte parlandole quando ha già "condizione: documentoVillaOttenuto" vera
+   (quindi è già apparsa, vedi dati/npc.js). Una tantum (cutsceneUnaTantum
+   di default): dopo questa, _creaNpcStato la ricrea 1 casella a est,
+   rivolta a ovest, per sempre (vedi js/map.js — flag persistita in
+   stato.cutsceneViste, chiave 'cutscene_npc:gdf_gate_nemi'). */
+CUTSCENE['gdf_gate_nemi_passa'] = [
+  { tipo: 'dialogo', nome: 'Assuntina', testo: [
+    'Hai i documenti, puoi passare.',
+  ] },
+  { tipo: 'muovi_npc', npc: 'gdf_gate_nemi', direzione: 'est', passi: 1 },
+  { tipo: 'guarda', npc: 'gdf_gate_nemi', direzione: 'ovest' },
+];
+
 /* ══════════════════════════════════════════════════════════
    VIA VITTORIA 5F — i due rivali (richiesta esplicita di Luca, 10 ott
    2026): all'ultimo piano, PRIMA della Lega, l'ALTRO rivale (quello che

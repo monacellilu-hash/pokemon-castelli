@@ -16016,6 +16016,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Ehi tu! Questa e' zona riservata. La Villa e' sotto il nostro controllo!"
@@ -16026,9 +16031,19 @@
        "value": "est"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 40
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16045,6 +16060,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Un ragazzino? Il Comandante Crasso ci ha detto di non far passare NESSUNO."
@@ -16055,9 +16075,19 @@
        "value": "ovest"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 41
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16074,6 +16104,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Cerchiamo un documento negli archivi pontifici. Ma tu non hai visto niente, chiaro?"
@@ -16084,9 +16119,19 @@
        "value": "ovest"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 42
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16103,6 +16148,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Il meteo dei Castelli sara' nostro! Immagina: pioggia a comando sulle vigne dei concorrenti..."
@@ -16113,9 +16163,19 @@
        "value": "est"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 42
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16132,6 +16192,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Fulvia dice che sei tu quello che ci da' fastidio da Frascati. Ora ci penso io!"
@@ -16142,9 +16207,19 @@
        "value": "ovest"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 43
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16161,6 +16236,11 @@
      "opacity": 1,
      "properties": [
       {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
+      {
        "name": "dialogo_intro",
        "type": "string",
        "value": "Grunt GdF: Sei arrivato fin qui? Non importa. Quello che cercavamo l'abbiamo gia' trovato."
@@ -16171,9 +16251,19 @@
        "value": "est"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 44
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
@@ -16189,6 +16279,11 @@
      "name": "gdf-villa-7",
      "opacity": 1,
      "properties": [
+      {
+       "name": "condizione",
+       "type": "string",
+       "value": "documentoVillaOttenuto"
+      },
       {
        "name": "dialogo_intro",
        "type": "string",
@@ -16210,9 +16305,19 @@
        "value": "documentoVillaOttenuto"
       },
       {
+       "name": "gate",
+       "type": "bool",
+       "value": true
+      },
+      {
        "name": "livello_max",
        "type": "int",
        "value": 45
+      },
+      {
+       "name": "noTestBypass",
+       "type": "bool",
+       "value": true
       },
       {
        "name": "oggetto_ricompensa",
