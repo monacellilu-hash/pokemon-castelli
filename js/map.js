@@ -9087,11 +9087,25 @@ const GameMap = (function () {
         // scoperto perché il ramo 'porta' qui sotto non ha mai avuto questo
         // controllo aggiuntivo (asimmetria non voluta).
         if (ev.tipo === 'uscita' || ev.tipo === 'warp') {
-          if (ev.w > 0 && ev.h > 0) {
-            if (tx >= ev.tx0 && tx <= ev.tx1 && ty >= ev.ty0 && ty <= ev.ty1) {
-              this._transizioneMappa(ev); return;
+          const dentroWarp = (ev.w > 0 && ev.h > 0)
+            ? (tx >= ev.tx0 && tx <= ev.tx1 && ty >= ev.ty0 && ty <= ev.ty1)
+            : (ev.tx === tx && ev.ty === ty);
+          if (dentroWarp) {
+            // Bug segnalato da Luca (18 ott 2026): un warp/uscita con una
+            // "condizione" (es. warp_gdf_marino → password_rifugio_completa,
+            // o il varco dell'Abbazia → medaglie>=7) la dichiarava in Tiled
+            // ma non veniva MAI controllata qui — si passava sempre, a
+            // prescindere da tutto (stesso tipo di bug già corretto per gli
+            // NPC "gate" come Assuntina a Nemi).
+            const condWarp = ev.props && (ev.props.condizione || ev.props.richiede);
+            if (condWarp) {
+              const esitoWarp = verificaCondizione(condWarp);
+              if (!esitoWarp.ok) {
+                const msgWarp = (ev.props.messaggio_gate) || esitoWarp.messaggio || '🔒 Non puoi ancora passare di qui.';
+                if (typeof mostraToast === 'function') mostraToast(msgWarp, 3000);
+                return;
+              }
             }
-          } else if (ev.tx === tx && ev.ty === ty) {
             this._transizioneMappa(ev); return;
           }
         }
@@ -13002,7 +13016,10 @@ const GameMap = (function () {
     }
 
     _voceDa(chiave, oggetto, quanti) {
-      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina'].includes(oggetto.categoria);
+      // Bug segnalato da Luca (18 ott 2026): 'mn' mancava da questo elenco
+      // (solo 'mt' c'era) — le MN comparivano nella lista zaino ma senza il
+      // tasto "Usa", quindi non si potevano insegnare a nessun Pokémon.
+      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'mn', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina'].includes(oggetto.categoria);
       const diretto = oggetto.categoria === 'repellente';
       return { chiave, oggetto, quanti, img: oggetto.img, usabile: suBersaglio || diretto, diretto };
     }
