@@ -7654,7 +7654,7 @@
       {
        "name": "flag_fine",
        "type": "string",
-       "value": "museoSceneCompleta"
+       "value": "museoLuogotenenteSconfitto"
       },
       {
        "name": "flag_ripresa",

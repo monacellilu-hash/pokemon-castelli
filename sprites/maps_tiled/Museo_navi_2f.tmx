@@ -371,7 +371,7 @@
    <property name="condizione" value="documentoVillaOttenuto"/>
    <property name="cutscene_id" value="museo_navi_intro"/>
    <property name="cutscene_id_ripresa" value="museo_navi_sfida"/>
-   <property name="flag_fine" value="museoSceneCompleta"/>
+   <property name="flag_fine" value="museoLuogotenenteSconfitto"/>
    <property name="flag_ripresa" value="museoIntroVista"/>
    <property name="id" value="trigger_cutscene_museo_2f"/>
    <property name="quando" value="entra"/>
