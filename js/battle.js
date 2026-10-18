@@ -637,8 +637,16 @@ const Battle = (function () {
       ? ` [${STATI[ist.condizione.tipo].sigla}]` : '';
   }
 
+  // Abilità che danno immunità TOTALE a un tipo di stato (richiesta Luca, 18
+  // ott 2026): Insonnia/Spirito Vitale → mai addormentato, Pellefredda →
+  // mai scottato.
+  const ABILITA_IMMUNE_STATO = {
+    insomnia: 'sleep', 'vital-spirit': 'sleep', 'water-veil': 'burn',
+  };
+
   // Un Pokémon è immune a quel tipo di stato per via dei suoi tipi?
   function immuneAStato(ist, tipoStato) {
+    if (ABILITA_IMMUNE_STATO[ist.abilitaChiave] === tipoStato) return true;
     if (tipoStato === 'poison')     return ist.tipi.includes('poison') || ist.tipi.includes('steel');
     if (tipoStato === 'burn')       return ist.tipi.includes('fire');
     if (tipoStato === 'freeze')     return ist.tipi.includes('ice');
@@ -717,6 +725,10 @@ const Battle = (function () {
     // devono essere solo estetiche): immunità totale alle mosse Terra,
     // come nei giochi veri.
     if (mossa.tipo === 'ground' && difensore.abilitaChiave === 'levitate') eff = 0;
+    // Parafulmine/Scudofuoco (richiesta Luca, 18 ott 2026): immunità totale
+    // alle mosse Elettro/Fuoco, stesso principio di Levitate.
+    if (mossa.tipo === 'electric' && difensore.abilitaChiave === 'lightning-rod') eff = 0;
+    if (mossa.tipo === 'fire' && difensore.abilitaChiave === 'flash-fire') eff = 0;
     // Idroassorbenza (water-absorb, richiesta Luca, 18 ott 2026): niente
     // danno dalle mosse Acqua, il difensore recupera il 25% degli HP massimi.
     // "assorbito" letto dal chiamante (eseguiMossa) per curare invece di colpire.
@@ -742,6 +754,18 @@ const Battle = (function () {
       A = A * 1.5;
     } else if (fisica && attaccante.condizione && attaccante.condizione.tipo === 'burn') {
       A = A * 0.5;
+    }
+    // Fretta (hustle, richiesta Luca): +50% Attacco sulle mosse fisiche,
+    // sempre (non legata a uno stato alterato, a differenza di Attitudine).
+    if (fisica && attaccante.abilitaChiave === 'hustle') A = A * 1.5;
+
+    // Pianta/Fuoco/Torrente/Sciame (richiesta Luca): mossa dello stesso
+    // tipo dell'abilità ×1.5 quando chi attacca è sotto 1/3 degli HP massimi
+    // — le 4 abilità "da starter in difficoltà".
+    const BOOST_TIPO_BASSI_HP = { overgrow: 'grass', blaze: 'fire', torrent: 'water', swarm: 'bug' };
+    if (attaccante.hpAttuale <= attaccante.hpMax / 3 &&
+        BOOST_TIPO_BASSI_HP[attaccante.abilitaChiave] === mossa.tipo) {
+      A = A * 1.5;
     }
 
     // Guscioprotettivo (shell-armor, richiesta Luca): niente colpi critici subiti.
@@ -1745,6 +1769,20 @@ const Battle = (function () {
 
     for (const c of mossa.cambiStat) {
       if (obiettivo.mod[c.stat] === undefined) continue; // statistica non gestita
+      // Corpochiaro/Nebbiabianca/Forbiciforti (richiesta Luca, 18 ott 2026):
+      // bloccano le riduzioni di statistica causate dall'AVVERSARIO (non le
+      // proprie, es. Danza Spada che abbassa la Difesa di chi la usa resta valida).
+      if (!versoSe && c.modifica < 0) {
+        const abil = obiettivo.abilitaChiave;
+        if (abil === 'clear-body' || abil === 'white-smoke') {
+          await di(`${etich} non si lascia abbassare le statistiche!`);
+          continue;
+        }
+        if (abil === 'hyper-cutter' && c.stat === 'attack') {
+          await di(`${etich} protegge il suo Attacco!`);
+          continue;
+        }
+      }
       const prima = obiettivo.mod[c.stat];
       obiettivo.mod[c.stat] = Math.max(-6, Math.min(6, prima + c.modifica));
       const nome = STAT_NOMI[c.stat] || c.stat;
@@ -1787,6 +1825,9 @@ const Battle = (function () {
     // Occhioveglia (sand-veil, richiesta Luca): più difficile da colpire
     // nella tempesta di sabbia.
     if (dif.abilitaChiave === 'sand-veil' && meteoBattaglia === 'sandstorm') soglia *= 0.8;
+    // Fretta (hustle): contropartita del +50% Attacco, -20% precisione sulle
+    // mosse fisiche di chi la possiede.
+    if (att.abilitaChiave === 'hustle' && mossa.classe !== 'special') soglia *= 0.8;
     return Math.random() * 100 <= soglia;
   }
 
@@ -2255,7 +2296,9 @@ const Battle = (function () {
         const immune = meteoBattaglia === 'sandstorm'
           ? (ist.tipi.includes('rock') || ist.tipi.includes('ground') || ist.tipi.includes('steel'))
           : ist.tipi.includes('ice');
-        if (immune) continue;
+        // Riparo Magico (magic-guard, richiesta Luca, 18 ott 2026): immune a
+        // TUTTI i danni indiretti (meteo, veleno/scottatura — vedi sotto).
+        if (immune || ist.abilitaChiave === 'magic-guard') continue;
         const danno = Math.max(1, Math.floor(ist.hpMax / 16));
         ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
         lampeggia(ist);
@@ -2279,7 +2322,7 @@ const Battle = (function () {
     await fineTurnoMeteo();
     const lista = [[mio, mio.nome], [nemico, etichettaNemico()]];
     for (const [ist, etich] of lista) {
-      if (ist.hpAttuale <= 0 || !ist.condizione) continue;
+      if (ist.hpAttuale <= 0 || !ist.condizione || ist.abilitaChiave === 'magic-guard') continue;
       if (ist.condizione.tipo === 'poison' || ist.condizione.tipo === 'burn') {
         const danno = Math.max(1, Math.floor(ist.hpMax / 8));
         ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
@@ -2297,10 +2340,39 @@ const Battle = (function () {
       aggiornaPannelli();
       await di(`${etich} recupera un po' di HP grazie ai Rimasugli! 🍂`);
     }
+    await _abilitaFineTurno(lista);
     await _elaboraAttacchiRitardati(
       () => (mio.hpAttuale > 0 ? { ist: mio, etichetta: mio.nome } : null),
       () => (nemico.hpAttuale > 0 ? { ist: nemico, etichetta: etichettaNemico() } : null),
     );
+  }
+
+  // Abilità che scattano a FINE TURNO (richiesta Luca, 18 ott 2026),
+  // generica per singola e doppia: `lista` = [[istanza, etichetta], ...].
+  //  - Scattosuccessivo (speed-boost): +1 Velocità ogni turno in campo.
+  //  - Metamorfosi (shed-skin): 30% di guarire da sé da uno stato alterato.
+  //  - Idratazione (hydration): guarisce da uno stato alterato SEMPRE sotto la pioggia.
+  async function _abilitaFineTurno(lista) {
+    for (const [ist, etich] of lista) {
+      if (ist.hpAttuale <= 0) continue;
+      if (ist.abilitaChiave === 'speed-boost') {
+        const prima = ist.mod.speed || 0;
+        ist.mod.speed = Math.max(-6, Math.min(6, prima + 1));
+        if (ist.mod.speed !== prima) {
+          aggiornaPannelli();
+          await di(`La Velocità di ${etich} aumenta!`);
+        }
+      }
+      if (ist.condizione) {
+        const guarisce = (ist.abilitaChiave === 'shed-skin' && Math.random() < 0.3) ||
+          (ist.abilitaChiave === 'hydration' && meteoBattaglia === 'rain');
+        if (guarisce) {
+          ist.condizione = null;
+          aggiornaPannelli();
+          await di(`${etich} si è curato da solo!`);
+        }
+      }
+    }
   }
 
   // Fa scattare le mosse "ritardate" (Divinazione/Doom Desire) il cui
@@ -2511,7 +2583,14 @@ const Battle = (function () {
   // introdotta solo dalla 7ª generazione in poi, qui era sbagliato.
   function velocitaEffettiva(ist) {
     let v = statEffettiva(ist, ist.velocita, 'speed');
-    if (ist.condizione && ist.condizione.tipo === 'paralysis') v *= 0.25;
+    // Piedisvelti (quick-feet, richiesta Luca): +50% Velocità se ha uno
+    // stato alterato, e IGNORA il malus da paralisi (a differenza del
+    // normale ×0.25) — esattamente come Attitudine ignora la scottatura.
+    if (ist.abilitaChiave === 'quick-feet' && ist.condizione) {
+      v = v * 1.5;
+    } else if (ist.condizione && ist.condizione.tipo === 'paralysis') {
+      v *= 0.25;
+    }
     // Nuotafrode/Clorofilla (richiesta Luca, 18 ott 2026): raddoppiano la
     // Velocità nel meteo giusto, a prescindere dagli sbalzi di statistica.
     if (ist.abilitaChiave === 'swift-swim' && meteoBattaglia === 'rain') v *= 2;
@@ -4131,7 +4210,7 @@ const Battle = (function () {
         const immune = meteoBattaglia === 'sandstorm'
           ? (ist.tipi.includes('rock') || ist.tipi.includes('ground') || ist.tipi.includes('steel'))
           : ist.tipi.includes('ice');
-        if (immune) continue;
+        if (immune || ist.abilitaChiave === 'magic-guard') continue;
         const danno = Math.max(1, Math.floor(ist.hpMax / 16));
         ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
         lampeggia(ist);
@@ -4153,7 +4232,7 @@ const Battle = (function () {
     await fineTurnoMeteoDoppia();
     const tutti = [...doppiaMieiAttivi, ...doppiaNemiciAttivi].filter(x => x && x.hpAttuale > 0);
     for (const ist of tutti) {
-      if (!ist.condizione) continue;
+      if (!ist.condizione || ist.abilitaChiave === 'magic-guard') continue;
       if (ist.condizione.tipo === 'poison' || ist.condizione.tipo === 'burn') {
         const danno = Math.max(1, Math.floor(ist.hpMax / 8));
         ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
@@ -4171,6 +4250,7 @@ const Battle = (function () {
       aggiornaPannelli();
       await di(`${etichettaDi(ist)} recupera un po' di HP grazie ai Rimasugli! 🍂`);
     }
+    await _abilitaFineTurno(tutti.map(ist => [ist, etichettaDi(ist)]));
     await _elaboraAttacchiRitardati(
       () => { const b = doppiaMieiAttivi.find(m => m && m.hpAttuale > 0); return b ? { ist: b, etichetta: etichettaDi(b) } : null; },
       () => { const b = doppiaNemiciAttivi.find(m => m && m.hpAttuale > 0); return b ? { ist: b, etichetta: etichettaDi(b) } : null; },
