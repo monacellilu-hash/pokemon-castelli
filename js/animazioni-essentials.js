@@ -1099,7 +1099,11 @@ const AnimazioniEssentials = (function () {
     // raggio doppio (32px/16px scalati) — nati nello stesso istante,
     // intermittenti, esattamente come nello script originale.
     const dimOrb = 32 * scalaX;
-    const raggioEsterno = 32 * scalaX, raggioInterno = 16 * scalaX;
+    // Raggi allargati e pallini più grandi/luminosi (19 ott 2026, richiesta
+    // Luca: "le scintille non si vedono bene") — stesso schema, solo più
+    // visibile: raggio ×1.4, pallini più grandi con bagliore (shadowBlur),
+    // alpha minima alzata da 0.4 a 0.65 così non spariscono mai del tutto.
+    const raggioEsterno = 32 * scalaX * 1.4, raggioInterno = 16 * scalaX * 1.4;
     let giri = 0;
     const animaAnello = setInterval(() => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -1111,23 +1115,26 @@ const AnimazioniEssentials = (function () {
         const d = dimOrb * scalaPulse;
         ctx.drawImage(imgOrb, 0, 0, 32, 32, arrivo.x - d / 2, arrivo.y - d / 2, d, d);
       }
-      // Scintille orbitanti, due raggi, sfasate di 45°.
+      // Scintille orbitanti, due raggi, sfasate di 45°, con bagliore per
+      // staccare bene dal pallino e dallo sfondo.
+      ctx.shadowColor = '#fff86a';
+      ctx.shadowBlur = 8;
       for (let k = 0; k < 4; k++) {
-        const ang = (k / 4) * Math.PI * 2 + giri * 0.35;
-        ctx.globalAlpha = (giri % 2 === 0) ? 0.9 : 0.4;
-        ctx.fillStyle = '#fff86a';
+        const ang = (k / 4) * Math.PI * 2 + giri * 0.25;
+        ctx.globalAlpha = (giri % 2 === 0) ? 1 : 0.65;
+        ctx.fillStyle = '#fffde0';
         ctx.beginPath();
-        ctx.arc(arrivo.x + Math.cos(ang) * raggioEsterno, arrivo.y + Math.sin(ang) * raggioEsterno * 0.5, 3, 0, Math.PI * 2);
+        ctx.arc(arrivo.x + Math.cos(ang) * raggioEsterno, arrivo.y + Math.sin(ang) * raggioEsterno * 0.5, 5, 0, Math.PI * 2);
         ctx.fill();
         const ang2 = ang + Math.PI / 4;
         ctx.beginPath();
-        ctx.arc(arrivo.x + Math.cos(ang2) * raggioInterno, arrivo.y + Math.sin(ang2) * raggioInterno * 0.5, 2, 0, Math.PI * 2);
+        ctx.arc(arrivo.x + Math.cos(ang2) * raggioInterno, arrivo.y + Math.sin(ang2) * raggioInterno * 0.5, 3.5, 0, Math.PI * 2);
         ctx.fill();
       }
       ctx.restore();
       giri++;
-    }, 40);
-    await new Promise(r => setTimeout(r, 440));
+    }, 45);
+    await new Promise(r => setTimeout(r, 620));
     clearInterval(animaAnello);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
