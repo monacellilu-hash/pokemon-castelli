@@ -1029,4 +1029,32 @@ DATI_INCONTRI['incontri lago di nemi'] = DATI_INCONTRI['incontri lago albano'];
 // Monte Po 3 (acqua_percorso_montepo3).
 DATI_INCONTRI['acqua_via_vittoria_surf'] = DATI_INCONTRI['incontri via vittoria 2f'];
 
+// ── BOSCO DEL SIGNOR TUSCOLO (Monte Porzio — 19 ott 2026, richiesta
+// esplicita di Luca): zona SOLO Coleottero, pioggia perenne (vedi
+// _contestoMeteo in js/map.js). Dratini a rate 0.1: il più basso di tutto
+// il gioco (il prossimo più basso era 0.5, Gyarados del Lago di Albano) —
+// "un gran culo", esattamente come richiesto, a Lv.5 nonostante il resto
+// della zona sia già oltre il cap della 5ª palestra.
+DATI_INCONTRI['incontri bosco tuscolo'] = {
+  probabilita: 15,
+  pokemon: [
+    { id: 15,  min: 38, max: 40, rate: 20 },  // Beedrill
+    { id: 12,  min: 38, max: 40, rate: 20 },  // Butterfree
+    { id: 47,  min: 38, max: 41, rate: 16 },  // Parasect
+    { id: 49,  min: 39, max: 42, rate: 16 },  // Venomoth
+    { id: 166, min: 38, max: 41, rate: 14 },  // Ledian
+    { id: 168, min: 38, max: 41, rate: 14 },  // Ariados
+    { id: 267, min: 38, max: 41, rate: 14 },  // Beautifly
+    { id: 269, min: 38, max: 41, rate: 14 },  // Dustox
+    { id: 123, min: 40, max: 43, rate: 10 },  // Scyther
+    { id: 127, min: 40, max: 43, rate: 10 },  // Pinsir
+    { id: 284, min: 39, max: 42, rate: 10 },  // Masquerain
+    { id: 205, min: 40, max: 43, rate: 8 },   // Forretress
+    { id: 293, min: 38, max: 40, rate: 8 },   // Volbeat
+    { id: 314, min: 38, max: 40, rate: 8 },   // Illumise
+    { id: 214, min: 41, max: 44, rate: 6 },   // Heracross
+    { id: 147, min: 5,  max: 5,  rate: 0.1 }, // Dratini — rarissimo di proposito
+  ],
+};
+
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;

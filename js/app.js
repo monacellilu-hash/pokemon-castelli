@@ -521,6 +521,12 @@ function aggiornaMeteo() {
     if (typeof GameMap !== 'undefined' && GameMap.aggiornaVeloMeteo) GameMap.aggiornaVeloMeteo();
     return;
   }
+  // Bosco del Signor Tuscolo: pioggia fissa, sempre (richiesta Luca).
+  if (ctx.pioggiaFissa) {
+    stato.meteo = { tipo: 'pioggia', scadeAlPasso: Infinity };
+    if (typeof GameMap !== 'undefined' && GameMap.aggiornaVeloMeteo) GameMap.aggiornaVeloMeteo();
+    return;
+  }
   if (!ctx.outdoor) { stato.meteo = { tipo: 'sereno', scadeAlPasso: 0 }; return; }   // interni: sempre sereno
 
   // Chiave per CLUSTER (zone "incollate" come Percorso 1/Borgata Tuscolana
@@ -1384,6 +1390,99 @@ async function interagisciSignorTorlonia() {
         await regalaStarterTorlonia(scelto, ['Ottima scelta, portalo con cura!']);
       }
     }
+  } finally {
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
+  }
+}
+
+/* ============================================================
+   SIGNOR TUSCOLO (Bosco del Signor Tuscolo, Monte Porzio — 19 ott 2026)
+   Dopo aver battuto tutti i 10 allenatori del bosco, regala uno starter
+   a scelta tra TUTTI quelli che non hai ancora (le 3 generazioni, 9 in
+   tutto — non solo quelli della tua generazione come Torlonia/Baso).
+   Stesso sprite del Signor Torlonia (richiesta esplicita di Luca).
+   ============================================================ */
+
+const BOSCO_TUSCOLO_TRAINER_IDS = [
+  'bosco_tuscolo_1', 'bosco_tuscolo_2', 'bosco_tuscolo_3', 'bosco_tuscolo_4',
+  'bosco_tuscolo_5', 'bosco_tuscolo_6', 'bosco_tuscolo_7', 'bosco_tuscolo_8',
+  'bosco_tuscolo_9', 'bosco_tuscolo_10',
+];
+
+// Tutti i 9 starter (3 generazioni) che il giocatore NON ha ancora in
+// squadra, in nessuno dei 3 stadi — stessa logica di infoStarterGiocatore,
+// estesa a tutte le generazioni invece che solo a quella di partenza.
+function starterNonPosseduti() {
+  const risultato = [];
+  for (const g of [1, 2, 3]) {
+    for (const s of STARTER_PER_GEN[g]) {
+      const finale = STARTER_FINALE[s.id];
+      const posseduto = (stato.squadra || []).some(
+        p => p.id === s.id || p.id === s.id + 1 || p.id === finale
+      );
+      if (!posseduto) risultato.push(s);
+    }
+  }
+  return risultato;
+}
+
+async function regalaStarterTuscolo(opzione) {
+  if (stato.squadra.length >= 6) {
+    mostraToast('⚠️ La tua squadra è piena: libera un posto e torna a parlare col Signor Tuscolo.');
+    return;
+  }
+  let mostro;
+  try {
+    mostro = await Battle.creaIstanza(opzione.id, LIVELLO_STARTER);
+    segnaPokedex(mostro.id, mostro.nome, mostro.sprite && mostro.sprite.fronte, true);
+  } catch (err) {
+    console.error('[Tuscolo] Errore nel creare il regalo:', err);
+    mostraToast('⚠️ Errore di connessione: riprova a riparlare col Signor Tuscolo.');
+    return;
+  }
+  stato.squadra.push(mostro);
+  if (!stato.flags) stato.flags = {};
+  stato.flags.tuscoloRegaloRicevuto = true;
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo('Signor Tuscolo', [`Ottima scelta! Portalo con te con cura.`]);
+}
+
+async function interagisciSignorTuscolo() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  GameMap.bloccaMovimento();
+  try {
+    const battuti = stato.allenatoriBattuti || [];
+    const tuttiBattuti = BOSCO_TUSCOLO_TRAINER_IDS.every(id => battuti.includes(id));
+    if (!tuttiBattuti) {
+      await mostraDialogo('Signor Tuscolo', [
+        'Questo bosco porta il mio nome, e i miei allenatori lo sorvegliano.',
+        'Battili tutti e dieci, poi torna a parlarmi: avrò un bel regalo per te.',
+      ]);
+      return;
+    }
+
+    if (stato.flags && stato.flags.tuscoloRegaloRicevuto) {
+      await mostraDialogo('Signor Tuscolo', [
+        'Spero che il mio dono ti sia utile nel tuo viaggio. A presto!',
+      ]);
+      return;
+    }
+
+    await mostraDialogo('Signor Tuscolo', [
+      'Bravo! Hai battuto proprio tutti quanti, complimenti davvero.',
+    ]);
+
+    const opzioni = starterNonPosseduti();
+    if (opzioni.length === 0) {
+      await mostraDialogo('Signor Tuscolo', [
+        'Hai già tutti gli starter dei Castelli... non ho più niente da offrirti!',
+      ]);
+      return;
+    }
+
+    const scelto = await scegliStarterOpzioni(opzioni, 'Scegli uno starter che non hai ancora!');
+    if (scelto) await regalaStarterTuscolo(scelto);
   } finally {
     if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
   }

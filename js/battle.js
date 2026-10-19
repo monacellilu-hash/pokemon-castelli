@@ -75,18 +75,29 @@ const Battle = (function () {
     } catch (e) { /* cache piena/non disponibile: non deve mai bloccare la lotta */ }
   }
 
+  // Promesse di "sprite pronto" per elemento (bug segnalato da Luca, 19 ott
+  // 2026: "i Pokémon spariscono ad ogni cambio/cura/ricarica"). Causa reale:
+  // impostaSpriteConCache è asincrona (cache/fetch), ma animaEntrataPokemon
+  // riportava opacity a 1 dopo un tempo FISSO, senza aspettare che l'<img>
+  // avesse davvero finito di caricare — su un cache-miss (specie mai vista,
+  // sprite back diverso dal front...) lo sprite veniva rivelato ancora
+  // vuoto/rotto, sembrando "sparito". Ora ogni chiamata registra qui una
+  // promessa che si risolve quando el.src è stato davvero assegnato (sempre,
+  // anche nel ramo di fallback finale) — vedi attendiSpriteCaricato sotto.
+  const _spritePronto = {};
+
   // Imposta lo sprite di un <img> di battaglia con cache locale + retry.
   // url vuoto = svuota l'elemento (stesso comportamento di sempre, resta
   // sincrono: niente da scaricare o cercare in cache).
   function impostaSpriteConCache(elId, url) {
     const el = $(elId);
     if (!el) return;
-    if (!url) { el.src = ''; return; }
+    if (!url) { el.src = ''; _spritePronto[elId] = Promise.resolve(); return; }
     const mioUrl = url; // richiesta più recente per QUESTO elemento (vedi sotto)
     el.dataset.spriteUrl = mioUrl;
 
     const TENTATIVI = 3, TIMEOUT_MS = 4000;
-    (async () => {
+    const promessa = (async () => {
       // Se nel frattempo qualcun altro ha richiesto un altro sprite per lo
       // stesso <img> (cambio Pokémon rapido), questa risposta è superata:
       // non sovrascrivere con uno sprite vecchio arrivato in ritardo.
@@ -120,6 +131,20 @@ const Battle = (function () {
         }
       }
     })();
+    _spritePronto[elId] = promessa;
+  }
+
+  // Aspetta che l'ultimo sprite richiesto per quell'elemento sia stato
+  // davvero assegnato (src impostato) PRIMA di rivelarlo — con un tetto
+  // massimo per non bloccare l'animazione all'infinito se rete/cache sono
+  // completamente morte (a quel punto si rivela comunque, anche se vuoto,
+  // meglio che restare bloccati per sempre).
+  function attendiSpriteCaricato(elId, timeoutMs) {
+    const p = _spritePronto[elId] || Promise.resolve();
+    return Promise.race([
+      p,
+      new Promise(r => setTimeout(r, timeoutMs || 2500)),
+    ]);
   }
 
   // ---- Stato interno della battaglia ----
@@ -770,6 +795,10 @@ const Battle = (function () {
 
     // Guscioprotettivo (shell-armor, richiesta Luca): niente colpi critici subiti.
     const critico = (difensore.abilitaChiave === 'shell-armor') ? false : tiraCritico(mossa);
+    // Tiro Cecchino (sniper, 19 ott 2026): sui critici il moltiplicatore è
+    // ×3 invece di ×2 (anziché applicarlo sotto con "molt *= 2", qui si
+    // segna solo quanto vale per quel colpo).
+    const moltCritico = critico ? (attaccante.abilitaChiave === 'sniper' ? 3 : 2) : 1;
 
     // Formula reale (0174_Move_UsageCalculations.rb#pbCalcDamage): il
     // termine di livello va arrotondato per difetto PRIMA di moltiplicarlo
@@ -804,7 +833,13 @@ const Battle = (function () {
       if (mossa.tipo === 'water') molt *= 1.5;
       else if (mossa.tipo === 'fire') molt *= 0.5;
     }
-    if (critico) molt *= 2;
+    molt *= moltCritico;
+    // Pellespessa (thick-fat, 19 ott 2026): dimezza il danno subito dalle
+    // mosse Fuoco e Ghiaccio, come Scudofuoco/Idroassorbenza ma senza
+    // immunità totale — qui va sul moltiplicatore finale, non su "eff".
+    if (difensore.abilitaChiave === 'thick-fat' && (mossa.tipo === 'fire' || mossa.tipo === 'ice')) {
+      molt *= 0.5;
+    }
     molt *= eff;
     molt *= 0.85 + Math.random() * 0.15; // variazione casuale
 
@@ -1218,6 +1253,7 @@ const Battle = (function () {
       // (sovrapposti, non in sequenza: più naturale e più vicino all'originale).
       ball.style.transition = `opacity ${durataFx(250)}ms ease-out`;
       ball.style.opacity = '0';
+      await attendiSpriteCaricato(el.id, 2000);
       el.style.opacity = '';
       el.classList.remove('sprite-cresce');
       void el.offsetWidth;
@@ -1229,6 +1265,7 @@ const Battle = (function () {
       return;
     }
 
+    await attendiSpriteCaricato(el.id, 2000);
     el.style.opacity = '';
     el.classList.remove('sprite-cresce');
     void el.offsetWidth;
@@ -1782,6 +1819,12 @@ const Battle = (function () {
           await di(`${etich} protegge il suo Attacco!`);
           continue;
         }
+        // Occhioveglia (keen-eye, 19 ott 2026): la Precisione non si può
+        // mai abbassare, a prescindere da chi lo fa.
+        if (abil === 'keen-eye' && c.stat === 'accuracy') {
+          await di(`${etich} protegge la sua Precisione!`);
+          continue;
+        }
       }
       const prima = obiettivo.mod[c.stat];
       obiettivo.mod[c.stat] = Math.max(-6, Math.min(6, prima + c.modifica));
@@ -1971,6 +2014,17 @@ const Battle = (function () {
           !att.condizione && Math.random() < 0.3) {
         await applicaStato(att, statoContatto, etichettaAtt);
       }
+      // Timido (rattled, 19 ott 2026): +1 Velocità se colpito da una mossa
+      // Coleottero/Buio/Spettro, a prescindere da chi l'ha usata.
+      if (dif.hpAttuale > 0 && dif.abilitaChiave === 'rattled' &&
+          ['bug', 'dark', 'ghost'].includes(mossa.tipo)) {
+        const prima = dif.mod.speed || 0;
+        dif.mod.speed = Math.max(-6, Math.min(6, prima + 1));
+        if (dif.mod.speed !== prima) {
+          aggiornaPannelli();
+          await di(`${etichettaDif} si agita, la sua Velocità aumenta!`);
+        }
+      }
       // Efficacia mostrata una volta sola per sequenza multi-colpo (come il
       // gioco vero: "Colpito N volte!" + efficacia, non ripetuta a ogni colpo).
       if (numColpi === 1) {
@@ -2120,7 +2174,11 @@ const Battle = (function () {
       // 3°:45%, 4°:70%, 5°:100% (garantita).
       const SOGLIE_RISVEGLIO = [0.25, 0.35, 0.45, 0.70, 1.0];
       const turno = (c.turniDormito || 0) + 1;   // turno di sonno che sta per tentare
-      const soglia = SOGLIE_RISVEGLIO[Math.min(turno, SOGLIE_RISVEGLIO.length) - 1];
+      // Mattiniero (early-bird, 19 ott 2026): usa la soglia come se fossero
+      // già passati il doppio dei turni di sonno veri (ma il contatore
+      // salvato resta quello reale, altrimenti raddoppierebbe ad ogni turno).
+      const turnoSoglia = att.abilitaChiave === 'early-bird' ? turno * 2 : turno;
+      const soglia = SOGLIE_RISVEGLIO[Math.min(turnoSoglia, SOGLIE_RISVEGLIO.length) - 1];
       const sveglia = Math.random() < soglia;
       if (sveglia) {
         att.condizione = null;
@@ -2241,6 +2299,21 @@ const Battle = (function () {
     // MOD 6B: FURIA — alla prima esecuzione blocca il Pokémon per 2-3 turni
     if (MOSSE_FURIA[mossa.nome] && !(att.furia && att.furia.nome === mossa.nome)) {
       att.furia = { nome: mossa.nome, turni: 2 + Math.floor(Math.random() * 2) };
+    }
+
+    // Umidità (damp, 19 ott 2026): niente Autodistruzione/Esplosione sul
+    // campo se QUALCUNO in campo (di entrambi i lati) ce l'ha — generico
+    // per singola e doppia, legge tutti gli attivi invece di "dif" (che in
+    // doppia può essere solo una parte del campo).
+    if (MOSSE_AUTODISTRUZIONE.has(mossa.nome)) {
+      const campoAttivo = modoDoppia
+        ? [...doppiaMieiAttivi, ...doppiaNemiciAttivi].filter(Boolean)
+        : [mio, nemico].filter(Boolean);
+      const bagnafuoco = campoAttivo.find(p => p.hpAttuale > 0 && p.abilitaChiave === 'damp');
+      if (bagnafuoco) {
+        await di(`Umidità di ${bagnafuoco.nome} impedisce l'esplosione!`);
+        return;
+      }
     }
 
     // In doppia, "dif" può essere un array di bersagli (mossa ad area): la
@@ -2371,6 +2444,13 @@ const Battle = (function () {
           aggiornaPannelli();
           await di(`${etich} si è curato da solo!`);
         }
+      }
+      // Pioggiabeneficio (rain-dish, 19 ott 2026): 1/16 HP max sotto la pioggia.
+      if (ist.abilitaChiave === 'rain-dish' && meteoBattaglia === 'rain' && ist.hpAttuale < ist.hpMax) {
+        const cura = Math.max(1, Math.floor(ist.hpMax / 16));
+        ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + cura);
+        aggiornaPannelli();
+        await di(`${etich} recupera HP grazie a Pioggiabeneficio! 🌧️`);
       }
     }
   }
@@ -3130,6 +3210,12 @@ const Battle = (function () {
 
   async function cambiaPokemon(idx, eraObbligatorio) {
     nascondiMenu();
+    // Guarigione Naturale (natural-cure, 19 ott 2026): chi ESCE dal campo
+    // (non chi KO, quello non ha stati residui da curare) perde ogni stato
+    // alterato — va letto PRIMA di sovrascrivere "mio" col nuovo Pokémon.
+    if (mio && mio.hpAttuale > 0 && mio.abilitaChiave === 'natural-cure') {
+      mio.condizione = null;
+    }
     indiceAttivo = idx;
     mio = statoGioco.squadra[idx];
     azzeraModificatori(mio); // gli sbalzi di statistica si resettano al cambio
@@ -3200,28 +3286,33 @@ const Battle = (function () {
     // METÀ dell'EXP di un allenatore (non la formula vera dei giochi, dove il
     // rapporto è 1:1.5) — teniamo il bonus allenatore ×1.5 di sempre e
     // scaliamo SOLO il selvatico a ×0.75, così selvatico/allenatore = 0.5 esatto.
-    let exp = Math.max(10, Math.floor(nemico.baseExp * nemico.livello / 7));
-    if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
-    else exp = Math.floor(exp * 0.75);
-    await assegnaExp(mio, exp);
-    // EV (richiesta di Luca, 10 ott 2026): solo a chi è sceso in campo
-    // davvero, NON a chi riceve solo l'EXP condivisa — stessa regola dei
-    // giochi veri (l'Esperienza Condivisa non condivide gli EV).
-    assegnaEv(mio, nemico.evYield);
+    // Allenatori "senza ricompensa" (es. Bosco del Signor Tuscolo, richiesta
+    // Luca 19 ott 2026): niente EXP né EV, a prescindere da tutto il resto —
+    // premioSoldi è già 0 dal chiamante (vedi _avviaLottaTrainer in js/map.js).
+    if (!(datiAllenatore && datiAllenatore.senzaExp)) {
+      let exp = Math.max(10, Math.floor(nemico.baseExp * nemico.livello / 7));
+      if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
+      else exp = Math.floor(exp * 0.75);
+      await assegnaExp(mio, exp);
+      // EV (richiesta di Luca, 10 ott 2026): solo a chi è sceso in campo
+      // davvero, NON a chi riceve solo l'EXP condivisa — stessa regola dei
+      // giochi veri (l'Esperienza Condivisa non condivide gli EV).
+      assegnaEv(mio, nemico.evYield);
 
-    // EXP condivisa con il resto della squadra (sess. 29 set 2026: diventata
-    // un'opzione, proposta la prima volta insieme alla scelta della
-    // difficoltà — vedi _sceltaRivale in app.js — e sempre disattivabile
-    // dal menu Opzioni). Chi ha sferrato il colpo decisivo ("mio") guadagna
-    // il pieno, gli altri in squadra il 55%, in sordina —
-    // assegnaExp(..., silenzioso=true) non mostra il messaggio "guadagna X
-    // Punti Esperienza" né la barra/il riquadro statistiche, ma il "sale al
-    // livello" resta sempre visibile.
-    if (statoGioco.opzioni && statoGioco.opzioni.expCondivisa) {
-      const expCondivisa = Math.max(1, Math.floor(exp * 0.55));
-      for (const compagno of statoGioco.squadra) {
-        if (compagno === mio || compagno.hpAttuale <= 0) continue;
-        await assegnaExp(compagno, expCondivisa, true);
+      // EXP condivisa con il resto della squadra (sess. 29 set 2026: diventata
+      // un'opzione, proposta la prima volta insieme alla scelta della
+      // difficoltà — vedi _sceltaRivale in app.js — e sempre disattivabile
+      // dal menu Opzioni). Chi ha sferrato il colpo decisivo ("mio") guadagna
+      // il pieno, gli altri in squadra il 55%, in sordina —
+      // assegnaExp(..., silenzioso=true) non mostra il messaggio "guadagna X
+      // Punti Esperienza" né la barra/il riquadro statistiche, ma il "sale al
+      // livello" resta sempre visibile.
+      if (statoGioco.opzioni && statoGioco.opzioni.expCondivisa) {
+        const expCondivisa = Math.max(1, Math.floor(exp * 0.55));
+        for (const compagno of statoGioco.squadra) {
+          if (compagno === mio || compagno.hpAttuale <= 0) continue;
+          await assegnaExp(compagno, expCondivisa, true);
+        }
       }
     }
 

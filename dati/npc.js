@@ -460,7 +460,7 @@ const DATI_NPC = {
   // li metteva in sequenza mostrando il benvenuto DUE VOLTE (segnalato da
   // Luca, 1 ott 2026).
   'npc_joy': {
-    sprite: 'npc joy', nome: 'Infermiera Joy',
+    sprite: 'npc joy', nome: 'Coco',
     direzione: 'sud',
     movimento: 'fisso',
     azione: 'interagisciCentroTiled',
@@ -774,7 +774,9 @@ const DATI_NPC = {
   // già in js/app.js (interagisciPensione) ma era attaccata a un NPC
   // "pensione_nemi" mai piazzato su nessuna mappa — quindi non funzionava.
   'npc_nemi_daycare_nonna': {
-    sprite: 'npc joy', nome: 'Nonna dell\'Asilo', direzione: 'sud', movimento: 'fisso',
+    // Sprite 'npc joy' tolto (19 ott 2026, richiesta Luca): riservato
+    // SOLO all'infermiera dei Centri Pokémon, non va condiviso con altri NPC.
+    sprite: 'NPC 09', nome: 'Nonna dell\'Asilo', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciPensione',
   },
 
@@ -1944,7 +1946,13 @@ const DATI_NPC = {
   // Fermo immobile: si parla con lui per iniziare la lotta (azione), NON ha
   // un dialogo di saluto separato — dati.dialogo_prima (DATI_TRAINER) è già
   // la battuta pre-lotta, mostrarne un'altra qui la duplicherebbe.
-  'cotral_osservatorio_luogotenente': { sprite: 'Capo_Cotral', nome: 'Luogotenente', direzione: 'sud', movimento: 'fisso', azione: 'interagisciLuogotenenteOsservatorio' },
+  // Bug segnalato da Luca (19 ott 2026): sprite invisibile sulla mappa.
+  // 'Capo_Cotral.png' esiste solo nella vecchia cartella 'OW_Trainer_sprite/'
+  // (mai migrata, non indicizzata in NPC_SPRITE_INDEX) — il motore non lo
+  // trovava mai. Sostituito con lo stesso sprite già usato per lei in
+  // combattimento (dati/trainer.js, 'Luogotenente_Cotral_Osservatorio'),
+  // già al posto giusto e indicizzato.
+  'cotral_osservatorio_luogotenente': { sprite: 'Luogotenente_Cotral_Osservatorio', nome: 'Francesca', direzione: 'sud', movimento: 'fisso', azione: 'interagisciLuogotenenteOsservatorio' },
 
   // Ricercatori "ignari" (sess. 15 set 2026): NON diventano mai grunt,
   // sempre presenti (nessun gate), solo la battuta cambia dopo la
@@ -2181,9 +2189,15 @@ const DATI_NPC = {
     sprite: 'Capopalestra_Ariccia', nome: 'Isa', direzione: 'est', movimento: 'fisso',
     dialogo: ['Il GdF non capisce cosa rischia di distruggere.'],
   },
+  // Bug segnalato da Luca (19 ott 2026): la cutscene lo nascondeva con
+  // "nascondi_npc" ma il passo "rigenera_npc" subito dopo lo rifaceva
+  // apparire, perché qui non c'era NESSUNA condizione — _rigeneraNpc()
+  // lo ricreava sempre da capo. Ora sparisce per sempre dopo essere
+  // scappato con Kyogre (stesso pattern dei gate "gate:true, condizione").
   'boss gdf': {
     sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Tutto come previsto.'],
+    gate: true, condizione: 'antro9_kyogre_rapito',
   },
 
   // Abbazia di San Nilo (sess. 14 ott 2026, staging di Luca): Igino, il
@@ -2201,5 +2215,20 @@ const DATI_NPC = {
   'gdf_sannilo_traditore': {
     sprite: 'GdF_grunt_uomo', nome: '???', direzione: 'est', movimento: 'fisso',
     dialogo: ['...'],
+  },
+
+  /* ── Bosco del Signor Tuscolo (Monte Porzio — 19 ott 2026, richiesta
+     esplicita di Luca) ── */
+  'npc_bosco_tuscolo_hiker': {
+    sprite: 'trainer_HIKER', nome: 'Escursionista', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Qui dentro non funzionano i repellenti, non so cosa succede!'],
+  },
+  // Stesso sprite del Signor Torlonia (richiesta esplicita di Luca).
+  // Logica vera in interagisciSignorTuscolo (js/app.js): dopo i 10
+  // allenatori del bosco, regala uno starter a scelta tra quelli che il
+  // giocatore non ha ancora, da qualunque delle 3 generazioni.
+  'signor_tuscolo': {
+    sprite: 'trainer_PROFESSOR', nome: 'Signor Tuscolo', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciSignorTuscolo',
   },
 };

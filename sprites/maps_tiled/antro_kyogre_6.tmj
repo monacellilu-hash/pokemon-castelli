@@ -2734,6 +2734,30 @@
                  "width":0,
                  "x":143.168428367653,
                  "y":86.4939833949014
+                }, 
+                {
+                 "height":533.048757580191,
+                 "id":1208,
+                 "name":"Acqua_surf",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":480.520951611133,
+                 "x":209.736232434805,
+                 "y":74.2034658388501
+                }, 
+                {
+                 "height":428.555382356168,
+                 "id":1209,
+                 "name":"Acqua_surf",
+                 "opacity":1,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":514.228618594784,
+                 "x":76.5911147909732,
+                 "y":203.696779397242
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -2742,7 +2766,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":1208,
+ "nextobjectid":1210,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

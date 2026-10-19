@@ -488,15 +488,8 @@ const GameMap = (function () {
       interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
-    // Variante "underwater" (l'esterno sommerso della caverna, visto in Sub):
-    // registrata per completezza ma NON collegata ad alcun warp — nel gioco
-    // originale è un'area cosmetica separata, il suo ruolo in questo
-    // progetto resta da decidere (vedi messaggio di fine sessione).
-    'antro_kyogre_underwater': {
-      file: 'sprites/maps_tiled/antro_kyogre_underwater.tmj',
-      interno: true, tema: 'cave',
-      latFissa: 41.7440, lonFissa: 12.6580,
-    },
+    // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
+    // l'Antro di Kyogre parte direttamente da 'antro_kyogre_entrance'.
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
     // Lago di Albano, registrata da Luca ma mai aggiunta qui — il warp
     // risultava "Zona non ancora disponibile".
@@ -600,6 +593,15 @@ const GameMap = (function () {
     'monteporzio': {
       file: 'sprites/maps_tiled/monteporzio.tmj',
       latC: 41.8180, lonC: 12.7170,
+    },
+    // ── Bosco del Signor Tuscolo (19 ott 2026, richiesta Luca): dungeon
+    // facoltativo collegato a Monte Porzio — avvistamento rarissimo di
+    // Dratini, 10 allenatori Elettro/Terra, pioggia perenne (vedi
+    // _contestoMeteo/aggiornaMeteo). Spawn/warp verso monteporzio: li
+    // posiziona Luca direttamente in Tiled. ──
+    'bosco_signor_tuscolo': {
+      file: 'sprites/maps_tiled/bosco_signor_tuscolo.tmj',
+      latC: 41.8175, lonC: 12.7140,
     },
     // ── Centro Pokémon e Market dedicati di Monte Porzio Catone ──
     'pokecenter_monteporzio': {
@@ -2007,7 +2009,11 @@ const GameMap = (function () {
     const leggiTipo = (obj) => {
       const props = {};
       if (obj.properties) obj.properties.forEach(p => { props[p.name] = p.value; });
-      return normTipo(props.type || obj.type || '');
+      // Fallback sul NOME (19 ott 2026): i rettangoli "Acqua_surf" dell'Antro
+      // di Kyogre non hanno né proprietà "type" né il campo nativo Tiled
+      // "type/class" — solo un nome parlante. Letto solo se gli altri due
+      // mancano, non cambia nulla per gli oggetti già tipizzati correttamente.
+      return normTipo(props.type || obj.type || obj.name || '');
     };
 
     // Sasso del tileset Caves (tile locale 1213, tunnel roccioso, sessione 6
@@ -2199,7 +2205,9 @@ const GameMap = (function () {
     const aggiungi = (obj) => {
       const props = {};
       if (obj.properties) obj.properties.forEach(p => { props[p.name] = p.value; });
-      let tipo = normTipo(props.type || obj.type || '');
+      // Fallback sul NOME (19 ott 2026, vedi leggiTipo sopra): copre i
+      // rettangoli "Acqua_surf" senza proprietà/type nativo nell'Antro di Kyogre.
+      let tipo = normTipo(props.type || obj.type || obj.name || '');
       let idEv = props.id || obj.name || '';
       // Il rivale piazzato come "trigger_rivale" è in realtà un TRAINER visibile
       // con linea visiva: lo normalizziamo così usa tutto il sistema trainer
@@ -2239,7 +2247,7 @@ const GameMap = (function () {
     if (collLayer) for (const obj of collLayer.objects) {
       const props = {};
       if (obj.properties) obj.properties.forEach(p => { props[p.name] = p.value; });
-      const tp = normTipo(props.type || obj.type || '');
+      const tp = normTipo(props.type || obj.type || obj.name || '');
       if (isMnTrigger(tp)) aggiungi(obj);
     }
 
@@ -3987,6 +3995,12 @@ const GameMap = (function () {
       const s = String(raw || '').toLowerCase();
       if (s === 'ns' || s === 'sn') return ['nord', 'sud'];
       if (s === 'eo' || s === 'oe' || s === 'ew' || s === 'we') return ['est', 'ovest'];
+      // "random"/"tutte" (19 ott 2026, richiesta Luca per i grunt GdF
+      // dell'Antro di Kyogre): trainer FERMI che guardano a turno in tutte
+      // e 4 le direzioni, invece delle sole 2 di una pattuglia N-S/E-O —
+      // vedi _aggiornaNPC, che per questi sceglie la prossima direzione a
+      // caso invece di ciclarle in ordine fisso.
+      if (s === 'random' || s === 'tutte') return ['nord', 'sud', 'est', 'ovest'];
       return null;
     }
 
@@ -4164,8 +4178,10 @@ const GameMap = (function () {
         const dirCiclo = this._dirCiclo(ev.props.direzione);
         const patuglia = ev.props.pattuglia === true || ev.props.pattuglia === 'true' ||
                          ev.props.patuglia === true || ev.props.patuglia === 'true';
+        const direzioneCasuale = String(ev.props.direzione || '').toLowerCase() === 'random' ||
+                                  String(ev.props.direzione || '').toLowerCase() === 'tutte';
         let dir = this._normDir(ev.props.direzione);
-        if (patuglia && dirCiclo) dir = dirCiclo[0];
+        if (patuglia && dirCiclo) dir = dirCiclo[Math.floor(Math.random() * dirCiclo.length)];
 
         npcStato.push({
           ev,
@@ -4177,6 +4193,7 @@ const GameMap = (function () {
           movimento: String(ev.props.movimento || 'fisso').toLowerCase(),
           patuglia: !!(patuglia && dirCiclo),
           dirCiclo: dirCiclo || ['nord', 'sud'],
+          direzioneCasuale,
           cicloIdx: 0,
           raggio: parseInt(ev.props.raggio || '3', 10),
           timer: Math.floor(Math.random() * 75),   // sfasa i timer per non muoverli all'unisono
@@ -4515,7 +4532,10 @@ const GameMap = (function () {
           const py = (st.ty + 1) * tileSize;
           const spr = this.add.sprite(px, py, texKey, 1).setOrigin(0.5, 1).setDepth(20);   // frame 1 = sud, fermo
           const frameW = this.textures.get(texKey).get(0).width || 64;
-          spr.setScale((tileSize * 1.4) / frameW);
+          // Kyogre +60% (richiesta Luca, 19 ott 2026): troppo piccolo
+          // rispetto a quanto dovrebbe imporsi nell'Antro, solo lui.
+          const boostTaglia = (st.legId === 382) ? 1.6 : 1;
+          spr.setScale((tileSize * 1.4 * boostTaglia) / frameW);
           st.sprite = spr;
           npcSprites.push(spr);
           continue;
@@ -4972,8 +4992,14 @@ const GameMap = (function () {
         if (st.tipo === 'trainer' && st.patuglia) {
           if (st.timer >= 120) {
             st.timer = 0;
-            st.cicloIdx = (st.cicloIdx + 1) % st.dirCiclo.length;
-            st.dir = st.dirCiclo[st.cicloIdx];
+            if (st.direzioneCasuale) {
+              // Grunt fermo che "guarda in giro" (19 ott 2026): direzione
+              // scelta a caso ad ogni intervallo, non ciclata in ordine fisso.
+              st.dir = st.dirCiclo[Math.floor(Math.random() * st.dirCiclo.length)];
+            } else {
+              st.cicloIdx = (st.cicloIdx + 1) % st.dirCiclo.length;
+              st.dir = st.dirCiclo[st.cicloIdx];
+            }
             this._setNpcFrame(st.sprite, st.dir, false);
           }
           continue;
@@ -5749,6 +5775,10 @@ const GameMap = (function () {
         outdoor: !eInterno && !eGrottaBuia,
         monteCavo: mappaCorrente === 'monte_cavo',
         sabbiaOsservatorio,
+        // Bosco del Signor Tuscolo (19 ott 2026, richiesta Luca): pioggia
+        // PERENNE su tutta la mappa, stesso principio di sabbiaOsservatorio
+        // ma senza bisogno di un rettangolo dedicato (qui vale ovunque).
+        pioggiaFissa: mappaCorrente === 'bosco_signor_tuscolo',
         mappa: mappaCorrente,
         // Sess. 1 ott 2026: le mappe dello stesso cluster sono la STESSA zona
         // "incollata" visivamente (es. Percorso 1 e Borgata Tuscolana) — il
@@ -9801,6 +9831,10 @@ const GameMap = (function () {
         if (!stato.mn) stato.mn = {};
         if (!stato.mn[dati.mnVittoria]) {
           stato.mn[dati.mnVittoria] = true;
+          // Stesso bug del 18 ott 2026 (vedi _concediOggettoMN in js/app.js),
+          // ritrovato qui il 19 ott: anche questo percorso dava solo il
+          // permesso, mai l'oggetto nello zaino.
+          if (typeof _concediOggettoMN === 'function') _concediOggettoMN(dati.mnVittoria);
           const NOMI_MN = { surf: 'Surf', taglio: 'Taglio', volo: 'Volo', forza: 'Forza',
                              spaccaroccia: 'Spaccaroccia', cascata: 'Cascata', sub: 'Sub' };
           if (typeof mostraToast === 'function')
@@ -10047,8 +10081,12 @@ const GameMap = (function () {
             nome: nomeLotta,
             squadra: squadra,
             dialogoSconfitta: dati.dialogo_dopo || '',
-            premioSoldi: dati.premio || 100,
+            // dati.premio ?? invece di || : uno 0 esplicito (allenatori senza
+            // ricompensa, es. Bosco del Signor Tuscolo) non deve ripiegare
+            // sul default 100 solo perché 0 è falsy.
+            premioSoldi: dati.premio != null ? dati.premio : 100,
             oggettiCura: dati.oggettiCura || null,
+            senzaExp: !!dati.senzaExp,
           },
           stato,
           onFine: (esito) => {
@@ -13987,7 +14025,7 @@ const GameMap = (function () {
     }
     bloccaMovimento();
     if (typeof mostraDialogo === 'function') {
-      mostraDialogo('Infermiera Joy', [
+      mostraDialogo('Coco', [
         'Benvenuta al Centro Pokémon!',
         'Affidami i tuoi Pokémon, li curerò subito.',
         '...',

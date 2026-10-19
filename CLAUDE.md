@@ -187,13 +187,13 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
    (grunt/Marino/Grotta del Vulcano) e Team CoTrAL (Osservatorio) cablati e giocabili. Mancano ancora
    alcuni dungeon narrativi minori (Museo di Nemi, dungeon dei porchettari) — vedi `docs/TODO.md`.
 10. [FATTO] **F10 — Team GdF**: covo di Marino, Giovanni, Grotta del Vulcano, tutto cablato.
-11. **F11 — Leggendari ed eventi**: SOLO 6 su 21 piazzati davvero su una mappa (Zapdos-preview,
-    Moltres, Raikou/Entei/Suicune, Latios/Latias, Groudon, Deoxys-trigger). **Mancano 10 su 21**:
-    Articuno, Mewtwo, Mew, Lugia, Ho-Oh, Celebi, i 3 Regi, Kyogre, Rayquaza, Jirachi.
+11. **F11 — Leggendari ed eventi**: aggiornato il 19 ottobre 2026 — piazzati e svegliati anche
+    **Articuno, Mewtwo, Ho-Oh, Celebi, i 3 Regi, Kyogre** (oltre ai 6 già fatti: Zapdos-preview,
+    Moltres, Raikou/Entei/Suicune, Latios/Latias, Groudon, Deoxys-trigger). **Mancano solo**:
+    Jirachi, Rayquaza, Lugia, Deoxys (cattura vera), Mew/Villa Aldobrandini.
 12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione Remo: cablati e
-    giocabili). **Post-game CoTrAL/Bunkerino: ASSENTE** — le mappe `Bunkerino_0f/1f.tmx` esistono come
-    file ma non sono mai state convertite in `.tmj` né registrate nel motore (oggi irraggiungibili).
-    Mewtwo/Mew (doppia): nessuna lotta vera da nessuna parte.
+    giocabili). **Post-game CoTrAL/Bunkerino**: aggiornato il 19 ottobre 2026 — ora collegato per
+    davvero, cutscene della doppia Mewtwo/Mew scritta.
 13. **F13 — Pubblicazione su GitHub Pages**: non fatta. `MODALITA_TEST` non blocca più (si autogestisce,
     spento online finché non si sblocca a password — `js/data.js`), quindi non è un ostacolo residuo.
 14. **F14 (estetica) — Grafica cartoon** (Tiled + tileset liberi, avatar pixel, edifici iconici). La logica NON cambia. Non iniziata.
@@ -209,16 +209,17 @@ sistema di cutscene dichiarativo `dati/cutscene.js` è usato attivamente, non "r
 - **"GdF" e "CoTrAL"** e i nomi di luoghi reali: mantenerli sostituibili via costante.
 - OSM: attribuzione obbligatoria sulla mappa.
 
-## STATO ATTUALE (verificato sul codice reale il 5 ottobre 2026 — non fidarsi di versioni precedenti di questa riga)
+## STATO ATTUALE (aggiornato il 19 ottobre 2026 — non fidarsi di versioni precedenti di questa riga)
 **F1-F10 e F12 fatte e giocabili** (tempo, economia, tutte e 7 le MN, Team GdF, Lega di Colonna con
 Superquattro/Remo, menu nativi completi, lotta in doppio, sistema cutscene). Limite **Gen 1-2-3
 (ID 1-386)**. `MODALITA_TEST` oggi si autogestisce (acceso in locale, spento online finché non si
-sblocca a password) — non è più un ostacolo prima della pubblicazione.
+sblocca a password) — non è più un ostacolo prima della pubblicazione. **Bunkerino post-Lega
+CoTrAL collegato**, cutscene della doppia Mewtwo/Mew scritta.
 
-**I due buchi veri che restano**: **F11 Leggendari solo 6/21 piazzati** (manca Articuno, Mewtwo, Mew,
-Lugia, Ho-Oh, Celebi, i 3 Regi, Kyogre, Rayquaza, Jirachi) e **il Bunkerino post-Lega CoTrAL (F12)
-non esiste ancora in gioco** (mappe `.tmx` presenti ma mai convertite/cablate — niente Mewtwo/Mew).
-F13 (pubblicazione) e F14 (grafica cartoon) non iniziate.
+**Quello che resta davvero**: **F11 leggendari** — mancano solo Jirachi, Rayquaza, Lugia, Deoxys
+(cattura), Mew/Villa Aldobrandini (tutti gli altri 17/21 sono piazzati). Coda di NPC su casella di
+collisione (~40 casi) e ~100 abilità ancora da implementare (vedi `docs-nogithub/ROADMAP.md` per i
+dettagli di sessione). F13 (pubblicazione) e F14 (grafica cartoon) non iniziate.
 
 Vedi `docs/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
 aperti — ATTENZIONE: parti di quel file erano scollate dal codice reale fino al 5 ottobre 2026,
