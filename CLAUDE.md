@@ -1,7 +1,7 @@
 # CLAUDE.md — Pokémon Castelli Romani
 
 ## ⭐ STELLA POLARE (leggi sempre per prima)
-L'obiettivo finale è **un gioco RPG completo in stile Pokémon Smeraldo** (esplorazione, palestre, allenatori, dungeon, MN, leggendari, Lega), ambientato sui Castelli Romani. **La mappa reale (Leaflet/OpenStreetMap) è solo un'IMPALCATURA temporanea**: serve a definire aree, coordinate e distanze reali durante lo sviluppo. NON è il prodotto finale. Nella fase estetica (F14) la mappa OSM viene **sostituita** da una mappa cartoon custom in stile Game Boy Advance. Tutta la logica costruita sulle coordinate reali resta valida; cambia solo lo strato visivo. Punta sempre al feeling di Pokémon Smeraldo, non a "una mappa con dei marker".
+L'obiettivo finale è **un gioco RPG completo in stile Pokémon Smeraldo** (esplorazione, palestre, allenatori, dungeon, MN, leggendari, Lega), ambientato sui Castelli Romani. **Il cambio motore è GIÀ FATTO**: la vecchia mappa Leaflet/OpenStreetMap (usata solo come impalcatura iniziale per definire aree/coordinate/distanze reali) è stata **sostituita del tutto** da mappe Tiled in stile Game Boy Authentic (tileset reali da pret/pokeemerald/pokefirered), motore Phaser 3 (`MAPPA_TILED = true` in modo permanente, `js/app.js`). Zero Leaflet caricato in `index.html`. Le coordinate reali (lat/lon) restano nei dati solo come campo storico/di comodo in `MAPPE` (`js/map.js`), non pilotano più nulla a schermo. Punta sempre al feeling di Pokémon Smeraldo, non a "una mappa con dei marker" — e oggi è già così.
 
 ## CHI SEI
 Sei un Senior Game Developer ed esperto GIS. Sviluppi questo gioco AL POSTO dell'utente, che NON sa programmare. L'utente è il direttore creativo e il tester: tu sei l'intero team di sviluppo.
@@ -10,21 +10,21 @@ Sei un Senior Game Developer ed esperto GIS. Sviluppi questo gioco AL POSTO dell
 1. **Guida passo passo, sempre.** L'utente parte da zero assoluto: dove cliccare, cosa scrivere, cosa dovrebbe vedere.
 2. **Codice sempre completo.** Mai placeholder, mai snippet parziali. Crei e modifichi tu i file direttamente.
 3. **Ciclo sviluppo → test.** Dopo ogni blocco: spiega ESATTAMENTE come testare. Se c'è un errore, chiedi di incollare la console (F12 → Console) e correggi.
-4. **Aggiorna `docs/ROADMAP.md` a fine sessione**: cosa è fatto, cosa funziona, prossimo passo. A inizio sessione leggi ROADMAP.md.
+4. **Aggiorna `docs-nogithub/ROADMAP.md` a fine sessione**: cosa è fatto, cosa funziona, prossimo passo. A inizio sessione leggi ROADMAP.md.
 5. **Una fase alla volta.** Niente scope creep. La VISIONE è la destinazione, non il compito di una sessione.
 6. **Commenti nel codice in italiano**, semplici.
 
 ## IL PROGETTO
-RPG stile Pokémon classico (ispirazione: **Pokémon Smeraldo** e **Rosso Fuoco**), su browser (HTML5/CSS/JS puro), ambientato sui Castelli Romani (Lazio). Mappa OSM via Leaflet ora; grafica cartoon custom in fase finale.
+RPG stile Pokémon classico (ispirazione: **Pokémon Smeraldo** e **Rosso Fuoco**), su browser (HTML5/CSS/JS puro), ambientato sui Castelli Romani (Lazio). Motore grafico: Phaser 3 + mappe Tiled (tileset reali da pret/pokeemerald/pokefirered) — Leaflet/OSM è stato tolto, non più presente nel gioco.
 
 ### Stack tecnico
-- **Mappa**: Leaflet.js (CDN) + tile OpenStreetMap. Centrata sui Castelli (~41.79, 12.69).
+- **Motore grafico**: Phaser 3 + mappe Tiled (`.tmj`, `sprites/maps_tiled/`). Nessuna dipendenza da Leaflet/OpenStreetMap nel gioco vero.
 - **Dati Pokémon**: PokéAPI. LIMITE RIGOROSO: solo ID 1-386 (**Gen 1-2-3** — scelta utente, sessione 6). Stats, mosse, sprite front/back, catene evolutive.
 - **Cache obbligatoria**: ogni risposta PokéAPI in localStorage al primo fetch.
 - **Salvataggi**: localStorage + Esporta/Importa come file JSON.
-- **Hosting finale**: GitHub Pages (sito statico).
+- **Hosting finale**: GitHub Pages (sito statico) — **da fare**: oggi il gioco è solo nel repository Git (commit/push), non ha un link pubblico; vedi nota su F13 più sotto.
 
-### Architettura file
+### Architettura file (reale, non quella storica)
 ```
 pokemon-castelli/
 ├── CLAUDE.md
@@ -32,13 +32,16 @@ pokemon-castelli/
 ├── style.css
 ├── js/
 │   ├── app.js        (avvio, stato, salvataggi, progressione, level cap, TEMPO)
-│   ├── map.js        (Leaflet, avatar, movimento, zone, trigger incontri)
+│   ├── map.js        (Phaser 3 + Tiled: avatar, movimento, zone, trigger incontri, warp)
 │   ├── pokeapi.js    (fetch + cache PokéAPI, ID_MAX=386)
 │   ├── battle.js     (combattimento a turni)
-│   ├── world.js      (zone, percorsi, dungeon, tabelle incontri, MN/gate)
-│   └── data.js       (palestre, Lega, leggendari, team, oggetti, NPC, tempo)
-└── docs/
-    └── ROADMAP.md
+│   ├── data.js       (palestre, Lega, leggendari, team, oggetti, NPC, tempo, mercati)
+│   └── clusters.js   (mappe .world fuse in cluster continui)
+├── dati/
+│   ├── npc.js, trainer.js, cutscene.js, porte.js, ecc. (contenuti per città/mappa)
+├── sprites/maps_tiled/   (tutte le mappe .tmj + tileset)
+└── docs-nogithub/
+    └── ROADMAP.md     (NON su Git, per scelta — vedi sotto)
 ```
 
 ---
@@ -70,8 +73,8 @@ Si parte da **Roma** (Borgata Tuscolana) sulla **Via Tuscolana** verso i Castell
 > chiusa da un ostacolo **Spaccaroccia**, apribile solo dopo essere arrivati a Castel Gandolfo e aver
 > liberato la Villa; esiste anche un **percorso diretto Grottaferrata → Rocca di Papa** (con bivio
 > verso Monte Cavo), che però resta chiuso finché non si hanno le medaglie di Marino e Monte Porzio,
-> proprio per non rompere il level cap. Vedi `docs/BIBBIA-NARRATIVA.md` (arco Rocca di Papa/CoTrAL) e
-> `docs/TODO.md` per i dettagli e i punti ancora aperti.
+> proprio per non rompere il level cap. Vedi `docs-nogithub/BIBBIA-NARRATIVA.md` (arco Rocca di Papa/CoTrAL) e
+> `docs-nogithub/TODO.md` per i dettagli e i punti ancora aperti.
 
 ## LEVEL CAP
 Ogni palestra alza il tetto di livello al livello dell'asso del Capopalestra. L'EXP si blocca al cap finché non ottieni la medaglia successiva.
@@ -113,7 +116,7 @@ Tra le città: percorsi, boschi, grotte, laghi, ognuno con tabella incontri coer
   comandante — sconfitto la prima volta dà la **Pietra Zaffiro** (Kyogre). Lo si ritrova una seconda e
   ultima volta alla **Grotta del Vulcano** (sopra Rocca di Papa, accessibile da subito solo nei piani
   esterni — quelli interni si sbloccano con la Pietra Zaffiro): sconfitto lì dà la **Pietra Rubino**
-  (Groudon). Sequenza completa in `docs/STORIA_COMPLETA.md`, arco GdF.
+  (Groudon). Sequenza completa in `docs-nogithub/STORIA_COMPLETA.md`, arco GdF.
 - ✅ **Identità di Giovanni risolta** (8 settembre 2026): sostituisce il vecchio nome provvisorio
   "Crasso"/"Comandante GdF" generico. È lo stesso personaggio sia al Rifugio di Marino sia alla Grotta
   del Vulcano (due incontri, stesso boss, squadra diversa la seconda volta).
@@ -146,7 +149,7 @@ Un solo leggendario "di casa" per luogo; roaming sfalsati.
 - **Ho-Oh(250)** — Ariccia: un **dungeon dei porchettari** sblocca la **Piuma**; dopo aver **battuto la
   palestra di Ariccia**, mostrando la Piuma a un allenatore sotto il **Ponte** si apre una **grotta di
   Ho-Oh**. Condizione di **cattura** effettiva ancora **[DA DECIDERE — Luca]**: dopo la Lega o dopo
-  l'ottava palestra, vedi `docs/TODO.md`.
+  l'ottava palestra, vedi `docs-nogithub/TODO.md`.
 - **Celebi(251)** — **Boschi del Tuscolo**.
 - **Trio Regi (377/378/379)** — **Tuscolo**, camere sigillate da **enigmi in latino**: ognuna richiede **≥3 Pokémon di un tipo** (Terra / Volante / Buio).
 - **Latias(380)/Latios(381)** — **roaming** post-Lega.
@@ -166,7 +169,7 @@ Un solo leggendario "di casa" per luogo; roaming sfalsati.
 ## COMBATTIMENTO
 A turni classico. Sprite back (proprio) + front (avversario), barre HP, livelli. Menu: **Attacca** (max 4 mosse con PP), **Pokémon**, **Zaino** (Ball, Pozioni, MN/oggetti), **Fuga** (solo selvatici). Danni semplificati (livello, atk/def, potenza, STAB, efficacia tipi). EXP e level-up (bloccato al cap). Evoluzioni per livello via PokéAPI. Cattura su HP residui + tipo di Ball.
 
-**Risfida allenatori** (pianificata, non ancora implementata — vedi `docs/TODO.md`): dopo un certo
+**Risfida allenatori** (pianificata, non ancora implementata — vedi `docs-nogithub/TODO.md`): dopo un certo
 tempo si può risfidare un allenatore già battuto. Premio pensato soprattutto per l'**EXP**; i **soldi**
 sono ridotti a **metà** rispetto alla prima vittoria; il **livello** della sua squadra sale, ma non oltre
 il livello dell'asso del **capopalestra successivo alla zona** in cui si trova l'allenatore (es. un
@@ -185,7 +188,7 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
 8. [FATTO] **F8 — Le altre 7 palestre + level cap + EXP scalato**.
 9. [FATTO] **F9 — Path, dungeon, MN + città vive**: tempo, economia, tutte e 7 le MN, NPC, Team GdF
    (grunt/Marino/Grotta del Vulcano) e Team CoTrAL (Osservatorio) cablati e giocabili. Mancano ancora
-   alcuni dungeon narrativi minori (Museo di Nemi, dungeon dei porchettari) — vedi `docs/TODO.md`.
+   alcuni dungeon narrativi minori (Museo di Nemi, dungeon dei porchettari) — vedi `docs-nogithub/TODO.md`.
 10. [FATTO] **F10 — Team GdF**: covo di Marino, Giovanni, Grotta del Vulcano, tutto cablato.
 11. **F11 — Leggendari ed eventi**: aggiornato il 19 ottobre 2026 — piazzati e svegliati anche
     **Articuno, Mewtwo, Ho-Oh, Celebi, i 3 Regi, Kyogre** (oltre ai 6 già fatti: Zapdos-preview,
@@ -194,9 +197,22 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
 12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione Remo: cablati e
     giocabili). **Post-game CoTrAL/Bunkerino**: aggiornato il 19 ottobre 2026 — ora collegato per
     davvero, cutscene della doppia Mewtwo/Mew scritta.
-13. **F13 — Pubblicazione su GitHub Pages**: non fatta. `MODALITA_TEST` non blocca più (si autogestisce,
-    spento online finché non si sblocca a password — `js/data.js`), quindi non è un ostacolo residuo.
-14. **F14 (estetica) — Grafica cartoon** (Tiled + tileset liberi, avatar pixel, edifici iconici). La logica NON cambia. Non iniziata.
+13. **F13 — Pubblicazione su GitHub Pages**: non fatta. **Attenzione, non è la stessa cosa dei
+    commit/push che facciamo ad ogni sessione**: `git push` salva solo il codice nel repository
+    (controllo versione, backup, nient'altro) — il gioco resta giocabile solo in locale (server
+    locale). F13 vuol dire attivare **GitHub Pages** nelle impostazioni del repository (Settings →
+    Pages → Deploy from branch → `master` / root): da quel momento il gioco è raggiungibile con un
+    **link pubblico** (es. `https://monacellilu-hash.github.io/pokemon-castelli/`), senza bisogno di
+    installare nulla. È un'operazione che si fa UNA volta nelle impostazioni GitHub (pochi click sul
+    sito, non da riga di comando), poi resta sempre attiva e si aggiorna automaticamente ad ogni
+    push successivo. `MODALITA_TEST` non blocca più (si autogestisce, spento online finché non si
+    sblocca a password — `js/data.js`), quindi non è un ostacolo residuo.
+
+**F14 (estetica — sostituzione grafica OSM→cartoon) non esiste più come fase separata: è già
+DENTRO F1-F12**, realizzata con un approccio diverso da quello previsto all'inizio (non "stessa
+mappa Leaflet con tileset sopra", ma sostituzione completa del motore con Phaser 3 + Tiled e
+tileset reali da pret/pokeemerald/pokefirered — vedi STELLA POLARE in cima). Nessuna fase F14
+residua da fare.
 
 **Verificato il 5 ottobre 2026** (lotta in doppio ESISTE da tempo ed è usata attivamente —
 `Battle.avviaDoppia`, js/battle.js — contrariamente a quanto si poteva leggere qui prima; i menu
@@ -207,7 +223,6 @@ sistema di cutscene dichiarativo `dati/cutscene.js` è usato attivamente, non "r
 - Sprite/nomi Pokémon = IP Nintendo/Game Freak: progetto SOLO personale/didattico. Mai monetizzare/promuovere.
 - Architettura dati disaccoppiata (facile sostituire i Pokémon con creature originali).
 - **"GdF" e "CoTrAL"** e i nomi di luoghi reali: mantenerli sostituibili via costante.
-- OSM: attribuzione obbligatoria sulla mappa.
 
 ## STATO ATTUALE (aggiornato il 19 ottobre 2026 — non fidarsi di versioni precedenti di questa riga)
 **F1-F10 e F12 fatte e giocabili** (tempo, economia, tutte e 7 le MN, Team GdF, Lega di Colonna con
@@ -219,24 +234,26 @@ CoTrAL collegato**, cutscene della doppia Mewtwo/Mew scritta.
 **Quello che resta davvero**: **F11 leggendari** — mancano solo Jirachi, Rayquaza, Lugia, Deoxys
 (cattura), Mew/Villa Aldobrandini (tutti gli altri 17/21 sono piazzati). Coda di NPC su casella di
 collisione (~40 casi) e ~100 abilità ancora da implementare (vedi `docs-nogithub/ROADMAP.md` per i
-dettagli di sessione). F13 (pubblicazione) e F14 (grafica cartoon) non iniziate.
+dettagli di sessione). **F13 (pubblicazione GitHub Pages) non fatta** — vedi ROADMAP IN FASI sopra
+per la differenza tra questo e i soliti commit/push. F14 non esiste più come fase, è già compresa
+nel motore attuale (Phaser 3 + Tiled).
 
-Vedi `docs/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
+Vedi `docs-nogithub/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
 aperti — ATTENZIONE: parti di quel file erano scollate dal codice reale fino al 5 ottobre 2026,
 controllare sempre col codice prima di fidarsi ciecamente di una voce vecchia.
 
 ## DOCUMENTI DI DESIGN (leggi anche questi, oltre a ROADMAP)
-- `docs/ROADMAP.md` — stato preciso e avanzamento per sessione (leggi a inizio sessione).
-- `docs/BIBBIA-NARRATIVA.md` — **fonte di verità sulla storia** (team, leggendari, città, eventi).
-- `docs/STORIA_COMPLETA.md` — narrativa completa più recente, **sovrascrive** dettagli più vecchi di
+- `docs-nogithub/ROADMAP.md` — stato preciso e avanzamento per sessione (leggi a inizio sessione).
+- `docs-nogithub/BIBBIA-NARRATIVA.md` — **fonte di verità sulla storia** (team, leggendari, città, eventi).
+- `docs-nogithub/STORIA_COMPLETA.md` — narrativa completa più recente, **sovrascrive** dettagli più vecchi di
   CLAUDE.md/BIBBIA-NARRATIVA quando in conflitto.
-- `docs/STATO-PROGETTO.md` — fotografia dello stato reale (mappe esistenti/collegate, MN, sistemi).
-- `docs/TODO.md` — to-do list unica, con indicazione di CHI fa cosa (LUCA/CLAUDE CODE) e le domande
+- `docs-nogithub/STATO-PROGETTO.md` — fotografia dello stato reale (mappe esistenti/collegate, MN, sistemi).
+- `docs-nogithub/TODO.md` — to-do list unica, con indicazione di CHI fa cosa (LUCA/CLAUDE CODE) e le domande
   ancora aperte.
-- `docs/DIALOGHI-NPC.md` — battute degli NPC (filler), città per città.
-- `docs/COORDINATE-NUOVI-LUOGHI.md` — **coordinate dei luoghi nuovi** da aggiungere in F9-F11
+- `docs-nogithub/DIALOGHI-NPC.md` — battute degli NPC (filler), città per città.
+- `docs-nogithub/COORDINATE-NUOVI-LUOGHI.md` — **coordinate dei luoghi nuovi** da aggiungere in F9-F11
   (marker in data.js, zone/dungeon in world.js).
-- `docs/TEMPLATE-CUTSCENE.md` — **usa SEMPRE questo template per ogni cutscene nuova** (Luca lo
+- `docs-nogithub/TEMPLATE-CUTSCENE.md` — **usa SEMPRE questo template per ogni cutscene nuova** (Luca lo
   compila, tu lo traduci in passi di `dati/cutscene.js`). Non scrivere mai una cutscene come funzione
   JS su misura in `js/map.js`: se manca un "passo" nel vocabolario del motore (vedi commento in testa
   a `dati/cutscene.js`), aggiungilo lì una volta per tutte — riusabile da tutte le cutscene future,
