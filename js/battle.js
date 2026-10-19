@@ -617,6 +617,13 @@ const Battle = (function () {
   };
   // MOD 6B — Mosse che fanno svenire chi le usa (dopo aver colpito).
   const MOSSE_AUTODISTRUZIONE = new Set(['explosion', 'self-destruct', 'selfdestruct']);
+
+  // Mosse "sonore" vere (per Insonorizzato/soundproof, 19 ott 2026) — solo
+  // quelle che esistono già in Gen 1-3 (ID ≤ 386, CLAUDE.md).
+  const MOSSE_SONORE = new Set([
+    'growl', 'roar', 'sing', 'supersonic', 'screech', 'snore', 'uproar',
+    'metal-sound', 'perish-song', 'heal-bell', 'sonic-boom', 'grasswhistle', 'grass-whistle',
+  ]);
   // MOD 6B — Mosse di protezione: annullano la mossa avversaria per quel turno.
   const MOSSE_PROTEZIONE = new Set(['protect', 'detect']);
   // Sess. 18 ott 2026 (richiesta esplicita di Luca) — Divinazione/Doom
@@ -672,6 +679,9 @@ const Battle = (function () {
   // Un Pokémon è immune a quel tipo di stato per via dei suoi tipi?
   function immuneAStato(ist, tipoStato) {
     if (ABILITA_IMMUNE_STATO[ist.abilitaChiave] === tipoStato) return true;
+    // Foglia Vigore (leaf-guard, 19 ott 2026): immune a QUALUNQUE stato
+    // alterato (non solo sonno) mentre c'è il sole.
+    if (ist.abilitaChiave === 'leaf-guard' && meteoBattaglia === 'sun') return true;
     if (tipoStato === 'poison')     return ist.tipi.includes('poison') || ist.tipi.includes('steel');
     if (tipoStato === 'burn')       return ist.tipi.includes('fire');
     if (tipoStato === 'freeze')     return ist.tipi.includes('ice');
@@ -695,6 +705,20 @@ const Battle = (function () {
       if (riga[t] !== undefined) molt *= riga[t];
     }
     return molt;
+  }
+
+  // Tuttofare (scrappy, 19 ott 2026): le mosse Normale/Lotta dell'attaccante
+  // colpiscono gli Spettro come se non fossero immuni (l'immunità Spettro è
+  // la sola cosa che annulla: niente effetto su Buio/Acciaio ecc., quelle
+  // restano come da tabella). Qui si ricalcola l'efficacia TOGLIENDO
+  // "ghost" dai tipi del difensore prima di guardare la tabella.
+  function efficaciaConScrappy(mossa, attaccante, difensore) {
+    if (attaccante.abilitaChiave === 'scrappy' &&
+        (mossa.tipo === 'normal' || mossa.tipo === 'fighting') &&
+        difensore.tipi.includes('ghost')) {
+      return efficacia(mossa.tipo, difensore.tipi.filter(t => t !== 'ghost'));
+    }
+    return efficacia(mossa.tipo, difensore.tipi);
   }
 
   // Abilità che scattano quando un Pokémon ENTRA in campo (inizio lotta o
@@ -745,7 +769,7 @@ const Battle = (function () {
   }
 
   function calcolaDanno(attaccante, difensore, mossa) {
-    let eff = efficacia(mossa.tipo, difensore.tipi);
+    let eff = efficaciaConScrappy(mossa, attaccante, difensore);
     // Levitate (richiesta esplicita di Luca, 9 ott 2026 — le Abilità non
     // devono essere solo estetiche): immunità totale alle mosse Terra,
     // come nei giochi veri.
@@ -754,6 +778,13 @@ const Battle = (function () {
     // alle mosse Elettro/Fuoco, stesso principio di Levitate.
     if (mossa.tipo === 'electric' && difensore.abilitaChiave === 'lightning-rod') eff = 0;
     if (mossa.tipo === 'fire' && difensore.abilitaChiave === 'flash-fire') eff = 0;
+    // Assorbimone (sap-sipper, 19 ott 2026): come Scudofuoco ma per le mosse
+    // Erba — niente danno E +1 Attacco, una tantum per colpo subito.
+    if (mossa.tipo === 'grass' && difensore.abilitaChiave === 'sap-sipper') {
+      const prima = difensore.mod.attack || 0;
+      difensore.mod.attack = Math.max(-6, Math.min(6, prima + 1));
+      return { danno: 0, eff: 0, critico: false };
+    }
     // Idroassorbenza (water-absorb, richiesta Luca, 18 ott 2026): niente
     // danno dalle mosse Acqua, il difensore recupera il 25% degli HP massimi.
     // "assorbito" letto dal chiamante (eseguiMossa) per curare invece di colpire.
@@ -783,6 +814,9 @@ const Battle = (function () {
     // Fretta (hustle, richiesta Luca): +50% Attacco sulle mosse fisiche,
     // sempre (non legata a uno stato alterato, a differenza di Attitudine).
     if (fisica && attaccante.abilitaChiave === 'hustle') A = A * 1.5;
+    // Forza Solare (solar-power, 19 ott 2026): +50% Attacco Speciale sotto
+    // il sole (il costo in HP a fine turno è in _abilitaFineTurno).
+    if (!fisica && attaccante.abilitaChiave === 'solar-power' && meteoBattaglia === 'sun') A = A * 1.5;
 
     // Pianta/Fuoco/Torrente/Sciame (richiesta Luca): mossa dello stesso
     // tipo dell'abilità ×1.5 quando chi attacca è sotto 1/3 degli HP massimi
@@ -793,8 +827,10 @@ const Battle = (function () {
       A = A * 1.5;
     }
 
-    // Guscioprotettivo (shell-armor, richiesta Luca): niente colpi critici subiti.
-    const critico = (difensore.abilitaChiave === 'shell-armor') ? false : tiraCritico(mossa);
+    // Guscioprotettivo (shell-armor)/Armatura Battaglia (battle-armor,
+    // 19 ott 2026, stesso identico effetto): niente colpi critici subiti.
+    const SENZA_CRITICI = new Set(['shell-armor', 'battle-armor']);
+    const critico = SENZA_CRITICI.has(difensore.abilitaChiave) ? false : tiraCritico(mossa);
     // Tiro Cecchino (sniper, 19 ott 2026): sui critici il moltiplicatore è
     // ×3 invece di ×2 (anziché applicarlo sotto con "molt *= 2", qui si
     // segna solo quanto vale per quel colpo).
@@ -824,6 +860,10 @@ const Battle = (function () {
     // invece che una volta sola.
     let molt = 1;
     if (attaccante.tipi.includes(mossa.tipo)) molt *= 1.5; // STAB
+    // Tecnico (technician, 19 ott 2026): +50% sulle mosse di potenza bassa
+    // (≤60, soglia vera dei giochi), PRIMA di applicare moltiplicatori extra
+    // (Rotolamento ecc.) — guarda la potenza base della mossa, non potenzaEff.
+    if (attaccante.abilitaChiave === 'technician' && mossa.potenza > 0 && mossa.potenza <= 60) molt *= 1.5;
     const heldAtt = attaccante.oggetto && typeof OGGETTI !== 'undefined' ? OGGETTI[attaccante.oggetto] : null;
     if (heldAtt && heldAtt.boostTipo === mossa.tipo) molt *= 1.2; // Oggetto potenziante (es. Carbonella)
     if (meteoBattaglia === 'sun') {
@@ -841,6 +881,10 @@ const Battle = (function () {
       molt *= 0.5;
     }
     molt *= eff;
+    // Lente Colorata (tinted-lens, 19 ott 2026): raddoppia il danno sulle
+    // mosse "non molto efficaci" (eff<1) — va DOPO aver già applicato eff,
+    // altrimenti si perde il confronto con 1.
+    if (attaccante.abilitaChiave === 'tinted-lens' && eff > 0 && eff < 1) molt *= 2;
     molt *= 0.85 + Math.random() * 0.15; // variazione casuale
 
     const danno = Math.round(base * molt);
@@ -1731,7 +1775,7 @@ const Battle = (function () {
   }
 
   // Applica uno stato alterato al bersaglio (se possibile)
-  async function applicaStato(bersaglio, tipoStato, etichetta) {
+  async function applicaStato(bersaglio, tipoStato, etichetta, causatore, etichettaCausatore) {
     // CONFUSIONE (sess. 13 ott 2026, bug segnalato da Luca: non si attivava
     // MAI): è uno stato VOLATILE separato (bersaglio.confusione), non uno dei
     // 5 STATI "maggiori" — prima di questo fix mosse come Confusione/
@@ -1769,6 +1813,19 @@ const Battle = (function () {
     bersaglio.condizione = { tipo: tipoStato, turni: 0, turniDormito: 0 };
     aggiornaPannelli();
     await di(`${etichetta} è ${STATI[tipoStato].nome}!`);
+
+    // Sincronizzazione (synchronize, 19 ott 2026): veleno/paralisi/scottatura
+    // ricevuti tornano indietro su chi li ha causati — non sonno/congelamento
+    // (regola vera dei giochi). "causatore" manca sulle abilità di contatto
+    // (Statica/Velenopunto/Corpofiamma, già gestite a parte più sopra).
+    const STATI_SINCRONIZZABILI = new Set(['poison', 'paralysis', 'burn']);
+    if (bersaglio.abilitaChiave === 'synchronize' && STATI_SINCRONIZZABILI.has(tipoStato) &&
+        causatore && causatore !== bersaglio && causatore.hpAttuale > 0 &&
+        !causatore.condizione && !immuneAStato(causatore, tipoStato)) {
+      causatore.condizione = { tipo: tipoStato, turni: 0, turniDormito: 0 };
+      aggiornaPannelli();
+      await di(`${etichettaCausatore || 'Il rivale'} è stato "sincronizzato" e ${STATI[tipoStato].nome.toLowerCase()} pure lui!`);
+    }
   }
 
   // Mosse "damage-lower" che però abbassano le PROPRIE statistiche (non quelle
@@ -1856,6 +1913,10 @@ const Battle = (function () {
       }
       return false;
     }
+    // Insonorizzato (soundproof, 19 ott 2026): immune a QUALUNQUE mossa
+    // sonora (danno o stato) — controllato qui così blocca anche le mosse
+    // di stato pure (Ninnananna/Ipnoshock/Rombo…), non solo quelle con danno.
+    if (dif.abilitaChiave === 'soundproof' && MOSSE_SONORE.has(mossa.nome)) return false;
     // No Guard (richiesta Luca, 18 ott 2026): nessuna mossa manca mai, da
     // nessuno dei due lati, se uno dei due Pokémon in campo ce l'ha.
     if (att.abilitaChiave === 'no-guard' || dif.abilitaChiave === 'no-guard') return true;
@@ -2025,6 +2086,15 @@ const Battle = (function () {
           await di(`${etichettaDif} si agita, la sua Velocità aumenta!`);
         }
       }
+      // Armatura Debole (weak-armor, 19 ott 2026): -1 Difesa / +1 Velocità
+      // quando subisce una mossa FISICA (qualunque, non solo contatto).
+      if (dif.hpAttuale > 0 && dif.abilitaChiave === 'weak-armor' && mossa.classe !== 'special') {
+        const primaDef = dif.mod.defense || 0, primaVel = dif.mod.speed || 0;
+        dif.mod.defense = Math.max(-6, Math.min(6, primaDef - 1));
+        dif.mod.speed = Math.max(-6, Math.min(6, primaVel + 1));
+        aggiornaPannelli();
+        await di(`L'Armatura Debole di ${etichettaDif} si spezza: Difesa giù, Velocità su!`);
+      }
       // Efficacia mostrata una volta sola per sequenza multi-colpo (come il
       // gioco vero: "Colpito N volte!" + efficacia, non ripetuta a ogni colpo).
       if (numColpi === 1) {
@@ -2087,7 +2157,7 @@ const Battle = (function () {
       if (mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion') &&
           (mossa.statoEffetto === 'confusion' || !dif.condizione) &&
           (mossa.statoProbabilita === 0 || Math.random() * 100 < mossa.statoProbabilita)) {
-        await applicaStato(dif, mossa.statoEffetto, etichettaDif);
+        await applicaStato(dif, mossa.statoEffetto, etichettaDif, att, etichettaAtt);
       }
       // Cambio di statistiche secondario
       if (mossa.cambiStat && mossa.cambiStat.length > 0 &&
@@ -2117,7 +2187,7 @@ const Battle = (function () {
       const etichObiettivo = versoSe ? etichettaAtt : etichettaDif;
       // Per le mosse di stato pure la probabilità API è 0 = effetto garantito
       const prob = mossa.statoProbabilita > 0 ? mossa.statoProbabilita : 100;
-      if (Math.random() * 100 < prob) await applicaStato(obiettivoStato, mossa.statoEffetto, etichObiettivo);
+      if (Math.random() * 100 < prob) await applicaStato(obiettivoStato, mossa.statoEffetto, etichObiettivo, att, etichettaAtt);
       else await di('...ma non ha funzionato!');
     }
     if (mossa.cambiStat && mossa.cambiStat.length > 0) {
@@ -2451,6 +2521,21 @@ const Battle = (function () {
         ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + cura);
         aggiornaPannelli();
         await di(`${etich} recupera HP grazie a Pioggiabeneficio! 🌧️`);
+      }
+      // Corpogelo (ice-body, 19 ott 2026): stesso principio ma sotto la grandine.
+      if (ist.abilitaChiave === 'ice-body' && meteoBattaglia === 'hail' && ist.hpAttuale < ist.hpMax) {
+        const cura = Math.max(1, Math.floor(ist.hpMax / 16));
+        ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + cura);
+        aggiornaPannelli();
+        await di(`${etich} recupera HP grazie a Corpogelo! ❄️`);
+      }
+      // Forza Solare (solar-power, 19 ott 2026): +50% Att.Speciale sotto il
+      // sole (calcolaDanno), ma perde 1/8 HP max ogni turno di sole.
+      if (ist.abilitaChiave === 'solar-power' && meteoBattaglia === 'sun' && ist.hpAttuale > 0) {
+        const danno = Math.max(1, Math.floor(ist.hpMax / 8));
+        ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
+        aggiornaPannelli();
+        await di(`${etich} è prosciugato dalla Forza Solare!`);
       }
     }
   }
@@ -3215,6 +3300,11 @@ const Battle = (function () {
     // alterato — va letto PRIMA di sovrascrivere "mio" col nuovo Pokémon.
     if (mio && mio.hpAttuale > 0 && mio.abilitaChiave === 'natural-cure') {
       mio.condizione = null;
+    }
+    // Recupero (regenerator, 19 ott 2026): chi esce dal campo vivo recupera
+    // 1/3 degli HP massimi, stesso principio di Guarigione Naturale sopra.
+    if (mio && mio.hpAttuale > 0 && mio.abilitaChiave === 'regenerator') {
+      mio.hpAttuale = Math.min(mio.hpMax, mio.hpAttuale + Math.floor(mio.hpMax / 3));
     }
     indiceAttivo = idx;
     mio = statoGioco.squadra[idx];
