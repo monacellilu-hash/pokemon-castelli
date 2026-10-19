@@ -59,6 +59,11 @@
        appena diventata vera (tile Poké Ball nascosto fino a quel momento).
    - { tipo: 'fade_out'/'fade_in', ms } e { tipo: 'rigenera_npc' }: schermo nero
        e rilettura di gate/condizioni degli NPC (vedi museo_navi_sfida).
+   - { tipo: 'cambia_mappa', mappa: 'borgata_tuscolana', spawn: 'da_casamia_1f' }
+       (19 ott 2026) Cambia mappa VERA a metà cutscene, come un warp normale
+       ma scriptato — usa lo spawn_id di un warp/spawn già esistente su
+       quella mappa. Mettilo SEMPRE tra un fade_out e un fade_in, altrimenti
+       si vede il caricamento a nudo (vedi 'lega_finale_remo').
    - { tipo: 'trema', ms: 350, intensita: 0.012 }
        Scuote la camera (es. un boss che rivela la sua vera natura).
    - { tipo: 'cambia_sprite', npc: 'id_npc_tiled', sprite: 'NomeSprite' }
@@ -847,4 +852,35 @@ CUTSCENE['abbazia_sannilo_ginevra_igino'] = [
   ] },
   { tipo: 'oggetto', contenuto: 'password_3', chiave: true },
   { tipo: 'flag', nome: 'abbazia_password', valore: true },
+];
+
+/* ── Finale della Lega: Remo sconfitto (19 ott 2026, richiesta esplicita
+   di Luca) ── Dopo la primissima vittoria sul Campione: lui non capisce
+   come tu ci sia riuscito, poi titoli di coda scherzosi su schermo nero,
+   e si ritorna davanti a casa a Borgata Tuscolana. Da lì in poi: Amintore
+   (la guardia, dati/npc.js 'guardia_borgata') ha una battuta nuova se gli
+   parli, e il Prof. Castagno (interagisciLaboratorio, js/app.js) regala
+   la MN Sub alla prossima visita — nessuno dei due si muove da solo verso
+   il giocatore qui, troppo rischioso scriptare un lungo cammino su una
+   mappa diversa da questa: ci pensa il giocatore a tornare a parlargli. */
+CUTSCENE['lega_finale_remo'] = [
+  { tipo: 'dialogo', nome: 'Remo', testo: [
+    'Cosa...? Non è possibile. Io sono il Campione della Lega di Colonna. Nessuno mi batte, nessuno MAI.',
+    'Eppure tu l\'hai fatto. {maschile|femminile}, da dove vieni? Come hai fatto ad arrivare fin qui così forte?',
+    'Non lo capisco. Non lo capisco e forse non lo capirò mai. Ma un Campione sa riconoscere chi lo supera.',
+    'Il titolo è tuo, {nome}. Porta il nome dei Castelli Romani con onore, ovunque tu vada da qui in avanti.',
+  ] },
+  { tipo: 'flag', nome: 'legaCompletata', valore: true },
+  { tipo: 'aspetta', ms: 400 },
+  { tipo: 'fade_out', ms: 900 },
+  { tipo: 'dialogo', nome: '', testo: [
+    'POKÉMON CASTELLI ROMANI',
+    'by Marcs',
+    '— un gioco fatto in casa, a tarda notte, a forza di caffè e testardaggine —',
+    'Grazie per aver giocato. Sì, anche tu che stai leggendo i titoli di coda per sbaglio.',
+    'La storia continua...',
+  ] },
+  { tipo: 'cambia_mappa', mappa: 'borgata_tuscolana', spawn: 'da_casamia_1f' },
+  { tipo: 'aspetta', ms: 300 },
+  { tipo: 'fade_in', ms: 900 },
 ];

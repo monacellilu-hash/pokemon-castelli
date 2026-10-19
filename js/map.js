@@ -731,6 +731,7 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/Lega_pokemon.tmj',
       latC: 41.8337, lonC: 12.7532,
       interno: true,   // niente Volo dentro la Lega (richiesta esplicita, sess. 5 set)
+      biciConsentita: true,   // 19 ott 2026, richiesta Luca: qui la bici si può usare
     },
     // ── Entrata Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F di FireRed,
     // 5 ott 2026): Centro Pokémon + Market combinati, con NPC che parlano dei
@@ -3392,7 +3393,7 @@ const GameMap = (function () {
       tileSize  = tmj.tilewidth;
       mappaCorrente = chiave;
       mappaInfo = { ...def, mapW, mapH };
-      if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
+      if (mappaInfo.interno && !mappaInfo.biciConsentita) biciAttiva = false;   // niente bici in edifici/interni (punto 9) - eccezione Lega Pokémon
       // Sub (19 ott 2026): bug segnalato da Luca — camminava "normale" con
       // il follower perché il punto d'immersione porta PRIMA su
       // 'lago_albano_profondo' (non un nome "antro_kyogre_*"), che il
@@ -3710,7 +3711,7 @@ const GameMap = (function () {
       spawnGuard = { tx: sx, ty: sy };
 
       mappaInfo = { ...MAPPE[chiaveEntrata], mapW: boxEntrata.w, mapH: boxEntrata.h };
-      if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
+      if (mappaInfo.interno && !mappaInfo.biciConsentita) biciAttiva = false;   // niente bici in edifici/interni (punto 9) - eccezione Lega Pokémon
 
       // Camera sul bounding box dell'INTERO cluster (Parte 4): nessun ricalcolo
       // quando il player attraversa una cucitura interna.
@@ -5226,7 +5227,7 @@ const GameMap = (function () {
           if (typeof mostraToast === 'function') mostraToast('🚲 Non hai la Bicicletta.', 1800);
         } else if (surfAttivo) {
           if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici in acqua.', 1800);
-        } else if (mappaInfo && mappaInfo.interno) {
+        } else if (mappaInfo && mappaInfo.interno && !mappaInfo.biciConsentita) {
           if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici qui dentro.', 1800);
         } else {
           biciAttiva = !biciAttiva;
@@ -5545,7 +5546,7 @@ const GameMap = (function () {
           mappaCorrente = nuovaSub;
           const box = clusterBoxes[mappaCorrente];
           mappaInfo = { ...MAPPE[mappaCorrente], mapW: box.w, mapH: box.h };
-          if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
+          if (mappaInfo.interno && !mappaInfo.biciConsentita) biciAttiva = false;   // niente bici in edifici/interni (punto 9) - eccezione Lega Pokémon
           const comune = MAPPA_COMUNE[mappaCorrente];
           if (comune && typeof stato !== 'undefined' && Array.isArray(stato.cittaVisitate) &&
               !stato.cittaVisitate.includes(comune)) {
@@ -6663,6 +6664,17 @@ const GameMap = (function () {
         // fa sparire i trainer sugli altri piani mentre lo schermo è nero.
         case 'rigenera_npc':
           return this._rigeneraNpc();
+        // Cambia mappa VERA a metà cutscene (19 ott 2026, finale Lega):
+        // { tipo:'cambia_mappa', mappa:'borgata_tuscolana', spawn:'da_casamia_1f' }
+        // — usa lo stesso spawn_id di un warp normale. Da mettere tra un
+        // fade_out e un fade_in (altrimenti si vede il caricamento a nudo).
+        case 'cambia_mappa':
+          // caricaMappa sblocca il movimento da sola a fine caricamento
+          // (lo fa SEMPRE, è l'unico punto che carica mappe in tutto il
+          // motore) — qui dentro una cutscene va bloccato di nuovo subito,
+          // altrimenti per una frazione di secondo (schermo ancora nero
+          // per il fade_out) il giocatore potrebbe muoversi.
+          return this.caricaMappa(passo.mappa, undefined, undefined, passo.spawn).then(() => bloccaMovimento());
         // Scuote la camera (es. un boss che rivela la sua vera natura).
         // Stessa intensità già usata altrove nel motore per le scosse.
         case 'trema':
@@ -9876,6 +9888,19 @@ const GameMap = (function () {
       // post-game (Bunkerino/CoTrAL, leggendari post-Lega, ecc. — vedi CLAUDE.md).
       if (dati.campioneLega) {
         if (!stato.flags) stato.flags = {};
+        // Finale vero (19 ott 2026, richiesta esplicita di Luca): SOLO la
+        // primissima vittoria (legaCompletata era ancora false) fa partire
+        // la cutscene finale — una risfida successiva non la ripete.
+        // Gestisce da sé blocco/sblocco movimento, cambio mappa e
+        // salvataggio: ritorna true ("gestito altrove") come il boss della
+        // Grotta del Vulcano qui sotto.
+        const primaVoltaLega = !stato.flags.legaCompletata;
+        if (primaVoltaLega) {
+          this._giocaCutscene('lega_finale_remo').then(() => {
+            if (typeof salvaPartita === 'function') salvaPartita();
+          });
+          return true;
+        }
         // Missione 5 di Cenciarels (Museo di Nemi): si attiva solo in
         // RI-sfida (legaCompletata era già vera PRIMA di questa vittoria,
         // quindi non la prima volta), solo se la squadra reale (niente
@@ -14284,7 +14309,7 @@ const GameMap = (function () {
       if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici in acqua.', 1800);
       return;
     }
-    if (mappaInfo && mappaInfo.interno) {
+    if (mappaInfo && mappaInfo.interno && !mappaInfo.biciConsentita) {
       if (typeof mostraToast === 'function') mostraToast('🚲 Non puoi usare la bici qui dentro.', 1800);
       return;
     }

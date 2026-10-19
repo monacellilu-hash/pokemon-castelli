@@ -2231,4 +2231,22 @@ const DATI_NPC = {
     sprite: 'trainer_PROFESSOR', nome: 'Signor Tuscolo', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciSignorTuscolo',
   },
+
+  /* ── Percorso 10, donatore MN Cascata (19 ott 2026, richiesta esplicita
+     di Luca) — sprite riciclato del Prof. Castagno, ma è un personaggio
+     diverso: un ex Campione in pensione, in cerca di chi erediti la sua
+     "legacy". Logica vera in interagisciDonatoreCascata (js/app.js). ── */
+  'donatore_cascata': {
+    sprite: 'Nuovo_professor_oak', nome: 'Severo', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciDonatoreCascata',
+  },
+
+  /* ── Guardia di Borgata Tuscolana (19 ott 2026, richiesta esplicita di
+     Luca): presente dall'inizio del gioco con una battuta qualsiasi,
+     ottiene la battuta speciale dopo aver vinto la Lega (vedi
+     interagisciGuardiaBorgata in js/app.js). ── */
+  'guardia_borgata': {
+    sprite: 'NPC 19', nome: 'Amintore', direzione: 'sud', movimento: 'fisso',
+    azione: 'interagisciGuardiaBorgata',
+  },
 };

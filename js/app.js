@@ -1131,6 +1131,29 @@ async function interagisciLaboratorio() {
       await spiegaDifficoltaOak();
       return;
     }
+    // Dopo la Lega (19 ott 2026, richiesta esplicita di Luca): il
+    // Professore ha saputo della vittoria (e che hai battuto i suoi
+    // nipoti, i rivali) e regala la MN Sub, una tantum.
+    if (stato.flags.legaCompletata) {
+      if (stato.mn && stato.mn.sub) {
+        await mostraDialogo(PROFESSORE_NOME, [
+          'Il tuo Pokédex è una meraviglia da studiare. Continua così, Campione!',
+        ]);
+        return;
+      }
+      await mostraDialogo(PROFESSORE_NOME, [
+        'Campione! Mi hanno detto tutto. Dimmi, come procede col Pokédex?',
+        'E ho saputo anche dell\'altra cosa... hai battuto pure i miei nipoti, eh? Me l\'hanno raccontata in lacrime.',
+        'Mi hai reso fiero, davvero. Prendi questo come ringraziamento: la MN Sub. Ora potrai scendere anche dove la terra finisce e comincia l\'acqua.',
+      ]);
+      if (!stato.mn) stato.mn = {};
+      stato.mn.sub = true;
+      _concediOggettoMN('sub');
+      salvaPartita();
+      aggiornaHUD();
+      await mostraDialogo('🎁 MN Sub', ['Hai ottenuto la MN Sub!']);
+      return;
+    }
     await mostraDialogo(PROFESSORE_NOME, [
       'Oh, bentornato! Come procede l\'avventura?',
       'Ricorda: la prima palestra è a FRASCATI, in fondo alla Via Tuscolana. Il Capopalestra Donnie usa Pokémon di tipo Erba.',
@@ -1446,6 +1469,80 @@ async function regalaStarterTuscolo(opzione) {
   salvaPartita();
   aggiornaHUD();
   await mostraDialogo('Signor Tuscolo', [`Ottima scelta! Portalo con te con cura.`]);
+}
+
+/* ============================================================
+   SEVERO — donatore MN Cascata a Percorso 10 (19 ott 2026, richiesta
+   esplicita di Luca). Sprite riciclato del Prof. Castagno, ma è un
+   personaggio diverso: un ex Campione in pensione. Prima della Lega ha
+   solo un indizio, dopo averla vinta racconta la sua storia e dona la MN.
+   ============================================================ */
+async function interagisciDonatoreCascata() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  GameMap.bloccaMovimento();
+  try {
+    if (!stato.flags || !stato.flags.legaCompletata) {
+      await mostraDialogo('Severo', [
+        'Mh. Ti guardo camminare e riconosco quello sguardo... ce l\'hai anche tu, lo sguardo di chi non si accontenta.',
+        'Io, alla tua età, ero già arrivato in fondo. Ma questo non te lo dico ora: torna quando avrai visto la Lega con i tuoi occhi.',
+      ]);
+      return;
+    }
+
+    if (stato.mn && stato.mn.cascata) {
+      await mostraDialogo('Severo', [
+        'L\'acqua scende sempre verso il basso, ma chi sa usarla bene può anche farla risalire. Non dimenticarlo.',
+      ]);
+      return;
+    }
+
+    await mostraDialogo('Severo', [
+      'Allora è vero. Sei tu il nuovo Campione dei Castelli.',
+      'Tanti anni fa, prima che tu nascessi, quella Lega l\'ho vinta io. Avevo la tua stessa età, e pensavo che sarebbe durato per sempre.',
+      'Invece passano gli anni, le ginocchia cedono, e un giorno ti ritrovi qui, a Percorso 10, a chiederti se tutto quello che hai costruito abbia lasciato qualcosa a chi verrà dopo.',
+      'Ho passato anni a cercare qualcuno a cui lasciare in eredità quello che ho imparato. Allenatore dopo allenatore, nessuno mi convinceva davvero.',
+      'Tu invece sì. Hai quello sguardo. Lo sguardo di chi non si accontenta mai, nemmeno da Campione.',
+      'Prendi questo. È la Cascata: io la usavo per risalire i torrenti più impetuosi dei Castelli, quando ancora avevo gambe per farlo.',
+      'Portala con onore. E quando anche tu sarai vecchio come me, spero che tu trovi qualcuno a cui lasciarla.',
+    ]);
+
+    if (!stato.mn) stato.mn = {};
+    stato.mn.cascata = true;
+    _concediOggettoMN('cascata');
+    salvaPartita();
+    aggiornaHUD();
+    await mostraDialogo('🎁 MN Cascata', [
+      'Hai ottenuto la MN Cascata!',
+      'Ora puoi risalire le cascate che blocchi il cammino in giro per i Castelli.',
+    ]);
+  } finally {
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
+  }
+}
+
+/* ============================================================
+   AMINTORE — guardia di Borgata Tuscolana (19 ott 2026, richiesta
+   esplicita di Luca). Presente dall'inizio del gioco con una battuta
+   qualsiasi, ottiene la battuta speciale dopo aver vinto la Lega.
+   ============================================================ */
+async function interagisciGuardiaBorgata() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  GameMap.bloccaMovimento();
+  try {
+    if (!stato.flags || !stato.flags.legaCompletata) {
+      await mostraDialogo('Amintore', [
+        'Stacce attento là fuori, ragazzo. Sti Castelli so\' pieni de insidie.',
+      ]);
+      return;
+    }
+    await mostraDialogo('Amintore', [
+      'Ao, ma sei tu? Ao, nun ce posso crede.',
+      'Ehi tu, campione! Nun te davo manco un euro, sembravi un fallito co\' quella faccia.',
+      'Vai, vai a parlà col Professore, su. Se lo merita de saperlo prima de tutti.',
+    ]);
+  } finally {
+    if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
+  }
 }
 
 async function interagisciSignorTuscolo() {
