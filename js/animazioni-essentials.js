@@ -780,14 +780,40 @@ const AnimazioniEssentials = (function () {
   // singolo lampo di impatto sul bersaglio, UN SOLO fotogramma — niente
   // proiettile, l'attaccante si scuote (colpo in arrivo) e il lampo
   // compare al contatto. Generica: riusata per più grafiche reali.
-  async function _giocaImpattoRom(nomeFile, attaccanteEl, bersaglioEl) {
+  // Pugno/impatto (Metodo 1, 19 ott 2026 — letti Mega Punch/Comet Punch/
+  // Dynamic Punch): mancavano DUE strati reali, comuni a tutto il gruppo.
+  // 1) Lo sfondo si scurisce brevemente durante il colpo (monbg+setalpha
+  //    nello script vero) — qui un solo riquadro semitrasparente, disegnato
+  //    UNA VOLTA (non in un ciclo che si ripete: è così che si evita il bug
+  //    di accumulo già trovato e corretto su Fulmine).
+  // 2) Il vero impatto mostra anche la FORMA del pugno/piede vero
+  //    (hands_and_feet.png, frame "Fist") sovrapposta al lampo, non solo
+  //    un lampo generico astratto.
+  async function _giocaImpattoRom(nomeFile, attaccanteEl, bersaglioEl, pugnoVero) {
     const { img, pronta } = caricaImmagineRom(nomeFile);
-    await pronta;
+    const attese = [pronta];
+    let imgPugno, prontaPugno;
+    if (pugnoVero) {
+      ({ img: imgPugno, pronta: prontaPugno } = caricaImmagineRom('hands_and_feet.png'));
+      attese.push(prontaPugno);
+    }
+    await Promise.all(attese);
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
     const scalaX = w / ESS_W, scalaY = h / ESS_H;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    // Sfondo scurito per tutta la durata del colpo (disegnato una volta
+    // sola) — SOLO i pugni veri: letti anche Horn Attack e Headbutt/Body
+    // Slam per confronto (Metodo 1, 19 ott 2026), quelli non scuriscono
+    // affatto (nessun monbg/setalpha nei loro script reali) — "punch_
+    // impact.png" era condiviso anche da loro, ma non sono affatto pugni.
+    if (pugnoVero) {
+      ctx.save();
+      ctx.fillStyle = 'rgba(0,0,0,0.35)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.restore();
+    }
 
     // Balzo dell'attaccante verso il bersaglio (richiesta di Luca, 10 ott
     // 2026, "procedi col gruppo grosso"): ricontrollati gli script veri di
@@ -814,13 +840,25 @@ const AnimazioniEssentials = (function () {
     ctx.translate(centro.x, centro.y);
     ctx.scale(scalaX, scalaY);
     ctx.drawImage(img, -16, -16, 32, 32);
+    // Forma vera del pugno (hands_and_feet.png, frame "Fist" = primi 32px)
+    // sovrapposta al lampo, SOLO per le mosse a pugno vere.
+    if (pugnoVero) {
+      ctx.drawImage(imgPugno, 0, 0, 32, 32, -16, -16, 32, 32);
+    }
     ctx.restore();
     _scuotiSpriteRom(bersaglioEl, 3, 200);
     await new Promise(r => setTimeout(r, 200));
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
   async function _giocaPugnoRom(attaccanteEl, bersaglioEl) {
-    await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl);
+    await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl, true);
+  }
+  // Testata/Schianto/Pressing e simili (Metodo 1, 19 ott 2026): condividono
+  // "punch_impact.png" come lampo generico ma NON sono pugni (sono balzi/
+  // corpo a corpo, script reale confermato senza hands_and_feet.png né
+  // sfondo scurito) — stessa funzione, senza il pugno sovrapposto.
+  async function _giocaCorpoARom(attaccanteEl, bersaglioEl) {
+    await _giocaImpattoRom('punch_impact.png', attaccanteEl, bersaglioEl, false);
   }
 
   // Pugni elementali (richiesta di Luca, 10 ott 2026 — "procedi con le più
@@ -882,7 +920,7 @@ const AnimazioniEssentials = (function () {
   // Mosse a corno/zanna (Cornonite, Attacco Zanna...): grafica vera
   // horn_hit.png, stessa logica del pugno.
   async function _giocaCornoRom(attaccanteEl, bersaglioEl) {
-    await _giocaImpattoRom('horn_hit.png', attaccanteEl, bersaglioEl);
+    await _giocaImpattoRom('horn_hit.png', attaccanteEl, bersaglioEl, false);
   }
 
   // Attacco Furia (bonus del 10 ott 2026, non era quella che Luca
@@ -1679,8 +1717,10 @@ const AnimazioniEssentials = (function () {
 
     // Riuso della categoria impatto per altre mosse da contatto senza
     // grafica dedicata nel gioco vero (lampo generico al contatto).
-    HEADBUTT: _giocaPugnoRom, STOMP: _giocaPugnoRom, BODYSLAM: _giocaPugnoRom,
-    SLAM: _giocaPugnoRom, DOUBLEEDGE: _giocaPugnoRom, TAKEDOWN: _giocaPugnoRom,
+    // Metodo 1 (19 ott 2026): questi 6 non sono pugni (letti gli script
+    // reali di Headbutt/Body Slam) — niente fist/sfondo scurito per loro.
+    HEADBUTT: _giocaCorpoARom, STOMP: _giocaCorpoARom, BODYSLAM: _giocaCorpoARom,
+    SLAM: _giocaCorpoARom, DOUBLEEDGE: _giocaCorpoARom, TAKEDOWN: _giocaCorpoARom,
     SMELLINGSALTS: _giocaPugnoRom, DIZZYPUNCH: _giocaPugnoRom,
     HYPERFANG: _giocaCornoRom, CRUSHCLAW: _giocaCornoRom,
 
