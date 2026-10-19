@@ -2637,14 +2637,15 @@ const GameMap = (function () {
 
   // Genere → texture per ogni "modalità" del personaggio.
   const SPRITE_PLAYER = {
-    boy:  { normale: 'player-red',      run: 'player-red-run',  bike: 'player-red-bike',  surf: 'player-red-surf',  fish: 'player-red-fish' },
-    girl: { normale: 'player-girl-red', run: 'player-girl-run', bike: 'player-girl-bike', surf: 'player-girl-surf', fish: 'player-girl-fish' },
+    boy:  { normale: 'player-red',      run: 'player-red-run',  bike: 'player-red-bike',  surf: 'player-red-surf',  fish: 'player-red-fish',  sub: 'player-red-sub' },
+    girl: { normale: 'player-girl-red', run: 'player-girl-run', bike: 'player-girl-bike', surf: 'player-girl-surf', fish: 'player-girl-fish', sub: 'player-girl-sub' },
   };
 
   let genereGiocatore = 'boy';  // impostato da stato.genere al primo caricamento
   let corsaAttiva      = false; // tasto Corsa tenuto premuto
   let corsaTouchAttiva = false; // pulsante [B] a schermo tenuto premuto (solo mobile)
   let biciAttiva       = false; // Bicicletta indossata (si toglie da sola in Surf)
+  let subAttivo        = false; // 19 ott 2026: dentro una mappa "sott'acqua" (Antro di Kyogre)
   let pescaFinoA       = 0;     // this.time.now: mostra la posa da pesca fino a questo istante
 
   // Follower — il primo Pokémon della squadra cammina dietro al giocatore,
@@ -3031,6 +3032,12 @@ const GameMap = (function () {
       const FRAME_NORMALE = { frameWidth: 32, frameHeight: 48 };
       const FRAME_BICI     = { frameWidth: 48, frameHeight: 48 };
       const FRAME_PESCA    = { frameWidth: 96, frameHeight: 80 };
+      // Sub/Immersione (19 ott 2026): sprite vero estratto da pret/pokeemerald
+      // (object_events/pics/people/brendan|may/underwater.png) — SOLO 4 frame
+      // su una riga, 32×32 (non 4 direzioni come gli altri): nei giochi
+      // originali l'immersione non ha un vero ciclo direzionale, è un'unica
+      // animazione di nuoto. Vedi il loop di animazioni poco sotto.
+      const FRAME_SUB      = { frameWidth: 32, frameHeight: 32 };
       for (const genere of Object.keys(SPRITE_PLAYER)) {
         const s = SPRITE_PLAYER[genere];
         this.load.spritesheet(s.normale, `sprites/${s.normale}.png`, FRAME_NORMALE);
@@ -3038,6 +3045,7 @@ const GameMap = (function () {
         this.load.spritesheet(s.bike,    `sprites/${s.bike}.png`,    FRAME_BICI);
         this.load.spritesheet(s.surf,    `sprites/${s.surf}.png`,    FRAME_NORMALE);
         this.load.spritesheet(s.fish,    `sprites/${s.fish}.png`,    FRAME_PESCA);
+        this.load.spritesheet(s.sub,     `sprites/${s.sub}.png`,     FRAME_SUB);
       }
       // Masso spingibile (puzzle MN Forza): un solo frame statico, si sposta
       // di casella in casella quando il giocatore ci cammina contro con la MN.
@@ -3183,6 +3191,21 @@ const GameMap = (function () {
             key: `${genere}-fish-idle-${dir}`,
             frames: this.anims.generateFrameNumbers(s.fish, { frames: [frames[1]] }),
             frameRate: 1, repeat: -1,
+          });
+        }
+        // Sub: un'unica animazione di nuoto (4 frame, nessuna direzione vera
+        // nel foglio originale) — registrata identica sotto tutte e 4 le
+        // chiavi di direzione, così _animKeyPlayer non deve saperlo.
+        for (const [dir] of GRUPPI_DIREZIONE) {
+          this.anims.create({
+            key: `${genere}-sub-idle-${dir}`,
+            frames: this.anims.generateFrameNumbers(s.sub, { frames: [0] }),
+            frameRate: 4, repeat: -1,
+          });
+          this.anims.create({
+            key: `${genere}-sub-walk-${dir}`,
+            frames: this.anims.generateFrameNumbers(s.sub, { frames: [0, 1, 2, 3] }),
+            frameRate: 6, repeat: -1,
           });
         }
       }
@@ -3370,6 +3393,9 @@ const GameMap = (function () {
       mappaCorrente = chiave;
       mappaInfo = { ...def, mapW, mapH };
       if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
+      // Sub (19 ott 2026): dentro l'Antro di Kyogre il giocatore appare
+      // "sott'acqua" per davvero (sprite dedicato, vedi _variantePlayerAttiva).
+      subAttivo = chiave.startsWith('antro_kyogre');
 
       // Segna la città come "visitata" (sblocca la destinazione per la MN Volo)
       const comune = MAPPA_COMUNE[chiave];
@@ -5111,6 +5137,7 @@ const GameMap = (function () {
     // (esclude Corsa/Surf), poi Surf, poi Corsa, poi normale. Determina quale
     // set di sprite (SPRITE_PLAYER[genere][variante]) va mostrato.
     _variantePlayerAttiva() {
+      if (subAttivo) return 'sub';   // priorità massima: sei "sott'acqua" per davvero
       if (biciAttiva) return 'bike';
       if (surfAttivo) return 'surf';
       if (corsaAttiva) return 'run';
