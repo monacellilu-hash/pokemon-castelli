@@ -886,6 +886,40 @@ const GameMap = (function () {
       bloccaVuoti: true,
       latFissa: 41.8144, lonFissa: 12.7607,
     },
+    // ── 5 case di Colonna (19 ott 2026, richiesta esplicita di Luca): 2 cloni
+    // di casa2 + 3 di casadoppia_luxury, NPC che parlano della Lega/Colonna/
+    // "Città dei Campioni" — alcuni regalano oggetti one-shot (ricariche
+    // totali/MT) e danno indizi velati sui tipi del Superquattro. Porte e
+    // spawn sono SOLO oggetti punto in colonna_2.tmj (eventi): nessuna
+    // grafica/collisione disegnata da Claude — Luca le posiziona a mano
+    // dove preferisce (vedi door_colonna_casa2_1/2, door_colonna_casadoppia_
+    // luxury_1/2/3 e gli spawn_da_colonna_casa2_*/spawn_da_colonna_
+    // casadoppia_luxury_* corrispondenti). ──
+    'colonna_casa2_1': {
+      file: 'sprites/maps_tiled/colonna_casa2_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
+    'colonna_casa2_2': {
+      file: 'sprites/maps_tiled/colonna_casa2_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
+    'colonna_casadoppia_luxury_1': {
+      file: 'sprites/maps_tiled/colonna_casadoppia_luxury_1.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
+    'colonna_casadoppia_luxury_2': {
+      file: 'sprites/maps_tiled/colonna_casadoppia_luxury_2.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
+    'colonna_casadoppia_luxury_3': {
+      file: 'sprites/maps_tiled/colonna_casadoppia_luxury_3.tmj',
+      interno: true, bloccaVuoti: true,
+      latFissa: 41.8144, lonFissa: 12.7607,
+    },
     // 1f/2f/3f/5f registrate qui (sess. 5 set 2026): i file .tmj esistevano
     // già ma non erano ancora agganciate a MAPPE — solo 4f lo era. Ognuna
     // ospita un membro del Superquattro (1f-4f) o il Campione (5f), vedi

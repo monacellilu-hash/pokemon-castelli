@@ -2678,6 +2678,76 @@ async function interagisciGianluca() {
   }
 }
 
+/* ── Doni one-shot nelle 5 case di Colonna (19 ott 2026, richiesta di
+   Luca): ogni funzione regala l'oggetto una volta sola (flag in
+   stato.flags), poi l'NPC ripete solo la battuta di dialogo già scritta
+   in dati/npc.js (il dialogo "prima" si rivede sempre, l'azione no). ── */
+async function interagisciDonoColonnaCasa2_1() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.dono_colonna_casa2_1) return;
+  stato.flags.dono_colonna_casa2_1 = true;
+  if (!stato.zaino) stato.zaino = {};
+  stato.zaino.maxpozione = (stato.zaino.maxpozione || 0) + 2;
+  stato.zaino.elisir = (stato.zaino.elisir || 0) + 2;
+  await mostraDialogo('Signora', ['Tieni: 2 Pozioni Massime e 2 Elisir, le ricariche totali per HP e PP!']);
+  if (typeof mostraToast === 'function') mostraToast('🎁 Hai ricevuto 2× Pozione Massima e 2× Elisir!', 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
+async function interagisciDonoColonnaCasa2_2() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.dono_colonna_casa2_2) return;
+  stato.flags.dono_colonna_casa2_2 = true;
+  if (!stato.zaino) stato.zaino = {};
+  stato.zaino.mt_24_fulmine = (stato.zaino.mt_24_fulmine || 0) + 1;
+  await mostraDialogo('Elettricista', ['Eccola: TM24, Fulmine. Non si direbbe, ma funziona benissimo anche fuori dall\'acqua.']);
+  if (typeof mostraToast === 'function') mostraToast('🎁 Hai ricevuto la MT — Fulmine!', 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
+async function interagisciDonoColonnaLuxury1() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.dono_colonna_luxury_1) return;
+  stato.flags.dono_colonna_luxury_1 = true;
+  if (!stato.zaino) stato.zaino = {};
+  stato.zaino.mt_psychic = (stato.zaino.mt_psychic || 0) + 1;
+  await mostraDialogo('Collezionista', ['Prendi questa TM29, Psichico. L\'ho tenuta per anni in vetrina, è ora che serva a qualcuno.']);
+  if (typeof mostraToast === 'function') mostraToast('🎁 Hai ricevuto la MT — Psichico!', 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
+async function interagisciDonoColonnaLuxury2() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.dono_colonna_luxury_2) return;
+  stato.flags.dono_colonna_luxury_2 = true;
+  if (!stato.zaino) stato.zaino = {};
+  stato.zaino.mt_shadow_ball = (stato.zaino.mt_shadow_ball || 0) + 1;
+  await mostraDialogo('Antiquario', ['Tieni la TM30, Palla Ombra: un pezzo raro, ma sei tu il vero collezionista ora.']);
+  if (typeof mostraToast === 'function') mostraToast('🎁 Hai ricevuto la MT — Palla Ombra!', 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
+async function interagisciDonoColonnaLuxury3() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.dono_colonna_luxury_3) return;
+  stato.flags.dono_colonna_luxury_3 = true;
+  if (!stato.zaino) stato.zaino = {};
+  stato.zaino.mt_gelo_raggio = (stato.zaino.mt_gelo_raggio || 0) + 1;
+  await mostraDialogo('Viaggiatrice', ['Ecco la TM — Gelo Raggio. In bocca al lupo per la Via Vittoria!']);
+  if (typeof mostraToast === 'function') mostraToast('🎁 Hai ricevuto la MT — Gelo Raggio!', 3000);
+  aggiornaHUD();
+  salvaPartita();
+}
+
 /* ── Epilogo Rifugio CoTrAL di Rocca di Papa (sess. 12 set 2026): con
    Marcello/i grunt ormai spariti, restano solo Baso e Gianluca nella stanza.
    Baso [A] dà solo un promemoria; Gianluca [A] fa scattare la scena vera

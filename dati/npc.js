@@ -1897,6 +1897,110 @@ const DATI_NPC = {
     dialogo: ['Qualcuno dice che la statua raffigura un Pokémon leggendario. Io non ci ho mai creduto ai leggendari... ma dopo quella cosa lì, chissà.'],
   },
 
+  /* ══════ 5 case di Colonna (19 ott 2026, richiesta esplicita di Luca):
+     2 cloni di casa2 + 3 di casadoppia_luxury. NPC che parlano della Lega/
+     di Colonna/"Città dei Campioni" — un NPC per casa regala un oggetto
+     one-shot (ricariche totali o una MT) e alcuni danno indizi velati sui
+     tipi del Superquattro, in base ai Pokémon che "possiedono" (nella
+     finzione). Porte/spawn sono solo punti in Colonna_2.tmj — nessuna
+     grafica disegnata da Claude, Luca posiziona lui le entrate. ══════ */
+
+  // ── Casa piccola 1: colore puro, nessun indizio (famiglia di Colonna) ──
+  'npc_colonna_casa2_1_1': {
+    sprite: 'NPC 03', nome: 'Anziana', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho visto nascere questa città, prima qui c\'era solo un casale. Poi è arrivata la Lega e tutto è cambiato.'],
+  },
+  'npc_colonna_casa2_1_2': {
+    sprite: 'NPC 06', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['A Colonna ci chiamano tutti "la Città dei Campioni", ma io un campione vero l\'ho visto solo una volta, da lontano.'],
+  },
+  'npc_colonna_casa2_1_5': {
+    sprite: 'NPC 10', nome: 'Bambino', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Da grande voglio sfidare la Lega! Ora vado a letto presto per crescere forte come i Pokémon del Superquattro.'],
+  },
+  'npc_colonna_casa2_1_6': {
+    sprite: 'NPC 16', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Quelli della Lega non si fanno mai vedere in giro. Vivono tutti dentro, dicono, non si sa manco come sono messi di persona.'],
+  },
+  'npc_colonna_casa2_1_7': {
+    sprite: 'NPC 22', nome: 'Signora', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Prima di sfidare la Lega, prendi un po\' di roba: non si torna indietro una volta entrati!'],
+    azione: 'interagisciDonoColonnaCasa2_1',
+  },
+
+  // ── Casa piccola 2: colore + indizio velato sul tipo di "Pres" (2ª sala:
+  // Drago/Elettro/Acqua) + ricompensa MT Fulmine ──
+  'npc_colonna_casa2_2_1': {
+    sprite: 'NPC 04', nome: 'Pescatore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ho sentito dire che nella 2ª sala della Lega si sente odore di salmastro, anche se siamo lontani dal mare. Boh, voci.'],
+  },
+  'npc_colonna_casa2_2_2': {
+    sprite: 'NPC 08', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Un turista mi ha detto che ha sentito un ruggito e poi un tuono fortissimo, dalla 2ª sala. Chissà che roba tengono lì.'],
+  },
+  'npc_colonna_casa2_2_5': {
+    sprite: 'NPC 13', nome: 'Pensionato', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ai miei tempi la Lega manco esisteva. Ora i ragazzi non pensano ad altro.'],
+  },
+  'npc_colonna_casa2_2_6': {
+    sprite: 'NPC 19', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Dicono che il secondo della Lega abbia un Pokémon che vola e sputa fulmini insieme. Io non ci credo, ma mai dire mai.'],
+  },
+  'npc_colonna_casa2_2_7': {
+    sprite: 'NPC 24', nome: 'Elettricista', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Tieni, questa MT l\'ho vinta a una fiera e non mi serve. Magari a te sì, specie contro chi nuota.'],
+    azione: 'interagisciDonoColonnaCasa2_2',
+  },
+
+  // ── Casadoppia Luxury 1: indizio velato su "Dema" (3ª sala: Folletto/
+  // Volante/Psico) + ricompensa MT Psichico ──
+  'npc_colonna_casadoppia_luxury_1_1': {
+    sprite: 'NPC 05', nome: 'Gentiluomo', direzione: 'sud', movimento: 'random',
+    dialogo: ['Questa casa l\'ho comprata col premio della prima sfida alla Lega. Non l\'ho mai più rivinto, eh eh.'],
+  },
+  'npc_colonna_casadoppia_luxury_1_2': {
+    sprite: 'NPC 11', nome: 'Dama', direzione: 'sud', movimento: 'random',
+    dialogo: ['La terza sala della Lega ha un\'aria strana, quasi fatata. Ho sentito dire che chi ci entra si sente osservato dalla mente.'],
+  },
+  'npc_colonna_casadoppia_luxury_1_3': {
+    sprite: 'NPC 17', nome: 'Collezionista', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il terzo membro ama i Pokémon leggeri come piume. Ne ho visto uno volare senza muovere le ali, in una foto rubata.'],
+    azione: 'interagisciDonoColonnaLuxury1',
+  },
+
+  // ── Casadoppia Luxury 2: indizio velato su "Marcuois" (4ª sala: Acqua/
+  // Acciaio/Psico) + ricompensa MT Palla Ombra ──
+  'npc_colonna_casadoppia_luxury_2_1': {
+    sprite: 'NPC 07', nome: 'Signora', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il quarto della Lega si veste sempre di metallo, anche fuori dalle lotte. Un tipo strano.'],
+  },
+  'npc_colonna_casadoppia_luxury_2_2': {
+    sprite: 'NPC 14', nome: 'Pensionato', direzione: 'sud', movimento: 'random',
+    dialogo: ['Dicono che l\'ultima sala prima del Campione luccichi come se fosse sott\'acqua, ma è tutta corazzata di acciaio. Strano combinato.'],
+  },
+  'npc_colonna_casadoppia_luxury_2_3': {
+    sprite: 'NPC 25', nome: 'Antiquario', direzione: 'sud', movimento: 'random',
+    dialogo: ['Qui vendo solo cose rare, ma questa te la regalo: una Palla Ombra può servire contro chi si crede invincibile.'],
+    azione: 'interagisciDonoColonnaLuxury2',
+  },
+
+  // ── Casadoppia Luxury 3: indizio velato su "Captain" (1ª sala: Lotta/
+  // Roccia/Buio/Terra) + ricompensa MT Gelo Raggio (per bilanciare, non per
+  // coprire il tipo) ──
+  'npc_colonna_casadoppia_luxury_3_1': {
+    sprite: 'NPC 09', nome: 'Allenatore', direzione: 'sud', movimento: 'random',
+    dialogo: ['Il primo della Lega mena duro e non parla tanto. Un suo Pokémon pesa più di un camioncino, giuro.'],
+  },
+  'npc_colonna_casadoppia_luxury_3_2': {
+    sprite: 'NPC 15', nome: 'Minatore in pensione', direzione: 'sud', movimento: 'random',
+    dialogo: ['Ho lavorato nelle cave vicino alla prima sala per anni. Si sentivano ruggiti nel buio, mai capito da dove venissero davvero.'],
+  },
+  'npc_colonna_casadoppia_luxury_3_3': {
+    sprite: 'NPC 27', nome: 'Viaggiatrice', direzione: 'sud', movimento: 'random',
+    dialogo: ['Prima di partire per la Via Vittoria, prendi questa: il ghiaccio fa sempre comodo, pure coi caldi di agosto.'],
+    azione: 'interagisciDonoColonnaLuxury3',
+  },
+
   // NPC col look del Team CoTrAL: NON sono allenatori (type 'npc', non
   // 'trainer' — niente sfida), solo scontrosi, e camminano in giro per la
   // piazza (movimento:'random', già supportato dal motore). Richiesta
