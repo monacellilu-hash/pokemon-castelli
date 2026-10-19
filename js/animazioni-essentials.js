@@ -403,12 +403,212 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl);
   }
 
-  // Mosse sonore (Urlo, Rombo, Rumorsuono, Metal Suono...): anelli
-  // d'onda sonora sul bersaglio — grafica vera sound_waves.png (2 frame).
+  // Mosse sonore rimaste sul riuso generico (Rumorsuono/Scarica Rumorosa/
+  // Botto Sonico/Rombo/Russare): anelli d'onda sonora sul bersaglio —
+  // grafica vera sound_waves.png (2 frame). Growl/Roar/Screech/Supersonic/
+  // Sing hanno coreografie reali TROPPO diverse (letto lo script vero,
+  // Metodo 1, 19 ott 2026) per restare qui — vedi le 3 funzioni dedicate
+  // sotto, uscite dal gruppo.
   async function _giocaSuonoRom(attaccanteEl, bersaglioEl) {
     const { img, pronta } = caricaImmagineRom('sound_waves.png');
     await pronta;
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 32]);
+  }
+
+  // Polvere Sonnifera/Velenosa, Fungo Spora (Move_SLEEP_POWDER/POISON_
+  // POWDER/STUN_SPORE, src/data/battle_anim.h — Metodo 1, 19 ott 2026):
+  // le 3 mosse condividono LO STESSO sprite reale (poison_powder.png),
+  // solo palette diversa, e NON erano insieme: Veleno era sul riuso
+  // "Fanghiglia" (sludge, liquido viscoso) e Immobilizzante su "Fulmine"
+  // (lampi elettrici) — due abbinamenti sbagliati trovati per caso
+  // leggendo lo script vero. Particelle che cadono dall'alto ondeggiando,
+  // posizioni/velocità copiate di netto dallo script reale (8 delle 16
+  // dell'originale, a scaglioni di 15-30 frame).
+  async function _giocaPolvereRom(tintaCss, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('poison_powder.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.55);
+
+    // [x, y, ritardoMs, ampiezzaOnda, velocitaY] — valori reali dallo
+    // script (create_sleep_powder_particle_sprite), x/y in pixel Essentials.
+    const PARTICELLE = [
+      [-30, -22, 0,   5, 0.8], [10, -22, 0,  -5, 0.8], [-25, -22, 0,   5, 1.1],
+      [-5, -22, 250, -5, 0.8], [5, -22, 250,  5, 0.9], [0, -22, 250, -5, 0.7],
+      [-15, -22, 500, 5, 1.1], [15, -22, 500, -5, 0.8],
+    ];
+    const durataMs = 900;
+    const t0 = performance.now();
+    await new Promise(resolve => {
+      const frame = () => {
+        const adesso = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        if (tintaCss) { ctx.filter = tintaCss; }
+        for (const [px, py, ritardo, amp, vel] of PARTICELLE) {
+          const t = adesso - ritardo;
+          if (t < 0 || t > durataMs) continue;
+          const prog = t / durataMs;
+          const x = arrivo.x + px * scalaX + Math.sin(prog * Math.PI * 3) * amp * scalaX;
+          const y = arrivo.y + py * scalaY + prog * 40 * vel * scalaY;
+          ctx.globalAlpha = 1 - prog * 0.6;
+          ctx.drawImage(img, 0, 0, 8, 8, x - 4 * scalaX, y - 4 * scalaY, 8 * scalaX, 8 * scalaY);
+        }
+        ctx.restore();
+        if (adesso < durataMs + 500) requestAnimationFrame(frame);
+        else resolve();
+      };
+      frame();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  async function _giocaPolvereSonnoRom(a, b) { await _giocaPolvereRom(null, a, b); }
+  async function _giocaPolvereVelenoRom(a, b) { await _giocaPolvereRom('hue-rotate(260deg)', a, b); }
+  async function _giocaSporeStordenteRom(a, b) { await _giocaPolvereRom('hue-rotate(60deg)', a, b); }
+
+  // Ululato/Ringhio (Move_GROWL/Move_ROAR, data/battle_anim_scripts.s ->
+  // RoarEffect, src/battle_anim_effects_3.c -> AnimRoarNoiseLine — Metodo 1,
+  // 19 ott 2026): NON è un'onda che viaggia verso il bersaglio come pensava
+  // il gruppo generico — sono 3 righe sonore che scoppiano vicino alla
+  // bocca di chi attacca (sopra/dritto/sotto), due raffiche da 3, POI il
+  // bersaglio trema. Tutta l'animazione resta sull'ATTACCANTE.
+  async function _giocaRuggitoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('noise_line.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const bocca = _centroElRom(attaccanteEl, campoRect, 0.6, 0.35);
+
+    const raffica = async () => {
+      const offsetsY = [-10, 0, 10];
+      offsetsY.forEach((dy, i) => {
+        let t0 = performance.now();
+        const durata = 260;
+        const frame = () => {
+          const t = performance.now() - t0;
+          if (t > durata) return;
+          const prog = t / durata;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog;
+          const dx = 24 * scalaX * (0.3 + prog);
+          const dyy = (dy * scalaY) * (0.3 + prog * 1.4);
+          const dim = 24 * scalaX;
+          ctx.drawImage(img, 0, i % 2 === 0 ? 0 : 32, 32, 32,
+            bocca.x + dx - dim / 2, bocca.y + dyy - dim / 2, dim, dim);
+          ctx.restore();
+          requestAnimationFrame(frame);
+        };
+        frame();
+      });
+    };
+    await raffica();
+    await new Promise(r => setTimeout(r, 250));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await raffica();
+    await new Promise(r => setTimeout(r, 260));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    _scuotiSpriteRom(bersaglioEl, 2, 300);
+    await new Promise(r => setTimeout(r, 300));
+  }
+
+  // Urlo/Ipnoshock (Move_SCREECH/Move_SUPERSONIC, ScreechRing/Supersonic-
+  // Ring, src/battle_anim_effects_2.c -> gGrowingRingAffineAnimTable —
+  // Metodo 1, 19 ott 2026): anello che cresce sul bersaglio (zoom via
+  // affine-anim vera, qui approssimato scalando il disegno), ripetuto più
+  // volte — 2 per Urlo, 6 per Ipnoshock (molto più intenso nello script
+  // originale, non erano affatto identiche come nel riuso generico).
+  async function _giocaAnelloRom(nomeImg, ripetizioni, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom(nomeImg);
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.55);
+
+    for (let i = 0; i < ripetizioni; i++) {
+      const t0 = performance.now();
+      const durata = 220;
+      await new Promise(resolve => {
+        const frame = () => {
+          const t = performance.now() - t0;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (t > durata) { resolve(); return; }
+          const prog = t / durata;
+          const dim = (16 + prog * 26) * scalaX;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog * 0.7;
+          ctx.drawImage(img, 0, 0, 16, 16, arrivo.x - dim / 2, arrivo.y - dim / 2, dim, dim * 1.3);
+          ctx.restore();
+          requestAnimationFrame(frame);
+        };
+        frame();
+      });
+    }
+    _scuotiSpriteRom(bersaglioEl, 1, 150);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  async function _giocaUrloRom(attaccanteEl, bersaglioEl) {
+    await _giocaAnelloRom('ring.png', 2, attaccanteEl, bersaglioEl);
+  }
+  async function _giocaIpnoshockRom(attaccanteEl, bersaglioEl) {
+    await _giocaAnelloRom('gold_ring.png', 6, attaccanteEl, bersaglioEl);
+  }
+
+  // Ninnananna (Move_SING, src/battle_anim_scripts.s — Metodo 1, 19 ott
+  // 2026): niente onda né anello — 12 note musicali (gWavyMusicNotesSprite-
+  // Template) che escono una dopo l'altra vicino al bersaglio e si
+  // allontanano ondeggiando, mentre lo sfondo si tinge arcobaleno
+  // (AnimTask_MusicNotesRainbowBlend, qui approssimato con un filtro hue
+  // sul canvas invece che sullo sfondo vero di battaglia).
+  async function _giocaNoteMusicaliRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('music_notes.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+
+    const note = [];
+    for (let i = 0; i < 8; i++) {
+      note.push({
+        ang: (i / 8) * Math.PI * 2,
+        t0: performance.now() + i * 90,
+        frame: i % 6,   // music_notes.png: 6 fotogrammi (note diverse), 16x16 ciascuno
+      });
+    }
+    const dim = 16 * scalaX;
+    const durataTotale = 8 * 90 + 700;
+    await new Promise(resolve => {
+      const inizio = performance.now();
+      const loop = () => {
+        const adesso = performance.now();
+        const passato = adesso - inizio;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const n of note) {
+          const t = adesso - n.t0;
+          if (t < 0 || t > 700) continue;
+          const prog = t / 700;
+          const salita = prog * 40 * scalaY;
+          const ondeggio = Math.sin(prog * Math.PI * 2 + n.ang) * 14 * scalaX;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog;
+          ctx.drawImage(img, 0, n.frame * 16, 16, 16,
+            arrivo.x + ondeggio - dim / 2, arrivo.y - salita - dim / 2, dim, dim);
+          ctx.restore();
+        }
+        if (passato < durataTotale) requestAnimationFrame(loop);
+        else resolve();
+      };
+      loop();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   // Potenziamenti su se stessi (Focus Energy, Spada Danza, Rafforza...):
@@ -1493,9 +1693,15 @@ const AnimazioniEssentials = (function () {
   // CRUSHCLAW si adatta meglio alle artigliate che al corno (assegnata sopra).
   ANIMAZIONI_ROM.CRUSHCLAW = _giocaArtigliRom;
   Object.assign(ANIMAZIONI_ROM, {
-    SCREECH: _giocaSuonoRom, METALSOUND: _giocaSuonoRom, HYPERVOICE: _giocaSuonoRom,
-    SONICBOOM: _giocaSuonoRom, UPROAR: _giocaSuonoRom, ROAR: _giocaSuonoRom,
-    GROWL: _giocaSuonoRom, SING: _giocaSuonoRom, SUPERSONIC: _giocaSuonoRom,
+    // Metodo 1 (19 ott 2026): Growl/Roar, Screech/Supersonic e Sing avevano
+    // coreografie reali troppo diverse per restare sul riuso generico —
+    // usciti dal gruppo, vedi le funzioni dedicate sopra. Metal Sound/
+    // Hyper Voice/Sonic Boom/Uproar/Snore restano qui per ora (non ancora
+    // letti i loro script veri).
+    METALSOUND: _giocaSuonoRom, HYPERVOICE: _giocaSuonoRom,
+    SONICBOOM: _giocaSuonoRom, UPROAR: _giocaSuonoRom,
+    ROAR: _giocaRuggitoRom, GROWL: _giocaRuggitoRom,
+    SCREECH: _giocaUrloRom, SUPERSONIC: _giocaIpnoshockRom, SING: _giocaNoteMusicaliRom,
     SNORE: _giocaSuonoRom,
 
     FOCUSENERGY: _giocaPotenziamentoRom, SWORDSDANCE: _giocaPotenziamentoRom,
@@ -1513,9 +1719,13 @@ const AnimazioniEssentials = (function () {
     // già verificate per lo stesso tipo/elemento: Tossina/Velenopolvere
     // riusano la bolla di veleno, Tuononda/Scintilla elettrica le onde
     // elettriche, Ipnosi/Soporifero... riusano l'onda sonora).
-    TOXIC: _giocaSludgeRom, POISONPOWDER: _giocaSludgeRom,
-    THUNDERWAVE: _giocaFulmineRom, STUNSPORE: _giocaFulmineRom,
-    SLEEPPOWDER: _giocaSuonoRom, HYPNOSIS: _giocaSuonoRom, SPORE: _giocaSuonoRom,
+    TOXIC: _giocaSludgeRom,
+    THUNDERWAVE: _giocaFulmineRom,
+    // Metodo 1 (19 ott 2026): Veleno/Immobilizzante erano finiti per
+    // sbaglio sul riuso di Fanghiglia/Fulmine — tutte e 3 le polveri
+    // condividono invece lo stesso sprite vero, vedi _giocaPolvereRom sopra.
+    POISONPOWDER: _giocaPolvereVelenoRom, STUNSPORE: _giocaSporeStordenteRom,
+    SLEEPPOWDER: _giocaPolvereSonnoRom, HYPNOSIS: _giocaSuonoRom, SPORE: _giocaSuonoRom,
     WILLOWISP: _giocaEmberRom, GLARE: _giocaBuioRom, CONFUSERAY: _giocaPsywaveRom,
 
     PROTECT: _giocaScudoRom, DETECT: _giocaScudoRom, LIGHTSCREEN: _giocaScudoRom,
