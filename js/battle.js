@@ -578,6 +578,9 @@ const Battle = (function () {
   // "contatto" = mossa fisica (PokéAPI non espone un flag di contatto vero,
   // ma è vero per la stragrande maggioranza delle mosse fisiche Gen 1-3).
   const ABILITA_CONTATTO_STATO = { static: 'paralysis', 'poison-point': 'poison', 'flame-body': 'burn' };
+  // Spora (effect-spore, 20 ott 2026): come le 3 sopra ma con 3 stati possibili
+  // invece di uno solo (10% ciascuno sul contatto, come nei giochi veri).
+  const ABILITA_CONTATTO_STATO_MULTI = { 'effect-spore': ['sleep', 'poison', 'paralysis'] };
 
   // Stati alterati gestiti (chiave API → nome italiano breve)
   const STATI = {
@@ -674,6 +677,8 @@ const Battle = (function () {
   // mai scottato.
   const ABILITA_IMMUNE_STATO = {
     insomnia: 'sleep', 'vital-spirit': 'sleep', 'water-veil': 'burn',
+    // 20 ott 2026 — 3 abilità immuni mancanti (stesso schema delle 3 sopra):
+    limber: 'paralysis', immunity: 'poison', 'magma-armor': 'freeze',
   };
 
   // Un Pokémon è immune a quel tipo di stato per via dei suoi tipi?
@@ -732,6 +737,7 @@ const Battle = (function () {
   };
   async function attivaAbilitaIngresso(pkm, etichetta, avversario, etichettaAvversario) {
     if (!pkm || !pkm.abilitaChiave) return;
+    _aggiornaForecast(pkm);
     const nuovoMeteo = METEO_DA_ABILITA[pkm.abilitaChiave];
     if (nuovoMeteo && meteoBattaglia !== nuovoMeteo) {
       meteoBattaglia = nuovoMeteo;
@@ -751,6 +757,53 @@ const Battle = (function () {
         await di(`Attacco di ${etichettaAvversario} è diminuito!`);
       }
     }
+    // Eco (trace, 20 ott 2026): copia l'Abilità dell'avversario all'ingresso
+    // (una volta sola — se l'avversario non ha Abilità o ce l'ha già uguale
+    // non succede nulla di visibile).
+    if (pkm.abilitaChiave === 'trace' && avversario && avversario.abilitaChiave &&
+        avversario.abilitaChiave !== 'trace' && avversario.hpAttuale > 0) {
+      pkm.abilitaChiave = avversario.abilitaChiave;
+      await di(`${etichetta} copia l'Abilità di ${etichettaAvversario} con Eco!`);
+    }
+    // Trasduttore (download, 20 ott 2026): confronta Difesa/Dif.Speciale
+    // BASE dell'avversario ed alza l'Attacco (se la Difesa è più bassa) o
+    // l'Att.Speciale (altrimenti) di 1 stadio.
+    if (pkm.abilitaChiave === 'download' && avversario && avversario.hpAttuale > 0) {
+      const statBassa = (avversario.difesa <= avversario.difSp) ? 'attack' : 'special-attack';
+      const prima = pkm.mod[statBassa] || 0;
+      pkm.mod[statBassa] = Math.max(-6, Math.min(6, prima + 1));
+      if (pkm.mod[statBassa] !== prima) {
+        await di(`${etichetta} attiva il Trasduttore!`);
+        aggiornaPannelli();
+        await frecceStat(pkm, 1);
+        await di(`${STAT_NOMI[statBassa] || statBassa} di ${etichetta} è aumentato!`);
+      }
+    }
+    // Premonizione (forewarn, 20 ott 2026): rivela la mossa più potente
+    // dell'avversario (solo informativo, nessun effetto meccanico).
+    if (pkm.abilitaChiave === 'forewarn' && avversario && avversario.mosse && avversario.mosse.length) {
+      const piuForte = avversario.mosse.reduce((a, b) => ((b.potenza || 0) > (a.potenza || 0) ? b : a));
+      if (piuForte && piuForte.potenza) {
+        await di(`La Premonizione di ${etichetta} rivela: ${etichettaAvversario} conosce ${piuForte.nomeIt}!`);
+      }
+    }
+    // Investigazione (frisk, 20 ott 2026): rivela l'oggetto dell'avversario.
+    if (pkm.abilitaChiave === 'frisk' && avversario && avversario.hpAttuale > 0) {
+      const nomeOgg = (avversario.oggetto && typeof OGGETTI !== 'undefined' && OGGETTI[avversario.oggetto])
+        ? OGGETTI[avversario.oggetto].nome : null;
+      await di(nomeOgg
+        ? `${etichetta} fruga con Investigazione: ${etichettaAvversario} porta ${nomeOgg}!`
+        : `${etichetta} fruga con Investigazione, ma non trova nulla.`);
+    }
+    // Anticipazione (anticipation, 20 ott 2026): trema se l'avversario
+    // conosce una mossa superefficace contro di lui.
+    if (pkm.abilitaChiave === 'anticipation' && avversario && avversario.mosse) {
+      const pericolosa = avversario.mosse.some(m => {
+        if (!m.potenza || !m.tipo) return false;
+        try { return efficaciaConScrappy(m, avversario, pkm) > 1; } catch (e) { return false; }
+      });
+      if (pericolosa) await di(`${etichetta} trema per l'Anticipazione!`);
+    }
   }
 
   // Colpo critico (0172_Battle_Move.rb/0174_Move_UsageCalculations.rb):
@@ -762,36 +815,76 @@ const Battle = (function () {
   // in poi). Mancava del tutto prima: c'era il campo dati "colpo_critico_
   // alto" su alcune mosse in dati/mosse.js ma nessun codice lo leggeva.
   const RAPPORTI_CRITICO = [16, 8, 4, 3, 2];
-  function tiraCritico(mossa) {
-    const stadio = (mossa.effetto === 'colpo_critico_alto') ? 1 : 0;
+  function tiraCritico(mossa, attaccante) {
+    let stadio = (mossa.effetto === 'colpo_critico_alto') ? 1 : 0;
+    // Superbotta (super-luck, 20 ott 2026): +1 stadio di rapporto critico,
+    // si somma con l'alta probabilità della mossa (stesso principio dei
+    // giochi veri, dove gli stadi si cumulano).
+    if (attaccante && attaccante.abilitaChiave === 'super-luck') stadio += 1;
     const rapporto = RAPPORTI_CRITICO[Math.min(stadio, RAPPORTI_CRITICO.length - 1)];
     return Math.random() < 1 / rapporto;
   }
 
+  // Mosse a pugno (iron-fist, 20 ott 2026): elenco reale delle mosse "punch"
+  // disponibili alle specie ≤386 (fonte: Bulbapedia, categoria Punching moves).
+  const MOSSE_PUGNO = new Set([
+    'comet-punch', 'mega-punch', 'fire-punch', 'ice-punch', 'thunder-punch',
+    'dizzy-punch', 'dynamic-punch', 'mach-punch', 'focus-punch', 'meteor-mash',
+    'hammer-arm', 'bullet-punch',
+  ]);
+
   function calcolaDanno(attaccante, difensore, mossa) {
+    // Normalizzatore (normalize, 20 ott 2026): tutte le mosse di chi la
+    // possiede diventano di tipo Normale (ai fini di STAB/efficacia/oggetti
+    // potenzianti) — si ripristina il tipo vero a fine funzione, "mossa" è
+    // lo stesso oggetto condiviso riusato ad ogni turno.
+    const tipoOriginale = mossa.tipo;
+    if (attaccante.abilitaChiave === 'normalize' && mossa.potenza > 0) mossa.tipo = 'normal';
+    const _ripristinaTipo = () => { mossa.tipo = tipoOriginale; };
+
     let eff = efficaciaConScrappy(mossa, attaccante, difensore);
+    // Mente Infranta (mold-breaker, 20 ott 2026): ignora le Abilità
+    // DIFENSIVE dell'avversario (immunità di tipo, Pellespessa, Filtro...)
+    // — non le abilità "reattive" (es. Pellerugginosa resta attiva). Qui
+    // si usa una copia locale dell'abilità del difensore, azzerata se
+    // l'attaccante ha Mente Infranta, SOLO per i controlli di immunità
+    // qui sotto (le abilità vere di "difensore" non vengono toccate).
+    const abilDif = (attaccante.abilitaChiave === 'mold-breaker') ? null : difensore.abilitaChiave;
     // Levitate (richiesta esplicita di Luca, 9 ott 2026 — le Abilità non
     // devono essere solo estetiche): immunità totale alle mosse Terra,
     // come nei giochi veri.
-    if (mossa.tipo === 'ground' && difensore.abilitaChiave === 'levitate') eff = 0;
+    if (mossa.tipo === 'ground' && abilDif === 'levitate') eff = 0;
     // Parafulmine/Scudofuoco (richiesta Luca, 18 ott 2026): immunità totale
     // alle mosse Elettro/Fuoco, stesso principio di Levitate.
-    if (mossa.tipo === 'electric' && difensore.abilitaChiave === 'lightning-rod') eff = 0;
-    if (mossa.tipo === 'fire' && difensore.abilitaChiave === 'flash-fire') eff = 0;
+    if (mossa.tipo === 'electric' && abilDif === 'lightning-rod') eff = 0;
+    if (mossa.tipo === 'fire' && abilDif === 'flash-fire') eff = 0;
     // Assorbimone (sap-sipper, 19 ott 2026): come Scudofuoco ma per le mosse
     // Erba — niente danno E +1 Attacco, una tantum per colpo subito.
-    if (mossa.tipo === 'grass' && difensore.abilitaChiave === 'sap-sipper') {
+    if (mossa.tipo === 'grass' && abilDif === 'sap-sipper') {
       const prima = difensore.mod.attack || 0;
       difensore.mod.attack = Math.max(-6, Math.min(6, prima + 1));
+      _ripristinaTipo();
       return { danno: 0, eff: 0, critico: false };
     }
     // Idroassorbenza (water-absorb, richiesta Luca, 18 ott 2026): niente
     // danno dalle mosse Acqua, il difensore recupera il 25% degli HP massimi.
     // "assorbito" letto dal chiamante (eseguiMossa) per curare invece di colpire.
-    if (mossa.tipo === 'water' && difensore.abilitaChiave === 'water-absorb') {
+    // Mototraente (volt-absorb, 20 ott 2026): stesso identico principio ma
+    // per le mosse Elettro.
+    // Pellesecca (dry-skin, 20 ott 2026): le mosse Acqua curano anch'esse
+    // (stesso bonus di volt-absorb/water-absorb), ma SOLO per l'Acqua —
+    // il resto di Pellesecca (danno extra da Fuoco, cura/danno a fine turno
+    // da meteo) è gestito più sotto / in fineTurnoStati.
+    if ((mossa.tipo === 'water' && (abilDif === 'water-absorb' || abilDif === 'dry-skin')) ||
+        (mossa.tipo === 'electric' && abilDif === 'volt-absorb')) {
+      _ripristinaTipo();
       return { danno: 0, eff: 0, critico: false, assorbito: true };
     }
-    if (eff === 0) return { danno: 0, eff: 0, critico: false };
+    // Punto Debole (wonder-guard, 20 ott 2026 — SOLO Shedinja, id 292): solo
+    // le mosse superefficaci infliggono danno, tutte le altre non hanno
+    // alcun effetto (stesso trattamento di "eff === 0" qui sotto).
+    if (abilDif === 'wonder-guard' && mossa.potenza > 0 && eff <= 1) eff = 0;
+    if (eff === 0) { _ripristinaTipo(); return { danno: 0, eff: 0, critico: false }; }
 
     // Mosse fisiche usano Attacco/Difesa, speciali Att.Sp./Dif.Sp.
     // Applichiamo gli sbalzi di statistica (Crescita, Urlo, ecc.).
@@ -799,9 +892,19 @@ const Battle = (function () {
     let A = fisica
       ? statEffettiva(attaccante, attaccante.attacco, 'attack')
       : statEffettiva(attaccante, attaccante.attSp, 'special-attack');
-    const D = fisica
+    let D = fisica
       ? statEffettiva(difensore, difensore.difesa, 'defense')
       : statEffettiva(difensore, difensore.difSp, 'special-defense');
+    // Forza Bruta/Potenza Pura (huge-power/pure-power, 20 ott 2026): Attacco
+    // raddoppiato (SOLO la statistica fisica, mai Att.Sp.).
+    if (fisica && (attaccante.abilitaChiave === 'huge-power' || attaccante.abilitaChiave === 'pure-power')) {
+      A = A * 2;
+    }
+    // Pellimarmo (marvel-scale, 20 ott 2026): Difesa ×1.5 se il portatore ha
+    // uno stato alterato (stesso principio di Attitudine, ma in difesa).
+    if (fisica && difensore.abilitaChiave === 'marvel-scale' && difensore.condizione) {
+      D = D * 1.5;
+    }
 
     // Attitudine (guts, richiesta Luca): Attacco ×1.5 se chi attacca ha uno
     // stato alterato, e NON subisce il dimezzamento da scottatura (gioca
@@ -830,7 +933,7 @@ const Battle = (function () {
     // Guscioprotettivo (shell-armor)/Armatura Battaglia (battle-armor,
     // 19 ott 2026, stesso identico effetto): niente colpi critici subiti.
     const SENZA_CRITICI = new Set(['shell-armor', 'battle-armor']);
-    const critico = SENZA_CRITICI.has(difensore.abilitaChiave) ? false : tiraCritico(mossa);
+    const critico = SENZA_CRITICI.has(difensore.abilitaChiave) ? false : tiraCritico(mossa, attaccante);
     // Tiro Cecchino (sniper, 19 ott 2026): sui critici il moltiplicatore è
     // ×3 invece di ×2 (anziché applicarlo sotto con "molt *= 2", qui si
     // segna solo quanto vale per quel colpo).
@@ -859,11 +962,19 @@ const Battle = (function () {
     // Math.floor() separato, perdendo un po' di danno ad ogni passaggio
     // invece che una volta sola.
     let molt = 1;
-    if (attaccante.tipi.includes(mossa.tipo)) molt *= 1.5; // STAB
+    // Adattabilità (adaptability, 20 ott 2026): STAB ×2 invece di ×1.5.
+    if (attaccante.tipi.includes(mossa.tipo)) {
+      molt *= (attaccante.abilitaChiave === 'adaptability') ? 2 : 1.5; // STAB
+    }
     // Tecnico (technician, 19 ott 2026): +50% sulle mosse di potenza bassa
     // (≤60, soglia vera dei giochi), PRIMA di applicare moltiplicatori extra
     // (Rotolamento ecc.) — guarda la potenza base della mossa, non potenzaEff.
     if (attaccante.abilitaChiave === 'technician' && mossa.potenza > 0 && mossa.potenza <= 60) molt *= 1.5;
+    // Pugno di Ferro (iron-fist, 20 ott 2026): +20% sulle mosse a pugno.
+    if (attaccante.abilitaChiave === 'iron-fist' && MOSSE_PUGNO.has(mossa.nome)) molt *= 1.2;
+    // Spericolato (reckless, 20 ott 2026): +20% sulle mosse col contraccolpo
+    // (stesso campo "drain" negativo già usato per Testaquadra/rock-head).
+    if (attaccante.abilitaChiave === 'reckless' && mossa.drain < 0) molt *= 1.2;
     const heldAtt = attaccante.oggetto && typeof OGGETTI !== 'undefined' ? OGGETTI[attaccante.oggetto] : null;
     if (heldAtt && heldAtt.boostTipo === mossa.tipo) molt *= 1.2; // Oggetto potenziante (es. Carbonella)
     if (meteoBattaglia === 'sun') {
@@ -873,11 +984,22 @@ const Battle = (function () {
       if (mossa.tipo === 'water') molt *= 1.5;
       else if (mossa.tipo === 'fire') molt *= 0.5;
     }
+    // Pellesecca (dry-skin, 20 ott 2026): +25% danno dalle mosse Fuoco
+    // subite (oltre alla cura dalle mosse Acqua, già gestita sopra, e al
+    // tick di fine turno in fineTurnoStati).
+    if (abilDif === 'dry-skin' && mossa.tipo === 'fire') molt *= 1.25;
+    // Rivalità (rivalry, 20 ott 2026): +25% danno contro lo stesso genere,
+    // -25% contro il genere opposto (nessun effetto se uno dei due non ha
+    // genere, 'N' — specie senza sesso).
+    if (attaccante.abilitaChiave === 'rivalry' && attaccante.genere && difensore.genere &&
+        attaccante.genere !== 'N' && difensore.genere !== 'N') {
+      molt *= (attaccante.genere === difensore.genere) ? 1.25 : 0.75;
+    }
     molt *= moltCritico;
     // Pellespessa (thick-fat, 19 ott 2026): dimezza il danno subito dalle
     // mosse Fuoco e Ghiaccio, come Scudofuoco/Idroassorbenza ma senza
     // immunità totale — qui va sul moltiplicatore finale, non su "eff".
-    if (difensore.abilitaChiave === 'thick-fat' && (mossa.tipo === 'fire' || mossa.tipo === 'ice')) {
+    if (abilDif === 'thick-fat' && (mossa.tipo === 'fire' || mossa.tipo === 'ice')) {
       molt *= 0.5;
     }
     molt *= eff;
@@ -885,9 +1007,15 @@ const Battle = (function () {
     // mosse "non molto efficaci" (eff<1) — va DOPO aver già applicato eff,
     // altrimenti si perde il confronto con 1.
     if (attaccante.abilitaChiave === 'tinted-lens' && eff > 0 && eff < 1) molt *= 2;
+    // Filtro/Roccia Solida (filter/solid-rock, 20 ott 2026): -25% danno sulle
+    // mosse superefficaci (eff>1) — l'opposto di Lente Colorata.
+    if ((abilDif === 'filter' || abilDif === 'solid-rock') && eff > 1) {
+      molt *= 0.75;
+    }
     molt *= 0.85 + Math.random() * 0.15; // variazione casuale
 
     const danno = Math.round(base * molt);
+    _ripristinaTipo();
     return { danno: Math.max(1, danno), eff, critico };
   }
 
@@ -1883,17 +2011,32 @@ const Battle = (function () {
           continue;
         }
       }
+      // Semplice (simple, 20 ott 2026): raddoppia QUALSIASI variazione di
+      // statistica sul portatore, sia in positivo che in negativo.
+      const modificaEff = (obiettivo.abilitaChiave === 'simple') ? c.modifica * 2 : c.modifica;
       const prima = obiettivo.mod[c.stat];
-      obiettivo.mod[c.stat] = Math.max(-6, Math.min(6, prima + c.modifica));
+      obiettivo.mod[c.stat] = Math.max(-6, Math.min(6, prima + modificaEff));
       const nome = STAT_NOMI[c.stat] || c.stat;
       if (obiettivo.mod[c.stat] === prima) {
         await di(`${nome} di ${etich} non può cambiare ancora!`);
-      } else if (c.modifica > 0) {
-        await frecceStat(obiettivo, c.modifica);
-        await di(`${nome} di ${etich} ${c.modifica >= 2 ? 'è aumentato molto!' : 'è aumentato!'}`);
+      } else if (modificaEff > 0) {
+        await frecceStat(obiettivo, modificaEff);
+        await di(`${nome} di ${etich} ${modificaEff >= 2 ? 'è aumentato molto!' : 'è aumentato!'}`);
       } else {
-        await frecceStat(obiettivo, c.modifica);
-        await di(`${nome} di ${etich} ${c.modifica <= -2 ? 'è diminuito molto!' : 'è diminuito!'}`);
+        await frecceStat(obiettivo, modificaEff);
+        await di(`${nome} di ${etich} ${modificaEff <= -2 ? 'è diminuito molto!' : 'è diminuito!'}`);
+      }
+      // Agonismo (competitive, 20 ott 2026): se l'AVVERSARIO ti abbassa una
+      // statistica, l'Att.Speciale sale di 2 stadi (oltre al calo normale,
+      // non invece di esso).
+      if (!versoSe && modificaEff < 0 && obiettivo.abilitaChiave === 'competitive' &&
+          obiettivo.mod[c.stat] !== prima) {
+        const primaSpa = obiettivo.mod['special-attack'] || 0;
+        obiettivo.mod['special-attack'] = Math.max(-6, Math.min(6, primaSpa + 2));
+        if (obiettivo.mod['special-attack'] !== primaSpa) {
+          await frecceStat(obiettivo, 2);
+          await di(`L'Agonismo di ${etich} fa salire molto l'Att. Speciale!`);
+        }
       }
     }
     aggiornaPannelli();
@@ -1929,9 +2072,21 @@ const Battle = (function () {
     // Occhioveglia (sand-veil, richiesta Luca): più difficile da colpire
     // nella tempesta di sabbia.
     if (dif.abilitaChiave === 'sand-veil' && meteoBattaglia === 'sandstorm') soglia *= 0.8;
+    // Manto Nevoso (snow-cloak, 20 ott 2026): stesso principio di Occhioveglia
+    // ma con la grandine.
+    if (dif.abilitaChiave === 'snow-cloak' && meteoBattaglia === 'hail') soglia *= 0.8;
     // Fretta (hustle): contropartita del +50% Attacco, -20% precisione sulle
     // mosse fisiche di chi la possiede.
     if (att.abilitaChiave === 'hustle' && mossa.classe !== 'special') soglia *= 0.8;
+    // Insettocchio (compound-eyes, 20 ott 2026): +30% precisione sulle mosse
+    // di chi la possiede (non tocca le mosse a precisione infinita, già
+    // filtrate sopra con "return true").
+    if (att.abilitaChiave === 'compound-eyes') soglia *= 1.3;
+    // Passogoffo (tangled-feet, 20 ott 2026): +33% elusione (soglia più bassa
+    // per chi attacca) quando il difensore è confuso.
+    if (dif.abilitaChiave === 'tangled-feet' && dif.condizione && dif.condizione.tipo === 'confusion') {
+      soglia *= 0.67;
+    }
     return Math.random() * 100 <= soglia;
   }
 
@@ -1946,10 +2101,13 @@ const Battle = (function () {
   // numero; quelle "2-5" (Attacco Furia ecc.) usano la distribuzione VERA
   // delle gen. 3-4 (verificata su Bulbapedia): 2 e 3 colpi 37,5% ciascuno,
   // 4 e 5 colpi 12,5% ciascuno — non equiprobabile.
-  function _numeroColpi(mossa) {
+  function _numeroColpi(mossa, attaccante) {
     const min = mossa.minColpi, max = mossa.maxColpi;
     if (!min || !max || max <= 1) return 1;
     if (min === max) return min;
+    // Mentelegata (skill-link, 20 ott 2026): le mosse multi-colpo vanno
+    // SEMPRE al massimo di colpi possibile.
+    if (attaccante && attaccante.abilitaChiave === 'skill-link') return max;
     if (min === 2 && max === 5) {
       const r = Math.random() * 100;
       if (r < 37.5) return 2;
@@ -1998,7 +2156,7 @@ const Battle = (function () {
       return;
     }
 
-    const numColpi = _numeroColpi(mossa);
+    const numColpi = _numeroColpi(mossa, att);
     let colpiAndati = 0;
     let ultimoEff = 1;
     let ultimoDanno = 0;
@@ -2075,6 +2233,41 @@ const Battle = (function () {
           !att.condizione && Math.random() < 0.3) {
         await applicaStato(att, statoContatto, etichettaAtt);
       }
+      // Spora (effect-spore, 20 ott 2026): come sopra ma a scelta fra 3 stati
+      // (10% ciascuno sul contatto, invece di un 30% su un solo stato).
+      const statiContattoMulti = ABILITA_CONTATTO_STATO_MULTI[dif.abilitaChiave];
+      if (statiContattoMulti && mossa.classe !== 'special' && att.hpAttuale > 0 &&
+          !att.condizione && Math.random() < 0.3) {
+        const scelto = statiContattoMulti[Math.floor(Math.random() * statiContattoMulti.length)];
+        await applicaStato(att, scelto, etichettaAtt);
+      }
+      // Pellerugginosa (rough-skin, 20 ott 2026): 1/8 degli HP massimi di
+      // contraccolpo a chi colpisce per contatto (mossa fisica).
+      if (dif.abilitaChiave === 'rough-skin' && mossa.classe !== 'special' && att.hpAttuale > 0) {
+        const dannoRS = Math.max(1, Math.floor(att.hpMax / 8));
+        att.hpAttuale = Math.max(0, att.hpAttuale - dannoRS);
+        lampeggia(att);
+        aggiornaPannelli();
+        await di(`${etichettaAtt} è ferito dalla Pellerugginosa di ${etichettaDif}!`);
+      }
+      // Cambio Colore (color-change, 20 ott 2026): il difensore diventa del
+      // tipo della mossa che l'ha appena colpito (se è ancora in gioco).
+      if (dif.hpAttuale > 0 && dif.abilitaChiave === 'color-change' && mossa.tipo &&
+          !(dif.tipi.length === 1 && dif.tipi[0] === mossa.tipo)) {
+        dif.tipi = [mossa.tipo];
+        aggiornaPannelli();
+        await di(`${etichettaDif} cambia tipo: ora è di tipo ${(typeof TIPO_NOMI !== 'undefined' && TIPO_NOMI[mossa.tipo]) || mossa.tipo}!`);
+      }
+      // Punto Collera (anger-point, 20 ott 2026): un colpo critico subito fa
+      // salire l'Attacco al massimo (+6 stadi) in un colpo solo.
+      if (dif.hpAttuale > 0 && dif.abilitaChiave === 'anger-point' && critico) {
+        const prima = dif.mod.attack || 0;
+        dif.mod.attack = 6;
+        if (dif.mod.attack !== prima) {
+          aggiornaPannelli();
+          await di(`Il Punto Collera di ${etichettaDif} fa salire l'Attacco al massimo!`);
+        }
+      }
       // Timido (rattled, 19 ott 2026): +1 Velocità se colpito da una mossa
       // Coleottero/Buio/Spettro, a prescindere da chi l'ha usata.
       if (dif.hpAttuale > 0 && dif.abilitaChiave === 'rattled' &&
@@ -2108,7 +2301,15 @@ const Battle = (function () {
       // solo alla fine — coerente con come agiscono gli altri effetti qui.
       if (mossa.drain && danno > 0) {
         const variazione = Math.max(1, Math.round(danno * Math.abs(mossa.drain) / 100));
-        if (mossa.drain > 0) {
+        // Liquidoozio (liquid-ooze, 20 ott 2026): il drenaggio si ritorce
+        // contro chi attacca, invece di curare, se il difensore lo possiede.
+        if (mossa.drain > 0 && dif.abilitaChiave === 'liquid-ooze') {
+          att.hpAttuale = Math.max(0, att.hpAttuale - variazione);
+          lampeggia(att);
+          aggiornaPannelli();
+          await testoFluttuante(att, `-${variazione}`, '#ff5c5c');
+          await di(`Il Liquidoozio di ${etichettaDif} fa male a ${etichettaAtt}!`);
+        } else if (mossa.drain > 0) {
           const primaHp = att.hpAttuale;
           att.hpAttuale = Math.min(att.hpMax, att.hpAttuale + variazione);
           const recuperati = att.hpAttuale - primaHp;
@@ -2154,14 +2355,21 @@ const Battle = (function () {
       // riga ~1721). Prima qui mancava: Troppoforte/Vampata/Meteora di Draco
       // (cambiStatProbabilita=0 su PokéAPI = sempre) non riducevano MAI le
       // statistiche di chi le usa — bug segnalato da Luca, 6 ott 2026.
-      if (mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion') &&
+      // Polvere Scudo (shield-dust, 20 ott 2026): il portatore ignora gli
+      // effetti SECONDARI delle mosse subite (non il danno, solo stato/
+      // cambiStat qui sotto).
+      const senzaEffettiSecondari = dif.abilitaChiave === 'shield-dust';
+      // Grazianidea (serene-grace, 20 ott 2026): raddoppia la probabilità
+      // di QUALSIASI effetto secondario delle mosse di chi la possiede.
+      const moltProbSecondaria = att.abilitaChiave === 'serene-grace' ? 2 : 1;
+      if (!senzaEffettiSecondari && mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion') &&
           (mossa.statoEffetto === 'confusion' || !dif.condizione) &&
-          (mossa.statoProbabilita === 0 || Math.random() * 100 < mossa.statoProbabilita)) {
+          (mossa.statoProbabilita === 0 || Math.random() * 100 < mossa.statoProbabilita * moltProbSecondaria)) {
         await applicaStato(dif, mossa.statoEffetto, etichettaDif, att, etichettaAtt);
       }
       // Cambio di statistiche secondario
-      if (mossa.cambiStat && mossa.cambiStat.length > 0 &&
-          (mossa.cambiStatProbabilita === 0 || Math.random() * 100 < mossa.cambiStatProbabilita)) {
+      if (!senzaEffettiSecondari && mossa.cambiStat && mossa.cambiStat.length > 0 &&
+          (mossa.cambiStatProbabilita === 0 || Math.random() * 100 < mossa.cambiStatProbabilita * moltProbSecondaria)) {
         await applicaCambiStat(att, dif, mossa, etichettaAtt, etichettaDif);
       }
       return;
@@ -2290,6 +2498,18 @@ const Battle = (function () {
       att.deveRicaricare = false;
       await di(`${etichettaAtt} deve ricaricare!`);
       return;
+    }
+
+    // Pigrizia (truant, 20 ott 2026): agisce un turno su due, a prescindere
+    // da tutto il resto — stesso principio della ricarica sopra, ma
+    // alternato invece che una tantum (flag che si inverte ogni turno).
+    if (att.abilitaChiave === 'truant') {
+      if (att._truantOzia) {
+        att._truantOzia = false;
+        await di(`${etichettaAtt} ozia per la Pigrizia!`);
+        return;
+      }
+      att._truantOzia = true;
     }
 
     if (!(await puoAgire(att, etichettaAtt))) return;
@@ -2429,9 +2649,17 @@ const Battle = (function () {
   // Danni di fine turno da Sabbia/Grandine (1/16 HP max, tipi immuni esclusi),
   // più il conto alla rovescia del meteo (5 turni se impostato da mossa; un
   // numero grande se ereditato dalla mappa, di fatto per tutta la battaglia).
+  // Cielo Sereno/Serrasaracinesca (cloud-nine/air-lock, 20 ott 2026): mentre
+  // sono in campo, niente danno da tempesta di sabbia/grandine (il resto
+  // dei bonus meteo — Nuotafrode, Pioggiabeneficio, ecc. — resta attivo,
+  // semplificazione accettata per un'abilità che tocca 2-3 specie su 386).
+  function _meteoNeutralizzata() {
+    return (mio.hpAttuale > 0 && (mio.abilitaChiave === 'cloud-nine' || mio.abilitaChiave === 'air-lock')) ||
+           (nemico.hpAttuale > 0 && (nemico.abilitaChiave === 'cloud-nine' || nemico.abilitaChiave === 'air-lock'));
+  }
   async function fineTurnoMeteo() {
     if (!meteoBattaglia) return;
-    if (meteoBattaglia === 'sandstorm' || meteoBattaglia === 'hail') {
+    if ((meteoBattaglia === 'sandstorm' || meteoBattaglia === 'hail') && !_meteoNeutralizzata()) {
       const nomeMeteo = meteoBattaglia === 'sandstorm' ? 'tempesta di sabbia' : 'grandine';
       const lista = [[mio, mio.nome], [nemico, etichettaNemico()]];
       for (const [ist, etich] of lista) {
@@ -2467,12 +2695,20 @@ const Battle = (function () {
     for (const [ist, etich] of lista) {
       if (ist.hpAttuale <= 0 || !ist.condizione || ist.abilitaChiave === 'magic-guard') continue;
       if (ist.condizione.tipo === 'poison' || ist.condizione.tipo === 'burn') {
-        const danno = Math.max(1, Math.floor(ist.hpMax / 8));
-        ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
-        lampeggia(ist);
-        aggiornaPannelli();
-        const causa = ist.condizione.tipo === 'poison' ? 'dal veleno' : 'dalla scottatura';
-        await di(`${etich} è tormentato ${causa}!`);
+        const quantita = Math.max(1, Math.floor(ist.hpMax / 8));
+        // Guarveleno (poison-heal, 20 ott 2026): il veleno CURA invece di
+        // danneggiare (non tocca la scottatura, resta normale).
+        if (ist.condizione.tipo === 'poison' && ist.abilitaChiave === 'poison-heal') {
+          ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + quantita);
+          aggiornaPannelli();
+          await di(`${etich} recupera HP grazie al Guarveleno!`);
+        } else {
+          ist.hpAttuale = Math.max(0, ist.hpAttuale - quantita);
+          lampeggia(ist);
+          aggiornaPannelli();
+          const causa = ist.condizione.tipo === 'poison' ? 'dal veleno' : 'dalla scottatura';
+          await di(`${etich} è tormentato ${causa}!`);
+        }
       }
     }
     for (const [ist, etich] of lista) {
@@ -2495,9 +2731,19 @@ const Battle = (function () {
   //  - Scattosuccessivo (speed-boost): +1 Velocità ogni turno in campo.
   //  - Metamorfosi (shed-skin): 30% di guarire da sé da uno stato alterato.
   //  - Idratazione (hydration): guarisce da uno stato alterato SEMPRE sotto la pioggia.
+  // Previsione (forecast, 20 ott 2026 — SOLO Castform, id 351): il tipo
+  // segue il meteo. Chiamata ogni fine turno (stesso principio delle
+  // abilità sopra), così si adegua anche se il meteo cambia mentre è in campo.
+  const TIPO_DA_METEO_FORECAST = { sun: 'fire', rain: 'water', hail: 'ice' };
+  function _aggiornaForecast(ist) {
+    if (ist.abilitaChiave !== 'forecast') return;
+    const nuovoTipo = TIPO_DA_METEO_FORECAST[meteoBattaglia] || 'normal';
+    if (!(ist.tipi.length === 1 && ist.tipi[0] === nuovoTipo)) ist.tipi = [nuovoTipo];
+  }
   async function _abilitaFineTurno(lista) {
     for (const [ist, etich] of lista) {
       if (ist.hpAttuale <= 0) continue;
+      _aggiornaForecast(ist);
       if (ist.abilitaChiave === 'speed-boost') {
         const prima = ist.mod.speed || 0;
         ist.mod.speed = Math.max(-6, Math.min(6, prima + 1));
@@ -2536,6 +2782,22 @@ const Battle = (function () {
         ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
         aggiornaPannelli();
         await di(`${etich} è prosciugato dalla Forza Solare!`);
+      }
+      // Pellesecca (dry-skin, 20 ott 2026): 1/8 HP max di cura sotto la
+      // pioggia, 1/8 HP max di danno sotto il sole (il resto — cura dalle
+      // mosse Acqua, danno extra da Fuoco — è in calcolaDanno).
+      if (ist.abilitaChiave === 'dry-skin' && ist.hpAttuale > 0) {
+        if (meteoBattaglia === 'rain' && ist.hpAttuale < ist.hpMax) {
+          const cura = Math.max(1, Math.floor(ist.hpMax / 8));
+          ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + cura);
+          aggiornaPannelli();
+          await di(`${etich} recupera HP grazie a Pellesecca! 🌧️`);
+        } else if (meteoBattaglia === 'sun') {
+          const danno = Math.max(1, Math.floor(ist.hpMax / 8));
+          ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
+          aggiornaPannelli();
+          await di(`${etich} è prosciugato dal sole per via di Pellesecca!`);
+        }
       }
     }
   }
@@ -2809,7 +3071,12 @@ const Battle = (function () {
     // perché raro ma comunque non fedele.
     const vMia = velocitaEffettiva(mio), vNem = velocitaEffettiva(nemico);
     let mioPrima;
+    // Costanza (stall, 20 ott 2026): a parità di priorità, chi la possiede
+    // agisce sempre per ultimo (se la possiedono entrambi, si pareggia e
+    // decide la velocità come sempre).
+    const stallMia = mio.abilitaChiave === 'stall', stallNem = nemico.abilitaChiave === 'stall';
     if (prioMia !== prioNem) mioPrima = prioMia > prioNem;
+    else if (stallMia !== stallNem) mioPrima = stallNem;
     else if (vMia !== vNem) mioPrima = vMia > vNem;
     else mioPrima = Math.random() < 0.5;
 
@@ -3346,6 +3613,24 @@ const Battle = (function () {
     // dai selvatici (qui siamo già certi non sia un allenatore, vedi sopra).
     const fugaGarantita = mio.abilitaChiave === 'run-away';
 
+    // Trappola/Magnetiterrazzo/Testatagliente (shadow-tag/magnet-pull/
+    // arena-trap, 20 ott 2026): il selvatico impedisce la fuga — Trappola
+    // sempre, Magnetiterrazzo solo contro tipo Acciaio, Testatagliente solo
+    // contro chi non vola/non ha Levitazione (qui semplificato: chiunque non
+    // sia di tipo Volante e non abbia Levitate, visto che non ci sono mosse
+    // di Fossa da gestire come eccezione in questo motore).
+    const abilN = nemico.abilitaChiave;
+    const trappolaAttiva = !fugaGarantita && (
+      abilN === 'shadow-tag' ||
+      (abilN === 'magnet-pull' && mio.tipi.includes('steel')) ||
+      (abilN === 'arena-trap' && !mio.tipi.includes('flying') && mio.abilitaChiave !== 'levitate')
+    );
+    if (trappolaAttiva) {
+      await di(`Non riesci a fuggire: ${etichettaNemico()} ti blocca!`);
+      await turnoNemicoEFine();
+      return;
+    }
+
     // Più sei veloce del nemico, più è facile scappare
     let prob = 0.55 + (mio.velocita - nemico.velocita) / 150;
     prob = Math.min(0.95, Math.max(0.25, prob));
@@ -3440,6 +3725,23 @@ const Battle = (function () {
       // animazione (bug segnalato da Luca: "la barra blu non si riempie,
       // si leva subito la schermata"). Una pausa breve la lascia vedere.
       await new Promise(r => setTimeout(r, durataFx(600)));
+    }
+    // Raccogliscorte (pickup, 20 ott 2026): 10% di possibilità a fine lotta
+    // (qualunque lotta, vinta) di trovare un oggetto comune, per ciascun
+    // membro della squadra che lo possiede e non porta già nulla — vera
+    // meccanica a passi nei giochi originali, qui semplificata a "per
+    // lotta vinta" per restare dentro al motore esistente.
+    const OGGETTI_PICKUP = ['pozione', 'superpozione', 'antidoto', 'pokeball', 'repellente'];
+    if (statoGioco.squadra) {
+      for (const compagno of statoGioco.squadra) {
+        if (compagno.hpAttuale <= 0 || compagno.abilitaChiave !== 'pickup' || compagno.oggetto) continue;
+        if (Math.random() < 0.1) {
+          const trovato = OGGETTI_PICKUP[Math.floor(Math.random() * OGGETTI_PICKUP.length)];
+          compagno.oggetto = trovato;
+          const nomeOgg = (typeof OGGETTI !== 'undefined' && OGGETTI[trovato]) ? OGGETTI[trovato].nome : trovato;
+          await di(`${compagno.nome} ha trovato ${nomeOgg} grazie a Raccogliscorte!`);
+        }
+      }
     }
     fineBattaglia('vittoria');
   }
@@ -4384,7 +4686,9 @@ const Battle = (function () {
 
   async function fineTurnoMeteoDoppia() {
     if (!meteoBattaglia) return;
-    if (meteoBattaglia === 'sandstorm' || meteoBattaglia === 'hail') {
+    const _neutralizzataDoppia = [...doppiaMieiAttivi, ...doppiaNemiciAttivi]
+      .some(x => x && x.hpAttuale > 0 && (x.abilitaChiave === 'cloud-nine' || x.abilitaChiave === 'air-lock'));
+    if ((meteoBattaglia === 'sandstorm' || meteoBattaglia === 'hail') && !_neutralizzataDoppia) {
       const nomeMeteo = meteoBattaglia === 'sandstorm' ? 'tempesta di sabbia' : 'grandine';
       const tutti = [...doppiaMieiAttivi, ...doppiaNemiciAttivi].filter(x => x && x.hpAttuale > 0);
       for (const ist of tutti) {
@@ -4415,12 +4719,18 @@ const Battle = (function () {
     for (const ist of tutti) {
       if (!ist.condizione || ist.abilitaChiave === 'magic-guard') continue;
       if (ist.condizione.tipo === 'poison' || ist.condizione.tipo === 'burn') {
-        const danno = Math.max(1, Math.floor(ist.hpMax / 8));
-        ist.hpAttuale = Math.max(0, ist.hpAttuale - danno);
-        lampeggia(ist);
-        aggiornaPannelli();
-        const causa = ist.condizione.tipo === 'poison' ? 'dal veleno' : 'dalla scottatura';
-        await di(`${etichettaDi(ist)} è tormentato ${causa}!`);
+        const quantita = Math.max(1, Math.floor(ist.hpMax / 8));
+        if (ist.condizione.tipo === 'poison' && ist.abilitaChiave === 'poison-heal') {
+          ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + quantita);
+          aggiornaPannelli();
+          await di(`${etichettaDi(ist)} recupera HP grazie al Guarveleno!`);
+        } else {
+          ist.hpAttuale = Math.max(0, ist.hpAttuale - quantita);
+          lampeggia(ist);
+          aggiornaPannelli();
+          const causa = ist.condizione.tipo === 'poison' ? 'dal veleno' : 'dalla scottatura';
+          await di(`${etichettaDi(ist)} è tormentato ${causa}!`);
+        }
       }
     }
     for (const ist of tutti) {
