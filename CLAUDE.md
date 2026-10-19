@@ -190,10 +190,14 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
    (grunt/Marino/Grotta del Vulcano) e Team CoTrAL (Osservatorio) cablati e giocabili. Mancano ancora
    alcuni dungeon narrativi minori (Museo di Nemi, dungeon dei porchettari) — vedi `docs-nogithub/TODO.md`.
 10. [FATTO] **F10 — Team GdF**: covo di Marino, Giovanni, Grotta del Vulcano, tutto cablato.
-11. **F11 — Leggendari ed eventi**: aggiornato il 19 ottobre 2026 — piazzati e svegliati anche
-    **Articuno, Mewtwo, Ho-Oh, Celebi, i 3 Regi, Kyogre** (oltre ai 6 già fatti: Zapdos-preview,
-    Moltres, Raikou/Entei/Suicune, Latios/Latias, Groudon, Deoxys-trigger). **Mancano solo**:
-    Jirachi, Rayquaza, Lugia, Deoxys (cattura vera), Mew/Villa Aldobrandini.
+11. **F11 — Leggendari ed eventi**: verificato DAVVERO sul codice il 20 ottobre 2026 (scansione
+    di ogni `.tmj` per oggetti `leggendario` reali, non solo citazioni nei dialoghi) — **17/21
+    piazzati**: Articuno (Monte Cavo), Mewtwo+Deoxys-trigger (Bunkerino/Grottaferrata), Ho-Oh,
+    Celebi (roaming Boschi del Tuscolo dopo Simone/"Il Solitario"), i 3 Regi, Kyogre, Groudon,
+    Moltres, Raikou/Entei/Suicune, Latios/Latias. **Mancano davvero solo 5**: Jirachi, Rayquaza/
+    San Rocco, Lugia (Monte Cavo ha SOLO Articuno, "treno_lugia.tmj" è solo un connettore vuoto),
+    Zapdos (esiste solo il "preview"/cutscene di Maso, nessun incontro vero), Mew/Villa
+    Aldobrandini (solo citato nei dialoghi/cutscene, nessun oggetto piazzato).
 12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione Remo: cablati e
     giocabili). **Post-game CoTrAL/Bunkerino**: aggiornato il 19 ottobre 2026 — ora collegato per
     davvero, cutscene della doppia Mewtwo/Mew scritta.
@@ -231,12 +235,15 @@ Superquattro/Remo, menu nativi completi, lotta in doppio, sistema cutscene). Lim
 sblocca a password) — non è più un ostacolo prima della pubblicazione. **Bunkerino post-Lega
 CoTrAL collegato**, cutscene della doppia Mewtwo/Mew scritta.
 
-**Quello che resta davvero**: **F11 leggendari** — mancano solo Jirachi, Rayquaza, Lugia, Deoxys
-(cattura), Mew/Villa Aldobrandini (tutti gli altri 17/21 sono piazzati). Coda di NPC su casella di
-collisione (~40 casi) e ~100 abilità ancora da implementare (vedi `docs-nogithub/ROADMAP.md` per i
-dettagli di sessione). **F13 (pubblicazione GitHub Pages) non fatta** — vedi ROADMAP IN FASI sopra
-per la differenza tra questo e i soliti commit/push. F14 non esiste più come fase, è già compresa
-nel motore attuale (Phaser 3 + Tiled).
+**Quello che resta davvero** (aggiornato 20 ottobre 2026): **F11 leggendari** — mancano solo
+Jirachi, Rayquaza/San Rocco, Lugia, Zapdos (incontro vero), Mew/Villa Aldobrandini (17/21 già
+piazzati, vedi ROADMAP IN FASI sopra per i dettagli verificati sul codice). **Abilità**: da
+55/113 a **100/113** censite sulle specie 1-386 (sessione 20 ottobre) — restano 13 bloccate da
+meccaniche di base non ancora nel motore (Flinch, Infatuazione, furto oggetti, mosse di scambio
+forzato, bacche consumabili), non dalle abilità in sé. Coda di NPC su casella di collisione (~40
+casi) ancora da controllare. **F13 (pubblicazione GitHub Pages) non fatta** — vedi ROADMAP IN
+FASI sopra per la differenza tra questo e i soliti commit/push. F14 non esiste più come fase, è
+già compresa nel motore attuale (Phaser 3 + Tiled).
 
 Vedi `docs-nogithub/TODO.md` per la lista aggiornata di cosa manca (diviso LUCA/CLAUDE CODE) e i punti ancora
 aperti — ATTENZIONE: parti di quel file erano scollate dal codice reale fino al 5 ottobre 2026,
