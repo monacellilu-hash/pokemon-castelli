@@ -896,6 +896,111 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Danza Spada (Move_SWORDS_DANCE, src/battle_anim_scripts.s — Metodo 1,
+  // 19 ott 2026): una spada vera (sword.png, 2 fotogrammi) ruota accanto a
+  // chi la usa mentre si muove a ellisse (qui approssimato con un dondolio
+  // laterale) — niente a che fare con una scintilla astratta.
+  async function _giocaDanzaSpadaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('sword.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.65, 0.4);
+    const dim = 28 * scalaX;
+    _scuotiSpriteRom(attaccanteEl, 1, 550);
+    const t0 = performance.now();
+    const durata = 550;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        const ang = prog * Math.PI * 4;
+        ctx.save();
+        ctx.translate(centro.x + Math.sin(ang) * 10 * scalaX, centro.y);
+        ctx.rotate(Math.sin(ang) * 0.5);
+        ctx.drawImage(img, 0, 0, 32, 32, -dim / 2, -dim / 2, dim, dim);
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Danza Drago (Move_DRAGON_DANCE, src/battle_anim_scripts.s — Metodo 1,
+  // 19 ott 2026): 4 sfere (hollow_orb.png) che orbitano intorno a chi
+  // attacca ad angoli di 90° — niente scintilla, un vero anello di sfere.
+  async function _giocaDanzaDragoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('hollow_orb.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.5);
+    const dim = 14 * scalaX, raggio = 30 * scalaX;
+    _scuotiSpriteRom(attaccanteEl, 1, 650);
+    const t0 = performance.now();
+    const durata = 650;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        ctx.save();
+        for (let k = 0; k < 4; k++) {
+          const ang = (k / 4) * Math.PI * 2 + prog * Math.PI * 3;
+          ctx.drawImage(img, 0, 0, 16, 16,
+            centro.x + Math.cos(ang) * raggio - dim / 2,
+            centro.y + Math.sin(ang) * raggio * 0.5 - dim / 2, dim, dim);
+        }
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Calma Mente (Move_CALM_MIND, src/battle_anim_scripts.s — Metodo 1, 19
+  // ott 2026): un anello si restringe su chi attacca, due volte (gThinRing-
+  // ShrinkingSpriteTemplate ×2) — riusa ring.png, nessun anello dedicato
+  // nel pacchetto estratto finora.
+  async function _giocaMenteCalmaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('ring.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.5);
+    for (let giro = 0; giro < 2; giro++) {
+      const t0 = performance.now();
+      const durata = 300;
+      await new Promise(resolve => {
+        const frame = () => {
+          const t = performance.now() - t0;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (t > durata) { resolve(); return; }
+          const prog = t / durata;
+          const dim = (50 - prog * 36) * scalaX;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog * 0.3;
+          ctx.drawImage(img, 0, 0, 16, 16, centro.x - dim / 2, centro.y - dim / 2, dim, dim * 1.3);
+          ctx.restore();
+          requestAnimationFrame(frame);
+        };
+        frame();
+      });
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Trappole da campo (Punte, Punte Velenose, Levitoroccia...): punte che
   // crescono ai piedi del bersaglio — grafica vera ice_spikes.png (4
   // fotogrammi, 8×16, non quadrati: funzione dedicata).
@@ -2083,11 +2188,17 @@ const AnimazioniEssentials = (function () {
     SCREECH: _giocaUrloRom, SUPERSONIC: _giocaIpnoshockRom, SING: _giocaNoteMusicaliRom,
     SNORE: _giocaSuonoRom,
 
-    FOCUSENERGY: _giocaPotenziamentoRom, SWORDSDANCE: _giocaPotenziamentoRom,
+    // Metodo 1 (19 ott 2026): Danza Spada/Danza Drago/Calma Mente uscite
+    // dal riuso generico (sprite veri letti dagli script). Ululato
+    // condivide ESATTAMENTE RoarEffect con Ululato/Ringhio del gruppo
+    // Suono — stessa funzione, _giocaRuggitoRom, nessun duplicato.
+    // Focus Energy/Rafforza/Affila/Medita/Bulk Up/Forza Cosmica restano
+    // generiche per ora, non ancora lette.
+    FOCUSENERGY: _giocaPotenziamentoRom, SWORDSDANCE: _giocaDanzaSpadaRom,
     HARDEN: _giocaPotenziamentoRom, SHARPEN: _giocaPotenziamentoRom,
-    HOWL: _giocaPotenziamentoRom, MEDITATE: _giocaPotenziamentoRom,
-    BULKUP: _giocaPotenziamentoRom, CALMMIND: _giocaPotenziamentoRom,
-    DRAGONDANCE: _giocaPotenziamentoRom, COSMICPOWER: _giocaPotenziamentoRom,
+    HOWL: _giocaRuggitoRom, MEDITATE: _giocaPotenziamentoRom,
+    BULKUP: _giocaPotenziamentoRom, CALMMIND: _giocaMenteCalmaRom,
+    DRAGONDANCE: _giocaDanzaDragoRom, COSMICPOWER: _giocaPotenziamentoRom,
 
     RECOVER: _giocaCuraRom, SOFTBOILED: _giocaCuraRom, REST: _giocaCuraRom,
     MORNINGSUN: _giocaCuraRom, SYNTHESIS: _giocaCuraRom, MILKDRINK: _giocaCuraRom,

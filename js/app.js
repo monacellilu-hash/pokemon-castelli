@@ -6362,8 +6362,8 @@ async function inizializzaSquadraTest() {
   // diverso, così ogni Pokémon in squadra copre più animazioni da solo:
   const MOSSE_TEST_PER_ID = {
     59:  ['flamethrower', 'fire-blast', 'fire-spin', 'eruption'],  // Arcanine: 4 varianti Fuoco (Metodo 1, 19 ott)
-    130: ['hydro-pump', 'screech', 'charm', 'growl'],             // Gyarados: Acqua, Suono(Urlo), Sguardo(Fascino), Suono(Ruggito)
-    131: ['mud-shot', 'supersonic', 'sweet-scent', 'body-slam'],  // Lapras: Fanghiglia, Suono(Ipnoshock), Sguardo(Fragranza), "non-pugno" di confronto
+    130: ['hydro-pump', 'screech', 'swords-dance', 'dragon-dance'], // Gyarados: Acqua, Suono(Urlo), Potenziamento(Danza Spada+Drago)
+    131: ['mud-shot', 'supersonic', 'calm-mind', 'howl'],            // Lapras: Fanghiglia, Suono(Ipnoshock), Potenziamento(Calma Mente+Ululato)
     143: ['signal-beam', 'sing', 'attract', 'taunt'],             // Snorlax: Raggio Segnale, Suono(Ninnananna), Sguardo(Attrazione+Sfottò)
     242: ['psywave', 'sleep-powder', 'dynamic-punch', 'torment'], // Blissey: Fluttuonda, Polvere Sonno, Pugno vero, Sguardo(Tormento)
     149: ['thunderbolt', 'poison-powder', 'stun-spore', 'comet-punch'], // Dragonite: Fulmine, le altre 2 polveri, Pugno (Comet)
