@@ -426,7 +426,7 @@ const GameMap = (function () {
     // cluster di superficie, è un "interno" a sé come i piani del rifugio GdF.
     'lago_albano_profondo': {
       file: 'sprites/maps_tiled/Lago di Albano profondo.tmj',
-      interno: true,
+      interno: true, sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     // ── Antro Kyogre (10 ott 2026): ex SeafloorCavern di pokeemerald,
@@ -440,52 +440,52 @@ const GameMap = (function () {
     // (gli "npc_*" nelle mappe sono solo segnaposto con nota_origine).
     'antro_kyogre_entrance': {
       file: 'sprites/maps_tiled/antro_kyogre_entrance.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_1': {
       file: 'sprites/maps_tiled/antro_kyogre_1.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_2': {
       file: 'sprites/maps_tiled/antro_kyogre_2.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_3': {
       file: 'sprites/maps_tiled/antro_kyogre_3.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_4': {
       file: 'sprites/maps_tiled/antro_kyogre_4.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_5': {
       file: 'sprites/maps_tiled/antro_kyogre_5.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_6': {
       file: 'sprites/maps_tiled/antro_kyogre_6.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_7': {
       file: 'sprites/maps_tiled/antro_kyogre_7.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_8': {
       file: 'sprites/maps_tiled/antro_kyogre_8.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_9': {
       file: 'sprites/maps_tiled/antro_kyogre_9.tmj',
-      interno: true, tema: 'cave',
+      interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
@@ -3393,9 +3393,13 @@ const GameMap = (function () {
       mappaCorrente = chiave;
       mappaInfo = { ...def, mapW, mapH };
       if (mappaInfo.interno) biciAttiva = false;   // niente bici in edifici/interni (punto 9)
-      // Sub (19 ott 2026): dentro l'Antro di Kyogre il giocatore appare
-      // "sott'acqua" per davvero (sprite dedicato, vedi _variantePlayerAttiva).
-      subAttivo = chiave.startsWith('antro_kyogre');
+      // Sub (19 ott 2026): bug segnalato da Luca — camminava "normale" con
+      // il follower perché il punto d'immersione porta PRIMA su
+      // 'lago_albano_profondo' (non un nome "antro_kyogre_*"), che il
+      // controllo per nome non copriva. Ora è un flag esplicito sulla
+      // mappa (def.sub), vero per quella E per tutte le stanze dell'Antro.
+      subAttivo = !!def.sub;
+      this._aggiornaVisibilitaFollower();   // niente follower mentre sei sott'acqua
 
       // Segna la città come "visitata" (sblocca la destinazione per la MN Volo)
       const comune = MAPPA_COMUNE[chiave];
@@ -4856,7 +4860,7 @@ const GameMap = (function () {
     // (corsa/interni compresi, come nei giochi veri).
     _aggiornaVisibilitaFollower() {
       if (!followerSprite) return;
-      const nascondi = biciAttiva || surfAttivo || !followerSpecieId;
+      const nascondi = biciAttiva || surfAttivo || subAttivo || !followerSpecieId;
       followerSprite.setVisible(!nascondi);
     }
 
