@@ -1065,6 +1065,36 @@ const AnimazioniEssentials = (function () {
   // delle altre). Riusa _particellaOndaVersoTarget semplicemente mettendo
   // "partenza" sopra il bersaglio invece che sull'attaccante: la funzione
   // è generica, non sa (né le importa) da dove parte il segmento.
+  // Lampo di schermo (AnimTask_BlendBattleAnimPal verso RGB_BLACK, Metodo 1
+  // — 19 ott 2026): il gioco vero scurisce lo sfondo/il bersaglio a scatti
+  // invece di un semplice fade — qui un rettangolo nero semitrasparente sul
+  // canvas FX, ad alternanza, approssima lo stesso effetto "flash elettrico".
+  function _lampoSchermoRom(alphaMax, passi, msPerPasso) {
+    return new Promise(resolve => {
+      let i = 0;
+      const tick = () => {
+        const su = i < passi;
+        const frazione = su ? i / passi : (passi * 2 - i) / passi;
+        ctx.save();
+        ctx.fillStyle = `rgba(0,0,0,${(alphaMax * frazione).toFixed(2)})`;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        ctx.restore();
+        i++;
+        if (i <= passi * 2) setTimeout(tick, msPerPasso);
+        else resolve();
+      };
+      tick();
+    });
+  }
+
+  // Fulmine/Tuono (Move_THUNDERBOLT/THUNDER, src/battle_anim_electric.c +
+  // data/battle_anim_scripts.s — Metodo 1, 19 ott 2026): script reale letto
+  // riga per riga (strumenti/estrai_script_animazioni.py THUNDERBOLT).
+  // Sequenza vera: 3 fulmini scoscesi (AnimTask_ElectricBolt, offset x
+  // 24/-24/0) → doppio lampo nero sul bersaglio (AnimTask_BlendBattleAnimPal
+  // verso RGB_BLACK e ritorno, è il "flash" che prima mancava del tutto) →
+  // anello di 8 scintille che orbitano il bersaglio (AnimSparkElectricity-
+  // Flashing, raggio 32 e 16, intermittenti) → doppio lampo di sfondo finale.
   async function _giocaFulmineRom(attaccanteEl, bersaglioEl) {
     const { img, pronta } = caricaImmagineRom('spark.png');
     await pronta;
@@ -1079,7 +1109,32 @@ const AnimazioniEssentials = (function () {
     }
     await Promise.all(attese);
     _scuotiSpriteRom(bersaglioEl, 3, 220);
-    await new Promise(r => setTimeout(r, 220));
+    // Doppio lampo nero sul bersaglio (script reale: nero→0→nero→0).
+    await _lampoSchermoRom(0.55, 3, 35);
+    // Anello di scintille che orbitano il bersaglio, raggio doppio
+    // (32px e 16px scalati), intermittenti come nello script originale.
+    const raggioEsterno = 32 * scalaX, raggioInterno = 16 * scalaX;
+    let giri = 0;
+    const animaAnello = setInterval(() => {
+      ctx.save();
+      for (let k = 0; k < 4; k++) {
+        const ang = (k / 4) * Math.PI * 2 + giri * 0.35;
+        ctx.globalAlpha = (giri % 2 === 0) ? 0.9 : 0.4;
+        ctx.fillStyle = '#fff86a';
+        ctx.beginPath();
+        ctx.arc(arrivo.x + Math.cos(ang) * raggioEsterno, arrivo.y + Math.sin(ang) * raggioEsterno * 0.5, 3, 0, Math.PI * 2);
+        ctx.fill();
+        const ang2 = ang + Math.PI / 4;
+        ctx.beginPath();
+        ctx.arc(arrivo.x + Math.cos(ang2) * raggioInterno, arrivo.y + Math.sin(ang2) * raggioInterno * 0.5, 2, 0, Math.PI * 2);
+        ctx.fill();
+      }
+      ctx.restore();
+      giri++;
+    }, 40);
+    await new Promise(r => setTimeout(r, 360));
+    clearInterval(animaAnello);
+    await _lampoSchermoRom(0.3, 2, 45);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
