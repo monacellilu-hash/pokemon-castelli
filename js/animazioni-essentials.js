@@ -2104,16 +2104,48 @@ const AnimazioniEssentials = (function () {
   // Lanciarocce e mosse Roccia simili: macigno lanciato verso il
   // bersaglio — grafica vera rocks.png (primo fotogramma dei 6, già
   // un'immagine completa 32×32).
-  async function _giocaRocciaRom(attaccanteEl, bersaglioEl) {
+  // Lanciarocce/Frana Rocciosa (Move_ROCK_THROW/ROCK_SLIDE, src/battle_
+  // anim_scripts.s — Metodo 1, 19 ott 2026): i sassi NON vengono lanciati
+  // in orizzontale da chi attacca — cadono dall'ALTO sul bersaglio
+  // (gFallingRockSpriteTemplate), col terreno che trema (shake_mon_or_
+  // platform). Frana ne fa cadere di più (rockSlide = true).
+  async function _giocaRocciaRom(attaccanteEl, bersaglioEl, frana) {
     const { img, pronta } = caricaImmagineRom('rock.png');
     await pronta;
-    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
-    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 420, ampiezzaPx: 0 };
-
-    _scuotiSpriteRom(attaccanteEl, 2, 200);
-    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
-    _scuotiSpriteRom(bersaglioEl, 3, 280);
-    await new Promise(r => setTimeout(r, 280));
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.55);
+    const dim = 30 * scalaX;
+    const durataCaduta = 260;
+    const sassi = (frana
+      ? [[-18, 0], [0, 60], [18, 120], [-10, 180], [8, 240]]
+      : [[0, 0]]
+    ).map(([dx, ritardo]) => ({ dx, ritardo, scosso: false }));
+    const fine = Math.max(...sassi.map(s => s.ritardo)) + durataCaduta;
+    const t0 = performance.now();
+    await new Promise(resolve => {
+      const frame = () => {
+        const adesso = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (adesso > fine) { resolve(); return; }
+        ctx.save();
+        for (const s of sassi) {
+          const t = adesso - s.ritardo;
+          if (t < 0) continue;
+          if (t > durataCaduta) continue;
+          const prog = t / durataCaduta;
+          ctx.drawImage(img, 0, 0, 32, 32,
+            arrivo.x + s.dx * scalaX - dim / 2, arrivo.y - (1 - prog) * 70 * scalaY - dim / 2, dim, dim);
+          if (prog > 0.9 && !s.scosso) { s.scosso = true; _scuotiSpriteRom(bersaglioEl, 2, 150); }
+        }
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    await new Promise(r => setTimeout(r, 150));
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
@@ -2339,7 +2371,10 @@ const AnimazioniEssentials = (function () {
     ICEBEAM: _giocaGhiaccioRom, BLIZZARD: _giocaGhiaccioRom, ICYWIND: _giocaGhiaccioRom,
     POWDERSNOW: _giocaGhiaccioRom, AURORABEAM: _giocaGhiaccioRom, FROSTBREATH: _giocaGhiaccioRom,
 
-    ROCKTHROW: _giocaRocciaRom, ROCKSLIDE: _giocaRocciaRom, ROCKBLAST: _giocaRocciaRom,
+    // Metodo 1 (19 ott 2026): i sassi cadono dall'alto, non vengono
+    // lanciati in orizzontale (script reale) — Frana/Scarica ne fa cadere
+    // 5 invece di 1.
+    ROCKTHROW: _giocaRocciaRom, ROCKSLIDE: (a, b) => _giocaRocciaRom(a, b, true), ROCKBLAST: (a, b) => _giocaRocciaRom(a, b, true),
     POWERGEM: _giocaRocciaRom, ANCIENTPOWER: _giocaRocciaRom, ROCKTOMB: _giocaRocciaRom,
 
     MAGICALLEAF: _giocaFoglieRom, ENERGYBALL: _giocaFoglieRom, LEAFSTORM: _giocaFoglieRom,
