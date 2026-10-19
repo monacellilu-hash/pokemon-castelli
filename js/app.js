@@ -6362,10 +6362,10 @@ async function inizializzaSquadraTest() {
   // diverso, così ogni Pokémon in squadra copre più animazioni da solo:
   const MOSSE_TEST_PER_ID = {
     59:  ['flamethrower', 'fire-blast', 'fire-spin', 'eruption'],  // Arcanine: 4 varianti Fuoco (Metodo 1, 19 ott)
-    130: ['hydro-pump', 'screech', 'swords-dance', 'dragon-dance'], // Gyarados: Acqua, Suono(Urlo), Potenziamento(Danza Spada+Drago)
+    130: ['hydro-pump', 'octazooka', 'swords-dance', 'dragon-dance'], // Gyarados: Acqua(Ottocannone), Potenziamento(Danza Spada+Drago)
     131: ['mud-shot', 'supersonic', 'calm-mind', 'protect'],         // Lapras: Fanghiglia, Suono(Ipnoshock), Potenziamento(Calma Mente), Scudo(Protezione)
     143: ['signal-beam', 'sing', 'rest', 'moonlight'],            // Snorlax: Raggio Segnale, Suono(Ninnananna), Cura(Riposo+Chiaro di Luna)
-    242: ['psywave', 'sleep-powder', 'dynamic-punch', 'milk-drink'], // Blissey: Fluttuonda, Polvere Sonno, Pugno vero, Cura(Latte Caldo)
+    242: ['psychic', 'sleep-powder', 'dynamic-punch', 'water-pulse'], // Blissey: Psico(distorsione), Polvere Sonno, Pugno vero, Acqua(Idropulsar)
     149: ['thunderbolt', 'light-screen', 'reflect', 'barrier'],    // Dragonite: Fulmine, Scudo(i 3 muri colorati)
   };
   for (const id of idSquadra) {

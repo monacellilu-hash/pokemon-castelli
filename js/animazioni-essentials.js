@@ -565,6 +565,38 @@ const AnimazioniEssentials = (function () {
   async function _giocaIpnoshockRom(attaccanteEl, bersaglioEl) {
     await _giocaAnelloRom('gold_ring.png', 6, attaccanteEl, bersaglioEl);
   }
+  // Ottocannone (Move_OCTAZOOKA, src/battle_anim_scripts.s — Metodo 1,
+  // 19 ott 2026): una pallina NERA (inchiostro, non acqua) lanciata al
+  // bersaglio, che scoppia in una nuvola di fumo grigio — niente a che
+  // fare con le bolle d'acqua delle altre mosse del gruppo.
+  async function _giocaOttocannoneRom(attaccanteEl, bersaglioEl) {
+    const { img: imgPalla, pronta: prontaPalla } = caricaImmagineRom('black_ball.png');
+    const { img: imgFumo, pronta: prontaFumo } = caricaImmagineRom('gray_smoke.png');
+    await Promise.all([prontaPalla, prontaFumo]);
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 8, frameH: 8, righeY: [0], frameMs: 9999, durataMs: 300, ampiezzaPx: 0 };
+    _scuotiSpriteRom(attaccanteEl, 1, 200);
+    await _particellaOndaVersoTarget(ctx, imgPalla, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    _scuotiSpriteRom(bersaglioEl, 3, 300);
+    const dim = 40 * scalaX;
+    ctx.save();
+    ctx.drawImage(imgFumo, 0, 0, 32, 32, arrivo.x - dim / 2, arrivo.y - dim / 2, dim, dim);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 350));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  // Idropulsar (Move_WATER_PULSE): un anello blu sul bersaglio (gWaterPulse-
+  // BubbleSpriteTemplate), riusa blue_ring.png come Fluttuonda.
+  async function _giocaIdropulsarRom(attaccanteEl, bersaglioEl) {
+    await _giocaAnelloRom('blue_ring.png', 2, attaccanteEl, bersaglioEl);
+  }
+
+  // Psiraggio (Move_PSYBEAM, src/battle_anim_scripts.s — Metodo 1, 19 ott
+  // 2026): PsybeamRings ripete lo stesso anello (gold_ring.png) 4 volte,
+  // riusa _giocaAnelloRom come Ipnoshock — niente proiettile a onda.
+  async function _giocaPsiraggioRom(attaccanteEl, bersaglioEl) {
+    await _giocaAnelloRom('gold_ring.png', 4, attaccanteEl, bersaglioEl);
+  }
 
   // Ninnananna (Move_SING, src/battle_anim_scripts.s — Metodo 1, 19 ott
   // 2026): niente onda né anello — 12 note musicali (gWavyMusicNotesSprite-
@@ -1842,6 +1874,36 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Psichico/Confusione/Extrasenso (Move_PSYCHIC/CONFUSION/EXTRASENSORY,
+  // src/battle_anim_scripts.s — Metodo 1, 19 ott 2026): NIENTE proiettile
+  // — nello script vero il bersaglio si deforma/schiaccia sul posto
+  // (AnimTask_ScaleMonAndRestore) con uno sfondo tinto, non riceve
+  // nessuna sfera. Lo sprite vero del bersaglio (<img> HTML) viene
+  // schiacciato con un vero transform CSS, non disegnato sul canvas.
+  async function _giocaDistorsionePsichicaRom(attaccanteEl, bersaglioEl) {
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    _scuotiSpriteRom(attaccanteEl, 1, 200);
+    await new Promise(r => setTimeout(r, 200));
+    ctx.save();
+    ctx.fillStyle = 'rgba(180,60,220,0.25)';
+    ctx.fillRect(0, 0, w, h);
+    ctx.restore();
+    if (bersaglioEl) {
+      const originale = bersaglioEl.style.transform;
+      bersaglioEl.style.transition = 'transform 120ms ease-in-out';
+      bersaglioEl.style.transform = `${originale} scale(0.82, 1.18)`;
+      await new Promise(r => setTimeout(r, 120));
+      bersaglioEl.style.transform = `${originale} scale(1.15, 0.85)`;
+      await new Promise(r => setTimeout(r, 120));
+      bersaglioEl.style.transform = originale;
+      bersaglioEl.style.transition = '';
+    }
+    _scuotiSpriteRom(bersaglioEl, 3, 250);
+    await new Promise(r => setTimeout(r, 250));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Idrogetto (Move_WATER_GUN, src/battle_anim_scripts.s): UNA bolla
   // lanciata dritta verso il bersaglio (AnimThrowProjectile — un lancio
   // semplice, non l'onda di Idrocannone), poi gocce che schizzano
@@ -2241,15 +2303,22 @@ const AnimazioniEssentials = (function () {
     HEATWAVE: _giocaEmberRom, OVERHEAT: _giocaEmberRom, INCINERATE: _giocaEmberRom,
     FIRESPIN: _giocaGiroDiFuocoRom, ERUPTION: _giocaEruzioneRom, MYSTICALFIRE: _giocaEmberRom,
 
-    BUBBLE: _giocaWaterGunRom, BUBBLEBEAM: _giocaWaterGunRom, WATERPULSE: _giocaWaterGunRom,
+    // Metodo 1 (19 ott 2026): Ottocannone (palla nera + fumo, non acqua) e
+    // Idropulsar (anello) uscite dal riuso generico dell'onda.
+    BUBBLE: _giocaWaterGunRom, BUBBLEBEAM: _giocaWaterGunRom, WATERPULSE: _giocaIdropulsarRom,
     BRINE: _giocaWaterGunRom, MUDDYWATER: _giocaWaterGunRom, WHIRLPOOL: _giocaWaterGunRom,
-    OCTAZOOKA: _giocaWaterGunRom,
+    OCTAZOOKA: _giocaOttocannoneRom,
 
     SLUDGEBOMB: _giocaSludgeRom, SMOG: _giocaSludgeRom, GUNKSHOT: _giocaSludgeRom,
     ACIDSPRAY: _giocaAcidRom, POISONSTING: _giocaAcidRom, POISONGAS: _giocaSludgeRom,
 
-    PSYBEAM: _giocaPsywaveRom, PSYCHIC: _giocaPsywaveRom, EXTRASENSORY: _giocaPsywaveRom,
-    FUTURESIGHT: _giocaPsywaveRom, PSYCHOCUT: _giocaPsywaveRom, CONFUSION: _giocaPsywaveRom,
+    // Metodo 1 (19 ott 2026): Psichico/Confusione/Extrasenso NON lanciano
+    // una sfera — il bersaglio si deforma sul posto (script reale).
+    // Psiraggio riusa l'anello (come Ipnoshock, Sguardo). Psicobotta resta
+    // sulla sfera (è comunque un colpo ritardato gestito a parte in
+    // battle.js). Psicotaglio/Accumulo Forza non esistono in Gen 3.
+    PSYBEAM: _giocaPsiraggioRom, PSYCHIC: _giocaDistorsionePsichicaRom, EXTRASENSORY: _giocaDistorsionePsichicaRom,
+    FUTURESIGHT: _giocaPsywaveRom, PSYCHOCUT: _giocaPsywaveRom, CONFUSION: _giocaDistorsionePsichicaRom,
     STOREDPOWER: _giocaPsywaveRom,
 
     MUDBOMB: _giocaMudShotRom, MUDSLAP: _giocaMudShotRom, EARTHPOWER: _giocaMudShotRom,
