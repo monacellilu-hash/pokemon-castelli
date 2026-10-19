@@ -1948,6 +1948,18 @@ const GameMap = (function () {
       return ha ? { ok: true } : { ok: false, messaggio: '🔒 Devi prima ottenere quella medaglia.' };
     }
 
+    // Requisito "allenatore:<id>" — un trainer preciso già battuto (es.
+    // "allenatore:sq_captain"), 19 ott 2026: le scale della Lega di Colonna
+    // si aprono SOLO dopo aver battuto il Superquattro/Campione di quel
+    // piano, stesso principio di "medaglia:<id>" sopra.
+    const allSingolo = s.match(/^allenatore:([a-z0-9_\-]+)$/);
+    if (allSingolo) {
+      const idAll = allSingolo[1];
+      const ha = typeof stato !== 'undefined' && Array.isArray(stato.allenatoriBattuti) &&
+                 stato.allenatoriBattuti.includes(idAll);
+      return ha ? { ok: true } : { ok: false, messaggio: '🔒 Devi prima battere l\'allenatore di questa sala.' };
+    }
+
     // Requisito "N pokemon <tipo> in squadra"
     const m = s.match(/(\d+|un|uno|una|due|tre|quattro|cinque|sei)\s+pok[eé]?mon\s+([a-zàèéìòù]+)/);
     if (m) {
@@ -6668,6 +6680,18 @@ const GameMap = (function () {
         // { tipo:'cambia_mappa', mappa:'borgata_tuscolana', spawn:'da_casamia_1f' }
         // — usa lo stesso spawn_id di un warp normale. Da mettere tra un
         // fade_out e un fade_in (altrimenti si vede il caricamento a nudo).
+        // Cura tutta la squadra (19 ott 2026): stessa logica del Centro
+        // Pokémon (HP pieni, niente stati, PP ricaricati) ma senza
+        // dialogo — per cutscene come la risfida del Campione.
+        case 'cura_squadra':
+          if (stato.squadra) {
+            stato.squadra.forEach(p => {
+              p.hpAttuale = p.hpMax;
+              p.condizione = null;
+              if (p.mosse) p.mosse.forEach(m => { m.pp = m.ppMax; });
+            });
+          }
+          return Promise.resolve();
         case 'cambia_mappa':
           // caricaMappa sblocca il movimento da sola a fine caricamento
           // (lo fa SEMPRE, è l'unico punto che carica mappe in tutto il
@@ -9929,6 +9953,14 @@ const GameMap = (function () {
         // si testava legaCompletata a mano da console, quindi il Grunt
         // restava invisibile anche a muro aperto — semplificato a un
         // flag solo).
+        // Risfida (19 ott 2026, richiesta esplicita di Luca): dalla seconda
+        // vittoria in poi, niente dialogo/titoli di coda — solo schermo
+        // nero, squadra curata, torni davanti a casa. Stesso "gestito
+        // altrove" della primissima volta sopra.
+        this._giocaCutscene('lega_risfida_remo').then(() => {
+          if (typeof salvaPartita === 'function') salvaPartita();
+        });
+        return true;
       }
       // Boss GdF della Grotta del Vulcano (sess. 8 set 2026): battuto (ultimo
       // della catena sottocomandante→boss) → seconda parte di cutscene

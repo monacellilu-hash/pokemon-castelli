@@ -2246,7 +2246,7 @@ const DATI_NPC = {
      ottiene la battuta speciale dopo aver vinto la Lega (vedi
      interagisciGuardiaBorgata in js/app.js). ── */
   'guardia_borgata': {
-    sprite: 'NPC 19', nome: 'Amintore', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 19', nome: 'Claudio', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciGuardiaBorgata',
   },
 };

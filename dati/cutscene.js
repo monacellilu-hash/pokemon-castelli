@@ -59,6 +59,8 @@
        appena diventata vera (tile Poké Ball nascosto fino a quel momento).
    - { tipo: 'fade_out'/'fade_in', ms } e { tipo: 'rigenera_npc' }: schermo nero
        e rilettura di gate/condizioni degli NPC (vedi museo_navi_sfida).
+   - { tipo: 'cura_squadra' } (19 ott 2026) Cura tutta la squadra (HP pieni,
+       niente stati, PP ricaricati) come il Centro Pokémon ma senza dialogo.
    - { tipo: 'cambia_mappa', mappa: 'borgata_tuscolana', spawn: 'da_casamia_1f' }
        (19 ott 2026) Cambia mappa VERA a metà cutscene, come un warp normale
        ma scriptato — usa lo spawn_id di un warp/spawn già esistente su
@@ -883,4 +885,16 @@ CUTSCENE['lega_finale_remo'] = [
   { tipo: 'cambia_mappa', mappa: 'borgata_tuscolana', spawn: 'da_casamia_1f' },
   { tipo: 'aspetta', ms: 300 },
   { tipo: 'fade_in', ms: 900 },
+];
+
+/* ── Risfida del Campione (19 ott 2026): dalla SECONDA vittoria su Remo
+   in poi — niente dialogo/titoli di coda (quelli solo la prima volta,
+   vedi 'lega_finale_remo' sopra), solo schermo nero, squadra curata, e
+   si torna davanti a casa a Borgata Tuscolana. ── */
+CUTSCENE['lega_risfida_remo'] = [
+  { tipo: 'fade_out', ms: 700 },
+  { tipo: 'cura_squadra' },
+  { tipo: 'cambia_mappa', mappa: 'borgata_tuscolana', spawn: 'da_casamia_1f' },
+  { tipo: 'aspetta', ms: 200 },
+  { tipo: 'fade_in', ms: 700 },
 ];

@@ -1530,15 +1530,15 @@ async function interagisciGuardiaBorgata() {
   GameMap.bloccaMovimento();
   try {
     if (!stato.flags || !stato.flags.legaCompletata) {
-      await mostraDialogo('Amintore', [
+      await mostraDialogo('Claudio', [
         'Stacce attento là fuori, ragazzo. Sti Castelli so\' pieni de insidie.',
       ]);
       return;
     }
-    await mostraDialogo('Amintore', [
+    await mostraDialogo('Claudio', [
       'Ao, ma sei tu? Ao, nun ce posso crede.',
       'Ehi tu, campione! Nun te davo manco un euro, sembravi un fallito co\' quella faccia.',
-      'Vai, vai a parlà col Professore, su. Se lo merita de saperlo prima de tutti.',
+      'Senti, è venuto er Professore poco fa: te sta a cercà, ha detto che vuole parlatte subito. Vacce prima che se scorda.',
     ]);
   } finally {
     if (!stato.incontroAttivo) GameMap.sbloccaMovimento();
