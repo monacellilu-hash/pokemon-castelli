@@ -1065,39 +1065,21 @@ const AnimazioniEssentials = (function () {
   // delle altre). Riusa _particellaOndaVersoTarget semplicemente mettendo
   // "partenza" sopra il bersaglio invece che sull'attaccante: la funzione
   // è generica, non sa (né le importa) da dove parte il segmento.
-  // Lampo di schermo (AnimTask_BlendBattleAnimPal verso RGB_BLACK, Metodo 1
-  // — 19 ott 2026): il gioco vero scurisce lo sfondo/il bersaglio a scatti
-  // invece di un semplice fade — qui un rettangolo nero semitrasparente sul
-  // canvas FX, ad alternanza, approssima lo stesso effetto "flash elettrico".
-  function _lampoSchermoRom(alphaMax, passi, msPerPasso) {
-    return new Promise(resolve => {
-      let i = 0;
-      const tick = () => {
-        const su = i < passi;
-        const frazione = su ? i / passi : (passi * 2 - i) / passi;
-        ctx.save();
-        ctx.fillStyle = `rgba(0,0,0,${(alphaMax * frazione).toFixed(2)})`;
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        ctx.restore();
-        i++;
-        if (i <= passi * 2) setTimeout(tick, msPerPasso);
-        else resolve();
-      };
-      tick();
-    });
-  }
-
   // Fulmine/Tuono (Move_THUNDERBOLT/THUNDER, src/battle_anim_electric.c +
   // data/battle_anim_scripts.s — Metodo 1, 19 ott 2026): script reale letto
   // riga per riga (strumenti/estrai_script_animazioni.py THUNDERBOLT).
-  // Sequenza vera: 3 fulmini scoscesi (AnimTask_ElectricBolt, offset x
-  // 24/-24/0) → doppio lampo nero sul bersaglio (AnimTask_BlendBattleAnimPal
-  // verso RGB_BLACK e ritorno, è il "flash" che prima mancava del tutto) →
-  // anello di 8 scintille che orbitano il bersaglio (AnimSparkElectricity-
-  // Flashing, raggio 32 e 16, intermittenti) → doppio lampo di sfondo finale.
+  // Prima versione (19 ott, sess. stessa giornata) aggiungeva un lampo nero
+  // a più fotogrammi con fillRect semitrasparente SENZA mai pulire il
+  // canvas tra un fotogramma e l'altro: l'alpha si accumulava invece di
+  // oscillare, lo schermo restava scuro — bug segnalato da Luca, rimosso.
+  // Elemento vero mancante invece era un altro: il "pallino" centrale
+  // (gThunderboltOrbSpriteTemplate, shock_3.png, 32×32, 3 fotogrammi,
+  // intermittente) che compare ESATTAMENTE insieme alle 8 scintille
+  // orbitanti — Luca lo ricordava bene, io l'avevo saltato del tutto.
   async function _giocaFulmineRom(attaccanteEl, bersaglioEl) {
     const { img, pronta } = caricaImmagineRom('spark.png');
-    await pronta;
+    const { img: imgOrb, pronta: prontaOrb } = caricaImmagineRom('shock_3.png');
+    await Promise.all([pronta, prontaOrb]);
     const { scalaX, scalaY, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
     const partenzaAlto = { x: arrivo.x, y: arrivo.y - 90 };
     const opts = { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 };
@@ -1109,14 +1091,27 @@ const AnimazioniEssentials = (function () {
     }
     await Promise.all(attese);
     _scuotiSpriteRom(bersaglioEl, 3, 220);
-    // Doppio lampo nero sul bersaglio (script reale: nero→0→nero→0).
-    await _lampoSchermoRom(0.55, 3, 35);
-    // Anello di scintille che orbitano il bersaglio, raggio doppio
-    // (32px e 16px scalati), intermittenti come nello script originale.
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Pallino centrale (shock_3.png, 32x32xN fotogrammi in colonna — qui
+    // prendiamo il primo, l'affine-pulse originale è approssimato con una
+    // leggera oscillazione di scala) + anello di 8 scintille che orbitano,
+    // raggio doppio (32px/16px scalati) — nati nello stesso istante,
+    // intermittenti, esattamente come nello script originale.
+    const dimOrb = 32 * scalaX;
     const raggioEsterno = 32 * scalaX, raggioInterno = 16 * scalaX;
     let giri = 0;
     const animaAnello = setInterval(() => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.save();
+      // Pallino: lampeggia (visibile/invisibile) come l'originale, con un
+      // piccolo "respiro" di scala al posto dell'affine-anim vera.
+      if (giri % 3 < 2) {
+        const scalaPulse = 1 + 0.12 * Math.sin(giri * 0.6);
+        const d = dimOrb * scalaPulse;
+        ctx.drawImage(imgOrb, 0, 0, 32, 32, arrivo.x - d / 2, arrivo.y - d / 2, d, d);
+      }
+      // Scintille orbitanti, due raggi, sfasate di 45°.
       for (let k = 0; k < 4; k++) {
         const ang = (k / 4) * Math.PI * 2 + giri * 0.35;
         ctx.globalAlpha = (giri % 2 === 0) ? 0.9 : 0.4;
@@ -1132,9 +1127,8 @@ const AnimazioniEssentials = (function () {
       ctx.restore();
       giri++;
     }, 40);
-    await new Promise(r => setTimeout(r, 360));
+    await new Promise(r => setTimeout(r, 440));
     clearInterval(animaAnello);
-    await _lampoSchermoRom(0.3, 2, 45);
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
