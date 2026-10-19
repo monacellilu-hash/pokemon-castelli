@@ -750,57 +750,6 @@
                  "width":0,
                  "x":658,
                  "y":-464
-                }, 
-                {
-                 "height":17.3333,
-                 "id":69,
-                 "name":"warp",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"destinazione",
-                         "type":"string",
-                         "value":"monteporzio"
-                        }, 
-                        {
-                         "name":"spawn_id",
-                         "type":"string",
-                         "value":"da_Via Vittoria"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"warp"
-                        }],
-                 "rotation":0,
-                 "type":"warp",
-                 "visible":true,
-                 "width":18.6667,
-                 "x":870.32835,
-                 "y":1730.22
-                }, 
-                {
-                 "height":19,
-                 "id":70,
-                 "name":"spawn",
-                 "opacity":1,
-                 "properties":[
-                        {
-                         "name":"id",
-                         "type":"string",
-                         "value":"da monteporzio"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"spawn"
-                        }],
-                 "rotation":0,
-                 "type":"spawn",
-                 "visible":true,
-                 "width":21.3333,
-                 "x":869.58835,
-                 "y":1702.53
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1211,7 +1160,7 @@
                 {
                  "height":0,
                  "id":18,
-                 "name":"port per il terzo piano in basso a destra",
+                 "name":"port per il quarto piano in alto ",
                  "opacity":1,
                  "point":true,
                  "properties":[
@@ -1264,7 +1213,7 @@
                 {
                  "height":0,
                  "id":20,
-                 "name":"port per il terzo piano in basso a destra",
+                 "name":"port per il quarto piano in basso ",
                  "opacity":1,
                  "point":true,
                  "properties":[
@@ -1363,8 +1312,8 @@
                  "type":"",
                  "visible":true,
                  "width":1760,
-                 "x":0,
-                 "y":0
+                 "x":-6,
+                 "y":-4
                 }, 
                 {
                  "height":0,
@@ -1521,6 +1470,57 @@
                  "width":0,
                  "x":1408,
                  "y":1344
+                }, 
+                {
+                 "height":17.3333,
+                 "id":69,
+                 "name":"warp",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"percorso_montepo_3"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_Via Vittoria"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"warp",
+                 "visible":true,
+                 "width":18.6667,
+                 "x":870.32835,
+                 "y":1730.22
+                }, 
+                {
+                 "height":19,
+                 "id":70,
+                 "name":"spawn",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"da percorso_montepo_3"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "type":"spawn",
+                 "visible":true,
+                 "width":21.3333,
+                 "x":869.58835,
+                 "y":1702.53
                 }],
          "opacity":1,
          "type":"objectgroup",

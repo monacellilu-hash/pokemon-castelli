@@ -870,30 +870,133 @@
                  "y":739
                 }, 
                 {
-                 "height":0,
-                 "id":3,
-                 "name":"scala primo piano",
+                 "height":1352,
+                 "id":55,
+                 "name":"incontri via vittoria 4f",
                  "opacity":1,
-                 "point":true,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"incontri via vittoria 4f"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"erba_alta"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":0,
-                 "x":369,
-                 "y":589
+                 "width":1275.66666666667,
+                 "x":86.2130538209932,
+                 "y":38.8141540291407
                 }, 
                 {
                  "height":0,
-                 "id":4,
-                 "name":"scala per il primo piano centrale alto",
+                 "id":56,
+                 "name":"spawn",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"spawn_4f_3"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
                  "rotation":0,
                  "type":"",
                  "visible":true,
                  "width":0,
-                 "x":273,
-                 "y":537.239964317574
+                 "x":340.01,
+                 "y":604.667
+                }, 
+                {
+                 "height":0,
+                 "id":57,
+                 "name":"port per il primo piano in alto a destra",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"via_vittoria_1f"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"spawn_1f_11"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":372,
+                 "y":596
+                }, 
+                {
+                 "height":0,
+                 "id":58,
+                 "name":"spawn",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"spawn_4f_4"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"spawn"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":276.51,
+                 "y":496
+                }, 
+                {
+                 "height":0,
+                 "id":59,
+                 "name":"port per il quarto piano in basso ",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"via_vittoria_1f"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"spawn_1f_12"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":275.333333333333,
+                 "y":536.666666666667
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -902,7 +1005,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":55,
+ "nextobjectid":60,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",
