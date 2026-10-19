@@ -6404,6 +6404,19 @@ async function inizializzaSquadraTest() {
           mostraToast('⚠️ Fluttuonda non insegnata a Blissey (errore di rete): riprova a preparare la squadra test.', 6000);
         }
       }
+      // Dragonite (id 149): Fulmine, per testare il doppio lampo + anello
+      // di scintille aggiunti il 19 ott 2026 (Metodo 1) — vale per tutto il
+      // gruppo Elettro generico (Tuonoshock/Tuono/Scarica/Zapcannon/ecc.).
+      if (id === 149) {
+        try {
+          const fulmine = await PokeAPI.getMossa('thunderbolt');
+          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fulmine, pp: fulmine.ppMax }));
+          console.log('[Squadra test] Fulmine insegnato a Dragonite:', pkm.mosse);
+        } catch (e) {
+          console.warn('[Squadra test] Impossibile insegnare Fulmine a Dragonite:', e.message);
+          mostraToast('⚠️ Fulmine non insegnato a Dragonite (errore di rete): riprova a preparare la squadra test.', 6000);
+        }
+      }
       stato.squadra.push(pkm);
     }
   }
