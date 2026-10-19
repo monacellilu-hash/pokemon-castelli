@@ -659,6 +659,80 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Barriera Luce/Riflesso/Barriera (Move_LIGHT_SCREEN/REFLECT/BARRIER,
+  // src/battle_anim_scripts.s — Metodo 1, 19 ott 2026): le 3 condividono
+  // LETTERALMENTE lo stesso muro (green_light_wall.png), solo la palette
+  // cambia colore (verde/blu/grigio) — esattamente come le 3 polveri del
+  // gruppo Suono. Un muro trasparente che sale accanto a chi lo usa,
+  // NIENTE a che fare con l'anello di Salvaguardia (quello resta corretto
+  // sul riuso _giocaScudoRom).
+  async function _giocaMuroRom(tintaCss, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('green_light_wall.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.6);
+    const dim = 56 * scalaX;
+    const t0 = performance.now();
+    const durata = 450;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        ctx.save();
+        if (tintaCss) ctx.filter = tintaCss;
+        ctx.globalAlpha = Math.min(1, prog * 2);
+        ctx.drawImage(img, 0, 0, 64, 64, centro.x - dim / 2, centro.y - dim / 2, dim, dim);
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    await new Promise(r => setTimeout(r, 300));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  async function _giocaBarrieraLuceRom(a, b) { await _giocaMuroRom(null, a, b); }          // verde, già il colore vero
+  async function _giocaRiflessoRom(a, b) { await _giocaMuroRom('hue-rotate(190deg)', a, b); } // blu
+  async function _giocaBarrieraRom(a, b) { await _giocaMuroRom('saturate(0) brightness(1.3)', a, b); } // grigio
+
+  // Protezione/Individuazione (Move_PROTECT/DETECT, src/battle_anim_
+  // scripts.s — Metodo 1, 19 ott 2026): una mano/scudo vero (protect.png)
+  // si apre davanti a chi la usa — niente anello sotto i piedi.
+  async function _giocaProteggiRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('protect.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.4, 0.55);
+    const dim = 44 * scalaX;
+    const t0 = performance.now();
+    const durata = 300;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        const scala = 0.4 + prog * 0.6;
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, prog * 2);
+        ctx.drawImage(img, 0, 0, 64, 64,
+          centro.x - dim * scala / 2, centro.y - dim * scala / 2, dim * scala, dim * scala);
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    await new Promise(r => setTimeout(r, 350));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
   // Mosse a piume (Giravento, Scaccianebbia, Rifugio...): piuma bianca
   // che fluttua su chi la usa — grafica vera white_feather.png (2 frame).
   async function _giocaPiumaRom(attaccanteEl, bersaglioEl) {
@@ -2313,9 +2387,13 @@ const AnimazioniEssentials = (function () {
     SLEEPPOWDER: _giocaPolvereSonnoRom, HYPNOSIS: _giocaSuonoRom, SPORE: _giocaSuonoRom,
     WILLOWISP: _giocaEmberRom, GLARE: _giocaBuioRom, CONFUSERAY: _giocaPsywaveRom,
 
-    PROTECT: _giocaScudoRom, DETECT: _giocaScudoRom, LIGHTSCREEN: _giocaScudoRom,
-    REFLECT: _giocaScudoRom, SAFEGUARD: _giocaScudoRom, ENDURE: _giocaScudoRom,
-    SPIKYSHIELD: _giocaScudoRom, BARRIER: _giocaScudoRom,
+    // Metodo 1 (19 ott 2026): Protezione/Individuazione (mano/scudo vero)
+    // e Barriera Luce/Riflesso/Barriera (muro colorato, stesso sprite
+    // delle 3, solo palette diversa) uscite dal riuso dell'anello —
+    // Salvaguardia resta corretta sull'anello (confermato dal suo script).
+    PROTECT: _giocaProteggiRom, DETECT: _giocaProteggiRom, LIGHTSCREEN: _giocaBarrieraLuceRom,
+    REFLECT: _giocaRiflessoRom, SAFEGUARD: _giocaScudoRom, ENDURE: _giocaScudoRom,
+    SPIKYSHIELD: _giocaProteggiRom, BARRIER: _giocaBarrieraRom,
 
     SANDATTACK: _giocaSabbiaRom, SMOKESCREEN: _giocaSabbiaRom, FLASH: _giocaSabbiaRom,
     MUDSPORT: _giocaSabbiaRom, KINESIS: _giocaSabbiaRom,
