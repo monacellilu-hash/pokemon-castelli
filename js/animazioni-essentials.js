@@ -1336,6 +1336,135 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
+  // Fuocobomba (Move_FIRE_BLAST, src/battle_anim_fire.c — Metodo 1, 19 ott
+  // 2026): la "stella" iconica — 5 fiammelle (small_ember.png) disposte in
+  // anello intorno al bersaglio (angoli multipli di 360/5, UpdateFireRing-
+  // CircleOffset nell'originale), poi una croce di altre fiammelle sopra,
+  // ripetuta 3 volte. Niente proiettile che viaggia: tutto compare già
+  // intorno al bersaglio, a differenza di Lanciafiamme.
+  async function _giocaFuocobombaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_ember.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const dim = 20 * scalaX;
+    const raggio = 26 * scalaX;
+
+    for (let giro = 0; giro < 3; giro++) {
+      // Anello di 5 fiammelle.
+      ctx.save();
+      for (let k = 0; k < 5; k++) {
+        const ang = (k / 5) * Math.PI * 2 - Math.PI / 2;
+        ctx.drawImage(img, 0, 32, 32, 32,
+          arrivo.x + Math.cos(ang) * raggio - dim / 2,
+          arrivo.y + Math.sin(ang) * raggio * 0.6 - dim / 2, dim, dim);
+      }
+      ctx.restore();
+      await new Promise(r => setTimeout(r, 130));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Croce di fiammelle sopra il bersaglio.
+      ctx.save();
+      const bracci = [[0, -1], [0, 1], [-1, 0], [1, 0], [0, 0]];
+      for (const [bx, by] of bracci) {
+        ctx.drawImage(img, 0, 32, 32, 32,
+          arrivo.x + bx * raggio * 0.6 - dim / 2,
+          arrivo.y + by * raggio * 0.5 - dim / 2, dim, dim);
+      }
+      ctx.restore();
+      _scuotiSpriteRom(bersaglioEl, 1, 120);
+      await new Promise(r => setTimeout(r, 160));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Giro Fuoco (Move_FIRE_SPIN, src/battle_anim_scripts.s — Metodo 1, 19
+  // ott 2026): 3 fiammelle che girano a spirale STRETTA intorno al
+  // bersaglio (FireSpinEffect × 3, ogni fiammella con raggio/velocità
+  // leggermente diversi) — è una trappola che avvolge, non un proiettile.
+  async function _giocaGiroDiFuocoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('small_ember.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const dim = 16 * scalaX;
+    const spire = [
+      { raggio: 30, vel: 0.5, fase: 0 },
+      { raggio: 22, vel: 0.65, fase: 2 },
+      { raggio: 14, vel: 0.8, fase: 4 },
+    ];
+    _scuotiSpriteRom(bersaglioEl, 1, 700);
+    const t0 = performance.now();
+    const durata = 700;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        ctx.save();
+        for (const s of spire) {
+          const ang = s.fase + (t / durata) * Math.PI * 2 * 3 * s.vel;
+          const r = s.raggio * scalaX;
+          ctx.drawImage(img, 0, 32, 32, 32,
+            arrivo.x + Math.cos(ang) * r - dim / 2,
+            arrivo.y + Math.sin(ang) * r * 0.5 - dim / 2, dim, dim);
+        }
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Eruzione (Move_ERUPTION, src/battle_anim_fire.c — Metodo 1, 19 ott
+  // 2026): sassi caldi lanciati in aria da chi attacca, che poi ricadono
+  // sul campo con tremore — warm_rock.png, letto per intero dallo script.
+  async function _giocaEruzioneRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('warm_rock.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const partenza = _centroElRom(attaccanteEl, campoRect, 0.5, 0.6);
+    const dim = 18 * scalaX;
+    const sassi = [
+      { dx: -40, dy: 0 }, { dx: -15, dy: 20 }, { dx: 10, dy: -10 },
+      { dx: 35, dy: 10 }, { dx: -30, dy: -25 }, { dx: 20, dy: 25 },
+    ];
+    _scuotiSpriteRom(attaccanteEl, 2, 300);
+    const t0 = performance.now();
+    const durata = 650;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        ctx.save();
+        for (const s of sassi) {
+          // Arco: sale e poi ricade (parabola semplice).
+          const salita = Math.sin(prog * Math.PI) * 50 * scalaY;
+          const x = partenza.x + s.dx * scalaX * prog * 2;
+          const y = partenza.y - salita + s.dy * scalaY * prog;
+          ctx.drawImage(img, 0, 0, 32, 32, x - dim / 2, y - dim / 2, dim, dim);
+        }
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    _scuotiSpriteRom(bersaglioEl, 4, 300);
+    await new Promise(r => setTimeout(r, 300));
+  }
+
   // Idrocannone (Move_HYDRO_PUMP, src/battle_anim_scripts.s): stesso
   // movimento a onda di Lanciafiamme (gHydroPumpOrbSpriteTemplate usa anche
   // lui AnimToTargetInSinWave), grafica vera water_orb.png (16×16, 4
@@ -1829,9 +1958,13 @@ const AnimazioniEssentials = (function () {
     // coreografia diversa ma non radicalmente diversa (stesso tipo di
     // proiettile semplice), questa è un'approssimazione onesta, non un
     // placeholder a caso.
-    FIREBLAST: _giocaEmberRom, LAVAPLUME: _giocaEmberRom, FLAMEBURST: _giocaEmberRom,
+    // Metodo 1 (19 ott 2026): Fuocobomba/Giro Fuoco/Eruzione uscite dal
+    // riuso generico (script reali troppo diversi - niente proiettile).
+    // Magma Vulcano/Scoppio di Fuoco/Vampata/Giorno di Sole/Brace/Fuoco
+    // Magico restano qui per ora, non ancora letti.
+    FIREBLAST: _giocaFuocobombaRom, LAVAPLUME: _giocaEmberRom, FLAMEBURST: _giocaEmberRom,
     HEATWAVE: _giocaEmberRom, OVERHEAT: _giocaEmberRom, INCINERATE: _giocaEmberRom,
-    FIRESPIN: _giocaEmberRom, ERUPTION: _giocaEmberRom, MYSTICALFIRE: _giocaEmberRom,
+    FIRESPIN: _giocaGiroDiFuocoRom, ERUPTION: _giocaEruzioneRom, MYSTICALFIRE: _giocaEmberRom,
 
     BUBBLE: _giocaWaterGunRom, BUBBLEBEAM: _giocaWaterGunRom, WATERPULSE: _giocaWaterGunRom,
     BRINE: _giocaWaterGunRom, MUDDYWATER: _giocaWaterGunRom, WHIRLPOOL: _giocaWaterGunRom,
