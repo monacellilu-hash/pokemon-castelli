@@ -6339,84 +6339,41 @@ async function inizializzaSquadraTest() {
   // Volante: Pidgey, Spearow, Zubat
   // Buio: Murkrow, Houndour, Sneasel
 
+  // Assegna fino a 4 mosse DIVERSE (non più 4 copie della stessa) a uno
+  // slot — richiesta esplicita di Luca, 19 ott 2026, per testare in un
+  // colpo tutti i gruppi Metodo 1 fatti finora senza dover rimescolare la
+  // squadra ogni volta. Ogni mossa è indipendente: se una fallisce (rete)
+  // le altre restano, non si perde tutto il set come succedeva prima.
+  async function _impostaMosseTest(pkm, slugs) {
+    const mosse = [];
+    for (const slug of slugs) {
+      try {
+        const m = await PokeAPI.getMossa(slug);
+        mosse.push({ ...m, pp: m.ppMax });
+      } catch (e) {
+        console.warn(`[Squadra test] Mossa "${slug}" non insegnata a ${pkm.nome} (errore di rete):`, e.message);
+      }
+    }
+    if (mosse.length > 0) pkm.mosse = mosse;
+  }
+
   stato.squadra = [];
+  // Assegnazione per Pokémon → 4 mosse di test, una per gruppo "Metodo 1"
+  // diverso, così ogni Pokémon in squadra copre più animazioni da solo:
+  const MOSSE_TEST_PER_ID = {
+    59:  ['flamethrower', 'growl', 'taunt', 'mega-punch'],       // Arcanine: Fuoco, Suono(Ruggito), Sguardo(Sfottò), Pugno
+    130: ['hydro-pump', 'screech', 'charm', 'headbutt'],         // Gyarados: Acqua, Suono(Urlo), Sguardo(Fascino), "non-pugno" di confronto
+    131: ['mud-shot', 'supersonic', 'sweet-scent', 'body-slam'], // Lapras: Fanghiglia, Suono(Ipnoshock), Sguardo(Fragranza), "non-pugno"
+    143: ['signal-beam', 'sing', 'attract', 'lock-on'],          // Snorlax: Raggio Segnale, Suono(Ninnananna), Sguardo(Attrazione), Sguardo(Mira)
+    242: ['psywave', 'sleep-powder', 'dynamic-punch', 'torment'],// Blissey: Fluttuonda, Polvere Sonno, Pugno vero, Sguardo(Tormento)
+    149: ['thunderbolt', 'poison-powder', 'stun-spore', 'comet-punch'], // Dragonite: Fulmine, le altre 2 polveri, Pugno (Comet)
+  };
   for (const id of idSquadra) {
     const pkm = await Battle.creaIstanza(id, 100);
     if (pkm) {
       pkm.hpAttuale = pkm.hpMax; // HP pieni
-      // Arcanine (id 59): forza Flamethrower su TUTTE le mosse per testare
-      // le animazioni (sess. 29 set 2026: prima la mettevo solo in mosse[0],
-      // ma se il fetch falliva o l'array aveva un'altra forma restava con
-      // Rogodenti/le mosse di livello e Luca non se ne accorgeva finché non
-      // provava — meglio un Arcanine "monotematico" ma sicuro al 100%).
-      if (id === 59) {
-        try {
-          const fiammate = await PokeAPI.getMossa('flamethrower');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fiammate, pp: fiammate.ppMax }));
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Flamethrower ad Arcanine:', e.message);
-          mostraToast('⚠️ Flamethrower non insegnato ad Arcanine (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
-      // Gyarados (id 130): stesso trattamento con Idrocannone, per testare
-      // la seconda animazione "a onda" da fonte vera (sess. 29 set 2026).
-      if (id === 130) {
-        try {
-          const idro = await PokeAPI.getMossa('hydro-pump');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...idro, pp: idro.ppMax }));
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Idrocannone a Gyarados:', e.message);
-          mostraToast('⚠️ Idrocannone non insegnato a Gyarados (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
-      // Lapras (id 131)/Snorlax (id 143): stesso trattamento per testare
-      // Fanghiglia e Raggio Segnale, le 2 animazioni ROM aggiunte dopo
-      // Lanciafiamme/Idrocannone (sess. 1 ott 2026) — tipo non in tema
-      // (sono solo per il test, non è la squadra "vera").
-      if (id === 131) {
-        try {
-          const fanghiglia = await PokeAPI.getMossa('mud-shot');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fanghiglia, pp: fanghiglia.ppMax }));
-          console.log('[Squadra test] Fanghiglia insegnata a Lapras:', pkm.mosse);
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Fanghiglia a Lapras:', e.message);
-          mostraToast('⚠️ Fanghiglia non insegnata a Lapras (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
-      if (id === 143) {
-        try {
-          const segnale = await PokeAPI.getMossa('signal-beam');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...segnale, pp: segnale.ppMax }));
-          console.log('[Squadra test] Raggio Segnale insegnato a Snorlax:', pkm.mosse);
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Raggio Segnale a Snorlax:', e.message);
-          mostraToast('⚠️ Raggio Segnale non insegnato a Snorlax (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
-      // Blissey (id 242): Fluttuonda, 3ª animazione ROM aggiunta oggi.
-      if (id === 242) {
-        try {
-          const fluttuonda = await PokeAPI.getMossa('psywave');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fluttuonda, pp: fluttuonda.ppMax }));
-          console.log('[Squadra test] Fluttuonda insegnata a Blissey:', pkm.mosse);
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Fluttuonda a Blissey:', e.message);
-          mostraToast('⚠️ Fluttuonda non insegnata a Blissey (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
-      // Dragonite (id 149): Fulmine, per testare il doppio lampo + anello
-      // di scintille aggiunti il 19 ott 2026 (Metodo 1) — vale per tutto il
-      // gruppo Elettro generico (Tuonoshock/Tuono/Scarica/Zapcannon/ecc.).
-      if (id === 149) {
-        try {
-          const fulmine = await PokeAPI.getMossa('thunderbolt');
-          pkm.mosse = [0, 1, 2, 3].map(() => ({ ...fulmine, pp: fulmine.ppMax }));
-          console.log('[Squadra test] Fulmine insegnato a Dragonite:', pkm.mosse);
-        } catch (e) {
-          console.warn('[Squadra test] Impossibile insegnare Fulmine a Dragonite:', e.message);
-          mostraToast('⚠️ Fulmine non insegnato a Dragonite (errore di rete): riprova a preparare la squadra test.', 6000);
-        }
-      }
+      const slugs = MOSSE_TEST_PER_ID[id];
+      if (slugs) await _impostaMosseTest(pkm, slugs);
       stato.squadra.push(pkm);
     }
   }
