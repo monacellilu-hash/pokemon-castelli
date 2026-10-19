@@ -681,13 +681,213 @@ const AnimazioniEssentials = (function () {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
-  // Mosse di sguardo/fascino (Attrazione, Occhio di Falco, Sguardo
-  // Cupo...): scintillio sul bersaglio — grafica vera eye_sparkle.png
-  // (4 fotogrammi, 16×16).
+  // Mosse "di sguardo" rimaste sul riuso generico (Mira/Odora Pista/
+  // Previsione/Bis/Spavento): scintillio sul bersaglio — grafica vera
+  // eye_sparkle.png (4 fotogrammi, 16×16). Attrazione/Fascino/Blandisci/
+  // Sfottò/Tormento/Fragranza hanno coreografie reali troppo diverse
+  // (letto lo script vero, Metodo 1, 19 ott 2026) — uscite dal gruppo,
+  // vedi le funzioni dedicate sotto.
   async function _giocaSguardoRom(attaccanteEl, bersaglioEl) {
     const { img, pronta } = caricaImmagineRom('sparkle.png');
     await pronta;
     await _giocaTaglioRom(img, attaccanteEl, bersaglioEl, [0, 16, 32, 48], 16);
+  }
+
+  // Due segni di rabbia sul bersaglio (Move_TAUNT/TORMENT, src/battle_anim_
+  // scripts.s — Metodo 1, 19 ott 2026): comune a entrambe, letta dallo
+  // script vero. anger.png, un fotogramma 16x16, appare due volte (sinistra
+  // poi destra) sopra la testa del bersaglio.
+  async function _mostraRabbiaDoppiaRom(bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('anger.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.25);
+    const dim = 16 * scalaX;
+    for (const dx of [-20, 20]) {
+      ctx.save();
+      ctx.drawImage(img, 0, 0, 16, 16, centro.x + dx * scalaX - dim / 2, centro.y - dim / 2, dim, dim);
+      ctx.restore();
+      _scuotiSpriteRom(bersaglioEl, 1, 180);
+      await new Promise(r => setTimeout(r, 220));
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+  }
+
+  // Sfottò (Move_TAUNT): nuvoletta di pensiero + ditino che tentenna sopra
+  // chi attacca, POI i due segni di rabbia sul bersaglio.
+  async function _giocaSfottoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('thought_bubble.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.15);
+    const dim = 24 * scalaX;
+    ctx.save();
+    ctx.drawImage(img, 0, 0, 32, 32, centro.x - dim / 2, centro.y - dim / 2, dim, dim);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 400));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    await _mostraRabbiaDoppiaRom(bersaglioEl);
+  }
+
+  // Tormento (Move_TORMENT): chi attacca trema per la rabbia, poi i due
+  // segni di rabbia sul bersaglio (niente nuvoletta, a differenza di Sfottò).
+  async function _giocaTormentoRom(attaccanteEl, bersaglioEl) {
+    _scuotiSpriteRom(attaccanteEl, 2, 300);
+    await new Promise(r => setTimeout(r, 300));
+    await _mostraRabbiaDoppiaRom(bersaglioEl);
+  }
+
+  // Fascino/Blandisci (Move_CHARM — Captivate non esiste in Gen 3, nessuno
+  // script reale da leggere, riusa la stessa coreografia): chi attacca
+  // dondola, 3 cuori magenta gli compaiono vicino — TUTTO sull'attaccante,
+  // niente proiettile verso il bersaglio (a differenza di Attrazione sotto).
+  async function _giocaFascinoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('magenta_heart.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.3);
+    const dim = 16 * scalaX;
+    _scuotiSpriteRom(attaccanteEl, 1, 600);
+    for (const dx of [0, -20, 20]) {
+      ctx.save();
+      ctx.drawImage(img, 0, 0, 16, 16, centro.x + dx * scalaX - dim / 2, centro.y - dim / 2 - 10 * scalaY, dim, dim);
+      ctx.restore();
+      await new Promise(r => setTimeout(r, 250));
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Attrazione (Move_ATTRACT): cuore lanciato verso il bersaglio, scoppia
+  // in 6 cuoricini sparsi intorno a lui, poi cuori che salgono intorno a
+  // chi attacca — la più elaborata del gruppo, letta per intero dallo
+  // script vero (pink_heart_2.png, 5 fotogrammi 32x32).
+  async function _giocaAttrazioneRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('pink_heart_2.png');
+    await pronta;
+    const { scalaX, scalaY, partenza, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
+    const opts = { frameW: 32, frameH: 32, righeY: [0], frameMs: 9999, durataMs: 350, ampiezzaPx: 0 };
+
+    _scuotiSpriteRom(attaccanteEl, 1, 500);
+    await _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, 1, 0, opts);
+    // 6 cuoricini-scoppio sparsi intorno al bersaglio.
+    const dim = 14 * scalaX;
+    const offsets = [[-24, -18], [20, -24], [-14, 10], [22, 14], [0, -30], [-30, -4]];
+    for (const [dx, dy] of offsets) {
+      ctx.save();
+      ctx.globalAlpha = 0.9;
+      ctx.drawImage(img, 0, 32, 32, 32, arrivo.x + dx * scalaX - dim / 2, arrivo.y + dy * scalaY - dim / 2, dim, dim);
+      ctx.restore();
+    }
+    await new Promise(r => setTimeout(r, 300));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // Cuori che salgono intorno a chi ha subito la mossa (il bersaglio è
+    // ormai "infatuato" — resta sul bersaglio, coerente col significato).
+    const salita = [];
+    for (let i = 0; i < 5; i++) {
+      salita.push((async (ritardo, dx) => {
+        await new Promise(r => setTimeout(r, ritardo));
+        const t0 = performance.now();
+        const durata = 500;
+        return new Promise(resolve => {
+          const frame = () => {
+            const t = performance.now() - t0;
+            if (t > durata) { resolve(); return; }
+            const prog = t / durata;
+            ctx.save();
+            ctx.globalAlpha = 1 - prog;
+            ctx.drawImage(img, 0, 0, 32, 32,
+              arrivo.x + dx * scalaX - dim / 2, arrivo.y - prog * 40 * scalaY - dim / 2, dim, dim);
+            ctx.restore();
+            requestAnimationFrame(frame);
+          };
+          frame();
+        });
+      })(i * 100, (i - 2) * 12));
+    }
+    await Promise.all(salita);
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Fragranza (Move_SWEET_SCENT): petali rosa che ondeggiano intorno a chi
+  // attacca — pink_petal.png, 4 fotogrammi 8x8.
+  async function _giocaFragranzaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('pink_petal.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.4);
+    const dim = 10 * scalaX;
+    const petali = [];
+    for (let i = 0; i < 10; i++) petali.push({ ang: (i / 10) * Math.PI * 2, t0: i * 60 });
+    const durataTotale = 10 * 60 + 500;
+    const inizio = performance.now();
+    await new Promise(resolve => {
+      const loop = () => {
+        const adesso = performance.now() - inizio;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        for (const p of petali) {
+          const t = adesso - p.t0;
+          if (t < 0 || t > 500) continue;
+          const prog = t / 500;
+          const raggio = (20 + prog * 30) * scalaX;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog;
+          ctx.drawImage(img, 0, 0, 8, 8,
+            centro.x + Math.cos(p.ang + prog * 3) * raggio - dim / 2,
+            centro.y + Math.sin(p.ang + prog * 3) * raggio * 0.5 - dim / 2 - prog * 10 * scalaY, dim, dim);
+          ctx.restore();
+        }
+        if (adesso < durataTotale) requestAnimationFrame(loop);
+        else resolve();
+      };
+      loop();
+    });
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Mira (Move_LOCK_ON): un reticolo si blocca sul bersaglio — lock_on.png
+  // (32x40, mirino + scatto finale).
+  async function _giocaMiraRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('lock_on.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
+    const dim = 32 * scalaX;
+    const t0 = performance.now();
+    const durata = 500;
+    await new Promise(resolve => {
+      const frame = () => {
+        const t = performance.now() - t0;
+        if (t > durata) { resolve(); return; }
+        const prog = t / durata;
+        const scala = 2.2 - prog * 1.2;   // si restringe fino a "bloccarsi"
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.save();
+        ctx.globalAlpha = Math.min(1, prog * 3);
+        ctx.drawImage(img, 0, 0, 32, 32,
+          centro.x - dim * scala / 2, centro.y - dim * scala / 2, dim * scala, dim * scala);
+        ctx.restore();
+        requestAnimationFrame(frame);
+      };
+      frame();
+    });
+    _scuotiSpriteRom(bersaglioEl, 1, 150);
+    await new Promise(r => setTimeout(r, 200));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
   }
 
   // Trappole da campo (Punte, Punte Velenose, Levitoroccia...): punte che
@@ -1777,8 +1977,11 @@ const AnimazioniEssentials = (function () {
 
     SPIKES: _giocaPunteRom, TOXICSPIKES: _giocaPunteRom, STEALTHROCK: _giocaPunteRom,
 
-    ATTRACT: _giocaSguardoRom, LOCKON: _giocaSguardoRom, MEANLOOK: _giocaSguardoRom,
-    SWEETSCENT: _giocaSguardoRom, CAPTIVATE: _giocaSguardoRom, CHARM: _giocaSguardoRom,
+    // Metodo 1 (19 ott 2026): Attrazione/Fascino/Blandisci/Fragranza/Mira
+    // uscite dal riuso generico (script reali troppo diversi, vedi sopra).
+    // Mean Look/Foresight/Odor Sleuth restano qui per ora, non ancora letti.
+    ATTRACT: _giocaAttrazioneRom, LOCKON: _giocaMiraRom, MEANLOOK: _giocaSguardoRom,
+    SWEETSCENT: _giocaFragranzaRom, CAPTIVATE: _giocaFascinoRom, CHARM: _giocaFascinoRom,
     FORESIGHT: _giocaSguardoRom, ODORSLEUTH: _giocaSguardoRom,
 
     STRINGSHOT: _giocaRagnatelaRom, SPIDERWEB: _giocaRagnatelaRom, STICKYWEB: _giocaRagnatelaRom,
@@ -1789,8 +1992,11 @@ const AnimazioniEssentials = (function () {
     // Ultimo riuso (nessuna grafica nuova): mosse evasive/di schermaglia
     // che si adattano bene alle categorie già costruite.
     SUBSTITUTE: _giocaScudoRom, MINIMIZE: _giocaPiumaRom, DOUBLETEAM: _giocaPiumaRom,
-    TAUNT: _giocaSguardoRom, ENCORE: _giocaSguardoRom, DISABLE: _giocaSguardoRom,
-    TORMENT: _giocaSguardoRom,
+    // Sfottò/Tormento: script reali letti, condividono i 2 segni di rabbia
+    // sul bersaglio (Metodo 1, 19 ott 2026) — vedi _mostraRabbiaDoppiaRom.
+    // Bis/Spavento restano sul riuso generico per ora.
+    TAUNT: _giocaSfottoRom, ENCORE: _giocaSguardoRom, DISABLE: _giocaSguardoRom,
+    TORMENT: _giocaTormentoRom,
   });
 
   // Sess. 1 ott 2026 ("ultimo sforzo per coprirle tutte", richiesta di
