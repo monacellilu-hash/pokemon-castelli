@@ -1948,6 +1948,16 @@ const GameMap = (function () {
       return ha ? { ok: true } : { ok: false, messaggio: '🔒 Devi prima ottenere quella medaglia.' };
     }
 
+    // Requisito "leggendario:<idSpecie>" — un leggendario preciso già
+    // catturato (es. "leggendario:382" per Kyogre), 19 ott 2026: i gate
+    // post-Lega di Colonna 2 dipendono dal Pokédex, non da un flag a mano.
+    const legSingolo = s.match(/^leggendario:(\d+)$/);
+    if (legSingolo) {
+      const idLeg = parseInt(legSingolo[1], 10);
+      const ha = typeof legCatturato === 'function' && legCatturato(idLeg);
+      return ha ? { ok: true } : { ok: false, messaggio: '🔒 Non puoi ancora passare di qui.' };
+    }
+
     // Requisito "allenatore:<id>" — un trainer preciso già battuto (es.
     // "allenatore:sq_captain"), 19 ott 2026: le scale della Lega di Colonna
     // si aprono SOLO dopo aver battuto il Superquattro/Campione di quel

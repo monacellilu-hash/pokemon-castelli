@@ -1834,13 +1834,42 @@ const DATI_NPC = {
     azione: 'apriErboristaColonna',
   },
 
+  /* ── Gate di Colonna 2 (19 ott 2026, richiesta esplicita di Luca): 4 NPC
+     piazzati da Luca lungo il bordo nord, condividevano per errore l'id
+     del "Tifoso della Lega" generico (npc.js sotto) — ora 4 id propri.
+     NON dicono il motivo vero del blocco (voluto): solo "non si può
+     passare". Si tolgono da soli (gate:true) quando TUTTE le condizioni
+     sono vere insieme: Kyogre E Groudon catturati (Pokédex, molto più
+     semplice da controllare che "hai fatto l'episodio X") + la cutscene
+     di Maso/Zapdos a Percorso Monte Po 3 completata. ── */
+  'colonna2_gate_1': {
+    sprite: 'NPC 15', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
+    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
+    dialogo: ['No, da qui non si passa. Manco i Campioni ce la fanno.'],
+  },
+  'colonna2_gate_2': {
+    sprite: 'NPC 17', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
+    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
+    dialogo: ['Fermo lì. Nun c\'è verso de fatte passà, oggi.'],
+  },
+  'colonna2_gate_3': {
+    sprite: 'NPC 21', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
+    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
+    dialogo: ['Nemmeno a chiede bello. Da qui nun passa nessuno.'],
+  },
+  'colonna2_gate_4': {
+    sprite: 'NPC 25', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
+    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
+    dialogo: ['Torna quando sarai davero pronto. Nun è oggi il giorno giusto.'],
+  },
+
   // NPC che parlano della Lega (semplice colore, sess. 14 set 2026).
   'colonna_npc_lega_1': {
-    sprite: 'NPC 12', nome: 'Tifoso della Lega', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 12', nome: 'Tifoso della Lega', direzione: 'sud', movimento: 'random',
     dialogo: ['Siamo arrivati fin qui! Si sente l\'energia nell\'aria, la Lega è proprio dietro l\'angolo.'],
   },
   'colonna_npc_lega_2': {
-    sprite: 'NPC 08', nome: 'Anziano di Colonna', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 08', nome: 'Anziano di Colonna', direzione: 'sud', movimento: 'random',
     dialogo: ['Il Campione è imbattuto da anni, dicono. Ci vuole una squadra fortissima per sfidarlo.'],
   },
 
@@ -1848,23 +1877,23 @@ const DATI_NPC = {
   // piazza (richiesta esplicita di Luca: "a pezzi da più npc" — il
   // giocatore deve parlarci con 4/5 per farsi un'idea completa).
   'colonna_npc_cotral_lore_1': {
-    sprite: 'NPC 02', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 02', nome: 'Abitante', direzione: 'sud', movimento: 'random',
     dialogo: ['Hai visto quella statua enorme in piazza? Il Team CoTrAL l\'ha tirata su dal nulla, in una notte.'],
   },
   'colonna_npc_cotral_lore_2': {
-    sprite: 'NPC 04', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 04', nome: 'Abitante', direzione: 'sud', movimento: 'random',
     dialogo: ['Dicono che la salutano ogni mattina all\'alba, tutti in fila. Strano, per gente che dovrebbe occuparsi di autobus.'],
   },
   'colonna_npc_cotral_lore_3': {
-    sprite: 'NPC 05', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 05', nome: 'Abitante', direzione: 'sud', movimento: 'random',
     dialogo: ['Ho sentito dire che vogliono controllare il meteo... ma che c\'entra una statua con la pioggia?'],
   },
   'colonna_npc_cotral_lore_4': {
-    sprite: 'NPC 09', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 09', nome: 'Abitante', direzione: 'sud', movimento: 'random',
     dialogo: ['Prima erano solo tizi con la tuta arancione, ora si comportano come una setta. Io la piazza la evito, di sera.'],
   },
   'colonna_npc_cotral_lore_5': {
-    sprite: 'NPC 14', nome: 'Abitante', direzione: 'sud', movimento: 'fisso',
+    sprite: 'NPC 14', nome: 'Abitante', direzione: 'sud', movimento: 'random',
     dialogo: ['Qualcuno dice che la statua raffigura un Pokémon leggendario. Io non ci ho mai creduto ai leggendari... ma dopo quella cosa lì, chissà.'],
   },
 
