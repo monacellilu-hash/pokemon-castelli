@@ -16,6 +16,12 @@
 
 const AnimazioniEssentials = (function () {
   const ESS_W = 512, ESS_H = 384;
+  // Richiesta esplicita di Luca (19 ott 2026): gli effetti delle mosse
+  // erano troppo piccoli — +12% su TUTTI (vecchio motore Essentials e
+  // nuovo Metodo 1), un solo numero invece di tarare ogni mossa a mano.
+  // Va SOLO sulla dimensione/distanza delle particelle, non sugli sprite
+  // veri dei Pokémon (quelli restano <img> HTML, fuori da questo canvas).
+  const BUMP_EFFETTI = 1.12;
   const CELL = 192, COLS = 5;
   const FPS = 20;
   const CARTELLA = 'sprites/animazioni_mosse_essentials/';
@@ -113,7 +119,7 @@ const AnimazioniEssentials = (function () {
 
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
 
     // FOCUS_USER_X/FOCUS_TARGET_X (sopra) presumono SEMPRE "utente a
     // sinistra (dove sta il giocatore), bersaglio a destra (dove sta il
@@ -353,7 +359,7 @@ const AnimazioniEssentials = (function () {
     const d = dimFrame || 32; // lato del fotogramma quadrato (32 di default, cut/slash/vine/artigli/esplosione)
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
 
@@ -429,7 +435,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.55);
 
@@ -480,7 +486,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const bocca = _centroElRom(attaccanteEl, campoRect, 0.6, 0.35);
 
@@ -527,7 +533,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.55);
 
@@ -571,7 +577,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
 
@@ -641,7 +647,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.75);
     ctx.save();
@@ -668,7 +674,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     _scuotiSpriteRom(bersaglioEl, 2, 220);
@@ -702,7 +708,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.25);
     const dim = 16 * scalaX;
@@ -723,7 +729,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.15);
     const dim = 24 * scalaX;
@@ -752,7 +758,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.3);
     const dim = 16 * scalaX;
@@ -824,7 +830,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(attaccanteEl, campoRect, 0.5, 0.4);
     const dim = 10 * scalaX;
@@ -863,7 +869,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const dim = 32 * scalaX;
@@ -898,7 +904,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.85);
     const righeY = [0, 16, 32, 48];
@@ -1000,7 +1006,7 @@ const AnimazioniEssentials = (function () {
     await Promise.all(attese);
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     // Sfondo scurito per tutta la durata del colpo (disegnato una volta
@@ -1102,7 +1108,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const offsets = [{ x: -10, y: -8 }, { x: 10, y: 2 }, { x: 10, y: -6 }];
@@ -1135,7 +1141,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const primoDestra = Math.random() < 0.5; // choosetwoturnanim: lato casuale, poi alterna
@@ -1165,7 +1171,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     for (let i = 0; i < 2; i++) {
@@ -1194,7 +1200,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const originale = bersaglioEl ? bersaglioEl.style.transform : '';
@@ -1225,7 +1231,7 @@ const AnimazioniEssentials = (function () {
     await Promise.all([prontaGust, prontaImpact]);
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const centro = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
 
@@ -1271,7 +1277,7 @@ const AnimazioniEssentials = (function () {
   async function _preparaAnimOnda(attaccanteEl, bersaglioEl) {
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     return {
       scalaX, scalaY,
@@ -1347,7 +1353,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const dim = 20 * scalaX;
@@ -1389,7 +1395,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const arrivo = _centroElRom(bersaglioEl, campoRect, 0.5, 0.5);
     const dim = 16 * scalaX;
@@ -1430,7 +1436,7 @@ const AnimazioniEssentials = (function () {
     await pronta;
     ottieniCanvas();
     const { w, h } = ridimensionaCanvas();
-    const scalaX = w / ESS_W, scalaY = h / ESS_H;
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
     const campoRect = canvas.getBoundingClientRect();
     const partenza = _centroElRom(attaccanteEl, campoRect, 0.5, 0.6);
     const dim = 18 * scalaX;
