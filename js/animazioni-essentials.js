@@ -1061,6 +1061,96 @@ const AnimazioniEssentials = (function () {
     await _giocaTaglioRom(img, attaccanteEl, attaccanteEl, [0, 16, 32, 48], 16);
   }
 
+  // Riposo (Move_REST, src/battle_anim_scripts.s — Metodo 1, 19 ott
+  // 2026): 3 lettere "Z" (sonno) che salgono e sfumano sopra chi la usa —
+  // letter_z.png, niente a che fare con lo scintillio verde delle altre
+  // cure, è "si sta addormentando", non "si sta curando con energia".
+  async function _giocaRiposoRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('letter_z.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.65, 0.25);
+    const dim = 20 * scalaX;
+    for (let i = 0; i < 3; i++) {
+      const t0 = performance.now();
+      const durata = 500;
+      await new Promise(resolve => {
+        const frame = () => {
+          const t = performance.now() - t0;
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          if (t > durata) { resolve(); return; }
+          const prog = t / durata;
+          ctx.save();
+          ctx.globalAlpha = 1 - prog * 0.7;
+          ctx.drawImage(img, 0, 0, 32, 32,
+            centro.x + i * 6 * scalaX - dim / 2, centro.y - prog * 30 * scalaY - dim / 2, dim, dim);
+          ctx.restore();
+          requestAnimationFrame(frame);
+        };
+        frame();
+      });
+    }
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Chiaro di Luna (Move_MOONLIGHT, src/battle_anim_scripts.s — Metodo 1,
+  // 19 ott 2026): una luna vera appare mentre lo sfondo si scurisce — un
+  // concetto completamente diverso dallo scintillio verde delle altre cure.
+  async function _giocaLunaRom(attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom('moon.png');
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.6, 0.15);
+    const dim = 40 * scalaX;
+    ctx.save();
+    ctx.fillStyle = 'rgba(0,0,30,0.35)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.restore();
+    let alpha = 0;
+    await new Promise(resolve => {
+      const frame = () => {
+        alpha = Math.min(1, alpha + 0.05);
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.drawImage(img, 0, 0, 64, 64, centro.x - dim / 2, centro.y - dim / 2, dim, dim);
+        ctx.restore();
+        if (alpha < 1) requestAnimationFrame(frame);
+        else resolve();
+      };
+      frame();
+    });
+    await new Promise(r => setTimeout(r, 500));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // Covauova/Latte Caldo (Move_SOFT_BOILED/MILK_DRINK — Metodo 1, 19 ott
+  // 2026): un uovo che si incrina o una bottiglia di latte, non uno
+  // scintillio — niente proiettile, tutto fermo su chi la usa.
+  async function _giocaUovoLatteRom(nomeFile, dimFotogramma, attaccanteEl, bersaglioEl) {
+    const { img, pronta } = caricaImmagineRom(nomeFile);
+    await pronta;
+    ottieniCanvas();
+    const { w, h } = ridimensionaCanvas();
+    const scalaX = (w / ESS_W) * BUMP_EFFETTI, scalaY = (h / ESS_H) * BUMP_EFFETTI;
+    const campoRect = canvas.getBoundingClientRect();
+    const centro = _centroElRom(attaccanteEl, campoRect, 0.6, 0.45);
+    const dim = 26 * scalaX;
+    _scuotiSpriteRom(attaccanteEl, 1, 500);
+    ctx.save();
+    ctx.drawImage(img, 0, 0, dimFotogramma, dimFotogramma, centro.x - dim / 2, centro.y - dim / 2, dim, dim);
+    ctx.restore();
+    await new Promise(r => setTimeout(r, 500));
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  async function _giocaCovauovaRom(a, b) { await _giocaUovoLatteRom('breaking_egg.png', 32, a, b); }
+  async function _giocaLatteCaldoRom(a, b) { await _giocaUovoLatteRom('milk_bottle.png', 32, a, b); }
+
   // Artigliate (Graffio, Artiglio di Metallo, Artiglio di Drago...): 5
   // fotogrammi di un graffio che cresce — grafica vera claw_slash.png.
   async function _giocaArtigliRom(attaccanteEl, bersaglioEl) {
@@ -2200,10 +2290,15 @@ const AnimazioniEssentials = (function () {
     BULKUP: _giocaPotenziamentoRom, CALMMIND: _giocaMenteCalmaRom,
     DRAGONDANCE: _giocaDanzaDragoRom, COSMICPOWER: _giocaPotenziamentoRom,
 
-    RECOVER: _giocaCuraRom, SOFTBOILED: _giocaCuraRom, REST: _giocaCuraRom,
-    MORNINGSUN: _giocaCuraRom, SYNTHESIS: _giocaCuraRom, MILKDRINK: _giocaCuraRom,
+    // Metodo 1 (19 ott 2026): Riposo/Chiaro di Luna/Covauova/Latte Caldo
+    // uscite dal riuso generico (concetti visivi diversi da "scintillio
+    // verde di energia" — sonno, luna, cibo). Recover/Morning Sun/
+    // Synthesis/Wish/Slack Off restano sullo scintillio, coerente coi
+    // loro script reali (tutti e 4 usano stelle/scintille vere).
+    RECOVER: _giocaCuraRom, SOFTBOILED: _giocaCovauovaRom, REST: _giocaRiposoRom,
+    MORNINGSUN: _giocaCuraRom, SYNTHESIS: _giocaCuraRom, MILKDRINK: _giocaLatteCaldoRom,
     ROOST: _giocaCuraRom, SLACKOFF: _giocaCuraRom, WISH: _giocaCuraRom,
-    MOONLIGHT: _giocaCuraRom,
+    MOONLIGHT: _giocaLunaRom,
 
     // Mosse che infliggono stato (overlay sul bersaglio, riuso di grafiche
     // già verificate per lo stesso tipo/elemento: Tossina/Velenopolvere
