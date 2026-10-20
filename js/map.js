@@ -9586,7 +9586,11 @@ const GameMap = (function () {
 
     _tentaIncontro(ev) {
       if (typeof stato === 'undefined' || stato.incontroAttivo) return;
-      if (stato.repellentePassi && stato.repellentePassi > 0) return;
+      // Bosco del Signor Tuscolo (20 ott 2026, richiesta esplicita di Luca):
+      // il Repellente non deve funzionare qui, a prescindere da quando è
+      // stato attivato (anche se usato prima di entrare nel bosco).
+      const repellenteDisattivato = (mappaCorrente === 'bosco_signor_tuscolo');
+      if (!repellenteDisattivato && stato.repellentePassi && stato.repellentePassi > 0) return;
 
       // Celebi e il roaming hanno la priorità sull'incontro normale (eventi
       // rari, niente repellente).

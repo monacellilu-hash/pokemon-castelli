@@ -620,6 +620,14 @@ const Battle = (function () {
   };
   // MOD 6B — Mosse che fanno svenire chi le usa (dopo aver colpito).
   const MOSSE_AUTODISTRUZIONE = new Set(['explosion', 'self-destruct', 'selfdestruct']);
+  // Memento (20 ott 2026, bug segnalato da Luca: "non fa quello che deve
+  // fare"): abbassa Attacco/Att.Speciale dell'avversario di 2 stadi E chi la
+  // usa sviene sempre, a prescindere dal risultato dell'abbassamento — non
+  // era gestita per niente: l'abbassamento statistiche funzionava già (è
+  // una mossa di stato pura, passa dal motore generico), ma lo svenimento
+  // di chi la usa mancava del tutto. Set separato da MOSSE_AUTODISTRUZIONE
+  // perché Umidità (damp) blocca Esplosione/Autodistruzione ma NON Memento.
+  const MOSSE_AUTOSACRIFICIO = new Set(['memento']);
 
   // Mosse "sonore" vere (per Insonorizzato/soundproof, 19 ott 2026) — solo
   // quelle che esistono già in Gen 1-3 (ID ≤ 386, CLAUDE.md).
@@ -2636,6 +2644,14 @@ const Battle = (function () {
       lampeggia(att);
       aggiornaPannelli();
       await di(`${etichettaAtt} si è sacrificato nell'esplosione!`);
+    }
+    // Memento (20 ott 2026): sviene sempre, anche se l'abbassamento delle
+    // statistiche è stato bloccato da un'Abilità (Corpochiaro/Forbiciforti...).
+    if (MOSSE_AUTOSACRIFICIO.has(mossa.nome) && att.hpAttuale > 0) {
+      att.hpAttuale = 0;
+      lampeggia(att);
+      aggiornaPannelli();
+      await di(`${etichettaAtt} si è sacrificato con Memento!`);
     }
 
     // 3) Mosse a ricarica (Iper Raggio & co.): il prossimo turno salterà.
