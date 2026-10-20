@@ -239,13 +239,14 @@ const DATI_TRAINER = {
     // Sess. 1 ott 2026: squadra portata a 6 (prima 4, troppo facile per
     // essere la prima palestra) + scorta di cura (richiesta di Luca).
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
+    // Mosse fissate a mano da Luca (20 ott 2026, docs-nogithub/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 69,  livello: 9 },   // Bellsprout
-      { id: 114, livello: 10 },  // Tangela
-      { id: 271, livello: 11 },  // Lombre
-      { id: 2,   livello: 12 },  // Ivysaur
-      { id: 44,  livello: 13 },  // Gloom
-      { id: 253, livello: 14 },  // Grovyle (l'asso)
+      { id: 69,  livello: 9,  mosse: ['vine-whip', 'growth'] },   // Bellsprout
+      { id: 114, livello: 10, mosse: ['constrict', 'ingrain', 'sleep-powder', 'absorb'] },  // Tangela
+      { id: 271, livello: 11, mosse: ['astonish', 'growl', 'absorb'] },  // Lombre
+      { id: 2,   livello: 12, mosse: ['tackle', 'growl', 'leech-seed', 'leaf-blade'] },  // Ivysaur
+      { id: 44,  livello: 13, mosse: ['absorb', 'poison-powder', 'razor-leaf'] },  // Gloom
+      { id: 253, livello: 14, mosse: ['razor-leaf', 'growth', 'mega-drain', 'quick-attack'] },  // Grovyle (l'asso)
     ],
     oggettiCura: [{ chiave: 'pozione', quantita: 3 }],
     dialogo_prima: 'Sono Donnie, Capopalestra di Frascati. Cresciuto tra le pesche e le vigne di mio padre, ho allenato questi Pokémon Erba con le mie mani — e qualche erba l\'ho pure assaggiata. Odio solo una cosa quanto le gelate tardive: il Team GdF. Vediamo se reggi il confronto!',
@@ -304,12 +305,12 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 36,  livello: 16 },  // Clefable
-      { id: 177, livello: 17 },  // Natu
-      { id: 326, livello: 18 },  // Grumpig
-      { id: 64,  livello: 19 },  // Kadabra
-      { id: 97,  livello: 20 },  // Hypno
-      { id: 196, livello: 21 },  // Espeon (l'asso)
+      { id: 36,  livello: 16, mosse: ['double-slap', 'sing', 'minimize', 'protect'] },  // Clefable
+      { id: 177, livello: 17, mosse: ['leer', 'peck', 'night-shade'] },  // Natu
+      { id: 326, livello: 18, mosse: ['splash', 'psywave', 'odor-sleuth', 'psybeam'] },  // Grumpig
+      { id: 64,  livello: 19, mosse: ['teleport', 'kinesis', 'confusion', 'disable'] },  // Kadabra
+      { id: 97,  livello: 20, mosse: ['pound', 'hypnosis', 'disable', 'confusion'] },  // Hypno
+      { id: 196, livello: 21, mosse: ['tail-whip', 'helping-hand', 'sand-attack', 'confusion'] },  // Espeon (l'asso)
     ],
     oggettiCura: [{ chiave: 'pozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'Benvenuto all\'Abbazia di San Nilo, pellegrino. Sono Igino: tra questi chiostri millenari ho imparato che la vera forza nasce dalla quiete della mente. I miei Pokémon Psico e io meditiamo insieme ogni alba. Mostrami la disciplina del tuo spirito!',
@@ -425,12 +426,12 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 125, livello: 30 },  // Electabuzz
-      { id: 26,  livello: 31 },  // Raichu
-      { id: 101, livello: 32 },  // Electrode
-      { id: 135, livello: 32 },  // Jolteon
-      { id: 310, livello: 33 },  // Manectric
-      { id: 181, livello: 34 },  // Ampharos (l'asso)
+      { id: 125, livello: 30, mosse: ['quick-attack', 'thunder-punch', 'light-screen', 'swift'] },  // Electabuzz
+      { id: 26,  livello: 31, mosse: ['tail-whip', 'thunder-shock', 'thunderbolt', 'quick-attack'] },  // Raichu
+      { id: 101, livello: 32, mosse: ['screech', 'spark', 'self-destruct'] },  // Electrode
+      { id: 135, livello: 32, mosse: ['sand-attack', 'thunder-shock', 'thunderbolt', 'double-kick'] },  // Jolteon
+      { id: 310, livello: 33, mosse: ['quick-attack', 'spark'] },  // Manectric
+      { id: 181, livello: 34, mosse: ['earthquake', 'thunder-wave', 'thunderbolt', 'thunder-punch'] },  // Ampharos (l'asso)
     ],
     oggettiCura: [{ chiave: 'superpozione', quantita: 2 }, { chiave: 'iperpozione', quantita: 1 }],
     dialogo_prima: 'Ciao! Sono Biretta, astronoma dell\'Osservatorio di Monte Porzio. Ogni notte studio le stelle… e i miei Pokémon Elettro generano l\'energia dei telescopi! Preparati: la mia squadra colpisce alla velocità della luce!',
@@ -904,12 +905,14 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 297, livello: 35 },  // Hariyama
-      { id: 107, livello: 36 },  // Hitmonchan
-      { id: 106, livello: 37 },  // Hitmonlee
-      { id: 257, livello: 38 },  // Blaziken
-      { id: 308, livello: 39 },  // Medicham
-      { id: 68,  livello: 40 },  // Machamp (l'asso)
+      { id: 297, livello: 35, mosse: ['fake-out', 'whirlwind', 'knock-off', 'smelling-salts'] },  // Hariyama
+      { id: 107, livello: 36, mosse: ['fire-punch', 'ice-punch', 'thunder-punch', 'sky-uppercut'] },  // Hitmonchan
+      { id: 106, livello: 37, mosse: ['focus-energy', 'high-jump-kick', 'mind-reader', 'foresight'] },  // Hitmonlee
+      { id: 257, livello: 38, mosse: ['sand-attack', 'bulk-up', 'quick-attack', 'blaze-kick'] },  // Blaziken
+      { id: 308, livello: 39, mosse: ['hidden-power', 'mind-reader', 'calm-mind', 'high-jump-kick'] },  // Medicham
+      // Granfisico SEMPRE come prima mossa in campo (richiesta esplicita di
+      // Luca) — vedi primaMossa in creaIstanza/_scegliMossaPesata, js/battle.js.
+      { id: 68,  livello: 40, mosse: ['earthquake', 'cross-chop', 'revenge', 'bulk-up'], primaMossa: 'bulk-up' },  // Machamp (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 2 }],
     dialogo_prima: 'Fermo lì! Sono Baso di Rocca di Papa, e qui ci si allena scalando la pietra viva del Vulcano Laziale! Il Monte Cavo ci guarda: i miei Pokémon hanno i pugni duri come il peperino su cui mi alleno. Spero che tu non sia di quelli che si sgretolano al primo colpo!',
@@ -997,12 +1000,12 @@ const DATI_TRAINER = {
     // Lairon (il Pokémon che Steelix sostituisce), Steelix vero è 208.
     // Corretto qui con l'id giusto per il nome scritto.
     squadra: [
-      { id: 299, livello: 41 },  // Nosepass
-      { id: 306, livello: 42 },  // Aggron
-      { id: 208, livello: 43 },  // Steelix
-      { id: 76,  livello: 44 },  // Golem
-      { id: 112, livello: 45 },  // Rhydon
-      { id: 248, livello: 46 },  // Tyranitar (l'asso)
+      { id: 299, livello: 41, mosse: ['thunder-wave', 'rock-slide', 'sandstorm', 'rest'] },  // Nosepass
+      { id: 306, livello: 42, mosse: ['roar', 'take-down', 'iron-tail', 'protect'] },  // Aggron
+      { id: 208, livello: 43, mosse: ['harden', 'rage', 'earthquake', 'slam'] },  // Steelix
+      { id: 76,  livello: 44, mosse: ['earthquake', 'rollout', 'rock-blast'] },  // Golem
+      { id: 112, livello: 45, mosse: ['thrash', 'scary-face', 'rock-blast', 'horn-drill'] },  // Rhydon
+      { id: 248, livello: 46, mosse: ['crunch', 'rock-slide', 'flamethrower', 'earthquake'] },  // Tyranitar (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 2 }, { chiave: 'superpozione', quantita: 1 }],
     dialogo_prima: 'ALT! Chi entra nei Castra Albana deve dimostrare il proprio valore! Sono Giorgia: queste mura sono di pietra viva da duemila anni, e la mia palestra ne custodisce la durezza. Niente trucchi, niente scuse: solo pietra contro pietra. AVE!',
@@ -1017,12 +1020,12 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 61,  livello: 24 },  // Poliwhirl
-      { id: 134, livello: 25 },  // Vaporeon
-      { id: 119, livello: 26 },  // Seaking
-      { id: 195, livello: 26 },  // Quagsire
-      { id: 184, livello: 27 },  // Azumarill
-      { id: 130, livello: 28 },  // Gyarados (l'asso)
+      { id: 61,  livello: 24, mosse: ['bubble', 'hypnosis', 'water-gun', 'double-slap'] },  // Poliwhirl
+      { id: 134, livello: 25, mosse: ['helping-hand', 'sand-attack', 'water-gun', 'quick-attack'] },  // Vaporeon
+      { id: 119, livello: 26, mosse: ['water-sport', 'supersonic', 'horn-attack', 'flail'] },  // Seaking
+      { id: 195, livello: 26, mosse: ['water-gun', 'slam', 'mud-shot', 'amnesia'] },  // Quagsire
+      { id: 184, livello: 27, mosse: ['tail-whip', 'water-gun', 'rollout', 'bubble-beam'] },  // Azumarill
+      { id: 130, livello: 28, mosse: ['thrash', 'bite', 'dragon-rage'] },  // Gyarados (l'asso)
     ],
     oggettiCura: [{ chiave: 'superpozione', quantita: 2 }],
     dialogo_prima: 'Ehilà! Sono Matilde, come i Quattro Mori della nostra fontana! Lo sai che alla Sagra dell\'Uva la fontana versa vino invece dell\'acqua? Ma per i miei Pokémon solo acqua di sorgente, eh! Vediamo se sai navigare in acque agitate!',
@@ -1116,12 +1119,14 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // il Pokémon più forte (l'asso, ultimo della squadra) fisso al fianco
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md).
     squadra: [
-      { id: 229, livello: 51 },  // Houndoom
-      { id: 319, livello: 51 },  // Sharpedo
-      { id: 275, livello: 51 },  // Shiftry
-      { id: 342, livello: 51 },  // Crawdaunt
-      { id: 359, livello: 51 },  // Absol
-      { id: 197, livello: 52 },  // Umbreon (l'asso)
+      { id: 229, livello: 51, mosse: ['crunch', 'odor-sleuth', 'feint-attack', 'flamethrower'] },  // Houndoom
+      { id: 319, livello: 51, mosse: ['slash', 'crunch', 'swagger', 'skull-bash'] },  // Sharpedo
+      { id: 275, livello: 51, mosse: ['razor-leaf', 'growth', 'crunch', 'frenzy-plant'] },  // Shiftry
+      { id: 342, livello: 51, mosse: ['crunch', 'surf', 'crabhammer', 'swords-dance'] },  // Crawdaunt
+      { id: 359, livello: 51, mosse: ['double-team', 'slash', 'future-sight', 'crunch'] },  // Absol
+      // Si cura con Ripresa sotto il 40% HP (richiesta esplicita di Luca) —
+      // vedi prediligeCura in creaIstanza/_scegliMossaPesata, js/battle.js.
+      { id: 197, livello: 52, mosse: ['pursuit', 'crunch', 'screech', 'recover'], prediligeCura: true },  // Umbreon (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Isa. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
@@ -1223,12 +1228,12 @@ const DATI_TRAINER = {
     // Squadra aggiornata da Luca (10 ott 2026, docs/SQUADRE-CAPIPALESTRA.md):
     // cap alzato da 58 a 63, aggiornato anche in js/data.js (PALESTRE['genzano'].levelCap).
     squadra: [
-      { id: 38,  livello: 62 },  // Ninetales
-      { id: 59,  livello: 62 },  // Arcanine
-      { id: 323, livello: 62 },  // Camerupt
-      { id: 157, livello: 62 },  // Typhlosion
-      { id: 136, livello: 62 },  // Flareon
-      { id: 6,   livello: 63 },  // Charizard (l'asso)
+      { id: 38,  livello: 62, mosse: ['protect', 'confuse-ray', 'flamethrower', 'heat-wave'] },  // Ninetales
+      { id: 59,  livello: 62, mosse: ['fire-fang', 'flamethrower', 'bulk-up', 'extreme-speed'] },  // Arcanine
+      { id: 323, livello: 62, mosse: ['rock-slide', 'earthquake', 'eruption'] },  // Camerupt
+      { id: 157, livello: 62, mosse: ['fire-blast', 'will-o-wisp', 'swift', 'flamethrower'] },  // Typhlosion
+      { id: 136, livello: 62, mosse: ['fire-spin', 'earthquake', 'razor-leaf', 'flamethrower'] },  // Flareon
+      { id: 6,   livello: 63, mosse: ['flamethrower', 'wing-attack', 'signal-beam', 'ice-beam'] },  // Charizard (l'asso)
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Benvenuto a Genzano, dove ogni giugno la via si copre di petali per l\'Infiorata! Sono Camilla, l\'ultima Capopalestra dei Castelli. Sotto questi fiori scorre il calore del vulcano laziale: senza quel fuoco, l\'Infiorata non fiorirebbe così bella. I miei Pokémon di tipo Fuoco sono la stessa fiamma che nutre i miei fiori. Sei l\'ultimo quadro della mia Infiorata: vediamo di che colori sei fatto!',

@@ -546,6 +546,11 @@ const Battle = (function () {
       abilitaChiave: abilitaChiaveDaSlot(dati, abilitaSlot), // slug inglese (es. "static")
       natura: generaNatura(),          // richiesta di Luca, 10 ott 2026: ±10% su due stat
       ev: evAzzerati(),                // Punti Effort: iniziano sempre a 0, si guadagnano in lotta
+      // 20 ott 2026 (richiesta esplicita di Luca, es. Machamp/Umbreon delle
+      // palestre): comportamenti IA opzionali per singolo Pokémon di una
+      // squadra avversaria — vedi scegliMossaNemico().
+      primaMossa: (opzioni && opzioni.primaMossa) || null,   // slug: usata SEMPRE al primo turno in campo, poi normale
+      prediligeCura: !!(opzioni && opzioni.prediligeCura),   // sotto il 40% HP preferisce una mossa di cura se ce l'ha
     };
     ricalcolaStatistiche(ist);
     ist.hpAttuale = ist.hpMax;
@@ -2947,11 +2952,33 @@ const Battle = (function () {
   // diversi): pesa le mosse offensive per danno atteso contro il MIGLIOR
   // bersaglio disponibile (potenza × efficacia di tipo × STAB), le mosse
   // di stato restano scegliibili ma con un peso base basso.
+  // Mosse di cura totale/quasi totale (per prediligeCura, vedi sotto):
+  // elenco dei Gen 1-3 realmente disponibili (niente Wish: non cura subito).
+  const MOSSE_CURA_TOTALE = new Set(['recover', 'soft-boiled', 'milk-drink', 'rest',
+    'moonlight', 'morning-sun', 'synthesis']);
+
   function _scegliMossaPesata(attaccante, possibiliBersagli) {
     if (attaccante.inCarica) return attaccante.inCarica;
     if (attaccante.furia) return attaccante.mosse.find(m => m.nome === attaccante.furia.nome) || mossaFallback();
+    // Prima mossa fissa (20 ott 2026, richiesta esplicita di Luca, es.
+    // Machamp che apre sempre con Granfisico): solo al primo turno in campo
+    // di questo Pokémon, poi torna alla scelta normale.
+    if (attaccante.primaMossa && !attaccante._primaMossaFatta) {
+      attaccante._primaMossaFatta = true;
+      const m = attaccante.mosse.find(mm => mm.nome === attaccante.primaMossa && mm.pp > 0);
+      if (m) return m;
+    }
     const utilizzabili = attaccante.mosse.filter(m => m.pp > 0);
     if (!utilizzabili.length) return mossaFallback();
+    // Predilige una mossa di cura sotto il 40% HP (20 ott 2026, richiesta
+    // esplicita di Luca, es. Umbreon): se ne ha una disponibile, la usa
+    // sempre a quella soglia — non "forse", come i giochi veri non sprecano
+    // un turno di cura se possono vincere lo scambio altrimenti, ma qui è
+    // semplice e prevedibile apposta (comportamento voluto, non un bug).
+    if (attaccante.prediligeCura && attaccante.hpAttuale / attaccante.hpMax < 0.4) {
+      const cura = utilizzabili.find(m => MOSSE_CURA_TOTALE.has(m.nome));
+      if (cura) return cura;
+    }
     const bersagli = possibiliBersagli.filter(b => b && b.hpAttuale > 0);
     if (!bersagli.length) return utilizzabili[Math.floor(Math.random() * utilizzabili.length)];
 
@@ -4227,7 +4254,7 @@ const Battle = (function () {
         const facile = statoGioco && statoGioco.difficolta === 'facile';
         for (const voce of datiAllenatore.squadra) {
           const livello = facile ? Math.max(2, voce.livello - 2) : voce.livello;
-          const istanza = await creaIstanza(voce.id, livello, { evolviPerLivello: true, mosseFisse: voce.mosse });
+          const istanza = await creaIstanza(voce.id, livello, { evolviPerLivello: true, mosseFisse: voce.mosse, primaMossa: voce.primaMossa, prediligeCura: voce.prediligeCura });
           // "Cloni" con le mosse ESATTE di un Pokémon del giocatore (hack
           // dedicato a Maso, sess. 6 ott 2026): voce.mosseOverride è un
           // array già pronto (copiato da pkm.mosse altrove), sostituisce
