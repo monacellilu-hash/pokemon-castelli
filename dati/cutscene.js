@@ -866,7 +866,7 @@ CUTSCENE['abbazia_sannilo_ginevra_igino'] = [
    il giocatore qui, troppo rischioso scriptare un lungo cammino su una
    mappa diversa da questa: ci pensa il giocatore a tornare a parlargli. */
 CUTSCENE['lega_finale_remo'] = [
-  { tipo: 'dialogo', nome: 'Remo', testo: [
+  { tipo: 'dialogo', nome: '{{RIVALE}}', testo: [
     'Cosa...? Non è possibile. Io sono il Campione della Lega di Colonna. Nessuno mi batte, nessuno MAI.',
     'Eppure tu l\'hai fatto. {maschile|femminile}, da dove vieni? Come hai fatto ad arrivare fin qui così forte?',
     'Non lo capisco. Non lo capisco e forse non lo capirò mai. Ma un Campione sa riconoscere chi lo supera.',

@@ -595,7 +595,7 @@ const DATI_TRAINER = {
   'gdf_grunt_grotta_vulcano_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 40 }, { id: 110, livello: 41 }],
+    squadra: [{ id: 42, livello: 68 }, { id: 110, livello: 68 }],
     dialogo_prima: 'Nessuno entra nella Grotta del Vulcano. Il Comandante ha i suoi piani per quello che dorme là dentro.',
     dialogo_dopo: 'Bah... di\' pure in giro quello che hai visto, tanto non cambia niente.',
     premio: 1700,
@@ -609,7 +609,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Nazzareno',
-    squadra: [{ id: 28, livello: 50 }, { id: 76, livello: 51 }],
+    squadra: [{ id: 28, livello: 71 }, { id: 76, livello: 71 }],
     dialogo_prima: 'Manco morto te lascio passà.',
     dialogo_dopo: 'Ahó, mo\' vado a riferì al Comandante.',
     premio: 1500,
@@ -617,7 +617,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Recluta GdF', nome: 'Ottaviano',
-    squadra: [{ id: 126, livello: 51 }, { id: 323, livello: 52 }],
+    squadra: [{ id: 126, livello: 71 }, { id: 323, livello: 71 }],
     dialogo_prima: 'Sta grotta è nostra, statte accorto.',
     dialogo_dopo: 'Mannaggia... nun ce posso crede.',
     premio: 1530,
@@ -625,7 +625,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Fiorenzo',
-    squadra: [{ id: 34, livello: 51 }, { id: 51, livello: 52 }],
+    squadra: [{ id: 34, livello: 71 }, { id: 51, livello: 71 }],
     dialogo_prima: 'Er Comandante sa già che sei entrato. Preparate.',
     dialogo_dopo: 'Bella lotta, però nun cambia gnente.',
     premio: 1530,
@@ -633,7 +633,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Publio',
-    squadra: [{ id: 105, livello: 51 }, { id: 112, livello: 52 }],
+    squadra: [{ id: 105, livello: 71 }, { id: 112, livello: 71 }],
     dialogo_prima: 'Questo braccio della grotta è mio. Nun se passa.',
     dialogo_dopo: 'Vabbè... passa, ma nun te ce abituà.',
     premio: 1530,
@@ -641,7 +641,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Ermenegildo',
-    squadra: [{ id: 262, livello: 52 }, { id: 302, livello: 51 }],
+    squadra: [{ id: 262, livello: 71 }, { id: 302, livello: 71 }],
     dialogo_prima: 'Te sei perso, o sei venuto a cercà guai?',
     dialogo_dopo: 'Nell\'ombra se vede tutto, e io c\'ho visto poco bene stavolta.',
     premio: 1560,
@@ -649,7 +649,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_6': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Anacleto',
-    squadra: [{ id: 208, livello: 52 }, { id: 219, livello: 51 }],
+    squadra: [{ id: 208, livello: 71 }, { id: 219, livello: 71 }],
     dialogo_prima: 'Guardie de ferro, giovino. Nun passi de sicuro.',
     dialogo_dopo: 'Er ferro s\'è piegato... complimenti.',
     premio: 1560,
@@ -657,7 +657,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_7': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Learco',
-    squadra: [{ id: 38, livello: 52 }, { id: 59, livello: 53 }],
+    squadra: [{ id: 38, livello: 71 }, { id: 59, livello: 72 }],
     dialogo_prima: 'Sti Pokémon de fòco ce piaceno più della lava vera.',
     dialogo_dopo: 'Mo\' me sa che devo raffreddamme un attimo.',
     premio: 1600,
@@ -665,7 +665,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_8': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Domiziano',
-    squadra: [{ id: 344, livello: 52 }, { id: 338, livello: 52 }],
+    squadra: [{ id: 344, livello: 71 }, { id: 338, livello: 71 }],
     dialogo_prima: 'Terra e roccia, propio come sta grotta. Provace.',
     dialogo_dopo: 'Nun ce posso fà gnente, sei più forte.',
     premio: 1600,
@@ -673,7 +673,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_9': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Erasmo',
-    squadra: [{ id: 229, livello: 53 }, { id: 359, livello: 52 }],
+    squadra: [{ id: 229, livello: 72 }, { id: 359, livello: 71 }],
     dialogo_prima: 'Qua dentro er buio te magna, statte attento.',
     dialogo_dopo: 'Va bè, oggi hai vinto tu.',
     premio: 1630,
@@ -681,7 +681,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_10': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Vitaliano',
-    squadra: [{ id: 306, livello: 53 }, { id: 136, livello: 52 }],
+    squadra: [{ id: 306, livello: 72 }, { id: 136, livello: 71 }],
     dialogo_prima: 'Sei arrivato fin qua? Mo\' se fa sul serio.',
     dialogo_dopo: 'Nun era mai successo. Er Comandante nun sarà contento.',
     premio: 1700,
@@ -689,7 +689,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_11': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Corradino',
-    squadra: [{ id: 324, livello: 53 }, { id: 323, livello: 53 }],
+    squadra: [{ id: 324, livello: 72 }, { id: 323, livello: 72 }],
     dialogo_prima: 'Semo vicini ar nucleo. Da qui nun se passa senza combatte.',
     dialogo_dopo: 'Mo\' capisco perché er Comandante te vò fermà a tutti i costi.',
     premio: 1700,
@@ -697,7 +697,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_1f_12': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 6,
     classe: 'Ufficiale GdF', nome: 'Massimiliano',
-    squadra: [{ id: 248, livello: 54 }, { id: 229, livello: 53 }, { id: 219, livello: 52 }],
+    squadra: [{ id: 248, livello: 72 }, { id: 229, livello: 72 }, { id: 219, livello: 71 }],
     dialogo_prima: 'So\' l\'ufficiale più anziano de sta grotta. Chi vò passà, prima deve passà da me.',
     dialogo_dopo: 'Nemmanco io so\' bastato... Vai, ma stacce accorto.',
     premio: 2100,
@@ -710,7 +710,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Aureliano',
-    squadra: [{ id: 28, livello: 54 }, { id: 219, livello: 55 }],
+    squadra: [{ id: 28, livello: 72 }, { id: 219, livello: 72 }],
     dialogo_prima: 'Mo\' te fermo io, statte bono.',
     dialogo_dopo: 'Vabbè, oggi te va bene così.',
     premio: 1750,
@@ -718,7 +718,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Soldato GdF', nome: 'Ciriaco',
-    squadra: [{ id: 51, livello: 55 }, { id: 105, livello: 56 }],
+    squadra: [{ id: 51, livello: 72 }, { id: 105, livello: 72 }],
     dialogo_prima: 'Ancora avanti? Sei più tosto de quello che pensavo.',
     dialogo_dopo: 'Mannaggia a mme e a chi m\'ha mannato qua.',
     premio: 1780,
@@ -726,7 +726,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Bonaventura',
-    squadra: [{ id: 302, livello: 56 }, { id: 208, livello: 55 }],
+    squadra: [{ id: 302, livello: 72 }, { id: 208, livello: 72 }],
     dialogo_prima: 'Più vai giù, più fa caldo — e più semo tosti noi.',
     dialogo_dopo: 'Bella lotta davero, ma nun te ce abituà.',
     premio: 1800,
@@ -734,7 +734,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Filiberto',
-    squadra: [{ id: 38, livello: 56 }, { id: 323, livello: 57 }],
+    squadra: [{ id: 38, livello: 72 }, { id: 323, livello: 73 }],
     dialogo_prima: 'Er Comandante nun deve esse disturbato. Fine der discorso.',
     dialogo_dopo: 'Nun ce posso crede... continua pure, ma stacce accorto.',
     premio: 1830,
@@ -742,7 +742,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Ottone',
-    squadra: [{ id: 227, livello: 56 }, { id: 344, livello: 57 }],
+    squadra: [{ id: 227, livello: 72 }, { id: 344, livello: 73 }],
     dialogo_prima: 'Da qui in poi è tutta salita, giovino. E nun parlo solo della strada.',
     dialogo_dopo: 'Vabbè, mo\' famme passà er dolore in pace.',
     premio: 1850,
@@ -750,7 +750,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_2f_6': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Costantino',
-    squadra: [{ id: 359, livello: 57 }, { id: 306, livello: 58 }],
+    squadra: [{ id: 359, livello: 73 }, { id: 306, livello: 73 }],
     dialogo_prima: 'Er Comandante sa sempre chi je passa davanti. E mo\' sa pure de te.',
     dialogo_dopo: 'Continua pure... tanto lo sa già che stai arivanno.',
     premio: 1900,
@@ -766,7 +766,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_3f_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Marcantonio',
-    squadra: [{ id: 105, livello: 54 }, { id: 76, livello: 55 }],
+    squadra: [{ id: 105, livello: 72 }, { id: 76, livello: 72 }],
     dialogo_prima: 'Quaggiù nemmeno la luce ce prova più a entrà. E manco tu passi.',
     dialogo_dopo: 'Va bene, va bene... nun me guardà così.',
     premio: 1850,
@@ -774,7 +774,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_3f_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Veterano GdF', nome: 'Sigismondo',
-    squadra: [{ id: 38, livello: 55 }, { id: 323, livello: 54 }],
+    squadra: [{ id: 38, livello: 72 }, { id: 323, livello: 72 }],
     dialogo_prima: 'Er nucleo è vicino. Da qui, o me batti o te ne torni indietro.',
     dialogo_dopo: 'Complimenti... nun capita spesso de perde quaggiù.',
     premio: 1850,
@@ -782,7 +782,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_3f_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Zenobio',
-    squadra: [{ id: 208, livello: 55 }, { id: 219, livello: 54 }],
+    squadra: [{ id: 208, livello: 72 }, { id: 219, livello: 72 }],
     dialogo_prima: 'Er Comandante sta a du\' passi da qui. Prima passi da me.',
     dialogo_dopo: 'Mo\' me tocca annà a dijelo io stesso... che sfiga.',
     premio: 1880,
@@ -790,7 +790,7 @@ const DATI_TRAINER = {
   'gdf_grotta_vulcano_3f_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo', vista: 5,
     classe: 'Ufficiale GdF', nome: 'Venanzio',
-    squadra: [{ id: 359, livello: 55 }, { id: 262, livello: 56 }],
+    squadra: [{ id: 359, livello: 72 }, { id: 262, livello: 72 }],
     dialogo_prima: 'Tra un po\' senti puzza de zolfo vero, eh? Significa che sei arrivato troppo avanti.',
     dialogo_dopo: 'Vabbè... vedi tu de cavattela con quelli dopo de me.',
     premio: 1880,
@@ -811,7 +811,7 @@ const DATI_TRAINER = {
     // (nome interno invariato, non è più "Giovanni" per il giocatore).
     sprite: 'Luogotenente_GdF_3', ritratto: 'Luogotenente_GdF_3', vista: 6,
     classe: 'Luogotenente GdF', nome: 'Ginevra',
-    squadra: [{ id: 112, livello: 57 }, { id: 229, livello: 58 }],
+    squadra: [{ id: 112, livello: 73 }, { id: 229, livello: 73 }],
     // Il vero discorso da cattivo lo fa Lorenzo PRIMA di questa lotta (vedi
     // _prossimitaSpotta in js/map.js, che mostra un dialogo multi-pagina
     // apposito prima di chiamare _avviaLottaTrainer) — qui resta solo la
@@ -831,7 +831,7 @@ const DATI_TRAINER = {
   'gdf_boss_grotta_vulcano': {
     sprite: 'Lorenzo', ritratto: 'Lorenzo', vista: 0,
     classe: 'Comandante GdF', nome: 'Lorenzo',
-    squadra: [{ id: 306, livello: 60 }, { id: 373, livello: 61 }, { id: 376, livello: 62 }],
+    squadra: [{ id: 306, livello: 73 }, { id: 373, livello: 74 }, { id: 376, livello: 74 }],
     dialogo_prima: 'Basta così. Adesso vengo io di persona — e questa volta non ti sbaglierai due volte.',
     dialogo_dopo: 'Impossibile... IMPOSSIBILE!',
     premio: 3200,
@@ -1441,7 +1441,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 60 }, { id: 88, livello: 61 }],
+    squadra: [{ id: 42, livello: 69 }, { id: 88, livello: 69 }],
     dialogo_prima: 'Fermo là! Questo rifugio non è mica un parco giochi.',
     dialogo_dopo: 'Vabbè... ma tanto qui dentro è tutto blindato lo stesso.',
     premio: 2800,
@@ -1449,7 +1449,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 60 }, { id: 20, livello: 61 }],
+    squadra: [{ id: 24, livello: 69 }, { id: 20, livello: 69 }],
     dialogo_prima: 'Come hai fatto ad entrà? La password mica se trova per strada!',
     dialogo_dopo: 'Ao, sei pure forte... ma qui il piano va avanti uguale.',
     premio: 2800,
@@ -1457,7 +1457,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 72, livello: 60 }, { id: 89, livello: 61 }],
+    squadra: [{ id: 72, livello: 69 }, { id: 89, livello: 69 }],
     dialogo_prima: 'Il Capo non vuole visite. Levate dai piedi!',
     dialogo_dopo: 'Mo\' te lascio passà, ma non dì che t\'ho aiutato io.',
     premio: 2800,
@@ -1465,7 +1465,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 60 }, { id: 24, livello: 61 }],
+    squadra: [{ id: 42, livello: 69 }, { id: 24, livello: 69 }],
     dialogo_prima: 'Quest\'acqua nasconde più cose de quello che pensi.',
     dialogo_dopo: 'Va be\', hai vinto. Ma il Capo se sta a preparà da tempo.',
     premio: 2800,
@@ -1473,7 +1473,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fa_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 60 }, { id: 110, livello: 61 }],
+    squadra: [{ id: 89, livello: 69 }, { id: 110, livello: 69 }],
     dialogo_prima: 'Er caveau è roba nostra. Nun se tocca!',
     dialogo_dopo: 'E vabbè, so\' cose che càpitano...',
     premio: 2800,
@@ -1481,7 +1481,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fa_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 31, livello: 60 }, { id: 42, livello: 61 }],
+    squadra: [{ id: 31, livello: 69 }, { id: 42, livello: 69 }],
     dialogo_prima: 'Qui dentro c\'è più refurtiva che a un mercato de Porta Portese.',
     dialogo_dopo: 'Mo\' me sa che devo cambià lavoro...',
     premio: 2800,
@@ -1489,7 +1489,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fc_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 60 }, { id: 73, livello: 61 }],
+    squadra: [{ id: 24, livello: 69 }, { id: 73, livello: 69 }],
     dialogo_prima: 'Perso in questo labirinto de rocce? Te ce faccio perde pe\' davero!',
     dialogo_dopo: 'Non è ancora finita, ma vabbè, avanti così.',
     premio: 2800,
@@ -1497,7 +1497,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fc_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 60 }, { id: 20, livello: 61 }],
+    squadra: [{ id: 89, livello: 69 }, { id: 20, livello: 69 }],
     dialogo_prima: 'Questi massi nun se spostano da soli, sai?',
     dialogo_dopo: 'Uffa, mo\' devo pure rifà er turno de guardia.',
     premio: 2800,
@@ -1505,7 +1505,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fc_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 110, livello: 60 }, { id: 34, livello: 61 }],
+    squadra: [{ id: 110, livello: 69 }, { id: 34, livello: 69 }],
     dialogo_prima: 'Ancora un po\' e sei davanti al Capo. Peccato che nun ce arriverai.',
     dialogo_dopo: 'Boh, mo\' famme capì come te lo dico ar Capo...',
     premio: 2800,
@@ -1513,7 +1513,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 73, livello: 60 }, { id: 89, livello: 61 }],
+    squadra: [{ id: 73, livello: 69 }, { id: 89, livello: 69 }],
     dialogo_prima: 'Da qui in poi c\'è solo l\'isola del Capo. Nun se passa!',
     dialogo_dopo: 'Vai pure, tanto l\'acqua profonda te ferma uguale...',
     premio: 2800,
@@ -1523,7 +1523,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 88, livello: 60 }, { id: 42, livello: 61 }],
+    squadra: [{ id: 88, livello: 69 }, { id: 42, livello: 69 }],
     dialogo_prima: 'Chi t\'ha fatto entrà? Qui nun se passa!',
     dialogo_dopo: 'Vabbè, mo\' me ne vado a riposà.',
     premio: 2800,
@@ -1531,7 +1531,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_6': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 60 }, { id: 73, livello: 61 }],
+    squadra: [{ id: 24, livello: 69 }, { id: 73, livello: 69 }],
     dialogo_prima: 'Er Capo m\'ha detto de nun fà passà nessuno. Mi dispiace per te.',
     dialogo_dopo: 'Ahó, nun me l\'aspettavo proprio.',
     premio: 2800,
@@ -1539,7 +1539,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_1f_7': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 20, livello: 60 }, { id: 89, livello: 61 }],
+    squadra: [{ id: 20, livello: 69 }, { id: 89, livello: 69 }],
     dialogo_prima: 'Ancora uno e sei davanti all\'isola der Capo. Ma nun ce arriverai.',
     dialogo_dopo: 'Mo\' me sa che er Capo se preoccupa davero.',
     premio: 2800,
@@ -1548,7 +1548,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fa_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 73, livello: 60 }, { id: 31, livello: 61 }],
+    squadra: [{ id: 73, livello: 69 }, { id: 31, livello: 69 }],
     dialogo_prima: 'Er caveau è sorvegliato giorno e notte. Nun passi de qui.',
     dialogo_dopo: 'Vabbè, só cose che càpitano...',
     premio: 2800,
@@ -1559,7 +1559,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 89, livello: 60 }, { id: 73, livello: 61 }],
+    squadra: [{ id: 89, livello: 69 }, { id: 73, livello: 69 }],
     dialogo_prima: 'L\'isola der Capo è protetta da tutti i lati. Nun passi.',
     dialogo_dopo: 'E vabbè, mo\' lo dico ar Capo...',
     premio: 2800,
@@ -1567,7 +1567,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 110, livello: 60 }, { id: 195, livello: 61 }],
+    squadra: [{ id: 110, livello: 69 }, { id: 195, livello: 69 }],
     dialogo_prima: 'Quest\'acqua nasconde più guardie de quelle che vedi.',
     dialogo_dopo: 'Ahó, nun ce credo.',
     premio: 2800,
@@ -1575,7 +1575,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 24, livello: 60 }, { id: 230, livello: 61 }],
+    squadra: [{ id: 24, livello: 69 }, { id: 230, livello: 69 }],
     dialogo_prima: 'Er Capo sta a preparà quarcosa de grosso. Nun te ce voglio tra i piedi.',
     dialogo_dopo: 'Vabbè, passa pure, ma nun dì che t\'ho fatto passà io.',
     premio: 2800,
@@ -1583,7 +1583,7 @@ const DATI_TRAINER = {
   'gdf_grunt_marino_2fb_5': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
     classe: 'Recluta GdF', nome: 'Grunt',
-    squadra: [{ id: 42, livello: 60 }, { id: 88, livello: 61 }],
+    squadra: [{ id: 42, livello: 69 }, { id: 88, livello: 69 }],
     dialogo_prima: 'Ultima guardia prima der Capo. Qui finisce la fortuna.',
     dialogo_dopo: 'La fortuna nun c\'entrava, eri davero preparato.',
     premio: 2800,
@@ -1596,7 +1596,7 @@ const DATI_TRAINER = {
   'npc_safarizone_secrethouse_1': {
     sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 4,
     classe: 'Guardiano', nome: 'Policarpo',
-    squadra: [ { id: 18, livello: 42 }, { id: 169, livello: 43 } ],   // Pidgeot, Crobat
+    squadra: [ { id: 18, livello: 63 }, { id: 169, livello: 63 } ],   // Pidgeot, Crobat
     dialogo_prima: 'Pochi sanno di questa casa nascosta nella Zona Safari. Tu però ci sei arrivato: dimostrami che te lo meriti.',
     dialogo_dopo: 'Niente male. Tieni, è giusto che tu possa volare fin qui ogni volta che vuoi.',
     premio: 1800,
@@ -1610,11 +1610,11 @@ const DATI_TRAINER = {
     sprite: 'Lorenzo', ritratto: 'Lorenzo',
     classe: 'Comandante GdF', nome: 'Lorenzo',
     squadra: [
-      { id: 195, livello: 60 },  // Quagsire
-      { id: 134, livello: 60 },  // Vaporeon
-      { id: 342, livello: 60 },  // Crawdaunt
-      { id: 73,  livello: 61 },  // Tentacruel
-      { id: 230, livello: 61 },  // Kingdra (l'asso)
+      { id: 195, livello: 69 },  // Quagsire
+      { id: 134, livello: 69 },  // Vaporeon
+      { id: 342, livello: 69 },  // Crawdaunt
+      { id: 73,  livello: 69 },  // Tentacruel
+      { id: 230, livello: 69 },  // Kingdra (l'asso)
     ],
     dialogo_prima: 'Quest\'isola è mia, e presto lo sarà pure quello che dorme sott\'acqua.',
     dialogo_dopo: 'Nun è finita qui... quello che ho svegliato nun se riaddormenta tanto facile.',
@@ -3658,6 +3658,7 @@ const DATI_TRAINER = {
     squadra: [ { id: 248, livello: 61 } ],   // fallback: solo il core (Tyranitar)
     dialogo_dopo: 'Impressionante. Ma le prossime sale sono ancora più dure.',
     premio: 12000,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
   'sq_pres': {
     sprite: 'Er_pres_superquattro', ritratto: 'ELITEFOUR_Lance', vista: 5,
@@ -3668,6 +3669,7 @@ const DATI_TRAINER = {
     squadra: [ { id: 149, livello: 62 } ],   // fallback: solo il core (Dragonite)
     dialogo_dopo: 'Il tuono si è placato. Vai avanti, hai guadagnato il diritto.',
     premio: 13000,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
   'sq_dema': {
     sprite: 'Dema_superquattro', ritratto: 'ELITEFOUR_Lorelei', vista: 5,
@@ -3678,6 +3680,7 @@ const DATI_TRAINER = {
     squadra: [ { id: 282, livello: 62 } ],   // fallback: solo il core (Gardevoir)
     dialogo_dopo: 'La tua mente è più forte della mia magia. Avanti.',
     premio: 13000,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
   'sq_marcuois': {
     sprite: 'Marcus_superquattro', ritratto: 'ELITEFOUR_Agatha', vista: 5,
@@ -3688,6 +3691,7 @@ const DATI_TRAINER = {
     squadra: [ { id: 376, livello: 63 } ],   // fallback: solo il core (Metagross)
     dialogo_dopo: 'Acciaio spezzato. Non credevo fosse possibile. Vai dal Campione.',
     premio: 14000,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
   'campione_remo': {
     // Stesso sprite del Remo "rivale" (rivale_via_vittoria sopra): è lo
@@ -3700,6 +3704,7 @@ const DATI_TRAINER = {
     squadra: [ { id: 6, livello: 65 } ],     // fallback: solo un core plausibile
     dialogo_dopo: 'Hai vinto. Sei tu il nuovo Campione dei Castelli Romani.',
     premio: 20000,
+    oggettiCura: [{ chiave: 'curatotale', quantita: 4 }],   // richiesta Luca 20 ott 2026 (4 per il Campione)
   },
 
   /* ── Osservatorio CoTrAL (sess. 15 set 2026, ridisegnato dopo il primo
@@ -3862,7 +3867,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_1': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 248, livello: 61 } ],
+    squadra: [ { id: 248, livello: 72 } ],
     dialogo_prima: 'Questo piano è sorvegliato. Fermati dove sei.',
     dialogo_dopo: 'Impossibile... richiamo rinforzi.',
     premio: 2300,
@@ -3870,7 +3875,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_2': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 229, livello: 62 } ],
+    squadra: [ { id: 229, livello: 73 } ],
     dialogo_prima: 'Nessuno doveva arrivare fin qui dopo la Lega. Pazienza, tanto peggio per te.',
     dialogo_dopo: 'Vai pure avanti. Ma non sarà facile come con me.',
     premio: 2400,
@@ -3878,7 +3883,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_3': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 89, livello: 63 } ],
+    squadra: [ { id: 89, livello: 73 } ],
     dialogo_prima: 'Il progetto 150 non riguarda i curiosi come te.',
     dialogo_dopo: 'Mo\' je lo dico al capo che sei passato.',
     premio: 2500,
@@ -3886,7 +3891,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_4': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 248, livello: 60 } ],
+    squadra: [ { id: 248, livello: 72 } ],
     dialogo_prima: 'Qui sotto non c\'è niente da vedere. Tornatene da dove sei venuto.',
     dialogo_dopo: 'Tsk. Non era questo il piano.',
     premio: 2600,
@@ -3894,7 +3899,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_5': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 76, livello: 61 } ],
+    squadra: [ { id: 76, livello: 72 } ],
     dialogo_prima: 'Ordini dall\'alto: nessun passaggio senza autorizzazione.',
     dialogo_dopo: 'Fin qui ci sei arrivato. Vediamo più avanti.',
     premio: 2700,
@@ -3902,7 +3907,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_6': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 68, livello: 62 }, { id: 208, livello: 63 } ],
+    squadra: [ { id: 68, livello: 73 }, { id: 208, livello: 73 } ],
     dialogo_prima: 'Non dovevi trovare l\'entrata. Ora è un problema mio.',
     dialogo_dopo: 'Il laboratorio ti aspetta. Se ci arrivi.',
     premio: 2800,
@@ -3910,7 +3915,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_7': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 248, livello: 63 }, { id: 229, livello: 64 } ],
+    squadra: [ { id: 248, livello: 73 }, { id: 229, livello: 73 } ],
     dialogo_prima: 'Pensavi che finisse con la Lega? Ingenuo.',
     dialogo_dopo: 'Bella lotta. Ma qui sotto ce ne sono altri come me.',
     premio: 2900,
@@ -3918,7 +3923,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_8': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 306, livello: 60 }, { id: 248, livello: 61 } ],
+    squadra: [ { id: 306, livello: 72 }, { id: 248, livello: 72 } ],
     dialogo_prima: 'Daje, famo veloce: io vinco e te ne vai.',
     dialogo_dopo: 'Va bene, va bene... passa.',
     premio: 3000,
@@ -3926,7 +3931,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_9': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 359, livello: 61 }, { id: 94, livello: 62 } ],
+    squadra: [ { id: 359, livello: 72 }, { id: 94, livello: 73 } ],
     dialogo_prima: 'Sei bravo ad arrivare fin qui. Vediamo se sei bravo pure a lottare.',
     dialogo_dopo: 'Non dire a nessuno che hai battuto anche me.',
     premio: 3100,
@@ -3934,7 +3939,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_0f_10': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 262, livello: 62 }, { id: 227, livello: 63 } ],
+    squadra: [ { id: 262, livello: 73 }, { id: 227, livello: 73 } ],
     dialogo_prima: 'Anche dopo la Lega, il Bunkerino resta cosa nostra.',
     dialogo_dopo: 'Il Progetto 150 non si ferma per una sconfitta.',
     premio: 3200,
@@ -3945,7 +3950,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_1': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 110, livello: 65 }, { id: 89, livello: 66 } ],
+    squadra: [ { id: 110, livello: 73 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Secondo piano, sorveglianza rinforzata. Non passi senza lottare.',
     dialogo_dopo: 'Rinforzi inutili. Vai, ma stai attento oltre questa porta.',
     premio: 3100,
@@ -3953,7 +3958,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_2': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 94, livello: 66 }, { id: 65, livello: 67 } ],
+    squadra: [ { id: 94, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Chi ti ha fatto entrare quaggiù? Non importa, esci lottando.',
     dialogo_dopo: 'Tsk. Nemmeno io sono riuscito a fermarti.',
     premio: 3200,
@@ -3961,7 +3966,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_3': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 68, livello: 67 }, { id: 302, livello: 68 } ],
+    squadra: [ { id: 68, livello: 74 }, { id: 302, livello: 74 } ],
     dialogo_prima: 'Qui si avvicina al nucleo del Progetto 150. Fermo.',
     dialogo_dopo: 'Il nucleo centrale ti aspetta. Buona fortuna, ne avrai bisogno.',
     premio: 3300,
@@ -3969,7 +3974,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_4': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 332, livello: 64 }, { id: 89, livello: 65 } ],
+    squadra: [ { id: 332, livello: 73 }, { id: 89, livello: 73 } ],
     dialogo_prima: 'Pensavi che il primo piano fosse l\'ultimo ostacolo?',
     dialogo_dopo: 'Hai superato la sorveglianza rinforzata. Non succederà di nuovo.',
     premio: 3400,
@@ -3977,7 +3982,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_5': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 359, livello: 65 }, { id: 65, livello: 66 } ],
+    squadra: [ { id: 359, livello: 73 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Mo\' basta curiosità: o lotti o te ne vai.',
     dialogo_dopo: 'Vai. Ma quello che c\'è oltre non lo batti con un indovinello.',
     premio: 3500,
@@ -3985,7 +3990,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_6': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 376, livello: 66 }, { id: 248, livello: 67 } ],
+    squadra: [ { id: 376, livello: 74 }, { id: 248, livello: 74 } ],
     dialogo_prima: 'Il livello di sicurezza qui è doppio. Scoprirai perché.',
     dialogo_dopo: 'Impressionante. Ma qui sotto siamo tanti.',
     premio: 3600,
@@ -3993,7 +3998,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_7': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 376, livello: 67 }, { id: 359, livello: 68 } ],
+    squadra: [ { id: 376, livello: 74 }, { id: 359, livello: 74 } ],
     dialogo_prima: 'Nemmeno il Campione della Lega è mai arrivato fin qui.',
     dialogo_dopo: 'Mo\' lo dico al comando che sei passato pure da me.',
     premio: 3700,
@@ -4001,7 +4006,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_8': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 227, livello: 64 }, { id: 68, livello: 65 } ],
+    squadra: [ { id: 227, livello: 73 }, { id: 68, livello: 73 } ],
     dialogo_prima: 'Fermo. Da qui in poi si lotta sul serio.',
     dialogo_dopo: 'Va bene, va bene! Passa, ma stai in guardia.',
     premio: 3800,
@@ -4009,7 +4014,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_9': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 197, livello: 65 }, { id: 262, livello: 66 } ],
+    squadra: [ { id: 197, livello: 73 }, { id: 262, livello: 74 } ],
     dialogo_prima: 'Gli indovinelli non bastano, qui ci vuole anche la forza.',
     dialogo_dopo: 'Nessuno mi aveva mai battuto su questo piano.',
     premio: 3900,
@@ -4017,7 +4022,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_10': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 76, livello: 66 }, { id: 89, livello: 67 } ],
+    squadra: [ { id: 76, livello: 74 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Sei arrivato al piano sbagliato per fare il turista.',
     dialogo_dopo: 'Il Progetto 150 ha riserve che non hai ancora visto.',
     premio: 4000,
@@ -4025,7 +4030,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_11': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 82, livello: 67 }, { id: 376, livello: 68 } ],
+    squadra: [ { id: 82, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Il nucleo centrale è vicino. Non un passo di più.',
     dialogo_dopo: 'Vai avanti. Il resto non dipende più da me.',
     premio: 4100,
@@ -4033,7 +4038,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_12': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 227, livello: 64 }, { id: 212, livello: 65 } ],
+    squadra: [ { id: 227, livello: 73 }, { id: 212, livello: 73 } ],
     dialogo_prima: 'Resisti qui fino a quando non arrivano i rinforzi veri.',
     dialogo_dopo: 'Bella lotta davvero. Ma non è ancora finita.',
     premio: 4200,
@@ -4041,7 +4046,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_13': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 76, livello: 65 }, { id: 208, livello: 65 }, { id: 65, livello: 66 } ],
+    squadra: [ { id: 76, livello: 73 }, { id: 208, livello: 73 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Pensavo fossi solo un\'altra guardia distratta. Mi sbagliavo su di te.',
     dialogo_dopo: 'Tornerò più forte. Il bunkerino non si arrende così.',
     premio: 4300,
@@ -4049,7 +4054,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_14': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 212, livello: 66 }, { id: 229, livello: 66 }, { id: 94, livello: 67 } ],
+    squadra: [ { id: 212, livello: 74 }, { id: 229, livello: 74 }, { id: 94, livello: 74 } ],
     dialogo_prima: 'Hai risolto gli indovinelli? Bravo. Ma la guardia non si supera con la logica.',
     dialogo_dopo: 'Hai vinto. Resta solo il nucleo, ora.',
     premio: 4400,
@@ -4057,7 +4062,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_15': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 205, livello: 67 }, { id: 229, livello: 67 }, { id: 168, livello: 68 } ],
+    squadra: [ { id: 205, livello: 74 }, { id: 229, livello: 74 }, { id: 168, livello: 74 } ],
     dialogo_prima: 'Qui dentro si decide chi può vedere Mewtwo. E non sei tu.',
     dialogo_dopo: 'Mo\' vai, prima che cambi idea.',
     premio: 4500,
@@ -4065,7 +4070,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_16': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 168, livello: 64 }, { id: 332, livello: 64 }, { id: 76, livello: 65 } ],
+    squadra: [ { id: 168, livello: 73 }, { id: 332, livello: 73 }, { id: 76, livello: 73 } ],
     dialogo_prima: 'Il secondo piano non perdona gli intrusi.',
     dialogo_dopo: 'La sorveglianza fallisce. Il nucleo no.',
     premio: 4600,
@@ -4073,7 +4078,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_17': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 110, livello: 65 }, { id: 248, livello: 65 }, { id: 197, livello: 66 } ],
+    squadra: [ { id: 110, livello: 73 }, { id: 248, livello: 73 }, { id: 197, livello: 74 } ],
     dialogo_prima: 'Vai avanti se vuoi, ma prima passa su di me.',
     dialogo_dopo: 'Passa. Ma guardati le spalle oltre questa porta.',
     premio: 4700,
@@ -4081,7 +4086,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_1f_18': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 359, livello: 66 }, { id: 229, livello: 66 }, { id: 205, livello: 67 } ],
+    squadra: [ { id: 359, livello: 74 }, { id: 229, livello: 74 }, { id: 205, livello: 74 } ],
     dialogo_prima: 'Mo\' vediamo di che pasta sei fatto davvero.',
     dialogo_dopo: 'Impossibile... nemmeno la mia squadra è bastata.',
     premio: 4800,
@@ -4095,7 +4100,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_1': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 94, livello: 67 }, { id: 376, livello: 68 } ],
+    squadra: [ { id: 94, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Terzo piano, massima sorveglianza. Nessun passaggio gratis.',
     dialogo_dopo: 'Impossibile... segnalo tutto ai superiori.',
     premio: 3300,
@@ -4103,7 +4108,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_2': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 68, livello: 67 }, { id: 212, livello: 68 } ],
+    squadra: [ { id: 68, livello: 74 }, { id: 212, livello: 74 } ],
     dialogo_prima: 'Non dovevi arrivare così lontano.',
     dialogo_dopo: 'Avanti così... ma non durerà.',
     premio: 3300,
@@ -4111,7 +4116,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_3': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 197, livello: 67 }, { id: 262, livello: 67 }, { id: 76, livello: 68 } ],
+    squadra: [ { id: 197, livello: 74 }, { id: 262, livello: 74 }, { id: 76, livello: 74 } ],
     dialogo_prima: 'Qui si allenano i migliori. Fatti onore, se riesci.',
     dialogo_dopo: 'Tre contro uno e hai vinto comunque... complimenti.',
     premio: 3450,
@@ -4119,7 +4124,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_4': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 208, livello: 68 }, { id: 227, livello: 68 } ],
+    squadra: [ { id: 208, livello: 74 }, { id: 227, livello: 74 } ],
     dialogo_prima: 'Acciaio contro carne e ossa. Indovina chi vince di solito.',
     dialogo_dopo: 'Oggi no, a quanto pare.',
     premio: 3350,
@@ -4127,7 +4132,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_5': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 302, livello: 67 }, { id: 65, livello: 68 } ],
+    squadra: [ { id: 302, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Il Capo non vuole visite. Fermati qui.',
     dialogo_dopo: 'Passa pure... ma sei avvisato, più avanti è peggio.',
     premio: 3300,
@@ -4135,7 +4140,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_6': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 332, livello: 67 }, { id: 168, livello: 67 }, { id: 89, livello: 68 } ],
+    squadra: [ { id: 332, livello: 74 }, { id: 168, livello: 74 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Spine e veleno, un bel biglietto da visita.',
     dialogo_dopo: 'Che squadra... va bene, va bene.',
     premio: 3450,
@@ -4143,7 +4148,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_7': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 248, livello: 68 }, { id: 376, livello: 69 } ],
+    squadra: [ { id: 248, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Dinosauro contro robot, scegli tu chi affrontare prima.',
     dialogo_dopo: 'Non me l\'aspettavo. Rispetto.',
     premio: 3400,
@@ -4151,7 +4156,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_8': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 82, livello: 68 }, { id: 229, livello: 69 } ],
+    squadra: [ { id: 82, livello: 74 }, { id: 229, livello: 74 } ],
     dialogo_prima: 'Qui dentro ci alleniamo sul serio, non è un gioco.',
     dialogo_dopo: 'Sul serio... lo dicevo sul serio.',
     premio: 3400,
@@ -4159,7 +4164,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_9': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 359, livello: 68 }, { id: 110, livello: 68 }, { id: 65, livello: 69 } ],
+    squadra: [ { id: 359, livello: 74 }, { id: 110, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Non ti conviene proseguire. Ma fai come vuoi.',
     dialogo_dopo: 'Vai avanti. Se ce la fai, almeno.',
     premio: 3500,
@@ -4167,7 +4172,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_10': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 94, livello: 68 }, { id: 68, livello: 69 } ],
+    squadra: [ { id: 94, livello: 74 }, { id: 68, livello: 74 } ],
     dialogo_prima: 'Ombre e pugni, una combinazione che non perdona.',
     dialogo_dopo: 'Mi hai sorpreso, non capita spesso.',
     premio: 3400,
@@ -4175,7 +4180,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_11': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 212, livello: 68 }, { id: 208, livello: 69 } ],
+    squadra: [ { id: 212, livello: 74 }, { id: 208, livello: 74 } ],
     dialogo_prima: 'Metallo su metallo, vediamo se resisti.',
     dialogo_dopo: 'Resistito eccome. Vai.',
     premio: 3450,
@@ -4183,7 +4188,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_12': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 227, livello: 68 }, { id: 262, livello: 68 }, { id: 76, livello: 69 } ],
+    squadra: [ { id: 227, livello: 74 }, { id: 262, livello: 74 }, { id: 76, livello: 74 } ],
     dialogo_prima: 'Acciaio, zanne e roccia: scegli con cura la tua prossima mossa.',
     dialogo_dopo: 'Scelta azzeccata, a quanto pare.',
     premio: 3550,
@@ -4191,7 +4196,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_13': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 197, livello: 69 }, { id: 376, livello: 70 } ],
+    squadra: [ { id: 197, livello: 74 }, { id: 376, livello: 75 } ],
     dialogo_prima: 'Siamo quasi in cima. Ma non con te in squadra, pare.',
     dialogo_dopo: 'Quasi in cima... togliti tu, piuttosto.',
     premio: 3500,
@@ -4199,7 +4204,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_14': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 302, livello: 69 }, { id: 229, livello: 70 } ],
+    squadra: [ { id: 302, livello: 74 }, { id: 229, livello: 75 } ],
     dialogo_prima: 'Fantasmi e fuoco infernale. Spaventato?',
     dialogo_dopo: 'Macché spaventato... bella lotta però.',
     premio: 3500,
@@ -4207,7 +4212,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_15': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 89, livello: 69 }, { id: 332, livello: 69 }, { id: 168, livello: 70 } ],
+    squadra: [ { id: 89, livello: 74 }, { id: 332, livello: 74 }, { id: 168, livello: 75 } ],
     dialogo_prima: 'Veleno su veleno, non è un bel biglietto di ritorno.',
     dialogo_dopo: 'Il mio biglietto di ritorno è timbrato "sconfitta".',
     premio: 3600,
@@ -4215,7 +4220,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_16': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 248, livello: 69 }, { id: 65, livello: 70 } ],
+    squadra: [ { id: 248, livello: 74 }, { id: 65, livello: 75 } ],
     dialogo_prima: 'Qui sotto il Capo non vuole sorprese. Tu sei una sorpresa.',
     dialogo_dopo: 'Sorpresa riuscita, direi.',
     premio: 3550,
@@ -4223,7 +4228,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_17': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 82, livello: 69 }, { id: 212, livello: 70 } ],
+    squadra: [ { id: 82, livello: 74 }, { id: 212, livello: 75 } ],
     dialogo_prima: 'Siamo gli ultimi prima delle scale per il 3° piano.',
     dialogo_dopo: 'Ultimi... e battuti. Vai, ti aspettano sopra.',
     premio: 3600,
@@ -4231,7 +4236,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_18': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 359, livello: 70 }, { id: 227, livello: 70 }, { id: 205, livello: 70 } ],
+    squadra: [ { id: 359, livello: 75 }, { id: 227, livello: 75 }, { id: 205, livello: 75 } ],
     dialogo_prima: 'Dopo di me solo le scale, e non è un bel posto.',
     dialogo_dopo: 'Vai pure... ma quello che trovi sopra è peggio di me.',
     premio: 3700,
@@ -4239,7 +4244,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_19': {
     sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
-    squadra: [ { id: 376, livello: 70 }, { id: 94, livello: 71 } ],
+    squadra: [ { id: 376, livello: 75 }, { id: 94, livello: 75 } ],
     dialogo_prima: 'Il Capo sa che sei arrivato fin qui. Non sarà contento.',
     dialogo_dopo: 'Il Capo saprà anche questo, fidati.',
     premio: 3700,
@@ -4247,7 +4252,7 @@ const DATI_TRAINER = {
   'cotral_bunkerino_2f_20': {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
-    squadra: [ { id: 68, livello: 70 }, { id: 208, livello: 70 }, { id: 376, livello: 71 } ],
+    squadra: [ { id: 68, livello: 75 }, { id: 208, livello: 75 }, { id: 376, livello: 75 } ],
     dialogo_prima: 'Ultima guardia prima delle scale. Qui finisce la fortuna.',
     dialogo_dopo: 'La fortuna non c\'entrava, eri davvero preparato.',
     premio: 3800,
@@ -4260,7 +4265,7 @@ const DATI_TRAINER = {
   'all-dept-1': {
     sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
     classe: 'Ragazzino', nome: 'Pietro',
-    squadra: [ { id: 19, livello: 30 }, { id: 109, livello: 31 } ],
+    squadra: [ { id: 19, livello: 64 }, { id: 109, livello: 64 } ],
     dialogo_prima: 'Al 3° piano trovi i giocattoli, ma io sono qui per allenarmi!',
     dialogo_dopo: 'Vabbè, tornerò più forte.',
     premio: 620,
@@ -4268,7 +4273,7 @@ const DATI_TRAINER = {
   'all-dept-2': {
     sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
     classe: 'Ragazzino', nome: 'Walter',
-    squadra: [ { id: 100, livello: 30 }, { id: 81, livello: 31 } ],
+    squadra: [ { id: 100, livello: 64 }, { id: 81, livello: 64 } ],
     dialogo_prima: 'Scommetto che non hai mai affrontato un elettrico qui dentro!',
     dialogo_dopo: 'Accidenti, speravo di stupirti.',
     premio: 620,
@@ -4276,7 +4281,7 @@ const DATI_TRAINER = {
   'all-dept-3': {
     sprite: 'trainer_YOUNGSTER', ritratto: 'YOUNGSTER', vista: 5,
     classe: 'Ragazzino', nome: 'Osvaldo',
-    squadra: [ { id: 56, livello: 30 }, { id: 66, livello: 31 }, { id: 29, livello: 31 } ],
+    squadra: [ { id: 56, livello: 64 }, { id: 66, livello: 64 }, { id: 29, livello: 64 } ],
     dialogo_prima: 'Tre contro una, ma tranquillo, giochiamo pulito!',
     dialogo_dopo: 'Che batosta. Il negozio consola, almeno.',
     premio: 680,
@@ -4284,7 +4289,7 @@ const DATI_TRAINER = {
   'all-dept-roof-1': {
     sprite: 'trainer_COOLTRAINER_M', ritratto: 'COOLTRAINER_M', vista: 6,
     classe: 'Fuoriclasse', nome: 'Learco',
-    squadra: [ { id: 130, livello: 32 }, { id: 65, livello: 33 } ],
+    squadra: [ { id: 130, livello: 65 }, { id: 65, livello: 65 } ],
     dialogo_prima: 'Vengo sempre qui sul tetto per allenarmi con vista panoramica.',
     dialogo_dopo: 'Bella lotta, complimenti davvero.',
     premio: 700,
@@ -4292,7 +4297,7 @@ const DATI_TRAINER = {
   'all-dept-roof-2': {
     sprite: 'trainer_LASS', ritratto: 'LASS', vista: 6,
     classe: 'Damerina', nome: 'Benedetta',
-    squadra: [ { id: 35, livello: 31 }, { id: 113, livello: 32 } ],
+    squadra: [ { id: 35, livello: 64 }, { id: 113, livello: 65 } ],
     dialogo_prima: 'Shopping e battaglie, la combinazione perfetta!',
     dialogo_dopo: 'Mi hai rovinato la giornata di shopping...',
     premio: 660,
@@ -4308,10 +4313,10 @@ const DATI_TRAINER = {
     sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Recluta CoTrAL', nome: 'Sentinella',
     squadra: [
-      { id: 208, livello: 64 },   // Steelix
-      { id: 94, livello: 64 },    // Gengar
-      { id: 169, livello: 65 },   // Crobat
-      { id: 373, livello: 66 },   // Salamence
+      { id: 208, livello: 73 },   // Steelix
+      { id: 94, livello: 73 },    // Gengar
+      { id: 169, livello: 73 },   // Crobat
+      { id: 373, livello: 74 },   // Salamence
     ],
     dialogo_prima: 'Ah, sei tu. Ora che la Lega è alle spalle possiamo giocare a carte scoperte. Fatti sotto, se vuoi passare.',
     dialogo_dopo: '...Va bene, hai vinto. Passa pure, tanto ormai non importa più niente.',

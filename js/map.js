@@ -6678,8 +6678,16 @@ const GameMap = (function () {
             .replace(/\{([^|{}]*)\|([^|{}]*)\}/g, (_m, a, b) => (genereF ? b : a))
             .replace(/\{nome\}/g, nomePg);
           const righe = (Array.isArray(passo.testo) ? passo.testo : [passo.testo]).map(risolvi);
+          // '{{RIVALE}}' nel campo nome: nome del rivale scelto a inizio
+          // partita (stato.rivale.nome) — serve per il Campione della Lega,
+          // che nelle battute non si chiama più "Remo" fisso ma ha il nome
+          // del rivale del giocatore (richiesta 20 ott 2026).
+          let nomeParlante = passo.nome || '';
+          if (nomeParlante === '{{RIVALE}}') {
+            nomeParlante = (typeof stato !== 'undefined' && stato.rivale && stato.rivale.nome) || RIVALE_NOME;
+          }
           if (typeof mostraDialogo !== 'function') return Promise.resolve();
-          return mostraDialogo(passo.nome || '', righe);
+          return mostraDialogo(nomeParlante, righe);
         }
         // Lotta contro un trainer di DATI_TRAINER dentro la cutscene. Vinta: i
         // flag/ricompense del trainer scattano come sempre e la scena continua.
@@ -6708,7 +6716,7 @@ const GameMap = (function () {
             // solo dal vecchio flagVittoria/oggettoChiaveVittoria di un
             // trainer) — es. 'abbazia_password' data da Igino a fine scena,
             // sess. 14 ott 2026. Ricontrolla sempre dopo averla impostata.
-            if (['baso_tornato', 'museo_nemi_password', 'abbazia_password'].includes(passo.nome)) {
+            if (['baso_tornato', 'museo_nemi_password', 'abbazia_password', 'legaCompletata'].includes(passo.nome)) {
               this._controllaPasswordRifugio();
             }
           }
@@ -10045,6 +10053,14 @@ const GameMap = (function () {
         // salvataggio: ritorna true ("gestito altrove") come il boss della
         // Grotta del Vulcano qui sotto.
         const primaVoltaLega = !stato.flags.legaCompletata;
+        // Level cap della Lega (richiesta esplicita di Luca, 20 ott 2026):
+        // prima vittoria → cap 75 (sblocca anche il rifugio GdF di Marino,
+        // vedi _controllaPasswordRifugio sopra); dalla seconda vittoria in
+        // poi (dopo aver catturato Kyogre/Groudon/Rayquaza ecc., storia GdF)
+        // → cap 100. stato.flags.legaVittorie conta le vittorie vere.
+        stato.flags.legaVittorie = (stato.flags.legaVittorie || 0) + 1;
+        if (stato.flags.legaVittorie === 1) stato.levelCap = 75;
+        else stato.levelCap = 100;
         if (primaVoltaLega) {
           this._giocaCutscene('lega_finale_remo').then(() => {
             if (typeof salvaPartita === 'function') salvaPartita();
@@ -10186,13 +10202,17 @@ const GameMap = (function () {
     // Le 3 parti della password del Rifugio GdF di Marino (sess. 8 set 2026,
     // arco GdF riscritto): baso_tornato (1ª, lettera CoTrAL Monte Cavo),
     // museo_nemi_password (2ª, Michela), abbazia_password (3ª, Ginevra).
-    // Ottenibili in QUALSIASI ordine — appena tutte e 3 sono vere, sblocca
-    // il flag combinato che il warp della porta del rifugio controlla
-    // davvero (verificaCondizione capisce solo UN flag alla volta, non un
-    // "e" tra più flag — stesso schema già usato per baso_tornato stesso).
+    // Ottenibili in QUALSIASI ordine — appena tutte e 3 sono vere E in più
+    // hai battuto la Lega di Colonna almeno una volta (legaCompletata,
+    // richiesta esplicita di Luca 20 ott 2026 — il rifugio è contenuto
+    // POST-prima-Lega, non prima), sblocca il flag combinato che il warp
+    // della porta del rifugio controlla davvero (verificaCondizione capisce
+    // solo UN flag alla volta, non un "e" tra più flag — stesso schema già
+    // usato per baso_tornato stesso).
     _controllaPasswordRifugio() {
       if (!stato.flags || stato.flags.password_rifugio_completa) return;
-      if (stato.flags.baso_tornato && stato.flags.museo_nemi_password && stato.flags.abbazia_password) {
+      if (stato.flags.baso_tornato && stato.flags.museo_nemi_password &&
+          stato.flags.abbazia_password && stato.flags.legaCompletata) {
         stato.flags.password_rifugio_completa = true;
         if (typeof mostraToast === 'function') {
           mostraToast('🔑 Hai tutte e 3 le parti della password del Rifugio GdF di Marino!', 3500);

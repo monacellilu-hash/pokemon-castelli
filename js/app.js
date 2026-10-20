@@ -2116,7 +2116,13 @@ async function vinciPalestra(palestra) {
   if (!stato.medaglie.includes(palestra.id)) stato.medaglie.push(palestra.id);
 
   const prossima = PALESTRE.find(p => p.ordine === palestra.ordine + 1);
-  stato.levelCap = prossima ? prossima.levelCap : 60;
+  // Dopo l'ultima palestra (Genzano, cap 63): il cap pre-Lega è 63, non 60
+  // (richiesta esplicita di Luca 20 ott 2026 — prima della Lega il
+  // Superquattro più forte arriva a 62-64, il Campione fino a 66, quindi un
+  // cap di 60 abbassava il tetto SOTTO l'ultima palestra; vedi anche
+  // Via Vittoria/Lega in js/map.js dove la prima vittoria sulla Lega alza
+  // il cap a 75, la seconda a 100).
+  stato.levelCap = prossima ? prossima.levelCap : 63;
 
   // F12: 8ª medaglia → sblocca Via Vittoria
   if (stato.medaglie.length >= 8 && !stato.mn.vittoria) {
@@ -4193,9 +4199,20 @@ function estraiTeamSuperquattro(membro) {
   // membro.mosse = { idSpecie: ['slug1', 'slug2', ...] }, opzionale — se assente
   // per quella specie resta la scelta automatica di sempre (scegliMosse).
   const mosseDiId = (id) => (membro.mosse && membro.mosse[id]) || undefined;
+  // primaMossa/prediligeCura per specie (20 ott 2026, richiesta Luca — stessa
+  // idea del moveset fisso ma per i due comportamenti d'IA già usati nei
+  // Capipalestra): membro.primaMossa/membro.prediligeCura = { idSpecie: ... }.
+  const primaMossaDiId  = (id) => (membro.primaMossa && membro.primaMossa[id]) || undefined;
+  const prediligeCuraDiId = (id) => !!(membro.prediligeCura && membro.prediligeCura[id]);
+  const voce = (id, livello) => ({
+    id, livello,
+    mosse: mosseDiId(id),
+    primaMossa: primaMossaDiId(id),
+    prediligeCura: prediligeCuraDiId(id),
+  });
   return [
-    ...cinque.map((id, i) => ({ id, livello: membro.livMin + Math.round(spread * i / 5), mosse: mosseDiId(id) })),
-    { id: membro.coreId, livello: membro.livMax, mosse: mosseDiId(membro.coreId) },
+    ...cinque.map((id, i) => voce(id, membro.livMin + Math.round(spread * i / 5))),
+    voce(membro.coreId, membro.livMax),
   ];
 }
 

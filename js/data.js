@@ -2683,8 +2683,28 @@ const SUPERQUATTRO = [
     livMin: 60, livMax: 62,
     premioSoldi: 12000,
     // Tipi: Lotta / Roccia / Buio / Terra
-    pool:   [68, 214, 76, 112, 306, 229, 359, 330, 34, 248],
+    // Pool aggiornato 20 ott 2026 (modifiche dirette di Luca su
+    // SQUADRE-SUPERQUATTRO.md): Machamp, Heracross, Golem, Umbreon, Aggron,
+    // Houndoom, Absol, Nidoking, Swampert + Tyranitar (asso fisso).
+    pool:   [68, 214, 76, 197, 306, 229, 359, 34, 260, 248],
     coreId: 248, // Tyranitar BST 600
+    // Moveset fisso per specie (20 ott 2026): tradotto dall'italiano allo
+    // slug inglese PokéAPI verificato via API, non a memoria.
+    mosse: {
+      68:  ['recover', 'cross-chop', 'earthquake', 'dynamic-punch'],      // Machamp
+      214: ['counter', 'take-down', 'reversal', 'megahorn'],              // Heracross
+      76:  ['rock-blast', 'earthquake', 'dig', 'double-edge'],            // Golem
+      197: ['pursuit', 'crunch', 'screech', 'recover'],                  // Umbreon
+      306: ['take-down', 'iron-tail', 'protect', 'earthquake'],          // Aggron
+      229: ['leaf-blade', 'feint-attack', 'flamethrower', 'crunch'],     // Houndoom
+      359: ['double-team', 'slash', 'future-sight', 'swords-dance'],     // Absol
+      34:  ['earthquake', 'surf', 'cross-chop', 'thrash'],               // Nidoking
+      260: ['surf', 'earthquake', 'bulk-up', 'recover'],                 // Swampert
+      248: ['thunderbolt', 'surf', 'crunch', 'earthquake'],              // Tyranitar
+    },
+    // Umbreon: usa Ripresa appena scende sotto il 40% HP se la conosce
+    // (stesso meccanismo dell'Umbreon di Ariccia — richiesta Luca 20 ott 2026).
+    prediligeCura: { 197: true },
     dialogoIntro: [
       'Benvenuto nella prima sala della Lega di Colonna.',
       'Mi chiamano Captain. Ho combattuto in cento arene, sui Castelli e fuori.',
@@ -2700,8 +2720,22 @@ const SUPERQUATTRO = [
     livMin: 61, livMax: 63,
     premioSoldi: 13000,
     // Tipi: Drago / Elettro / Acqua
-    pool:   [149, 373, 334, 181, 135, 26, 130, 350, 121, 131],
+    // Pool aggiornato 20 ott 2026: Salamence, Altaria, Ampharos, Jolteon,
+    // Gyarados, Milotic, Starmie, Kingdra, Flygon + Dragonite (asso fisso).
+    pool:   [373, 334, 181, 135, 130, 350, 121, 230, 330, 149],
     coreId: 149, // Dragonite BST 600
+    mosse: {
+      373: ['dragon-breath', 'flamethrower', 'fly', 'crunch'],           // Salamence
+      334: ['dragon-dance', 'extreme-speed', 'fly', 'sky-attack'],       // Altaria
+      181: ['cotton-spore', 'thunder-punch', 'light-screen', 'thunder'], // Ampharos
+      135: ['pin-missile', 'thunder-wave', 'agility', 'thunder'],        // Jolteon
+      130: ['hydro-pump', 'sky-attack', 'dragon-dance', 'crunch'],       // Gyarados
+      350: ['ice-beam', 'hydro-pump', 'surf', 'calm-mind'],             // Milotic
+      121: ['recover', 'swift', 'psychic', 'confuse-ray'],              // Starmie
+      230: ['dragon-breath', 'surf', 'earthquake', 'calm-mind'],         // Kingdra
+      330: ['crunch', 'dragon-breath', 'dragon-dance', 'earthquake'],    // Flygon
+      149: ['extreme-speed', 'thunderbolt', 'wing-attack', 'outrage'],   // Dragonite
+    },
     dialogoIntro: [
       'Seconda sala. Io sono Pres.',
       'Tempeste, maree e draghi — ecco la mia filosofia.',
@@ -2717,8 +2751,22 @@ const SUPERQUATTRO = [
     livMin: 61, livMax: 63,
     premioSoldi: 13000,
     // Tipi: Folletto / Volante / Psico
-    pool:   [282, 65, 196, 36, 176, 227, 178, 97, 210, 124],
+    // Pool aggiornato 20 ott 2026: Alakazam, Espeon, Gengar, Mr. Mime, Crobat,
+    // Aerodactyl, Charizard, Meganium, Typhlosion + Gardevoir (asso fisso).
+    pool:   [65, 196, 94, 122, 169, 142, 6, 154, 157, 282],
     coreId: 282, // Gardevoir BST 518
+    mosse: {
+      65:  ['future-sight', 'calm-mind', 'psychic', 'shadow-ball'],      // Alakazam
+      196: ['psybeam', 'shadow-ball', 'psychic', 'morning-sun'],         // Espeon
+      94:  ['psychic', 'shadow-ball', 'calm-mind', 'fire-punch'],        // Gengar
+      122: ['psychic', 'calm-mind', 'reflect', 'recover'],               // Mr. Mime
+      169: ['fly', 'sludge-bomb', 'crunch', 'earthquake'],               // Crobat
+      142: ['ancient-power', 'ice-beam', 'fly', 'crunch'],               // Aerodactyl
+      6:   ['flamethrower', 'fly', 'crunch', 'calm-mind'],               // Charizard
+      154: ['solar-beam', 'recover', 'growth', 'dig'],                  // Meganium
+      157: ['fire-fang', 'fire-blast', 'sunny-day', 'brick-break'],      // Typhlosion
+      282: ['shadow-ball', 'future-sight', 'psychic', 'recover'],        // Gardevoir
+    },
     dialogoIntro: [
       'Terza sala. Sono Dema.',
       'La mente, il vento, l\'incanto — queste sono le mie armi.',
@@ -2734,8 +2782,25 @@ const SUPERQUATTRO = [
     livMin: 62, livMax: 64,
     premioSoldi: 14000,
     // Tipi: Acqua / Acciaio / Psico
-    pool:   [376, 208, 212, 205, 80, 199, 134, 91, 230, 121],
+    // Pool aggiornato 20 ott 2026: Venusaur, Scizor, Lapras, Blastoise,
+    // Vaporeon, Exeggutor, Kingdra, Starmie + Metagross (asso fisso).
+    // Pool da 8 (non 9): richiesta esplicita di Luca ("non c'è problema,
+    // basta che insomma c'è il pool e l'asso fisso").
+    pool:   [3, 212, 131, 9, 134, 103, 230, 121, 376],
     coreId: 376, // Metagross BST 600
+    mosse: {
+      3:   ['leaf-blade', 'iron-tail', 'crunch', 'calm-mind'],           // Venusaur
+      212: ['slash', 'swords-dance', 'iron-tail', 'brick-break'],        // Scizor
+      131: ['recover', 'surf', 'hydro-pump', 'ice-beam'],               // Lapras
+      9:   ['hydro-cannon', 'ice-beam', 'calm-mind', 'surf'],            // Blastoise
+      134: ['aurora-beam', 'earthquake', 'dive', 'rain-dance'],          // Vaporeon
+      103: ['psychic', 'calm-mind', 'leaf-blade', 'rain-dance'],         // Exeggutor
+      230: ['rock-tomb', 'agility', 'hydro-pump', 'dragon-dance'],       // Kingdra
+      121: ['recover', 'swift', 'rapid-spin', 'confuse-ray'],           // Starmie
+      376: ['recover', 'psychic', 'calm-mind', 'meteor-mash'],          // Metagross
+    },
+    // Metagross: usa Ripresa appena scende sotto il 40% HP (richiesta Luca 20 ott 2026).
+    prediligeCura: { 376: true },
     dialogoIntro: [
       'Quarta sala. Marcuois.',
       'Acciaio forgiato nell\'acqua, mente fredda come un\'incudine.',
@@ -2761,13 +2826,37 @@ const STARTER_FINALE = {
 
 const REMO_LEGA = {
   id: 'campione-remo',
-  nome: 'Green',
+  nome: 'Green',   // fallback difensivo: il nome VERO è sempre stato.rivale.nome (dinamico)
   classe: 'Campione',
   livMin: 64, livMax: 66,
   premioSoldi: 20000,
-  // Pool fisso (11 specie); il coreId è lo starter finale di Remo (calcolato in app.js)
-  pool: [18, 65, 359, 330, 143, 214, 181, 94, 373, 149, 121],
-  // Pidgeot, Alakazam, Absol, Flygon, Snorlax, Heracross, Ampharos, Gengar, Salamence, Dragonite, Starmie
+  // Pool aggiornato 20 ott 2026 (modifiche dirette di Luca): Pidgeot,
+  // Alakazam, Snorlax, Ampharos, Gengar, Salamence, Dragonite, Lapras — 8
+  // specie (il coreId è lo starter finale del rivale scelto, calcolato in
+  // app.js, non fa parte di questo pool).
+  pool: [18, 65, 143, 181, 94, 373, 149, 131],
+  // Pidgeot, Alakazam, Snorlax, Ampharos, Gengar, Salamence, Dragonite, Lapras
+  mosse: {
+    18:  ['drill-peck', 'feather-dance', 'agility', 'fly'],              // Pidgeot
+    65:  ['future-sight', 'calm-mind', 'psychic', 'shadow-ball'],        // Alakazam
+    143: ['rest', 'earthquake', 'bulk-up', 'hyper-beam'],               // Snorlax
+    181: ['earthquake', 'thunder-punch', 'light-screen', 'thunder'],     // Ampharos
+    94:  ['psychic', 'shadow-ball', 'calm-mind', 'fire-punch'],          // Gengar
+    373: ['dragon-breath', 'scary-face', 'fly', 'crunch'],              // Salamence
+    149: ['agility', 'safeguard', 'wing-attack', 'outrage'],            // Dragonite
+    131: ['recover', 'ice-beam', 'perish-song', 'surf'],                // Lapras
+    // Asso dinamico (starter finale del rivale scelto): mosse per tipo,
+    // chiavi = tutte le possibili forme finali in STARTER_FINALE qui sotto.
+    3:   ['leaf-blade', 'sludge-bomb', 'growth', 'earthquake'],          // Venusaur (erba)
+    6:   ['flamethrower', 'earthquake', 'growth', 'crunch'],            // Charizard (fuoco)
+    9:   ['surf', 'ice-beam', 'calm-mind', 'rain-dance'],               // Blastoise (acqua)
+    154: ['leaf-blade', 'sludge-bomb', 'growth', 'earthquake'],          // Meganium (erba)
+    157: ['flamethrower', 'earthquake', 'growth', 'crunch'],            // Typhlosion (fuoco)
+    160: ['surf', 'ice-beam', 'calm-mind', 'rain-dance'],               // Feraligatr (acqua)
+    254: ['leaf-blade', 'sludge-bomb', 'growth', 'earthquake'],          // Sceptile (erba)
+    257: ['flamethrower', 'earthquake', 'growth', 'crunch'],            // Blaziken (fuoco)
+    260: ['surf', 'ice-beam', 'calm-mind', 'rain-dance'],               // Swampert (acqua)
+  },
   dialogoIntro: [
     'Eccoti finalmente.',
     'Ho aspettato qui, al trono dei Campioni, dal giorno che ti ho sfidato nel laboratorio.',
