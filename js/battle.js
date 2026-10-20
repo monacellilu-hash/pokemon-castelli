@@ -221,6 +221,21 @@ const Battle = (function () {
   // nei giochi originali), oppure impostato da una mossa (5 turni).
   let meteoBattaglia = null;
   let meteoBattagliaTurni = 0;
+  // Schermi di squadra (20 ott 2026, richiesta Luca — Riflesso/Schermoluce/
+  // Salvaguardia erano scelte come mosse ma non facevano letteralmente
+  // nulla: mossaUtile() le scarta dalla scelta automatica, ma un moveset
+  // fisso (mosse: [...]) le forza lo stesso). Solo lotta SINGOLA (mio/
+  // nemico): in doppia questi contatori restano sempre a 0, innocui.
+  // Durano 5 turni come nei giochi veri (decremento in fineTurnoStati).
+  let schermiMio = { reflect: 0, lightscreen: 0, safeguard: 0 };
+  let schermiNemico = { reflect: 0, lightscreen: 0, safeguard: 0 };
+  // Restituisce lo schermo del LATO di "ist" (chi viene protetto), o null se
+  // non è né mio né nemico (es. doppia, dove questa feature resta disattivata).
+  function _schermiDiLato(ist) {
+    if (ist === mio) return schermiMio;
+    if (ist === nemico) return schermiNemico;
+    return null;
+  }
   // Coda delle mosse "ritardate" (Divinazione/Doom Desire, vedi MOSSE_RITARDATE):
   // { turni, danno, nomeMossa, nomeAttaccante, latoColpito: 'giocatore'|'nemico' }.
   // Lavora per LATO (via latoBattler), non per istanza fissa: funziona
@@ -387,6 +402,11 @@ const Battle = (function () {
     if (m.statoEffetto && (STATI[m.statoEffetto] || m.statoEffetto === 'confusion')) return true; // infligge uno stato gestito
     if (m.cambiStat && m.cambiStat.length > 0) return true;   // modifica le statistiche
     if (MOSSE_METEO[m.nome]) return true;                     // imposta il meteo
+    // Protezione/Individuazione (gestite in eseguiTurno) e Riflesso/
+    // Schermoluce/Salvaguardia (20 ott 2026, gestite in eseguiMossa/
+    // applicaStato): ora hanno un effetto vero, non più solo decorativo.
+    if (m.nome === 'protect' || m.nome === 'detect') return true;
+    if (m.nome === 'reflect' || m.nome === 'light-screen' || m.nome === 'safeguard') return true;
     return false;
   }
 
@@ -1067,6 +1087,13 @@ const Battle = (function () {
     // mosse superefficaci (eff>1) — l'opposto di Lente Colorata.
     if ((abilDif === 'filter' || abilDif === 'solid-rock') && eff > 1) {
       molt *= 0.75;
+    }
+    // Riflesso/Schermoluce (20 ott 2026): dimezza il danno fisico/speciale
+    // sul lato protetto, come nei giochi veri (solo lotta singola).
+    const schermiDif = _schermiDiLato(difensore);
+    if (schermiDif) {
+      if (fisica && schermiDif.reflect > 0) molt *= 0.5;
+      else if (!fisica && schermiDif.lightscreen > 0) molt *= 0.5;
     }
     molt *= 0.85 + Math.random() * 0.15; // variazione casuale
 
@@ -1960,6 +1987,15 @@ const Battle = (function () {
 
   // Applica uno stato alterato al bersaglio (se possibile)
   async function applicaStato(bersaglio, tipoStato, etichetta, causatore, etichettaCausatore) {
+    // Salvaguardia (20 ott 2026): blocca qualsiasi stato/confusione inflitto
+    // da QUALCUN ALTRO sul lato protetto (non blocca mai un Pokémon che
+    // si addormenta/avvelena/confonde da solo, es. Riposo — "causatore"
+    // assente o diverso dal bersaglio).
+    const schermiBers = _schermiDiLato(bersaglio);
+    if (schermiBers && schermiBers.safeguard > 0 && causatore !== bersaglio) {
+      await di(`${etichetta} è protetto dalla Salvaguardia!`);
+      return;
+    }
     // CONFUSIONE (sess. 13 ott 2026, bug segnalato da Luca: non si attivava
     // MAI): è uno stato VOLATILE separato (bersaglio.confusione), non uno dei
     // 5 STATI "maggiori" — prima di questo fix mosse come Confusione/
@@ -2441,6 +2477,19 @@ const Battle = (function () {
       aggiornaMeteoUI();
       await di(info.messaggio);
     }
+    // Riflesso/Schermoluce/Salvaguardia (20 ott 2026): proteggono il lato di
+    // chi le usa (att), 5 turni, come il meteo qui sopra. Sostituiscono lo
+    // schermo se già attivo (non si somma, come nei giochi veri).
+    if (mossa.nome === 'reflect' || mossa.nome === 'light-screen' || mossa.nome === 'safeguard') {
+      const schermiAtt = _schermiDiLato(att);
+      if (schermiAtt) {
+        qualcosa = true;
+        const chiave = mossa.nome === 'reflect' ? 'reflect' : mossa.nome === 'light-screen' ? 'lightscreen' : 'safeguard';
+        schermiAtt[chiave] = 5;
+        const MSG_SCHERMO = { reflect: 'Riflesso attenua i colpi fisici!', lightscreen: 'Schermoluce attenua i colpi speciali!', safeguard: 'Il team è protetto dagli stati alterati!' };
+        await di(MSG_SCHERMO[chiave]);
+      }
+    }
     if (mossa.statoEffetto && (STATI[mossa.statoEffetto] || mossa.statoEffetto === 'confusion')) {
       qualcosa = true;
       // Mosse come Riposo hanno bersaglio "user": lo stato va a chi la usa,
@@ -2755,6 +2804,14 @@ const Battle = (function () {
   // più la cura passiva dei Rimasugli (1/16 degli HP massimi)
   async function fineTurnoStati() {
     await fineTurnoMeteo();
+    // Scadenza di Riflesso/Schermoluce/Salvaguardia (20 ott 2026), 5 turni
+    // come il meteo: nessun messaggio di scadenza nei giochi veri, quindi
+    // niente messaggio qui — solo il contatore che torna a 0.
+    for (const sch of [schermiMio, schermiNemico]) {
+      for (const chiave of ['reflect', 'lightscreen', 'safeguard']) {
+        if (sch[chiave] > 0) sch[chiave] -= 1;
+      }
+    }
     const lista = [[mio, mio.nome], [nemico, etichettaNemico()]];
     for (const [ist, etich] of lista) {
       if (ist.hpAttuale <= 0 || !ist.condizione || ist.abilitaChiave === 'magic-guard') continue;
@@ -2957,6 +3014,57 @@ const Battle = (function () {
   const MOSSE_CURA_TOTALE = new Set(['recover', 'soft-boiled', 'milk-drink', 'rest',
     'moonlight', 'morning-sun', 'synthesis']);
 
+  // Mossa "inutile nel contesto attuale" (20 ott 2026, richiesta esplicita
+  // di Luca dopo aver visto AI_CheckBadMove di pret/pokeemerald — l'IA vera
+  // di Smeraldo scarta mosse come un'altra Danza Spada quando l'Attacco è
+  // già al massimo, o Tossico su un bersaglio già avvelenato: non è un
+  // problema di "tipo inefficace", è che la mossa non farebbe NULLA qui e
+  // ora). Copre solo gli effetti che il nostro motore gestisce davvero
+  // (stadi di statistica, i 4 stati maggiori + congelamento, confusione,
+  // meteo, i 3 schermi) — gli effetti non implementati restano fuori,
+  // mossaUtile() li ha già esclusi dalla scelta automatica a monte.
+  function _mossaInutileNelContesto(attaccante, bersagli, m) {
+    const bersaglio = bersagli[0]; // lotta singola: un solo bersaglio possibile
+    if (!bersaglio) return false;
+    // Meteo: inutile ripetere una mossa che imposta un meteo già attivo.
+    if (MOSSE_METEO[m.nome] && meteoBattaglia === MOSSE_METEO[m.nome].tipo) return true;
+    // Schermi (Riflesso/Schermoluce/Salvaguardia): inutile se già attivo sul
+    // proprio lato (non si somma, si sostituirebbe solo a sé stesso).
+    const schermiAtt = _schermiDiLato(attaccante);
+    if (schermiAtt) {
+      if (m.nome === 'reflect' && schermiAtt.reflect > 0) return true;
+      if (m.nome === 'light-screen' && schermiAtt.lightscreen > 0) return true;
+      if (m.nome === 'safeguard' && schermiAtt.safeguard > 0) return true;
+    }
+    // Stati maggiori (sonno/veleno/paralisi/scottatura/congelamento) e
+    // confusione: inutile se il bersaglio ha già un problema di stato (i 5
+    // maggiori sono mutuamente esclusivi), è già immune per tipo/Abilità, o
+    // è protetto dalla Salvaguardia sul suo lato.
+    if (m.statoEffetto === 'confusion') {
+      if (bersaglio.confusione > 0 || bersaglio.abilitaChiave === 'own-tempo') return true;
+    } else if (m.statoEffetto && STATI[m.statoEffetto]) {
+      if (bersaglio.condizione || immuneAStato(bersaglio, m.statoEffetto)) return true;
+    }
+    if (m.statoEffetto && (STATI[m.statoEffetto] || m.statoEffetto === 'confusion')) {
+      const schermiBers = _schermiDiLato(bersaglio);
+      if (schermiBers && schermiBers.safeguard > 0) return true;
+    }
+    // Cambio di statistiche: inutile se TUTTI gli stadi coinvolti sono già
+    // al tetto (±6) nella direzione in cui la mossa li spingerebbe.
+    if (m.cambiStat && m.cambiStat.length > 0) {
+      const versoSe = (m.bersaglio === 'user' || m.bersaglio === 'users-field');
+      const target = versoSe ? attaccante : bersaglio;
+      const tuttiAlTetto = m.cambiStat.every(c => {
+        const attuale = target.mod[c.stat] || 0;
+        if (c.modifica > 0) return attuale >= 6;
+        if (c.modifica < 0) return attuale <= -6;
+        return false;
+      });
+      if (tuttiAlTetto) return true;
+    }
+    return false;
+  }
+
   function _scegliMossaPesata(attaccante, possibiliBersagli) {
     if (attaccante.inCarica) return attaccante.inCarica;
     if (attaccante.furia) return attaccante.mosse.find(m => m.nome === attaccante.furia.nome) || mossaFallback();
@@ -2996,7 +3104,13 @@ const Battle = (function () {
     //    "sempre la stessa", solo meno a caso quando c'è una scelta ovvia).
     const senzaEffetto = [];
     const pesi = utilizzabili.map(m => {
-      if (!m.potenza || m.potenza <= 0) return 1; // mossa di stato: peso base, non esclusa
+      if (!m.potenza || m.potenza <= 0) {
+        // Mossa di stato: peso base, A MENO che non sia inutile nel
+        // contesto attuale (stat già al tetto, bersaglio già nello stesso
+        // stato, meteo/schermo già attivo, ecc. — vedi _mossaInutileNelContesto).
+        if (_mossaInutileNelContesto(attaccante, bersagli, m)) { senzaEffetto.push(m); return 0; }
+        return 1;
+      }
       const effMax = Math.max(...bersagli.map(b => efficacia(m.tipo, b.tipi || [])));
       if (effMax === 0) { senzaEffetto.push(m); return 0; }
       const stab = (attaccante.tipi || []).includes(m.tipo) ? 1.5 : 1;
@@ -4206,6 +4320,8 @@ const Battle = (function () {
     meteoBattaglia = METEO_DA_MAPPA[meteoMappa] || null;
     meteoBattagliaTurni = meteoBattaglia ? 998 : 0;
     aggiornaMeteoUI();
+    schermiMio = { reflect: 0, lightscreen: 0, safeguard: 0 };
+    schermiNemico = { reflect: 0, lightscreen: 0, safeguard: 0 };
     const temaSfondo = opzioni.sfondo ||
       (typeof GameMap !== 'undefined' && GameMap.temaBattaglia ? GameMap.temaBattaglia() : 'grass');
 
@@ -5032,6 +5148,8 @@ const Battle = (function () {
     meteoBattaglia = METEO_DA_MAPPA[meteoMappa] || null;
     meteoBattagliaTurni = meteoBattaglia ? 998 : 0;
     aggiornaMeteoUI();
+    schermiMio = { reflect: 0, lightscreen: 0, safeguard: 0 };
+    schermiNemico = { reflect: 0, lightscreen: 0, safeguard: 0 };
     const temaSfondo = opzioni.sfondo ||
       (typeof GameMap !== 'undefined' && GameMap.temaBattaglia ? GameMap.temaBattaglia() : 'grass');
 
