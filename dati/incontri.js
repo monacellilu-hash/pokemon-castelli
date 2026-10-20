@@ -63,7 +63,7 @@ const DATI_INCONTRI = {
       { id: 368, min: 56, max: 61, rate: 10 },  // Gorebyss
       { id: 321, min: 60, max: 65, rate: 4 },   // Wailord
       { id: 369, min: 62, max: 68, rate: 3 },   // Relicanth (rarissimo, relitto del passato)
-      { id: 131, min: 58, max: 63, rate: 6 },   // Lapras (rara)
+      { id: 131, min: 58, max: 63, rate: 0.02},   // Lapras (rara)
       { id: 223, min: 55, max: 60, rate: 20 },  // Remoraid
       { id: 226, min: 56, max: 61, rate: 20 },  // Mantine
       { id: 320, min: 56, max: 62, rate: 16 },  // Wailmer
@@ -516,7 +516,7 @@ const DATI_INCONTRI = {
       { id: 220, min: 22, max: 25, rate: 28 },  // Swinub (Gen2)
       { id: 221, min: 24, max: 27, rate: 10 },  // Piloswine (evoluto)
       { id: 225, min: 24, max: 28, rate: 22 },  // Delibird (Gen2, raro)
-      { id: 246, min: 24, max: 27, rate: 22 },  // Larvitar (raro di montagna)
+      { id: 246, min: 24, max: 27, rate: 1 },  // Larvitar (raro di montagna)
       { id: 361, min: 23, max: 26, rate: 22 },  // Snorunt (Gen3)
       { id: 362, min: 25, max: 28, rate: 6 },  // Glalie (evoluto)
 ],
@@ -603,8 +603,7 @@ const DATI_INCONTRI = {
     pokemonNotte: [
       { id: 236, min: 28, max: 30, rate: 28 },  // Tyrogue (Gen2, raro)
       { id: 237, min: 31, max: 33, rate: 10 },  // Hitmontop (Gen2, raro)
-      { id: 106, min: 30, max: 32, rate: 10 },  // Hitmonlee (rarissimo)
-      { id: 107, min: 30, max: 32, rate: 10 },  // Hitmonchan (rarissimo)
+
       { id: 296, min: 28, max: 31, rate: 28 },  // Makuhita (Gen3)
 ],
   },
@@ -639,7 +638,9 @@ const DATI_INCONTRI = {
       { id: 335, min: 26, max: 30, rate: 10 },  // Zangoose (Gen3)
 ],
     pokemonNotte: [
-      { id: 336, min: 26, max: 30, rate: 10 },  // Seviper (Gen3)
+      { id: 336, min: 26, max: 30, rate: 80 },  // Seviper (Gen3)
+      { id: 106, min: 30, max: 32, rate: 0.02 },  // Hitmonlee (rarissimo)
+      { id: 107, min: 30, max: 32, rate: 0.02 },  // Hitmonchan (rarissimo)
 ],
   },
 
@@ -990,7 +991,6 @@ const DATI_INCONTRI = {
   'incontri percorso montepo 3': {
     probabilita: 10,
     pokemon: [
-      { id: 212, min: 56, max: 61, rate: 6 },  // Scizor (rarissimo)
       { id: 286, min: 57, max: 62, rate: 6 },  // Breloom
       { id: 326, min: 56, max: 61, rate: 6 },  // Grumpig
       { id: 97,  min: 55, max: 60, rate: 6 },  // Hypno
