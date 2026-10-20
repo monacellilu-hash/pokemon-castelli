@@ -63,7 +63,7 @@ const DATI_INCONTRI = {
       { id: 368, min: 56, max: 61, rate: 10 },  // Gorebyss
       { id: 321, min: 60, max: 65, rate: 4 },   // Wailord
       { id: 369, min: 62, max: 68, rate: 3 },   // Relicanth (rarissimo, relitto del passato)
-      { id: 131, min: 58, max: 63, rate: 6 },   // Lapras (rara)
+      { id: 131, min: 58, max: 63, rate: 0.02},   // Lapras (rara)
       { id: 223, min: 55, max: 60, rate: 20 },  // Remoraid
       { id: 226, min: 56, max: 61, rate: 20 },  // Mantine
       { id: 320, min: 56, max: 62, rate: 16 },  // Wailmer
