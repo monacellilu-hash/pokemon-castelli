@@ -516,7 +516,7 @@ const DATI_INCONTRI = {
       { id: 220, min: 22, max: 25, rate: 28 },  // Swinub (Gen2)
       { id: 221, min: 24, max: 27, rate: 10 },  // Piloswine (evoluto)
       { id: 225, min: 24, max: 28, rate: 22 },  // Delibird (Gen2, raro)
-      { id: 246, min: 24, max: 27, rate: 22 },  // Larvitar (raro di montagna)
+      { id: 246, min: 24, max: 27, rate: 1 },  // Larvitar (raro di montagna)
       { id: 361, min: 23, max: 26, rate: 22 },  // Snorunt (Gen3)
       { id: 362, min: 25, max: 28, rate: 6 },  // Glalie (evoluto)
 ],
