@@ -4189,9 +4189,13 @@ function estraiTeamSuperquattro(membro) {
   }
   const cinque = pool.slice(0, 5);
   const spread = membro.livMax - membro.livMin;
+  // Moveset fisso per specie (20 ott 2026, stesso meccanismo dei Capipalestra):
+  // membro.mosse = { idSpecie: ['slug1', 'slug2', ...] }, opzionale — se assente
+  // per quella specie resta la scelta automatica di sempre (scegliMosse).
+  const mosseDiId = (id) => (membro.mosse && membro.mosse[id]) || undefined;
   return [
-    ...cinque.map((id, i) => ({ id, livello: membro.livMin + Math.round(spread * i / 5) })),
-    { id: membro.coreId, livello: membro.livMax },
+    ...cinque.map((id, i) => ({ id, livello: membro.livMin + Math.round(spread * i / 5), mosse: mosseDiId(id) })),
+    { id: membro.coreId, livello: membro.livMax, mosse: mosseDiId(membro.coreId) },
   ];
 }
 
