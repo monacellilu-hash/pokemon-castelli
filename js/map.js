@@ -10301,6 +10301,15 @@ const GameMap = (function () {
             premioSoldi: dati.premio != null ? dati.premio : 100,
             oggettiCura: dati.oggettiCura || null,
             senzaExp: !!dati.senzaExp,
+            // Superquattro/Campione (20 ott 2026, bug trovato verificando una
+            // domanda di Luca): su sconfitta, gestisciKO (battle.js) chiamava
+            // SEMPRE _teletrasportaCentroPokemon() — che usa la STESSA
+            // caricaMappa() del redirect apposito qui sotto ("torni
+            // all'ingresso della Lega") — due caricaMappa() in corsa, vinceva
+            // quella più lenta a caricare: a volte si finiva fuori dal Centro
+            // Pokémon invece che all'ingresso della Lega. legaDefeat dice a
+            // _teletrasportaCentroPokemon() di non intervenire in questo caso.
+            legaDefeat: !!(dati.superquattro || dati.campioneLega),
           },
           stato,
           onFine: (esito) => {

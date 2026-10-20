@@ -3813,6 +3813,11 @@ const Battle = (function () {
   // Frascati), si torna al punto di partenza vero e proprio del gioco.
   function _teletrasportaCentroPokemon() {
     if (nienteTeleportSuSconfitta) return;   // vedi avvia(): 1a lotta col rivale nel lab
+    // Superquattro/Campione (20 ott 2026): la Lega ha un suo redirect dedicato
+    // (torna all'ingresso, js/map.js) che chiama la STESSA caricaMappa() di
+    // qui sotto — due in corsa altrimenti, con risultato imprevedibile (a
+    // volte si finiva fuori dal Centro Pokémon invece che all'ingresso).
+    if (datiAllenatore && datiAllenatore.legaDefeat) return;
     if (typeof GameMap === 'undefined' || !GameMap.vaiAMappa) return;
     const centro = statoGioco.ultimoCentroCura;
     if (centro && centro.mappa) {
