@@ -1041,6 +1041,11 @@ const DATI_INCONTRI = {
 
 };
 DATI_INCONTRI['acqua_percorso_montepo3'] = DATI_INCONTRI['incontri percorso montepo 3'];
+// Alias: la zona erba_alta dell'Osservatorio (Osservatorio.tmj, 20 ott
+// 2026) ha l'id "incontri erba osservatorio" (per distinguerla in Tiled
+// dalla zona "sabbia" della stessa mappa) — stessa tabella giorno/notte
+// di sempre, solo nome diverso sul rettangolo.
+DATI_INCONTRI['incontri erba osservatorio'] = DATI_INCONTRI['incontri osservatorio'];
 
 // Alias: il singolo tile "acqua profonda lago di nemi" (Lago di Albano
 // interno.tmj) ha un id Tiled proprio invece di "acqua_lago di albano_surf"

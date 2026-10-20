@@ -1863,6 +1863,12 @@ const GameMap = (function () {
     'cascata':              'trigger_cascata',
     'cascata_cascata':      'trigger_cascata',
     'acqua_cascata':        'trigger_cascata',
+    // Sabbia dell'Osservatorio (20 ott 2026, richiesta esplicita di Luca):
+    // zona dedicata alla tempesta di sabbia perenne, ma è ANCHE zona
+    // incontri — stesso meccanismo di erba_alta, solo nome diverso per
+    // distinguerla visivamente in Tiled dalla zona erba normale (giorno/
+    // notte) della stessa mappa.
+    'sabbia':               'erba_alta',
   };
   // Tollerante agli spazi/maiuscole: "acqua surf" → "acqua_surf" → trigger_surf.
   // (Non altera il valore restituito per i tipi non aliasati, es. "pokemon leggendario".)
