@@ -3648,6 +3648,7 @@ const DATI_TRAINER = {
     sprite: 'Capitano', ritratto: 'ELITEFOUR_Bruno', vista: 5,
     classe: 'Superquattro', nome: 'Captain',
     superquattro: 'sq-captain',
+    pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_captain_battuto',
     squadra: [ { id: 248, livello: 61 } ],   // fallback: solo il core (Tyranitar)
     dialogo_dopo: 'Impressionante. Ma le prossime sale sono ancora più dure.',
@@ -3657,6 +3658,7 @@ const DATI_TRAINER = {
     sprite: 'Er_pres_superquattro', ritratto: 'ELITEFOUR_Lance', vista: 5,
     classe: 'Superquattro', nome: 'Pres',
     superquattro: 'sq-pres',
+    pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_pres_battuto',
     squadra: [ { id: 149, livello: 62 } ],   // fallback: solo il core (Dragonite)
     dialogo_dopo: 'Il tuono si è placato. Vai avanti, hai guadagnato il diritto.',
@@ -3666,6 +3668,7 @@ const DATI_TRAINER = {
     sprite: 'Dema_superquattro', ritratto: 'ELITEFOUR_Lorelei', vista: 5,
     classe: 'Superquattro', nome: 'Dema',
     superquattro: 'sq-dema',
+    pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_dema_battuto',
     squadra: [ { id: 282, livello: 62 } ],   // fallback: solo il core (Gardevoir)
     dialogo_dopo: 'La tua mente è più forte della mia magia. Avanti.',
@@ -3675,6 +3678,7 @@ const DATI_TRAINER = {
     sprite: 'Marcus_superquattro', ritratto: 'ELITEFOUR_Agatha', vista: 5,
     classe: 'Superquattro', nome: 'Marcuois',
     superquattro: 'sq-marcuois',
+    pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_marcuois_battuto',
     squadra: [ { id: 376, livello: 63 } ],   // fallback: solo il core (Metagross)
     dialogo_dopo: 'Acciaio spezzato. Non credevo fosse possibile. Vai dal Campione.',
@@ -3686,6 +3690,7 @@ const DATI_TRAINER = {
     sprite: 'RIVALE_1', ritratto: 'POKEMONTRAINER_Brendan', vista: 5,
     classe: 'Campione', nome: 'Green',
     campioneLega: true,
+    pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'campione_remo_battuto',
     squadra: [ { id: 6, livello: 65 } ],     // fallback: solo un core plausibile
     dialogo_dopo: 'Hai vinto. Sei tu il nuovo Campione dei Castelli Romani.',

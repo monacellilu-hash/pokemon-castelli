@@ -4610,6 +4610,50 @@ const GameMap = (function () {
       }
     }
 
+    // Riquadro REALE del disegno dentro un'immagine/frame (20 ott 2026,
+    // richiesta esplicita di Luca: leggendari/compagni dei Capipalestra e
+    // Superquattro troppo piccoli rispetto al Follower). Il problema di
+    // fondo era sempre lo stesso, in due pacchetti diversi: sia il foglio
+    // follower (riquadri 64×64) sia il fronte di battaglia PokéAPI hanno
+    // molto spazio vuoto trasparente intorno al personaggio — scalare sulla
+    // dimensione del riquadro/immagine (frameW, img.width) rende il
+    // Pokémon molto più piccolo di quanto sembri al giocatore. Qui si
+    // disegna la regione su un canvas separato e si scansiona il canale
+    // alpha per trovare il riquadro VERO (bordi del disegno, non del file):
+    // la scala finale si basa su quello, esattamente come se il file non
+    // avesse margini — risultato coerente col Follower (che su schermo
+    // riempie quasi tutto il suo riquadro). Risultato cache-ato per
+    // immagine+regione, il canvas si crea una volta sola per sprite.
+    _riquadroVeroDisegno(img, sx, sy, sw, sh) {
+      if (!this._cacheRiquadroVero) this._cacheRiquadroVero = new Map();
+      const chiave = `${img.src || img}_${sx}_${sy}_${sw}_${sh}`;
+      if (this._cacheRiquadroVero.has(chiave)) return this._cacheRiquadroVero.get(chiave);
+      let risultato = { w: sw, h: sh };   // ripiego: l'intera regione, se la scansione fallisce
+      try {
+        const cv = document.createElement('canvas');
+        cv.width = sw; cv.height = sh;
+        const ctx = cv.getContext('2d');
+        ctx.drawImage(img, sx, sy, sw, sh, 0, 0, sw, sh);
+        const dati = ctx.getImageData(0, 0, sw, sh).data;
+        let minX = sw, minY = sh, maxX = -1, maxY = -1;
+        for (let y = 0; y < sh; y++) {
+          for (let x = 0; x < sw; x++) {
+            if (dati[(y * sw + x) * 4 + 3] > 10) {   // alpha non trascurabile
+              if (x < minX) minX = x;
+              if (x > maxX) maxX = x;
+              if (y < minY) minY = y;
+              if (y > maxY) maxY = y;
+            }
+          }
+        }
+        if (maxX >= minX && maxY >= minY) {
+          risultato = { w: maxX - minX + 1, h: maxY - minY + 1 };
+        }
+      } catch (e) { /* canvas "tainted" (CORS) o altro errore: resta il ripiego */ }
+      this._cacheRiquadroVero.set(chiave, risultato);
+      return risultato;
+    }
+
     // Mostra i leggendari (type "pokemon leggendario"/"leggendario_ambientale",
     // es. Latios/Latias) con lo sprite OVERWORLD del pacchetto follower (sess.
     // 8 set 2026, richiesta esplicita di Luca — prima usavano il fronte di
@@ -4633,11 +4677,18 @@ const GameMap = (function () {
           const px = st.tx * tileSize + tileSize / 2;
           const py = (st.ty + 1) * tileSize;
           const spr = this.add.sprite(px, py, texKey, 1).setOrigin(0.5, 1).setDepth(20);   // frame 1 = sud, fermo
-          const frameW = this.textures.get(texKey).get(0).width || 64;
-          // Kyogre +60% (richiesta Luca, 19 ott 2026): troppo piccolo
-          // rispetto a quanto dovrebbe imporsi nell'Antro, solo lui.
+          const frame = this.textures.get(texKey).get(1);
+          const img = this.textures.get(texKey).getSourceImage();
+          // Stessa dimensione del Follower (20 ott 2026, richiesta esplicita
+          // di Luca): si scala sul riquadro VERO del disegno (niente margini
+          // vuoti del riquadro 64×64), non più su un moltiplicatore fisso
+          // "a occhio" (prima 1.4×, faceva sembrare i leggendari più grandi
+          // o più piccoli del Follower a seconda della specie, invece di
+          // uguali). Kyogre resta +60% (richiesta Luca, 19 ott 2026): troppo
+          // piccolo rispetto a quanto dovrebbe imporsi nell'Antro, solo lui.
+          const riquadro = this._riquadroVeroDisegno(img, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight);
           const boostTaglia = (st.legId === 382) ? 1.6 : 1;
-          spr.setScale((tileSize * 1.4 * boostTaglia) / frameW);
+          spr.setScale((tileSize * boostTaglia) / Math.max(riquadro.w, riquadro.h));
           st.sprite = spr;
           npcSprites.push(spr);
           continue;
@@ -4663,8 +4714,11 @@ const GameMap = (function () {
         const py = (st.ty + 1) * tileSize;
         const spr = this.add.image(px, py, key).setOrigin(0.5, 1).setDepth(20);
         const img = this.textures.get(key).getSourceImage();
-        const dim = Math.max(img.width || 96, img.height || 96);
-        spr.setScale((tileSize * 1.7) / dim);
+        // Stessa dimensione del Follower (20 ott 2026): riquadro vero del
+        // disegno, non il canvas intero del fronte di battaglia PokéAPI
+        // (che ha ancora più margine vuoto del foglio follower).
+        const riquadro = this._riquadroVeroDisegno(img, 0, 0, img.width || 96, img.height || 96);
+        spr.setScale(tileSize / Math.max(riquadro.w, riquadro.h));
         st.sprite = spr;
         npcSprites.push(spr);
       }
@@ -4718,8 +4772,11 @@ const GameMap = (function () {
         const py = (st.ty + offsetTy + 1) * tileSize;
         const spr = this.add.image(px, py, texKey).setOrigin(0.5, 1).setDepth(20);
         const img = this.textures.get(texKey).getSourceImage();
-        const dim = Math.max(img.width || 96, img.height || 96);
-        spr.setScale((tileSize * 1.7) / dim);
+        // Stessa dimensione del Follower (20 ott 2026, richiesta esplicita
+        // di Luca): riquadro vero del disegno, non il canvas del fronte di
+        // battaglia PokéAPI (molto margine vuoto intorno al personaggio).
+        const riquadro = this._riquadroVeroDisegno(img, 0, 0, img.width || 96, img.height || 96);
+        spr.setScale(tileSize / Math.max(riquadro.w, riquadro.h));
         npcSprites.push(spr);
       }
     }

@@ -6079,7 +6079,15 @@ async function usaOggettoSu(chiave, idx) {
       mostraToast(`${pkm.nome} è già al massimo della felicità.`);
       return;
     }
-    pkm.felicita = 255;
+    // Caramella Felicità (richiesta esplicita di Luca, 20 ott 2026): a
+    // differenza della Pietra Amicizia (sopra, al massimo in un colpo),
+    // questa sale solo del 10% (+26, arrotondando 255×0.10) — ripetibile
+    // più volte fino al massimo, oggetto.felicitaParziale la distingue.
+    if (oggetto.felicitaParziale) {
+      pkm.felicita = Math.min(255, pkm.felicita + oggetto.felicitaParziale);
+    } else {
+      pkm.felicita = 255;
+    }
     stato.zaino[chiave] -= 1;
     if ((stato.zaino[chiave] || 0) <= 0) delete stato.zaino[chiave];
     mostraToast(`${oggetto.icona} ${pkm.nome} sembra molto più affezionato a te! Potrebbe evolvere al prossimo livello.`);

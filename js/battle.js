@@ -477,7 +477,30 @@ const Battle = (function () {
   }
 
   // Crea un'istanza completa di un Pokémon (scarica i dati se servono)
-  async function creaIstanza(id, livello) {
+  // Risolve l'id "giusto" per livello (20 ott 2026, richiesta esplicita di
+  // Luca: "non si può vedere uno Zubat al 55, deve avere Golbat" — vale per
+  // le squadre avversarie/selvatiche, NON per le catture/doni del
+  // giocatore, che in nessun gioco vero evolvono da sole al momento della
+  // creazione). Segue SOLO la catena "livello" (metodo "livello" in
+  // EVOLUZIONI_DB): pietra/scambio/felicità richiedono un'azione del
+  // giocatore, non si "scoprono" da sole col livello — lasciate come sono.
+  // Un ramo con PIÙ evoluzioni possibili allo stesso stadio (es. Eevee) non
+  // viene mai toccato automaticamente: si evolve a scelta del giocatore,
+  // non ha senso indovinare quale forma dargli a un avversario.
+  function _risolviIdPerLivello(id, livello) {
+    if (typeof EVOLUZIONI_DB === 'undefined') return id;
+    let attuale = id;
+    for (let i = 0; i < 5; i++) {   // tetto di sicurezza, nessuna catena Gen1-3 supera i 3 stadi
+      const voce = EVOLUZIONI_DB[attuale];
+      if (!voce || Array.isArray(voce)) break;   // ramificata: non si tocca
+      if (voce.metodo !== 'livello' || livello < voce.valore) break;
+      attuale = voce.idEvo;
+    }
+    return attuale;
+  }
+
+  async function creaIstanza(id, livello, opzioni) {
+    if (opzioni && opzioni.evolviPerLivello) id = _risolviIdPerLivello(id, livello);
     const dati = await PokeAPI.getPokemon(id);
     const abilitaSlot = sceglieSlotAbilita(dati);
     const ist = {
@@ -4157,7 +4180,7 @@ const Battle = (function () {
         const facile = statoGioco && statoGioco.difficolta === 'facile';
         for (const voce of datiAllenatore.squadra) {
           const livello = facile ? Math.max(2, voce.livello - 2) : voce.livello;
-          const istanza = await creaIstanza(voce.id, livello);
+          const istanza = await creaIstanza(voce.id, livello, { evolviPerLivello: true });
           // "Cloni" con le mosse ESATTE di un Pokémon del giocatore (hack
           // dedicato a Maso, sess. 6 ott 2026): voce.mosseOverride è un
           // array già pronto (copiato da pkm.mosse altrove), sostituisce
@@ -4170,7 +4193,7 @@ const Battle = (function () {
         indiceNemico = 0;
         nemico = squadraNemica[0];
       } else {
-        nemico = await creaIstanza(opzioni.idPokemon, opzioni.livello);
+        nemico = await creaIstanza(opzioni.idPokemon, opzioni.livello, { evolviPerLivello: true });
       }
     } catch (err) {
       console.error('[Battle] Errore nel creare il nemico:', err);
@@ -5010,7 +5033,7 @@ const Battle = (function () {
       if (doppiaBancoCondiviso) {
         const all = doppiaAllenatori[0];
         const istanze = [];
-        for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello));
+        for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true }));
         doppiaNemiciAttivi[0] = istanze.shift() || null;
         doppiaNemiciAttivi[1] = istanze.shift() || null;
         doppiaBanchi[0] = istanze;   // bench VERO, condiviso da entrambi gli slot
@@ -5021,7 +5044,7 @@ const Battle = (function () {
           const all = doppiaAllenatori[s];
           if (!all) continue;
           const istanze = [];
-          for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello));
+          for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true }));
           doppiaNemiciAttivi[s] = istanze.shift() || null;
           doppiaBanchi[s] = istanze;
           if (doppiaNemiciAttivi[s]) _registraSlotDoppia(doppiaNemiciAttivi[s], 'nemico', s);
