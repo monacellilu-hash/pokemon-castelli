@@ -530,10 +530,6 @@ const DATI_INCONTRI = {
       { id: 52, min: 20, max: 23, rate: 22 },  // Meowth
       { id: 53, min: 23, max: 25, rate: 10 },  // Persian (evoluto)
       { id: 58, min: 21, max: 24, rate: 16 },  // Growlithe
-      { id: 133, min: 23, max: 25, rate: 22 },  // Eevee (rarissimo)
-      { id: 39, min: 20, max: 23, rate: 28 },  // Jigglypuff
-      { id: 174, min: 19, max: 21, rate: 28 },  // Igglybuff (cucciolo)
-      { id: 190, min: 21, max: 24, rate: 16 },  // Aipom (Gen2)
       { id: 209, min: 22, max: 25, rate: 22 },  // Snubbull (Gen2)
       { id: 210, min: 23, max: 26, rate: 10 },  // Granbull (evoluto)
       { id: 234, min: 23, max: 25, rate: 6 },  // Stantler (Gen2, raro)
@@ -637,6 +633,10 @@ const DATI_INCONTRI = {
     probabilita: 15,
     pokemon: [
       { id: 286, min: 30, max: 33, rate: 6 },  // Breloom (Gen3, evoluto)
+      { id: 133, min: 23, max: 25, rate: 0.5 },  // Eevee (rarissimo)
+      { id: 39, min: 20, max: 23, rate: 28 },  // Jigglypuff
+      { id: 174, min: 19, max: 21, rate: 28 },  // Igglybuff (cucciolo)
+      { id: 190, min: 21, max: 24, rate: 16 },  // Aipom (Gen2)
 ],
     pokemonNotte: [
       { id: 302, min: 29, max: 32, rate: 16 },  // Sableye (Gen3)
