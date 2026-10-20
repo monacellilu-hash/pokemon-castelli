@@ -454,24 +454,33 @@ const DATI_INCONTRI = {
   // coppia più ovvia; Clefairy/Cleffa danzano al chiaro di luna (sempre
   // notte nel lore), Drowzee/Murkrow/Chimecho notturni per tema, il resto
   // di giorno. Rate per BST reale (più forte = più raro).
+  // Risistemata il 20 ott 2026 (richiesta esplicita di Luca, "non incontro
+  // pokemon censiti in incontri osservatorio"): giorno/notte erano
+  // scambiati rispetto al documento di riferimento (docs-nogithub/
+  // MAPPA-SPECIE-INCONTRI.md) — Drowzee/Lunatone/Clefairy/Cleffa/Chimecho
+  // erano finiti di notte invece che di giorno, e viceversa per Voltorb/
+  // Swablu/Castform. Rate e livelli riallineati al documento (Mr. Mime e
+  // Castform erano segnati "rarissimo" nel documento ma avevano un rate
+  // gonfiato nel codice, 6 e 10 invece di 1 — stesso tipo di errore
+  // segnalato da Luca in generale su tutte le tabelle).
   'incontri osservatorio': {
     probabilita: 15,
     pokemon: [
-      { id: 63,  min: 21, max: 24, rate: 22 },  // Abra
-      { id: 64,  min: 23, max: 26, rate: 10 },  // Kadabra (evoluto, raro)
-      { id: 100, min: 21, max: 24, rate: 22 },  // Voltorb
-      { id: 333, min: 22, max: 25, rate: 22 },  // Swablu (Gen3)
-      { id: 338, min: 23, max: 26, rate: 6 },   // Solrock (Gen3, tema sole)
-      { id: 122, min: 23, max: 26, rate: 6 },   // Mr. Mime (raro)
-      { id: 351, min: 23, max: 26, rate: 10 },  // Castform (raro, meteo)
+      { id: 63,  min: 26, max: 30, rate: 22 },  // Abra
+      { id: 96,  min: 26, max: 30, rate: 20 },  // Drowzee
+      { id: 337, min: 28, max: 32, rate: 8 },   // Lunatone (Gen3, tema cielo)
+      { id: 338, min: 28, max: 32, rate: 8 },   // Solrock (Gen3, tema cielo)
+      { id: 35,  min: 26, max: 29, rate: 10 },  // Clefairy (rara)
+      { id: 64,  min: 29, max: 32, rate: 6 },   // Kadabra (evoluto, raro)
+      { id: 122, min: 29, max: 32, rate: 1 },   // Mr. Mime (rarissimo)
+      { id: 173, min: 24, max: 26, rate: 6 },   // Cleffa (cucciolo)
 ],
     pokemonNotte: [
-      { id: 96,  min: 21, max: 24, rate: 22 },  // Drowzee
-      { id: 198, min: 22, max: 25, rate: 10 },  // Murkrow (Gen2)
-      { id: 337, min: 23, max: 26, rate: 6 },   // Lunatone (Gen3, tema luna)
-      { id: 35,  min: 21, max: 23, rate: 22 },  // Clefairy (danza al chiaro di luna)
-      { id: 173, min: 19, max: 21, rate: 28 },  // Cleffa (cucciolo)
-      { id: 358, min: 22, max: 25, rate: 10 },  // Chimecho
+      { id: 100, min: 26, max: 30, rate: 18 },  // Voltorb
+      { id: 333, min: 27, max: 31, rate: 16 },  // Swablu (Gen3)
+      { id: 198, min: 27, max: 31, rate: 14 },  // Murkrow (Gen2)
+      { id: 351, min: 28, max: 32, rate: 1 },   // Castform (rarissimo, meteo)
+      { id: 358, min: 27, max: 31, rate: 14 },  // Chimecho
 ],
   },
 
@@ -523,19 +532,26 @@ const DATI_INCONTRI = {
   // ── MONTE PORZIO CATONE — città (Lv 24-30) ──
   // NUOVA (sessione 6 agosto): mancava del tutto, nonostante la città esista
   // da tempo. Serve un rettangolo erba_alta con questo id in monteporzio.tmj.
+  // Risistemata il 20 ott 2026 (richiesta esplicita di Luca, "occhio a
+  // Monteporzio"): Growlithe non è mai stato nel documento di riferimento
+  // (docs-nogithub/MAPPA-SPECIE-INCONTRI.md) — tolto. Snubbull/Granbull/
+  // Stantler erano di giorno invece che di notte — spostati. Eevee/
+  // Jigglypuff/Igglybuff/Aipom sono stati tolti da qui da Luca stesso
+  // (commit af9768d, 20 ott) perché ora si trovano al Bosco del Signor
+  // Tuscolo — NON li rimetto, anche se il documento (non aggiornato dopo
+  // quella scelta) li elenca ancora qui.
   'incontri monteporzio': {
     probabilita: 15,
     pokemon: [
       { id: 27, min: 20, max: 23, rate: 22 },  // Sandshrew
       { id: 52, min: 20, max: 23, rate: 22 },  // Meowth
       { id: 53, min: 23, max: 25, rate: 10 },  // Persian (evoluto)
-      { id: 58, min: 21, max: 24, rate: 16 },  // Growlithe
-      { id: 209, min: 22, max: 25, rate: 22 },  // Snubbull (Gen2)
-      { id: 210, min: 23, max: 26, rate: 10 },  // Granbull (evoluto)
-      { id: 234, min: 23, max: 25, rate: 6 },  // Stantler (Gen2, raro)
 ],
     pokemonNotte: [
       { id: 25, min: 20, max: 23, rate: 22 },  // Pikachu (raro)
+      { id: 209, min: 22, max: 25, rate: 22 },  // Snubbull (Gen2)
+      { id: 210, min: 23, max: 26, rate: 10 },  // Granbull (evoluto)
+      { id: 234, min: 23, max: 25, rate: 6 },  // Stantler (Gen2, raro)
 ],
   },
 
