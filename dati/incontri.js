@@ -603,8 +603,7 @@ const DATI_INCONTRI = {
     pokemonNotte: [
       { id: 236, min: 28, max: 30, rate: 28 },  // Tyrogue (Gen2, raro)
       { id: 237, min: 31, max: 33, rate: 10 },  // Hitmontop (Gen2, raro)
-      { id: 106, min: 30, max: 32, rate: 10 },  // Hitmonlee (rarissimo)
-      { id: 107, min: 30, max: 32, rate: 10 },  // Hitmonchan (rarissimo)
+
       { id: 296, min: 28, max: 31, rate: 28 },  // Makuhita (Gen3)
 ],
   },
@@ -639,7 +638,9 @@ const DATI_INCONTRI = {
       { id: 335, min: 26, max: 30, rate: 10 },  // Zangoose (Gen3)
 ],
     pokemonNotte: [
-      { id: 336, min: 26, max: 30, rate: 10 },  // Seviper (Gen3)
+      { id: 336, min: 26, max: 30, rate: 80 },  // Seviper (Gen3)
+      { id: 106, min: 30, max: 32, rate: 0.02 },  // Hitmonlee (rarissimo)
+      { id: 107, min: 30, max: 32, rate: 0.02 },  // Hitmonchan (rarissimo)
 ],
   },
 
@@ -990,7 +991,6 @@ const DATI_INCONTRI = {
   'incontri percorso montepo 3': {
     probabilita: 10,
     pokemon: [
-      { id: 212, min: 56, max: 61, rate: 6 },  // Scizor (rarissimo)
       { id: 286, min: 57, max: 62, rate: 6 },  // Breloom
       { id: 326, min: 56, max: 61, rate: 6 },  // Grumpig
       { id: 97,  min: 55, max: 60, rate: 6 },  // Hypno
