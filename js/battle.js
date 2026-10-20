@@ -170,11 +170,11 @@ const Battle = (function () {
   let indiceNemico = 0;           // quale Pokémon nemico è in campo
   let fuggireImpossibile = false; // F11: true per i leggendari (fuga bloccata)
   let nienteTeleportSuSconfitta = false; // vedi avvia(): solo la 1a lotta col rivale nel lab
-  // Switch volontario dell'IA (sess. 6 ott 2026, hack dedicato per Maso su
-  // Percorso Monte Po 3 — richiesta esplicita di Luca, NON un comportamento
-  // generale degli allenatori): attivo solo se datiAllenatore.switchIntelligente
-  // è true. Cambia Pokémon se uno in panchina è nettamente più efficace di
-  // quello in campo contro il nostro, non più spesso di una volta ogni 3 turni.
+  // Switch volontario dell'IA (nato sess. 6 ott 2026 per Maso, generalizzato
+  // a TUTTI gli allenatori il 20 ott 2026 — richiesta esplicita di Luca,
+  // "le battaglie sono troppo facili/a caso"): cambia Pokémon se uno in
+  // panchina è nettamente più efficace di quello in campo contro il
+  // nostro, non più spesso di una volta ogni 3 turni.
   let numeroTurnoBattaglia = 0;
   let ultimoSwitchVolontarioTurno = -99;
 
@@ -2955,13 +2955,29 @@ const Battle = (function () {
     const bersagli = possibiliBersagli.filter(b => b && b.hpAttuale > 0);
     if (!bersagli.length) return utilizzabili[Math.floor(Math.random() * utilizzabili.length)];
 
+    // IA più "cattiva" (20 ott 2026, richiesta esplicita di Luca: "troppo
+    // facile, gioca a caso"): due cambi rispetto a prima.
+    // 1) Una mossa SENZA alcun effetto (immunità di tipo, es. Terremoto su un
+    //    volante) non si usa MAI se c'è almeno un'alternativa valida — prima
+    //    aveva un peso residuo (0.2) che la faceva scegliere comunque, raro
+    //    ma capitava, ed era esattamente quello che sembrava "giocare a caso".
+    // 2) L'efficacia pesa al QUADRATO, non lineare: una mossa superefficace
+    //    (×2 o ×4) ora è molto più preferita di una poco efficace o neutra,
+    //    invece di una leggera preferenza quasi impercettibile — l'IA sceglie
+    //    quasi sempre la mossa giusta per il tipo dell'avversario, pur
+    //    restando casuale quando più mosse sono comparabili (niente di
+    //    "sempre la stessa", solo meno a caso quando c'è una scelta ovvia).
+    const senzaEffetto = [];
     const pesi = utilizzabili.map(m => {
       if (!m.potenza || m.potenza <= 0) return 1; // mossa di stato: peso base, non esclusa
       const effMax = Math.max(...bersagli.map(b => efficacia(m.tipo, b.tipi || [])));
-      if (effMax === 0) return 0.2; // non ha alcun effetto su nessuno: quasi mai, ma non vietata del tutto
+      if (effMax === 0) { senzaEffetto.push(m); return 0; }
       const stab = (attaccante.tipi || []).includes(m.tipo) ? 1.5 : 1;
-      return m.potenza * effMax * stab;
+      return m.potenza * effMax * effMax * stab;
     });
+    // Se TUTTE le mosse offensive sono senza effetto, almeno una di stato (se
+    // c'è) resta comunque scelgibile col suo peso base — mai scegliere
+    // un'offensiva inutile se esiste una mossa di stato sensata al suo posto.
     const totale = pesi.reduce((s, p) => s + p, 0);
     if (totale <= 0) return utilizzabili[Math.floor(Math.random() * utilizzabili.length)];
     let r = Math.random() * totale;
@@ -3006,7 +3022,13 @@ const Battle = (function () {
   // probabilità, non più di una volta ogni 3 turni. Ritorna true se ha
   // switchato (consuma il turno, niente attacco quel giro).
   async function _provaSwitchNemico() {
-    if (!datiAllenatore || !datiAllenatore.switchIntelligente) return false;
+    // Generalizzata a TUTTI gli allenatori (20 ott 2026, richiesta esplicita
+    // di Luca: "se ha solo mosse normali contro uno spettro, deve cambiare
+    // Pokémon se ne ha un altro migliore") — prima era un hack dedicato solo
+    // a Maso (switchIntelligente). Resta disattivabile per un allenatore
+    // specifico scrivendo switchIntelligente: false in dati/trainer.js, se
+    // mai servisse (nessuno lo fa oggi).
+    if (!datiAllenatore || datiAllenatore.switchIntelligente === false) return false;
     if (!nemico || nemico.hpAttuale <= 0 || !mio) return false;
     if (squadraNemica.length <= 1) return false;
     if (numeroTurnoBattaglia - ultimoSwitchVolontarioTurno < 3) return false;
