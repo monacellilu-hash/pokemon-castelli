@@ -499,6 +499,24 @@ const Battle = (function () {
     return attuale;
   }
 
+  // Moveset FISSO scelto a mano (20 ott 2026, richiesta esplicita di Luca:
+  // scegliMosse prende solo le 4 mosse apprese più di recente per livello,
+  // spesso scarse/sbilanciate sui Capipalestra — "a cazzo di cane"). Array
+  // di slug inglesi PokéAPI (es. ['vine-whip','razor-leaf']); una mossa non
+  // valida/non trovata viene saltata, non blocca le altre.
+  async function _mosseFisse(elenco) {
+    const scelte = [];
+    for (const nome of elenco) {
+      try {
+        const dettagli = await PokeAPI.getMossa(nome);
+        scelte.push({ ...dettagli, pp: dettagli.ppMax });
+      } catch (e) {
+        console.warn('[Battle] Mossa fissa non trovata:', nome, e.message);
+      }
+    }
+    return scelte.length ? scelte : [mossaFallback()];
+  }
+
   async function creaIstanza(id, livello, opzioni) {
     if (opzioni && opzioni.evolviPerLivello) id = _risolviIdPerLivello(id, livello);
     const dati = await PokeAPI.getPokemon(id);
@@ -514,7 +532,9 @@ const Battle = (function () {
       catchRate: (typeof dati.catchRate === 'number') ? dati.catchRate : 45,
       livello: livello,
       exp: Math.pow(livello, 3),       // curva di crescita: Lv^3
-      mosse: await scegliMosse(dati, livello),
+      mosse: (opzioni && opzioni.mosseFisse && opzioni.mosseFisse.length)
+        ? await _mosseFisse(opzioni.mosseFisse)
+        : await scegliMosse(dati, livello),
       mosseImparabili: dati.mosse,     // lista specie: serve per i level-up futuri
       mosseImparabiliSchema: 'gen123', // già calcolato col fix Gen 1-3 (6 ott 2026)
       condizione: null,                // stato alterato: null | { tipo, turni }
@@ -4180,7 +4200,7 @@ const Battle = (function () {
         const facile = statoGioco && statoGioco.difficolta === 'facile';
         for (const voce of datiAllenatore.squadra) {
           const livello = facile ? Math.max(2, voce.livello - 2) : voce.livello;
-          const istanza = await creaIstanza(voce.id, livello, { evolviPerLivello: true });
+          const istanza = await creaIstanza(voce.id, livello, { evolviPerLivello: true, mosseFisse: voce.mosse });
           // "Cloni" con le mosse ESATTE di un Pokémon del giocatore (hack
           // dedicato a Maso, sess. 6 ott 2026): voce.mosseOverride è un
           // array già pronto (copiato da pkm.mosse altrove), sostituisce
@@ -5033,7 +5053,7 @@ const Battle = (function () {
       if (doppiaBancoCondiviso) {
         const all = doppiaAllenatori[0];
         const istanze = [];
-        for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true }));
+        for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true, mosseFisse: voce.mosse }));
         doppiaNemiciAttivi[0] = istanze.shift() || null;
         doppiaNemiciAttivi[1] = istanze.shift() || null;
         doppiaBanchi[0] = istanze;   // bench VERO, condiviso da entrambi gli slot
@@ -5044,7 +5064,7 @@ const Battle = (function () {
           const all = doppiaAllenatori[s];
           if (!all) continue;
           const istanze = [];
-          for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true }));
+          for (const voce of all.squadra) istanze.push(await creaIstanza(voce.id, voce.livello, { evolviPerLivello: true, mosseFisse: voce.mosse }));
           doppiaNemiciAttivi[s] = istanze.shift() || null;
           doppiaBanchi[s] = istanze;
           if (doppiaNemiciAttivi[s]) _registraSlotDoppia(doppiaNemiciAttivi[s], 'nemico', s);
