@@ -3395,6 +3395,21 @@ const GameMap = (function () {
       const def = MAPPE[chiave];
       if (!def) { console.error('[Map] Mappa sconosciuta:', chiave); return; }
 
+      // Bosco del Signor Tuscolo (20 ott 2026, richiesta esplicita di Luca —
+      // NON è un bug, è voluto): è una "sfida a sequenza unica" — se si esce
+      // dal bosco per QUALUNQUE motivo (uscita volontaria, svenimento e
+      // teletrasporto al Centro Pokémon...) prima di aver parlato col Signor
+      // Tuscolo, TUTTI gli allenatori già battuti tornano sfidabili. Si
+      // azzera qui, non alla battaglia, così vale per ogni via d'uscita.
+      if (mappaCorrente === 'bosco_signor_tuscolo' && chiave !== 'bosco_signor_tuscolo' &&
+          typeof BOSCO_TUSCOLO_TRAINER_IDS !== 'undefined' && typeof stato !== 'undefined') {
+        if (Array.isArray(stato.allenatoriBattuti)) {
+          stato.allenatoriBattuti = stato.allenatoriBattuti.filter(id => !BOSCO_TUSCOLO_TRAINER_IDS.includes(id));
+        }
+        for (const id of BOSCO_TUSCOLO_TRAINER_IDS) trainerBattuti.delete(id);
+        if (typeof salvaPartita === 'function') salvaPartita();
+      }
+
       this._pulisciLayers();
       bloccato = true;
 

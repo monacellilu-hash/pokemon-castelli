@@ -77,8 +77,6 @@ const DATI_INCONTRI = {
       { id: 10, min: 2, max: 5, rate: 28 },  // Caterpie
       { id: 13, min: 2, max: 5, rate: 28 },  // Weedle
       { id: 16, min: 2, max: 5, rate: 28 },  // Pidgey
-      { id: 19, min: 2, max: 5, rate: 28 },  // Rattata
-      { id: 20, min: 5, max: 7, rate: 10 },  // Raticate (evoluto, raro)
       { id: 60, min: 3, max: 5, rate: 22 },  // Poliwag
       { id: 69, min: 3, max: 5, rate: 22 },  // Bellsprout
       { id: 161, min: 2, max: 5, rate: 28 },  // Sentret (Gen2)
@@ -93,6 +91,8 @@ const DATI_INCONTRI = {
 ],
     pokemonNotte: [
       { id: 23, min: 2, max: 5, rate: 22 },  // Ekans
+      { id: 19, min: 2, max: 5, rate: 28 },  // Rattata
+      { id: 20, min: 5, max: 7, rate: 10 },  // Raticate (evoluto, raro)
       { id: 29, min: 2, max: 4, rate: 28 },  // Nidoran♀
       { id: 32, min: 2, max: 4, rate: 28 },  // Nidoran♂
       { id: 43, min: 3, max: 5, rate: 22 },  // Oddish
@@ -104,16 +104,12 @@ const DATI_INCONTRI = {
   'incontri tuscolo': {
     probabilita: 15,
     pokemon: [
-      { id: 10,  min: 8,  max: 11, rate: 25 },  // Caterpie
       { id: 11,  min: 9,  max: 12, rate: 12 },  // Metapod
-      { id: 13,  min: 8,  max: 11, rate: 25 },  // Weedle
       { id: 14,  min: 9,  max: 12, rate: 12 },  // Kakuna
       { id: 43,  min: 8,  max: 12, rate: 20 },  // Oddish
       { id: 69,  min: 8,  max: 12, rate: 20 },  // Bellsprout
       { id: 46,  min: 9,  max: 12, rate: 18 },  // Paras
       { id: 92,  min: 10, max: 12, rate: 12 },  // Gastly (tra le rovine)
-      { id: 102, min: 9,  max: 12, rate: 12 },  // Exeggcute
-      { id: 74,  min: 9,  max: 12, rate: 18 },  // Geodude (rovine)
       { id: 187, min: 8,  max: 11, rate: 18 },  // Hoppip (Gen2)
       { id: 191, min: 8,  max: 11, rate: 14 },  // Sunkern (Gen2)
       { id: 204, min: 9,  max: 11, rate: 14 },  // Pineco (Gen2)
@@ -125,18 +121,20 @@ const DATI_INCONTRI = {
       { id: 12,  min: 11, max: 13, rate: 4 },   // Butterfree (evoluto, raro)
       { id: 15,  min: 11, max: 13, rate: 4 },   // Beedrill (evoluto, raro)
       { id: 47,  min: 11, max: 13, rate: 6 },   // Parasect (evoluto)
-      { id: 201, min: 10, max: 12, rate: 3 },   // Unown (rovine, raro)
-      { id: 206, min: 10, max: 12, rate: 4 },   // Dunsparce (raro)
     ],
-    // Incontri notturni (sess. 5 ott 2026): di notte le rovine si popolano
+    // Incontri notturni (sess. 5 ott 2026, risistemati 20 ott 2026 sul
+    // documento: Caterpie/Weedle/Exeggcute/Geodude/Unown/Dunsparce erano
+    // finiti di giorno invece che di notte): di notte le rovine si popolano
     // di fantasmi — stesso bosco ma con Gastly più comune e Haunter
     // (evoluto) che compare solo col buio, mai di giorno.
     pokemonNotte: [
       { id: 10,  min: 8,  max: 11, rate: 20 },  // Caterpie
       { id: 13,  min: 8,  max: 11, rate: 20 },  // Weedle
-      { id: 92,  min: 10, max: 12, rate: 28 },  // Gastly (più comune di notte)
-      { id: 93,  min: 11, max: 13, rate: 8 },   // Haunter (evoluto, solo di notte)
+      { id: 102, min: 9,  max: 12, rate: 12 },  // Exeggcute
+      { id: 92,  min: 10, max: 12, rate: 20 },  // Gastly (più comune di notte)
+      { id: 93,  min: 11, max: 13, rate: 1 },   // Haunter (evoluto, solo di notte)
       { id: 74,  min: 9,  max: 12, rate: 18 },  // Geodude
+      { id: 206, min: 10, max: 12, rate: 4 },   // Dunsparce (raro)
       { id: 201, min: 10, max: 12, rate: 6 },   // Unown (più facile di notte tra le rovine)
     ],
   },
@@ -248,7 +246,7 @@ const DATI_INCONTRI = {
       { id: 22, min: 14, max: 17, rate: 10 },  // Fearow (evoluto)
       { id: 84, min: 12, max: 16, rate: 22 },  // Doduo
       { id: 170, min: 13, max: 17, rate: 22 },  // Chinchou (Gen2)
-      { id: 180, min: 13, max: 17, rate: 16 },  // Flaaffy (Gen2)
+      { id: 179, min: 10, max: 13, rate: 13 },  // Mareep (Gen2)
       { id: 239, min: 12, max: 16, rate: 16 },  // Elekid (Gen2)
       { id: 309, min: 13, max: 17, rate: 22 },  // Electrike (Gen3)
       { id: 311, min: 14, max: 18, rate: 10 },  // Plusle (Gen3)
@@ -295,13 +293,13 @@ const DATI_INCONTRI = {
       { id: 54, min: 12, max: 16, rate: 22 },  // Psyduck
       { id: 60, min: 12, max: 16, rate: 22 },  // Poliwag
       { id: 61, min: 14, max: 17, rate: 16 },  // Poliwhirl (evoluto)
-      { id: 90, min: 14, max: 18, rate: 22 },  // Shellder
-      { id: 118, min: 13, max: 17, rate: 22 },  // Goldeen
-      { id: 270, min: 12, max: 16, rate: 28 },  // Lotad (Gen3)
       { id: 183, min: 12, max: 16, rate: 28 },  // Marill (Gen2)
 ],
     pokemonNotte: [
       { id: 298, min: 12, max: 14, rate: 28 },  // Azurill (cucciolo di Marill)
+      { id: 90, min: 14, max: 18, rate: 22 },  // Shellder
+      { id: 118, min: 13, max: 17, rate: 22 },  // Goldeen
+      { id: 270, min: 12, max: 16, rate: 28 },  // Lotad (Gen3)
 ],
   },
 
@@ -313,16 +311,16 @@ const DATI_INCONTRI = {
     pokemon: [
       { id: 54, min: 16, max: 19, rate: 22 },  // Psyduck
       { id: 55, min: 20, max: 22, rate: 6 },  // Golduck (raro, evoluto)
-      { id: 79, min: 18, max: 22, rate: 22 },  // Slowpoke
-      { id: 80, min: 19, max: 21, rate: 6 },  // Slowbro (evoluto, raro)
-      { id: 194, min: 16, max: 19, rate: 28 },  // Wooper (Gen2)
-      { id: 270, min: 16, max: 19, rate: 28 },  // Lotad (Gen3)
       { id: 278, min: 17, max: 21, rate: 28 },  // Wingull (Gen3)
       { id: 279, min: 18, max: 20, rate: 10 },  // Pelipper (evoluto)
       { id: 183, min: 17, max: 20, rate: 28 },  // Marill (Gen2)
 ],
     pokemonNotte: [
       { id: 118, min: 17, max: 21, rate: 22 },  // Goldeen
+      { id: 79, min: 18, max: 22, rate: 22 },  // Slowpoke
+      { id: 80, min: 19, max: 21, rate: 6 },  // Slowbro (evoluto, raro)
+      { id: 194, min: 16, max: 19, rate: 28 },  // Wooper (Gen2)
+      { id: 270, min: 16, max: 19, rate: 28 },  // Lotad (Gen3)
 ],
   },
 
@@ -384,14 +382,14 @@ const DATI_INCONTRI = {
       { id: 170, min: 16, max: 19, rate: 22 },  // Chinchou (Gen2)
       { id: 175, min: 14, max: 17, rate: 28 },  // Togepi (rara, giardini)
       { id: 176, min: 17, max: 20, rate: 10 },  // Togetic (evoluto, rarissimo)
-      { id: 177, min: 14, max: 17, rate: 22 },  // Natu (Gen2, nei giardini)
-      { id: 178, min: 15, max: 17, rate: 6 },  // Xatu (evoluto)
-      { id: 194, min: 14, max: 17, rate: 28 },  // Wooper (Gen2)
-      { id: 195, min: 15, max: 17, rate: 10 },  // Quagsire (evoluto)
       { id: 222, min: 15, max: 18, rate: 10 },  // Corsola (Gen2)
 ],
     pokemonNotte: [
       { id: 318, min: 17, max: 20, rate: 22 },  // Carvanha (Gen3, raro)
+      { id: 177, min: 14, max: 17, rate: 22 },  // Natu (Gen2, nei giardini)
+      { id: 178, min: 15, max: 17, rate: 6 },  // Xatu (evoluto)
+      { id: 194, min: 14, max: 17, rate: 28 },  // Wooper (Gen2)
+      { id: 195, min: 15, max: 17, rate: 10 },  // Quagsire (evoluto)
 ],
   },
 
@@ -435,13 +433,13 @@ const DATI_INCONTRI = {
       { id: 227, min: 20, max: 24, rate: 6 },  // Skarmory (Gen2, raro)
       { id: 235, min: 18, max: 21, rate: 28 },  // Smeargle
       { id: 285, min: 18, max: 21, rate: 22 },  // Shroomish (Gen3)
+],
+    pokemonNotte: [
+      { id: 357, min: 19, max: 22, rate: 6 },  // Tropius
       { id: 287, min: 18, max: 21, rate: 22 },  // Slakoth
       { id: 288, min: 19, max: 22, rate: 10 },  // Vigoroth (evoluto)
       { id: 313, min: 19, max: 22, rate: 10 },  // Volbeat (Gen3)
       { id: 314, min: 19, max: 22, rate: 10 },  // Illumise (Gen3)
-],
-    pokemonNotte: [
-      { id: 357, min: 19, max: 22, rate: 6 },  // Tropius
 ],
   },
 
@@ -583,10 +581,12 @@ const DATI_INCONTRI = {
     pokemon: [
       { id: 241, min: 27, max: 29, rate: 6 },  // Miltank (Gen2)
       { id: 352, min: 26, max: 29, rate: 10 },  // Kecleon (Gen3)
+      { id: 328, min: 32, max: 35, rate: 22 },  // Trapinch (Gen3)
 ],
     pokemonNotte: [
       { id: 215, min: 25, max: 28, rate: 10 },  // Sneasel (Gen2)
       { id: 355, min: 28, max: 30, rate: 22 },  // Duskull (Gen3, raro)
+      { id: 207, min: 33, max: 36, rate: 10 },  // Gligar (raro)
 ],
   },
 
@@ -614,13 +614,14 @@ const DATI_INCONTRI = {
   'incontri percorso 8': {
     probabilita: 15,
     pokemon: [
-      { id: 274, min: 29, max: 32, rate: 16 },  // Nuzleaf (Gen3, evoluto)
-      { id: 291, min: 31, max: 33, rate: 10 },  // Ninjask (Gen3, raro)
+      { id: 274, min: 41, max: 45, rate: 16 },  // Nuzleaf (Gen3, evoluto)
+      { id: 291, min: 43, max: 46, rate: 10 },  // Ninjask (Gen3, raro)
+      { id: 58,  min: 25, max: 29, rate: 16 },  // Growlithe
 ],
     pokemonNotte: [
-      { id: 42, min: 28, max: 31, rate: 10 },  // Golbat (evoluto)
-      { id: 168, min: 28, max: 31, rate: 10 },  // Ariados (Gen2, evoluto)
-      { id: 262, min: 30, max: 33, rate: 10 },  // Mightyena (Gen3, evoluto)
+      { id: 42, min: 40, max: 43, rate: 10 },  // Golbat (evoluto)
+      { id: 168, min: 40, max: 44, rate: 10 },  // Ariados (Gen2, evoluto)
+      { id: 262, min: 42, max: 46, rate: 10 },  // Mightyena (Gen3, evoluto)
 ],
   },
 
@@ -649,6 +650,9 @@ const DATI_INCONTRI = {
     probabilita: 15,
     pokemon: [
       { id: 286, min: 30, max: 33, rate: 6 },  // Breloom (Gen3, evoluto)
+      { id: 218, min: 27, max: 28, rate: 18 },  // Slugma (Gen2)
+      { id: 105, min: 28, max: 30, rate: 16 },  // Marowak
+      { id: 28,  min: 29, max: 30, rate: 14 },  // Sandslash
       { id: 133, min: 23, max: 25, rate: 0.5 },  // Eevee (rarissimo)
       { id: 39, min: 20, max: 23, rate: 28 },  // Jigglypuff
       { id: 174, min: 19, max: 21, rate: 28 },  // Igglybuff (cucciolo)
@@ -675,6 +679,9 @@ const DATI_INCONTRI = {
       { id: 218, min: 21, max: 23, rate: 18 },  // Slugma (Gen2)
       { id: 219, min: 21, max: 24, rate: 10 },  // Magcargo (Gen2, evoluto raro)
       { id: 51,  min: 23, max: 24, rate: 6 },   // Dugtrio (evoluto raro)
+      { id: 42,  min: 30, max: 33, rate: 22 },  // Golbat
+      { id: 75,  min: 31, max: 34, rate: 18 },  // Graveler
+      { id: 95,  min: 31, max: 34, rate: 16 },  // Onix
     ],
   },
   // ── TUNNEL ROCCIOSO 1F — fiume sotterraneo, MN Surf (Lv 30-36) ──
@@ -703,6 +710,9 @@ const DATI_INCONTRI = {
       { id: 105, min: 22, max: 25, rate: 16 },  // Marowak
       { id: 28,  min: 24, max: 25, rate: 14 },  // Sandslash
       { id: 229, min: 24, max: 25, rate: 7 },   // Houndoom (Gen2, evoluto raro)
+      { id: 42,  min: 30, max: 33, rate: 22 },  // Golbat
+      { id: 75,  min: 31, max: 34, rate: 18 },  // Graveler
+      { id: 95,  min: 31, max: 34, rate: 16 },  // Onix
     ],
   },
   'incontri tunnel roccioso 3f': {
@@ -713,6 +723,9 @@ const DATI_INCONTRI = {
       { id: 208, min: 26, max: 26, rate: 6 },   // Steelix (evoluto rarissimo)
       { id: 371, min: 22, max: 25, rate: 1 },   // Bagon (rarissimo, draghi solo nei dungeon)
       { id: 372, min: 25, max: 26, rate: 1 },   // Shelgon (rarissimo, evoluto)
+      { id: 42,  min: 30, max: 33, rate: 22 },  // Golbat
+      { id: 75,  min: 31, max: 34, rate: 18 },  // Graveler
+      { id: 95,  min: 31, max: 34, rate: 16 },  // Onix
 ],
   },
   'incontri tunnel roccioso 4f': {
@@ -748,6 +761,7 @@ const DATI_INCONTRI = {
       { id: 126, min: 31, max: 35, rate: 1 },   // Magmar (rarissimo)
       { id: 240, min: 30, max: 32, rate: 10 },  // Magby (cucciolo)
       { id: 324, min: 31, max: 33, rate: 16 },  // Torkoal
+      { id: 372, min: 31, max: 32, rate: 0.01 },  // Shelgon (rarissimo, evoluto)
 ],
   },
 
@@ -802,9 +816,13 @@ const DATI_INCONTRI = {
       { id: 166, min: 32, max: 36, rate: 16 },  // Ledian (Gen2)
       { id: 192, min: 32, max: 35, rate: 10 },  // Sunflora (Gen2)
       { id: 284, min: 35, max: 37, rate: 10 },  // Masquerain (Gen3, raro)
+      { id: 42,  min: 30, max: 33, rate: 22 },  // Golbat
+      { id: 75,  min: 31, max: 34, rate: 18 },  // Graveler
+      { id: 95,  min: 31, max: 34, rate: 16 },  // Onix
 ],
     pokemonNotte: [
       { id: 327, min: 32, max: 36, rate: 16 },  // Spinda
+      { id: 280, min: 29, max: 32, rate: 12 },  // Ralts (rarissimo)
 ],
   },
 
@@ -815,16 +833,16 @@ const DATI_INCONTRI = {
   'incontri percorso 11': {
     probabilita: 15,
     pokemon: [
-      { id: 202, min: 24, max: 26, rate: 10 },  // Wobbuffet
-      { id: 280, min: 24, max: 26, rate: 28 },  // Ralts (rarissimo)
-      { id: 299, min: 23, max: 25, rate: 16 },  // Nosepass (Gen3)
-      { id: 304, min: 24, max: 26, rate: 22 },  // Aron (Gen3)
-      { id: 305, min: 26, max: 27, rate: 10 },  // Lairon (Gen3, evoluto)
-      { id: 322, min: 24, max: 27, rate: 22 },  // Numel (Gen3)
-      { id: 323, min: 27, max: 28, rate: 6 },  // Camerupt (Gen3, evoluto, raro)
+      { id: 202, min: 29, max: 32, rate: 10 },  // Wobbuffet
+      { id: 280, min: 29, max: 32, rate: 2 },  // Ralts (rarissimo)
+      { id: 299, min: 28, max: 31, rate: 16 },  // Nosepass (Gen3)
+      { id: 323, min: 33, max: 35, rate: 6 },  // Camerupt (Gen3, evoluto, raro)
 ],
     pokemonNotte: [
-      { id: 360, min: 23, max: 24, rate: 28 },  // Wynaut (cucciolo)
+      { id: 360, min: 28, max: 30, rate: 28 },  // Wynaut (cucciolo)
+      { id: 304, min: 29, max: 32, rate: 22 },  // Aron (Gen3)
+      { id: 305, min: 32, max: 34, rate: 10 },  // Lairon (Gen3, evoluto)
+      { id: 322, min: 30, max: 33, rate: 22 },  // Numel (Gen3)
 ],
   },
 
@@ -871,16 +889,22 @@ const DATI_INCONTRI = {
   // come richiesto. Stanza segreta di Moltres ESCLUSA (incontro leggendario
   // unico, niente tabella selvatica lì). Specie tutte nuove rispetto alle
   // zone precedenti, livelli 55-63. ──
+  // Risistemata il 20 ott 2026 sul documento: i livelli erano rimasti a
+  // 30-33 (scala di un dungeon di metà gioco), ma Via Vittoria è l'ultimo
+  // dungeon prima della Lega (cap 60) — dovevano essere 55-60. Steelix(208)/
+  // Altaria(334) tolti da qui (il documento li mette nel piano sopra, ma
+  // quel piano qui è usato per l'acqua/Surf: non li ho spostati a forza in
+  // un posto che non c'entra, vanno ricollocati a mano da Luca).
   'incontri via vittoria 1f': {
     probabilita: 18,
     pokemon: [
-      { id: 95,  min: 30, max: 32, rate: 22 },  // Onix
-      { id: 208, min: 32, max: 33, rate: 12 },  // Steelix (evoluto)
-      { id: 246, min: 30, max: 32, rate: 20 },  // Larvitar
-      { id: 247, min: 31, max: 33, rate: 12 },  // Pupitar
-      { id: 74,  min: 30, max: 31, rate: 20 },  // Geodude
-      { id: 75,  min: 31, max: 32, rate: 14 },  // Graveler
-      { id: 334, min: 33, max: 34, rate: 1 },   // Altaria (rarissimo, drago/volante dungeon-only)
+      { id: 95,  min: 55, max: 58, rate: 32 },  // Onix
+      { id: 246, min: 55, max: 58, rate: 1 },   // Larvitar
+      { id: 247, min: 57, max: 60, rate: 0.5 }, // Pupitar
+      { id: 74,  min: 55, max: 57, rate: 40 },  // Geodude
+      { id: 75,  min: 57, max: 59, rate: 14 },  // Graveler
+      { id: 353, min: 55, max: 58, rate: 20 },  // Shuppet
+      { id: 200, min: 55, max: 58, rate: 16 },  // Misdreavus
 ],
   },
   'incontri via vittoria 2f': {
@@ -937,17 +961,23 @@ const DATI_INCONTRI = {
   // id="incontri percorso montepo 1" (il tile-locale-6 di outside.tsx non
   // funziona qui: la mappa usa un tileset suo estratto da pret, non
   // outside.tsx — vedi commento in _buildErbaAltaTiles, js/map.js). ──
+  // Risistemata il 20 ott 2026 sul documento: stesso bug di Via Vittoria,
+  // livelli rimasti a 22-27 invece di 55-63 (Percorso Monte Po 1 è post-Lega).
+  // Aggiunti Trapinch/Vibrava/Claydol che mancavano del tutto.
   'incontri percorso montepo 1': {
     probabilita: 10,
     pokemon: [
-      { id: 130, min: 24, max: 27, rate: 3 },  // Gyarados (rarissimo)
-      { id: 310, min: 23, max: 26, rate: 6 },  // Manectric
+      { id: 130, min: 58, max: 63, rate: 3 },  // Gyarados (rarissimo)
+      { id: 310, min: 57, max: 62, rate: 6 },  // Manectric
+      { id: 328, min: 55, max: 58, rate: 18 },  // Trapinch
+      { id: 329, min: 58, max: 61, rate: 10 },  // Vibrava
+      { id: 344, min: 56, max: 59, rate: 13 },  // Claydol
 ],
     pokemonNotte: [
-      { id: 24, min: 22, max: 25, rate: 10 },  // Arbok
-      { id: 97, min: 22, max: 25, rate: 6 },  // Hypno
-      { id: 101, min: 23, max: 26, rate: 6 },  // Electrode
-      { id: 110, min: 23, max: 26, rate: 6 },  // Weezing
+      { id: 24, min: 55, max: 60, rate: 10 },  // Arbok
+      { id: 97, min: 55, max: 60, rate: 6 },  // Hypno
+      { id: 101, min: 56, max: 61, rate: 6 },  // Electrode
+      { id: 110, min: 56, max: 61, rate: 6 },  // Weezing
 ],
   },
 
@@ -955,15 +985,21 @@ const DATI_INCONTRI = {
   // Rettangolo erba_alta da disegnare in percorso_montepo_3.tmj con
   // id="incontri percorso montepo 3". L'acqua (trigger_surf id
   // "acqua_percorso_montepo3", già disegnata) riusa la STESSA tabella. ──
+  // Risistemata il 20 ott 2026 sul documento: stesso bug di livelli troppo
+  // bassi (27-31 invece di 55-62), e mancavano Hypno/Electrode.
   'incontri percorso montepo 3': {
     probabilita: 10,
     pokemon: [
-      { id: 212, min: 28, max: 31, rate: 6 },  // Scizor (rarissimo)
-      { id: 286, min: 27, max: 29, rate: 6 },  // Breloom
-      { id: 326, min: 26, max: 29, rate: 6 },  // Grumpig
+      { id: 212, min: 56, max: 61, rate: 6 },  // Scizor (rarissimo)
+      { id: 286, min: 57, max: 62, rate: 6 },  // Breloom
+      { id: 326, min: 56, max: 61, rate: 6 },  // Grumpig
+      { id: 97,  min: 55, max: 60, rate: 6 },  // Hypno
+      { id: 101, min: 56, max: 61, rate: 6 },  // Electrode
 ],
     pokemonNotte: [
-      { id: 297, min: 27, max: 30, rate: 6 },  // Hariyama
+      { id: 297, min: 58, max: 63, rate: 6 },  // Hariyama
+      { id: 97,  min: 55, max: 60, rate: 6 },  // Hypno
+      { id: 101, min: 56, max: 61, rate: 6 },  // Electrode
 ],
   },
 
@@ -977,9 +1013,14 @@ const DATI_INCONTRI = {
       { id: 62, min: 27, max: 30, rate: 10 },  // Poliwrath (evoluto, raro)
       { id: 85, min: 26, max: 29, rate: 16 },  // Dodrio
       { id: 193, min: 25, max: 28, rate: 28 },  // Yanma (Gen2)
+      { id: 241, min: 36, max: 39, rate: 6 },  // Miltank (Gen2)
+      { id: 352, min: 35, max: 39, rate: 10 },  // Kecleon (Gen3)
+      { id: 228, min: 27, max: 29, rate: 22 },  // Houndour (Gen2)
 ],
     pokemonNotte: [
       { id: 169, min: 26, max: 29, rate: 16 },  // Crobat (evoluto)
+      { id: 215, min: 34, max: 38, rate: 10 },  // Sneasel (Gen2)
+      { id: 355, min: 37, max: 40, rate: 22 },  // Duskull (Gen3, raro)
 ],
   },
 

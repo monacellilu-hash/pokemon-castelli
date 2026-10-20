@@ -1555,6 +1555,7 @@ async function interagisciSignorTuscolo() {
       await mostraDialogo('Signor Tuscolo', [
         'Questo bosco porta il mio nome, e i miei allenatori lo sorvegliano.',
         'Battili tutti e dieci, poi torna a parlarmi: avrò un bel regalo per te.',
+        'Attento però: è una sfida a sequenza unica! Se esci dal bosco per qualsiasi motivo prima di avermi parlato — anche solo per curarti — tutti quelli già battuti torneranno a sfidarti.',
       ]);
       return;
     }
