@@ -3119,13 +3119,12 @@ const OGGETTI = {
                descrizione: 'Fa evolvere Nidorina/o, Clefairy, Jigglypuff, Skitty.' },
   pietra_sole:   { nome: 'Pietra Sole',   categoria: 'pietra', prezzo: 9500, icona: '☀️',
                descrizione: 'Fa evolvere Gloom→Bellossom e Sunkern→Sunflora.' },
-  pietra_amicizia: { nome: 'Pietra Amicizia', categoria: 'felicita', prezzo: 9000, icona: '💞',
-               descrizione: 'Porta la felicità del Pokémon al massimo. Alcuni evolvono per felicità al livello successivo (es. Eevee→Umbreon di notte, →Espeon di giorno).' },
-  // Caramella Felicità (richiesta esplicita di Luca, 20 ott 2026): aumenta
-  // la felicità del 10% (invece del massimo immediato della Pietra
-  // Amicizia) — venduta al negozio di pietre di Ariccia (mk-ariccia-speciale).
-  caramella_felicita: { nome: 'Caramella Felicità', categoria: 'felicita', felicitaParziale: 26, prezzo: 15000, icona: '🍬',
-               descrizione: 'Aumenta la felicità del Pokémon del 10%. Ripetibile fino al massimo.' },
+  // Pietra Amicizia RIMOSSA (richiesta esplicita di Luca, 21 ott 2026): la
+  // Caramella Felicità qui sotto la sostituisce. Caramella portata dal 10%
+  // al 20% di felicità (felicitaParziale: 51 = 255×0.20) — venduta al
+  // negozio di pietre di Ariccia (mk-ariccia-speciale).
+  caramella_felicita: { nome: 'Caramella Felicità', categoria: 'felicita', felicitaParziale: 51, prezzo: 15000, icona: '🍬',
+               descrizione: 'Aumenta la felicità del Pokémon del 20%. Ripetibile fino al massimo.' },
 
   // ── OGGETTI DA TENERE PER EVOLUZIONE DA SCAMBIO (categoria 'held': il
   // Pokémon deve TENERLI — Zaino→Oggetti — prima di poter evolvere tramite
@@ -3474,10 +3473,9 @@ const POKE_MARKET = [
   // sessione 6 agosto: era tutto mischiato nel market base, ora split come le
   // altre città da Albano in poi — stesso pattern "doppio NPC").
   { id: 'mk-ariccia-speciale', comune: 'Ariccia', lat: 41.7200, lon: 12.6746,
-    // Pietra Amicizia/Caramella Felicità aggiunte il 20 ott 2026 (richiesta
-    // esplicita di Luca): la Pietra Amicizia esisteva già nei dati ma non
-    // era in vendita da nessuna parte — nessuno poteva mai comprarla.
-    merce: ['pietra_sole', 'dente_oscuro', 'pietra_amicizia', 'caramella_felicita'] },
+    // Caramella Felicità aggiunta il 20 ott 2026 (richiesta esplicita di
+    // Luca). Pietra Amicizia rimossa il 21 ott 2026 (richiesta esplicita).
+    merce: ['pietra_sole', 'dente_oscuro', 'caramella_felicita'] },
 
   { id: 'mk-genzano', comune: 'Genzano di Roma', lat: 41.7080, lon: 12.6920,
     merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_foglia', 'conchigliamutante'] },

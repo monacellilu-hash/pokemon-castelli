@@ -13300,7 +13300,12 @@ const GameMap = (function () {
       // Bug segnalato da Luca (18 ott 2026): 'mn' mancava da questo elenco
       // (solo 'mt' c'era) — le MN comparivano nella lista zaino ma senza il
       // tasto "Usa", quindi non si potevano insegnare a nessun Pokémon.
-      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'mn', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina'].includes(oggetto.categoria);
+      // Stesso bug trovato di nuovo il 21 ott 2026 su 'felicita' (Caramella
+      // Felicità "non si può usare") e 'scambio' (Pietra Scambio, stesso
+      // problema mai segnalato): questa lista è un doppione di quella in
+      // app.js (usaOggettoSu, variabile "suBersaglio") che va tenuta
+      // sincronizzata a mano — occhio se si aggiunge un'altra categoria.
+      const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'mn', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina', 'felicita', 'scambio'].includes(oggetto.categoria);
       const diretto = oggetto.categoria === 'repellente';
       return { chiave, oggetto, quanti, img: oggetto.img, usabile: suBersaglio || diretto, diretto };
     }
