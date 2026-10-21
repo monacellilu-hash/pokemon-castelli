@@ -2090,7 +2090,7 @@ const GameMap = (function () {
     for (const t of (tmj.tilesets || [])) {
       const src = String(t.source || '').toLowerCase().replace(/\\/g, '/');
       if (!src.endsWith('caves.tsj')) continue;
-      const TILE_LOCALI_SEMPRE_SOLIDI = [1213, 983, 965, 173, 174, 175, 181, 182, 183];
+      const TILE_LOCALI_SEMPRE_SOLIDI = [1213, 983, 965, 173, 175, 181, 182, 183];
       const gidSolidi = TILE_LOCALI_SEMPRE_SOLIDI.map(id => t.firstgid + id);
       for (const layer of tmj.layers) {
         if (layer.type !== 'tilelayer' || !layer.data) continue;
