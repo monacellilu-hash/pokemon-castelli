@@ -24,19 +24,25 @@ const Musica = (function () {
 
   const TRACCE = {
     // Battaglie
-    battaglia_selvatico:   'Battle (Wild Pokemon).ogg',
+    battaglia_selvatico:   'Battle (Wild Pokémon).ogg',
     battaglia_allenatore:  'Battle (Trainer).ogg',
     battaglia_capopalestra:'Battle (Gym Leader).ogg',
     battaglia_rivale:      'Final Battle (Rival).ogg',
-    vittoria_selvatico:    'Victory (Wild Pokemon).ogg',
+    vittoria_selvatico:    'Victory (Wild Pokémon).ogg',
     vittoria_allenatore:   'Victory (Trainer).ogg',
     vittoria_capopalestra: 'Victory (Gym Leader).ogg',
     medaglia:              'Obtained a Badge.ogg',
     evoluzione:            'Evolution.ogg',
+    // HP critico (22 ott 2026, richiesta esplicita di Luca): nei giochi
+    // veri, sotto una certa soglia di HP la musica di lotta CAMBIA in una
+    // variante più urgente (non è un effetto sonoro a parte) — qui
+    // "Tense Battle.ogg" del pacchetto, suonata al posto di qualsiasi
+    // battaglia_* quando l'HP del Pokémon in campo scende in rosso.
+    battaglia_critico: 'Tense Battle.ogg',
     // Luoghi generici
-    centro_pokemon: 'Pokemon Center.ogg',
-    palestra:       'Pokemon Gym.ogg',
-    laboratorio:    'Oak Pokemon Lab.ogg',
+    centro_pokemon: 'Pokémon Center.ogg',
+    palestra:       'Pokémon Gym.ogg',
+    laboratorio:    'Oak Pokémon Lab.ogg',
     // Città (riusate più volte, solo 7 temi città disponibili per ~11 comuni)
     borgata_tuscolana: 'Pallet Town.ogg',
     frascati:          'Pewter City.ogg',
@@ -58,7 +64,7 @@ const Musica = (function () {
     // Dungeon/luoghi speciali
     tunnel_roccioso: 'Mt. Moon.ogg',
     boschi_tuscolo:  'Viridian Forest.ogg',
-    grotta_vulcano:  'Pokemon Mansion.ogg',
+    grotta_vulcano:  'Pokémon Mansion.ogg',
     rifugio_gdf:     'Rocket Hideout.ogg',
     cotral:          'Rocket Hideout.ogg',
     bunkerino:       'Silph Co..ogg',
@@ -66,6 +72,12 @@ const Musica = (function () {
     treno:           'S.S. Anne.ogg',
     via_vittoria:    'Victory Road.ogg',
     lega:            'Hall of Fame.ogg',
+    // Grande Magazzino (ex-Celadon, 22 ott 2026): tema dedicato invece del
+    // fallback generico "percorso" — nei giochi veri non ha una musica
+    // propria (riusa il tema città), ma qui Luca ha chiesto musica
+    // dedicata per i market, e "Game Corner" nel pacchetto non era mai
+    // usata da nessuna parte.
+    grande_magazzino: 'Game Corner.ogg',
   };
 
   function _elem() {
@@ -118,6 +130,24 @@ const Musica = (function () {
     // Città vere e proprie (chiave esatta nel registro MAPPE)
     const CITTA = ['borgata_tuscolana','frascati','grottaferrata','marino','monteporzio',
                    'rocca_di_papa','albano','ariccia','genzano','castel_gandolfo','colonna'];
+
+    // Market (22 ott 2026, bug corretto: "mart_<città>" non era gestito da
+    // nessuna regola, finiva sempre nel ripiego generico "percorso_a" —
+    // richiesta esplicita di Luca di avere musica sensata nei market).
+    // I giochi veri non hanno un tema dedicato per lo shop: riusano quello
+    // della città, qui si fa lo stesso. 'mart_interno' è il market generico
+    // di Borgata Tuscolana/inizio partita.
+    if (k.startsWith('mart_')) {
+      const citta = k.slice(5);
+      if (CITTA.includes(citta)) return citta;
+      return 'borgata_tuscolana';   // mart_interno e altri generici
+    }
+    // Grande Magazzino (ex-Celadon): tema dedicato, vedi TRACCE sopra.
+    if (k.includes('celadon_dept')) return 'grande_magazzino';
+    // Erboristeria di Percorso 9 (lavaridgetown_herbshop): stesso tema del
+    // percorso a cui appartiene, non un fallback a caso.
+    if (k.includes('herbshop')) return _chiaveDaMappa('percorso_9');
+
     for (const c of CITTA) {
       if (k === c || k.startsWith(c + '_centro') || k.startsWith(c + '_est') ||
           k.startsWith(c + '_ovest') || k.startsWith(c + '_sud') || k.startsWith(c + '_nord')) {
@@ -156,6 +186,22 @@ const Musica = (function () {
     _suona(mappa[tipo] || 'battaglia_allenatore');
   }
 
+  // HP critico in lotta (22 ott 2026): sovrascrive la musica di lotta in
+  // corso con la variante "tesa", ricordandosi quale traccia riprendere
+  // quando l'HP non è più critico (fermaCritico). Diverso da ripristina()
+  // sopra, che invece torna al tema dell'OVERWORLD dopo una lotta/jingle.
+  let battagliaSospesaSottoCritico = null;
+  function suonaCritico() {
+    if (tracciaCorrente === 'battaglia_critico') return;   // già attivo
+    battagliaSospesaSottoCritico = tracciaCorrente;
+    _suona('battaglia_critico');
+  }
+  function fermaCritico() {
+    if (tracciaCorrente !== 'battaglia_critico' || !battagliaSospesaSottoCritico) return;
+    _suona(battagliaSospesaSottoCritico);
+    battagliaSospesaSottoCritico = null;
+  }
+
   // Jingle di vittoria (NON in loop, si ferma da solo): dopo la sua durata
   // (o su chiamata esplicita) torna al tema della mappa sospeso.
   function suonaVittoria(tipo) {
@@ -185,5 +231,5 @@ const Musica = (function () {
     tracciaCorrente = null;
   }
 
-  return { suonaPerMappa, suonaBattaglia, suonaVittoria, suonaMedaglia, suonaEvoluzione, ripristina, impostaMuto, stop };
+  return { suonaPerMappa, suonaBattaglia, suonaCritico, fermaCritico, suonaVittoria, suonaMedaglia, suonaEvoluzione, ripristina, impostaMuto, stop };
 })();

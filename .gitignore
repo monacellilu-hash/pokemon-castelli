@@ -43,6 +43,17 @@ non_utilizzati/
 # sorgente open source di terzi, non del progetto.
 pokeemerald-master/
 
+# Pack audio originale di Essentials FRLG (22 ott 2026): ~205MB, stesso
+# principio dei pack sprite sopra — materiale di origine, mai da pushare.
+Essentials FRLG-nogithub/
+
+# Musiche di sottofondo (js/musica.js) copiate dal pack sopra per l'uso
+# in LOCALE (22 ott 2026, richiesta esplicita di Luca): 43 file, ~194MB,
+# troppo pesanti per GitHub — restano solo sul computer per giocare in
+# locale, non vengono mai pushate. Se un giorno si vuole pubblicare con la
+# musica, vanno prima compresse (nessun ffmpeg disponibile oggi).
+sprites/audio/
+
 # Materiale grezzo/di riferimento, non caricato dal gioco (censimento
 # sess. 21 settembre 2026): sprite NPC originali già convertiti in
 # "sprites/npc e trainer per claude/", tileset RPG Maker campione mai usato,

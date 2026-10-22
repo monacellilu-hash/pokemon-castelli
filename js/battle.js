@@ -1214,6 +1214,17 @@ const Battle = (function () {
     const pctExp = Math.max(0, Math.min(100,
       (mio.exp - expBase) / (expProssimo - expBase) * 100));
     $('giocatore-exp').style.width = pctExp + '%';
+
+    // Musica di lotta "urgente" sotto il 25% HP (22 ott 2026, richiesta
+    // esplicita di Luca — stesso meccanismo dei giochi veri: NON è un
+    // suono a parte, è la musica di lotta che cambia in una variante più
+    // tesa). Stessa soglia già usata per la barra rossa (aggiornaBarraHp,
+    // pct<=25). Solo il Pokémon del GIOCATORE fa scattare il cambio, come
+    // nei giochi originali — quello del nemico no.
+    if (typeof Musica !== 'undefined') {
+      if (mio.hpAttuale > 0 && mio.hpAttuale / mio.hpMax <= 0.25) Musica.suonaCritico();
+      else Musica.fermaCritico();
+    }
   }
 
   // Imposta gli sprite (nemico di fronte, il proprio di spalle)
