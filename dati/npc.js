@@ -2339,7 +2339,7 @@ const DATI_NPC = {
   // dati/cutscene.js. Dialogo_dopo generico, la vera scena parte una sola
   // volta dal trigger "inizio cutscene".
   'gdf_sannilo_igino': {
-    sprite: 'trainer_GENTLEMAN', nome: 'Igino', direzione: 'sud', movimento: 'fisso',
+    sprite: 'Igino_Grottaferrata', nome: 'Igino', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Fai buon uso di quella password. Fermiamoli, prima che sia troppo tardi.'],
   },
   // Il grunt che tradisce il GdF a fine scena: era anche lui un allievo di
