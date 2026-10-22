@@ -11419,14 +11419,29 @@
      "point": true,
      "properties": [
       {
-       "name": "id",
-       "type": "string",
-       "value": "Deoxys"
-      },
-      {
        "name": "type",
        "type": "string",
-       "value": "pokemon leggendario Deoxys"
+       "value": "pokemon leggendario"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "pokemon leggendario"
+      },
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "deoxys"
+      },
+      {
+       "name": "livello",
+       "type": "string",
+       "value": "70"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
       }
      ],
      "rotation": 0,
@@ -11447,51 +11462,7 @@
      "visible": true,
      "width": 0,
      "x": 496,
-     "y": 758
-    },
-    {
-     "height": 0,
-     "id": 733,
-     "name": "spawn",
-     "opacity": 1,
-     "point": true,
-     "rotation": 0,
-     "type": "",
-     "visible": true,
-     "width": 0,
-     "x": 498,
-     "y": 722
-    },
-    {
-     "id": 1729,
-     "name": "spawn",
-     "type": "",
-     "point": true,
-     "x": 448,
-     "y": 260,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
-     "properties": [
-      {
-       "name": "id",
-       "type": "string",
-       "value": "da_capitano"
-      }
-     ]
-    },
-    {
-     "id": 1730,
-     "name": "deoxys_capitano_birthisland",
-     "type": "",
-     "point": true,
-     "x": 480,
-     "y": 244,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
+     "y": 758,
      "properties": [
       {
        "name": "type",
@@ -11506,7 +11477,27 @@
       {
        "name": "direzione",
        "type": "string",
-       "value": "ovest"
+       "value": "nord"
+      }
+     ]
+    },
+    {
+     "height": 0,
+     "id": 733,
+     "name": "spawn",
+     "opacity": 1,
+     "point": true,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 498,
+     "y": 722,
+     "properties": [
+      {
+       "name": "id",
+       "type": "string",
+       "value": "da_capitano"
       }
      ]
     }
