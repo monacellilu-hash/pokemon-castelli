@@ -12187,6 +12187,41 @@
      "width": 19.2906,
      "x": 550.3547,
      "y": 12.4962
+    },
+    {
+     "height": 0,
+     "id": 155,
+     "name": "oggetto_calcio_vitamina",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "contenuto",
+       "type": "string",
+       "value": "calcio"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "oggetto_calcio_vitamina"
+      },
+      {
+       "name": "quantita",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "oggetto"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 816.0,
+     "y": 816.0
     }
    ],
    "opacity": 1,
@@ -12197,7 +12232,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 154,
+ "nextobjectid": 156,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

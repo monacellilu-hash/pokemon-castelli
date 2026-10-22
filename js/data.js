@@ -3501,8 +3501,14 @@ const POKE_MARKET = [
   // come trovaglie gratuite, non da vendere) — le ho messe comunque per
   // completezza: dimmi se preferisci dare loro un prezzo vero o toglierle
   // da qui e piazzarle a terra da qualche parte invece.
+  // 22 ott 2026 (richiesta esplicita di Luca): aggiunti anche tutti gli
+  // oggetti da tenere (categoria 'held', 28 in tutto) e le 3 Ball mai
+  // vendute da nessuna parte (Dive/Nest/Heal Ball) — stesso principio
+  // delle MT sopra, "negozio unico end-game" invece di cercare un posto a
+  // terra per ciascuno.
   { id: 'mk-colonna', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
     merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante',
+      'diveball', 'nestball', 'healball',
       'mt03', 'mt05', 'mt_focus_punch', 'mt_dragon_claw', 'mt_calm_mind', 'mt_roar',
       'mt_toxic', 'mt_hail', 'mt_bulk_up', 'mt_hidden_power', 'mt_sunny_day', 'mt_taunt',
       'mt_blizzard', 'mt_light_screen', 'mt_protect', 'mt_rain_dance', 'mt_giga_drain',
@@ -3510,7 +3516,13 @@ const POKE_MARKET = [
       'mt_return', 'mt_psychic', 'mt_double_team', 'mt_reflect', 'mt_sludge_bomb',
       'mt_sandstorm', 'mt_aerial_ace', 'mt_torment', 'mt_facade', 'mt_secret_power',
       'mt_rest', 'mt_attract', 'mt_thief', 'mt_steel_wing', 'mt_skill_swap', 'mt_snatch',
-      'mt_overheat'] },
+      'mt_overheat',
+      'rivestimetallo', 'patroclo', 'squamadragone', 'dente_oscuro', 'conchigliamutante',
+      'upgrade', 'rimasugli', 'unghia_veloce', 'cinghia_focus', 'benda_focus',
+      'polvere_abbaglio', 'amomoneta', 'carbonella', 'acqua_magica', 'magnete',
+      'seme_miracolo', 'ghiaccio_perenne', 'cintura_nera', 'aculeo_veleno', 'sabbia_soffice',
+      'becco_rigido', 'cucchiaio_psico', 'polvere_argento', 'pietra_dura', 'sigillo_ombra',
+      'zanna_drago', 'lenti_scure', 'foulard_seta'] },
 
   // Market dell'Entrata della Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F
   // di FireRed, 5 ott 2026): ultima tappa di rifornimento prima della sfida

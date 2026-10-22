@@ -25003,6 +25003,41 @@
      "width": 0,
      "x": 1454.66666666667,
      "y": 826.333333333333
+    },
+    {
+     "height": 0,
+     "id": 97,
+     "name": "oggetto_zinco_vitamina",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "contenuto",
+       "type": "string",
+       "value": "zinco"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "oggetto_zinco_vitamina"
+      },
+      {
+       "name": "quantita",
+       "type": "int",
+       "value": 1
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "oggetto"
+      }
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 976.0,
+     "y": 1584.0
     }
    ],
    "opacity": 1,
@@ -25013,7 +25048,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 96,
+ "nextobjectid": 98,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
