@@ -89,6 +89,18 @@ const Battle = (function () {
   // Imposta lo sprite di un <img> di battaglia con cache locale + retry.
   // url vuoto = svuota l'elemento (stesso comportamento di sempre, resta
   // sincrono: niente da scaricare o cercare in cache).
+  // TENTATIVI_SPRITE/TIMEOUT_MS_SPRITE: budget massimo del retry qui sotto.
+  // attendiSpriteCaricato (sotto) DEVE aspettare almeno questo tanto prima di
+  // rivelare lo sprite — bug corretto 22 ott 2026 (segnalato da Luca, "i
+  // Pokémon continuano a sparire"): il tetto di rivelazione era fisso a
+  // 2000ms, molto più corto del budget REALE del retry (3×4000=12000ms su
+  // una connessione lenta/instabile) — lo sprite veniva rivelato (opacità
+  // ripristinata) PRIMA che l'immagine fosse davvero pronta, e restava vuoto
+  // finché il fetch in ritardo non arrivava (se arrivava). Ora i due numeri
+  // sono legati allo stesso budget, niente più disallineamento.
+  const TENTATIVI_SPRITE = 3, TIMEOUT_MS_SPRITE = 4000;
+  const TIMEOUT_TOTALE_SPRITE_MS = TENTATIVI_SPRITE * TIMEOUT_MS_SPRITE + 500; // +500ms di margine
+
   function impostaSpriteConCache(elId, url) {
     const el = $(elId);
     if (!el) return;
@@ -96,7 +108,7 @@ const Battle = (function () {
     const mioUrl = url; // richiesta più recente per QUESTO elemento (vedi sotto)
     el.dataset.spriteUrl = mioUrl;
 
-    const TENTATIVI = 3, TIMEOUT_MS = 4000;
+    const TENTATIVI = TENTATIVI_SPRITE, TIMEOUT_MS = TIMEOUT_MS_SPRITE;
     const promessa = (async () => {
       // Se nel frattempo qualcun altro ha richiesto un altro sprite per lo
       // stesso <img> (cambio Pokémon rapido), questa risposta è superata:
@@ -143,7 +155,7 @@ const Battle = (function () {
     const p = _spritePronto[elId] || Promise.resolve();
     return Promise.race([
       p,
-      new Promise(r => setTimeout(r, timeoutMs || 2500)),
+      new Promise(r => setTimeout(r, timeoutMs || TIMEOUT_TOTALE_SPRITE_MS)),
     ]);
   }
 
@@ -1513,7 +1525,7 @@ const Battle = (function () {
       // (sovrapposti, non in sequenza: più naturale e più vicino all'originale).
       ball.style.transition = `opacity ${durataFx(250)}ms ease-out`;
       ball.style.opacity = '0';
-      await attendiSpriteCaricato(el.id, 2000);
+      await attendiSpriteCaricato(el.id);
       el.style.opacity = '';
       el.classList.remove('sprite-cresce');
       void el.offsetWidth;
@@ -1525,7 +1537,7 @@ const Battle = (function () {
       return;
     }
 
-    await attendiSpriteCaricato(el.id, 2000);
+    await attendiSpriteCaricato(el.id);
     el.style.opacity = '';
     el.classList.remove('sprite-cresce');
     void el.offsetWidth;
@@ -3272,11 +3284,16 @@ const Battle = (function () {
     numeroTurnoBattaglia += 1;
     if (!(await _provaSwitchNemico()) && !(await _provaCuraNemico())) {
       await eseguiTurno(nemico, mio, scegliMossaNemico(), etichettaNemico(), mio.nome);
+      // KO doppio (22 ott 2026, richiesta Luca — Autodistruzione/Esplosione):
+      // il nemico va controllato PRIMA di "mio", altrimenti un suo auto-KO
+      // nello stesso colpo (es. Autodistruzione) non veniva mai gestito —
+      // niente "hai sconfitto X", niente avanzamento alla sua squadra.
+      if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     }
     await fineTurnoStati();
-    if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
+    if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     mostraMenuPrincipale();
   }
 
@@ -3294,8 +3311,8 @@ const Battle = (function () {
       if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
       await fineTurnoStati();
-      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
       if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
+      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
       mostraMenuPrincipale();
       return;
     }
@@ -3333,9 +3350,14 @@ const Battle = (function () {
       if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }   // MOD 6B: auto-KO (confusione/autodistruzione)
       await eseguiTurno(nemico, mio, mossaNemico, etNem, mio.nome);
+      // KO doppio (22 ott 2026, richiesta Luca): il nemico può auto-KO con
+      // Autodistruzione/Esplosione anche in questo secondo attacco — va
+      // controllato PRIMA di "mio", stesso motivo del blocco sopra.
+      if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     } else {
       await eseguiTurno(nemico, mio, mossaNemico, etNem, mio.nome);
+      if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
       if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
       await eseguiTurno(mio, nemico, mossaMia, mio.nome, etNem);
       if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
@@ -3344,8 +3366,8 @@ const Battle = (function () {
 
     // Fine turno: veleno/scottatura colpiscono entrambi
     await fineTurnoStati();
-    if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
     if (nemico.hpAttuale <= 0) { await nemicoSconfitto(); return; }
+    if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
 
     mostraMenuPrincipale();
   }
@@ -3891,6 +3913,13 @@ const Battle = (function () {
   async function nemicoSconfitto() {
     await di(`${etichettaNemico()} è esausto!`);
 
+    // KO doppio (22 ott 2026, richiesta esplicita di Luca — caso tipico:
+    // Autodistruzione/Esplosione): se "mio" è morto nello stesso scambio che
+    // ha sconfitto il nemico, niente EXP/EV per quella sconfitta — l'ha
+    // "uccisa insieme a sé" il nemico, non l'hai battuta tu. Se "mio" è
+    // ancora vivo, l'EXP è piena e normale, come sempre.
+    const mioVivoPerExp = mio.hpAttuale > 0;
+
     // EXP: formula vera dei giochi (Gen 1-4), baseExp*livello/7, +50% contro
     // allenatori. Il moltiplicatore "+50% per medaglia" qui sotto (rimosso
     // sess. 12 set 2026, segnalato da Luca con un confronto diretto: "un
@@ -3904,7 +3933,7 @@ const Battle = (function () {
     // Allenatori "senza ricompensa" (es. Bosco del Signor Tuscolo, richiesta
     // Luca 19 ott 2026): niente EXP né EV, a prescindere da tutto il resto —
     // premioSoldi è già 0 dal chiamante (vedi _avviaLottaTrainer in js/map.js).
-    if (!(datiAllenatore && datiAllenatore.senzaExp)) {
+    if (mioVivoPerExp && !(datiAllenatore && datiAllenatore.senzaExp)) {
       let exp = Math.max(10, Math.floor(nemico.baseExp * nemico.livello / 7));
       if (modalita === 'allenatore') exp = Math.floor(exp * 1.5);
       else exp = Math.floor(exp * 0.75);
@@ -3951,6 +3980,10 @@ const Battle = (function () {
       const rimasti = squadraNemica.filter(p => p && p.hpAttuale > 0).length;
       await di(`${datiAllenatore.nome} manda in campo ${nemico.nome}! (gliene restano ${rimasti})`);
       await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
+      // KO doppio (22 ott 2026): se "mio" è morto nello stesso scambio (es.
+      // Autodistruzione), tocca comunque scegliere il sostituto PRIMA di
+      // riaprire il menu principale — altrimenti restava in campo a 0 HP.
+      if (mio.hpAttuale <= 0) { await gestisciKO(); return; }
       mostraMenuPrincipale();
       return;
     }
