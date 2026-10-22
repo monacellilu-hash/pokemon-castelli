@@ -3493,8 +3493,24 @@ const POKE_MARKET = [
   // end-game su richiesta esplicita di Luca. Aperto tramite NPC dedicato
   // (apriMarketVenditore('mk-colonna'), non dalla vicinanza GPS — vedi
   // mart_colonna in MAPPE, js/map.js).
+  // 22 ott 2026 (richiesta esplicita di Luca, "gli MT li devi mettere
+  // TUTTI"): aggiunte qui tutte le 39 MT/TM che esistevano già in OGGETTI
+  // (prezzo già impostato, mai aggiunte a NESSUN negozio) — niente rischio
+  // di piazzarle a mano sulle mappe Tiled, tutte comprabili in un punto
+  // solo. mt03/mt05 avevano prezzo:0 in OGGETTI (probabilmente pensate
+  // come trovaglie gratuite, non da vendere) — le ho messe comunque per
+  // completezza: dimmi se preferisci dare loro un prezzo vero o toglierle
+  // da qui e piazzarle a terra da qualche parte invece.
   { id: 'mk-colonna', comune: 'Colonna', lat: 41.8144, lon: 12.7607,
-    merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante'] },
+    merce: ['ultraball', 'massimorepellente', 'elisir', 'maxpozione', 'revitalizzante',
+      'mt03', 'mt05', 'mt_focus_punch', 'mt_dragon_claw', 'mt_calm_mind', 'mt_roar',
+      'mt_toxic', 'mt_hail', 'mt_bulk_up', 'mt_hidden_power', 'mt_sunny_day', 'mt_taunt',
+      'mt_blizzard', 'mt_light_screen', 'mt_protect', 'mt_rain_dance', 'mt_giga_drain',
+      'mt_safeguard', 'mt_frustration', 'mt_solar_beam', 'mt_iron_tail', 'mt_thunder',
+      'mt_return', 'mt_psychic', 'mt_double_team', 'mt_reflect', 'mt_sludge_bomb',
+      'mt_sandstorm', 'mt_aerial_ace', 'mt_torment', 'mt_facade', 'mt_secret_power',
+      'mt_rest', 'mt_attract', 'mt_thief', 'mt_steel_wing', 'mt_skill_swap', 'mt_snatch',
+      'mt_overheat'] },
 
   // Market dell'Entrata della Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F
   // di FireRed, 5 ott 2026): ultima tappa di rifornimento prima della sfida
