@@ -2973,6 +2973,12 @@ const GameMap = (function () {
     Blue: 'trainer_rivale_2',
   };
 
+  // +30% su tutti gli sprite overworld di Pokémon — leggendari e compagni
+  // dei Capipalestra/Superquattro/Campione (22 ott 2026, richiesta esplicita
+  // di Luca). Il Follower del giocatore NON è toccato da questa costante
+  // (dimensione sua propria, non richiesta di cambiare).
+  const BOOST_TAGLIA_OVERWORLD = 1.3;
+
   // Risolve quale rivale rappresenta DAVVERO un trainer con identità di
   // rivale (22 ott 2026, bug Via Vittoria 5F: rivaleDaSprite(ev.props.sprite)
   // funziona solo per gli sprite Tiled generici "RIVALE_UOMO"/"RIVALE_DONNA"
@@ -4738,7 +4744,10 @@ const GameMap = (function () {
           // piccolo rispetto a quanto dovrebbe imporsi nell'Antro, solo lui.
           const riquadro = this._riquadroVeroDisegno(img, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight);
           const boostTaglia = (st.legId === 382) ? 1.6 : 1;
-          spr.setScale((tileSize * boostTaglia) / Math.max(riquadro.w, riquadro.h));
+          // +30% su TUTTI gli sprite overworld di Pokémon (22 ott 2026,
+          // richiesta esplicita di Luca) — moltiplica anche il boost
+          // speciale di Kyogre, non lo sostituisce.
+          spr.setScale((tileSize * boostTaglia * BOOST_TAGLIA_OVERWORLD) / Math.max(riquadro.w, riquadro.h));
           st.sprite = spr;
           npcSprites.push(spr);
           continue;
@@ -4768,7 +4777,7 @@ const GameMap = (function () {
         // disegno, non il canvas intero del fronte di battaglia PokéAPI
         // (che ha ancora più margine vuoto del foglio follower).
         const riquadro = this._riquadroVeroDisegno(img, 0, 0, img.width || 96, img.height || 96);
-        spr.setScale(tileSize / Math.max(riquadro.w, riquadro.h));
+        spr.setScale((tileSize * BOOST_TAGLIA_OVERWORLD) / Math.max(riquadro.w, riquadro.h));
         st.sprite = spr;
         npcSprites.push(spr);
       }
@@ -4792,6 +4801,14 @@ const GameMap = (function () {
     // _creaLeggendari: fronte di battaglia PokéAPI (ritagliato al pixel,
     // niente spazio vuoto), scala calcolata sulla dimensione reale
     // dell'immagine — identica tecnica usata per lo sprite di Donnie stesso.
+    // Sess. 22 ott 2026 (richiesta esplicita di Luca: "usa gli sprite dei
+    // follower, sono meglio"): il pacchetto follower copre TUTTE e 386 le
+    // specie (censito a mano il 14 ott, vedi _caricaTexFollower) — il motivo
+    // originale per cui questa funzione era passata al fronte di battaglia
+    // PokéAPI (molto margine vuoto, Pokémon minuscoli) non vale più da
+    // quando esiste _riquadroVeroDisegno, che ritaglia al pixel ENTRAMBE le
+    // fonti. Ora prova prima il follower (stesso foglio di _creaLeggendari),
+    // ripiega su PokéAPI solo se il caricamento del follower fallisce.
     async _creaCompagniPokemon() {
       if (typeof PokeAPI === 'undefined' || typeof DATI_TRAINER === 'undefined') return;
       for (const st of npcStato) {
@@ -4800,6 +4817,27 @@ const GameMap = (function () {
         if (!dati || !dati.pokemonFianco || !dati.squadra || !dati.squadra.length) continue;
         const asso = dati.squadra[dati.squadra.length - 1];
 
+        const offsetTx = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dx) ?? 1;
+        const offsetTy = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dy) ?? 0;
+        const px = (st.tx + offsetTx) * tileSize + tileSize / 2;
+        const py = (st.ty + offsetTy + 1) * tileSize;
+
+        let nomeSpecie = null;
+        try { const pkm = await PokeAPI.getPokemon(asso.id); nomeSpecie = pkm && pkm.nome; }
+        catch (e) { /* offline o non in cache */ }
+
+        const texKeyFollower = nomeSpecie ? await this._caricaTexFollower(nomeSpecie) : null;
+        if (texKeyFollower) {
+          const spr = this.add.sprite(px, py, texKeyFollower, 1).setOrigin(0.5, 1).setDepth(20);   // frame 1 = sud, fermo
+          const frame = this.textures.get(texKeyFollower).get(1);
+          const img = this.textures.get(texKeyFollower).getSourceImage();
+          const riquadro = this._riquadroVeroDisegno(img, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight);
+          spr.setScale((tileSize * BOOST_TAGLIA_OVERWORLD) / Math.max(riquadro.w, riquadro.h));
+          npcSprites.push(spr);
+          continue;
+        }
+
+        // Ripiego: fronte di battaglia PokéAPI (come prima del 22 ott 2026).
         let url = null;
         try { const pkm = await PokeAPI.getPokemon(asso.id); url = pkm && pkm.sprite && pkm.sprite.fronte; }
         catch (e) { /* offline o non in cache: niente compagno stavolta */ }
@@ -4816,17 +4854,10 @@ const GameMap = (function () {
         }
         if (!this.textures.exists(texKey)) continue;
 
-        const offsetTx = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dx) ?? 1;
-        const offsetTy = (dati.pokemonFiancoOffset && dati.pokemonFiancoOffset.dy) ?? 0;
-        const px = (st.tx + offsetTx) * tileSize + tileSize / 2;
-        const py = (st.ty + offsetTy + 1) * tileSize;
         const spr = this.add.image(px, py, texKey).setOrigin(0.5, 1).setDepth(20);
         const img = this.textures.get(texKey).getSourceImage();
-        // Stessa dimensione del Follower (20 ott 2026, richiesta esplicita
-        // di Luca): riquadro vero del disegno, non il canvas del fronte di
-        // battaglia PokéAPI (molto margine vuoto intorno al personaggio).
         const riquadro = this._riquadroVeroDisegno(img, 0, 0, img.width || 96, img.height || 96);
-        spr.setScale(tileSize / Math.max(riquadro.w, riquadro.h));
+        spr.setScale((tileSize * BOOST_TAGLIA_OVERWORLD) / Math.max(riquadro.w, riquadro.h));
         npcSprites.push(spr);
       }
     }
