@@ -3,7 +3,7 @@
    (js/map.js). Il movimento del giocatore resta bloccato per tutta la durata.
 
    TIPI DI PASSO:
-   - { tipo: 'dialogo', nome: 'Remo', testo: ['Riga 1', 'Riga 2'] }
+   - { tipo: 'dialogo', nome: 'NomePersonaggio', testo: ['Riga 1', 'Riga 2'] }
        Mostra un balloon di dialogo, aspetta che il giocatore lo chiuda.
    - { tipo: 'muovi_npc', npc: 'id_npc_tiled', direzione: 'nord', passi: 3 }
        Fa camminare un NPC già presente sulla mappa di N caselle in una
@@ -406,6 +406,13 @@ CUTSCENE['museo_navi_sfida'] = [
     'Qualcosa luccica sul pavimento, proprio dove stava il Capo GdF. Deve averla lasciata cadere durante la fuga...',
   ] },
   { tipo: 'flag', nome: 'museoSceneCompleta', valore: true },
+  // Bug corretto 22 ott 2026 (punto 5, stesso schema di San Nilo): il
+  // trigger Tiled del Museo delle Navi 2F ha flag_fine =
+  // "museoLuogotenenteSconfitto", ma questa scena non lo impostava mai
+  // (solo "museoSceneCompleta") — senza, il trigger non si bloccava mai da
+  // solo su quel controllo specifico (oggi comunque bloccato anche da
+  // stato.cutsceneViste, vedi _checkTriggerCutsceneEntra).
+  { tipo: 'flag', nome: 'museoLuogotenenteSconfitto', valore: true },
 ];
 
 CUTSCENE['museo_navi_intro'] = [
@@ -854,6 +861,13 @@ CUTSCENE['abbazia_sannilo_ginevra_igino'] = [
   ] },
   { tipo: 'oggetto', contenuto: 'password_3', chiave: true },
   { tipo: 'flag', nome: 'abbazia_password', valore: true },
+  // Bug corretto 22 ott 2026 (punto 5, segnalato da Luca): il trigger Tiled
+  // di San Nilo ("inizio cutscene", Interno_San_Nilo.tmj) ha flag_fine =
+  // "abbazia_sannilo_ginevra_sconfitta", ma questa scena non lo impostava
+  // mai (solo "gdf_sannilo_ginevra_sconfitta", usato per il respawn NPC) —
+  // senza, il trigger non si bloccava mai da solo su quel controllo (oggi
+  // comunque bloccato anche da stato.cutsceneViste, vedi _checkTriggerCutsceneEntra).
+  { tipo: 'flag', nome: 'abbazia_sannilo_ginevra_sconfitta', valore: true },
 ];
 
 /* ── Finale della Lega: Remo sconfitto (19 ott 2026, richiesta esplicita

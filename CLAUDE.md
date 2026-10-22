@@ -1,5 +1,17 @@
 # CLAUDE.md — Pokémon Castelli Romani
 
+## 🚫 REGOLA CAMPIONE (leggi prima di toccare qualsiasi testo della Lega)
+**Non esiste nessun personaggio "Remo".** Il Campione della Lega di Colonna è il **rivale che il
+giocatore ha scelto al laboratorio** all'inizio della partita, cioè `stato.rivale` (Green o Blue,
+con il suo starter `stato.rivale.idStarter`) — non un personaggio fisso. Nome, sprite, dialoghi e
+squadra del Campione si leggono SEMPRE da `stato.rivale`, mai scritti fissi nei testi. Quando
+scrivi un nuovo testo che riguarda il Campione: mai "Remo", "Green" o "Blue" fissi — usa `{{RIVALE}}`
+(risolto a runtime in `dati/cutscene.js`/`js/map.js`) o una frase neutra come "il Campione"/"il tuo
+rivale". Gli identificatori di codice `campione_remo`, `REMO_LEGA`, `estraiTeamRemo`,
+`lega_finale_remo`, `lega_risfida_remo` sono solo nomi storici interni (risalgono a quando il
+Campione aveva davvero questo nome placeholder) — **non si rinominano e non indicano un
+personaggio reale nel gioco**, non confonderli con un "Remo" da cercare o correggere altrove.
+
 ## ⭐ STELLA POLARE (leggi sempre per prima)
 L'obiettivo finale è **un gioco RPG completo in stile Pokémon Smeraldo** (esplorazione, palestre, allenatori, dungeon, MN, leggendari, Lega), ambientato sui Castelli Romani. **Il cambio motore è GIÀ FATTO**: la vecchia mappa Leaflet/OpenStreetMap (usata solo come impalcatura iniziale per definire aree/coordinate/distanze reali) è stata **sostituita del tutto** da mappe Tiled in stile Game Boy Authentic (tileset reali da pret/pokeemerald/pokefirered), motore Phaser 3 (`MAPPA_TILED = true` in modo permanente, `js/app.js`). Zero Leaflet caricato in `index.html`. Le coordinate reali (lat/lon) restano nei dati solo come campo storico/di comodo in `MAPPE` (`js/map.js`), non pilotano più nulla a schermo. Punta sempre al feeling di Pokémon Smeraldo, non a "una mappa con dei marker" — e oggi è già così.
 
@@ -13,6 +25,27 @@ Sei un Senior Game Developer ed esperto GIS. Sviluppi questo gioco AL POSTO dell
 4. **Aggiorna `docs-nogithub/ROADMAP.md` a fine sessione**: cosa è fatto, cosa funziona, prossimo passo. A inizio sessione leggi ROADMAP.md.
 5. **Una fase alla volta.** Niente scope creep. La VISIONE è la destinazione, non il compito di una sessione.
 6. **Commenti nel codice in italiano**, semplici.
+7. **ANALISI PRIMA DEI FIX.** Davanti a un bug segnalato: prima si riproduce e si trova la causa
+   con prove (log, grep, script di simulazione) — poi, solo dopo, si corregge. Le ipotesi non
+   verificate si etichettano come tali (es. "SOSPETTO, non confermato") e non si applicano alla
+   cieca come se fossero la causa vera.
+
+## REGOLE TECNICHE (emerse da bug reali, 22 ott 2026 — leggi prima di toccare sprite/cutscene/battaglia)
+- **SPRITE**: prima di assegnare lo sprite a un NPC o allenatore, controlla il nome esatto in
+  `sprites/npc e trainer/Unici/` e nell'indice `NPC_SPRITE_INDEX` di `js/map.js`: se esiste uno
+  sprite col nome del personaggio, usa quello e mai uno generico `trainer_*`. (Esempio: Igino a San
+  Nilo deve usare `'Igino_Grottaferrata'`, non `'trainer_GENTLEMAN'`.)
+- **CUTSCENE**: ogni `trigger_cutscene` deve poter essere giocato una volta sola. Per quelli
+  `quando:'entra'` il motore traccia da sé `stato.cutsceneViste` (default `una_tantum: true`, scrivi
+  `una_tantum: false` in Tiled per farla ripetere apposta) — se in più scrivi anche `flag_fine`,
+  quel flag DEVE coincidere con uno che la cutscene imposta davvero (controlla con grep prima di
+  scriverlo, non a memoria). Una scena interrotta da una lotta persa NON va mai segnata come vista.
+- **BATTAGLIA**: l'ordine di una squadra avversaria NON è garantito — lo switch dell'IA
+  (`_provaSwitchNemico`) può cambiare il Pokémon in campo a metà lotta, in qualsiasi posizione. Non
+  assumere mai che `indiceNemico` cresca di 1: il "prossimo" è il primo Pokémon ANCORA VIVO
+  (`hpAttuale > 0`) in tutta la squadra, e ogni cambio di Pokémon in campo (switch O KO) deve
+  aggiornare sprite, pannelli e animazione d'ingresso allo stesso modo.
+- **CAMPIONE**: vedi REGOLA CAMPIONE in cima a questo file — nessun "Remo".
 
 ## IL PROGETTO
 RPG stile Pokémon classico (ispirazione: **Pokémon Smeraldo** e **Rosso Fuoco**), su browser (HTML5/CSS/JS puro), ambientato sui Castelli Romani (Lazio). Motore grafico: Phaser 3 + mappe Tiled (tileset reali da pret/pokeemerald/pokefirered) — Leaflet/OSM è stato tolto, non più presente nel gioco.
@@ -55,7 +88,7 @@ pokemon-castelli/
 
 ## Il PATH (progressione lineare guidata)
 Si parte da **Roma** (Borgata Tuscolana) sulla **Via Tuscolana** verso i Castelli. Ordine guidato da **gate delle MN** e **level cap** progressivo:
-0. **BORGATA TUSCOLANA** (Roma) — Prof. **Castagno**, starter (scelta gen + starter), Pokédex, Ball, Pozioni. Il rivale **Remo** sfida subito.
+0. **BORGATA TUSCOLANA** (Roma) — Prof. **Castagno**, starter (scelta gen + starter), Pokédex, Ball, Pozioni. Il tuo rivale (Green o Blue, scelto qui) sfida subito.
 1. **Percorso Tuscolana** (tutorial) →
 2. **FRASCATI** — P1 **Erba** (Vinicio) · cap **14** · Medaglia Vigna
 3. **GROTTAFERRATA** — P2 **Psico** (Igino) · cap **21** · Medaglia Icona
@@ -66,7 +99,7 @@ Si parte da **Roma** (Borgata Tuscolana) sulla **Via Tuscolana** verso i Castell
 8. **ARICCIA** — P7 **Buio** (Isa) · cap **52** · Medaglia Fraschetta
 9. **GENZANO** — P8 **Fuoco** (Camilla) · cap **58** · Medaglia Lava
 10. **VIA VITTORIA** · cap **60**
-11. **COLONNA — LEGA POKÉMON** · Superquattro + Campione (**Remo**) · livelli **60-66**
+11. **COLONNA — LEGA POKÉMON** · Superquattro + Campione (il tuo rivale, `stato.rivale` — vedi REGOLA CAMPIONE) · livelli **60-66**
 
 > **Non è del tutto lineare, di proposito** (scelta esplicita dell'utente, non un errore da correggere):
 > alcuni tratti richiedono di tornare indietro. Es.: Marino ha una **biforcazione verso il Percorso 5**
@@ -161,7 +194,7 @@ Un solo leggendario "di casa" per luogo; roaming sfalsati.
 - Sempre solo ID ≤ 386. Incontro unico, livello alto, fuga impossibile.
 
 ## I SUPERQUATTRO (Lega di Colonna) — sistema a pool
-4 membri + Campione. Tipi: **Captain** (Lotta/Roccia/Buio/Terra), **Pres** (Drago/Elettro/Acqua), **Dema** (Folletto/Volante/Psico), **Marcuois** (Acqua/Acciaio/Psico). Campione = **Remo**.
+4 membri + Campione. Tipi: **Captain** (Lotta/Roccia/Buio/Terra), **Pres** (Drago/Elettro/Acqua), **Dema** (Folletto/Volante/Psico), **Marcuois** (Acqua/Acciaio/Psico). Campione = il tuo rivale (vedi REGOLA CAMPIONE in cima).
 - Ogni membro ha un **pool di 10** specie (ID 1-386) dei suoi tipi, **niente leggendari**.
 - A ogni sfida si **estraggono 6** dai 10. Il **Core** = BST più alto, sempre incluso, esce per ultimo; gli altri 5 random tra i 9.
 - Stessa logica per il Campione (pool più ampio, livelli 64-66).
@@ -198,7 +231,7 @@ allenatore tra la 2ª e la 3ª palestra non supera mai il livello dell'asso dell
     San Rocco, Lugia (Monte Cavo ha SOLO Articuno, "treno_lugia.tmj" è solo un connettore vuoto),
     Zapdos (esiste solo il "preview"/cutscene di Maso, nessun incontro vero), Mew/Villa
     Aldobrandini (solo citato nei dialoghi/cutscene, nessun oggetto piazzato).
-12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione Remo: cablati e
+12. [FATTO] **F12 — Via Vittoria + Lega a Colonna** (Superquattro pool + Campione (il tuo rivale): cablati e
     giocabili). **Post-game CoTrAL/Bunkerino**: aggiornato il 19 ottobre 2026 — ora collegato per
     davvero, cutscene della doppia Mewtwo/Mew scritta.
 13. **F13 — Pubblicazione su GitHub Pages**: non fatta. **Attenzione, non è la stessa cosa dei
@@ -230,7 +263,7 @@ sistema di cutscene dichiarativo `dati/cutscene.js` è usato attivamente, non "r
 
 ## STATO ATTUALE (aggiornato il 19 ottobre 2026 — non fidarsi di versioni precedenti di questa riga)
 **F1-F10 e F12 fatte e giocabili** (tempo, economia, tutte e 7 le MN, Team GdF, Lega di Colonna con
-Superquattro/Remo, menu nativi completi, lotta in doppio, sistema cutscene). Limite **Gen 1-2-3
+Superquattro/Campione, menu nativi completi, lotta in doppio, sistema cutscene). Limite **Gen 1-2-3
 (ID 1-386)**. `MODALITA_TEST` oggi si autogestisce (acceso in locale, spento online finché non si
 sblocca a password) — non è più un ostacolo prima della pubblicazione. **Bunkerino post-Lega
 CoTrAL collegato**, cutscene della doppia Mewtwo/Mew scritta.

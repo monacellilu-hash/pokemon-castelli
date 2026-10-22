@@ -2395,7 +2395,7 @@ const ALLENATORI = [
     squadra: [{ id: 149, livello: 60 }, { id: 68, livello: 59 }, { id: 128, livello: 59 }], // Dragonite, Machamp, Tauros
     dialogoIntro: ['Ho vinto trecento incontri consecutivi nell\'arena. Qui è il trecentounesiomo.'],
     dialogoSconfitta: 'Trecentouno sconfitte. Perfetto.',
-    dialogoDopo: ['Dragonite è il più forte che abbia mai allenato. Green ne ha uno pure lui.'],
+    dialogoDopo: ['Dragonite è il più forte che abbia mai allenato. Il tuo rivale ne ha uno pure lui.'],
   },
   {
     id: 'all-vv-13', classe: 'Duellante', nome: 'Lucrezio', zona: 'Via Vittoria',
@@ -2411,7 +2411,7 @@ const ALLENATORI = [
     squadra: [{ id: 94, livello: 60 }, { id: 65, livello: 60 }, { id: 121, livello: 60 }], // Gengar, Alakazam, Starmie
     dialogoIntro: ['Il penultimo ostacolo. Sono qui dal primo giorno della Lega. Pochi arrivano fin qui.'],
     dialogoSconfitta: 'Tu sì che sei arrivato.',
-    dialogoDopo: ['L\'uscita è lì. Poi la Lega. Poi Green.'],
+    dialogoDopo: ['L\'uscita è lì. Poi la Lega. Poi il Campione.'],
   },
   {
     id: 'all-vv-15', classe: 'Custode della Via', nome: 'Tullio', zona: 'Via Vittoria',
@@ -2670,7 +2670,8 @@ const VIA_VITTORIA_PORTA = {
 
 /* ----------------------------------------------------------
    F12 — LEGA POKÉMON DI COLONNA
-   Quattro Superquattro + Campione Remo.
+   Quattro Superquattro + Campione (il rivale scelto al laboratorio — non
+   esiste nessun "Remo", vedi REGOLA CAMPIONE in CLAUDE.md).
    Sistema a pool: ogni membro ha 10 specie; a ogni sfida si
    estraggono 6 (5 casuali + coreId sempre per ultimo).
    coreId = specie con BST più alta nel pool.
@@ -2870,7 +2871,7 @@ const REMO_LEGA = {
     '…',
     'Ok. Hai vinto TU. Sei il nuovo Campione dei Castelli Romani.',
     'Porterò questa sconfitta con me per un bel po\'.',
-    '(Green distoglie lo sguardo per un momento, poi ti stringe la mano)',
+    '(Il Campione distoglie lo sguardo per un momento, poi ti stringe la mano)',
     'Complimenti, campione. Sul serio.'
   ],
 };

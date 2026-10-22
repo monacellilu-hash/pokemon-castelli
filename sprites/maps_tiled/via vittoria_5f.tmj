@@ -971,25 +971,35 @@
                  "point":true,
                  "properties":[
                         {
+                         "name":"asso_livello",
+                         "type":"int",
+                         "value":62
+                        },
+                        {
                          "name":"direzione",
                          "type":"string",
                          "value":"sud"
-                        }, 
+                        },
                         {
                          "name":"id",
                          "type":"string",
                          "value":"rivale_via_vittoria"
-                        }, 
+                        },
                         {
                          "name":"sprite",
                          "type":"string",
                          "value":"trainer_POKEMONTRAINER_Brendan"
-                        }, 
+                        },
+                        {
+                         "name":"tappa",
+                         "type":"int",
+                         "value":6
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"
-                        }, 
+                        },
                         {
                          "name":"vista",
                          "type":"int",
@@ -1010,25 +1020,35 @@
                  "point":true,
                  "properties":[
                         {
+                         "name":"asso_livello",
+                         "type":"int",
+                         "value":62
+                        },
+                        {
                          "name":"direzione",
                          "type":"string",
                          "value":"sud"
-                        }, 
+                        },
                         {
                          "name":"id",
                          "type":"string",
                          "value":"rivale2_via_vittoria"
-                        }, 
+                        },
                         {
                          "name":"sprite",
                          "type":"string",
                          "value":"trainer_rivale_2"
-                        }, 
+                        },
+                        {
+                         "name":"tappa",
+                         "type":"int",
+                         "value":6
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"
-                        }, 
+                        },
                         {
                          "name":"vista",
                          "type":"int",

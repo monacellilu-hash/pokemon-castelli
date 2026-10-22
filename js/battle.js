@@ -1172,10 +1172,15 @@ const Battle = (function () {
     const elContatore = $('nemico-contatore');
     if (elContatore) {
       if (modalita === 'allenatore' && squadraNemica.length > 1) {
-        const rimasti = squadraNemica.length - indiceNemico;
+        // Bug corretto 22 ott 2026 (segnalato da Luca): "sconfitto = i >=
+        // rimasti" presumeva che i Pokémon scendessero in campo in ordine di
+        // posizione — falso dopo uno switch dell'IA (_provaSwitchNemico, può
+        // schierare qualsiasi posizione). Ogni pallina riflette ORA lo stato
+        // VERO del Pokémon in quella posizione (hpAttuale <= 0), non la sua
+        // posizione rispetto a indiceNemico.
         let html = '';
         for (let i = 0; i < squadraNemica.length; i++) {
-          const sconfitto = i >= rimasti;
+          const sconfitto = squadraNemica[i] && squadraNemica[i].hpAttuale <= 0;
           html += `<img src="sprites/Oggetti/icon_ball${sconfitto ? '_faint' : ''}.png" alt="">`;
         }
         elContatore.innerHTML = html;
@@ -3172,7 +3177,13 @@ const Battle = (function () {
     if (!datiAllenatore || datiAllenatore.switchIntelligente === false) return false;
     if (!nemico || nemico.hpAttuale <= 0 || !mio) return false;
     if (squadraNemica.length <= 1) return false;
-    if (numeroTurnoBattaglia - ultimoSwitchVolontarioTurno < 3) return false;
+    // Flag di TEST temporaneo (richiesto da Luca, 22 ott 2026, per verificare
+    // il fix del punto 6 — console: stato.flags.debug_switch_sempre = true):
+    // salta il cooldown di 3 turni e la probabilità del 70%, per forzare lo
+    // switch ogni volta che esiste un Pokémon migliore in panchina. DA
+    // TOGLIERE a fine test.
+    const debugSempre = !!(statoGioco.flags && statoGioco.flags.debug_switch_sempre);
+    if (!debugSempre && numeroTurnoBattaglia - ultimoSwitchVolontarioTurno < 3) return false;
 
     const efficaciaMax = (ist) => ist.tipi.reduce((max, t) => Math.max(max, efficacia(t, mio.tipi)), 0);
     const efficaciaAttuale = efficaciaMax(nemico);
@@ -3186,14 +3197,21 @@ const Battle = (function () {
       if (eff >= 2 && eff > migliorEfficacia) { migliore = i; migliorEfficacia = eff; }
     }
     if (migliore === null) return false;
-    if (Math.random() > 0.7) return false;   // "può deciderlo", non sempre
+    if (!debugSempre && Math.random() > 0.7) return false;   // "può deciderlo", non sempre
 
     ultimoSwitchVolontarioTurno = numeroTurnoBattaglia;
     const vecchio = nemico;
     indiceNemico = migliore;
     nemico = squadraNemica[indiceNemico];
+    // Bug corretto 22 ott 2026 (segnalato da Luca, caso Ginevra→Gardevoir):
+    // mancavano aggiornaSprite(true)/animaEntrataPokemon, le stesse due
+    // chiamate che il percorso del KO (nemicoSconfitto) già fa dopo aver
+    // cambiato "nemico" — senza, lo sprite restava quello del Pokémon
+    // RITIRATO (HP/nome/pannello del nuovo Pokémon, ma sprite vecchio).
+    aggiornaSprite(true);
     aggiornaPannelli();
     await di(`${etichettaNemico()} ritira ${vecchio.nome}!`);
+    await animaEntrataPokemon('nemico');
     await di(`${etichettaNemico()} manda in campo ${nemico.nome}!`);
     await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
     return true;
@@ -3913,14 +3931,24 @@ const Battle = (function () {
       }
     }
 
-    // L'allenatore manda in campo il prossimo Pokémon, se ne ha ancora
-    if (modalita === 'allenatore' && indiceNemico < squadraNemica.length - 1) {
-      indiceNemico += 1;
+    // L'allenatore manda in campo il prossimo Pokémon, se ne ha ancora vivo.
+    // Bug corretto 22 ott 2026 (segnalato da Luca, caso Ginevra): "indiceNemico
+    // < squadraNemica.length - 1" presumeva un ordine fisso per posizione —
+    // falso dopo uno switch dell'IA a metà lotta (_provaSwitchNemico può
+    // schierare QUALSIASI posizione, non solo in sequenza). Con l'ordine
+    // fisso, battere un Pokémon mandato in campo da uno switch "in avanti"
+    // (es. l'ultimo della squadra) chiudeva subito la lotta come vittoria,
+    // anche con altri Pokémon ancora vivi — o, in altri casi, rimandava in
+    // campo un Pokémon già KO. Ora si cerca semplicemente il primo Pokémon
+    // ANCORA VIVO nella squadra (hpAttuale > 0), in qualsiasi posizione.
+    const prossimoIndice = squadraNemica.findIndex(p => p && p.hpAttuale > 0);
+    if (modalita === 'allenatore' && prossimoIndice !== -1) {
+      indiceNemico = prossimoIndice;
       nemico = squadraNemica[indiceNemico];
       aggiornaSprite(true);
       aggiornaPannelli();
       await animaEntrataPokemon('nemico');
-      const rimasti = squadraNemica.length - indiceNemico;
+      const rimasti = squadraNemica.filter(p => p && p.hpAttuale > 0).length;
       await di(`${datiAllenatore.nome} manda in campo ${nemico.nome}! (gliene restano ${rimasti})`);
       await attivaAbilitaIngresso(nemico, etichettaNemico(), mio, mio.nome);
       mostraMenuPrincipale();

@@ -3634,6 +3634,12 @@ const DATI_TRAINER = {
   'rivale2_via_vittoria': {
     sprite: 'trainer_rivale_2', ritratto: 'trainer_rivale_2', vista: 6,
     classe: 'Rivale', nome: 'Blue', rivale: true,
+    // rivaleAltro (22 ott 2026, bug trovato: questo trainer risolveva SEMPRE
+    // su stato.rivale come rivale_via_vittoria, mostrando la stessa identità/
+    // squadra per entrambi): dice al motore che QUESTO è sempre l'ALTRO
+    // rivale (quello NON scelto al laboratorio), non il tuo — vedi
+    // risolviRivaleGiusto in js/map.js.
+    rivaleAltro: true,
     flagVittoria: 'rivale2_via_vittoria_battuto',
     squadra: [ { id: 302, livello: 58 }, { id: 359, livello: 59 }, { id: 248, livello: 60 } ],
     dialogo_prima: 'Allora, ci risentiamo prima della Lega. Non pensare che sia finita qui.',

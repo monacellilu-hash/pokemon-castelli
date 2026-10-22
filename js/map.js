@@ -2973,6 +2973,50 @@ const GameMap = (function () {
     Blue: 'trainer_rivale_2',
   };
 
+  // Risolve quale rivale rappresenta DAVVERO un trainer con identità di
+  // rivale (22 ott 2026, bug Via Vittoria 5F: rivaleDaSprite(ev.props.sprite)
+  // funziona solo per gli sprite Tiled generici "RIVALE_UOMO"/"RIVALE_DONNA"
+  // — rivale_via_vittoria/rivale2_via_vittoria usano invece sprite FISSI
+  // ("trainer_POKEMONTRAINER_Brendan"/"trainer_rivale_2"), quindi cadevano
+  // SEMPRE sul fallback stato.rivale per ENTRAMBI: il secondo rivale
+  // risultava la STESSA persona/squadra/starter del primo).
+  // dati.campioneLega → sempre il rivale scelto (stato.rivale), fisso.
+  // dati.rivaleAltro  → l'ALTRO rivale (quello NON scelto al laboratorio).
+  // dati.rivale       → il rivale scelto (stato.rivale), come sempre.
+  function risolviRivaleGiusto(dati, ev) {
+    if (!dati) return null;
+    if (dati.campioneLega) return (typeof stato !== 'undefined' && stato.rivale) || null;
+    if (dati.rivaleAltro) return (typeof altroRivale === 'function') ? altroRivale() : null;
+    if (dati.rivale) {
+      if (typeof rivaleDaSprite === 'function' && ev && ev.props) {
+        const viaSprite = rivaleDaSprite(ev.props.sprite);
+        if (viaSprite) return viaSprite;
+      }
+      return (typeof stato !== 'undefined' && stato.rivale) || null;
+    }
+    return null;
+  }
+
+  // I 2 rivali di Via Vittoria 5F (Green/rivale_via_vittoria sempre fisso,
+  // Blue/rivale2_via_vittoria sempre "l'altro"): una volta vista la cutscene
+  // ('via_vittoria_due_rivali_facile/difficile', flag qui sotto), NESSUNO
+  // dei due deve più poter avviare una lotta — quello sfidato è già battuto
+  // (flagVittoria/allenatoriBattuti lo gestisce già), quello che saluta e
+  // sparisce (nascondi_npc, solo per la sessione corrente) va bloccato anche
+  // dopo un ricaricamento della mappa, dove il suo sprite tornerebbe visibile.
+  const RIVALI_DUO_VIA_VITTORIA = new Set(['rivale_via_vittoria', 'rivale2_via_vittoria']);
+  function _duoRivaliViaVittoriaFinita() {
+    return !!(typeof stato !== 'undefined' && stato.flags && stato.flags.via_vittoria_rivale_finale_vista);
+  }
+  // Quale dei due oggetti Tiled "saluta e sparisce" (nascondi_npc nella
+  // cutscene) dipende dalla difficoltà, non è sempre lo stesso: FACILE
+  // (via_vittoria_due_rivali_facile) sfida rivale2_via_vittoria e nasconde
+  // rivale_via_vittoria; DIFFICILE fa l'opposto (vedi dati/cutscene.js).
+  function _rivaleViaVittoriaSalutaESparisce() {
+    return (typeof stato !== 'undefined' && stato.difficolta === 'difficile')
+      ? 'rivale2_via_vittoria' : 'rivale_via_vittoria';
+  }
+
   // Indovinelli del Bunkerino 1F (richiesta esplicita di Luca, 12 ott 2026):
   // stesso meccanismo della statua-interruttore dell'Osservatorio (porta a
   // scomparsa, vedi _nascondiTileOstacolo/_portaScomparsaApertaEv), ma
@@ -5098,10 +5142,26 @@ const GameMap = (function () {
           // rivali piazzati in giro per il mondo (dati.sprite assente, sprite letto
           // da ev.props "RIVALE_UOMO"/"RIVALE_DONNA" — quelli restano entrambi
           // sempre visibili, per design).
-          if (dati && dati.sprite && (dati.rivale || dati.campioneLega) && typeof stato !== 'undefined' &&
-              stato.rivale && stato.rivale.nome && SPRITE_RIVALE_SCELTO[stato.rivale.nome]) {
-            spriteFile = SPRITE_RIVALE_SCELTO[stato.rivale.nome];
+          // Bug corretto 22 ott 2026: rivale2_via_vittoria ("l'ALTRO" rivale,
+          // dati.rivaleAltro) cadeva in questo stesso ramo e veniva swappato
+          // su stato.rivale come rivale_via_vittoria — i due finivano per
+          // mostrare LO STESSO sprite. Ora rivale2_via_vittoria risolve su
+          // altroRivale(), non su stato.rivale.
+          if (dati && dati.sprite && (dati.rivale || dati.rivaleAltro || dati.campioneLega) && typeof stato !== 'undefined') {
+            const rivaleTarget = dati.rivaleAltro
+              ? (typeof altroRivale === 'function' ? altroRivale() : null)
+              : stato.rivale;
+            if (rivaleTarget && rivaleTarget.nome && SPRITE_RIVALE_SCELTO[rivaleTarget.nome]) {
+              spriteFile = SPRITE_RIVALE_SCELTO[rivaleTarget.nome];
+            }
           }
+          // I 2 rivali di Via Vittoria 5F restano invisibili per sempre dopo
+          // la cutscene finale (22 ott 2026, vedi RIVALI_DUO_VIA_VITTORIA):
+          // quello sfidato è già "battuto" (resta visibile come ogni altro
+          // trainer già battuto, non lo tocchiamo), quello che saluta e
+          // sparisce (nascondi_npc, solo per questa sessione) altrimenti
+          // tornerebbe visibile a ogni nuovo caricamento della mappa.
+          if (id === _rivaleViaVittoriaSalutaESparisce() && _duoRivaliViaVittoriaFinita()) continue;
         }
         // Fallback: se non c'è in DATI_*, usa la proprietà "sprite" messa in Tiled.
         if (!spriteFile && ev.props && ev.props.sprite) spriteFile = ev.props.sprite;
@@ -6322,12 +6382,20 @@ const GameMap = (function () {
           }
         }
         const idUnivoco = `cutscene:${ev.id || (ev.tx + ',' + ev.ty)}`;
-        const unaTantum = ev.props.una_tantum === true || ev.props.una_tantum === 'true';
+        // Default portato a TRUE il 22 ott 2026 (punto 5/7, richiesta
+        // esplicita di Luca): una cutscene finita non deve mai poter
+        // ripartire a piacere; prima il default era FALSE (si ripeteva
+        // sempre, a meno di una_tantum:true esplicito in Tiled) — ora si
+        // scrive una_tantum:false in Tiled per farla ripetere apposta.
+        const unaTantum = ev.props.una_tantum !== false && ev.props.una_tantum !== 'false';
         if (unaTantum && typeof stato !== 'undefined' && stato.cutsceneViste &&
             stato.cutsceneViste.includes(idUnivoco)) return;
         const cutsceneId = ev.props.cutscene_id || ev.props.cutscene;
         if (!cutsceneId) return;
-        this._giocaCutscene(cutsceneId).then(() => {
+        this._giocaCutscene(cutsceneId).then((esito) => {
+          // Non segnare "vista" una scena interrotta a metà (es. lotta
+          // persa): deve poter essere ritentata (punto 5, richiesta Luca).
+          if (esito === 'interrompi') return;
           if (unaTantum && typeof stato !== 'undefined') {
             if (!stato.cutsceneViste) stato.cutsceneViste = [];
             stato.cutsceneViste.push(idUnivoco);
@@ -6340,6 +6408,12 @@ const GameMap = (function () {
       // Allenatori (gregari + capopalestra): sfida premendo [A] se non già battuti.
       if (tipo === 'trainer') {
         const id = ev.id;
+        // I 2 rivali di Via Vittoria 5F dopo la cutscene finale (22 ott
+        // 2026): quello che "saluta e sparisce" non ha mai flagVittoria
+        // (non viene mai battuto), quindi senza questo controllo si poteva
+        // ripresentare per una lotta parlandoci direttamente [A].
+        if (RIVALI_DUO_VIA_VITTORIA.has(id) && _duoRivaliViaVittoriaFinita() &&
+            id === _rivaleViaVittoriaSalutaESparisce()) return;
         const dati = (typeof DATI_TRAINER !== 'undefined') ? DATI_TRAINER[id] : null;
         const giaBattuto = trainerBattuti.has(id) ||
           (typeof stato !== 'undefined' && stato.allenatoriBattuti && stato.allenatoriBattuti.includes(id));
@@ -6381,7 +6455,9 @@ const GameMap = (function () {
             if (dati.dialogo_dopo && typeof mostraDialogo === 'function') mostraDialogo(nomeNpc, [dati.dialogo_dopo]);
             return;
           }
-          this._giocaCutscene(dati.cutscene).then(() => {
+          this._giocaCutscene(dati.cutscene).then((esito) => {
+            // Non segnare "vista" una scena interrotta a metà (punto 5).
+            if (esito === 'interrompi') return;
             if (unaTantum && typeof stato !== 'undefined') {
               if (!stato.cutsceneViste) stato.cutsceneViste = [];
               stato.cutsceneViste.push(idUnivoco);
@@ -6589,19 +6665,30 @@ const GameMap = (function () {
     // per tutta la durata. Vedi dati/cutscene.js per i tipi di passo supportati.
     async _giocaCutscene(cutsceneId) {
       const passi = (typeof CUTSCENE !== 'undefined') ? CUTSCENE[cutsceneId] : null;
-      if (!passi) { console.warn('[Cutscene] id sconosciuto:', cutsceneId); return; }
+      if (!passi) { console.warn('[Cutscene] id sconosciuto:', cutsceneId); return 'interrompi'; }
       bloccaMovimento();
+      // Bug corretto 22 ott 2026 (punto 5, segnalato da Luca): questa
+      // funzione non diceva MAI al chiamante se si era fermata a metà
+      // (es. una lotta persa dentro la scena) — ogni .then() che segna la
+      // cutscene come "vista" (una_tantum) scattava comunque, anche su
+      // un'interruzione, impedendo di riprovare una scena persa. Ora
+      // ritorna 'interrompi' se un passo l'ha interrotta, altrimenti
+      // undefined — i chiamanti controllano questo valore prima di
+      // segnare stato.cutsceneViste.
+      let interrotta = false;
       try {
         for (const passo of passi) {
           // Un passo può restituire 'interrompi' (es. lotta persa): la scena
           // si ferma lì, senza eseguire i passi successivi.
           const esito = await this._eseguiPassoCutscena(passo);
-          if (esito === 'interrompi') break;
+          if (esito === 'interrompi') { interrotta = true; break; }
         }
       } catch (err) {
         console.error('[Cutscene] errore durante', cutsceneId, err);
+        interrotta = true;
       }
       sbloccaMovimento();
+      return interrotta ? 'interrompi' : undefined;
     }
 
     // Cutscene "allo spawn": un oggetto trigger_cutscene con proprietà
@@ -6618,7 +6705,9 @@ const GameMap = (function () {
         const giaVista = typeof stato !== 'undefined' && stato.cutsceneViste &&
           stato.cutsceneViste.includes(idUnivoco);
         if (!giaVista) {
-          this._giocaCutscene(cutsceneCodice).then(() => {
+          this._giocaCutscene(cutsceneCodice).then((esito) => {
+            // Non segnare "vista" una scena interrotta a metà (punto 5).
+            if (esito === 'interrompi') return;
             if (typeof stato !== 'undefined') {
               if (!stato.cutsceneViste) stato.cutsceneViste = [];
               stato.cutsceneViste.push(idUnivoco);
@@ -6655,7 +6744,9 @@ const GameMap = (function () {
                             ev.props.cutscene_id || ev.props.cutscene;
         if (!cutsceneId) continue;
 
-        this._giocaCutscene(cutsceneId).then(() => {
+        this._giocaCutscene(cutsceneId).then((esito) => {
+          // Non segnare "vista" una scena interrotta a metà (punto 5).
+          if (esito === 'interrompi') return;
           if (unaTantum && typeof stato !== 'undefined') {
             if (!stato.cutsceneViste) stato.cutsceneViste = [];
             stato.cutsceneViste.push(idUnivoco);
@@ -7119,9 +7210,19 @@ const GameMap = (function () {
     // Trigger "a rettangolo" per cutscene (oggetto Tiled trigger_cutscene con
     // quando:'entra'): parte quando il giocatore ENTRA nel rettangolo.
     // Proprietà: cutscene_id, condizione (opzionale), flag_fine (se questo
-    // flag è vero la scena è finita e non riparte più). Scena "riprendibile":
+    // flag è vero la scena è finita e non riparte più — compatibilità con le
+    // scene esistenti che già impostano un flag proprio). Scena "riprendibile":
     // con flag_ripresa + cutscene_id_ripresa, se il flag_ripresa è vero parte
     // la cutscene di ripresa (es. dopo una sconfitta, senza rifare l'intro).
+    // Bug corretto 22 ott 2026 (punto 5, segnalato da Luca): questo trigger
+    // non aveva MAI un suo modo di sapere "l'ho già giocata" — solo flag_fine
+    // la bloccava, e se il flag scritto in Tiled non corrispondeva a nessun
+    // flag che la cutscene imposta davvero (bug reale trovato a San Nilo),
+    // restava sempre rigiocabile. Ora usa lo stesso meccanismo una_tantum/
+    // stato.cutsceneViste degli altri trigger_cutscene (default: una sola
+    // volta; una_tantum:false in Tiled per farla ripetere apposta), E non
+    // segna "vista" una scena interrotta a metà (es. lotta persa dentro la
+    // scena) — così una scena persa resta ritentabile, una finita no.
     _checkTriggerCutsceneEntra() {
       if (typeof stato === 'undefined' || stato.incontroAttivo || dialogoInCorso || bloccato || trainerSpotting) return;
       for (const ev of eventiMappa) {
@@ -7130,6 +7231,10 @@ const GameMap = (function () {
         const cond = ev.props.condizione || ev.props.richiede;
         if (cond && !verificaCondizione(cond).ok) continue;
         if (ev.props.flag_fine && stato.flags && stato.flags[ev.props.flag_fine]) continue;
+        const idUnivoco = `cutscene_entra:${mappaCorrente}:${ev.id || (ev.tx0 + ',' + ev.ty0)}`;
+        const unaTantum = ev.props.una_tantum !== false && ev.props.una_tantum !== 'false';
+        const giaVista = unaTantum && stato.cutsceneViste && stato.cutsceneViste.includes(idUnivoco);
+        if (giaVista) continue;
         const dentro = posTile.tx >= ev.tx0 && posTile.tx <= ev.tx1 && posTile.ty >= ev.ty0 && posTile.ty <= ev.ty1;
         if (!dentro) continue;
         const ripresa = ev.props.flag_ripresa && stato.flags && stato.flags[ev.props.flag_ripresa];
@@ -7142,7 +7247,15 @@ const GameMap = (function () {
                    (inDifficile && ev.props.cutscene_id_difficile) ||
                    ev.props.cutscene_id;
         if (!id) continue;
-        this._giocaCutscene(id).then(() => {
+        this._giocaCutscene(id).then((esito) => {
+          // Interrotta (es. lotta persa a metà scena): NON segnare "vista",
+          // deve poter essere ritentata — resta la condizione "dentro" il
+          // rettangolo a far ripartire il trigger al prossimo passaggio.
+          if (esito === 'interrompi') return;
+          if (unaTantum) {
+            if (!stato.cutsceneViste) stato.cutsceneViste = [];
+            stato.cutsceneViste.push(idUnivoco);
+          }
           if (typeof salvaPartita === 'function') salvaPartita();
         });
         return;
@@ -9757,6 +9870,12 @@ const GameMap = (function () {
           trainerBattuti.add(id);
           continue;
         }
+        // I 2 rivali di Via Vittoria 5F dopo la cutscene finale (22 ott
+        // 2026): quello che "saluta e sparisce" non è mai stato battuto
+        // (niente flagVittoria), quindi senza questo controllo resterebbe
+        // sfidabile a vista per sempre dopo un ricaricamento della mappa.
+        if (RIVALI_DUO_VIA_VITTORIA.has(id) && _duoRivaliViaVittoriaFinita() &&
+            id === _rivaleViaVittoriaSalutaESparisce()) continue;
 
         const dati = DATI_TRAINER[id];
         if (!dati) continue;
@@ -9859,8 +9978,7 @@ const GameMap = (function () {
       bloccaMovimento();
 
       const risolviAllenatore = (v) => {
-        const rivaleGiusto = v.dati.rivale && v.st.ev && typeof rivaleDaSprite === 'function'
-          ? rivaleDaSprite(v.st.ev.props.sprite) : null;
+        const rivaleGiusto = risolviRivaleGiusto(v.dati, v.st.ev);
         const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) ||
           v.dati.nome || (v.st.ev && v.st.ev.nome) || v.id;
         let squadra = v.dati.squadra;
@@ -10286,7 +10404,8 @@ const GameMap = (function () {
       // Il Campione (campioneLega) non ha "rivale:true" ma è la STESSA persona
       // scelta al laboratorio (richiesta esplicita di Luca, 12 ott 2026): entra
       // anche lui nella risoluzione dinamica del nome/squadra.
-      const rivaleGiusto = (dati.rivale || dati.campioneLega) && typeof rivaleDaSprite === 'function' ? rivaleDaSprite(ev.props.sprite) : null;
+      // dati.rivaleAltro (22 ott 2026, bug Via Vittoria 5F): vedi risolviRivaleGiusto.
+      const rivaleGiusto = risolviRivaleGiusto(dati, ev);
       const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) || dati.nome || ev.nome || id;
       const dialogo = dati.dialogo_prima || 'Preparati a lottare!';
       // Rivale: squadra scalata in base alla "tappa" (n. incontro) con l'asso = starter
@@ -10304,6 +10423,14 @@ const GameMap = (function () {
         if (membro) squadra = estraiTeamSuperquattro(membro);
       } else if (dati.campioneLega && typeof estraiTeamRemo === 'function') {
         squadra = estraiTeamRemo();
+      }
+      // Protezione condivisa (22 ott 2026, richiesta esplicita di Luca):
+      // Superquattro/Campione non devono MAI scendere in campo con più di 6
+      // Pokémon — estraiTeamSuperquattro/estraiTeamRemo lo garantiscono già
+      // da sole (5 dal pool + coreId), ma questo slice resta come rete di
+      // sicurezza condivisa se il pool cambiasse forma in futuro.
+      if ((dati.superquattro || dati.campioneLega) && Array.isArray(squadra) && squadra.length > 6) {
+        squadra = squadra.slice(0, 6);
       }
       const dopoDialogo = () => {
         const tipoMusica = dati.rivale ? 'rivale' :
