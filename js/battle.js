@@ -4010,7 +4010,12 @@ const Battle = (function () {
         await di(`Hai ricevuto ₽${premio} per la vittoria!` + (mio.oggetto === 'amomoneta' ? ' (Amomoneta! 🪙)' : ''));
       }
       if (datiAllenatore.dialogoSconfitta) {
-        await di(`${datiAllenatore.nome}: «${datiAllenatore.dialogoSconfitta}»`);
+        // Alcuni allenatori (Superquattro, 22 ott 2026) hanno 2-3 battute in
+        // sequenza invece di una sola — array di stringhe, mostrate una alla
+        // volta come qualsiasi altro messaggio di battaglia.
+        const righe = Array.isArray(datiAllenatore.dialogoSconfitta)
+          ? datiAllenatore.dialogoSconfitta : [datiAllenatore.dialogoSconfitta];
+        for (const r of righe) await di(`${datiAllenatore.nome}: «${r}»`);
       }
     } else {
       // Lotta selvatica: senza dialoghi dopo (a differenza degli allenatori
@@ -5151,7 +5156,10 @@ const Battle = (function () {
       const dialoghi = [];
       for (const all of doppiaAllenatori) {
         if (all.premioSoldi) premio += all.premioSoldi;
-        if (all.dialogoSconfitta) dialoghi.push(`${all.nome}: «${all.dialogoSconfitta}»`);
+        if (all.dialogoSconfitta) {
+          const righe = Array.isArray(all.dialogoSconfitta) ? all.dialogoSconfitta : [all.dialogoSconfitta];
+          for (const r of righe) dialoghi.push(`${all.nome}: «${r}»`);
+        }
       }
       if (premio > 0) {
         statoGioco.soldi = (statoGioco.soldi || 0) + premio;

@@ -3662,7 +3662,19 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_captain_battuto',
     squadra: [ { id: 248, livello: 61 } ],   // fallback: solo il core (Tyranitar)
-    dialogo_dopo: 'Impressionante. Ma le prossime sale sono ancora più dure.',
+    // Dialoghi epici (22 ott 2026, richiesta esplicita di Luca): 2-3 battute
+    // pre e post, non più una riga sola — array di stringhe, mostrate in
+    // sequenza da mostraDialogo/di (vedi righeDialogo in js/map.js).
+    dialogo_prima: [
+      'Fin qui sei arrivato camminando sulle ossa di chi ha fallito prima di te.',
+      'Io sono la roccia su cui si spezzano. Lotta, Roccia, Buio, Terra: la forza bruta della terra stessa.',
+      'Mostrami se sei fatto della stessa pietra, o se ti sbricioli come tutti gli altri.',
+    ],
+    dialogo_dopo: [
+      'Impressionante. La pietra si è incrinata, per la prima volta in anni.',
+      'Ma non illuderti: io ero solo la prima sala. Le prossime sono ancora più dure.',
+      'Vai. Te lo sei guadagnato.',
+    ],
     premio: 12000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
@@ -3673,7 +3685,16 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_pres_battuto',
     squadra: [ { id: 149, livello: 62 } ],   // fallback: solo il core (Dragonite)
-    dialogo_dopo: 'Il tuono si è placato. Vai avanti, hai guadagnato il diritto.',
+    dialogo_prima: [
+      'Benvenuto nella sala del tuono e delle scaglie di drago.',
+      'Ho visto tempeste che hanno spazzato via intere squadre in un amen. Io sono la tempesta.',
+      'Elettro, Drago, Acqua: tre forze che non perdonano un passo falso. Dimostrami il tuo.',
+    ],
+    dialogo_dopo: [
+      'Il tuono si è placato... e per la prima volta, non per mano mia.',
+      'Hai cavalcato la tempesta invece di esserne travolto. Raro.',
+      'Vai avanti, hai guadagnato il diritto di continuare.',
+    ],
     premio: 13000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
@@ -3684,7 +3705,16 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_dema_battuto',
     squadra: [ { id: 282, livello: 62 } ],   // fallback: solo il core (Gardevoir)
-    dialogo_dopo: 'La tua mente è più forte della mia magia. Avanti.',
+    dialogo_prima: [
+      'Folletto, Volante, Psico: la mente, il cuore, il cielo. Tre modi di spezzare la volontà altrui.',
+      'Ho già visto come finisce questa lotta, nella tua mente, prima ancora che inizi.',
+      'Vediamo se il destino che ho letto è davvero quello che si realizzerà.',
+    ],
+    dialogo_dopo: [
+      'La tua mente è più forte della mia magia. Non lo avevo previsto.',
+      'Per la prima volta, il futuro che ho visto non si è avverato: il tuo.',
+      'Avanti, campione di domani.',
+    ],
     premio: 13000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
@@ -3695,7 +3725,16 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'sq_marcuois_battuto',
     squadra: [ { id: 376, livello: 63 } ],   // fallback: solo il core (Metagross)
-    dialogo_dopo: 'Acciaio spezzato. Non credevo fosse possibile. Vai dal Campione.',
+    dialogo_prima: [
+      'L\'ultima sala prima del Campione. Acciaio, Acqua, Psico: corazza impenetrabile e mente di ferro.',
+      'Chi arriva fin qui ha già vinto tre volte. Ma questa non è una formalità.',
+      'Il mio Metagross calcola mille mosse al secondo. Vediamo quante ne basteranno a fermarti.',
+    ],
+    dialogo_dopo: [
+      'Acciaio spezzato. Non credevo fosse possibile.',
+      'Nemmeno un calcolo da mille mosse al secondo ha previsto questo.',
+      'Vai dal Campione. Ha aspettato a lungo qualcuno come te.',
+    ],
     premio: 14000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },

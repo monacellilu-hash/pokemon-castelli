@@ -2382,4 +2382,40 @@ const DATI_NPC = {
     sprite: 'NPC 19', nome: 'Claudio', direzione: 'sud', movimento: 'fisso',
     azione: 'interagisciGuardiaBorgata',
   },
+
+  /* ── Base di lancio di Deoxys (22 ott 2026, post-Lega — richiesta
+     esplicita di Luca): raggiungibile da Grottaferrata (warp ex
+     "grotta_meteora") solo dopo aver battuto la Lega. 'deoxys_baselancio_entrata'
+     è la sala d'accoglienza (receptionist + scienziato, solo battute di
+     benvenuto), 'deoxys_baselancio_ufficio' è l'ufficio del Capitano, dove
+     parte tutta la missione del carburante — vedi 'deoxys_capitano_ufficio'
+     in dati/cutscene.js per i 3 stadi della storia. ── */
+  'npc_deoxys_baselancio_entrata_1': {
+    sprite: 'NPC 04', nome: 'Addetta', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Benvenuto alla base! Sei la nuova recluta che aspettavamo?',
+      'Il Capitano è nell\'ufficio in fondo, ti sta aspettando.',
+    ],
+  },
+  'deoxys_scienziato_entrata': {
+    sprite: 'trainer_SCIENTIST', nome: 'Dottor Fenaroli', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Programma spaziale dei Castelli Romani... top secret, naturalmente.',
+      'Se la gente sapesse quanto costa tutto questo, ci taglierebbero i fondi all\'istante.',
+      'Vai, il Capitano non ama aspettare.',
+    ],
+  },
+  'npc_deoxys_baselancio_ufficio_1': {
+    sprite: 'trainer_SCIENTIST', nome: 'Capitano Aldani', direzione: 'sud', movimento: 'fisso',
+    cutscene: 'deoxys_capitano_ufficio',
+    cutsceneUnaTantum: false,   // la scena si rigioca ad ogni visita, i blocchi interni si aprono/chiudono da soli coi flag
+  },
+  // Stesso Capitano, "salito con te" su Birth Island (vedi passo
+  // 'deoxys_capitano_ufficio' → cambia_mappa): parlargli di nuovo qui chiede
+  // se tornare indietro — stessa logica "a stadi" dell'ufficio.
+  'deoxys_capitano_birthisland': {
+    sprite: 'trainer_SCIENTIST', nome: 'Capitano Aldani', direzione: 'sud', movimento: 'fisso',
+    cutscene: 'deoxys_birthisland_ritorno',
+    cutsceneUnaTantum: false,
+  },
 };

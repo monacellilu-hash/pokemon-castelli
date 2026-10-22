@@ -912,3 +912,75 @@ CUTSCENE['lega_risfida_remo'] = [
   { tipo: 'aspetta', ms: 200 },
   { tipo: 'fade_in', ms: 700 },
 ];
+
+/* ══════════════════════════════════════════════════════════
+   Base di lancio di Deoxys (22 ott 2026, post-Lega — richiesta esplicita
+   di Luca). Il Capitano Aldani (dati/npc.js, 'npc_deoxys_baselancio_ufficio_1')
+   ha cutsceneUnaTantum:false: questa scena si RIGIOCA ad ogni visita, ma
+   ogni blocco di passi è condizionato con "richiede_condizione" (vocabolario
+   esteso in js/map.js, _eseguiPassoCutscena — stessa sintassi AND "+"/NOT "!"
+   di verificaCondizione) sui flag impostati dal blocco precedente, quindi ad
+   ogni visita si vede SOLO il blocco giusto per lo stadio in cui sei:
+
+   Stadio 0 (!missione_meteorite_presa): il discorso iniziale, imposta il flag.
+   Stadio 1 (ha iniziato la missione ma non ha ancora il minerale): il
+     minerale si raccoglie come oggetto-chiave a terra nella Grotta Perduta
+     (Room14, contenuto:'meteorite', flag_raccolta:'deoxys_meteorite_raccolto'
+     — vedi sprites/maps_tiled/deoxys_lostcave_room14.tmj), niente da fare qui.
+   Stadio 2 (ha il minerale, non ha ancora la tuta): lo consegna, riceve la
+     tuta, flag deoxys_tuta_data.
+   Stadio 3 (ha la tuta): chiede "sei pronto?" OGNI volta finché non risponde
+     sì — se risponde no, la scena finisce lì e si può riparlare più tardi.
+   ══════════════════════════════════════════════════════════ */
+CUTSCENE['deoxys_capitano_ufficio'] = [
+  // Stadio 0 — discorso iniziale
+  { tipo: 'dialogo', nome: 'Capitano Aldani', richiede_condizione: '!missione_meteorite_presa', testo: [
+    'Ah. Tu devi essere la recluta di cui mi hanno parlato.',
+    'Quello che fai qui dentro non è mai successo. Il programma spaziale dei Castelli Romani non esiste, per chi ce lo chiede. Capito?',
+    'La gente non capirebbe. E di sicuro non capirebbero i fondi che ci servono — quelli, infatti, non ci sono quasi mai.',
+    'Ma non importa più. Negli ultimi mesi i nostri strumenti hanno registrato un\'attività cosmica fuori scala, in arrivo sopra i Castelli Romani.',
+    'Abbiamo tutto pronto per il lancio. Razzo, tuta, piattaforma. Tutto, tranne il carburante adatto a reggere un volo del genere.',
+    'I nostri geologi hanno scoperto dei minerali formidabili nei pressi del Tunnel Roccioso, su Via dei Laghi. Una grotta che nessuno aveva mai esplorato davvero.',
+    'Vacci. Portami quel minerale, e questa missione finalmente si farà.',
+  ] },
+  { tipo: 'flag', nome: 'missione_meteorite_presa', valore: true, richiede_condizione: '!missione_meteorite_presa' },
+
+  // Stadio 1 — in attesa del minerale (nessun passo: il giocatore deve solo
+  // andare a prenderlo, la scena qui non ha nulla da fare e termina subito;
+  // il "promemoria" lo copre il dialogo_dopo generico se non ci fosse
+  // cutsceneUnaTantum:false — qui non serve perché lo stadio 2 sotto
+  // semplicemente non si apre finché non ha il minerale).
+
+  // Stadio 2 — consegna del minerale, riceve la tuta
+  { tipo: 'dialogo', nome: 'Capitano Aldani', richiede_condizione: 'deoxys_meteorite_raccolto+!deoxys_tuta_data', testo: [
+    'Questo è... esattamente quello che ci serviva. Incredibile.',
+    'Con questo possiamo davvero partire. Prendi questa tuta: è stata cucita su misura per chi avrebbe trovato il minerale.',
+  ] },
+  { tipo: 'oggetto', chiave: true, contenuto: 'tuta_spaziale', richiede_condizione: 'deoxys_meteorite_raccolto+!deoxys_tuta_data' },
+  { tipo: 'flag', nome: 'deoxys_tuta_data', valore: true, richiede_condizione: 'deoxys_meteorite_raccolto+!deoxys_tuta_data' },
+
+  // Stadio 3 — "sei pronto?", ripetuto ogni visita finché non risponde sì
+  { tipo: 'dialogo', nome: 'Capitano Aldani', richiede_condizione: 'deoxys_tuta_data', testo: [
+    'Sei pronto a partire? Una volta su, quell\'attività cosmica non aspetterà i tempi comodi.',
+  ] },
+  { tipo: 'scelta_si_no', richiede_condizione: 'deoxys_tuta_data', messaggio: 'Sei pronto a partire?', testoSi: 'Sì, andiamo', testoNo: 'Non ancora', salva_flag: 'deoxys_risposta_pronto' },
+  { tipo: 'fade_out', ms: 600, richiede_flag: 'deoxys_risposta_pronto' },
+  { tipo: 'cambia_mappa', mappa: 'deoxys_birthisland_exterior', spawn: 'da_capitano', richiede_flag: 'deoxys_risposta_pronto' },
+  { tipo: 'fade_in', ms: 600, richiede_flag: 'deoxys_risposta_pronto' },
+  { tipo: 'flag', nome: 'deoxys_risposta_pronto', valore: false, richiede_flag: 'deoxys_risposta_pronto' },
+];
+
+/* ── Stessa logica "a stadi", lato Birth Island: il Capitano ti ha seguito
+   su (NPC separato 'deoxys_capitano_birthisland', stesso sprite/nome) e
+   chiede se tornare indietro all'ufficio. ── */
+CUTSCENE['deoxys_birthisland_ritorno'] = [
+  { tipo: 'dialogo', nome: 'Capitano Aldani', testo: [
+    'Siamo arrivati. Resta il tempo che vuoi, ma appena sei pronto a tornare dimmelo.',
+    'Sei pronto a tornare? Abbiamo ottenuto tutto quello che serviva?',
+  ] },
+  { tipo: 'scelta_si_no', messaggio: 'Tornare indietro alla base?', testoSi: 'Sì, torniamo', testoNo: 'Non ancora', salva_flag: 'deoxys_risposta_ritorno' },
+  { tipo: 'fade_out', ms: 600, richiede_flag: 'deoxys_risposta_ritorno' },
+  { tipo: 'cambia_mappa', mappa: 'deoxys_baselancio_ufficio', spawn: 'da_birthisland', richiede_flag: 'deoxys_risposta_ritorno' },
+  { tipo: 'fade_in', ms: 600, richiede_flag: 'deoxys_risposta_ritorno' },
+  { tipo: 'flag', nome: 'deoxys_risposta_ritorno', valore: false, richiede_flag: 'deoxys_risposta_ritorno' },
+];

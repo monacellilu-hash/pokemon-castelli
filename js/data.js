@@ -3690,6 +3690,20 @@ const OGGETTI_CHIAVE = {
     icona: '🔵',
     descrizione: 'Una gemma blu fredda al tatto, anche sotto il sole di agosto. Sembra placare la furia di ciò che dorme nelle acque profonde del lago.',
   },
+  // Base di lancio di Deoxys (22 ott 2026, post-Lega, richiesta esplicita di
+  // Luca): minerale trovato nella Grotta Perduta di Via dei Laghi, da
+  // riportare al Capitano per avviare la missione — vedi 'deoxys_capitano_ufficio'
+  // in dati/cutscene.js.
+  'meteorite': {
+    nome: 'Meteorite',
+    icona: '☄️',
+    descrizione: 'Un minerale dall\'origine innegabilmente non terrestre, trovato nella Grotta Perduta. Il Capitano della base di lancio lo stava aspettando.',
+  },
+  'tuta_spaziale': {
+    nome: 'Tuta Spaziale',
+    icona: '👨‍🚀',
+    descrizione: 'La tuta data dal Capitano per il lancio: ti permette di affrontare il vuoto fin sopra l\'atmosfera.',
+  },
 };
 
 /* ----------------------------------------------------------

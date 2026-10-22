@@ -488,6 +488,35 @@ const GameMap = (function () {
       interno: true, tema: 'cave', sub: true,
       latFissa: 41.7440, lonFissa: 12.6580,
     },
+    // ── Base di lancio + Grotta Perduta di Deoxys (22 ott 2026, post-Lega,
+    // richiesta esplicita di Luca): ex "BattleDomePreBattleRoom"/"CaptainsOffice"
+    // (pokeemerald) per la base, "FiveIsland_LostCave" (pokefirered) per il
+    // labirinto di 14 stanze + entrata. Grafo interno ricostruito con la
+    // stessa tecnica dell'Antro di Kyogre (dest_warp_id grezzi, non solo il
+    // nome mappa — i loop che riportano a Room1 sono VERI, fanno parte del
+    // labirinto originale). Raggiungibile da 'grottaferrata' (ex warp
+    // "grotta_meteora", mai davvero esistita) solo con la Lega battuta; la
+    // Grotta Perduta si apre da 'via_dei_laghi' solo dopo aver anche parlato
+    // col Capitano (flag 'missione_meteorite_presa') — vedi 'deoxys_capitano_ufficio'
+    // in dati/cutscene.js per tutta la storia a stadi.
+    'deoxys_baselancio_entrata': { file: 'sprites/maps_tiled/deoxys_baselancio_entrata.tmj', interno: true, tema: 'cave' },
+    'deoxys_baselancio_ufficio': { file: 'sprites/maps_tiled/deoxys_baselancio_ufficio.tmj', interno: true, tema: 'cave' },
+    'deoxys_birthisland_exterior': { file: 'sprites/maps_tiled/deoxys_birthisland_exterior.tmj', interno: true },
+    'deoxys_lostcave_entrance': { file: 'sprites/maps_tiled/deoxys_lostcave_entrance.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room1': { file: 'sprites/maps_tiled/deoxys_lostcave_room1.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room2': { file: 'sprites/maps_tiled/deoxys_lostcave_room2.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room3': { file: 'sprites/maps_tiled/deoxys_lostcave_room3.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room4': { file: 'sprites/maps_tiled/deoxys_lostcave_room4.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room5': { file: 'sprites/maps_tiled/deoxys_lostcave_room5.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room6': { file: 'sprites/maps_tiled/deoxys_lostcave_room6.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room7': { file: 'sprites/maps_tiled/deoxys_lostcave_room7.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room8': { file: 'sprites/maps_tiled/deoxys_lostcave_room8.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room9': { file: 'sprites/maps_tiled/deoxys_lostcave_room9.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room10': { file: 'sprites/maps_tiled/deoxys_lostcave_room10.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room11': { file: 'sprites/maps_tiled/deoxys_lostcave_room11.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room12': { file: 'sprites/maps_tiled/deoxys_lostcave_room12.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room13': { file: 'sprites/maps_tiled/deoxys_lostcave_room13.tmj', interno: true, tema: 'cave' },
+    'deoxys_lostcave_room14': { file: 'sprites/maps_tiled/deoxys_lostcave_room14.tmj', interno: true, tema: 'cave' },
     // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
     // l'Antro di Kyogre parte direttamente da 'antro_kyogre_entrance'.
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
@@ -1681,6 +1710,25 @@ const GameMap = (function () {
     'ts-antrokyogre-8':      'sprites/PNG/antro_kyogre_8_tileset.png',
     'ts-antrokyogre-9':      'sprites/PNG/antro_kyogre_9_tileset.png',
     'ts-antrokyogre-uw':     'sprites/PNG/antro_kyogre_underwater_tileset.png',
+    // ── Base di lancio + Grotta Perduta di Deoxys (22 ott 2026) ──
+    'ts-dlc-entrance': 'sprites/PNG/deoxys_lostcave_entrance_tileset.png',
+    'ts-dlc-room1': 'sprites/PNG/deoxys_lostcave_room1_tileset.png',
+    'ts-dlc-room2': 'sprites/PNG/deoxys_lostcave_room2_tileset.png',
+    'ts-dlc-room3': 'sprites/PNG/deoxys_lostcave_room3_tileset.png',
+    'ts-dlc-room4': 'sprites/PNG/deoxys_lostcave_room4_tileset.png',
+    'ts-dlc-room5': 'sprites/PNG/deoxys_lostcave_room5_tileset.png',
+    'ts-dlc-room6': 'sprites/PNG/deoxys_lostcave_room6_tileset.png',
+    'ts-dlc-room7': 'sprites/PNG/deoxys_lostcave_room7_tileset.png',
+    'ts-dlc-room8': 'sprites/PNG/deoxys_lostcave_room8_tileset.png',
+    'ts-dlc-room9': 'sprites/PNG/deoxys_lostcave_room9_tileset.png',
+    'ts-dlc-room10': 'sprites/PNG/deoxys_lostcave_room10_tileset.png',
+    'ts-dlc-room11': 'sprites/PNG/deoxys_lostcave_room11_tileset.png',
+    'ts-dlc-room12': 'sprites/PNG/deoxys_lostcave_room12_tileset.png',
+    'ts-dlc-room13': 'sprites/PNG/deoxys_lostcave_room13_tileset.png',
+    'ts-dlc-room14': 'sprites/PNG/deoxys_lostcave_room14_tileset.png',
+    'ts-dbl-entrata': 'sprites/PNG/deoxys_baselancio_entrata_tileset.png',
+    'ts-dbl-ufficio': 'sprites/PNG/deoxys_baselancio_ufficio_tileset.png',
+    'ts-dbi-exterior': 'sprites/PNG/deoxys_birthisland_exterior_tileset.png',
     'ts-lab-ricerca':        'sprites/genzano_laboratorio_ricerca_tileset.png',
     'ts-lab-esperimenti':    'sprites/genzano_laboratorio_esperimenti_tileset.png',
     'ts-lega-entrata':       'sprites/lega_pokemon_entrata_tileset.png',
@@ -1757,6 +1805,24 @@ const GameMap = (function () {
     'antro_kyogre_8_tileset':         { key: 'ts-antrokyogre-8',   tw: 32, th: 32, cols: 16 },
     'antro_kyogre_9_tileset':         { key: 'ts-antrokyogre-9',   tw: 32, th: 32, cols: 16 },
     'antro_kyogre_underwater_tileset':{ key: 'ts-antrokyogre-uw',  tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_entrance_tileset': { key: 'ts-dlc-entrance', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room1_tileset': { key: 'ts-dlc-room1', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room2_tileset': { key: 'ts-dlc-room2', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room3_tileset': { key: 'ts-dlc-room3', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room4_tileset': { key: 'ts-dlc-room4', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room5_tileset': { key: 'ts-dlc-room5', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room6_tileset': { key: 'ts-dlc-room6', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room7_tileset': { key: 'ts-dlc-room7', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room8_tileset': { key: 'ts-dlc-room8', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room9_tileset': { key: 'ts-dlc-room9', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room10_tileset': { key: 'ts-dlc-room10', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room11_tileset': { key: 'ts-dlc-room11', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room12_tileset': { key: 'ts-dlc-room12', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room13_tileset': { key: 'ts-dlc-room13', tw: 32, th: 32, cols: 16 },
+    'deoxys_lostcave_room14_tileset': { key: 'ts-dlc-room14', tw: 32, th: 32, cols: 16 },
+    'deoxys_baselancio_entrata_tileset': { key: 'ts-dbl-entrata', tw: 32, th: 32, cols: 16 },
+    'deoxys_baselancio_ufficio_tileset': { key: 'ts-dbl-ufficio', tw: 32, th: 32, cols: 16 },
+    'deoxys_birthisland_exterior_tileset': { key: 'ts-dbi-exterior', tw: 32, th: 32, cols: 16 },
     // Laboratorio Rianimazione Fossili di Genzano (da FireRed, 5 ott 2026).
     'genzano_laboratorio_entrata_tileset':     { key: 'ts-lab-entrata',     tw: 32, th: 32, cols: 16 },
     'genzano_laboratorio_lounge_tileset':      { key: 'ts-lab-lounge',      tw: 32, th: 32, cols: 16 },
@@ -2529,6 +2595,19 @@ const GameMap = (function () {
     return String(s || '').toLowerCase()
       .replace(/pokemon[-\s]*castelli/g, '')   // toglie il prefisso del nome file
       .replace(/[^a-z0-9]/g, '');               // tiene solo lettere/numeri
+  }
+
+  // Normalizza dialogo_prima/dialogo_dopo per mostraDialogo: quasi tutti gli
+  // allenatori hanno una sola battuta (stringa), ma alcuni (es. Superquattro,
+  // 22 ott 2026, richiesta esplicita di Luca "dialoghi più ampi ed epici")
+  // ne hanno 2-3 in sequenza — in quel caso il dato è già un array di
+  // stringhe, da passare a mostraDialogo TALE E QUALE (non va richiuso in un
+  // array che lo conterrebbe come unico elemento, altrimenti risulterebbe
+  // "[object Object]" sullo schermo).
+  function righeDialogo(v, fallback) {
+    if (Array.isArray(v) && v.length) return v;
+    if (typeof v === 'string' && v) return [v];
+    return fallback ? [fallback] : [];
   }
 
   // Nome "umano" della mappa ricavato dal nome file (per i confronti)
@@ -6466,7 +6545,7 @@ const GameMap = (function () {
             }
           }
           if (dati && dati.dialogo_dopo && typeof mostraDialogo === 'function')
-            mostraDialogo(dati.nome || id, [dati.dialogo_dopo]);
+            mostraDialogo(dati.nome || id, righeDialogo(dati.dialogo_dopo));
           return;
         }
         if (dati) this._avviaLottaTrainer(id, dati, ev);
@@ -6789,6 +6868,25 @@ const GameMap = (function () {
     }
 
     _eseguiPassoCutscena(passo) {
+      // Guardia generica (22 ott 2026, richiesta Deoxys/base di lancio): un
+      // QUALSIASI passo può essere condizionato a un flag già impostato (di
+      // solito da uno 'scelta_si_no' precedente, es. "sei pronto?") — se il
+      // flag è falso il passo si salta del tutto, non solo per
+      // 'sostituisci_squadra_temporaneo' (che aveva già questa stessa idea,
+      // ma solo per sé stesso). Vocabolario esteso una volta, riusabile da
+      // tutte le cutscene future con un bivio sì/no.
+      if (passo.richiede_flag && !(typeof stato !== 'undefined' && stato.flags && stato.flags[passo.richiede_flag])) {
+        return Promise.resolve();
+      }
+      // Variante con espressione completa (AND "+", NOT "!", stessa sintassi
+      // di verificaCondizione) — serve per cutscene con più "stadi" diversi
+      // che si rigiocano ad ogni interazione (es. capitano della base di
+      // lancio di Deoxys, 22 ott 2026): ogni blocco di passi guarda un
+      // momento diverso della storia tramite i flag già impostati dai
+      // blocchi precedenti.
+      if (passo.richiede_condizione && !verificaCondizione(passo.richiede_condizione).ok) {
+        return Promise.resolve();
+      }
       switch (passo.tipo) {
         case 'dialogo': {
           // Segnaposto nel testo: {maschile|femminile} sceglie in base al
@@ -10050,10 +10148,10 @@ const GameMap = (function () {
       };
 
       if (typeof mostraDialogo === 'function') {
-        const dialogoA = a.dati.dialogo_prima || 'Preparati a lottare!';
-        const dialogoB = b.dati.dialogo_prima || 'Preparati a lottare!';
-        mostraDialogo(allenatoreA.nome, [dialogoA])
-          .then(() => mostraDialogo(allenatoreB.nome, [dialogoB]))
+        const dialogoA = righeDialogo(a.dati.dialogo_prima, 'Preparati a lottare!');
+        const dialogoB = righeDialogo(b.dati.dialogo_prima, 'Preparati a lottare!');
+        mostraDialogo(allenatoreA.nome, dialogoA)
+          .then(() => mostraDialogo(allenatoreB.nome, dialogoB))
           .then(dopoDialoghi);
       } else {
         dopoDialoghi();
@@ -10438,7 +10536,7 @@ const GameMap = (function () {
       // dati.rivaleAltro (22 ott 2026, bug Via Vittoria 5F): vedi risolviRivaleGiusto.
       const rivaleGiusto = risolviRivaleGiusto(dati, ev);
       const nomeLotta = (rivaleGiusto && rivaleGiusto.nome) || dati.nome || ev.nome || id;
-      const dialogo = dati.dialogo_prima || 'Preparati a lottare!';
+      const dialogo = righeDialogo(dati.dialogo_prima, 'Preparati a lottare!');
       // Rivale: squadra scalata in base alla "tappa" (n. incontro) con l'asso = starter
       let squadra = dati.squadra;
       if (dati.rivale && typeof costruisciSquadraRivale === 'function') {
@@ -10538,7 +10636,7 @@ const GameMap = (function () {
       };
 
       if (typeof mostraDialogo === 'function') {
-        mostraDialogo(nomeLotta, [dialogo]).then(dopoDialogo);
+        mostraDialogo(nomeLotta, dialogo).then(dopoDialogo);
       } else {
         dopoDialogo();
       }
