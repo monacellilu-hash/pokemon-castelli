@@ -3592,7 +3592,7 @@
     276,
     0,
     0,
-    0,
+    949,
     0,
     0,
     0,
@@ -10782,7 +10782,7 @@
      "y": 1225.16665
     },
     {
-     "height": 74.6667,
+     "height": 68.8485181818182,
      "id": 141,
      "name": "",
      "opacity": 1,
@@ -10888,6 +10888,42 @@
      "width": 13.5,
      "x": 585.5,
      "y": 1.5
+    },
+    {
+     "height": 78.5,
+     "id": 156,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 78.5,
+     "x": 1195.5,
+     "y": 1162
+    },
+    {
+     "height": 43.5,
+     "id": 157,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 11.5,
+     "x": 1196,
+     "y": 1227
+    },
+    {
+     "height": 42,
+     "id": 158,
+     "name": "",
+     "opacity": 1,
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 19,
+     "x": 1252.5,
+     "y": 1229
     }
    ],
    "opacity": 1,
@@ -11160,40 +11196,6 @@
      "width": 13.3333333333333,
      "x": 1258.88933873144,
      "y": 872.02294197031
-    },
-    {
-     "height": 19.8679750223016,
-     "id": 12,
-     "name": "deoxys_trigger",
-     "opacity": 1,
-     "properties": [
-      {
-       "name": "condizione",
-       "type": "string",
-       "value": "post_lega_luna"
-      },
-      {
-       "name": "id",
-       "type": "string",
-       "value": "deoxys_trigger"
-      },
-      {
-       "name": "pokemon_id",
-       "type": "int",
-       "value": 386
-      },
-      {
-       "name": "type",
-       "type": "string",
-       "value": "trigger_leggendario"
-      }
-     ],
-     "rotation": 0,
-     "type": "trigger_leggendario",
-     "visible": true,
-     "width": 19.8679750223015,
-     "x": 956.79611839246,
-     "y": 1360.7047736682
     },
     {
      "height": 32,
@@ -11564,7 +11566,7 @@
       {
        "name": "spawn_id",
        "type": "string",
-       "value": "da_grottaferrata"
+       "value": "da_deoxys_baselancio_entrata"
       },
       {
        "name": "type",
@@ -12220,27 +12222,28 @@
      "type": "",
      "visible": true,
      "width": 0,
-     "x": 816,
-     "y": 816
+     "x": 754,
+     "y": 686.5
     },
     {
+     "height": 0,
      "id": 156,
      "name": "spawn",
-     "type": "",
+     "opacity": 1,
      "point": true,
-     "x": 1215.72267206478,
-     "y": 1213.68960863698,
-     "width": 0,
-     "height": 0,
-     "rotation": 0,
-     "visible": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
        "value": "da_deoxys_baselancio_entrata"
       }
-     ]
+     ],
+     "rotation": 0,
+     "type": "",
+     "visible": true,
+     "width": 0,
+     "x": 1230.72267206478,
+     "y": 1303.18960863698
     }
    ],
    "opacity": 1,
@@ -12251,7 +12254,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 156,
+ "nextobjectid": 159,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

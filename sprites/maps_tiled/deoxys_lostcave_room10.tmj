@@ -1308,12 +1308,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "grunt_cotral"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_WOMAN_2"
+       "value": "deoxys_grotta_cotral1"
       },
       {
        "name": "type",

@@ -3738,6 +3738,61 @@ const DATI_TRAINER = {
     premio: 14000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 3 }],   // richiesta Luca 20 ott 2026
   },
+  /* ── Grotta Perduta di Deoxys (22 ott 2026, richiesta esplicita di Luca):
+     "alcuni sono esploratori che ti sfidano se ci parli perché hanno saputo
+     di questo meteorite" — 2 escursionisti indipendenti (niente a che fare
+     coi team) e 3 Grunt CoTrAL (stesso principio del resto della sotto-trama
+     CoTrAL: vogliono il minerale per i loro scopi). Livelli in linea con gli
+     altri contenuti post-Lega (vedi gdf_grotta_vulcano_1f_* sopra, Lv.71). ── */
+  'deoxys_grotta_escursionista1': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Learco',
+    squadra: [{ id: 112, livello: 70 }, { id: 208, livello: 70 }],
+    dialogo_prima: 'Ho sentito dire che in fondo a questa grotta c\'è un minerale mai visto prima. Lo trovo io prima di te!',
+    dialogo_dopo: 'Vabbè... tienitelo pure, il minerale. Io levo le tende.',
+    premio: 1400,
+  },
+  'deoxys_grotta_escursionista2': {
+    sprite: 'trainer_PICNICKER', ritratto: 'PICNICKER', vista: 5,
+    classe: 'Escursionista', nome: 'Flaminia',
+    squadra: [{ id: 286, livello: 70 }, { id: 272, livello: 70 }],
+    dialogo_prima: 'Pure tu sei venuta per il minerale "caduto dal cielo"? La fila la faccio io.',
+    dialogo_dopo: 'Mizzeca... va bene, passa. Ma dimmi almeno com\'è fatto, quando lo trovi!',
+    premio: 1400,
+  },
+  'deoxys_grotta_cotral1': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [{ id: 89, livello: 70 }, { id: 82, livello: 71 }],
+    dialogo_prima: 'Il CoTrAL ha fiutato quel minerale prima della concorrenza. Non passerai.',
+    dialogo_dopo: 'Riferirò tutto. Stavolta hai vinto tu, ma il Comandante lo saprà.',
+    premio: 1600,
+  },
+  'deoxys_grotta_cotral2': {
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetta',
+    squadra: [{ id: 65, livello: 71 }, { id: 178, livello: 70 }],
+    dialogo_prima: 'Un minerale caduto dal cielo... immagina cosa potremmo farne noi. Fatti da parte.',
+    dialogo_dopo: 'Tsk. Il Progetto dovrà aspettare, allora.',
+    premio: 1600,
+  },
+  'deoxys_grotta_cotral3': {
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
+    classe: 'Recluta CoTrAL', nome: 'Addetto',
+    squadra: [{ id: 229, livello: 71 }, { id: 354, livello: 70 }],
+    dialogo_prima: 'Siamo in tre qui dentro, e tu da solo. Fai due conti.',
+    dialogo_dopo: 'I conti non tornano mai come vorrei, con te in giro.',
+    premio: 1600,
+  },
+  'deoxys_grotta_scienziato': {
+    sprite: 'trainer_SCIENTIST', ritratto: 'SCIENTIST', vista: 5,
+    classe: 'Scienziato', nome: 'Dottor Mancini',
+    squadra: [{ id: 101, livello: 71 }, { id: 375, livello: 71 }],
+    dialogo_prima: 'Studio quel minerale da anni sulla carta. Vediamo se so difenderlo anche sul campo.',
+    dialogo_dopo: 'Interessante... la mia teoria sulla sua composizione andrà rivista. E anche la mia squadra, a quanto pare.',
+    premio: 1700,
+  },
+
   'campione_remo': {
     // Stesso sprite del Remo "rivale" (rivale_via_vittoria sopra): è lo
     // stesso personaggio, non un allenatore generico — deve sembrare lui.

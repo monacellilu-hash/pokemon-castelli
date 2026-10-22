@@ -1313,24 +1313,19 @@
     {
      "height": 0,
      "id": 1,
-     "name": "npc_deoxys_lostcave_room4_1",
+     "name": "deoxys_grotta_escursionista2",
      "opacity": 1,
      "point": true,
      "properties": [
       {
        "name": "id",
        "type": "string",
-       "value": "npc_deoxys_lostcave_room4_1"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_WOMAN_1"
+       "value": "deoxys_grotta_escursionista2"
       },
       {
        "name": "type",
        "type": "string",
-       "value": "npc"
+       "value": "trainer"
       }
      ],
      "rotation": 0,

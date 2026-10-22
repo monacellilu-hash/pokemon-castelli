@@ -1343,12 +1343,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "grunt_cotral"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_ITEM_BALL"
+       "value": "deoxys_grotta_cotral2"
       },
       {
        "name": "type",
@@ -1373,12 +1368,7 @@
       {
        "name": "id",
        "type": "string",
-       "value": "grunt_cotral"
-      },
-      {
-       "name": "nota_origine",
-       "type": "string",
-       "value": "OBJ_EVENT_GFX_ITEM_BALL"
+       "value": "deoxys_grotta_cotral3"
       },
       {
        "name": "type",
