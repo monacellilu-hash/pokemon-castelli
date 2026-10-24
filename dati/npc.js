@@ -96,9 +96,15 @@ const DATI_NPC = {
     sprite: 'NPC 02', nome: 'Sorella', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Ci siamo trasferiti qui a Via Gasperina da poco, lo sai no?', 'È comoda vicino alla metro.'],
   },
+  // 24 ott 2026, richiesta esplicita di Luca: dopo la Lega, la Mamma dà il
+  // via alla "scampagnata" di Lugia (biglietto per il treno di Ariccia).
+  // cutsceneUnaTantum:false perché gli stadi interni (vedi
+  // 'lugia_madre_scampagnata' in dati/cutscene.js) si aprono/chiudono da
+  // soli coi flag, stesso pattern del Capitano di Deoxys.
   'npc_casamia_1f_mamma': {
     sprite: 'trainer_LEADER_Misty', nome: 'Mamma', direzione: 'sud', movimento: 'fisso',
-    dialogo: ['Allora, ti piace il quartiere nuovo?'],
+    cutscene: 'lugia_madre_scampagnata',
+    cutsceneUnaTantum: false,
   },
   'npc_casamia_1f_5': {
     sprite: 'trainer_LEADER_Koga', nome: 'Papà', direzione: 'sud', movimento: 'fisso',
@@ -2417,5 +2423,32 @@ const DATI_NPC = {
     sprite: 'trainer_SCIENTIST', nome: 'Capitano Aldani', direzione: 'sud', movimento: 'fisso',
     cutscene: 'deoxys_birthisland_ritorno',
     cutsceneUnaTantum: false,
+  },
+
+  /* ── Lugia (24 ott 2026, post-Lega, richiesta esplicita di Luca): stazione
+     di Ariccia (Percorso 9) → Lugia Ruin Valley → Icefall Cave. ── */
+  'npc_lugia_capotreno': {
+    sprite: 'trainer_SCIENTIST', nome: 'Capotreno Bramanti', direzione: 'sud', movimento: 'fisso',
+    cutscene: 'lugia_capotreno_biglietto',
+    cutsceneUnaTantum: false,
+  },
+  'npc_lugia_battlepikelobby_stazione_ariccia_2': {
+    sprite: 'trainer_HIKER', nome: 'Viaggiatore', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Dicono che non si trovano più biglietti per la scampagnata...', 'Tutti pazzi per andare a Ruin Valley quest\'anno!'],
+  },
+  'npc_lugia_battlepikelobby_stazione_ariccia_3': {
+    sprite: 'trainer_TWINS', nome: 'Gemelle', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Noi un biglietto non lo troviamo manco a pagarlo oro!', 'Chissà chi se lo accaparra stavolta...'],
+  },
+  'npc_lugia_battlepikelobby_stazione_ariccia_4': {
+    sprite: 'trainer_BEAUTY', nome: 'Signora', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Il Capotreno Bramanti non fa passare nessuno senza biglietto.', 'E quest\'anno sono introvabili, che peccato.'],
+  },
+  // Scienziata "da campo": cura la squadra come un Centro Pokémon
+  // improvvisato (curaSquadraLugiaRuinValley, js/app.js) e accenna
+  // all'attività cosmica strana rilevata nella valle (presagio di Lugia).
+  'npc_lugia_scenziato_curatore': {
+    sprite: 'trainer_SCIENTIST', nome: 'Dott.ssa Ferrante', direzione: 'sud', movimento: 'fisso',
+    azione: 'curaSquadraLugiaRuinValley',
   },
 };

@@ -984,3 +984,45 @@ CUTSCENE['deoxys_birthisland_ritorno'] = [
   { tipo: 'fade_in', ms: 600, richiede_flag: 'deoxys_risposta_ritorno' },
   { tipo: 'flag', nome: 'deoxys_risposta_ritorno', valore: false, richiede_flag: 'deoxys_risposta_ritorno' },
 ];
+
+/* ── Lugia (24 ott 2026, post-Lega, richiesta esplicita di Luca): stessa
+   logica "a stadi" di Deoxys. La Mamma, dopo la Lega, dà il biglietto per
+   la scampagnata di Ariccia; il Capotreno alla stazione lo controlla e
+   fa partire il treno per Lugia Ruin Valley. ── */
+CUTSCENE['lugia_madre_scampagnata'] = [
+  // Stadio 0 — prima della Lega: solo due chiacchiere, come sempre.
+  { tipo: 'dialogo', nome: 'Mamma', richiede_condizione: '!legaCompletata', testo: [
+    'Allora, ti piace il quartiere nuovo?',
+  ] },
+  // Stadio 1 — Lega battuta, biglietto non ancora dato.
+  { tipo: 'dialogo', nome: 'Mamma', richiede_condizione: 'legaCompletata+!biglietto_scampagnata_dato', testo: [
+    'Hai battuto la Lega! Non ci posso credere, sei proprio cresciuto.',
+    'Ormai sai badare a te stesso. Perché non ti prendi una pausa, per una volta?',
+    'C\'è una scampagnata organizzata alla stazione di Ariccia, su Percorso 9: tutti vanno a Ruin Valley quest\'anno.',
+    'Ecco il biglietto per il treno, te l\'ho preso apposta. Divertiti, ma stai attento!',
+  ] },
+  { tipo: 'oggetto', chiave: true, contenuto: 'biglietto_scampagnata', richiede_condizione: 'legaCompletata+!biglietto_scampagnata_dato' },
+  { tipo: 'flag', nome: 'biglietto_scampagnata_dato', valore: true, richiede_condizione: 'legaCompletata+!biglietto_scampagnata_dato' },
+  // Stadio 2 — dopo, chiacchiera normale.
+  { tipo: 'dialogo', nome: 'Mamma', richiede_condizione: 'biglietto_scampagnata_dato', testo: [
+    'Buona scampagnata! Portami un souvenir, se trovi qualcosa di carino.',
+  ] },
+];
+
+CUTSCENE['lugia_capotreno_biglietto'] = [
+  // Stadio 0 — senza biglietto, non si passa.
+  { tipo: 'dialogo', nome: 'Capotreno Bramanti', richiede_condizione: '!biglietto_scampagnata_dato', testo: [
+    'Senza biglietto non puoi salire, mi spiace!',
+    'Dicono che qualcuno a casa ne avesse uno da parte...',
+  ] },
+  // Stadio 1 — con biglietto, scelta di partenza (ripetuta ogni visita finché non risponde sì).
+  { tipo: 'dialogo', nome: 'Capotreno Bramanti', richiede_condizione: 'biglietto_scampagnata_dato', testo: [
+    'Ah, hai il biglietto! Il treno per Ruin Valley sta per partire.',
+    'Pronto per la scampagnata?',
+  ] },
+  { tipo: 'scelta_si_no', richiede_condizione: 'biglietto_scampagnata_dato', messaggio: 'Salire sul treno per Ruin Valley?', testoSi: 'Sì, andiamo', testoNo: 'Non ancora', salva_flag: 'lugia_risposta_partenza' },
+  { tipo: 'fade_out', ms: 600, richiede_flag: 'lugia_risposta_partenza' },
+  { tipo: 'cambia_mappa', mappa: 'lugia_ruinvalley', spawn: 'da_lugia_battlepikelobby_stazione_ariccia', richiede_flag: 'lugia_risposta_partenza' },
+  { tipo: 'fade_in', ms: 600, richiede_flag: 'lugia_risposta_partenza' },
+  { tipo: 'flag', nome: 'lugia_risposta_partenza', valore: false, richiede_flag: 'lugia_risposta_partenza' },
+];

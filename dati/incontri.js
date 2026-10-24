@@ -1117,6 +1117,39 @@ DATI_INCONTRI['incontri bosco tuscolo'] = {
     { id: 214, min: 41, max: 44, rate: 6 },   // Heracross
     { id: 147, min: 5,  max: 5,  rate: 0.1 }, // Dratini — rarissimo di proposito
   ],
+
+  // ── LUGIA (24 ott 2026, post-Lega, richiesta esplicita di Luca) ──
+  // Icefall Cave: dungeon di ghiaccio, incontri su TUTTO il pavimento
+  // (incontriCostanti, vedi MAPPE in js/map.js), livelli 40-50 come chiesto.
+  'incontri lugia icefall cave': {
+    probabilita: 12,
+    pokemon: [
+      { id: 86,  min: 40, max: 43, rate: 20 },  // Seel
+      { id: 87,  min: 44, max: 47, rate: 10 },  // Dewgong
+      { id: 220, min: 40, max: 44, rate: 18 },  // Swinub
+      { id: 221, min: 45, max: 48, rate: 10 },  // Piloswine
+      { id: 215, min: 42, max: 46, rate: 14 },  // Sneasel
+      { id: 225, min: 43, max: 47, rate: 8 },   // Delibird
+      { id: 363, min: 41, max: 45, rate: 15 },  // Spheal
+      { id: 364, min: 46, max: 50, rate: 7 },   // Sealeo
+      { id: 238, min: 40, max: 43, rate: 8 },   // Smoochum (raro)
+    ],
+  },
+  // Ruin Valley: valle all'aperto, erba vera solo sul tile locale 20 del suo
+  // tileset (TILE_ERBA_PER_TILESET, js/map.js) — niente incontri sul resto
+  // del terreno/rovine, livelli 40-50 come chiesto.
+  'incontri lugia ruin valley': {
+    probabilita: 15,
+    pokemon: [
+      { id: 27,  min: 40, max: 43, rate: 20 },  // Sandshrew
+      { id: 28,  min: 44, max: 48, rate: 10 },  // Sandslash
+      { id: 74,  min: 40, max: 43, rate: 22 },  // Geodude
+      { id: 75,  min: 44, max: 48, rate: 12 },  // Graveler
+      { id: 104, min: 41, max: 44, rate: 18 },  // Cubone
+      { id: 105, min: 45, max: 49, rate: 8 },   // Marowak
+      { id: 299, min: 42, max: 46, rate: 10 },  // Nosepass
+    ],
+  },
 };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;

@@ -3704,6 +3704,14 @@ const OGGETTI_CHIAVE = {
     icona: '👨‍🚀',
     descrizione: 'La tuta data dal Capitano per il lancio: ti permette di affrontare il vuoto fin sopra l\'atmosfera.',
   },
+  // Lugia (24 ott 2026, richiesta esplicita di Luca): dato dalla Mamma dopo
+  // la Lega, serve al Capotreno Bramanti alla stazione di Ariccia per
+  // partire per la scampagnata verso Lugia Ruin Valley.
+  'biglietto_scampagnata': {
+    nome: 'Biglietto Scampagnata',
+    icona: '🎫',
+    descrizione: 'Il biglietto che la Mamma ti ha dato per il treno della scampagnata di Ariccia.',
+  },
 };
 
 /* ----------------------------------------------------------

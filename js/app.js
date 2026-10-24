@@ -3310,6 +3310,30 @@ function curaSquadraGrottaVulcano() {
   mostraDialogo(nome, ['Ecco fatto, tutto a posto! Occhio ai miei "colleghi"...', '✨ Squadra curata!']);
 }
 
+// Dott.ssa Ferrante, Lugia Ruin Valley (24 ott 2026, richiesta esplicita di
+// Luca): "c'è qualcosa di strano, bisognerebbe indagare" — cura la squadra
+// come un Centro Pokémon improvvisato, stesso pattern di curaSquadraViaLaghi.
+function curaSquadraLugiaRuinValley() {
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  const nome = 'Dott.ssa Ferrante';
+  if (!stato.squadra || stato.squadra.length === 0) {
+    mostraDialogo(nome, ['Non hai ancora nessun Pokémon con te!']);
+    return;
+  }
+  stato.squadra.forEach(p => {
+    p.hpAttuale = p.hpMax;
+    p.condizione = null;
+    p.mosse.forEach(m => { m.pp = m.ppMax; });
+  });
+  salvaPartita();
+  if (typeof aggiornaHUD === 'function') aggiornaHUD();
+  mostraDialogo(nome, [
+    'Studio questa valle da mesi: c\'è un\'attività energetica che non riesco a spiegarmi.',
+    'Nel dubbio ti tengo i Pokémon sempre al top, mi servi lucido per indagare insieme a me!',
+    '✨ Squadra curata!',
+  ]);
+}
+
 // Scienziato prigioniero del GdF (Grotta del Vulcano, 3° piano, sess. 8 set
 // 2026): sempre visibile, ma finché il boss è vivo non gli si può parlare
 // per davvero (è sorvegliato). Il "vero" dialogo di ringraziamento + Pietra

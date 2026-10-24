@@ -5152,4 +5152,40 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Che eleganza, davvero. Avanti pure, ti aspetta.',
     premio: 0, senzaExp: true,
   },
+
+  /* ── Lugia Ruin Valley — "scampagnata" (24 ott 2026, post-Lega, richiesta
+     esplicita di Luca): escursionisti forti che corrono a prendersi il
+     posto migliore per il barbecue, e finiscono per sfidarti. ── */
+  'npc_lugia_ruinvalley_2': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Walterio',
+    squadra: [{ id: 76, livello: 60 }, { id: 208, livello: 58 }],
+    dialogo_prima: 'Il posto vicino al laghetto è MIO! Ma prima togliti dai piedi, se ci riesci.',
+    dialogo_dopo: 'Vabbè, il posto resta tuo. Però la griglia la porto io, eh.',
+    premio: 1800,
+  },
+  'npc_lugia_ruinvalley_3': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Gualtiero',
+    squadra: [{ id: 306, livello: 60 }, { id: 112, livello: 58 }],
+    dialogo_prima: 'Ogni anno la stessa storia: chi arriva primo si prende l\'ombra buona. Stavolta tocca a me.',
+    dialogo_dopo: 'Non me l\'aspettavo... va bene, l\'ombra è tua.',
+    premio: 1800,
+  },
+  'npc_lugia_ruinvalley_4': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Fulgenzio',
+    squadra: [{ id: 95, livello: 56 }, { id: 75, livello: 56 }, { id: 105, livello: 60 }],
+    dialogo_prima: 'Ruin Valley non è una gita per tutti. Dimostrami che puoi starci, qui dentro.',
+    dialogo_dopo: 'Ok, hai la mia stima. Buona scampagnata, forestiero.',
+    premio: 1900,
+  },
+  'npc_lugia_ruinvalley_5': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 5,
+    classe: 'Escursionista', nome: 'Pancrazio',
+    squadra: [{ id: 299, livello: 55 }, { id: 324, livello: 58 }, { id: 232, livello: 60 }],
+    dialogo_prima: 'Ultimo arrivato, ultimo servito! A meno che tu non mi convinca a cederti il passo.',
+    dialogo_dopo: 'D\'accordo, passa pure. Occhio ai sassi che rotolano, qui dentro.',
+    premio: 1900,
+  },
 };

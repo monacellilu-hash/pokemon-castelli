@@ -517,6 +517,18 @@ const GameMap = (function () {
     'deoxys_lostcave_room12': { file: 'sprites/maps_tiled/deoxys_lostcave_room12.tmj', interno: true, tema: 'cave' },
     'deoxys_lostcave_room13': { file: 'sprites/maps_tiled/deoxys_lostcave_room13.tmj', interno: true, tema: 'cave' },
     'deoxys_lostcave_room14': { file: 'sprites/maps_tiled/deoxys_lostcave_room14.tmj', interno: true, tema: 'cave' },
+    // ── Lugia (24 ott 2026, post-Lega, richiesta esplicita di Luca): dopo la
+    // Lega, la madre a Borgata Tuscolana ti manda in "scampagnata" dalla
+    // stazione di Ariccia (ex BattleFrontier_BattlePikeLobby, pokeemerald,
+    // piazzata su Percorso 9 anche se non è Ariccia vera) fino a Lugia Ruin
+    // Valley (pokefirered) e Icefall Cave (pokefirered). Grafo interno
+    // ricostruito con gli stessi dest_warp_id grezzi usati per Deoxys.
+    'lugia_battlepikelobby_stazione_ariccia': { file: 'sprites/maps_tiled/lugia_battlepikelobby_stazione_ariccia.tmj', interno: true },
+    'lugia_ruinvalley': { file: 'sprites/maps_tiled/lugia_ruinvalley.tmj' },
+    'lugia_icefallcave_entrance': { file: 'sprites/maps_tiled/lugia_icefallcave_entrance.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
+    'lugia_icefallcave_1f': { file: 'sprites/maps_tiled/lugia_icefallcave_1f.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
+    'lugia_icefallcave_b1f': { file: 'sprites/maps_tiled/lugia_icefallcave_b1f.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
+    'lugia_icefallcave_back': { file: 'sprites/maps_tiled/lugia_icefallcave_back.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
     // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
     // l'Antro di Kyogre parte direttamente da 'antro_kyogre_entrance'.
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
@@ -1726,6 +1738,12 @@ const GameMap = (function () {
     'ts-dlc-room12': 'sprites/PNG/deoxys_lostcave_room12_tileset.png',
     'ts-dlc-room13': 'sprites/PNG/deoxys_lostcave_room13_tileset.png',
     'ts-dlc-room14': 'sprites/PNG/deoxys_lostcave_room14_tileset.png',
+    'ts-lugia-stazione': 'sprites/PNG/lugia_battlepikelobby_stazione_ariccia_tileset.png',
+    'ts-lugia-ruinvalley': 'sprites/PNG/lugia_ruinvalley_tileset.png',
+    'ts-lugia-ice-entrance': 'sprites/PNG/lugia_icefallcave_entrance_tileset.png',
+    'ts-lugia-ice-1f': 'sprites/PNG/lugia_icefallcave_1f_tileset.png',
+    'ts-lugia-ice-b1f': 'sprites/PNG/lugia_icefallcave_b1f_tileset.png',
+    'ts-lugia-ice-back': 'sprites/PNG/lugia_icefallcave_back_tileset.png',
     'ts-dbl-entrata': 'sprites/PNG/deoxys_baselancio_entrata_tileset.png',
     'ts-dbl-ufficio': 'sprites/PNG/deoxys_baselancio_ufficio_tileset.png',
     'ts-dbi-exterior': 'sprites/PNG/deoxys_birthisland_exterior_tileset.png',
@@ -1820,6 +1838,12 @@ const GameMap = (function () {
     'deoxys_lostcave_room12_tileset': { key: 'ts-dlc-room12', tw: 32, th: 32, cols: 16 },
     'deoxys_lostcave_room13_tileset': { key: 'ts-dlc-room13', tw: 32, th: 32, cols: 16 },
     'deoxys_lostcave_room14_tileset': { key: 'ts-dlc-room14', tw: 32, th: 32, cols: 16 },
+    'lugia_battlepikelobby_stazione_ariccia_tileset': { key: 'ts-lugia-stazione', tw: 32, th: 32, cols: 16 },
+    'lugia_ruinvalley_tileset': { key: 'ts-lugia-ruinvalley', tw: 32, th: 32, cols: 16 },
+    'lugia_icefallcave_entrance_tileset': { key: 'ts-lugia-ice-entrance', tw: 32, th: 32, cols: 16 },
+    'lugia_icefallcave_1f_tileset': { key: 'ts-lugia-ice-1f', tw: 32, th: 32, cols: 16 },
+    'lugia_icefallcave_b1f_tileset': { key: 'ts-lugia-ice-b1f', tw: 32, th: 32, cols: 16 },
+    'lugia_icefallcave_back_tileset': { key: 'ts-lugia-ice-back', tw: 32, th: 32, cols: 16 },
     'deoxys_baselancio_entrata_tileset': { key: 'ts-dbl-entrata', tw: 32, th: 32, cols: 16 },
     'deoxys_baselancio_ufficio_tileset': { key: 'ts-dbl-ufficio', tw: 32, th: 32, cols: 16 },
     'deoxys_birthisland_exterior_tileset': { key: 'ts-dbi-exterior', tw: 32, th: 32, cols: 16 },
@@ -2462,6 +2486,13 @@ const GameMap = (function () {
   // rettangoli esistente, non lo sostituisce: _getTileType usa prima le zone
   // disegnate a mano (che possono avere probabilità/id specifici), e ricade
   // su questo solo per le caselle non coperte da nessun rettangolo.
+  // Tileset INCORPORATI (estratti da pret, niente outside.tsx condiviso)
+  // che hanno comunque un tile "erba vera" riconoscibile per grafica — stesso
+  // principio di TILE_ACQUA_PER_TILESET qui sotto. Lugia Ruin Valley (24 ott
+  // 2026, richiesta esplicita di Luca): tile locale 20 del suo tileset.
+  const TILE_ERBA_PER_TILESET = {
+    lugia_ruinvalley_tileset: [20],
+  };
   function _buildErbaAltaTiles(tmj) {
     const set = new Set();
     const gidErba = [];
@@ -2470,6 +2501,8 @@ const GameMap = (function () {
       if (src.endsWith('outside.tsx') || src.endsWith('outside_pallet.tsx')) {
         gidErba.push(t.firstgid + 6);
       }
+      const extra = TILE_ERBA_PER_TILESET[t.name];
+      if (extra) for (const localId of extra) gidErba.push(t.firstgid + localId);
     }
     if (gidErba.length === 0) return set;
     const w = tmj.width, h = tmj.height;
@@ -2489,12 +2522,20 @@ const GameMap = (function () {
   // 944, Monte Cavo — sessione 8 agosto). Stesso principio di
   // _buildErbaAltaTiles: riconosciuto dal tile grafico, nessun rettangolo a
   // mano necessario. Usato in _sposta per far scivolare il giocatore.
+  // Lugia Icefall Cave B1F (24 ott 2026, richiesta esplicita di Luca): tile
+  // locale 22 del suo tileset incorporato, stessa dinamica di scivolata del
+  // ghiaccio di Monte Cavo — stesso principio di TILE_ERBA_PER_TILESET sopra.
+  const TILE_GHIACCIO_PER_TILESET = {
+    lugia_icefallcave_b1f_tileset: [22],
+  };
   function _buildIceTiles(tmj) {
     const set = new Set();
     const gidGhiaccio = [];
     for (const t of (tmj.tilesets || [])) {
       const src = String(t.source || '').toLowerCase().replace(/\\/g, '/');
       if (src.endsWith('caves.tsj')) gidGhiaccio.push(t.firstgid + 944);
+      const extra = TILE_GHIACCIO_PER_TILESET[t.name];
+      if (extra) for (const localId of extra) gidGhiaccio.push(t.firstgid + localId);
     }
     if (gidGhiaccio.length === 0) return set;
     const w = tmj.width, h = tmj.height;
