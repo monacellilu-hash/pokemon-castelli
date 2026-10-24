@@ -1009,6 +1009,29 @@ CUTSCENE['lugia_madre_scampagnata'] = [
   ] },
 ];
 
+/* ── Rayquaza (24 ott 2026, post-Lega, richiesta esplicita di Luca): la
+   fontana di San Rocco a Frascati Ovest. Prima della Lega è solo
+   decorazione; dopo, [A] sulla fontana apre un dialogo su rumori strani e
+   una cavità, con la scelta di infilarsi dentro (porta a Mt Ember Summit
+   Path 2F). Nessuna condizione di squadra qui: quella vera è più avanti,
+   sul warp dell'Artisan Cave (richiede Kyogre E Groudon davvero in
+   squadra — vedi MAPPE['rayquaza_artisancave_b1f'] in js/map.js). ── */
+CUTSCENE['rayquaza_fontana_sanrocco'] = [
+  { tipo: 'dialogo', nome: '???', richiede_condizione: '!legaCompletata', testo: [
+    'La fontana di San Rocco. Acqua fresca, come sempre.',
+  ] },
+  { tipo: 'dialogo', nome: '???', richiede_condizione: 'legaCompletata', testo: [
+    'Guarda bene l\'acqua... c\'è qualcosa di strano in questa fontana, ultimamente.',
+    'Uno strato di pietra si è smosso: sotto si vede una cavità buia.',
+    'Vuoi infilarti?',
+  ] },
+  { tipo: 'scelta_si_no', richiede_condizione: 'legaCompletata', messaggio: 'Infilarti nella cavità?', testoSi: 'Sì', testoNo: 'Non ancora', salva_flag: 'rayquaza_risposta_cavita' },
+  { tipo: 'fade_out', ms: 600, richiede_flag: 'rayquaza_risposta_cavita' },
+  { tipo: 'cambia_mappa', mappa: 'rayquaza_mtember_summitpath_2f', spawn: 'da_frascati_ovest', richiede_flag: 'rayquaza_risposta_cavita' },
+  { tipo: 'fade_in', ms: 600, richiede_flag: 'rayquaza_risposta_cavita' },
+  { tipo: 'flag', nome: 'rayquaza_risposta_cavita', valore: false, richiede_flag: 'rayquaza_risposta_cavita' },
+];
+
 CUTSCENE['lugia_capotreno_biglietto'] = [
   // Stadio 0 — senza biglietto, non si passa.
   { tipo: 'dialogo', nome: 'Capotreno Bramanti', richiede_condizione: '!biglietto_scampagnata_dato', testo: [

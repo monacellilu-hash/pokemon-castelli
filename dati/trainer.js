@@ -5188,4 +5188,55 @@ const DATI_TRAINER = {
     dialogo_dopo: 'D\'accordo, passa pure. Occhio ai sassi che rotolano, qui dentro.',
     premio: 1900,
   },
+
+  /* ── Jirachi, Cave of Origin (24 ott 2026, post-Lega, richiesta esplicita
+     di Luca): "cercatori" che vogliono arrivare a Jirachi prima di te. ── */
+  'npc_jirachi_cercatore_1': {
+    sprite: 'trainer_PSYCHIC_M', ritratto: 'PSYCHIC_M', vista: 4,
+    classe: 'Sensitivo', nome: 'Edmondo',
+    squadra: [{ id: 65, livello: 60 }],
+    dialogo_prima: 'Sento che il Pokémon dei desideri è qui vicino. E lo sento MIO.',
+    dialogo_dopo: 'Il destino ha parlato chiaro, a quanto pare. Passa.',
+    premio: 1800,
+  },
+  'npc_jirachi_cercatore_2': {
+    sprite: 'trainer_PSYCHIC_M', ritratto: 'PSYCHIC_M', vista: 4,
+    classe: 'Sensitivo', nome: 'Palmiro',
+    squadra: [{ id: 94, livello: 60 }],
+    dialogo_prima: 'Un desiderio solo basta e avanza, se è quello giusto. Fatti da parte.',
+    dialogo_dopo: 'Mmh. Forse il desiderio giusto era un altro.',
+    premio: 1800,
+  },
+  'npc_jirachi_cercatore_3': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
+    classe: 'Escursionista', nome: 'Cirillo',
+    squadra: [{ id: 330, livello: 60 }, { id: 376, livello: 62 }],
+    dialogo_prima: 'Ho scavato per settimane in questa grotta. Non mi freghi all\'ultimo metro.',
+    dialogo_dopo: 'Settimane buttate... ma almeno la lotta è stata bella.',
+    premio: 1900,
+  },
+  'npc_jirachi_cercatore_4': {
+    sprite: 'trainer_LADY', ritratto: 'LADY', vista: 4,
+    classe: 'Gentildonna', nome: 'Iginia',
+    squadra: [{ id: 350, livello: 60 }],
+    dialogo_prima: 'Un desiderio di bellezza eterna, ecco cosa chiederò. Non puoi capire.',
+    dialogo_dopo: 'Vabbè, la bellezza passa comunque. Vai.',
+    premio: 1800,
+  },
+  'npc_jirachi_cercatore_5': {
+    sprite: 'trainer_HIKER', ritratto: 'HIKER', vista: 4,
+    classe: 'Escursionista', nome: 'Teobaldo',
+    squadra: [{ id: 359, livello: 58 }, { id: 362, livello: 58 }],
+    dialogo_prima: 'Non sei il primo a provarci. Ma sarai l\'ultimo, se perdi.',
+    dialogo_dopo: 'Rispetto. Non capita spesso, qui dentro.',
+    premio: 1900,
+  },
+  'npc_jirachi_cercatore_6': {
+    sprite: 'trainer_SWIMMER_F', ritratto: 'SWIMMER_F', vista: 4,
+    classe: 'Nuotatrice', nome: 'Clotilde',
+    squadra: [{ id: 365, livello: 60 }],
+    dialogo_prima: 'Dicono che Jirachi dorma solo mille anni ogni volta. Non perdo questa occasione.',
+    dialogo_dopo: 'Avrò un\'altra occasione... tra mille anni, magari.',
+    premio: 1800,
+  },
 };

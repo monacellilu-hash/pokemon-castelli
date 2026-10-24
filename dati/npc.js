@@ -2451,4 +2451,18 @@ const DATI_NPC = {
     sprite: 'trainer_SCIENTIST', nome: 'Dott.ssa Ferrante', direzione: 'sud', movimento: 'fisso',
     azione: 'curaSquadraLugiaRuinValley',
   },
+
+  /* ── Rayquaza, Artisan Cave B1F (24 ott 2026, richiesta esplicita di
+     Luca): spiega perché l'ultima uscita non si apre senza Kyogre e
+     Groudon davvero in squadra (nessun gate NPC, il warp ha la sua stessa
+     condizione — vedi MAPPE['rayquaza_artisancave_b1f'], js/map.js). ── */
+  'npc_rayquaza_artisancave_scienziato': {
+    sprite: 'trainer_SCIENTIST', nome: 'Scienziato', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Studiamo questa grotta da anni: l\'energia che sentiamo oltre quella parete è immensa.',
+      'Le nostre misurazioni dicono una cosa precisa: serve la forza del mare E della terra insieme.',
+      'In parole semplici: ti servono sia Kyogre che Groudon, entrambi al tuo fianco in squadra. Non in Box: in squadra.',
+      'Solo allora quel passaggio si aprirà da solo.',
+    ],
+  },
 };

@@ -529,6 +529,31 @@ const GameMap = (function () {
     'lugia_icefallcave_1f': { file: 'sprites/maps_tiled/lugia_icefallcave_1f.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
     'lugia_icefallcave_b1f': { file: 'sprites/maps_tiled/lugia_icefallcave_b1f.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
     'lugia_icefallcave_back': { file: 'sprites/maps_tiled/lugia_icefallcave_back.tmj', interno: true, tema: 'icecave', incontriCostanti: true, incontriId: 'incontri lugia icefall cave' },
+    // ── Jirachi (24 ott 2026, post-Lega, richiesta esplicita di Luca): ex
+    // CaveOfOrigin_1F/B1F + DesertUnderpass (pokeemerald), raggiungibile da
+    // Osservatorio dietro un gate "Grunt_Cotral" che richiede Mewtwo già
+    // catturato (fix: condizione del gate era "Cattura_Mewtwo", stringa che
+    // non corrisponde a nessun flag reale — corretta in 'leggendario:150').
+    // Nessun incontro selvatico richiesto da Luca su queste mappe.
+    'jirachi_caveoforigin_1f': { file: 'sprites/maps_tiled/jirachi_caveoforigin_1f.tmj', interno: true, tema: 'cave' },
+    'jirachi_caveoforigin_b1f': { file: 'sprites/maps_tiled/jirachi_caveoforigin_b1f.tmj', interno: true, tema: 'cave' },
+    'jirachi_desertunderpass': { file: 'sprites/maps_tiled/jirachi_desertunderpass.tmj', interno: true, tema: 'cave' },
+    // ── Rayquaza (24 ott 2026, post-Lega, richiesta esplicita di Luca): ex
+    // Mt_Ember_SummitPath_2F (pokefirered) + ArtisanCave_B1F (pokeemerald),
+    // raggiungibile dalla fontana di San Rocco a Frascati Ovest (cutscene
+    // 'rayquaza_fontana_sanrocco', dati/cutscene.js). L'ultima uscita
+    // dell'Artisan Cave (verso la stanza di Rayquaza) non ha un gate NPC:
+    // il warp stesso ha "condizione":"squadra:382+squadra:383" (Kyogre E
+    // Groudon davvero in squadra, non solo catturati) e semplicemente non
+    // scatta se non è soddisfatta — stesso meccanismo "condizione" già
+    // usato su ogni altro warp del gioco, solo con la nuova primitiva
+    // "squadra:<idSpecie>" (verificaCondizione, poco più sopra in questo file).
+    'rayquaza_mtember_summitpath_2f': { file: 'sprites/maps_tiled/rayquaza_mtember_summitpath_2f.tmj', interno: true, tema: 'cave' },
+    'rayquaza_artisancave_b1f': { file: 'sprites/maps_tiled/rayquaza_artisancave_b1f.tmj', interno: true, tema: 'cave' },
+    // Stanza finale: SOLO Rayquaza, mappa fatta a mano da Luca (non estratta
+    // da pret) — spawn/warp di arrivo piazzati da me in un punto qualsiasi
+    // comodo, Luca li risposterà lui stesso dove preferisce.
+    'rayquaza_arena': { file: 'sprites/maps_tiled/Rayquaza.tmj', interno: true },
     // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
     // l'Antro di Kyogre parte direttamente da 'antro_kyogre_entrance'.
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
@@ -1489,6 +1514,9 @@ const GameMap = (function () {
     'tileset-outside':       { keyBase: 'ts-tsoutside', src: 'sprites/PNG/tileset-outside.png',
                                split: true, splitTiles: SPLIT_TILES, tw: 32, th: 32, cols: 8 },
     'Sea':                   { key: 'ts-sea',         tw: 32, th: 32, cols: 24 },
+    // Statue (24 ott 2026): usato dalla stanza finale di Rayquaza (Rayquaza.tmj,
+    // fatta a mano da Luca, non estratta da pret) — 561×587px, niente split.
+    'statues':               { key: 'ts-statues',     tw: 32, th: 32, cols: 17 },
     // Tunnel Roccioso (sessione 6 agosto): 256×6368px, sotto il limite WebGL
     // (~8192px), niente split necessario a differenza di outside/Emerald_Outside.
     'Caves':                 { key: 'ts-caves',       tw: 32, th: 32, cols: 8  },
@@ -1626,6 +1654,7 @@ const GameMap = (function () {
     'ts-prof-cast':   'sprites/PNG/NPC_ProfOak.png',
     // Tileset nuovi
     'ts-sea':         'sprites/PNG/Sea.png',
+    'ts-statues':     'sprites/PNG/statues.png',
     'ts-caves':       'sprites/PNG/Caves.png',
     'ts-snow':        'sprites/PNG/snow tiles.png',
     'ts-emerald32':   'sprites/PNG/pokemon_emerald_exterior_32x32.png',
@@ -1744,6 +1773,11 @@ const GameMap = (function () {
     'ts-lugia-ice-1f': 'sprites/PNG/lugia_icefallcave_1f_tileset.png',
     'ts-lugia-ice-b1f': 'sprites/PNG/lugia_icefallcave_b1f_tileset.png',
     'ts-lugia-ice-back': 'sprites/PNG/lugia_icefallcave_back_tileset.png',
+    'ts-jirachi-cave1f': 'sprites/PNG/jirachi_caveoforigin_1f_tileset.png',
+    'ts-jirachi-caveb1f': 'sprites/PNG/jirachi_caveoforigin_b1f_tileset.png',
+    'ts-jirachi-desert': 'sprites/PNG/jirachi_desertunderpass_tileset.png',
+    'ts-rayq-summitpath': 'sprites/PNG/rayquaza_mtember_summitpath_2f_tileset.png',
+    'ts-rayq-artisanb1f': 'sprites/PNG/rayquaza_artisancave_b1f_tileset.png',
     'ts-dbl-entrata': 'sprites/PNG/deoxys_baselancio_entrata_tileset.png',
     'ts-dbl-ufficio': 'sprites/PNG/deoxys_baselancio_ufficio_tileset.png',
     'ts-dbi-exterior': 'sprites/PNG/deoxys_birthisland_exterior_tileset.png',
@@ -1844,6 +1878,11 @@ const GameMap = (function () {
     'lugia_icefallcave_1f_tileset': { key: 'ts-lugia-ice-1f', tw: 32, th: 32, cols: 16 },
     'lugia_icefallcave_b1f_tileset': { key: 'ts-lugia-ice-b1f', tw: 32, th: 32, cols: 16 },
     'lugia_icefallcave_back_tileset': { key: 'ts-lugia-ice-back', tw: 32, th: 32, cols: 16 },
+    'jirachi_caveoforigin_1f_tileset': { key: 'ts-jirachi-cave1f', tw: 32, th: 32, cols: 16 },
+    'jirachi_caveoforigin_b1f_tileset': { key: 'ts-jirachi-caveb1f', tw: 32, th: 32, cols: 16 },
+    'jirachi_desertunderpass_tileset': { key: 'ts-jirachi-desert', tw: 32, th: 32, cols: 16 },
+    'rayquaza_mtember_summitpath_2f_tileset': { key: 'ts-rayq-summitpath', tw: 32, th: 32, cols: 16 },
+    'rayquaza_artisancave_b1f_tileset': { key: 'ts-rayq-artisanb1f', tw: 32, th: 32, cols: 16 },
     'deoxys_baselancio_entrata_tileset': { key: 'ts-dbl-entrata', tw: 32, th: 32, cols: 16 },
     'deoxys_baselancio_ufficio_tileset': { key: 'ts-dbl-ufficio', tw: 32, th: 32, cols: 16 },
     'deoxys_birthisland_exterior_tileset': { key: 'ts-dbi-exterior', tw: 32, th: 32, cols: 16 },
@@ -2086,6 +2125,18 @@ const GameMap = (function () {
       const idLeg = parseInt(legSingolo[1], 10);
       const ha = typeof legCatturato === 'function' && legCatturato(idLeg);
       return ha ? { ok: true } : { ok: false, messaggio: '🔒 Non puoi ancora passare di qui.' };
+    }
+
+    // Requisito "squadra:<idSpecie>" — un Pokémon di quella specie DAVVERO
+    // IN SQUADRA in questo momento (non solo catturato/in Box come
+    // "leggendario:<id>" sopra), 24 ott 2026: Rayquaza all'Artisan Cave
+    // richiede Kyogre E Groudon davvero in squadra, non solo posseduti.
+    const squadraSingola = s.match(/^squadra:(\d+)$/);
+    if (squadraSingola) {
+      const idSpecie = parseInt(squadraSingola[1], 10);
+      const ha = typeof stato !== 'undefined' && Array.isArray(stato.squadra) &&
+                 stato.squadra.some(p => p.id === idSpecie);
+      return ha ? { ok: true } : { ok: false, messaggio: '🔒 Ti serve un Pokémon preciso in squadra per andare avanti.' };
     }
 
     // Requisito "allenatore:<id>" — un trainer preciso già battuto (es.
