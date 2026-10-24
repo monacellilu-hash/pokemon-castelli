@@ -553,7 +553,7 @@ const GameMap = (function () {
     // Stanza finale: SOLO Rayquaza, mappa fatta a mano da Luca (non estratta
     // da pret) — spawn/warp di arrivo piazzati da me in un punto qualsiasi
     // comodo, Luca li risposterà lui stesso dove preferisce.
-    'rayquaza_arena': { file: 'sprites/maps_tiled/Rayquaza.tmj', interno: true },
+    'rayquaza': { file: 'sprites/maps_tiled/Rayquaza.tmj', interno: true },
     // Variante "underwater": scartata (decisione di Luca, 19 ott 2026) —
     // l'Antro di Kyogre parte direttamente da 'antro_kyogre_entrance'.
     // Casa sul lago (sess. 2 ott 2026): interno collegato alla spiaggia del
