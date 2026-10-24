@@ -2462,15 +2462,6 @@ const GameMap = (function () {
   // rettangoli esistente, non lo sostituisce: _getTileType usa prima le zone
   // disegnate a mano (che possono avere probabilità/id specifici), e ricade
   // su questo solo per le caselle non coperte da nessun rettangolo.
-  // true se questa mappa usa il tileset "outside"/"outside_pallet" da
-  // qualche parte (vedi mappeConErbaRilevabile sopra).
-  function _usaTilesetOutside(tmj) {
-    return (tmj.tilesets || []).some(t => {
-      const src = String(t.source || '').toLowerCase().replace(/\\/g, '/');
-      return src.endsWith('outside.tsx') || src.endsWith('outside_pallet.tsx');
-    });
-  }
-
   function _buildErbaAltaTiles(tmj) {
     const set = new Set();
     const gidErba = [];
@@ -2867,11 +2858,15 @@ const GameMap = (function () {
   let stavaSurfando    = false;
   let erbaAltaAuto     = null;   // Set "tx,ty": caselle erba alta riconosciute dal TILE (non da rettangolo)
   // Set delle chiavi-mappa (membro del cluster, o mappaCorrente se singola)
-  // che usano DAVVERO il tileset "outside"/"outside_pallet" (quello con
-  // l'erba alta riconoscibile dal tile locale 6) — sess. 14 ott 2026, vedi
-  // _getTileType: su una mappa che non lo usa (es. Zona Safari, interni)
-  // non c'è nessun segnale tile-per-tile affidabile, quindi i rettangoli
-  // 'erba_alta' restano "pieni" come prima, senza il filtro extra.
+  // che hanno DAVVERO almeno un tile d'erba vera di outside.tsx/outside_pallet.tsx
+  // da qualche parte sulla mappa (non basta includere il tileset: molte mappe
+  // outdoor lo includono solo per decorazioni, es. Via Vittoria/Monte Cavo/
+  // Percorso Monte Po, senza un solo cespuglio vero — bug corretto 24 ott
+  // 2026, prima si guardava solo "usa il tileset outside", non "ha tile
+  // d'erba vera"). Su una mappa SENZA nessun tile d'erba vera i rettangoli
+  // 'erba_alta' restano "pieni" (ogni casella calpestabile del rettangolo è
+  // zona incontri) — esattamente come già succede su Zona Safari/interni,
+  // che non includono affatto outside.tsx. Vedi _getTileType sotto.
   let mappeConErbaRilevabile = null;
   let erbaAltaIdPerMappa = {};   // chiave mappa membro → id incontri da usare per le sue caselle erbaAltaAuto
   let ghiaccioTiles    = null;   // Set "tx,ty": caselle di ghiaccio scivoloso (Caves.tsj, tile locale 944)
@@ -3622,7 +3617,7 @@ const GameMap = (function () {
       luciMappa     = parseLuci(tmj);
       acquaSurf     = _buildSurfTiles(tmj, eventiMappa);
       erbaAltaAuto  = _buildErbaAltaTiles(tmj);
-      mappeConErbaRilevabile = _usaTilesetOutside(tmj) ? new Set([chiave]) : new Set();
+      mappeConErbaRilevabile = erbaAltaAuto.size > 0 ? new Set([chiave]) : new Set();
       erbaAltaIdPerMappa = { [chiave]: _erbaAltaIdMappa(eventiMappa) };
       ghiaccioTiles = _buildIceTiles(tmj);
       muroNordTiles = _buildMuroNordTiles(tmj);
@@ -3795,7 +3790,7 @@ const GameMap = (function () {
         const erbaLocale   = _buildErbaAltaTiles(tmj);
         const ghiaccioLocale = _buildIceTiles(tmj);
         erbaAltaIdPerMappa[k] = _erbaAltaIdMappa(eventiLocali);
-        if (_usaTilesetOutside(tmj)) mappeRilevabiliSet.add(k);
+        if (erbaLocale.size > 0) mappeRilevabiliSet.add(k);
 
         for (let r = 0; r < tmj.height; r++) {
           const rigaGlob = collGrid[offY + r];
@@ -6158,16 +6153,31 @@ const GameMap = (function () {
           // 'acqua'/'incontri' restano come prima (già pensati per essere
           // precisi, niente filtro aggiuntivo).
           if (ev.tipo === 'erba_alta') {
-            const chiaveMappaQui = this._chiaveMappaPerCella(tx, ty);
-            const rilevabile = mappeConErbaRilevabile && mappeConErbaRilevabile.has(chiaveMappaQui);
-            if (rilevabile) {
-              const suAcqua = acquaSurf && acquaSurf.has(tx + ',' + ty);
-              const suErbaVera = erbaAltaAuto && erbaAltaAuto.has(tx + ',' + ty);
-              if (!suAcqua && !suErbaVera) continue;
+            // Override manuali su Tiled (proprietà bool sul rettangolo),
+            // sess. 24 ott 2026 — vincono sempre sulla regola automatica:
+            //  - tutto_il_rettangolo: forza "zona piena" anche su una mappa
+            //    con erba vera (non serve oggi, escape hatch per il futuro).
+            //  - solo_erba_vera: forza il filtro per-tile anche su una mappa
+            //    SENZA erba vera (serve a Via Vittoria 2F: pavimento di
+            //    grotta ma con una vasca d'acqua surfabile vera — gli
+            //    incontri devono scattare solo sull'acqua, mai a terra).
+            const forzaPieno  = ev.props && (ev.props.tutto_il_rettangolo === true || ev.props.tutto_il_rettangolo === 'true');
+            const forzaFiltro = ev.props && (ev.props.solo_erba_vera === true || ev.props.solo_erba_vera === 'true');
+            if (!forzaPieno) {
+              const chiaveMappaQui = this._chiaveMappaPerCella(tx, ty);
+              const rilevabile = forzaFiltro || (mappeConErbaRilevabile && mappeConErbaRilevabile.has(chiaveMappaQui));
+              if (rilevabile) {
+                const suAcqua = acquaSurf && acquaSurf.has(tx + ',' + ty);
+                const suErbaVera = erbaAltaAuto && erbaAltaAuto.has(tx + ',' + ty);
+                if (!suAcqua && !suErbaVera) continue;
+              }
+              // Mappa senza nessun tile d'erba vera (dungeon, Monte Po,
+              // Via Vittoria, Monte Cavo, Villa Torlonia p1, Lago Albano
+              // profondo...): nessun segnale tile-per-tile affidabile, il
+              // rettangolo è "zona piena" (ogni casella calpestabile è
+              // zona incontri) — stesso comportamento già in uso su Zona
+              // Safari/Villa Torlonia p0, che non includono outside.tsx.
             }
-            // Mappa senza tileset "outside" rilevabile (es. Zona Safari,
-            // interni): nessun segnale tile-per-tile affidabile, il
-            // rettangolo resta "pieno" come prima di questa sessione.
           }
           return ev;
         }
@@ -6209,6 +6219,43 @@ const GameMap = (function () {
         return { tipo: 'incontri', id: defMappa.incontriId, props: { id: defMappa.incontriId }, w: 0, h: 0, tx, ty };
       }
       return null;
+    }
+
+    // Debug/test da console (sess. 24 ott 2026, richiesta esplicita di Luca
+    // per verificare "qui dovrebbe scattare un incontro" senza dover
+    // camminare avanti e indietro, anche da telefono con un segnalibro
+    // javascript:): GameMap.debugIncontri() stampa per la casella sotto i
+    // piedi del giocatore la zona trovata da _getTileType, il TIPO
+    // effettivo (erba filtrata/zona piena/acqua/costante), la tabella
+    // DATI_INCONTRI usata e la sua probabilità.
+    _debugIncontriInfo() {
+      const tx = posTile.tx, ty = posTile.ty;
+      const terreno = this._getTileType(tx, ty);
+      const info = { mappa: mappaCorrente, tx, ty, zona: null, tipoReale: null, id: null, probabilita: null, tabellaEsiste: false };
+      if (!terreno) {
+        console.log('[debugIncontri]', info, '→ NESSUNA zona incontri su questa casella.');
+        return info;
+      }
+      const id = terreno.id || (terreno.props && terreno.props.id) || '';
+      const chiaveMappaQui = this._chiaveMappaPerCella(tx, ty);
+      const rilevabile = mappeConErbaRilevabile && mappeConErbaRilevabile.has(chiaveMappaQui);
+      let tipoReale;
+      if (terreno.tipo === 'erba_alta') {
+        const suAcqua = acquaSurf && acquaSurf.has(tx + ',' + ty);
+        tipoReale = suAcqua ? 'erba_alta → acqua (surf)' : (rilevabile ? 'erba_alta → erba vera (filtrata)' : 'erba_alta → zona piena (dungeon/no erba vera)');
+      } else if (terreno.tipo === 'trigger_surf') {
+        tipoReale = 'acqua (trigger_surf)';
+      } else if (terreno.tipo === 'incontri') {
+        tipoReale = 'incontri costanti (MAPPE[...].incontriCostanti)';
+      } else {
+        tipoReale = terreno.tipo;
+      }
+      const dati = (typeof DATI_INCONTRI !== 'undefined') ? DATI_INCONTRI[id] : null;
+      info.zona = terreno.tipo; info.tipoReale = tipoReale; info.id = id;
+      info.probabilita = dati ? (dati.probabilita != null ? dati.probabilita : PROB_INCONTRO) : null;
+      info.tabellaEsiste = !!dati;
+      console.log('[debugIncontri]', info);
+      return info;
     }
 
     // true se (tx,ty) è entro 3 caselle (riquadro 7x7) da un leggendario
@@ -14994,6 +15041,11 @@ const GameMap = (function () {
     if (scena) return scena._giocaCutscene(cutsceneId);
   }
 
+  // Debug/test: GameMap.debugIncontri() — vedi _debugIncontriInfo sopra.
+  function debugIncontri() {
+    if (scena) return scena._debugIncontriInfo();
+  }
+
   // Sfida dei Porchettari (Ariccia): 5 lotte di fila con cameo tra una e
   // l'altra, chiamata da sfidaPorchettari() in app.js dopo il dialogo/orario.
   function avviaSfidaPorchettari() {
@@ -15030,7 +15082,7 @@ const GameMap = (function () {
     debugNpcAttivi, debugCondizione, debugChiamaMetodo, debugImpostaPosTile, debugCollisione, debugValoreTile, debugSpawnList,
     temaBattaglia, mappaConsenteVolo, aggiornaVeloTempo,
     aggiornaVeloMeteo, contestoMeteo, aggiornaFollowerSpecie,
-    debugCutscene, avviaSfidaPorchettari, avviaSfidaParentiRocco, avviaLatiosLatiasScena,
+    debugCutscene, debugIncontri, avviaSfidaPorchettari, avviaSfidaParentiRocco, avviaLatiosLatiasScena,
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,
     posizioneAttualeSalvabile, stackAttualeSalvabile, ripristinaStack,
     apriMenuNativo, apriBoxNativo, apriMarketNativo, apriSelezioneSquadraPalestra, chiudiMenuNativo, tornaAMenuNativo, menuNativoAttivo,

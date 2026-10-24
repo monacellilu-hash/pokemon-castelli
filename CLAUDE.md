@@ -46,6 +46,17 @@ Sei un Senior Game Developer ed esperto GIS. Sviluppi questo gioco AL POSTO dell
   (`hpAttuale > 0`) in tutta la squadra, e ogni cambio di Pokémon in campo (switch O KO) deve
   aggiornare sprite, pannelli e animazione d'ingresso allo stesso modo.
 - **CAMPIONE**: vedi REGOLA CAMPIONE in cima a questo file — nessun "Remo".
+- **INCONTRI SELVATICI** (sess. 24 ott 2026): su una mappa con tile derba di
+  `outside.tsx`/`outside_pallet.tsx` basta un rettangolo `erba_alta` (anche piccolo, ovunque) con
+  l'id della tabella: il suo id vale per TUTTE le caselle derba della mappa. Su una mappa SENZA
+  nessun tile derba di `outside.tsx` (dungeon, mappe col prato in un tileset proprio) i
+  rettangoli `erba_alta` sono "zone piene" (ogni casella calpestabile del rettangolo è zona
+  incontri). Per forzare il comportamento: proprietà Tiled `tutto_il_rettangolo: true` (sempre
+  piena) / `solo_erba_vera: true` (sempre filtrata sul tile vero — usata su Via Vittoria 2F,
+  pavimento di grotta con vasca dacqua vera: niente pesci a terra). In alternativa per le grotte:
+  `incontriCostanti`/`incontriId` nel registro `MAPPE` (js/map.js), oppure un rettangolo di tipo
+  `'incontri'` (nessun filtro). Ogni nuovo dungeon deve avere incontri sul pavimento, tranne Lega,
+  Rifugi GdF, palestre e stanze di leggendari.
 
 ## IL PROGETTO
 RPG stile Pokémon classico (ispirazione: **Pokémon Smeraldo** e **Rosso Fuoco**), su browser (HTML5/CSS/JS puro), ambientato sui Castelli Romani (Lazio). Motore grafico: Phaser 3 + mappe Tiled (tileset reali da pret/pokeemerald/pokefirered) — Leaflet/OSM è stato tolto, non più presente nel gioco.

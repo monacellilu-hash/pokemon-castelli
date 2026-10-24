@@ -13516,6 +13516,11 @@
        "name": "type",
        "type": "string",
        "value": "erba_alta"
+      },
+      {
+       "name": "solo_erba_vera",
+       "type": "bool",
+       "value": true
       }
      ],
      "rotation": 0,
