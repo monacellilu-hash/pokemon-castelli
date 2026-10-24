@@ -6170,7 +6170,7 @@
                  "width":24.333333333333,
                  "x":2307.66666666667,
                  "y":199.666666666667
-                }],
+                },{"height":32,"id":344,"name":"oggetto_iperpozione_1_31","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_1_31"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":32,"y":992},{"height":32,"id":345,"name":"oggetto_ultraball_63_31","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"ultraball"},{"name":"id","type":"string","value":"oggetto_ultraball_63_31"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":2016,"y":992},{"height":32,"id":346,"name":"oggetto_revitalizzante_29_39","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzante"},{"name":"id","type":"string","value":"oggetto_revitalizzante_29_39"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":928,"y":1248},{"height":32,"id":347,"name":"oggetto_etere_5_65","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"etere"},{"name":"id","type":"string","value":"oggetto_etere_5_65"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":160,"y":2080},{"height":32,"id":348,"name":"oggetto_proteina_41_78","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"proteina"},{"name":"id","type":"string","value":"oggetto_proteina_41_78"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1312,"y":2496},{"height":32,"id":349,"name":"oggetto_calcio_82_89","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"calcio"},{"name":"id","type":"string","value":"oggetto_calcio_82_89"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":2624,"y":2848},{"height":32,"id":350,"name":"oggetto_ferro_76_80","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"ferro"},{"name":"id","type":"string","value":"oggetto_ferro_76_80"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":2432,"y":2560}],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -6178,7 +6178,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":344,
+ "nextobjectid":351,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

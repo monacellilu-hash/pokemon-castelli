@@ -11853,7 +11853,7 @@
        "value":"medaglia:frascati"
       }
      ]
-    }
+    },{"height":32,"id":89,"name":"oggetto_pozione_5_38","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pozione"},{"name":"id","type":"string","value":"oggetto_pozione_5_38"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":160,"y":1216},{"height":32,"id":90,"name":"oggetto_pokeball_31_43","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pokeball"},{"name":"id","type":"string","value":"oggetto_pokeball_31_43"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":992,"y":1376}
    ],
    "opacity":1,
    "type":"objectgroup",
@@ -11863,7 +11863,7 @@
   }
  ],
  "nextlayerid":21,
- "nextobjectid":88,
+ "nextobjectid":91,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

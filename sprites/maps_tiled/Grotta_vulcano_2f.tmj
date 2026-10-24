@@ -24510,7 +24510,7 @@
      "width": 0,
      "x": 1585.33333333333,
      "y": 1236
-    }
+    },{"height":32,"id":701,"name":"oggetto_revitalizzantemax_44_39","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzantemax"},{"name":"id","type":"string","value":"oggetto_revitalizzantemax_44_39"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1408,"y":1248},{"height":32,"id":702,"name":"oggetto_elisir_30_52","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"elisir"},{"name":"id","type":"string","value":"oggetto_elisir_30_52"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":960,"y":1664}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -24520,7 +24520,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 701,
+ "nextobjectid":703,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

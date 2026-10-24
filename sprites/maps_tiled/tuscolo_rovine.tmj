@@ -17252,7 +17252,7 @@
      "width": 32,
      "x": 864,
      "y": 671
-    }
+    },{"height":32,"id":129,"name":"oggetto_superpozione_12_37","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_12_37"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":384,"y":1184},{"height":32,"id":130,"name":"oggetto_pietra_luna_50_14","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pietra_luna"},{"name":"id","type":"string","value":"oggetto_pietra_luna_50_14"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1600,"y":448},{"height":32,"id":131,"name":"oggetto_antidototot_14_19","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"antidototot"},{"name":"id","type":"string","value":"oggetto_antidototot_14_19"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":448,"y":608}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -17262,7 +17262,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 129,
+ "nextobjectid":132,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -6991,7 +6991,7 @@
      "width": 0,
      "x": 560.0,
      "y": 720.0
-    }
+    },{"height":32,"id":46,"name":"oggetto_curatotale_11_10","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"curatotale"},{"name":"id","type":"string","value":"oggetto_curatotale_11_10"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":352,"y":320}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -7001,7 +7001,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 46,
+ "nextobjectid":47,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

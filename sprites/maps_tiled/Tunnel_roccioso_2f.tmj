@@ -10588,7 +10588,7 @@
      "width": 32,
      "x": 930.667,
      "y": 350
-    }
+    },{"height":32,"id":71,"name":"oggetto_revitalizzante_29_11","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzante"},{"name":"id","type":"string","value":"oggetto_revitalizzante_29_11"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":928,"y":352}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -11198,7 +11198,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 71,
+ "nextobjectid":72,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -5370,7 +5370,7 @@
      "width": 32,
      "x": 929.101214574899,
      "y": 17.0364372469635
-    }
+    },{"height":32,"id":83,"name":"oggetto_iperpozione_33_9","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_33_9"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1056,"y":288},{"height":32,"id":84,"name":"oggetto_revitalizzante_2_27","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzante"},{"name":"id","type":"string","value":"oggetto_revitalizzante_2_27"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":64,"y":864}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -5380,7 +5380,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 83,
+ "nextobjectid":85,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -10656,7 +10656,7 @@
      "width": 15,
      "x": 165.5,
      "y": 199.373
-    }
+    },{"height":32,"id":54,"name":"oggetto_elisir_37_42","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"elisir"},{"name":"id","type":"string","value":"oggetto_elisir_37_42"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1184,"y":1344}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -10954,7 +10954,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 54,
+ "nextobjectid":55,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -15816,7 +15816,7 @@
      "width": 32,
      "x": 192.666666666667,
      "y": 951.333333333334
-    }
+    },{"height":32,"id":158,"name":"oggetto_superpozione_33_17","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_33_17"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1056,"y":544},{"height":32,"id":159,"name":"oggetto_antidototot_21_20","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"antidototot"},{"name":"id","type":"string","value":"oggetto_antidototot_21_20"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":672,"y":640},{"height":32,"id":160,"name":"oggetto_etere_15_29","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"etere"},{"name":"id","type":"string","value":"oggetto_etere_15_29"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":480,"y":928},{"height":32,"id":161,"name":"oggetto_proteina_23_36","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"proteina"},{"name":"id","type":"string","value":"oggetto_proteina_23_36"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":736,"y":1152}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -15826,7 +15826,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 158,
+ "nextobjectid":162,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

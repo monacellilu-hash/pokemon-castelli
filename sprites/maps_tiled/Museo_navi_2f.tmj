@@ -7731,7 +7731,7 @@
      "width": 91.3470115967886,
      "x": 99.1971454058876,
      "y": 119.892952720785
-    }
+    },{"height":32,"id":77,"name":"oggetto_superball_12_21","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superball"},{"name":"id","type":"string","value":"oggetto_superball_12_21"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":384,"y":672}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -7741,7 +7741,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 77,
+ "nextobjectid":78,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

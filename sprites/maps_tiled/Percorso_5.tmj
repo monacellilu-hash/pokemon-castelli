@@ -5210,7 +5210,7 @@
                  "width":23.5,
                  "x":3142.5,
                  "y":1768
-                }],
+                },{"height":32,"id":503,"name":"oggetto_superpozione_37_47","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_37_47"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1184,"y":1504},{"height":32,"id":504,"name":"oggetto_antiparalisi_56_15","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"antiparalisi"},{"name":"id","type":"string","value":"oggetto_antiparalisi_56_15"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1792,"y":480},{"height":32,"id":505,"name":"oggetto_iperpozione_39_47","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_39_47"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1248,"y":1504}],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -5218,7 +5218,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":503,
+ "nextobjectid":506,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

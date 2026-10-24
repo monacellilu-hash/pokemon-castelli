@@ -9729,7 +9729,7 @@
      "width": 1016.4,
      "x": 262.324,
      "y": 1054.91
-    }
+    },{"height":32,"id":208,"name":"oggetto_superpozione_24_15","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_24_15"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":768,"y":480},{"height":32,"id":209,"name":"oggetto_antidoto_26_31","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"antidoto"},{"name":"id","type":"string","value":"oggetto_antidoto_26_31"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":832,"y":992}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -9739,7 +9739,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 61,
+ "nextobjectid":210,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -15031,7 +15031,7 @@
      "width": 146.37,
      "x": 940.815,
      "y": 772.9675
-    }
+    },{"height":32,"id":125,"name":"oggetto_pozione_18_11","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pozione"},{"name":"id","type":"string","value":"oggetto_pozione_18_11"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":576,"y":352}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -15041,7 +15041,7 @@
   }
  ],
  "nextlayerid": 22,
- "nextobjectid": 125,
+ "nextobjectid":126,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

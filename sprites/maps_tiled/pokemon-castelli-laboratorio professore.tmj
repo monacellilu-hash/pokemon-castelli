@@ -2658,7 +2658,7 @@
      "width": 0,
      "x": 333,
      "y": 149.666666666666
-    }
+    },{"height":32,"id":56,"name":"oggetto_pozione_10_7","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pozione"},{"name":"id","type":"string","value":"oggetto_pozione_10_7"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":320,"y":224},{"height":32,"id":57,"name":"oggetto_pokeball_11_7","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pokeball"},{"name":"id","type":"string","value":"oggetto_pokeball_11_7"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":352,"y":224},{"height":32,"id":58,"name":"oggetto_superball_12_7","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superball"},{"name":"id","type":"string","value":"oggetto_superball_12_7"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":384,"y":224}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -2668,7 +2668,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 56,
+ "nextobjectid":59,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

@@ -13684,7 +13684,7 @@
      "width": 0,
      "x": 880.0,
      "y": 880.0
-    }
+    },{"height":32,"id":205,"name":"oggetto_curatotale_51_30","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"curatotale"},{"name":"id","type":"string","value":"oggetto_curatotale_51_30"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1632,"y":960},{"height":32,"id":206,"name":"oggetto_revitalizzantemax_51_42","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzantemax"},{"name":"id","type":"string","value":"oggetto_revitalizzantemax_51_42"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1632,"y":1344},{"height":32,"id":207,"name":"oggetto_elisir_24_6","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"elisir"},{"name":"id","type":"string","value":"oggetto_elisir_24_6"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":768,"y":192},{"height":32,"id":208,"name":"oggetto_zinco_49_35","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"zinco"},{"name":"id","type":"string","value":"oggetto_zinco_49_35"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1568,"y":1120}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -13694,7 +13694,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 205,
+ "nextobjectid":209,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

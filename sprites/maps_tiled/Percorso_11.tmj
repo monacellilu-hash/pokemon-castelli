@@ -17091,7 +17091,7 @@
        "value": "placeholder, da riposizionare - uscita da percorso_11_casa4_1"
       }
      ]
-    }
+    },{"height":32,"id":61,"name":"oggetto_superpozione_12_51","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_12_51"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":384,"y":1632}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -17101,7 +17101,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 61,
+ "nextobjectid":62,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

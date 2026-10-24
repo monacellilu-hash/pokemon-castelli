@@ -9499,7 +9499,7 @@
      "width": 0,
      "x": 1385,
      "y": 1338
-    }
+    },{"height":32,"id":24,"name":"oggetto_elisir_0_6","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"elisir"},{"name":"id","type":"string","value":"oggetto_elisir_0_6"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":0,"y":192},{"height":32,"id":25,"name":"oggetto_carburante_1_20","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"carburante"},{"name":"id","type":"string","value":"oggetto_carburante_1_20"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":32,"y":640}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -9509,7 +9509,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 24,
+ "nextobjectid":26,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

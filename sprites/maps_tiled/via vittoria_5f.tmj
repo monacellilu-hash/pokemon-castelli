@@ -1121,7 +1121,7 @@
                  "width":215,
                  "x":388,
                  "y":353
-                }],
+                },{"height":32,"id":504,"name":"oggetto_curatotale_20_6","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"curatotale"},{"name":"id","type":"string","value":"oggetto_curatotale_20_6"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":640,"y":192},{"height":32,"id":505,"name":"oggetto_rarecandy_6_29","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"rarecandy"},{"name":"id","type":"string","value":"oggetto_rarecandy_6_29"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":192,"y":928}],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -1129,7 +1129,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":59,
+ "nextobjectid":506,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

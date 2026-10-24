@@ -17585,7 +17585,7 @@
      "width": 0,
      "x": 880.0,
      "y": 1168.0
-    }
+    },{"height":32,"id":203,"name":"oggetto_iperpozione_27_16","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_27_16"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":864,"y":512}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -17595,7 +17595,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 203,
+ "nextobjectid":204,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

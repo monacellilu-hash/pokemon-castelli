@@ -964,7 +964,7 @@
                  "width":0,
                  "x":984.604251012146,
                  "y":213.123231174089
-                }],
+                },{"height":32,"id":47,"name":"oggetto_iperpozione_10_18","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_10_18"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":320,"y":576}],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -972,7 +972,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":42,
+ "nextobjectid":48,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

@@ -1897,7 +1897,7 @@
                  "width":0,
                  "x":496,
                  "y":2609.33333333333
-                }],
+                },{"height":32,"id":83,"name":"oggetto_iperpozione_7_65","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_7_65"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":224,"y":2080},{"height":32,"id":84,"name":"oggetto_etere_8_79","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"etere"},{"name":"id","type":"string","value":"oggetto_etere_8_79"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":256,"y":2528},{"height":32,"id":85,"name":"oggetto_revitalizzante_5_73","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzante"},{"name":"id","type":"string","value":"oggetto_revitalizzante_5_73"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":160,"y":2336}],
          "opacity":1,
          "type":"objectgroup",
          "visible":true,
@@ -1905,7 +1905,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":83,
+ "nextobjectid":86,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

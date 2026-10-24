@@ -7416,7 +7416,7 @@
      "width": 11.3333333333333,
      "x": 522,
      "y": 750
-    }
+    },{"height":32,"id":91,"name":"oggetto_pozione_9_6","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pozione"},{"name":"id","type":"string","value":"oggetto_pozione_9_6"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":288,"y":192}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -7426,7 +7426,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 91,
+ "nextobjectid":92,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

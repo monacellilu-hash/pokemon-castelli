@@ -12505,7 +12505,7 @@
      "width": 32,
      "x": 500,
      "y": 800
-    }
+    },{"height":32,"id":83,"name":"oggetto_superpozione_2_14","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"superpozione"},{"name":"id","type":"string","value":"oggetto_superpozione_2_14"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":64,"y":448}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -12515,7 +12515,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid": 83,
+ "nextobjectid":84,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

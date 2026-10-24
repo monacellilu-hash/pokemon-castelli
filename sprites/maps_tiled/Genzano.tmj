@@ -25038,7 +25038,7 @@
      "width": 0,
      "x": 976.0,
      "y": 1584.0
-    }
+    },{"height":32,"id":98,"name":"oggetto_iperpozione_3_55","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"iperpozione"},{"name":"id","type":"string","value":"oggetto_iperpozione_3_55"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":96,"y":1760},{"height":32,"id":99,"name":"oggetto_ultraball_5_59","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"ultraball"},{"name":"id","type":"string","value":"oggetto_ultraball_5_59"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":160,"y":1888},{"height":32,"id":100,"name":"oggetto_revitalizzante_0_69","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzante"},{"name":"id","type":"string","value":"oggetto_revitalizzante_0_69"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":0,"y":2208},{"height":32,"id":101,"name":"oggetto_etere_27_71","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"etere"},{"name":"id","type":"string","value":"oggetto_etere_27_71"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":864,"y":2272},{"height":32,"id":102,"name":"oggetto_pietra_sole_2_81","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"pietra_sole"},{"name":"id","type":"string","value":"oggetto_pietra_sole_2_81"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":64,"y":2592},{"height":32,"id":103,"name":"oggetto_proteina_58_39","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"proteina"},{"name":"id","type":"string","value":"oggetto_proteina_58_39"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1856,"y":1248}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -25048,7 +25048,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 98,
+ "nextobjectid":104,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

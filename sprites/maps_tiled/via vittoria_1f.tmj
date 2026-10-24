@@ -13473,7 +13473,7 @@
      "width": 0,
      "x": 848.0,
      "y": 848.0
-    }
+    },{"height":32,"id":106,"name":"oggetto_curatotale_4_3","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"curatotale"},{"name":"id","type":"string","value":"oggetto_curatotale_4_3"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":128,"y":96},{"height":32,"id":107,"name":"oggetto_ultraball_6_5","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"ultraball"},{"name":"id","type":"string","value":"oggetto_ultraball_6_5"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":192,"y":160},{"height":32,"id":108,"name":"oggetto_revitalizzantemax_46_18","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzantemax"},{"name":"id","type":"string","value":"oggetto_revitalizzantemax_46_18"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1472,"y":576},{"height":32,"id":109,"name":"oggetto_elisir_29_25","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"elisir"},{"name":"id","type":"string","value":"oggetto_elisir_29_25"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":928,"y":800},{"height":32,"id":110,"name":"oggetto_proteina_45_29","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"proteina"},{"name":"id","type":"string","value":"oggetto_proteina_45_29"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":1440,"y":928},{"height":32,"id":111,"name":"oggetto_ferro_3_36","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"ferro"},{"name":"id","type":"string","value":"oggetto_ferro_3_36"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":96,"y":1152}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -13483,7 +13483,7 @@
   }
  ],
  "nextlayerid": 7,
- "nextobjectid": 106,
+ "nextobjectid":112,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

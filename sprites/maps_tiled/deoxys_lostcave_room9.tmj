@@ -1569,7 +1569,7 @@
      "width": 0,
      "x": 270.437109723461,
      "y": 175.450490633363
-    }
+    },{"height":32,"id":93,"name":"oggetto_revitalizzantemax_3_3","opacity":1,"properties":[{"name":"contenuto","type":"string","value":"revitalizzantemax"},{"name":"id","type":"string","value":"oggetto_revitalizzantemax_3_3"},{"name":"quantita","type":"int","value":1},{"name":"type","type":"string","value":"oggetto"}],"rotation":0,"type":"oggetto","visible":true,"width":32,"x":96,"y":96}
    ],
    "opacity": 1,
    "type": "objectgroup",
@@ -1579,7 +1579,7 @@
   }
  ],
  "nextlayerid": 6,
- "nextobjectid": 93,
+ "nextobjectid":94,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
