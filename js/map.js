@@ -1812,6 +1812,11 @@ const GameMap = (function () {
     // qui — risultato: tile invisibili/mancanti a schermo.
     'ts-soccer-field':       'sprites/PNG/pokemon_soccer_field.png',
     'ts-stazione-treno':     'sprites/PNG/Stazione_treno.png',
+    // "treni" (24 ott 2026): usato da Percorso_9.tmj (decorazioni del treno
+    // della stazione di Ariccia/Lugia) — mai registrato finora, la mappa
+    // mostrava quella parte tutta nera (warning "Tileset sconosciuto" in
+    // console, stesso bug già visto per via_dei_laghi/tileset-outside).
+    'ts-treni':              'sprites/PNG/treni.png',
     'ts-albano-scuola':      'sprites/PNG/albano_scuola_tileset.png',
   };
   Object.assign(TILESET_META, {
@@ -1917,6 +1922,7 @@ const GameMap = (function () {
     'nemi_daycare_tileset':            { key: 'ts-nemi-daycare', tw: 32, th: 32, cols: 16 },
     'pokemon_soccer_field':            { key: 'ts-soccer-field',   tw: 32, th: 32, cols: 15 },
     'Stazione_treno':                  { key: 'ts-stazione-treno', tw: 32, th: 32, cols: 49 },
+    'treni':                           { key: 'ts-treni', tw: 32, th: 32, cols: 7 },
     'albano_scuola_tileset':           { key: 'ts-albano-scuola', tw: 32, th: 32, cols: 16 },
   });
 
@@ -4909,7 +4915,13 @@ const GameMap = (function () {
           // uguali). Kyogre resta +60% (richiesta Luca, 19 ott 2026): troppo
           // piccolo rispetto a quanto dovrebbe imporsi nell'Antro, solo lui.
           const riquadro = this._riquadroVeroDisegno(img, frame.cutX, frame.cutY, frame.cutWidth, frame.cutHeight);
-          const boostTaglia = (st.legId === 382) ? 1.6 : 1;
+          // Lugia +80%, Rayquaza +50% (24 ott 2026, richiesta esplicita di
+          // Luca): troppo piccoli rispetto a quanto dovrebbero imporsi,
+          // stesso principio del boost di Kyogre qui sopra.
+          const boostTaglia = (st.legId === 382) ? 1.6
+            : (st.legId === 249) ? 1.8
+            : (st.legId === 384) ? 1.5
+            : 1;
           // +30% su TUTTI gli sprite overworld di Pokémon (22 ott 2026,
           // richiesta esplicita di Luca) — moltiplica anche il boost
           // speciale di Kyogre, non lo sostituisce.
