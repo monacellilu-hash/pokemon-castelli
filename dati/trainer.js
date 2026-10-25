@@ -3603,6 +3603,134 @@ const DATI_TRAINER = {
     premio: 1790,
   },
 
+  /* ── 15 allenatori aggiunti il 25 ott 2026 (richiesta esplicita di Luca):
+     Luca aveva piazzato 18 copie identiche di "via_vittoria_6" sparse tra
+     2F/3F/4F (stesso id, stesso sprite — bug di "tutti uguali" + lo
+     stesso id condiviso li avrebbe segnati tutti sconfitti insieme non
+     appena ne battevi uno). Rinominate le 15 copie IN PIÙ (oltre alle 3
+     originali già distinte su ciascun piano) con sprite/squadra/dialoghi
+     propri, tutte con movimento:random sull'oggetto Tiled. ── */
+  'via_vittoria_13': {
+    sprite: 'trainer_BEAUTY', ritratto: 'BEAUTY', vista: 5,
+    classe: 'Bellezza', nome: 'Clelia',
+    squadra: [ { id: 350, livello: 58 } ],
+    dialogo_prima: 'Non è un posto per una come me, lo so. Ma sono qui per restarci.',
+    dialogo_dopo: 'Che peccato, mi ero vestita così bene per l\'occasione.',
+    premio: 1700,
+  },
+  'via_vittoria_14': {
+    sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
+    classe: 'Gentildonna', nome: 'Dafne',
+    squadra: [ { id: 210, livello: 57 } ],
+    dialogo_prima: 'Mio padre dice che la Lega non è un posto per signorine. Gli farò vedere.',
+    dialogo_dopo: 'Forse aveva ragione lui... ma non lo ammetterò mai.',
+    premio: 1700,
+  },
+  'via_vittoria_15': {
+    sprite: 'trainer_BLACKBELT', ritratto: 'BLACKBELT', vista: 5,
+    classe: 'Duro', nome: 'Emiliano',
+    squadra: [ { id: 297, livello: 58 }, { id: 237, livello: 57 } ],
+    dialogo_prima: 'Pugno e mente, in equilibrio. Vediamo se tu hai lo stesso controllo.',
+    dialogo_dopo: 'Equilibrio rispettato. Sei forte.',
+    premio: 1740,
+  },
+  'via_vittoria_16': {
+    sprite: 'trainer_CAMPER', ritratto: 'CAMPER', vista: 5,
+    classe: 'Campeggiatore', nome: 'Lazzaro',
+    squadra: [ { id: 217, livello: 58 } ],
+    dialogo_prima: 'Ho piantato la tenda proprio qui, in mezzo al percorso. Scomodo per te, comodo per me.',
+    dialogo_dopo: 'Smonto le tende e ti lascio passare.',
+    premio: 1700,
+  },
+  'via_vittoria_17': {
+    sprite: 'trainer_GENTLEMAN', ritratto: 'GENTLEMAN', vista: 5,
+    classe: 'Gentiluomo', nome: 'Aldobrando',
+    squadra: [ { id: 148, livello: 57 } ],
+    dialogo_prima: 'Permetta che mi presenti prima di sfidarla, è solo educazione.',
+    dialogo_dopo: 'Che modi squisiti, anche in battaglia.',
+    premio: 1720,
+  },
+  'via_vittoria_18': {
+    sprite: 'trainer_SAILOR', ritratto: 'SAILOR', vista: 5,
+    classe: 'Marinaio', nome: 'Brunello',
+    squadra: [ { id: 130, livello: 59 } ],
+    dialogo_prima: 'Ho navigato acque peggiori di questo corridoio, fidati.',
+    dialogo_dopo: 'Bella tempesta, questa lotta.',
+    premio: 1750,
+  },
+  'via_vittoria_19': {
+    sprite: 'trainer_BIRDKEEPER', ritratto: 'BIRDKEEPER', vista: 5,
+    classe: 'Addestratore', nome: 'Eustachio',
+    squadra: [ { id: 22, livello: 56 }, { id: 227, livello: 58 } ],
+    dialogo_prima: 'I miei uccelli volano più in alto di qualsiasi tuo sogno di Lega.',
+    dialogo_dopo: 'Atterrati, stavolta. Ben fatto.',
+    premio: 1710,
+  },
+  'via_vittoria_20': {
+    sprite: 'trainer_FISHERMAN', ritratto: 'FISHERMAN', vista: 5,
+    classe: 'Pescatore', nome: 'Ildebrando',
+    squadra: [ { id: 99, livello: 57 }, { id: 342, livello: 58 } ],
+    dialogo_prima: 'Qui non si pesca, ma io la mia lotta la tiro su comunque.',
+    dialogo_dopo: 'Pesce grosso scappato stavolta, eh?',
+    premio: 1710,
+  },
+  'via_vittoria_21': {
+    sprite: 'trainer_BURGLAR', ritratto: 'BURGLAR', vista: 5,
+    classe: 'Incendiario', nome: 'Gaudenzio',
+    squadra: [ { id: 323, livello: 58 } ],
+    dialogo_prima: 'Fuoco e cenere, questo è il mio stile. Scottati pure.',
+    dialogo_dopo: 'Mi hai spento sul serio, complimenti.',
+    premio: 1730,
+  },
+  'via_vittoria_22': {
+    sprite: 'trainer_POKEMONRANGER_F', ritratto: 'POKEMONRANGER_F', vista: 5,
+    classe: 'Ranger', nome: 'Ippolita',
+    squadra: [ { id: 288, livello: 56 }, { id: 289, livello: 60 } ],
+    dialogo_prima: 'Proteggo questo percorso come proteggerei una riserva naturale. Con tutto quello che ho.',
+    dialogo_dopo: 'Hai superato la riserva. Complimenti davvero.',
+    premio: 1760,
+  },
+  'via_vittoria_23': {
+    sprite: 'trainer_TAMER', ritratto: 'TAMER', vista: 5,
+    classe: 'Domatore', nome: 'Quirino',
+    squadra: [ { id: 208, livello: 58 } ],
+    dialogo_prima: 'Ho domato bestie ben peggiori del tuo Pokémon. Vediamo.',
+    dialogo_dopo: 'Domato io, stavolta. Rispetto.',
+    premio: 1730,
+  },
+  'via_vittoria_24': {
+    sprite: 'trainer_BIKER', ritratto: 'BIKER', vista: 5,
+    classe: 'Motociclista', nome: 'Romolo',
+    squadra: [ { id: 89, livello: 57 }, { id: 110, livello: 57 } ],
+    dialogo_prima: 'Vengo a tutta velocità, verso la Lega. Nessuno mi ferma, nemmeno tu.',
+    dialogo_dopo: 'Frenata brusca. Hai vinto tu.',
+    premio: 1710,
+  },
+  'via_vittoria_25': {
+    sprite: 'trainer_RUINMANIAC', ritratto: 'RUINMANIAC', vista: 5,
+    classe: 'Archeologo', nome: 'Tarquinio',
+    squadra: [ { id: 76, livello: 58 } ],
+    dialogo_prima: 'Ho studiato rovine antiche quanto questa Via. Ora studio te.',
+    dialogo_dopo: 'Scoperta interessante, la tua forza.',
+    premio: 1720,
+  },
+  'via_vittoria_26': {
+    sprite: 'trainer_POKEMANIAC', ritratto: 'POKEMANIAC', vista: 5,
+    classe: 'Fanatico', nome: 'Zenone',
+    squadra: [ { id: 295, livello: 58 } ],
+    dialogo_prima: 'Conosco ogni specie fino al numero 386. E il tuo, lo conosco già.',
+    dialogo_dopo: 'Studio aggiornato: sei più forte di quanto pensassi.',
+    premio: 1730,
+  },
+  'via_vittoria_27': {
+    sprite: 'trainer_COOLTRAINER_M', ritratto: 'COOLTRAINER_M', vista: 5,
+    classe: 'Fuoriclasse', nome: 'Ciriaco',
+    squadra: [ { id: 65, livello: 58 }, { id: 68, livello: 59 } ],
+    dialogo_prima: 'L\'ultimo gradino prima della Lega merita un avversario serio. Eccomi.',
+    dialogo_dopo: 'Serio e sconfitto. Complimenti vivissimi.',
+    premio: 1780,
+  },
+
   /* ── Rivale REMO — ricompare a Via Vittoria, ultima tappa prima della
      Lega (stesso pattern "tappa" di rivale_tuscolo: in Tiled si passa
      tappa/asso_livello sull'oggetto e la squadra si scala in automatico,
@@ -3632,7 +3760,7 @@ const DATI_TRAINER = {
      nome/squadra qui sotto sono solo fallback se mai venisse combattuto
      FUORI dalla cutscene (oggi non succede). ── */
   'rivale2_via_vittoria': {
-    sprite: 'trainer_rivale_2', ritratto: 'trainer_rivale_2', vista: 6,
+    sprite: 'Rivale_2', ritratto: 'trainer_rivale_2', vista: 6,
     classe: 'Rivale', nome: 'Blue', rivale: true,
     // rivaleAltro (22 ott 2026, bug trovato: questo trainer risolveva SEMPRE
     // su stato.rivale come rivale_via_vittoria, mostrando la stessa identità/

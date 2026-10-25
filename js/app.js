@@ -3334,6 +3334,19 @@ function curaSquadraLugiaRuinValley() {
   ]);
 }
 
+// Signore di Colonna 2 (25 ott 2026, richiesta esplicita di Luca: era un
+// gate, ora regala un piccolo oggetto una volta sola).
+function regaloColonna2Gate3() {
+  if (!stato.flags) stato.flags = {};
+  if (stato.flags.colonna2_regalo_dato) return;
+  stato.flags.colonna2_regalo_dato = true;
+  if (!stato.zaino.iperpozione) stato.zaino.iperpozione = 0;
+  stato.zaino.iperpozione += 1;
+  salvaPartita();
+  if (typeof aggiornaHUD === 'function') aggiornaHUD();
+  if (typeof mostraToast === 'function') mostraToast('🧴 Hai ricevuto 1× Iperpozione!', 2500);
+}
+
 // Scienziato prigioniero del GdF (Grotta del Vulcano, 3° piano, sess. 8 set
 // 2026): sempre visibile, ma finché il boss è vivo non gli si può parlare
 // per davvero (è sorvegliato). Il "vero" dialogo di ringraziamento + Pietra

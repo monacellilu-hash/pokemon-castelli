@@ -494,23 +494,39 @@ CUTSCENE['gdf_gate_nemi_passa'] = [
    dati/cutscene.js carica prima di js/app.js, dove altroRivale() vive),
    risolta a runtime da _cutscenaBattaglia. ══════════════════════════════════════════════════════════ */
 
+// Riscritta il 25 ott 2026 (richiesta esplicita di Luca): i due rivali
+// sono presenti ovunque per tutta l'avventura ("Rivali in giro per il
+// mondo", vedi dati/trainer.js), quindi a questo punto li hai GIÀ
+// affrontati entrambi — il dialogo deve saperlo, non deve suonare come un
+// primo incontro. Il rivale NON scelto al laboratorio (quello che sfida
+// qui, l'ultima volta prima della Lega) cambia con la difficoltà: Blue in
+// facile, Green in difficile. Dopo la lotta è l'ALTRO (il tuo vero
+// rivale, stato.rivale) a congedarsi, citando lo sfidante come fratello
+// (Green) o sorella (Blue) — ENTRAMBI spariscono a schermo nero.
+
 // FACILE: hai scelto/affrontato Green al laboratorio → qui ti sfida Blue,
 // e alla fine è Green (il tuo rivale di sempre) a salutarti e sparire.
 CUTSCENE['via_vittoria_due_rivali_facile'] = [
+  { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Green', testo: [
+    'Eccoti, {nome}!',
+  ] },
   { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
   { tipo: 'dialogo', nome: 'Blue', testo: [
-    'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
-    'Green mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenata per conto mio, lontano da tutti.',
-    'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
+    'Finalmente sei arrivato fin qui, all\'ultimo piano prima della Lega.',
+    'Ci siamo affrontati un bel po\' di volte, lungo la strada. E non hai mai smesso di sorprenderci.',
+    'Io sono pronta ad affrontare il Superquattro. Ma prima, voglio un\'ultima lotta con te.',
   ] },
   { tipo: 'battaglia', trainer: 'rivale2_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
   { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
   { tipo: 'dialogo', nome: 'Green', testo: [
-    'Bene, sei pronto!',
-    'Ci vediamo presto, amico mio...',
+    'Bene, sei pronto.',
+    'Da come ti sei comportato con mia sorella, vedo che sei davvero all\'altezza.',
+    'Ci vediamo presto, {nome}.',
   ] },
-  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'fade_out', ms: 1000 },
   { tipo: 'nascondi_npc', npc: 'rivale_via_vittoria' },
+  { tipo: 'nascondi_npc', npc: 'rivale2_via_vittoria' },
   { tipo: 'aspetta', ms: 300 },
   { tipo: 'fade_in', ms: 500 },
   { tipo: 'flag', nome: 'via_vittoria_rivale_finale_vista', valore: true },
@@ -519,19 +535,25 @@ CUTSCENE['via_vittoria_due_rivali_facile'] = [
 // DIFFICILE: hai scelto/affrontato Blue al laboratorio → qui ti sfida
 // Green, e alla fine è Blue (il tuo rivale di sempre) a salutarti e sparire.
 CUTSCENE['via_vittoria_due_rivali_difficile'] = [
+  { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
+  { tipo: 'dialogo', nome: 'Blue', testo: [
+    'Eccoti, {nome}!',
+  ] },
   { tipo: 'guarda_reciproco', npc: 'rivale_via_vittoria' },
   { tipo: 'dialogo', nome: 'Green', testo: [
-    'Eccoti. Ti aspettavo proprio qui, all\'ultimo piano prima della Lega.',
-    'Blue mi ha raccontato tutto il vostro cammino insieme. Io invece mi sono allenato per conto mio, lontano da tutti.',
-    'Prima che tu affronti il Superquattro, voglio vedere con i miei occhi quanto vali davvero.',
+    'Finalmente sei arrivato fin qui, all\'ultimo piano prima della Lega.',
+    'Ci siamo affrontati un bel po\' di volte, lungo la strada. E non hai mai smesso di sorprenderci.',
+    'Io sono pronto ad affrontare il Superquattro. Ma prima, voglio un\'ultima lotta con te.',
   ] },
   { tipo: 'battaglia', trainer: 'rivale_via_vittoria', rivaleDinamico: true, tappa: 6, assoLivello: 62, rivaleRif: 'altroRivale' },
   { tipo: 'guarda_reciproco', npc: 'rivale2_via_vittoria' },
   { tipo: 'dialogo', nome: 'Blue', testo: [
-    'Bene, sei pronto!',
-    'Ci vediamo presto, amico mio...',
+    'Bene, sei pronto.',
+    'Da come ti sei comportato con mio fratello, vedo che sei davvero all\'altezza.',
+    'Ci vediamo presto, {nome}.',
   ] },
-  { tipo: 'fade_out', ms: 500 },
+  { tipo: 'fade_out', ms: 1000 },
+  { tipo: 'nascondi_npc', npc: 'rivale_via_vittoria' },
   { tipo: 'nascondi_npc', npc: 'rivale2_via_vittoria' },
   { tipo: 'aspetta', ms: 300 },
   { tipo: 'fade_in', ms: 500 },

@@ -311,16 +311,16 @@
                          "name":"id",
                          "type":"string",
                          "value":"campione_remo"
-                        }, 
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"
-                        }, 
+                        },
                         {
                          "name":"vista",
                          "type":"int",
-                         "value":5
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"",

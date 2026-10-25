@@ -449,7 +449,7 @@
                         {
                          "name":"vista",
                          "type":"int",
-                         "value":5
+                         "value":0
                         }],
                  "rotation":0,
                  "type":"",

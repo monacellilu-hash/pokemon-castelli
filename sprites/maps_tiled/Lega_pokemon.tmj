@@ -834,8 +834,8 @@
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"da_lega_entrata"
-                        }, 
+                         "value":"spawn_da_entrata_lega"
+                        },
                         {
                          "name":"nota_origine",
                          "type":"string",

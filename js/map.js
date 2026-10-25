@@ -796,7 +796,10 @@ const GameMap = (function () {
     'lega_pokemon': {
       file: 'sprites/maps_tiled/Lega_pokemon.tmj',
       latC: 41.8337, lonC: 12.7532,
-      interno: true,   // niente Volo dentro la Lega (richiesta esplicita, sess. 5 set)
+      // 25 ott 2026 (richiesta esplicita di Luca, sostituisce la decisione del
+      // 5 set): questa è l'area ESTERNA di avvicinamento alla Lega, non
+      // l'interno — il Volo deve funzionare qui. Rimane bloccato DENTRO
+      // (Lega_pokemon_1f..5f, registrate sotto, tutte interno:true).
       biciConsentita: true,   // 19 ott 2026, richiesta Luca: qui la bici si può usare
     },
     // ── Entrata Lega Pokémon (ex IndigoPlateau_PokemonCenter_1F di FireRed,
@@ -10768,7 +10771,7 @@ const GameMap = (function () {
             // Lega, come ricominciare la sfida da capo.
             if (esito === 'sconfitta' && (dati.superquattro || dati.campioneLega)) {
               sbloccaMovimento();
-              this.caricaMappa('lega_pokemon', 35, 45, 'spawn_lega_ingresso');
+              this.caricaMappa('lega_pokemon', 35, 45, 'spawn_da_entrata_lega');
               if (typeof salvaPartita === 'function') salvaPartita();
               return;
             }

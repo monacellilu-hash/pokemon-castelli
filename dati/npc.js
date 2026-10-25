@@ -1848,25 +1848,24 @@ const DATI_NPC = {
      sono vere insieme: Kyogre E Groudon catturati (Pokédex, molto più
      semplice da controllare che "hai fatto l'episodio X") + la cutscene
      di Maso/Zapdos a Percorso Monte Po 3 completata. ── */
+  // Non sono più gate (richiesta esplicita di Luca, 25 ott 2026: "là non mi
+  // servono", convertiti in gente comune che chiacchiera o regala oggetti).
   'colonna2_gate_1': {
-    sprite: 'NPC 28', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
-    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
-    dialogo: ['No, da qui non si passa. Manco i Campioni ce la fanno.'],
+    sprite: 'NPC 28', nome: 'Signora', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Colonna è tranquilla, sai? Dopo tutto quel trambusto con la Lega, finalmente si respira.'],
   },
   'colonna2_gate_2': {
-    sprite: 'NPC 30', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
-    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
-    dialogo: ['Fermo lì. Nun c\'è verso de fatte passà, oggi.'],
+    sprite: 'NPC 30', nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Nun ce crederai, ma quelli der CoTrAL se so\' fatti vedè puro da queste parti...', 'Mah, so\' solo voci, eh.'],
   },
   'colonna2_gate_3': {
-    sprite: 'NPC 04', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
-    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
-    dialogo: ['Nemmeno a chiede bello. Da qui nun passa nessuno.'],
+    sprite: 'NPC 04', nome: 'Signore', direzione: 'sud', movimento: 'fisso',
+    azione: 'regaloColonna2Gate3',
+    dialogo: ['Tiè, pija questa, che te po\' sempre servì!'],
   },
   'colonna2_gate_4': {
-    sprite: 'NPC 08', nome: 'Sentinella', direzione: 'sud', movimento: 'fisso',
-    gate: true, condizione: 'leggendario:382+leggendario:383+maso_montepo3_sconfitto',
-    dialogo: ['Torna quando sarai davero pronto. Nun è oggi il giorno giusto.'],
+    sprite: 'NPC 08', nome: 'Anziano', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Ar me tempo, Colonna era solo quattro case e un campo.', 'Mo guarda che è diventata, co\' tutti sti allenatori in giro!'],
   },
 
   // NPC che parlano della Lega (semplice colore, sess. 14 set 2026).

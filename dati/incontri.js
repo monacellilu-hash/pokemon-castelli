@@ -1150,6 +1150,23 @@ DATI_INCONTRI['incontri bosco tuscolo'] = {
       { id: 299, min: 42, max: 46, rate: 10 },  // Nosepass
     ],
   },
+
+  // ── Colonna (città finale, post-Lega — 25 ott 2026, richiesta esplicita
+  // di Luca): aveva già erba vera disegnata (outside.tsx) ma zero
+  // rettangoli erba_alta, quindi zero incontri nonostante l'erba ci fosse
+  // davvero. Livelli alti, coerenti con una città post-Lega.
+  'incontri colonna': {
+    probabilita: 12,
+    pokemon: [
+      { id: 53,  min: 56, max: 60, rate: 20 },  // Persian
+      { id: 85,  min: 56, max: 60, rate: 18 },  // Dodrio
+      { id: 209, min: 55, max: 58, rate: 15 },  // Snubbull
+      { id: 210, min: 59, max: 63, rate: 10 },  // Granbull
+      { id: 101, min: 57, max: 61, rate: 12 },  // Electrode
+      { id: 229, min: 60, max: 64, rate: 8 },   // Houndoom (raro)
+      { id: 132, min: 56, max: 60, rate: 5 },   // Ditto (rarissimo)
+    ],
+  },
 };
 
 if (typeof module !== 'undefined' && module.exports) module.exports = DATI_INCONTRI;
