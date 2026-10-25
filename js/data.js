@@ -3542,9 +3542,15 @@ const POKE_MARKET = [
     merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'antidototot'] },
   { id: 'mk-dept-3f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['iperpozione', 'revitalizzante', 'elisir', 'repellente', 'massimorepellente'] },
+  // 25 ott 2026 (segnalato da Luca): il commesso del 4° piano dice "MT ed
+  // evolutivi" (dati/npc.js) ma la merce aveva solo evolutivi, zero MT —
+  // aggiunta una selezione di 12 MT di supporto/stato, utili ma senza
+  // ripetere gli attacchi più forti già in vendita da Cenciarels/Colonna.
   { id: 'mk-dept-4f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['pietra_foglia', 'pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_luna',
-            'rivestimetallo', 'patroclo', 'squamadragone', 'dente_oscuro', 'conchigliamutante', 'upgrade'] },
+            'rivestimetallo', 'patroclo', 'squamadragone', 'dente_oscuro', 'conchigliamutante', 'upgrade',
+            'mt_toxic', 'mt_protect', 'mt_rest', 'mt_double_team', 'mt_sunny_day', 'mt_rain_dance',
+            'mt_hidden_power', 'mt_facade', 'mt_secret_power', 'mt_light_screen', 'mt_reflect', 'mt_safeguard'] },
   { id: 'mk-dept-5f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['ultraball', 'maxpozione', 'elisir', 'revitalizzante'] },
   { id: 'mk-dept-5f-rari', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
