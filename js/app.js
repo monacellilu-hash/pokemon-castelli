@@ -3560,14 +3560,58 @@ async function interagisciPensione() {
 
   const opzioniMenu = [];
   if (occupanti.length < 2) opzioniMenu.push('Lascia un Pokémon');
-  if (occupanti.length > 0) opzioniMenu.push('Ritira i tuoi Pokémon');
+  // 25 ott 2026 (richiesta esplicita di Luca): con 2 occupanti deve poter
+  // ritirarne SOLO UNO, lasciando l'altro a continuare ad allenarsi/fare
+  // l'uovo — prima si potevano ritirare solo tutti insieme.
+  if (occupanti.length === 1) opzioniMenu.push('Ritira il tuo Pokémon');
+  if (occupanti.length === 2) {
+    opzioniMenu.push('Ritira un Pokémon');
+    opzioniMenu.push('Ritira entrambi');
+  }
   opzioniMenu.push('Niente, grazie');
 
   const scelta = await mostraSceltaLista('Cosa vuoi fare?', opzioniMenu);
   const testoScelta = opzioniMenu[scelta];
 
   if (testoScelta === 'Lascia un Pokémon') await depositaPensione(nomeNpc);
-  else if (testoScelta === 'Ritira i tuoi Pokémon') await ritiraPensione(nomeNpc);
+  else if (testoScelta === 'Ritira il tuo Pokémon' || testoScelta === 'Ritira entrambi') await ritiraPensione(nomeNpc);
+  else if (testoScelta === 'Ritira un Pokémon') await ritiraUnoPensione(nomeNpc);
+}
+
+// Ritira UN SOLO Pokémon dalla pensione (richiesta esplicita di Luca, 25
+// ott 2026), lasciando l'altro occupante: se quello rimasto faceva parte
+// di una coppia compatibile, il conto dell'uovo si azzera (non c'è più
+// coppia) e torna ad allenarsi da solo da oggi.
+async function ritiraUnoPensione(nomeNpc) {
+  const occupanti = [];
+  if (stato.pensione.slot1) occupanti.push({ slot: 'slot1', p: stato.pensione.slot1 });
+  if (stato.pensione.slot2) occupanti.push({ slot: 'slot2', p: stato.pensione.slot2 });
+  if (occupanti.length === 0) return;
+  if (stato.squadra.length >= 6) {
+    await mostraDialogo(nomeNpc, ['Nun c\'hai posto in squadra! Libera uno slot prima de torna\'.']);
+    return;
+  }
+  const opzioni = occupanti.map(({ p }) => {
+    const iconaGenere = p.genere === 'M' ? '♂' : (p.genere === 'F' ? '♀' : '—');
+    return `${p.nome} Lv.${p.livello} (${iconaGenere})`;
+  });
+  const scelta = await mostraSceltaLista('Quale dei due vuoi ritirare?', opzioni);
+  if (scelta < 0) return;
+  const { slot, p } = occupanti[scelta];
+  stato.squadra.push(p);
+  stato.pensione[slot] = null;
+  stato.pensione['giorno' + (slot === 'slot1' ? 'Slot1' : 'Slot2')] = null;
+  // Restava solo l'altro occupante: niente più coppia, azzera il conto
+  // dell'uovo e fa ripartire l'allenamento in solitaria da oggi.
+  stato.pensione.giornoCoppia = null;
+  const rimasto = slot === 'slot1' ? stato.pensione.slot2 : stato.pensione.slot1;
+  if (rimasto) {
+    const chiaveGiornoRimasto = (slot === 'slot1') ? 'giornoSlot2' : 'giornoSlot1';
+    stato.pensione[chiaveGiornoRimasto] = (stato.tempo && stato.tempo.giorno) || 1;
+  }
+  salvaPartita();
+  aggiornaHUD();
+  await mostraDialogo(nomeNpc, [`Eccolo qua, ${p.nome}!`]);
 }
 
 async function depositaPensione(nomeNpc) {
@@ -5064,6 +5108,11 @@ const VOLO_TILED = {
   'Albano Laziale':   { mappa: 'albano',  tx: 31, ty: 33 },
   'Ariccia':          { mappa: 'ariccia', tx: 21, ty: 36 },
   'Genzano di Roma':  { mappa: 'genzano', tx: 9,  ty: 46 },
+  // Mancava anche Colonna (25 ott 2026, segnalato da Luca: curato al Centro
+  // Pokémon lì ma "non ancora raggiungibile in volo" — stesso identico bug
+  // già risolto il 18 set per Albano/Ariccia/Genzano). Atterra 1 casella a
+  // sud della porta del Centro Pokémon di Colonna (colonna_2.tmj, tx50/ty24).
+  'Colonna':          { mappa: 'colonna_2', tx: 50, ty: 25 },
 };
 
 // Elenco completo delle destinazioni di volo (con coordinate sicure)

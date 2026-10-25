@@ -3400,6 +3400,41 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Preparate\' bene, davanti a te c\'è ancora la Via Vittoria.',
     premio: 1600,
   },
+  /* ── 4 allenatori aggiunti il 25 ott 2026: Luca aveva piazzato 4 copie
+     identiche di "all-p12-2" (stesso sprite, stesso id) sdoppiando
+     l'oggetto in Tiled — rinominate con sprite/squadra/dialoghi propri. ── */
+  'all-p12-16': {
+    sprite: 'trainer_ROCKER', ritratto: 'ROCKER', vista: 6,
+    classe: 'Rocker', nome: 'Argante',
+    squadra: [ { id: 101, livello: 59 }, { id: 82, livello: 58 } ],
+    dialogo_prima: 'Sta musica me carica prima de ogni lotta. Pronto?',
+    dialogo_dopo: 'Che assolo de batosta. Rispetto vero.',
+    premio: 1480,
+  },
+  'all-p12-17': {
+    sprite: 'trainer_SUPERNERD', ritratto: 'SUPERNERD', vista: 6,
+    classe: 'Supernerd', nome: 'Berengario',
+    squadra: [ { id: 375, livello: 60 } ],
+    dialogo_prima: 'Statisticamente, le mie probabilità di vittoria sono alte. Vediamo se sbaglio i calcoli.',
+    dialogo_dopo: 'Calcoli sbagliati, a quanto pare. Affascinante.',
+    premio: 1500,
+  },
+  'all-p12-18': {
+    sprite: 'trainer_ENGINEER', ritratto: 'ENGINEER', vista: 6,
+    classe: 'Ingegnere', nome: 'Eliseo',
+    squadra: [ { id: 208, livello: 60 } ],
+    dialogo_prima: 'Ho costruito io stesso l\'allenamento di questo Pokémon. Pezzo per pezzo.',
+    dialogo_dopo: 'Progetto da rivedere, allora. Complimenti.',
+    premio: 1550,
+  },
+  'all-p12-19': {
+    sprite: 'trainer_CHANNELER', ritratto: 'CHANNELER', vista: 6,
+    classe: 'Channeler', nome: 'Fulgenzia',
+    squadra: [ { id: 200, livello: 58 }, { id: 94, livello: 60 } ],
+    dialogo_prima: 'Gli spiriti mi dicono che vincerò io. Ma non sono mai stati infallibili.',
+    dialogo_dopo: 'Gli spiriti si sono sbagliati di nuovo. Pazienza.',
+    premio: 1500,
+  },
   /* ── Monte Cavo — miniboss davanti ad Articuno (sessione 8 agosto, seconda
      parte). Squadra Ghiaccio/Fuoco/Roccia, livello medio tra il cap di Monte
      Porzio (34) e quello di Rocca di Papa (40) ≈ 37, come richiesto.
