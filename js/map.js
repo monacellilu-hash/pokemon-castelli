@@ -2697,8 +2697,14 @@ const GameMap = (function () {
   // array che lo conterrebbe come unico elemento, altrimenti risulterebbe
   // "[object Object]" sullo schermo).
   function righeDialogo(v, fallback) {
-    if (Array.isArray(v) && v.length) return v;
-    if (typeof v === 'string' && v) return [v];
+    // {nome} sostituito col nome del giocatore (25 ott 2026, richiesta
+    // esplicita di Luca per il Campione) — stessa sintassi già usata in
+    // dati/cutscene.js, qui estesa anche ai dialoghi_prima/dopo statici dei
+    // trainer "normali" (non cutscene), così resta riusabile da chiunque.
+    const sostNome = (s) => String(s).replace(/\{nome\}/g,
+      (typeof stato !== 'undefined' && stato.nomeGiocatore) || 'Allenatore');
+    if (Array.isArray(v) && v.length) return v.map(sostNome);
+    if (typeof v === 'string' && v) return [sostNome(v)];
     return fallback ? [fallback] : [];
   }
 
@@ -3143,9 +3149,14 @@ const GameMap = (function () {
   // rivale/campioneLega: i rivali piazzati in giro per il mondo con sprite
   // Tiled "RIVALE_UOMO"/"RIVALE_DONNA" restano invece sempre entrambi
   // visibili com'è oggi, non li tocca.
+  // Bug corretto 25 ott 2026 (segnalato da Luca): Blue puntava allo sprite
+  // GENERICO 'trainer_rivale_2' (cartella Trainer/) invece del suo sprite
+  // unico 'Rivale_2' (cartella Unici/, stessa cartella di RIVALE_1/Green) —
+  // regola SPRITE di CLAUDE.md, mai un trainer_* generico quando esiste lo
+  // sprite vero del personaggio.
   const SPRITE_RIVALE_SCELTO = {
     Green: 'RIVALE_1',
-    Blue: 'trainer_rivale_2',
+    Blue: 'Rivale_2',
   };
 
   // +30% su tutti gli sprite overworld di Pokémon — leggendari e compagni
@@ -3638,6 +3649,21 @@ const GameMap = (function () {
           stato.allenatoriBattuti = stato.allenatoriBattuti.filter(id => !BOSCO_TUSCOLO_TRAINER_IDS.includes(id));
         }
         for (const id of BOSCO_TUSCOLO_TRAINER_IDS) trainerBattuti.delete(id);
+        if (typeof salvaPartita === 'function') salvaPartita();
+      }
+
+      // Lega di Colonna (richiesta esplicita di Luca, 25 ott 2026): ogni
+      // volta che si IMBOCCA la sfida (si entra in lega_pokemon_1f, unico
+      // punto d'ingresso, sempre dalla hall 'lega_pokemon') si risfidano da
+      // capo TUTTI e 4 i membri del Superquattro + il Campione, sia che la
+      // volta precedente si sia vinto sia che si sia perso — niente di
+      // "già battuto" resta tra un tentativo e l'altro.
+      if (chiave === 'lega_pokemon_1f') {
+        const LEGA_TRAINER_IDS = ['sq_captain', 'sq_pres', 'sq_dema', 'sq_marcuois', 'campione_remo'];
+        if (Array.isArray(stato.allenatoriBattuti)) {
+          stato.allenatoriBattuti = stato.allenatoriBattuti.filter(id => !LEGA_TRAINER_IDS.includes(id));
+        }
+        for (const id of LEGA_TRAINER_IDS) trainerBattuti.delete(id);
         if (typeof salvaPartita === 'function') salvaPartita();
       }
 
@@ -13222,8 +13248,12 @@ const GameMap = (function () {
     // chiavi/MN non vendibili non hanno "prezzo" in OGGETTI, escluse da sole).
     _costruisciLista() {
       if (this._modo === 'vendi') {
+        // La Masterball non si vende MAI (richiesta esplicita di Luca, 25 ott
+        // 2026): va esclusa a parte, ha "prezzo" come ogni altra Ball (serve
+        // per calcolare il costo di ACQUISTO a Cenciarels) ma qui è il lato
+        // vendita, dove non deve mai comparire.
         this._merce = Object.keys(stato.zaino || {})
-          .filter(chiave => (stato.zaino[chiave] || 0) > 0 && OGGETTI[chiave] && OGGETTI[chiave].prezzo)
+          .filter(chiave => chiave !== 'masterball' && (stato.zaino[chiave] || 0) > 0 && OGGETTI[chiave] && OGGETTI[chiave].prezzo)
           .map(chiave => ({ chiave, oggetto: OGGETTI[chiave] }));
       } else {
         this._merce = (this._market ? this._market.merce : [])

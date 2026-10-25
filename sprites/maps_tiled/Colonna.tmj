@@ -237,7 +237,7 @@
                  "rotation":0,
                  "type":"",
                  "visible":true,
-                 "width":861.333333333333,
+                 "width":868.333333333333,
                  "x":1076,
                  "y":557.333333333333
                 }, 
@@ -970,6 +970,29 @@
                  "width":0,
                  "x":1008,
                  "y":69.3333333333335
+                },
+                {
+                 "height":32,
+                 "id":50,
+                 "name":"incontri_colonna",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"incontri colonna"
+                        },
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"erba_alta"
+                        }],
+                 "rotation":0,
+                 "type":"erba_alta",
+                 "visible":true,
+                 "width":32,
+                 "x":320,
+                 "y":32
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -978,7 +1001,7 @@
          "y":0
         }],
  "nextlayerid":6,
- "nextobjectid":49,
+ "nextobjectid":51,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

@@ -3965,6 +3965,16 @@ const DATI_TRAINER = {
     pokemonFianco: true,   // richiesta Luca 20 ott 2026: anche Superquattro/Campione
     flagVittoria: 'campione_remo_battuto',
     squadra: [ { id: 6, livello: 65 } ],     // fallback: solo un core plausibile
+    // Dialogo pre-lotta allungato (richiesta esplicita di Luca, 25 ott
+    // 2026: "fagli dire qualcosa un po' allungato", {nome} sostituito dal
+    // motore in righeDialogo, js/map.js).
+    dialogo_prima: [
+      '{nome}... ce siamo. Non pensavo che sarei arrivato fin qui a aspettatte proprio io.',
+      'Da quando ci siamo sfidati la prima volta, al laboratorio, so\' cambiato tanto — e penso sia successo pure a te.',
+      'Ho visto ogni medaglia che hai preso, ogni palestra, ogni dungeon. Non sei più quello che è partito da Borgata Tuscolana.',
+      'Ma io sono il Campione dei Castelli Romani per un motivo, {nome}. Qui non si passa per fortuna.',
+      'Dammi il tuo meglio. Io te do\' il mio!',
+    ],
     dialogo_dopo: 'Hai vinto. Sei tu il nuovo Campione dei Castelli Romani.',
     premio: 20000,
     oggettiCura: [{ chiave: 'curatotale', quantita: 4 }],   // richiesta Luca 20 ott 2026 (4 per il Campione)

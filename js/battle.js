@@ -1837,7 +1837,9 @@ const Battle = (function () {
         `<span class="mossa-nome">${mossa.nomeIt}</span>` +
         `<span class="tipo-badge" style="background:${TIPO_COLORI[mossa.tipo] || '#888'}">${TIPO_NOMI[mossa.tipo] || mossa.tipo}</span>` +
         `<span class="mossa-pp">PP ${mossa.pp}/${mossa.ppMax}</span>`;
-      btn.disabled = mossa.pp <= 0;
+      // Divinazione/Doom Desire in attesa di colpire: non si può rilanciare
+      // (richiesta Luca, 25 ott 2026) finché l'effetto non è risolto.
+      btn.disabled = mossa.pp <= 0 || mio.divinazionePendente === mossa.nome;
       btn.addEventListener('click', () => { _ultimoCursoreMosse = idx; turnoCompleto(mossa); });
       menu.appendChild(btn);
     });
@@ -2700,10 +2702,16 @@ const Battle = (function () {
       if (mossa.pp !== undefined && mossa.pp < 900) mossa.pp = Math.max(0, mossa.pp - 1);
       const bersaglioCalc = Array.isArray(dif) ? dif.find(b => b && b.hpAttuale > 0) : dif;
       await di(`${etichettaAtt} intravede il futuro!`);
+      // Finché non colpisce (o manca il bersaglio), chi l'ha usata non può
+      // rilanciarla — richiesta esplicita di Luca, 25 ott 2026 (prima la si
+      // poteva riusare ogni turno, accumulando più colpi in coda).
+      att.divinazionePendente = mossa.nome;
       if (bersaglioCalc) {
         const { danno } = calcolaDanno(att, bersaglioCalc, mossa);
         const latoColpito = latoBattler(att) === 'giocatore' ? 'nemico' : 'giocatore';
-        attacchiRitardati.push({ turni: 2, danno, nomeMossa: mossa.nome, nomeAttaccante: etichettaAtt, latoColpito });
+        attacchiRitardati.push({ turni: 2, danno, nomeMossa: mossa.nome, nomeAttaccante: etichettaAtt, latoColpito, attaccante: att });
+      } else {
+        att.divinazionePendente = null; // nessun bersaglio: l'effetto finisce subito
       }
       return;
     }
@@ -2961,6 +2969,7 @@ const Battle = (function () {
       a.turni -= 1;
       if (a.turni > 0) continue;
       attacchiRitardati.splice(i, 1);
+      if (a.attaccante) a.attaccante.divinazionePendente = null; // libera la mossa per il prossimo uso
       const bersaglio = a.latoColpito === 'giocatore' ? trovaMio() : trovaNemico();
       if (!bersaglio) {
         await di(`${a.nomeAttaccante} ha mancato col futuro: non c'è nessuno da colpire!`);
@@ -2978,7 +2987,7 @@ const Battle = (function () {
   function sceglieMossaCasuale(ist) {
     if (ist.inCarica) return ist.inCarica;   // deve completare la mossa a 2 turni
     if (ist.furia) return ist.mosse.find(m => m.nome === ist.furia.nome) || mossaFallback(); // MOD 6B
-    const utilizzabili = ist.mosse.filter(m => m.pp > 0);
+    const utilizzabili = ist.mosse.filter(m => m.pp > 0 && ist.divinazionePendente !== m.nome);
     return utilizzabili.length
       ? utilizzabili[Math.floor(Math.random() * utilizzabili.length)]
       : mossaFallback();
@@ -3104,7 +3113,7 @@ const Battle = (function () {
       const m = attaccante.mosse.find(mm => mm.nome === attaccante.primaMossa && mm.pp > 0);
       if (m) return m;
     }
-    const utilizzabili = attaccante.mosse.filter(m => m.pp > 0);
+    const utilizzabili = attaccante.mosse.filter(m => m.pp > 0 && attaccante.divinazionePendente !== m.nome);
     if (!utilizzabili.length) return mossaFallback();
     // Predilige una mossa di cura sotto il 40% HP (20 ott 2026, richiesta
     // esplicita di Luca, es. Umbreon): se ne ha una disponibile, la usa
@@ -3224,8 +3233,14 @@ const Battle = (function () {
 
     ultimoSwitchVolontarioTurno = numeroTurnoBattaglia;
     const vecchio = nemico;
+    // Bug corretto 25 ott 2026 (segnalato da Luca, caso Crobat/Volo): lo switch
+    // volontario non azzerava inCarica/seminvulnerabile di chi esce — richiamato
+    // più avanti, "vecchio" restava "in volo" per sempre e al rientro Volo
+    // colpiva in UN turno, come se la carica fosse già stata consumata.
+    vecchio.inCarica = null; vecchio.deveRicaricare = false; vecchio.seminvulnerabile = null;
     indiceNemico = migliore;
     nemico = squadraNemica[indiceNemico];
+    nemico.inCarica = null; nemico.deveRicaricare = false; nemico.seminvulnerabile = null;
     // Bug corretto 22 ott 2026 (segnalato da Luca, caso Ginevra→Gardevoir):
     // mancavano aggiornaSprite(true)/animaEntrataPokemon, le stesse due
     // chiamate che il percorso del KO (nemicoSconfitto) già fa dopo aver
@@ -4636,7 +4651,7 @@ const Battle = (function () {
         `<span class="mossa-nome">${mossa.nomeIt}</span>` +
         `<span class="tipo-badge" style="background:${TIPO_COLORI[mossa.tipo] || '#888'}">${TIPO_NOMI[mossa.tipo] || mossa.tipo}</span>` +
         `<span class="mossa-pp">PP ${mossa.pp}/${mossa.ppMax}</span>`;
-      btn.disabled = mossa.pp <= 0;
+      btn.disabled = mossa.pp <= 0 || m.divinazionePendente === mossa.nome;
       btn.addEventListener('click', () => { _ultimoCursoreMosseDoppia[slot] = idx; _doppiaSceltaMossa(slot, mossa); });
       menu.appendChild(btn);
     });

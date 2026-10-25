@@ -3378,8 +3378,13 @@ function parlaScienziatoGrottaVulcano() {
    - DUE, NON compatibili: ognuno si allena per conto suo come se fosse solo.
    ============================================================ */
 
-const GIORNI_PENSIONE_LIVELLO = 20; // giorni di gioco per +1 livello (deposito singolo/incompatibile)
-const GIORNI_PENSIONE_UOVO    = 20; // giorni di gioco insieme (coppia compatibile) prima che nasca l'uovo
+// Sess. 25 ott 2026 (segnalato da Luca: "la pensione non lo fa", soglie
+// troppo lunghe per notarlo giocando) — 20 giorni di gioco valgono ~28800
+// passi (quasi un'intera sessione di test): ridotte a soglie che si notano
+// davvero in una sessione normale. L'uovo usa "2 settimane" testuali, la
+// richiesta esplicita di Luca.
+const GIORNI_PENSIONE_LIVELLO = 5;  // giorni di gioco per +1 livello (deposito singolo/incompatibile)
+const GIORNI_PENSIONE_UOVO    = 14; // 2 settimane di gioco insieme (coppia compatibile) prima che nasca l'uovo
 const PASSI_SCHIUSA_UOVO      = 10000; // passi camminati col giocatore prima della schiusa
 
 // I 21 leggendari (Gen 1-3, vedi CLAUDE.md): MAI uova, nemmeno con Ditto —
@@ -3528,7 +3533,7 @@ async function interagisciPensione() {
   if (stato.pensione.uovoPronto) {
     if (stato.squadra.length >= 6) {
       await mostraDialogo(nomeNpc, [
-        'Ce sta \'n uovo pronto pe\' te, ma la tu\' squadra è piena!',
+        'I tuoi Pokémon... non so come dirlo... c\'è un uovo pronto, ma la tua squadra è piena!',
         'Fa\' posto e torna a trovamme.',
       ]);
       return;
@@ -3543,8 +3548,8 @@ async function interagisciPensione() {
     salvaPartita();
     aggiornaHUD();
     await mostraDialogo(nomeNpc, [
-      'Guarda che sorpresa! I tu\' Pokémon hanno fatto \'n uovo insieme!',
-      'Portelo con te e continua a cammina\': prima o poi se schiuderà!',
+      'I tuoi Pokémon... non so come dirlo... prendi questo uovo!',
+      'Portalo con te e continua a camminare: prima o poi si schiuderà!',
     ]);
     return;
   }
