@@ -424,6 +424,9 @@ const GameMap = (function () {
     // Sacca d'acqua profonda sotto il Lago di Albano, raggiungibile solo con
     // MN Sub (da interno_lago o dal rifugio GdF di Marino) — non fa parte del
     // cluster di superficie, è un "interno" a sé come i piani del rifugio GdF.
+    // Unica mappa con lo sprite/animazione "sub" (26 ott 2026, richiesta
+    // esplicita di Luca): l'Antro Kyogre qui sotto NON lo usa più, è un
+    // dungeon a piedi normale una volta dentro.
     'lago_albano_profondo': {
       file: 'sprites/maps_tiled/Lago di Albano profondo.tmj',
       interno: true, sub: true,
@@ -440,52 +443,52 @@ const GameMap = (function () {
     // (gli "npc_*" nelle mappe sono solo segnaposto con nota_origine).
     'antro_kyogre_entrance': {
       file: 'sprites/maps_tiled/antro_kyogre_entrance.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_1': {
       file: 'sprites/maps_tiled/antro_kyogre_1.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_2': {
       file: 'sprites/maps_tiled/antro_kyogre_2.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_3': {
       file: 'sprites/maps_tiled/antro_kyogre_3.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_4': {
       file: 'sprites/maps_tiled/antro_kyogre_4.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_5': {
       file: 'sprites/maps_tiled/antro_kyogre_5.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_6': {
       file: 'sprites/maps_tiled/antro_kyogre_6.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_7': {
       file: 'sprites/maps_tiled/antro_kyogre_7.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_8': {
       file: 'sprites/maps_tiled/antro_kyogre_8.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     'antro_kyogre_9': {
       file: 'sprites/maps_tiled/antro_kyogre_9.tmj',
-      interno: true, tema: 'cave', sub: true,
+      interno: true, tema: 'cave',
       latFissa: 41.7440, lonFissa: 12.6580,
     },
     // ── Base di lancio + Grotta Perduta di Deoxys (22 ott 2026, post-Lega,
@@ -3492,19 +3495,30 @@ const GameMap = (function () {
             frameRate: 1, repeat: -1,
           });
         }
-        // Sub: un'unica animazione di nuoto (4 frame, nessuna direzione vera
-        // nel foglio originale) — registrata identica sotto tutte e 4 le
-        // chiavi di direzione, così _animKeyPlayer non deve saperlo.
-        for (const [dir] of GRUPPI_DIREZIONE) {
+        // Sub (corretto 26 ott 2026, segnalato da Luca: "ruoti come una
+        // trottola a ogni step"): i 4 frame del foglio NON sono un ciclo di
+        // nuoto, sono 4 POSE DIREZIONALI fisse (verificato visivamente,
+        // ordine down/up/left/right) — una per direzione, come un normale
+        // foglio a 4 direzioni ma con un solo frame a testa invece di 4.
+        // Usarli tutti in sequenza come "ciclo di cammino" (comportamento
+        // precedente) faceva vedere il personaggio girare su se stesso
+        // (down→up→left→right→down...) a ogni passo, qualunque fosse la
+        // direzione vera. Ora idle E walk mostrano semplicemente la posa
+        // ferma della direzione giusta, come nei giochi originali (sott'acqua
+        // non c'è un vero ciclo di bracciate, il personaggio si limita a
+        // voltarsi).
+        const FRAME_SUB_DIR = { down: 0, up: 1, left: 2, right: 3 };
+        for (const dir of Object.keys(FRAME_SUB_DIR)) {
+          const frameIdx = FRAME_SUB_DIR[dir];
           this.anims.create({
             key: `${genere}-sub-idle-${dir}`,
-            frames: this.anims.generateFrameNumbers(s.sub, { frames: [0] }),
-            frameRate: 4, repeat: -1,
+            frames: this.anims.generateFrameNumbers(s.sub, { frames: [frameIdx] }),
+            frameRate: 1, repeat: -1,
           });
           this.anims.create({
             key: `${genere}-sub-walk-${dir}`,
-            frames: this.anims.generateFrameNumbers(s.sub, { frames: [0, 1, 2, 3] }),
-            frameRate: 6, repeat: -1,
+            frames: this.anims.generateFrameNumbers(s.sub, { frames: [frameIdx] }),
+            frameRate: 1, repeat: -1,
           });
         }
       }
@@ -5584,7 +5598,15 @@ const GameMap = (function () {
     // Chiave dell'animazione del giocatore per lo stato attuale (genere +
     // modalità). "tipo" è 'idle' o 'walk'.
     _animKeyPlayer(tipo, dir) {
-      return `${genereGiocatore}-${this._variantePlayerAttiva()}-${tipo}-${dir}`;
+      const variante = this._variantePlayerAttiva();
+      // Fix 26 ott 2026 (segnalato da Luca: "è piccola"): il foglio sub è
+      // 32×32 contro i 32×48 di tutti gli altri set (normale/corsa/bici/surf),
+      // quindi a parità di scala il personaggio appare più basso/piccolo
+      // sott'acqua. Nessun nuovo asset: si ingrandisce lo sprite dello
+      // stesso rapporto (48/32 = 1.5×) solo mentre è attiva la variante sub,
+      // tornando alla scala normale (1×) in ogni altro caso.
+      if (playerSprite) playerSprite.setScale(variante === 'sub' ? 1.5 : 1);
+      return `${genereGiocatore}-${variante}-${tipo}-${dir}`;
     }
 
     _posizionaPlayer(tx, ty) {
