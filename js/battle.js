@@ -4195,6 +4195,54 @@ const Battle = (function () {
     return { ok: true, messaggi };
   }
 
+  // EXP silenziosa fuori battaglia (26 ott 2026, richiesta esplicita di
+  // Luca per la Pensione di Nemi: "2500 passi = 250 exp al Pokémon", non più
+  // un salto di livello intero come caramellaRara). Stessa curva cubica e
+  // stesso tetto "mai al level cap" di assegnaExp, ma senza NESSUNA delle
+  // chiamate alla UI di battaglia (di/mostraSchermataLevelUp/aggiornaPannelli):
+  // qui non c'è nessuna schermata di lotta aperta. Mosse nuove ed evoluzioni
+  // restano gestite, riusando lo stesso schema non-UI di caramellaRara.
+  async function assegnaExpFuoriBattaglia(ist, exp, levelCap) {
+    const cap = levelCap || 100;
+    const expMassima = Math.pow(cap, 3) - 1;
+    ist.exp = (ist.exp || 0) + exp;
+    if (ist.exp > expMassima) ist.exp = expMassima;
+
+    const controllaNuoveMosseSilenziose = async () => {
+      const nuove = (ist.mosseImparabili || []).filter(m => m.livello === ist.livello);
+      for (const voce of nuove) {
+        if (ist.mosse.some(s => s.nome === voce.nome)) continue;
+        let dettagli;
+        try { dettagli = await PokeAPI.getMossa(voce.nome, voce.url); }
+        catch (e) { continue; }
+        if (!mossaUtile(dettagli)) continue;
+        if (ist.mosse.length < 4) ist.mosse.push({ ...dettagli, pp: dettagli.ppMax });
+      }
+    };
+
+    let salito = false;
+    // Stesso "mai al cap" di assegnaExp/caramellaRara: non supera cap-1.
+    while (ist.livello < cap - 1 && ist.exp >= Math.pow(ist.livello + 1, 3)) {
+      ist.livello += 1;
+      salito = true;
+      const vecchioHpMax = ist.hpMax;
+      ricalcolaStatistiche(ist);
+      ist.hpAttuale = Math.min(ist.hpMax, ist.hpAttuale + (ist.hpMax - vecchioHpMax));
+      await controllaNuoveMosseSilenziose();
+      try {
+        if (ist.felicita != null) ist.felicita = Math.min(255, ist.felicita + 2);
+        const evo = trovaEvoluzioneAuto(ist);
+        if (evo) {
+          await evolviIstanza(ist, evo.idEvo);
+          await controllaNuoveMosseSilenziose();
+        }
+      } catch (err) {
+        console.warn('[Battle] Controllo evoluzione (pensione) saltato:', err.message);
+      }
+    }
+    return salito;
+  }
+
   /* ==========================================================
      AVVIO DELLA BATTAGLIA
      ========================================================== */
@@ -5389,7 +5437,7 @@ const Battle = (function () {
 
   // Funzioni pubbliche del modulo
   return {
-    avvia, avviaDoppia, creaIstanza, caramellaRara, evolviIstanza, trovaEvoluzioneAuto, generaGenere, trovaSpecieBase,
+    avvia, avviaDoppia, creaIstanza, caramellaRara, assegnaExpFuoriBattaglia, evolviIstanza, trovaEvoluzioneAuto, generaGenere, trovaSpecieBase,
     sceglieSlotAbilita, abilitaChiaveDaSlot,
     spostaCursore, confermaCursore, indietroCursore,
     NATURE_DB, generaNatura, ricalcolaStatistiche,

@@ -1121,33 +1121,56 @@ DATI_INCONTRI['incontri bosco tuscolo'] = {
   // ── LUGIA (24 ott 2026, post-Lega, richiesta esplicita di Luca) ──
   // Icefall Cave: dungeon di ghiaccio, incontri su TUTTO il pavimento
   // (incontriCostanti, vedi MAPPE in js/map.js), livelli 40-50 come chiesto.
+  // Rifatta 26 ott 2026 (richiesta esplicita di Luca: "fotocopia con
+  // montecavo aggiungici in più solo Lapras") — stessa specie di
+  // 'incontri montecavo' (compreso il pool notturno), portate dai livelli
+  // bassi di Monte Cavo (22-28, prima della Lega) ai livelli 40-50 di
+  // questa zona post-Lega, più Lapras aggiunto come richiesto. Vale per
+  // tutti i piani (entrance/1F/B1F/Back condividono questo stesso
+  // incontriId, vedi MAPPE in js/map.js).
   'incontri lugia icefall cave': {
     probabilita: 12,
     pokemon: [
-      { id: 86,  min: 40, max: 43, rate: 20 },  // Seel
-      { id: 87,  min: 44, max: 47, rate: 10 },  // Dewgong
-      { id: 220, min: 40, max: 44, rate: 18 },  // Swinub
-      { id: 221, min: 45, max: 48, rate: 10 },  // Piloswine
-      { id: 215, min: 42, max: 46, rate: 14 },  // Sneasel
-      { id: 225, min: 43, max: 47, rate: 8 },   // Delibird
-      { id: 363, min: 41, max: 45, rate: 15 },  // Spheal
-      { id: 364, min: 46, max: 50, rate: 7 },   // Sealeo
-      { id: 238, min: 40, max: 43, rate: 8 },   // Smoochum (raro)
+      { id: 216, min: 40, max: 43, rate: 22 },  // Teddiursa
+      { id: 220, min: 40, max: 44, rate: 28 },  // Swinub
+      { id: 221, min: 44, max: 48, rate: 10 },  // Piloswine (evoluto)
+      { id: 225, min: 42, max: 46, rate: 22 },  // Delibird (raro)
+      { id: 246, min: 43, max: 47, rate: 1 },   // Larvitar (rarissimo)
+      { id: 361, min: 40, max: 43, rate: 22 },  // Snorunt
+      { id: 362, min: 45, max: 49, rate: 6 },   // Glalie (evoluto)
+      { id: 131, min: 41, max: 50, rate: 8 },   // Lapras (aggiunto, richiesta esplicita di Luca)
+    ],
+    pokemonNotte: [
+      { id: 74,  min: 40, max: 43, rate: 22 },  // Geodude
+      { id: 124, min: 43, max: 47, rate: 10 },  // Jynx (rarissima)
+      { id: 238, min: 40, max: 43, rate: 22 },  // Smoochum (cucciolo)
     ],
   },
   // Ruin Valley: valle all'aperto, erba vera solo sul tile locale 20 del suo
   // tileset (TILE_ERBA_PER_TILESET, js/map.js) — niente incontri sul resto
-  // del terreno/rovine, livelli 40-50 come chiesto.
+  // del terreno/rovine, livelli 40-50 come chiesto. Rifatta 26 ott 2026
+  // (richiesta esplicita di Luca: "se non ci sono incontri fai un mix tra
+  // percorso 7 e via dei laghi") — stessa logica di zona verificata nel
+  // codice (rettangolo erba_alta id 1185 già presente, tabella già
+  // collegata), ma specie cambiate come richiesto, portate ai livelli
+  // post-Lega di questa zona invece dei livelli bassi delle due mappe
+  // d'origine.
   'incontri lugia ruin valley': {
     probabilita: 15,
     pokemon: [
-      { id: 27,  min: 40, max: 43, rate: 20 },  // Sandshrew
-      { id: 28,  min: 44, max: 48, rate: 10 },  // Sandslash
-      { id: 74,  min: 40, max: 43, rate: 22 },  // Geodude
-      { id: 75,  min: 44, max: 48, rate: 12 },  // Graveler
-      { id: 104, min: 41, max: 44, rate: 18 },  // Cubone
-      { id: 105, min: 45, max: 49, rate: 8 },   // Marowak
-      { id: 299, min: 42, max: 46, rate: 10 },  // Nosepass
+      { id: 114, min: 40, max: 43, rate: 14 },  // Tangela (da via dei laghi)
+      { id: 123, min: 42, max: 46, rate: 8 },   // Scyther (da via dei laghi, raro)
+      { id: 241, min: 41, max: 44, rate: 12 },  // Miltank (da percorso 7)
+      { id: 352, min: 40, max: 44, rate: 14 },  // Kecleon (da percorso 7)
+      { id: 329, min: 43, max: 47, rate: 10 },  // Vibrava (evoluzione di Trapinch, percorso 7)
+      { id: 330, min: 48, max: 50, rate: 4 },   // Flygon (rarissimo)
+      { id: 286, min: 44, max: 48, rate: 8 },   // Breloom (evoluzione di Shroomish, via dei laghi)
+      { id: 189, min: 41, max: 45, rate: 10 },  // Jumpluff (evoluzione di Hoppip, via dei laghi)
+    ],
+    pokemonNotte: [
+      { id: 215, min: 42, max: 46, rate: 10 },  // Sneasel (da via dei laghi)
+      { id: 356, min: 43, max: 47, rate: 8 },   // Dusclops (evoluzione di Duskull, via dei laghi)
+      { id: 207, min: 44, max: 48, rate: 6 },   // Gligar (da via dei laghi)
     ],
   },
 

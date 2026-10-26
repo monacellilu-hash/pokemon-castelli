@@ -3175,6 +3175,12 @@ const OGGETTI = {
                descrizione: 'Insegna Cascata (Acqua, potenza 80). Riutilizzabile all\'infinito.' },
   mn_spaccaroccia: { nome: 'MN Spaccaroccia', categoria: 'mn', mossa: 'rock-smash', prezzo: 0, icona: '🪨',
                descrizione: 'Insegna Spaccaroccia (Lotta, potenza 40). Riutilizzabile all\'infinito.' },
+  // Mancava del tutto (bug trovato 26 ott 2026, segnalato da Luca): il
+  // PERMESSO stato.mn.sub lo dà già Genzano da tempo, ma l'OGGETTO MN non
+  // esisteva in OGGETTI → _concediOggettoMN non trovava nulla da dare e
+  // Castagno non regalava mai niente dopo la Lega. Stesso schema delle altre.
+  mn_sub: { nome: 'MN Sub', categoria: 'mn', mossa: 'dive', prezzo: 0, icona: '🤿',
+               descrizione: 'Insegna Sub (Acqua, potenza 80). Riutilizzabile all\'infinito.' },
 
   // ── MT (categoria 'mt': si usano su un Pokémon per insegnargli una mossa,
   //    si consumano all'uso — stile Gen 1-3, non riutilizzabili). Il campo

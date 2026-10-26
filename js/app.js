@@ -151,12 +151,11 @@ let stato = {
   meteo: { tipo: 'sereno', scadeAlPasso: 0 },
   // Gauntlet palestre: traccia l'indice del prossimo gregario da affrontare
   gauntletPalestra: {},
-  // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati, ciascuno col GIORNO in cui
-  // è stato lasciato (per il level-up in solitaria ogni 20 giorni) + il giorno in
-  // cui la coppia compatibile si è formata (per l'uovo, sempre ogni 20 giorni) +
-  // l'uovo pronto da ritirare. Rifatto a giorni (6 ott 2026, richiesta di Luca):
-  // prima era tutto a passi, ora SOLO la schiusa dell'uovo in squadra resta a passi.
-  pensione: { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false },
+  // F9.3 — Pensione Pokémon (Nemi): 2 slot depositati, ciascuno coi PASSI
+  // (stato.passi) a cui è stato lasciato (EXP vera ogni PASSI_PENSIONE_LIVELLO,
+  // 26 ott 2026, richiesta di Luca) + il giorno in cui la coppia compatibile
+  // si è formata (per l'uovo, resta a giorni di gioco) + l'uovo pronto.
+  pensione: { slot1: null, slot2: null, passiSlot1: null, passiSlot2: null, giornoCoppia: null, uovoPronto: false },
   pokedex:  {}, // { [id]: { visto, catturato, nome, spriteFronte } } — registro Pokédex
   // Laboratorio Rianimazione Fossili di Genzano (5 ott 2026): null finché non
   // si consegna un fossile, poi { fossile, idPokemon, giornoPronto }.
@@ -269,14 +268,23 @@ async function caricaPartita() {
       if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
       // Migrazione F9.3: Pensione Pokémon
       if (!stato.pensione || typeof stato.pensione !== 'object') {
-        stato.pensione = { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false };
+        stato.pensione = { slot1: null, slot2: null, passiSlot1: null, passiSlot2: null, giornoCoppia: null, uovoPronto: false };
       }
-      // Migrazione 6 ott 2026: da passi a giorni (vecchi salvataggi avevano
-      // "passiInsieme" invece dei 3 campi "giorno*" — li inizializza a oggi,
-      // non si può recuperare il progresso già fatto a passi.
-      if (stato.pensione.giornoSlot1 === undefined) stato.pensione.giornoSlot1 = null;
-      if (stato.pensione.giornoSlot2 === undefined) stato.pensione.giornoSlot2 = null;
+      // Migrazione 26 ott 2026: da giorni a passi per il level-up singolo
+      // (vecchi salvataggi avevano giornoSlot1/giornoSlot2) — un occupante
+      // già depositato riparte a contare da ORA, non si recupera il
+      // progresso già fatto a giorni (stessa logica della migrazione
+      // precedente, 6 ott 2026, da passi a giorni).
+      const passiOraMigrazione = stato.passi || 0;
+      if (stato.pensione.passiSlot1 === undefined) {
+        stato.pensione.passiSlot1 = stato.pensione.slot1 ? passiOraMigrazione : null;
+      }
+      if (stato.pensione.passiSlot2 === undefined) {
+        stato.pensione.passiSlot2 = stato.pensione.slot2 ? passiOraMigrazione : null;
+      }
       if (stato.pensione.giornoCoppia === undefined) stato.pensione.giornoCoppia = null;
+      delete stato.pensione.giornoSlot1;
+      delete stato.pensione.giornoSlot2;
       delete stato.pensione.passiInsieme;
       // Migrazione: assegna il sesso ai Pokémon salvati prima dell'introduzione del genere
       [...(stato.squadra || []), ...tuttiIBoxFlat()].forEach(p => {
@@ -1134,8 +1142,14 @@ async function interagisciLaboratorio() {
     // Dopo la Lega (19 ott 2026, richiesta esplicita di Luca): il
     // Professore ha saputo della vittoria (e che hai battuto i suoi
     // nipoti, i rivali) e regala la MN Sub, una tantum.
+    // Bug corretto 26 ott 2026 (segnalato da Luca): il controllo leggeva
+    // stato.mn.sub, che è il PERMESSO di usare Sub fuori lotta — dato già
+    // da Genzano con mnDonata:'sub' MOLTO prima della Lega — quindi questo
+    // ramo pensava "gliel'ho già data" e non regalava mai l'OGGETTO vero
+    // (mn_sub mancava pure del tutto da OGGETTI, vedi js/data.js). Ora usa
+    // un flag dedicato, indipendente dal permesso di Genzano.
     if (stato.flags.legaCompletata) {
-      if (stato.mn && stato.mn.sub) {
+      if (stato.flags.sub_data_da_castagno) {
         await mostraDialogo(PROFESSORE_NOME, [
           'Il tuo Pokédex è una meraviglia da studiare. Continua così, Campione!',
         ]);
@@ -1147,7 +1161,8 @@ async function interagisciLaboratorio() {
         'Mi hai reso fiero, davvero. Prendi questo come ringraziamento: la MN Sub. Ora potrai scendere anche dove la terra finisce e comincia l\'acqua.',
       ]);
       if (!stato.mn) stato.mn = {};
-      stato.mn.sub = true;
+      stato.mn.sub = true; // defensivo: su un salvataggio vecchio senza Genzano gli dà comunque il permesso
+      stato.flags.sub_data_da_castagno = true;
       _concediOggettoMN('sub');
       salvaPartita();
       aggiornaHUD();
@@ -2103,11 +2118,14 @@ async function interagisciPalestra(idPalestra) {
 // MAI l'oggetto corrispondente (mn_<nome>) nello zaino — quindi "Zaino →
 // Insegna" non la trovava mai e non si poteva insegnare a nessun Pokémon.
 // Da chiamare SEMPRE insieme a "stato.mn.<nome> = true", per ogni MN che ha
-// una voce in OGGETTI (oggi: taglio/surf/volo/forza/cascata/spaccaroccia —
-// Sub non è ancora implementata, CLAUDE.md).
+// una voce in OGGETTI (oggi: taglio/surf/volo/forza/cascata/spaccaroccia/sub).
 function _concediOggettoMN(nomeMN) {
   const chiave = 'mn_' + nomeMN;
-  if (typeof OGGETTI !== 'undefined' && OGGETTI[chiave] && !stato.zaino[chiave]) {
+  if (typeof OGGETTI === 'undefined' || !OGGETTI[chiave]) {
+    console.warn('[MN] Nessuna definizione OGGETTI.' + chiave + ' — nessun oggetto consegnato per "' + nomeMN + '".');
+    return;
+  }
+  if (!stato.zaino[chiave]) {
     stato.zaino[chiave] = 1;
   }
 }
@@ -2142,7 +2160,11 @@ async function vinciPalestra(palestra) {
   // Permesso MN concesso direttamente dalla palestra (Cascata/Sub, sessione 12 agosto).
   if (palestra.mnDonata && !stato.mn[palestra.mnDonata]) {
     stato.mn[palestra.mnDonata] = true;
-    _concediOggettoMN(palestra.mnDonata);
+    // Sub è un caso speciale (26 ott 2026): Genzano dà SOLO il permesso, non
+    // l'oggetto — l'oggetto mn_sub è il regalo del Prof. Castagno dopo la
+    // Lega (vedi interagisciLaboratorio), per non consegnarlo due volte e
+    // non anticiparlo a gym 8 invece che a fine gioco come deciso da Luca.
+    if (palestra.mnDonata !== 'sub') _concediOggettoMN(palestra.mnDonata);
     const nomiMN = { cascata: 'Cascata', sub: 'Sub' };
     messaggi.push(`${palestra.capopalestra.nome} ti dà anche il permesso di usare la MN ${nomiMN[palestra.mnDonata] || palestra.mnDonata}!`);
   }
@@ -3367,9 +3389,11 @@ function parlaScienziatoGrottaVulcano() {
 /* ============================================================
    PENSIONE POKÉMON — Nemi (F9.3)
    Lasci 1-2 Pokémon.
-   - UNO SOLO: si allena da solo, +1 livello ogni GIORNI_PENSIONE_LIVELLO
-     giorni di gioco (mai sopra il level cap — niente scorciatoie, richiesta
-     esplicita di Luca il 6 ott 2026: "non deve diventare overpower").
+   - UNO SOLO: si allena da solo, EXP_PENSIONE_LIVELLO EXP vera ogni
+     PASSI_PENSIONE_LIVELLO passi camminati dal giocatore (mai sopra il
+     level cap — niente scorciatoie, richiesta esplicita di Luca il 6 ott
+     2026: "non deve diventare overpower"; passi invece di giorni di gioco,
+     26 ott 2026, altra richiesta esplicita: "2500 passi = 250 exp").
    - DUE, COMPATIBILI (maschio+femmina della stessa specie, oppure Ditto +
      qualsiasi altra specie non asessuata): NON si allenano più da soli,
      dopo GIORNI_PENSIONE_UOVO giorni insieme nasce un uovo. L'uovo va
@@ -3383,8 +3407,13 @@ function parlaScienziatoGrottaVulcano() {
 // passi (quasi un'intera sessione di test): ridotte a soglie che si notano
 // davvero in una sessione normale. L'uovo usa "2 settimane" testuali, la
 // richiesta esplicita di Luca.
-const GIORNI_PENSIONE_LIVELLO = 5;  // giorni di gioco per +1 livello (deposito singolo/incompatibile)
-const GIORNI_PENSIONE_UOVO    = 14; // 2 settimane di gioco insieme (coppia compatibile) prima che nasca l'uovo
+// Allenamento singolo passato da "giorni di gioco → livello intero" a
+// "passi camminati → EXP vera" (26 ott 2026, richiesta esplicita di Luca:
+// "2500 passi = 250 exp al Pokémon") — usa stato.passi, lo stesso contatore
+// globale già usato per repellente/schiusa uova, non più stato.tempo.giorno.
+const PASSI_PENSIONE_LIVELLO = 2500; // passi del giocatore per ogni erogazione
+const EXP_PENSIONE_LIVELLO   = 250;  // EXP vera data al Pokémon ogni PASSI_PENSIONE_LIVELLO
+const GIORNI_PENSIONE_UOVO   = 14;   // 2 settimane di gioco insieme (coppia compatibile) prima che nasca l'uovo
 const PASSI_SCHIUSA_UOVO      = 10000; // passi camminati col giocatore prima della schiusa
 
 // I 21 leggendari (Gen 1-3, vedi CLAUDE.md): MAI uova, nemmeno con Ditto —
@@ -3464,31 +3493,31 @@ function aggiornaPensione() {
 
   // Non c'è una coppia compatibile: ogni occupante (1 o 2 incompatibili)
   // si allena per conto suo. _livellaPensioneSingolo consuma blocchi di
-  // GIORNI_PENSIONE_LIVELLO giorni uno alla volta (se il giocatore non
-  // torna per 60 giorni, ne recupera 3, non uno solo).
-  if (p.slot1) _livellaPensioneSingolo(p, 'slot1', 'giornoSlot1', giornoOra);
-  if (p.slot2) _livellaPensioneSingolo(p, 'slot2', 'giornoSlot2', giornoOra);
+  // PASSI_PENSIONE_LIVELLO passi uno alla volta (se il giocatore non torna
+  // per 7500 passi, ne recupera 3 blocchi di EXP, non uno solo).
+  if (p.slot1) _livellaPensioneSingolo(p, 'slot1', 'passiSlot1');
+  if (p.slot2) _livellaPensioneSingolo(p, 'slot2', 'passiSlot2');
 }
 
-// Asincrona (Battle.caramellaRara fa fetch delle mosse nuove su PokéAPI):
-// chiamata senza await da aggiornaPensione (va bene, non deve bloccare il
-// movimento), ma AL SUO INTERNO aspetta ogni livello uno alla volta, così
-// due blocchi di 20 giorni recuperati insieme non corrono in parallelo
-// sullo stesso Pokémon (rischio reale: due evoluzioni/doppio apprendimento
-// mosse quasi simultanei sulla stessa istanza).
-async function _livellaPensioneSingolo(p, chiaveSlot, chiaveGiorno, giornoOra) {
-  if (p[chiaveGiorno] == null) return;
+// Asincrona (Battle.assegnaExpFuoriBattaglia fa fetch delle mosse nuove su
+// PokéAPI): chiamata senza await da aggiornaPensione (va bene, non deve
+// bloccare il movimento), ma AL SUO INTERNO aspetta ogni erogazione di EXP
+// una alla volta, così più blocchi recuperati insieme non corrono in
+// parallelo sullo stesso Pokémon (rischio reale: due evoluzioni/doppio
+// apprendimento mosse quasi simultanei sulla stessa istanza).
+async function _livellaPensioneSingolo(p, chiaveSlot, chiavePassi) {
+  if (p[chiavePassi] == null) return;
   let cambiato = false;
-  while (giornoOra - p[chiaveGiorno] >= GIORNI_PENSIONE_LIVELLO) {
+  while ((stato.passi || 0) - p[chiavePassi] >= PASSI_PENSIONE_LIVELLO) {
     const pkm = p[chiaveSlot];
     const cap = (typeof stato !== 'undefined' && stato.levelCap) || 100;
-    if (typeof Battle === 'undefined' || !Battle.caramellaRara || pkm.livello >= cap) {
+    if (typeof Battle === 'undefined' || !Battle.assegnaExpFuoriBattaglia || pkm.livello >= cap - 1) {
       // Al cap: il contatore non avanza più, resta fermo finché il cap
-      // non sale (prossima medaglia) — niente livelli "in banca" perduti.
+      // non sale (prossima medaglia) — niente EXP "in banca" perduta.
       break;
     }
-    await Battle.caramellaRara(pkm, cap);
-    p[chiaveGiorno] += GIORNI_PENSIONE_LIVELLO;
+    await Battle.assegnaExpFuoriBattaglia(pkm, EXP_PENSIONE_LIVELLO, cap);
+    p[chiavePassi] += PASSI_PENSIONE_LIVELLO;
     cambiato = true;
   }
   if (cambiato) {
@@ -3528,7 +3557,7 @@ async function schiudiUovo(uovo) {
 async function interagisciPensione() {
   if (stato.incontroAttivo || dialogoInCorso) return;
   const nomeNpc = 'Nonna dell\'Asilo';
-  if (!stato.pensione) stato.pensione = { slot1: null, slot2: null, giornoSlot1: null, giornoSlot2: null, giornoCoppia: null, uovoPronto: false };
+  if (!stato.pensione) stato.pensione = { slot1: null, slot2: null, passiSlot1: null, passiSlot2: null, giornoCoppia: null, uovoPronto: false };
 
   if (stato.pensione.uovoPronto) {
     if (stato.squadra.length >= 6) {
@@ -3605,14 +3634,15 @@ async function ritiraUnoPensione(nomeNpc) {
   const { slot, p } = occupanti[scelta];
   stato.squadra.push(p);
   stato.pensione[slot] = null;
-  stato.pensione['giorno' + (slot === 'slot1' ? 'Slot1' : 'Slot2')] = null;
+  stato.pensione['passi' + (slot === 'slot1' ? 'Slot1' : 'Slot2')] = null;
   // Restava solo l'altro occupante: niente più coppia, azzera il conto
-  // dell'uovo e fa ripartire l'allenamento in solitaria da oggi.
+  // dell'uovo e fa ripartire l'allenamento in solitaria da ora (passi
+  // attuali come nuova base).
   stato.pensione.giornoCoppia = null;
   const rimasto = slot === 'slot1' ? stato.pensione.slot2 : stato.pensione.slot1;
   if (rimasto) {
-    const chiaveGiornoRimasto = (slot === 'slot1') ? 'giornoSlot2' : 'giornoSlot1';
-    stato.pensione[chiaveGiornoRimasto] = (stato.tempo && stato.tempo.giorno) || 1;
+    const chiavePassiRimasto = (slot === 'slot1') ? 'passiSlot2' : 'passiSlot1';
+    stato.pensione[chiavePassiRimasto] = stato.passi || 0;
   }
   salvaPartita();
   aggiornaHUD();
@@ -3637,11 +3667,13 @@ async function depositaPensione(nomeNpc) {
   if (!p.genere && typeof Battle !== 'undefined' && Battle.generaGenere) p.genere = Battle.generaGenere(p.id);
 
   stato.squadra.splice(idx, 1);
+  const passiOra = stato.passi || 0;
   const oggi = (stato.tempo && stato.tempo.giorno) || 1;
-  if (!stato.pensione.slot1) { stato.pensione.slot1 = p; stato.pensione.giornoSlot1 = oggi; }
-  else { stato.pensione.slot2 = p; stato.pensione.giornoSlot2 = oggi; }
+  if (!stato.pensione.slot1) { stato.pensione.slot1 = p; stato.pensione.passiSlot1 = passiOra; }
+  else { stato.pensione.slot2 = p; stato.pensione.passiSlot2 = passiOra; }
   // Se con questo deposito si forma una coppia compatibile, il livellamento
-  // in solitaria si ferma da qui e parte il conto alla rovescia dell'uovo.
+  // in solitaria si ferma da qui e parte il conto alla rovescia dell'uovo
+  // (l'uovo resta a giorni di gioco, non a passi — richiesta di Luca).
   if (stato.pensione.slot1 && stato.pensione.slot2 && pensioneCompatibili(stato.pensione.slot1, stato.pensione.slot2)) {
     stato.pensione.giornoCoppia = oggi;
   }
@@ -3660,8 +3692,8 @@ async function ritiraPensione(nomeNpc) {
   occupanti.forEach(p => stato.squadra.push(p));
   stato.pensione.slot1 = null;
   stato.pensione.slot2 = null;
-  stato.pensione.giornoSlot1 = null;
-  stato.pensione.giornoSlot2 = null;
+  stato.pensione.passiSlot1 = null;
+  stato.pensione.passiSlot2 = null;
   stato.pensione.giornoCoppia = null;
   salvaPartita();
   aggiornaHUD();
@@ -6706,7 +6738,7 @@ async function inizializzaSquadraTest() {
   // Bug segnalato da Luca (18 ott 2026): questo shortcut di test dava solo
   // il PERMESSO d'uso sul campo, mai l'oggetto nello zaino — quindi "Insegna"
   // non trovava mai Surf/Volo/ecc. da insegnare. Vedi _concediOggettoMN sopra.
-  ['taglio', 'surf', 'volo', 'forza', 'cascata', 'spaccaroccia'].forEach(_concediOggettoMN);
+  ['taglio', 'surf', 'volo', 'forza', 'cascata', 'spaccaroccia', 'sub'].forEach(_concediOggettoMN);
   // Level cap max
   stato.levelCap = 66;
 
