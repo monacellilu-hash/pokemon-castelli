@@ -2332,10 +2332,20 @@ const DATI_NPC = {
   // apparire, perché qui non c'era NESSUNA condizione — _rigeneraNpc()
   // lo ricreava sempre da capo. Ora sparisce per sempre dopo essere
   // scappato con Kyogre (stesso pattern dei gate "gate:true, condizione").
+  // Fix 27 ott 2026 (segnalato da Luca: "Lorenzo post cutscene ancora
+  // visibile"): mancava noTestBypass:true. Senza, in MODALITA_TEST (SEMPRE
+  // attiva in locale) il bypass dei gate lo escludeva comunque SEMPRE da
+  // npcStato — anche PRIMA della cutscene — perché un "gate" normale è
+  // pensato per un blocco che sparisce da solo in test, non per un
+  // personaggio di scena che la cutscene deve poter trovare (vedi lo stesso
+  // pattern già documentato sopra in js/map.js, blocco "NPC/trainer
+  // condizionati": ECCEZIONE noTestBypass per i gate di scena). Con
+  // l'eccezione applicata, ora la condizione vera (antro9_kyogre_rapito)
+  // governa la visibilità anche in test, esattamente come in produzione.
   'boss gdf': {
     sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Tutto come previsto.'],
-    gate: true, condizione: 'antro9_kyogre_rapito',
+    gate: true, condizione: 'antro9_kyogre_rapito', noTestBypass: true,
   },
 
   // Abbazia di San Nilo (sess. 14 ott 2026, staging di Luca): Igino, il
