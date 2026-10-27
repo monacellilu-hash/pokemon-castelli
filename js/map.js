@@ -3889,6 +3889,15 @@ const GameMap = (function () {
       clusterOriginY = minY;
       clusterBoxes   = {};
       mappaCorrente  = chiaveEntrata;
+      // Fix 27 ott 2026 (segnalato da Luca: "la grafica sub rimane finché
+      // non ricarico il browser"): _caricaMappaSingola() azzera subAttivo
+      // in base a def.sub, ma questo ramo "cluster" (usato per TUTTE le
+      // mappe fuse in un .world, es. interno_lago) non lo toccava mai —
+      // tornando da lago_albano_profondo (sub:true) a una mappa del
+      // cluster, subAttivo restava true per sempre (nessun cluster ha mai
+      // sub:true, quindi qui è sempre false).
+      subAttivo = false;
+      this._aggiornaVisibilitaFollower();
 
       mapW     = maxX - minX;
       mapH     = maxY - minY;

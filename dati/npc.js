@@ -2327,25 +2327,23 @@ const DATI_NPC = {
     sprite: 'Capopalestra_Ariccia', nome: 'Isa', direzione: 'est', movimento: 'fisso',
     dialogo: ['Il GdF non capisce cosa rischia di distruggere.'],
   },
-  // Bug segnalato da Luca (19 ott 2026): la cutscene lo nascondeva con
-  // "nascondi_npc" ma il passo "rigenera_npc" subito dopo lo rifaceva
-  // apparire, perché qui non c'era NESSUNA condizione — _rigeneraNpc()
-  // lo ricreava sempre da capo. Ora sparisce per sempre dopo essere
-  // scappato con Kyogre (stesso pattern dei gate "gate:true, condizione").
-  // Fix 27 ott 2026 (segnalato da Luca: "Lorenzo post cutscene ancora
-  // visibile"): mancava noTestBypass:true. Senza, in MODALITA_TEST (SEMPRE
-  // attiva in locale) il bypass dei gate lo escludeva comunque SEMPRE da
-  // npcStato — anche PRIMA della cutscene — perché un "gate" normale è
-  // pensato per un blocco che sparisce da solo in test, non per un
-  // personaggio di scena che la cutscene deve poter trovare (vedi lo stesso
-  // pattern già documentato sopra in js/map.js, blocco "NPC/trainer
-  // condizionati": ECCEZIONE noTestBypass per i gate di scena). Con
-  // l'eccezione applicata, ora la condizione vera (antro9_kyogre_rapito)
-  // governa la visibilità anche in test, esattamente come in produzione.
+  // BUG VERO trovato 27 ott 2026 (segnalato da Luca: "Lorenzo post cutscene
+  // ancora visibile" + "posso catturare Kyogre di nuovo"): gate/condizione
+  // scritti QUI (dati/npc.js) non vengono MAI letti dal motore per decidere
+  // se un NPC compare sulla mappa — _creaNpcStato() (js/map.js) legge SOLO
+  // ev.props.condizione/ev.props.gate, cioè le proprietà sull'OGGETTO TILED
+  // vero e proprio (stesso campo che su "gdf_gate_nemi"/Lago di Nemi.tmj è
+  // scritto correttamente lì). L'oggetto "npc_antro_kyogre_9_3" su
+  // antro_kyogre_9.tmj non aveva NESSUNA proprietà condizione/gate: Lorenzo
+  // restava quindi SEMPRE visibile, qualunque fosse il flag
+  // antro9_kyogre_rapito — il "fix" del 19 ott 2026 scritto qui sotto non
+  // ha MAI funzionato per questo motivo. Corretto aggiungendo condizione/
+  // gate/noTestBypass direttamente sull'oggetto Tiled (vedi
+  // antro_kyogre_9.tmj). I campi sotto restano solo per sprite/dialogo di
+  // fallback (quelli SÌ letti da qui), non più per la visibilità.
   'boss gdf': {
     sprite: 'Lorenzo', nome: 'Lorenzo', direzione: 'ovest', movimento: 'fisso',
     dialogo: ['Tutto come previsto.'],
-    gate: true, condizione: 'antro9_kyogre_rapito', noTestBypass: true,
   },
 
   // Abbazia di San Nilo (sess. 14 ott 2026, staging di Luca): Igino, il
