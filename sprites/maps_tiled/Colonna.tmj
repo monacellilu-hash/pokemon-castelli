@@ -803,7 +803,7 @@
                         {
                          "name":"destinazione",
                          "type":"string",
-                         "value":"bunkerino"
+                         "value":"bunkerino_0f"
                         }, 
                         {
                          "name":"spawn_id",
