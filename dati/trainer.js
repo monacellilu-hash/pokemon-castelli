@@ -4138,7 +4138,7 @@ const DATI_TRAINER = {
   //    2026): post-Lega, sorveglianza del piano superiore. Sprite/ritratto
   //    stesso trattamento Osservatorio (Grunt_Cotral_uomo/donna). ──
   'cotral_bunkerino_0f_1': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 248, livello: 72 } ],
     dialogo_prima: 'Questo piano è sorvegliato. Fermati dove sei.',
@@ -4146,7 +4146,7 @@ const DATI_TRAINER = {
     premio: 2300,
   },
   'cotral_bunkerino_0f_2': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 229, livello: 73 } ],
     dialogo_prima: 'Nessuno doveva arrivare fin qui dopo la Lega. Pazienza, tanto peggio per te.',
@@ -4154,7 +4154,7 @@ const DATI_TRAINER = {
     premio: 2400,
   },
   'cotral_bunkerino_0f_3': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 89, livello: 73 } ],
     dialogo_prima: 'Il progetto 150 non riguarda i curiosi come te.',
@@ -4162,7 +4162,7 @@ const DATI_TRAINER = {
     premio: 2500,
   },
   'cotral_bunkerino_0f_4': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 248, livello: 72 } ],
     dialogo_prima: 'Qui sotto non c\'è niente da vedere. Tornatene da dove sei venuto.',
@@ -4170,7 +4170,7 @@ const DATI_TRAINER = {
     premio: 2600,
   },
   'cotral_bunkerino_0f_5': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 76, livello: 72 } ],
     dialogo_prima: 'Ordini dall\'alto: nessun passaggio senza autorizzazione.',
@@ -4178,7 +4178,7 @@ const DATI_TRAINER = {
     premio: 2700,
   },
   'cotral_bunkerino_0f_6': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 68, livello: 73 }, { id: 208, livello: 73 } ],
     dialogo_prima: 'Non dovevi trovare l\'entrata. Ora è un problema mio.',
@@ -4186,7 +4186,7 @@ const DATI_TRAINER = {
     premio: 2800,
   },
   'cotral_bunkerino_0f_7': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 248, livello: 73 }, { id: 229, livello: 73 } ],
     dialogo_prima: 'Pensavi che finisse con la Lega? Ingenuo.',
@@ -4194,7 +4194,7 @@ const DATI_TRAINER = {
     premio: 2900,
   },
   'cotral_bunkerino_0f_8': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 306, livello: 72 }, { id: 248, livello: 72 } ],
     dialogo_prima: 'Daje, famo veloce: io vinco e te ne vai.',
@@ -4202,7 +4202,7 @@ const DATI_TRAINER = {
     premio: 3000,
   },
   'cotral_bunkerino_0f_9': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 359, livello: 72 }, { id: 94, livello: 73 } ],
     dialogo_prima: 'Sei bravo ad arrivare fin qui. Vediamo se sei bravo pure a lottare.',
@@ -4210,7 +4210,7 @@ const DATI_TRAINER = {
     premio: 3100,
   },
   'cotral_bunkerino_0f_10': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 262, livello: 73 }, { id: 227, livello: 73 } ],
     dialogo_prima: 'Anche dopo la Lega, il Bunkerino resta cosa nostra.',
@@ -4221,7 +4221,7 @@ const DATI_TRAINER = {
   // ── Grunt CoTrAL del Bunkerino 1F (richiesta esplicita di Luca, 12 ott
   //    2026): sorveglianza rinforzata, livello sopra quelli del 0F. ──
   'cotral_bunkerino_1f_1': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 110, livello: 73 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Secondo piano, sorveglianza rinforzata. Non passi senza lottare.',
@@ -4229,7 +4229,7 @@ const DATI_TRAINER = {
     premio: 3100,
   },
   'cotral_bunkerino_1f_2': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 94, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Chi ti ha fatto entrare quaggiù? Non importa, esci lottando.',
@@ -4237,7 +4237,7 @@ const DATI_TRAINER = {
     premio: 3200,
   },
   'cotral_bunkerino_1f_3': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 68, livello: 74 }, { id: 302, livello: 74 } ],
     dialogo_prima: 'Qui si avvicina al nucleo del Progetto 150. Fermo.',
@@ -4245,7 +4245,7 @@ const DATI_TRAINER = {
     premio: 3300,
   },
   'cotral_bunkerino_1f_4': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 332, livello: 73 }, { id: 89, livello: 73 } ],
     dialogo_prima: 'Pensavi che il primo piano fosse l\'ultimo ostacolo?',
@@ -4253,7 +4253,7 @@ const DATI_TRAINER = {
     premio: 3400,
   },
   'cotral_bunkerino_1f_5': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 359, livello: 73 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Mo\' basta curiosità: o lotti o te ne vai.',
@@ -4261,7 +4261,7 @@ const DATI_TRAINER = {
     premio: 3500,
   },
   'cotral_bunkerino_1f_6': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 376, livello: 74 }, { id: 248, livello: 74 } ],
     dialogo_prima: 'Il livello di sicurezza qui è doppio. Scoprirai perché.',
@@ -4269,7 +4269,7 @@ const DATI_TRAINER = {
     premio: 3600,
   },
   'cotral_bunkerino_1f_7': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 376, livello: 74 }, { id: 359, livello: 74 } ],
     dialogo_prima: 'Nemmeno il Campione della Lega è mai arrivato fin qui.',
@@ -4277,7 +4277,7 @@ const DATI_TRAINER = {
     premio: 3700,
   },
   'cotral_bunkerino_1f_8': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 227, livello: 73 }, { id: 68, livello: 73 } ],
     dialogo_prima: 'Fermo. Da qui in poi si lotta sul serio.',
@@ -4285,7 +4285,7 @@ const DATI_TRAINER = {
     premio: 3800,
   },
   'cotral_bunkerino_1f_9': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 197, livello: 73 }, { id: 262, livello: 74 } ],
     dialogo_prima: 'Gli indovinelli non bastano, qui ci vuole anche la forza.',
@@ -4293,7 +4293,7 @@ const DATI_TRAINER = {
     premio: 3900,
   },
   'cotral_bunkerino_1f_10': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 76, livello: 74 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Sei arrivato al piano sbagliato per fare il turista.',
@@ -4301,7 +4301,7 @@ const DATI_TRAINER = {
     premio: 4000,
   },
   'cotral_bunkerino_1f_11': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 82, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Il nucleo centrale è vicino. Non un passo di più.',
@@ -4309,7 +4309,7 @@ const DATI_TRAINER = {
     premio: 4100,
   },
   'cotral_bunkerino_1f_12': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 227, livello: 73 }, { id: 212, livello: 73 } ],
     dialogo_prima: 'Resisti qui fino a quando non arrivano i rinforzi veri.',
@@ -4317,7 +4317,7 @@ const DATI_TRAINER = {
     premio: 4200,
   },
   'cotral_bunkerino_1f_13': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 76, livello: 73 }, { id: 208, livello: 73 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Pensavo fossi solo un\'altra guardia distratta. Mi sbagliavo su di te.',
@@ -4325,7 +4325,7 @@ const DATI_TRAINER = {
     premio: 4300,
   },
   'cotral_bunkerino_1f_14': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 212, livello: 74 }, { id: 229, livello: 74 }, { id: 94, livello: 74 } ],
     dialogo_prima: 'Hai risolto gli indovinelli? Bravo. Ma la guardia non si supera con la logica.',
@@ -4333,7 +4333,7 @@ const DATI_TRAINER = {
     premio: 4400,
   },
   'cotral_bunkerino_1f_15': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 205, livello: 74 }, { id: 229, livello: 74 }, { id: 168, livello: 74 } ],
     dialogo_prima: 'Qui dentro si decide chi può vedere Mewtwo. E non sei tu.',
@@ -4341,7 +4341,7 @@ const DATI_TRAINER = {
     premio: 4500,
   },
   'cotral_bunkerino_1f_16': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 168, livello: 73 }, { id: 332, livello: 73 }, { id: 76, livello: 73 } ],
     dialogo_prima: 'Il secondo piano non perdona gli intrusi.',
@@ -4349,7 +4349,7 @@ const DATI_TRAINER = {
     premio: 4600,
   },
   'cotral_bunkerino_1f_17': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 110, livello: 73 }, { id: 248, livello: 73 }, { id: 197, livello: 74 } ],
     dialogo_prima: 'Vai avanti se vuoi, ma prima passa su di me.',
@@ -4357,7 +4357,7 @@ const DATI_TRAINER = {
     premio: 4700,
   },
   'cotral_bunkerino_1f_18': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 359, livello: 74 }, { id: 229, livello: 74 }, { id: 205, livello: 74 } ],
     dialogo_prima: 'Mo\' vediamo di che pasta sei fatto davvero.',
@@ -4371,7 +4371,7 @@ const DATI_TRAINER = {
      livelli un gradino sopra il 1F (64-68) per restare in scala verso il 3F. ── */
 
   'cotral_bunkerino_2f_1': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 94, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Terzo piano, massima sorveglianza. Nessun passaggio gratis.',
@@ -4379,7 +4379,7 @@ const DATI_TRAINER = {
     premio: 3300,
   },
   'cotral_bunkerino_2f_2': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 68, livello: 74 }, { id: 212, livello: 74 } ],
     dialogo_prima: 'Non dovevi arrivare così lontano.',
@@ -4387,7 +4387,7 @@ const DATI_TRAINER = {
     premio: 3300,
   },
   'cotral_bunkerino_2f_3': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 197, livello: 74 }, { id: 262, livello: 74 }, { id: 76, livello: 74 } ],
     dialogo_prima: 'Qui si allenano i migliori. Fatti onore, se riesci.',
@@ -4395,7 +4395,7 @@ const DATI_TRAINER = {
     premio: 3450,
   },
   'cotral_bunkerino_2f_4': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 208, livello: 74 }, { id: 227, livello: 74 } ],
     dialogo_prima: 'Acciaio contro carne e ossa. Indovina chi vince di solito.',
@@ -4403,7 +4403,7 @@ const DATI_TRAINER = {
     premio: 3350,
   },
   'cotral_bunkerino_2f_5': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 302, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Il Capo non vuole visite. Fermati qui.',
@@ -4411,7 +4411,7 @@ const DATI_TRAINER = {
     premio: 3300,
   },
   'cotral_bunkerino_2f_6': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 332, livello: 74 }, { id: 168, livello: 74 }, { id: 89, livello: 74 } ],
     dialogo_prima: 'Spine e veleno, un bel biglietto da visita.',
@@ -4419,7 +4419,7 @@ const DATI_TRAINER = {
     premio: 3450,
   },
   'cotral_bunkerino_2f_7': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 248, livello: 74 }, { id: 376, livello: 74 } ],
     dialogo_prima: 'Dinosauro contro robot, scegli tu chi affrontare prima.',
@@ -4427,7 +4427,7 @@ const DATI_TRAINER = {
     premio: 3400,
   },
   'cotral_bunkerino_2f_8': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 82, livello: 74 }, { id: 229, livello: 74 } ],
     dialogo_prima: 'Qui dentro ci alleniamo sul serio, non è un gioco.',
@@ -4435,7 +4435,7 @@ const DATI_TRAINER = {
     premio: 3400,
   },
   'cotral_bunkerino_2f_9': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 359, livello: 74 }, { id: 110, livello: 74 }, { id: 65, livello: 74 } ],
     dialogo_prima: 'Non ti conviene proseguire. Ma fai come vuoi.',
@@ -4443,7 +4443,7 @@ const DATI_TRAINER = {
     premio: 3500,
   },
   'cotral_bunkerino_2f_10': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 94, livello: 74 }, { id: 68, livello: 74 } ],
     dialogo_prima: 'Ombre e pugni, una combinazione che non perdona.',
@@ -4451,7 +4451,7 @@ const DATI_TRAINER = {
     premio: 3400,
   },
   'cotral_bunkerino_2f_11': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 212, livello: 74 }, { id: 208, livello: 74 } ],
     dialogo_prima: 'Metallo su metallo, vediamo se resisti.',
@@ -4459,7 +4459,7 @@ const DATI_TRAINER = {
     premio: 3450,
   },
   'cotral_bunkerino_2f_12': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 227, livello: 74 }, { id: 262, livello: 74 }, { id: 76, livello: 74 } ],
     dialogo_prima: 'Acciaio, zanne e roccia: scegli con cura la tua prossima mossa.',
@@ -4467,7 +4467,7 @@ const DATI_TRAINER = {
     premio: 3550,
   },
   'cotral_bunkerino_2f_13': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 197, livello: 74 }, { id: 376, livello: 75 } ],
     dialogo_prima: 'Siamo quasi in cima. Ma non con te in squadra, pare.',
@@ -4475,7 +4475,7 @@ const DATI_TRAINER = {
     premio: 3500,
   },
   'cotral_bunkerino_2f_14': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 302, livello: 74 }, { id: 229, livello: 75 } ],
     dialogo_prima: 'Fantasmi e fuoco infernale. Spaventato?',
@@ -4483,7 +4483,7 @@ const DATI_TRAINER = {
     premio: 3500,
   },
   'cotral_bunkerino_2f_15': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 89, livello: 74 }, { id: 332, livello: 74 }, { id: 168, livello: 75 } ],
     dialogo_prima: 'Veleno su veleno, non è un bel biglietto di ritorno.',
@@ -4491,7 +4491,7 @@ const DATI_TRAINER = {
     premio: 3600,
   },
   'cotral_bunkerino_2f_16': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 248, livello: 74 }, { id: 65, livello: 75 } ],
     dialogo_prima: 'Qui sotto il Capo non vuole sorprese. Tu sei una sorpresa.',
@@ -4499,7 +4499,7 @@ const DATI_TRAINER = {
     premio: 3550,
   },
   'cotral_bunkerino_2f_17': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 82, livello: 74 }, { id: 212, livello: 75 } ],
     dialogo_prima: 'Siamo gli ultimi prima delle scale per il 3° piano.',
@@ -4507,7 +4507,7 @@ const DATI_TRAINER = {
     premio: 3600,
   },
   'cotral_bunkerino_2f_18': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 359, livello: 75 }, { id: 227, livello: 75 }, { id: 205, livello: 75 } ],
     dialogo_prima: 'Dopo di me solo le scale, e non è un bel posto.',
@@ -4515,7 +4515,7 @@ const DATI_TRAINER = {
     premio: 3700,
   },
   'cotral_bunkerino_2f_19': {
-    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 0,
+    sprite: 'Grunt_Cotral_donna', ritratto: 'trainer_CoTral_F', vista: 5,
     classe: 'Addetta CoTrAL', nome: 'Addetta CoTrAL',
     squadra: [ { id: 376, livello: 75 }, { id: 94, livello: 75 } ],
     dialogo_prima: 'Il Capo sa che sei arrivato fin qui. Non sarà contento.',
@@ -4523,7 +4523,7 @@ const DATI_TRAINER = {
     premio: 3700,
   },
   'cotral_bunkerino_2f_20': {
-    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 0,
+    sprite: 'Grunt_Cotral_uomo', ritratto: 'trainer_CoTral_M', vista: 5,
     classe: 'Addetto CoTrAL', nome: 'Addetto CoTrAL',
     squadra: [ { id: 68, livello: 75 }, { id: 208, livello: 75 }, { id: 376, livello: 75 } ],
     dialogo_prima: 'Ultima guardia prima delle scale. Qui finisce la fortuna.',
@@ -4929,6 +4929,7 @@ const DATI_TRAINER = {
      questo elenco, sono NPC di scena (dati/npc.js), non allenatori. ── */
   'npc_antro_kyogre_entrance_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 42, livello: 61 }, { id: 41, livello: 62 } ],
     dialogo_prima: 'L\'Antro Kyogre è zona di ricerca der GdF. Fermati lì.',
@@ -4937,6 +4938,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_1_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 73, livello: 61 }, { id: 170, livello: 62 } ],
     dialogo_prima: 'Qui sotto l\'acqua nasconde più cose di quello che pensi.',
@@ -4945,6 +4947,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_1_2': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 195, livello: 61 }, { id: 341, livello: 62 } ],
     dialogo_prima: 'Er Comandante nun vo\' visite da ste parti.',
@@ -4953,6 +4956,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_1_3': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 171, livello: 61 }, { id: 339, livello: 62 } ],
     dialogo_prima: 'Zona di campionamento. Non è posto per turisti.',
@@ -4961,6 +4965,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_1_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 318, livello: 61 }, { id: 319, livello: 62 } ],
     dialogo_prima: 'Qua sotto c\'è una corrente che manco t\'immagini.',
@@ -4969,6 +4974,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_1_5': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 208, livello: 61 }, { id: 74, livello: 62 } ],
     dialogo_prima: 'Fermo lì. Er Capo sta a preparà qualcosa de grosso.',
@@ -4977,6 +4983,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_2_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 340, livello: 62 }, { id: 339, livello: 63 } ],
     dialogo_prima: 'Secondo piano, zona a rischio frana. Non passi.',
@@ -4985,6 +4992,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_2_3': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 342, livello: 62 }, { id: 341, livello: 63 } ],
     dialogo_prima: 'Il Comandante non vuole occhi indiscreti qui dentro.',
@@ -4993,6 +5001,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_2_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 76, livello: 62 }, { id: 74, livello: 63 } ],
     dialogo_prima: 'Quest\'antro è roba nostra. Nun se tocca!',
@@ -5001,6 +5010,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_2_8': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 369, livello: 62 }, { id: 170, livello: 63 } ],
     dialogo_prima: 'Sei entrato più a fondo di quanto dovresti.',
@@ -5009,6 +5019,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_3_2': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 134, livello: 62 }, { id: 73, livello: 63 } ],
     dialogo_prima: 'Terzo piano, sorvegliato a vista. Non un altro passo.',
@@ -5017,6 +5028,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_3_3': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 41, livello: 62 }, { id: 42, livello: 63 } ],
     dialogo_prima: 'Come hai fatto ad entrà? Sto posto è blindato!',
@@ -5025,6 +5037,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_3_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 319, livello: 62 }, { id: 318, livello: 63 } ],
     dialogo_prima: 'Qua sotto la montagna nessuno ci trova. O credevamo.',
@@ -5033,6 +5046,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_3_5': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 365, livello: 62 }, { id: 171, livello: 63 } ],
     dialogo_prima: 'Un altro? Ma quanti siete venuti fin qui sotto?',
@@ -5041,6 +5055,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_4_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 346, livello: 63 }, { id: 195, livello: 64 } ],
     dialogo_prima: 'Quarto piano. Qui le correnti nun perdonano, e manco noi.',
@@ -5049,6 +5064,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_4_2': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 347, livello: 63 }, { id: 342, livello: 64 } ],
     dialogo_prima: 'Zona instabile. Da qui si passa solo in una direzione.',
@@ -5057,6 +5073,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_5_3': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 230, livello: 63 }, { id: 340, livello: 64 } ],
     dialogo_prima: 'Quinto piano. L\'acqua qui canta diverso, lo senti?',
@@ -5065,6 +5082,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_5_4': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 208, livello: 63 }, { id: 369, livello: 64 } ],
     dialogo_prima: 'Fermo lì. Da qui in giù è tutto territorio sorvegliato.',
@@ -5073,6 +5091,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_9_1': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 319, livello: 64 }, { id: 365, livello: 65 } ],
     dialogo_prima: 'Ultimo piano. Il Comandante sta per risvegliarlo davvero.',
@@ -5081,6 +5100,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_9_2': {
     sprite: 'GdF_grunt_donna', ritratto: 'GdF_grunt_donna',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 73, livello: 64 }, { id: 134, livello: 65 } ],
     dialogo_prima: 'Non puoi fermare quello che sta per succedere qui.',
@@ -5089,6 +5109,7 @@ const DATI_TRAINER = {
   },
   'npc_antro_kyogre_9_4': {
     sprite: 'GdF_grunt_uomo', ritratto: 'GdF_grunt_uomo',
+    vista: 5,
     classe: 'Recluta GdF', nome: 'Grunt',
     squadra: [ { id: 76, livello: 64 }, { id: 346, livello: 65 } ],
     dialogo_prima: 'Er Comandante è qui davanti. Nun te ce fo passà.',

@@ -627,14 +627,14 @@
                 {
                  "height":0,
                  "id":1,
-                 "name":"gate",
+                 "name":"gate bunkerino",
                  "opacity":1,
                  "point":true,
                  "properties":[
                         {
                          "name":"condizione",
                          "type":"string",
-                         "value":"legaCompletata"
+                         "value":"legaCompletata+maso_montepo3_sconfitto"
                         }, 
                         {
                          "name":"direzione",
@@ -943,7 +943,7 @@
                  "y":69.3333333333335
                 }, 
                 {
-                 "height":32,
+                 "height":1184,
                  "id":50,
                  "name":"incontri_colonna",
                  "opacity":1,
@@ -961,9 +961,9 @@
                  "rotation":0,
                  "type":"erba_alta",
                  "visible":true,
-                 "width":32,
-                 "x":320,
-                 "y":32
+                 "width":1728,
+                 "x":224,
+                 "y":0
                 }],
          "opacity":1,
          "type":"objectgroup",

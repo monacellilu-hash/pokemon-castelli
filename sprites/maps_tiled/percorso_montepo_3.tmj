@@ -26681,6 +26681,11 @@
                          "value":"grunt_gate_montepo3"
                         }, 
                         {
+                         "name":"speciale",
+                         "type":"string",
+                         "value":"true"
+                        }, 
+                        {
                          "name":"type",
                          "type":"string",
                          "value":"trainer"

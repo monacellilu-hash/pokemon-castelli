@@ -1174,20 +1174,32 @@ DATI_INCONTRI['incontri bosco tuscolo'] = {
     ],
   },
 
-  // ── Colonna (città finale, post-Lega — 25 ott 2026, richiesta esplicita
-  // di Luca): aveva già erba vera disegnata (outside.tsx) ma zero
-  // rettangoli erba_alta, quindi zero incontri nonostante l'erba ci fosse
-  // davvero. Livelli alti, coerenti con una città post-Lega.
+  // ── Colonna (città finale, post-Lega). Sess. 25 ott 2026: aveva erba vera
+  // disegnata (outside.tsx) ma zero rettangoli erba_alta → zero incontri.
+  // Sess. 28 ott 2026 (richiesta esplicita di Luca, "ancora zero incontri"):
+  // il rettangolo messo la volta scorsa copriva UNA sola casella (32×32),
+  // quindi in pratica introvabile camminando per la città — allargato in
+  // Colonna.tmj/Colonna_2.tmj a coprire i veri cluster d'erba (il filtro
+  // "solo erba vera" fa il resto, nessun'altra casella ne risente). Tabella
+  // riscritta a richiesta: 6 specie di giorno + 6 di notte, comuni (nessun
+  // "rarissimo"), condivisa da entrambe le mappe (stesso id "incontri colonna").
   'incontri colonna': {
     probabilita: 12,
     pokemon: [
-      { id: 53,  min: 56, max: 60, rate: 20 },  // Persian
-      { id: 85,  min: 56, max: 60, rate: 18 },  // Dodrio
-      { id: 209, min: 55, max: 58, rate: 15 },  // Snubbull
-      { id: 210, min: 59, max: 63, rate: 10 },  // Granbull
-      { id: 101, min: 57, max: 61, rate: 12 },  // Electrode
-      { id: 229, min: 60, max: 64, rate: 8 },   // Houndoom (raro)
-      { id: 132, min: 56, max: 60, rate: 5 },   // Ditto (rarissimo)
+      { id: 53,  min: 55, max: 60, rate: 22 },  // Persian
+      { id: 85,  min: 56, max: 61, rate: 20 },  // Dodrio
+      { id: 209, min: 55, max: 59, rate: 18 },  // Snubbull
+      { id: 210, min: 58, max: 62, rate: 14 },  // Granbull
+      { id: 101, min: 57, max: 61, rate: 16 },  // Electrode
+      { id: 132, min: 56, max: 60, rate: 10 },  // Ditto
+    ],
+    pokemonNotte: [
+      { id: 169, min: 58, max: 63, rate: 20 },  // Crobat
+      { id: 228, min: 55, max: 59, rate: 20 },  // Houndour
+      { id: 229, min: 60, max: 64, rate: 10 },  // Houndoom (evoluzione, più raro di Houndour)
+      { id: 198, min: 56, max: 61, rate: 18 },  // Murkrow
+      { id: 302, min: 57, max: 62, rate: 16 },  // Sableye
+      { id: 359, min: 59, max: 64, rate: 8 },   // Absol (accento più raro, non "rarissimo")
     ],
   },
 };
