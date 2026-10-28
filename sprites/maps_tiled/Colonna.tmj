@@ -704,35 +704,6 @@
                 }, 
                 {
                  "height":0,
-                 "id":3,
-                 "name":"warp_bunkerino",
-                 "opacity":1,
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"destinazione",
-                         "type":"string",
-                         "value":"bunkerino"
-                        }, 
-                        {
-                         "name":"spawn_id",
-                         "type":"string",
-                         "value":"da_bunkerino"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"warp"
-                        }],
-                 "rotation":0,
-                 "type":"",
-                 "visible":true,
-                 "width":0,
-                 "x":752.5,
-                 "y":309
-                }, 
-                {
-                 "height":0,
                  "id":5,
                  "name":"spawn_bunkerino",
                  "opacity":1,
@@ -832,7 +803,7 @@
                         {
                          "name":"destinazione",
                          "type":"string",
-                         "value":"bunkerino_0f"
+                         "value":"bunkerino"
                         }, 
                         {
                          "name":"spawn_id",
@@ -970,7 +941,7 @@
                  "width":0,
                  "x":1008,
                  "y":69.3333333333335
-                },
+                }, 
                 {
                  "height":32,
                  "id":50,
@@ -981,7 +952,7 @@
                          "name":"id",
                          "type":"string",
                          "value":"incontri colonna"
-                        },
+                        }, 
                         {
                          "name":"type",
                          "type":"string",
