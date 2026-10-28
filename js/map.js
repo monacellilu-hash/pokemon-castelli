@@ -8065,15 +8065,19 @@ const GameMap = (function () {
     async _prossimitaSpottaDoppia(stA, idA, datiA, stB, idB, datiB) {
       if (trainerSpotting) return;
       trainerSpotting = true;
-      bloccaMovimento();
-      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
-      await Promise.all([this._mostraEsclamazione(stA), this._mostraEsclamazione(stB)]);
-      // _camminaVersoGiocatore (stesso helper di _prossimitaSpotta, il
-      // singolo): gestisce da solo l'avvicinamento da qualunque angolo,
-      // non solo in linea retta come il percorso "a vista".
-      await Promise.all([this._camminaVersoGiocatore(stA, 20), this._camminaVersoGiocatore(stB, 20)]);
-
-      trainerSpotting = false;
+      // Stesso fix 28 ott 2026 di _trainerSpotta (vedi commento lì): reset
+      // sempre garantito anche su eccezione a metà avvicinamento.
+      try {
+        bloccaMovimento();
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        await Promise.all([this._mostraEsclamazione(stA), this._mostraEsclamazione(stB)]);
+        // _camminaVersoGiocatore (stesso helper di _prossimitaSpotta, il
+        // singolo): gestisce da solo l'avvicinamento da qualunque angolo,
+        // non solo in linea retta come il percorso "a vista".
+        await Promise.all([this._camminaVersoGiocatore(stA, 20), this._camminaVersoGiocatore(stB, 20)]);
+      } finally {
+        trainerSpotting = false;
+      }
       this._avviaLottaTrainerDoppia({ st: stA, id: idA, dati: datiA }, { st: stB, id: idB, dati: datiB });
     }
 
@@ -8693,19 +8697,24 @@ const GameMap = (function () {
     async _avviaCotralSoloConCamilla(st, id, dati, viaInterazione) {
       if (trainerSpotting) return;
       trainerSpotting = true;
-      bloccaMovimento();
-      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
-      if (!viaInterazione) await this._mostraEsclamazione(st);
-      const dirVersoPlayer = this._direzioneTraCaselle(st.tx, st.ty, posTile.tx, posTile.ty);
-      st.dir = dirVersoPlayer;
-      if (st.sprite) this._setNpcFrame(st.sprite, dirVersoPlayer, false);
-      // Battuta prima della lotta (richiesta esplicita: "voglio dialogo"),
-      // come un allenatore normale — dati.dialogo_prima esiste già per
-      // tutti questi allenatori.
-      if (dati.dialogo_prima && typeof mostraDialogo === 'function') {
-        await mostraDialogo(dati.nome || 'Addetto CoTrAL', [dati.dialogo_prima]);
+      // Stesso fix 28 ott 2026 di _trainerSpotta (vedi commento lì): reset
+      // sempre garantito anche su eccezione a metà avvicinamento/dialogo.
+      try {
+        bloccaMovimento();
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        if (!viaInterazione) await this._mostraEsclamazione(st);
+        const dirVersoPlayer = this._direzioneTraCaselle(st.tx, st.ty, posTile.tx, posTile.ty);
+        st.dir = dirVersoPlayer;
+        if (st.sprite) this._setNpcFrame(st.sprite, dirVersoPlayer, false);
+        // Battuta prima della lotta (richiesta esplicita: "voglio dialogo"),
+        // come un allenatore normale — dati.dialogo_prima esiste già per
+        // tutti questi allenatori.
+        if (dati.dialogo_prima && typeof mostraDialogo === 'function') {
+          await mostraDialogo(dati.nome || 'Addetto CoTrAL', [dati.dialogo_prima]);
+        }
+      } finally {
+        trainerSpotting = false;
       }
-      trainerSpotting = false;
 
       // NIENTE dialogoSconfitta qui: la battuta finale e la consegna della
       // chiave (Luogotenente) vanno mostrate DOPO, a schermo di battaglia
@@ -8952,11 +8961,16 @@ const GameMap = (function () {
     async _prossimitaSpotta(st, id, dati, evTrigger) {
       if (trainerSpotting) return;
       trainerSpotting = true;
-      bloccaMovimento();
-      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
-      await this._mostraEsclamazione(st);
-      await this._camminaVersoGiocatore(st, 20);
-      trainerSpotting = false;
+      // Stesso fix 28 ott 2026 di _trainerSpotta (vedi commento lì): reset
+      // sempre garantito anche su eccezione a metà avvicinamento.
+      try {
+        bloccaMovimento();
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+        await this._mostraEsclamazione(st);
+        await this._camminaVersoGiocatore(st, 20);
+      } finally {
+        trainerSpotting = false;
+      }
       // Discorso da cattivo multi-pagina PRIMA della lotta vera (richiesta
       // esplicita di Luca: "allunga un po' i dialoghi") — proprietà
       // cutscene_id su evTrigger, riusa la stessa CUTSCENE[...] dichiarativa
@@ -10259,24 +10273,36 @@ const GameMap = (function () {
     async _trainerSpotta(st, id, dati) {
       if (trainerSpotting) return;
       trainerSpotting = true;
-      bloccaMovimento();
-      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      // Bug corretto 28 ott 2026 (segnalato da Luca: "hanno tutti vista ma
+      // quando mi incrociano non parte"): trainerSpotting è un lucchetto
+      // GLOBALE condiviso da 5 sequenze diverse (avvistamento singolo/
+      // doppio/vista/prossimità) — se una di queste lanciava un'eccezione a
+      // metà (es. un NPC spostato che rompe _passoTrainer/_liberoPerNPC), il
+      // reset a false non veniva mai eseguito e restava bloccato COSÌ per
+      // tutto il resto della sessione: non un trainer solo, TUTTI, su TUTTE
+      // le mappe, perché _controllaTrainerVista() stessa si rifiuta di
+      // procedere finché trainerSpotting è true. try/finally garantisce che
+      // si sblocchi sempre, anche se qualcosa va storto nel mezzo.
+      try {
+        bloccaMovimento();
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
 
-      await this._mostraEsclamazione(st);
+        await this._mostraEsclamazione(st);
 
-      // Cammina in linea retta nella direzione in cui guarda, fino ad essere
-      // adiacente al giocatore (la casella davanti diventa quella del player).
-      const { dx, dy } = this._dirDelta(st.dir);
-      let guard = 0;
-      while (guard++ < 30) {
-        const nx = st.tx + dx, ny = st.ty + dy;
-        if (nx === posTile.tx && ny === posTile.ty) break;   // sei davanti a lui
-        if (!this._liberoPerNPC(nx, ny, st)) break;          // ostacolo imprevisto
-        await this._passoTrainer(st, nx, ny);
+        // Cammina in linea retta nella direzione in cui guarda, fino ad essere
+        // adiacente al giocatore (la casella davanti diventa quella del player).
+        const { dx, dy } = this._dirDelta(st.dir);
+        let guard = 0;
+        while (guard++ < 30) {
+          const nx = st.tx + dx, ny = st.ty + dy;
+          if (nx === posTile.tx && ny === posTile.ty) break;   // sei davanti a lui
+          if (!this._liberoPerNPC(nx, ny, st)) break;          // ostacolo imprevisto
+          await this._passoTrainer(st, nx, ny);
+        }
+        if (st.sprite) this._setNpcFrame(st.sprite, st.dir, false);
+      } finally {
+        trainerSpotting = false;
       }
-      if (st.sprite) this._setNpcFrame(st.sprite, st.dir, false);
-
-      trainerSpotting = false;
       this._avviaLottaTrainer(id, dati, st.ev);
     }
 
@@ -10287,27 +10313,31 @@ const GameMap = (function () {
     async _trainerSpottaDoppia(a, b) {
       if (trainerSpotting) return;
       trainerSpotting = true;
-      bloccaMovimento();
-      if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
+      // Stesso fix 28 ott 2026 di _trainerSpotta (vedi commento lì): reset
+      // sempre garantito anche su eccezione a metà avvicinamento.
+      try {
+        bloccaMovimento();
+        if (playerSprite) playerSprite.anims.play(this._animKeyPlayer('idle', facciata), true);
 
-      await Promise.all([this._mostraEsclamazione(a.st), this._mostraEsclamazione(b.st)]);
+        await Promise.all([this._mostraEsclamazione(a.st), this._mostraEsclamazione(b.st)]);
 
-      // Avvicinamento in parallelo: entrambi camminano verso il giocatore finché
-      // non gli sono adiacenti (stessa logica di _trainerSpotta, ma per due).
-      const avvicina = async (st) => {
-        const { dx, dy } = this._dirDelta(st.dir);
-        let guard = 0;
-        while (guard++ < 30) {
-          const nx = st.tx + dx, ny = st.ty + dy;
-          if (nx === posTile.tx && ny === posTile.ty) break;
-          if (!this._liberoPerNPC(nx, ny, st)) break;
-          await this._passoTrainer(st, nx, ny);
-        }
-        if (st.sprite) this._setNpcFrame(st.sprite, st.dir, false);
-      };
-      await Promise.all([avvicina(a.st), avvicina(b.st)]);
-
-      trainerSpotting = false;
+        // Avvicinamento in parallelo: entrambi camminano verso il giocatore finché
+        // non gli sono adiacenti (stessa logica di _trainerSpotta, ma per due).
+        const avvicina = async (st) => {
+          const { dx, dy } = this._dirDelta(st.dir);
+          let guard = 0;
+          while (guard++ < 30) {
+            const nx = st.tx + dx, ny = st.ty + dy;
+            if (nx === posTile.tx && ny === posTile.ty) break;
+            if (!this._liberoPerNPC(nx, ny, st)) break;
+            await this._passoTrainer(st, nx, ny);
+          }
+          if (st.sprite) this._setNpcFrame(st.sprite, st.dir, false);
+        };
+        await Promise.all([avvicina(a.st), avvicina(b.st)]);
+      } finally {
+        trainerSpotting = false;
+      }
       this._avviaLottaTrainerDoppia(a, b);
     }
 
