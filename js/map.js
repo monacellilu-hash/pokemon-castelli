@@ -6548,6 +6548,7 @@ const GameMap = (function () {
           ev.tipo === 'cartello' || ev.tipo === 'cartel' || ev.tipo === 'pc' ||
           ev.tipo === 'oggetto'  || ev.tipo === 'object' ||
           ev.tipo === 'porta_scomparsa' || ev.tipo === 'statua_interruttore' ||
+          ev.tipo === 'indovinello' ||
           isMnTrigger(ev.tipo) || ev.tipo === 'trigger_storia';
         if (!interagibile) continue;
         const occ = (ev.w > 0 && ev.h > 0)
