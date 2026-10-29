@@ -6914,7 +6914,16 @@ const GameMap = (function () {
           if (i === cfg.corretta) {
             stato.flags[cfg.flag] = true;
             if (typeof mostraToast === 'function') mostraToast('✅ Esatto! Qualcosa si è mosso nella stanza...', 3000);
-            for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
+            // Bug corretto 29 ott 2026 (segnalato da Luca: "il tile sparisce
+            // ma rimane la collisione"): _applicaIndovinelliBunkerino() forza
+            // collGrid a 1 su queste celle finché non risolto (il tile della
+            // porta non è solido di suo, serve l'override a mano) — ma né qui
+            // né lì il blocco veniva MAI tolto una volta risolto. Ora si
+            // libera il passaggio per davvero, non solo visivamente.
+            for (const [tx, ty] of cfg.celle) {
+              this._nascondiTileOstacolo(tx, ty);
+              if (collGrid[ty]) collGrid[ty][tx] = 0;
+            }
             if (typeof salvaPartita === 'function') salvaPartita();
           } else if (typeof mostraDialogo === 'function') {
             await mostraDialogo('', ['Risposta sbagliata. Puoi riprovare quando vuoi.']);
@@ -9599,7 +9608,13 @@ const GameMap = (function () {
         if (!cfg) continue;
         const risolto = typeof stato !== 'undefined' && stato.flags && stato.flags[cfg.flag];
         if (risolto) {
-          for (const [tx, ty] of cfg.celle) this._nascondiTileOstacolo(tx, ty);
+          // Stesso fix del ramo "appena risolto" sopra: anche al rientro
+          // nella mappa (indovinello già risolto in una visita precedente)
+          // va tolto il blocco, non solo il tile.
+          for (const [tx, ty] of cfg.celle) {
+            this._nascondiTileOstacolo(tx, ty);
+            if (collGrid[ty]) collGrid[ty][tx] = 0;
+          }
         } else {
           // Bug segnalato da Luca (14 ott 2026): la porta non ancora risolta
           // era solo VISIVA, nessuna collisione la bloccava davvero — si
