@@ -654,7 +654,7 @@ const DATI_INCONTRI = {
       { id: 218, min: 27, max: 28, rate: 18 },  // Slugma (Gen2)
       { id: 105, min: 28, max: 30, rate: 16 },  // Marowak
       { id: 28,  min: 29, max: 30, rate: 14 },  // Sandslash
-      { id: 133, min: 23, max: 25, rate: 0.5 },  // Eevee (rarissimo)
+      { id: 133, min: 23, max: 25, rate: 15 },  // Eevee (rarissimo)
       { id: 39, min: 20, max: 23, rate: 28 },  // Jigglypuff
       { id: 174, min: 19, max: 21, rate: 28 },  // Igglybuff (cucciolo)
       { id: 190, min: 21, max: 24, rate: 16 },  // Aipom (Gen2)
