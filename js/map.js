@@ -2564,6 +2564,15 @@ const GameMap = (function () {
       if (src.endsWith('outside.tsx') || src.endsWith('outside_pallet.tsx')) {
         gidErba.push(t.firstgid + 6);
       }
+      // Tileset "outside" INCORPORATO nella mappa (senza file .tsx esterno):
+      // stessa disposizione di outside.tsx, erba alta = tile locale 6. Capita
+      // solo su Percorso 9 (30 ott 2026, segnalato da Luca: "gli incontri
+      // sono rari"): lì l'erba è nel tileset incorporato, quindi nessuna
+      // casella risultava erba alta e gli incontri scattavano solo nel
+      // piccolo rettangolo disegnato a mano (circa 3x6 caselle).
+      else if (!t.source && /^outside(_pallet)?$/i.test(String(t.name || ''))) {
+        gidErba.push(t.firstgid + 6);
+      }
       const extra = TILE_ERBA_PER_TILESET[t.name];
       if (extra) for (const localId of extra) gidErba.push(t.firstgid + localId);
     }
