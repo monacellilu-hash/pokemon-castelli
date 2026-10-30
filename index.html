@@ -2,13 +2,27 @@
 <html lang="it">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <!-- iOS Safari ignora user-scalable=no: lo zoom a pizzico/doppio tocco va fermato
+       a mano (30 ott 2026, richiesta di Luca: premendo due tasti insieme partiva
+       lo zoom del browser). I gesti a 2+ dita sulla pagina non servono al gioco. -->
+  <script>
+    (function () {
+      var blocca = function (e) { e.preventDefault(); };
+      ['gesturestart', 'gesturechange', 'gestureend'].forEach(function (n) {
+        document.addEventListener(n, blocca, { passive: false });
+      });
+      document.addEventListener('touchmove', function (e) {
+        if (e.touches && e.touches.length > 1) e.preventDefault();
+      }, { passive: false });
+    })();
+  </script>
   <title>Pokémon Castelli Romani</title>
 
   <!-- F14: font pixel-art GBA (usato per titoli e nomi dialogo) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=20261030b">
+  <link rel="stylesheet" href="style.css?v=20261030e">
 </head>
 <body>
 

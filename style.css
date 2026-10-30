@@ -2341,3 +2341,40 @@ html, body {
   transform: scale(2);
   transform-origin: top left;
 }
+
+
+/* ============================================================
+   Mobile (30 ott 2026, richiesta di Luca)
+   1) niente zoom del browser quando si premono due tasti insieme;
+   2) SELECT/START non devono più sovrapporsi al D-pad in verticale;
+   3) in orizzontale i tasti rispettano le aree sicure (notch/angoli).
+   ============================================================ */
+html, body {
+  touch-action: manipulation;          /* niente zoom con doppio tocco */
+  overscroll-behavior: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+#controlli-rapidi,
+#controlli-rapidi button,
+#tasti-select-start,
+#dpad {
+  touch-action: none;
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: portrait) {
+  /* SELECT/START sopra il D-pad (prima centrati in basso, finivano sopra la freccia destra). */
+  #tasti-select-start {
+    left: max(20px, env(safe-area-inset-left));
+    right: auto;
+    bottom: 148px;
+    transform: none;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) and (orientation: landscape) {
+  #dpad { left: max(20px, env(safe-area-inset-left)); bottom: max(12px, env(safe-area-inset-bottom)); }
+  #btn-interagisci { right: max(24px, env(safe-area-inset-right)); bottom: max(16px, env(safe-area-inset-bottom)); }
+  #btn-b { right: max(78px, calc(env(safe-area-inset-right) + 54px)); bottom: max(76px, calc(env(safe-area-inset-bottom) + 60px)); }
+  #controlli-rapidi { right: max(20px, env(safe-area-inset-right)); }
+}
