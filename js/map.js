@@ -6549,7 +6549,14 @@ const GameMap = (function () {
           ev.tipo === 'oggetto'  || ev.tipo === 'object' ||
           ev.tipo === 'porta_scomparsa' || ev.tipo === 'statua_interruttore' ||
           ev.tipo === 'indovinello' ||
-          isMnTrigger(ev.tipo) || ev.tipo === 'trigger_storia';
+          isMnTrigger(ev.tipo) || ev.tipo === 'trigger_storia' ||
+          // trigger_cutscene SENZA "quando" (né 'entra' né 'spawn') = si
+          // avvia premendo [A] (30 ott 2026, richiesta di Luca): finora
+          // _interagisci lo gestiva ma _eventoInCasella non lo trovava mai,
+          // quindi la fontana di San Rocco (Rayquaza, Frascati Ovest) non
+          // rispondeva a [A]. I trigger con quando:'entra'/'spawn' restano
+          // automatici, invariati.
+          (ev.tipo === 'trigger_cutscene' && !ev.props.quando);
         if (!interagibile) continue;
         const occ = (ev.w > 0 && ev.h > 0)
           ? (tx >= ev.tx0 && tx <= ev.tx1 && ty >= ev.ty0 && ty <= ev.ty1)
