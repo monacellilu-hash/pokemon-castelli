@@ -266,6 +266,10 @@ async function caricaPartita() {
       if (stato.flags.bunkerinoDebellato     === undefined) stato.flags.bunkerinoDebellato     = false;
       if (stato.flags.mewtwoSconfitto        === undefined) stato.flags.mewtwoSconfitto        = false;
       if (stato.gauntletBunkerino            === undefined) stato.gauntletBunkerino            = null;
+      // Level cap finale: il cap è "il livello più alto + 1" (i Pokémon si fermano
+      // a cap-1), quindi per arrivare davvero a Lv.100 serve 101 (30 ott 2026,
+      // richiesta di Luca). Aggiorna anche i salvataggi che hanno già il cap 100.
+      if (stato.flags.legaVittorie >= 2 && stato.levelCap === 100) stato.levelCap = 101;
       // Migrazione F9.3: Pensione Pokémon
       if (!stato.pensione || typeof stato.pensione !== 'object') {
         stato.pensione = { slot1: null, slot2: null, passiSlot1: null, passiSlot2: null, giornoCoppia: null, uovoPronto: false };
@@ -4305,14 +4309,31 @@ async function interagisciAnfratto(idAnfratto) {
    ---------------------------------------------------------- */
 
 // Estrae 6 Pokémon dal pool del Superquattro (5 random + coreId per ultimo)
+// Livelli della Lega (30 ott 2026, richiesta esplicita di Luca):
+//  - prima della prima vittoria: quelli base del membro (livMin/livMax in data.js);
+//  - dopo la prima vittoria (legaCompletata): 75-79;
+//  - dopo l'ultima missione di Cenciarels (squadra pulita, vedi
+//    MISSIONI_CENCIARELS): 95-100. Basta uno dei due flag: quello scritto alla
+//    vittoria (cenciarelsSquadraPulita) o la missione segnata come consegnata.
+function livelliLegaPerMembro(membro) {
+  const f = (typeof stato !== 'undefined' && stato.flags) ? stato.flags : {};
+  if (f.legaCompletata) {
+    const pulita = f.cenciarelsSquadraPulita ||
+      (f.cenciarelsMissioni && f.cenciarelsMissioni.cenciarels_squadra_pulita);
+    return pulita ? { min: 95, max: 100 } : { min: 75, max: 79 };
+  }
+  return { min: membro.livMin, max: membro.livMax };
+}
+
 function estraiTeamSuperquattro(membro) {
+  const liv = livelliLegaPerMembro(membro);
   const pool = membro.pool.filter(id => id !== membro.coreId);
   for (let i = pool.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1));
     [pool[i], pool[j]] = [pool[j], pool[i]];
   }
   const cinque = pool.slice(0, 5);
-  const spread = membro.livMax - membro.livMin;
+  const spread = liv.max - liv.min;
   // Moveset fisso per specie (20 ott 2026, stesso meccanismo dei Capipalestra):
   // membro.mosse = { idSpecie: ['slug1', 'slug2', ...] }, opzionale — se assente
   // per quella specie resta la scelta automatica di sempre (scegliMosse).
@@ -4329,8 +4350,8 @@ function estraiTeamSuperquattro(membro) {
     prediligeCura: prediligeCuraDiId(id),
   });
   return [
-    ...cinque.map((id, i) => voce(id, membro.livMin + Math.round(spread * i / 5))),
-    voce(membro.coreId, membro.livMax),
+    ...cinque.map((id, i) => voce(id, liv.min + Math.round(spread * i / 5))),
+    voce(membro.coreId, liv.max),
   ];
 }
 

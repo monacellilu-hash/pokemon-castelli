@@ -10568,10 +10568,10 @@ const GameMap = (function () {
         // prima vittoria → cap 75 (sblocca anche il rifugio GdF di Marino,
         // vedi _controllaPasswordRifugio sopra); dalla seconda vittoria in
         // poi (dopo aver catturato Kyogre/Groudon/Rayquaza ecc., storia GdF)
-        // → cap 100. stato.flags.legaVittorie conta le vittorie vere.
+        // → cap 101 (= Pokémon fino a Lv.100). stato.flags.legaVittorie conta le vittorie vere.
         stato.flags.legaVittorie = (stato.flags.legaVittorie || 0) + 1;
         if (stato.flags.legaVittorie === 1) stato.levelCap = 75;
-        else stato.levelCap = 100;
+        else stato.levelCap = 101;   // i Pokémon si fermano a cap-1: 101 = fino a Lv.100
         if (primaVoltaLega) {
           this._giocaCutscene('lega_finale_remo').then(() => {
             if (typeof salvaPartita === 'function') salvaPartita();
