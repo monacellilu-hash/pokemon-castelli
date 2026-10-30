@@ -5748,7 +5748,7 @@ function iconaOggettoHtml(oggetto) {
 // descrizione, bottone "Usa" se applicabile). Riusata dalle tasche 1 e 3.
 function creaCardOggetto(chiave, oggetto, quanti) {
   const suBersaglio = oggetto.categoria === 'cura' || oggetto.categoria === 'revive' || oggetto.categoria === 'test' || oggetto.categoria === 'curastato' || oggetto.categoria === 'pietra' || oggetto.categoria === 'felicita' || oggetto.categoria === 'scambio' || oggetto.categoria === 'mt' || oggetto.categoria === 'mn' || oggetto.categoria === 'held' || oggetto.categoria === 'curatotale' || oggetto.categoria === 'pp' || oggetto.categoria === 'raracandy';
-  const direttamente = oggetto.categoria === 'repellente';
+  const direttamente = oggetto.categoria === 'repellente' || oggetto.categoria === 'fuga';
   const usabile = suBersaglio || direttamente;
 
   const riga = document.createElement('div');
@@ -5763,7 +5763,8 @@ function creaCardOggetto(chiave, oggetto, quanti) {
 
   if (usabile) {
     riga.querySelector('.btn-preleva').addEventListener('click', () => {
-      if (direttamente) usaRepellente(chiave);
+      if (oggetto.categoria === 'fuga') usaFuneDiFuga(chiave);
+      else if (direttamente) usaRepellente(chiave);
       else renderScegliBersaglio(chiave);
     });
   }
@@ -6005,6 +6006,40 @@ function descriviEffettoMossa(d) {
 
   if (frasi.length === 0) frasi.push('Nessun effetto secondario.');
   return frasi.join(' ');
+}
+
+// Fune di Fuga (30 ott 2026, richiesta esplicita di Luca): teletrasporta
+// davanti all'ultimo Centro Pokémon usato (stato.ultimoCentroCura, lo stesso
+// punto dove si torna dopo una sconfitta; se non ti sei mai curato, Borgata
+// Tuscolana come nel caso della sconfitta). Monouso: l'oggetto si consuma solo
+// se il teletrasporto parte davvero. NON usabile nella Palestra di Genzano
+// (8ª palestra) e in nessuna mappa dell'Osservatorio (fuori + piani interni).
+const FUGA_VIETATA_MAPPE = ['palestra_genzano_interno'];
+function fugaVietataQui() {
+  if (typeof GameMap === 'undefined' || !GameMap.posizioneAttualeSalvabile) return false;
+  const pos = GameMap.posizioneAttualeSalvabile();
+  const chiave = pos && pos.chiave ? String(pos.chiave) : '';
+  return FUGA_VIETATA_MAPPE.includes(chiave) || chiave.indexOf('osservatorio') === 0;
+}
+function usaFuneDiFuga(chiave) {
+  const oggetto = OGGETTI[chiave];
+  if (!oggetto || (stato.zaino[chiave] || 0) <= 0) return;
+  if (stato.incontroAttivo || dialogoInCorso) return;
+  if (typeof GameMap === 'undefined' || !GameMap.vaiAMappa) return;
+  if (fugaVietataQui()) {
+    mostraToast('🚫 Non puoi usare la Fune di Fuga qui!', 2600);
+    return;
+  }
+  stato.zaino[chiave] -= 1;
+  const centro = stato.ultimoCentroCura;
+  if (typeof chiudiMenu === 'function') chiudiMenu();
+  if (centro && centro.mappa) GameMap.vaiAMappa(centro.mappa, centro.tx, centro.ty);
+  else GameMap.vaiAMappa('borgata_tuscolana');
+  stato.passiDaCheck = 0;       // niente incontro subito dopo l'arrivo
+  stato.ultimaZonaLocked = null;
+  salvaPartita();
+  aggiornaHUD();
+  mostraToast('🪢 Sei tornato all\'ultimo Centro Pokémon!', 3000);
 }
 
 // Attiva il repellente: niente incontri per N passi
