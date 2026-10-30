@@ -256,14 +256,25 @@ const DATI_NPC = {
     sprite: 'trainer_SUPERNERD', nome: 'Professor Anselmi', direzione: 'sud', movimento: 'fisso',
     azione: 'parlaScienziatoGrottaVulcano',
   },
-  // Direttore Lucio del Bunkerino (F12b, sess. 5 ott 2026): riusa la
-  // funzione già scritta interagisciBunkerino() (js/app.js), che gestisce da
-  // sola gauntlet 4 guardie + boss + Mewtwo in base a stato.gauntletBunkerino
-  // — qui serve solo collegarla a un NPC vero sulla mappa Tiled (prima
-  // dipendeva da lat/lon col vecchio motore, vedi fix nella stessa funzione).
+  // Direttore Lucio del Bunkerino: SCOLLEGATO il 30 ott 2026 (richiesta
+  // esplicita di Luca: "5 incontri in fila e poi sfidi Mewtwo, da togliere").
+  // azione:'interagisciBunkerino' richiamava js/app.js interagisciBunkerino(),
+  // un gauntlet LEGACY pre-Tiled (4 guardie ALLENATORI + boss + un Mewtwo
+  // catturabile "a parte", completamente separato dal vero scontro finale a
+  // scripted/cutscene di bunkerino_3f.tmj con la rivelazione di Mew) rimasto
+  // vivo per errore dopo la migrazione — bastava parlargli UNA volta per
+  // scatenare tutta la catena in sequenza. interagisciBunkerino()/
+  // avviaGauntletBunkerino()/triggeraMewtwo() restano in js/app.js (dead
+  // code, non richiamate da nessun'altra parte) ma non più raggiungibili.
+  // Ora è un NPC normale: dialogo di avvertimento, nessuna lotta scriptata —
+  // i veri trainer del piano (ora tutti a vista) e Mewtwo al 3F restano
+  // raggiungibili esplorando normalmente.
   'npc_bunkerino_direttore': {
     sprite: 'trainer_SUPERNERD', nome: 'Direttore Lucio', direzione: 'sud', movimento: 'fisso',
-    azione: 'interagisciBunkerino',
+    dialogo: [
+      'Sei valido, vai avanti. Ma attento: non è quello che sembra.',
+      'Io non ho potuto oppormi...',
+    ],
   },
   // ── Scena finale Bunkerino 3F (richiesta esplicita di Luca, 12 ott 2026):
   // Tom e Maso NON si lottano qui (già battuti altrove, Osservatorio/
