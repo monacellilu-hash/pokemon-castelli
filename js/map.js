@@ -6024,6 +6024,16 @@ const GameMap = (function () {
               !stato.cittaVisitate.includes(comune)) {
             stato.cittaVisitate.push(comune);
           }
+          // Bug vero corretto 4 nov 2026 (segnalato da Luca: "la musica non
+          // c'è su tutte le mappe"): caricaMappa() chiama Musica.suonaPerMappa
+          // una volta sola, all'ENTRATA nel cluster — ma dentro un cluster ci
+          // si sposta tra mappe membro (città ↔ percorsi, centro ↔ piazza)
+          // SENZA mai richiamare caricaMappa (è la "cucitura", nessun fade/
+          // reset, vedi commento sopra). La musica restava quindi quella di
+          // quando sei entrato nel cluster, qualunque mappa membro
+          // attraversassi dopo — qui invece va aggiornata ad ogni cambio di
+          // mappa membro, esattamente come città-visitata appena sopra.
+          if (typeof Musica !== 'undefined') Musica.suonaPerMappa(mappaCorrente);
         }
       }
 

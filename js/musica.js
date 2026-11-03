@@ -113,7 +113,12 @@ const Musica = (function () {
   function _chiaveDaMappa(chiave) {
     const k = String(chiave).toLowerCase();
     if (k.includes('casa') || k.includes('condominio')) return null;    // niente cambio, resta il tema città
-    if (k.startsWith('pokecenter') || k.includes('pokecenter')) return 'centro_pokemon';
+    // "safarizone_center"/"safarizone_center_resthouse" (4 nov 2026, bug
+    // trovato controllando il registro MAPPE): sono Centri Pokémon veri ma
+    // non contengono "pokecenter" nel nome, restavano fuori da questa
+    // regola e finivano nel fallback generico "percorso_a".
+    if (k.startsWith('pokecenter') || k.includes('pokecenter') ||
+        k.startsWith('safarizone_center')) return 'centro_pokemon';
     if (k.includes('palestra')) return 'palestra';
     if (k === 'borgata_tuscolana' || k.includes('laboratorio')) return 'laboratorio';
     if (k.includes('tunnel_roccioso')) return 'tunnel_roccioso';
