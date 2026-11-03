@@ -7,12 +7,12 @@
    Le tracce vengono da Essentials FRLG (uso personale, stesso principio
    degli sprite — vedi CLAUDE.md, vincoli legali).
 
-   ATTENZIONE (6 ott 2026): i file .ogg originali sono enormi (4-5 MB
-   l'uno, ~194MB in totale per 43 tracce) — nessun ffmpeg disponibile per
-   comprimerli. Finché Luca non decide come procedere (comprimerli lui,
-   usarne pochi, o accettare il peso), i file audio potrebbero non essere
-   ancora presenti in sprites/audio/ — in quel caso il motore semplicemente
-   non riproduce nulla (try/catch silenzioso), nessun errore bloccante.
+   I 43 file .ogg originali erano enormi (4-5 MB l'uno, ~194MB in totale) e
+   restavano fuori da git — risolto il 4 nov 2026: ricompressi con ffmpeg
+   (libvorbis q:a 2 ~96kbit/s) a ~37MB totali, ora committati per davvero in
+   sprites/audio/ e pubblicati con il resto del gioco. Il try/catch in
+   _suona() resta comunque silenzioso per design (un file mancante/non
+   ancora caricato non deve mai bloccare il gioco).
    ============================================================ */
 
 const Musica = (function () {
