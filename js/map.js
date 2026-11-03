@@ -12331,7 +12331,7 @@ const GameMap = (function () {
     _collegaIndietro() {
       const daSquadra = this._fonte.tipo !== 'box';
       this.add.text(this.cameras.main.width / 2, this.cameras.main.height * 0.985,
-        daSquadra ? '←→ pagina · ↓ azioni · B torna alla Squadra' : '←→ pagina · ↓ azioni · B torna al Box', {
+        daSquadra ? '←→ pagina · ↑↓ cambia Pokémon · B torna alla Squadra' : '←→ pagina · ↑↓ cambia Pokémon · B torna al Box', {
         fontFamily: 'Arial', fontSize: '12px', color: '#888',
       }).setOrigin(0.5, 1).setDepth(2);
       const tornaIndietro = () => {
@@ -12368,17 +12368,23 @@ const GameMap = (function () {
         this._pagina = PAGINE[(i + 1) % PAGINE.length];
         this._disegnaPagina();
       });
+      // ↑↓ cambiano Pokémon (richiesta esplicita di Luca, 3 nov 2026) SOLO
+      // quando il focus è sulla pagina (non sui bottoni azione in fondo, non
+      // nell'analisi mosse — scelta precisa di Luca tra le opzioni proposte):
+      // una volta che il focus è sceso ai bottoni con ↓, ↑↓ tornano a fare
+      // quello che facevano prima (↑ torna alla pagina, ↓ resta un no-op).
+      // I bottoni azione restano comunque raggiungibili col mouse/tocco
+      // (sempre interattivi, vedi _disegnaAzioni) anche se non più con ↓ da
+      // qui: è il compromesso scelto esplicitamente da Luca per liberare ↑↓.
       this.input.keyboard.on('keydown-DOWN', () => {
         if (this._modoDettaglioMossa) { this._muoviCursoreMossa(1); return; }
-        if (this._focoAzioni || this._azioni.length === 0) return;
-        this._focoAzioni = true; this._cursoreAzione = 0;
-        this._disegnaPagina();
+        if (this._focoAzioni) return;
+        this._cambiaPokemonInfo(1);
       });
       this.input.keyboard.on('keydown-UP', () => {
         if (this._modoDettaglioMossa) { this._muoviCursoreMossa(-1); return; }
-        if (!this._focoAzioni) return;
-        this._focoAzioni = false;
-        this._disegnaPagina();
+        if (this._focoAzioni) { this._focoAzioni = false; this._disegnaPagina(); return; }
+        this._cambiaPokemonInfo(-1);
       });
       const conferma = () => {
         if (this._modoDettaglioMossa) { this._alConfermaDettaglioMossa(); return; }
@@ -12439,6 +12445,24 @@ const GameMap = (function () {
 
     _ridisegna() {
       this.scene.restart({ fonte: this._fonte, pagina: this._pagina });
+    }
+
+    // Passa al Pokémon precedente/successivo (delta ±1) restando nella
+    // stessa lista di provenienza (Squadra o lo stesso Box) — salta gli
+    // slot vuoti, ciclico. Resta sulla stessa pagina (Info/Skills/Mosse).
+    _cambiaPokemonInfo(delta) {
+      const inBox = this._fonte.tipo === 'box';
+      const lista = inBox ? (stato.boxes[this._fonte.box] || []) : (stato.squadra || []);
+      const validi = [];
+      lista.forEach((p, i) => { if (p) validi.push(i); });
+      if (validi.length <= 1) return;
+      const attuale = inBox ? this._fonte.slot : this._fonte.idx;
+      const pos = validi.indexOf(attuale);
+      const nuovoIdx = validi[(pos + delta + validi.length) % validi.length];
+      const nuovaFonte = inBox
+        ? { tipo: 'box', box: this._fonte.box, slot: nuovoIdx }
+        : { tipo: 'squadra', idx: nuovoIdx };
+      this.scene.restart({ fonte: nuovaFonte, pagina: this._pagina });
     }
 
     // Ridisegna tutto (sfondo + overlay pagina + barra azioni) da zero: la
@@ -13013,7 +13037,7 @@ const GameMap = (function () {
 
       const nota = boxMano
         ? `✋ Stai tenendo ${boxMano.pkm.nome}. Muovi il cursore su uno slot (anche in squadra, qui sotto) e premi A per posarlo o scambiarlo.`
-        : 'Freccette per muovere il cursore, A su un Pokémon per prenderlo, A su uno slot vuoto per depositare. ◀▶ sul bordo cambia Box.';
+        : 'Freccette per muovere il cursore, A su un Pokémon apre Info/Ordina, A su uno slot vuoto (o dopo aver scelto Ordina) per depositare. ◀▶ sul bordo cambia Box.';
       this.add.text(CW / 2, CH - 90, nota, {
         fontFamily: 'Arial', fontSize: '12px', color: '#ccc', align: 'center', wordWrap: { width: CW - 80 },
       }).setOrigin(0.5).setDepth(2);
@@ -13041,6 +13065,7 @@ const GameMap = (function () {
       }
 
       const uscire = () => {
+        if (this._menuBox) { this._chiudiMenuCella(); return; }
         // BUG VERO DEI 7 POKÉMON IN SQUADRA (trovato da Luca giocando, 10
         // ott 2026): questa rete di sicurezza rimetteva il Pokémon in mano
         // nel suo "slot di origine" — corretto SOLO se quello slot è
@@ -13074,10 +13099,27 @@ const GameMap = (function () {
       // ←/→ sul bordo sinistro/destro cambiano pagina Box (stesso schema di
       // overflow già usato in PokedexScene), non serve un tasto dedicato.
       this._cursore = this._cursoreIniziale; // indice flat 0-35
+      // Menu a tendina Info/Ordina (richiesta esplicita di Luca, 3 nov 2026):
+      // stesso schema già usato in Squadra (_menuBox/_menuVoci/_menuCursore)
+      // — A su un Pokémon NON preso in mano apre il menu invece di prenderlo
+      // subito; A su uno slot mentre si tiene già un Pokémon in mano resta
+      // invariato (posa/scambio diretto, è la seconda metà di "Ordina").
+      this._menuBox = null;
+      this._menuVoci = null;
+      this._menuCursore = 0;
+      this._menuRef = null;
       const refPerCursore = (idx) => idx < 30
         ? { tipo: 'box', box: boxIndiceAttivo, slot: idx }
         : { tipo: 'squadra', idx: idx - 30 };
+      this._refPerCursore = refPerCursore;
       const muoviCursoreBox = (dRow, dCol) => {
+        if (this._menuBox) {
+          if (dRow !== 0) {
+            this._menuCursore = (this._menuCursore + dRow + this._menuVoci.length) % this._menuVoci.length;
+            this._aggiornaMenuCella();
+          }
+          return;
+        }
         let riga = Math.floor(this._cursore / 6), col = this._cursore % 6;
         if (dCol !== 0) {
           col += dCol;
@@ -13092,7 +13134,14 @@ const GameMap = (function () {
       this.input.keyboard.on('keydown-DOWN',  () => muoviCursoreBox(1, 0));
       this.input.keyboard.on('keydown-LEFT',  () => muoviCursoreBox(0, -1));
       this.input.keyboard.on('keydown-RIGHT', () => muoviCursoreBox(0, 1));
-      const confermaBox = () => this._clicCella(refPerCursore(this._cursore));
+      const confermaBox = () => {
+        if (this._menuBox) {
+          const v = this._menuVoci && this._menuVoci[this._menuCursore];
+          if (v) v.onClick();
+          return;
+        }
+        this._clicCella(refPerCursore(this._cursore));
+      };
       this.input.keyboard.on('keydown-ENTER', confermaBox);
       this.input.keyboard.on('keydown-SPACE', confermaBox);
     }
@@ -13100,6 +13149,7 @@ const GameMap = (function () {
     _disegnaGriglia() {
       if (this._celle) this._celle.forEach(o => o.destroy());
       this._celle = [];
+      this._celleXY = {};   // indice flat 0-35 -> {cx, cy, size}, usato da _mostraMenuCella per ancorare il popup
       const CW = this.cameras.main.width, CH = this.cameras.main.height;
       const COLS = 6, ROWS = 5;
       const startY = 70;
@@ -13121,6 +13171,7 @@ const GameMap = (function () {
         const cx = startX + col * cell, cy = startY + row * cell;
         const pkm = stato.boxes[boxIndiceAttivo][slot];
         this._disegnaCella(cx, cy, cell - 4, pkm, { tipo: 'box', box: boxIndiceAttivo, slot }, slot === this._cursore);
+        this._celleXY[slot] = { cx, cy, size: cell - 4 };
       }
 
       // Striscia Squadra
@@ -13132,6 +13183,7 @@ const GameMap = (function () {
       const dockStartX = CW / 2 - (dockCell * 6) / 2 + dockCell / 2;
       for (let i = 0; i < 6; i++) {
         this._disegnaCella(dockStartX + i * dockCell, dockY + dockCell / 2, dockCell - 6, stato.squadra[i] || null, { tipo: 'squadra', idx: i }, (30 + i) === this._cursore);
+        this._celleXY[30 + i] = { cx: dockStartX + i * dockCell, cy: dockY + dockCell / 2, size: dockCell - 6 };
       }
     }
 
@@ -13166,16 +13218,16 @@ const GameMap = (function () {
     _clicCella(ref) {
       const pkmQui = leggiSlotBox(ref);
 
+      // Richiesta esplicita di Luca (3 nov 2026): A su un Pokémon libero
+      // (nessuno già in mano) apre il menu Info/Ordina, invece di prenderlo
+      // subito — stesso schema già in uso in Squadra (_mostraMenuCarta).
+      // "Ordina" dentro quel menu fa esattamente quello che faceva prima
+      // questo ramo (vedi _prendiCella). Il "posa/scambio" quando si tiene
+      // già un Pokémon in mano resta invariato, nessun menu in mezzo lì
+      // (è la seconda metà dell'azione "Ordina", non una nuova scelta).
       if (!boxMano) {
         if (!pkmQui) return;
-        if (ref.tipo === 'squadra' && stato.squadra.length <= 1) {
-          if (typeof mostraToast === 'function') mostraToast('Non puoi lasciare la squadra senza nemmeno un Pokémon!');
-          return;
-        }
-        if (ref.tipo === 'box') stato.boxes[ref.box][ref.slot] = null;
-        else stato.squadra.splice(ref.idx, 1);
-        boxMano = { origine: ref, pkm: pkmQui };
-        this.scene.restart({ cursore: this._cursore });
+        this._mostraMenuCella(ref, pkmQui);
         return;
       }
 
@@ -13196,6 +13248,83 @@ const GameMap = (function () {
         mostraToast(boxMano ? `🔄 Scambiati ${preso.nome} e ${pkmQui.nome}.` : `📦 ${preso.nome} sistemato.`);
       }
       this.scene.restart({ cursore: this._cursore });
+    }
+
+    // Prende in mano il Pokémon di ref (voce "Ordina" del menu) — stessa
+    // identica logica che _clicCella faceva da sola prima del 3 nov 2026.
+    _prendiCella(ref, pkmQui) {
+      if (ref.tipo === 'squadra' && stato.squadra.length <= 1) {
+        if (typeof mostraToast === 'function') mostraToast('Non puoi lasciare la squadra senza nemmeno un Pokémon!');
+        return;
+      }
+      if (ref.tipo === 'box') stato.boxes[ref.box][ref.slot] = null;
+      else stato.squadra.splice(ref.idx, 1);
+      boxMano = { origine: ref, pkm: pkmQui };
+      this.scene.restart({ cursore: this._cursore });
+    }
+
+    // Menu a tendina Info/Ordina, stesso schema di _mostraMenuCarta in
+    // PartyScene — ancorato accanto alla cella scelta, con un cursore vero
+    // (↑↓ + A/Invio, vedi muoviCursoreBox/confermaBox in create()).
+    _mostraMenuCella(ref, pkmQui) {
+      this._chiudiMenuCella();
+      const xy = this._celleXY && this._celleXY[this._cursore];
+      if (!xy) return;
+      const CW = this.cameras.main.width, CH = this.cameras.main.height;
+      const w = 150, h = 90;
+      let x = xy.cx + xy.size / 2 + 6 + w / 2;
+      if (x + w / 2 > CW - 8) x = xy.cx - xy.size / 2 - 6 - w / 2;
+      const y = Phaser.Math.Clamp(xy.cy, h / 2 + 8, CH - h / 2 - 8);
+
+      const box = [];
+      const bg = this.add.rectangle(x, y, w, h, 0x0d1220, 0.98)
+        .setStrokeStyle(2, 0xffcb05).setDepth(20).setInteractive();
+      box.push(bg);
+
+      const attivaInfo = () => {
+        this._chiudiMenuCella();
+        this.scene.stop();
+        this.scene.launch('PartyDetailScene', { fonte: ref });
+      };
+      const infoBtn = this.add.text(x, y - h / 4, 'ℹ️ Info', {
+        fontFamily: 'Arial', fontSize: '15px', color: '#fff',
+      }).setOrigin(0.5).setDepth(21).setInteractive({ useHandCursor: true });
+      infoBtn.on('pointerover', () => { this._menuCursore = 0; this._aggiornaMenuCella(); });
+      infoBtn.on('pointerdown', attivaInfo);
+      box.push(infoBtn);
+
+      const separatore = this.add.rectangle(x, y, w - 20, 1, 0x3a3a4a).setDepth(21);
+      box.push(separatore);
+
+      const attivaOrdina = () => {
+        this._chiudiMenuCella();
+        this._prendiCella(ref, pkmQui);
+      };
+      const ordinaBtn = this.add.text(x, y + h / 4, '🔀 Ordina', {
+        fontFamily: 'Arial', fontSize: '15px', color: '#fff',
+      }).setOrigin(0.5).setDepth(21).setInteractive({ useHandCursor: true });
+      ordinaBtn.on('pointerover', () => { this._menuCursore = 1; this._aggiornaMenuCella(); });
+      ordinaBtn.on('pointerdown', attivaOrdina);
+      box.push(ordinaBtn);
+
+      this._menuBox = box;
+      this._menuVoci = [
+        { btn: infoBtn, onClick: attivaInfo },
+        { btn: ordinaBtn, onClick: attivaOrdina },
+      ];
+      this._menuCursore = 0;
+      this._aggiornaMenuCella();
+    }
+
+    _aggiornaMenuCella() {
+      if (!this._menuVoci) return;
+      this._menuVoci.forEach((v, i) => {
+        v.btn.setColor(i === this._menuCursore ? '#ffcb05' : '#fff');
+      });
+    }
+
+    _chiudiMenuCella() {
+      if (this._menuBox) { this._menuBox.forEach(o => o.destroy()); this._menuBox = null; this._menuVoci = null; }
     }
   }
 
