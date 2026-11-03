@@ -2677,7 +2677,11 @@ async function interagisciRoccaNpc1() {
     ]);
     return;
   }
-  await mostraDialogo(nome, ['Corri, aiuta Baso a tornare sano e salvo!']);
+  await mostraDialogo(nome, [
+    'Corri, aiuta Baso a tornare sano e salvo!',
+    'Dicono in giro che ci sia un sentiero mai esplorato tra qui e Grottaferrata... pare che ci abbiano visto proprio Baso, chissà perché.',
+    'Se dopo la palestra cerchi quella di Albano: prendi Via dei Laghi, o scendi alla spiaggia del Lago di Albano — lì dicono che si faccia anche Surf.',
+  ]);
 }
 
 /* ── Gianluca liberato (Rocca di Papa): primo dialogo una tantum, poi
@@ -2698,6 +2702,7 @@ async function interagisciGianluca() {
     await mostraDialogo(nome, [
       'Grazie per avermi salvato, te ne sarò sempre grato!',
       'Tieni, prendi questo: è il mio vecchio flauto, non mi serve più. Magari a te servirà.',
+      'Dicono che a Marino ci sia un Pokémon enorme addormentato in mezzo alla strada, che blocca tutti — forse proprio un flauto come questo potrebbe svegliarlo.',
       'Usa pure la mia funivia quando vuoi!',
     ]);
     if (typeof mostraToast === 'function') mostraToast('🎵 Hai ricevuto il Flauto Pokémon!', 3000);

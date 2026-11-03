@@ -5567,6 +5567,34 @@
                  "y":1151.33333333333
                 }, 
                 {
+                 "height":32,
+                 "id":9009,
+                 "name":"npc_hint_marino1",
+                 "opacity":1,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"sud"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"npc_hint_marino1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"npc"
+                        }],
+                 "rotation":0,
+                 "type":"npc",
+                 "visible":true,
+                 "width":32,
+                 "x":705,
+                 "y":1182
+                }, 
+                {
                  "height":20,
                  "id":20,
                  "name":"market_door",
@@ -6843,7 +6871,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":9009,
+ "nextobjectid":9010,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",

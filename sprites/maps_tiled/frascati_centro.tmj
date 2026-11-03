@@ -6770,6 +6770,35 @@
      "y": 360.75
     },
     {
+     "height": 32,
+     "id": 161,
+     "name": "npc_hint_frascati1",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "npc_hint_frascati1"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "npc",
+     "visible": true,
+     "width": 32,
+     "x": 988,
+     "y": 423
+    },
+    {
      "height": 11.375,
      "id": 146,
      "name": "spawn_pokemarket_frascati",
@@ -7664,7 +7693,7 @@
   }
  ],
  "nextlayerid": 22,
- "nextobjectid": 158,
+ "nextobjectid": 162,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

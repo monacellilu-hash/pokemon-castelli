@@ -16709,6 +16709,35 @@
     },
     {
      "height": 32,
+     "id": 204,
+     "name": "npc_hint_monteporzio1",
+     "opacity": 1,
+     "properties": [
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "npc_hint_monteporzio1"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "npc"
+      }
+     ],
+     "rotation": 0,
+     "type": "npc",
+     "visible": true,
+     "width": 32,
+     "x": 420,
+     "y": 731
+    },
+    {
+     "height": 32,
      "id": 15,
      "name": "npc",
      "opacity": 1,
@@ -17595,7 +17624,7 @@
   }
  ],
  "nextlayerid": 21,
- "nextobjectid":204,
+ "nextobjectid":205,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",

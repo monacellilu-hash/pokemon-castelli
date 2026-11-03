@@ -16,6 +16,33 @@ const SPRITE_CENCIARELS = 'Scenziato_donna';
 
 const DATI_NPC = {
 
+  /* ── NPC "da smarrimento" (3 nov 2026, richiesta esplicita di Luca): i
+     suoi amici che testavano il gioco non sapevano dove andare dopo una
+     palestra — vedi docs-nogithub/RIASSUNTO_STORIA_PER_NPC.md per il
+     riepilogo completo su cui si basano questi indizi. Dialoghi brevi,
+     senza spoiler sulla trama, solo indicazioni pratiche su dove andare. ── */
+  'npc_hint_frascati1': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Dopo Frascati la strada porta dritta a Grottaferrata.',
+      'Se vuoi, dai un\'occhiata al Tuscolo qui a nord — ma ci ripasserai comunque più avanti, non perderci troppo tempo adesso.',
+    ],
+  },
+  'npc_hint_marino1': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Dopo Castel Gandolfo c\'è chi spacca le rocce a mani nude — tornaci con la medaglia di Monte Porzio.',
+      'Cerchi il Tunnel Roccioso? È a nord-est, sopra la strada per Genzano: lo chiamano Via dei Laghi.',
+    ],
+  },
+  'npc_hint_castelgandolfo1': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Qui c\'è chi insegna a spaccare le rocce, ma solo a chi ha già la medaglia di Monte Porzio.',
+      'Il Tunnel Roccioso che si apre con quella mossa è su, verso Via dei Laghi.',
+    ],
+  },
+
   /* ── NPC all'ingresso di ogni palestra (richiesta esplicita di Luca,
      10 ott 2026): spiega il tipo della palestra (NON le superefficacie,
      solo il tipo), racconta qualcosa sul Capopalestra in italiano corretto
@@ -810,6 +837,24 @@ const DATI_NPC = {
   'npc_genzano_casa8_1_1': {
     sprite: 'NPC 04', nome: 'Rosina', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Il mio gatto non va d accordo coi Pokemon di casa, che muso!'],
+  },
+  // Spunto "da smarrimento" (3 nov 2026, richiesta esplicita di Luca):
+  // Monte Porzio, vicino alla palestra — dove andare dopo Biretta.
+  'npc_hint_monteporzio1': {
+    nome: 'Ricercatrice', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Appena preso la medaglia di Biretta, torna a Castel Gandolfo: ci sono ricercatori che donano una MN a chi ha già 4 medaglie.',
+      'Cerchi il Museo delle Navi? È sopra il Lago di Nemi.',
+      'Dicono pure che nel deserto qui intorno ci sia qualcosa di raro... ma sai come sono le leggende metropolitane.',
+    ],
+  },
+  // Spunto "da smarrimento" (3 nov 2026, richiesta esplicita di Luca): dopo
+  // Giorgia, verso la Zona Safari c'è chi dona il permesso Volo (vedi
+  // 'npc_safarizone_secrethouse_1' in dati/trainer.js, Policarpo) — oggetto
+  // Tiled già esistente su albano.tmj ma senza voce dedicata finora.
+  'albano_npc2': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Hai già la Medaglia Scudo? Allora prova la Zona Safari: dicono che lì dentro c\'è chi fa volare chiunque dimostri di meritarselo.'],
   },
   'npc_albano_casadoppia_luxury_1_1': {
     sprite: 'NPC 22', nome: 'Samanta', direzione: 'sud', movimento: 'fisso',

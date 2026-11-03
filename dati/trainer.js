@@ -1130,7 +1130,7 @@ const DATI_TRAINER = {
     ],
     oggettiCura: [{ chiave: 'iperpozione', quantita: 3 }],  // sess. 1 ott 2026
     dialogo_prima: 'Shhh… benvenuto ad Ariccia, dove la notte è padrona. Sono Isa. Quando le fraschette si svuotano e il ponte resta solo, i miei Pokémon Buio escono a giocare. Porchetta e vino li lascio agli altri: io mi nutro delle paure degli sfidanti. Fammi vedere le tue!',
-    dialogo_dopo: 'Hai acceso una luce nel mio buio… La Medaglia Fraschetta è tua. Ora brindiamo, va\'!',
+    dialogo_dopo: 'Hai acceso una luce nel mio buio… La Medaglia Fraschetta è tua. Ora brindiamo, va\'! ...Un\'ultima cosa: a San Nilo, dentro l\'Abbazia di Grottaferrata, girano brutte voci su Igino. Vacci, prima che sia tardi.',
     premio: 5200,
     palestraId: 'ariccia',   // → assegna la Medaglia Fraschetta e alza il level cap a 52
   },
@@ -1330,7 +1330,7 @@ const DATI_TRAINER = {
     classe: 'Luogotenente GdF', nome: 'Fernando',
     squadra: [{ id: 110, livello: 44 }, { id: 24, livello: 45 }],
     dialogo_prima: 'Il documento? Non passa da un dilettante come te. Sono Fernando, e questi archivi li difendo io di persona.',
-    dialogo_dopo: 'Il documento dice: \'Le pietre riposano al Museo delle Barche di Nemi\'. ...Aspetta, se ve ne siete già andati lì... devo correre a Nemi ad avvisare Michela!',
+    dialogo_dopo: 'Il documento dice: \'Le pietre riposano al Museo delle Barche di Nemi\'. ...Aspetta, se ve ne siete già andati lì... devo correre a Nemi ad avvisare Michela! In fondo c\'è anche un biglietto: "Ingresso al Museo delle Navi, Lago di Nemi". Tienilo, ti servirà per entrare.',
     premio: 1800,
     flagVittoria: 'documentoVillaOttenuto',
   },

@@ -763,6 +763,7 @@ CUTSCENE['antro_kyogre_9_matilde_isa'] = [
   { tipo: 'fade_in', ms: 600 },
   { tipo: 'dialogo', nome: 'Lorenzo', testo: [
     'Ah ah ah! Grazie a voi possiedo il re del lago!',
+    'Ora mi manca solo Groudon... e so già dove dorme: nel nucleo della Grotta del Vulcano, sopra Rocca di Papa.',
     'Addio... non mi prenderete mai!',
   ] },
   { tipo: 'fade_out', ms: 1000 },
@@ -776,6 +777,7 @@ CUTSCENE['antro_kyogre_9_matilde_isa'] = [
   ] },
   { tipo: 'dialogo', nome: 'Isa', testo: [
     'Kyogre va riportato dove deve stare. I Castelli vanno salvati, prima che sia davvero troppo tardi.',
+    'E hai sentito anche tu, vero? Ha detto Grotta del Vulcano. Se vuole fare lo stesso con Groudon, è lì che devi andare.',
   ] },
   { tipo: 'dialogo', nome: 'Matilde', testo: ['{nome}, ci aiuterai?'] },
   { tipo: 'scelta_si_no', messaggio: 'Ci aiuterai?', testoSi: 'Sì', testoNo: 'No', salva_flag: 'antro9_matilde_risposta' },
