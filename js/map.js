@@ -13849,7 +13849,8 @@ const GameMap = (function () {
         const disabilitato = (!v.diretto && stato.squadra.length === 0);
         if (disabilitato) return;
         if (v.diretto) {
-          usaRepellente(v.chiave);
+          if (v.oggetto.categoria === 'fuga') usaFuneDiFuga(v.chiave);
+          else usaRepellente(v.chiave);
           this.scene.restart();
           return;
         }
@@ -13978,7 +13979,10 @@ const GameMap = (function () {
       // app.js (usaOggettoSu, variabile "suBersaglio") che va tenuta
       // sincronizzata a mano — occhio se si aggiunge un'altra categoria.
       const suBersaglio = ['cura', 'revive', 'test', 'curastato', 'pietra', 'mt', 'mn', 'held', 'curatotale', 'pp', 'raracandy', 'vitamina', 'felicita', 'scambio'].includes(oggetto.categoria);
-      const diretto = oggetto.categoria === 'repellente';
+      // Bug segnalato da Luca (3 nov 2026): 'fuga' (Fune di Fuga) mancava qui,
+      // stessa classe di bug di mn/felicita/scambio sopra — l'oggetto non
+      // risultava mai "usabile" nel menu Zaino nativo.
+      const diretto = oggetto.categoria === 'repellente' || oggetto.categoria === 'fuga';
       return { chiave, oggetto, quanti, img: oggetto.img, usabile: suBersaglio || diretto, diretto };
     }
 
@@ -14069,7 +14073,8 @@ const GameMap = (function () {
                 return;
               }
               if (v.diretto) {
-                usaRepellente(v.chiave);
+                if (v.oggetto.categoria === 'fuga') usaFuneDiFuga(v.chiave);
+                else usaRepellente(v.chiave);
                 this.scene.restart();
                 return;
               }
