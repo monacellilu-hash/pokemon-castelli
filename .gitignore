@@ -47,12 +47,12 @@ pokeemerald-master/
 # principio dei pack sprite sopra — materiale di origine, mai da pushare.
 Essentials FRLG-nogithub/
 
-# Musiche di sottofondo (js/musica.js) copiate dal pack sopra per l'uso
-# in LOCALE (22 ott 2026, richiesta esplicita di Luca): 43 file, ~194MB,
-# troppo pesanti per GitHub — restano solo sul computer per giocare in
-# locale, non vengono mai pushate. Se un giorno si vuole pubblicare con la
-# musica, vanno prima compresse (nessun ffmpeg disponibile oggi).
-sprites/audio/
+# Musiche di sottofondo (js/musica.js): fino al 4 nov 2026 qui c'era
+# l'esclusione del pack originale (43 file, ~194MB, troppo pesante per
+# GitHub). Ricompresso quel giorno (ffmpeg via pacchetto Python
+# imageio-ffmpeg, libvorbis q:a 2 ≈ 96kbit/s, stesso sample rate 44100Hz)
+# a ~37MB totali — ORA SONO COMMITTATI DAVVERO, vedi sprites/audio/ sotto
+# git. Nessuna esclusione più necessaria.
 
 # Materiale grezzo/di riferimento, non caricato dal gioco (censimento
 # sess. 21 settembre 2026): sprite NPC originali già convertiti in
