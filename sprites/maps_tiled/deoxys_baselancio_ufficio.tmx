@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.10" tiledversion="1.12.2" orientation="orthogonal" renderorder="right-down" width="9" height="8" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="31">
+ <tileset firstgid="1" name="deoxys_baselancio_ufficio_tileset" tilewidth="32" tileheight="32" tilecount="64" columns="16">
+  <image source="../../strumenti/output_mappe_estratte/deoxys_baselancio_ufficio_tileset.png" width="512" height="128"/>
+ </tileset>
+ <tileset firstgid="65" source="../Tsj/outside/outside.tsx"/>
+ <layer id="1" name="ground" width="9" height="8">
+  <data encoding="csv">
+1,1,1,3,3,5,7,3,3,
+9,9,9,11,13,15,17,19,21,
+23,25,25,27,29,25,25,31,33,
+35,37,37,37,37,37,37,25,25,
+39,37,37,37,37,37,37,37,37,
+23,37,37,41,43,37,37,37,37,
+23,37,37,45,47,37,37,49,51,
+0,0,0,0,0,0,0,65,65
+</data>
+ </layer>
+ <layer id="2" name="deco_sotto" width="9" height="8">
+  <data encoding="csv">
+0,0,0,0,0,0,0,0,0,
+0,0,0,0,0,0,0,0,0,
+24,26,26,0,0,26,26,0,0,
+0,38,38,38,38,38,38,26,26,
+0,38,38,38,38,38,38,38,38,
+1013,38,38,0,0,38,38,38,38,
+24,38,38,0,0,38,38,50,52,
+0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <layer id="3" name="edifici" width="9" height="8">
+  <data encoding="csv">
+2,2,2,4,4,6,8,4,4,
+10,10,10,12,14,16,18,20,22,
+0,0,0,28,30,0,0,32,34,
+36,0,0,0,0,0,0,0,0,
+40,0,0,0,0,0,0,0,0,
+0,0,0,42,44,0,0,0,0,
+0,0,0,46,48,0,0,0,0,
+0,0,0,0,0,0,0,0,0
+</data>
+ </layer>
+ <objectgroup id="4" name="collisioni">
+  <object id="1000" x="0" y="0" width="32" height="32"/>
+  <object id="1001" x="32" y="0" width="32" height="32"/>
+  <object id="1002" x="64" y="0" width="32" height="32"/>
+  <object id="1003" x="96" y="0" width="32" height="32"/>
+  <object id="1004" x="128" y="0" width="32" height="32"/>
+  <object id="1005" x="160" y="0" width="32" height="32"/>
+  <object id="1006" x="192" y="0" width="32" height="32"/>
+  <object id="1007" x="224" y="0" width="32" height="32"/>
+  <object id="1008" x="256" y="0" width="32" height="32"/>
+  <object id="1009" x="0" y="32" width="32" height="32"/>
+  <object id="1010" x="32" y="32" width="32" height="32"/>
+  <object id="1011" x="64" y="32" width="32" height="32"/>
+  <object id="1012" x="96" y="32" width="32" height="32"/>
+  <object id="1013" x="128" y="32" width="32" height="32"/>
+  <object id="1014" x="160" y="32" width="32" height="32"/>
+  <object id="1015" x="192" y="32" width="32" height="32"/>
+  <object id="1016" x="224" y="32" width="32" height="32"/>
+  <object id="1017" x="256" y="32" width="32" height="32"/>
+  <object id="1018" x="224" y="64" width="32" height="32"/>
+  <object id="1019" x="256" y="64" width="32" height="32"/>
+  <object id="1020" x="0" y="96" width="32" height="32"/>
+  <object id="1021" x="0" y="128" width="32" height="32"/>
+  <object id="1022" x="96" y="160" width="32" height="32"/>
+  <object id="1023" x="128" y="160" width="32" height="32"/>
+  <object id="1024" x="96" y="192" width="32" height="32"/>
+  <object id="1025" x="128" y="192" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup id="5" name="eventi">
+  <object id="1" name="npc_deoxys_baselancio_ufficio_1" x="142.5" y="111.25">
+   <properties>
+    <property name="id" value="npc_deoxys_baselancio_ufficio_1"/>
+    <property name="type" value="npc"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="2" name="oggetto_ufficio_etere" x="17.5" y="179.25">
+   <properties>
+    <property name="contenuto" value="etere"/>
+    <property name="quantita" value="1"/>
+    <property name="type" value="oggetto"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="3" name="uscita_1" x="225.5" y="223.75" width="61.25" height="32">
+   <properties>
+    <property name="destinazione" value="deoxys_baselancio_entrata"/>
+    <property name="spawn_id" value="da_deoxys_baselancio_entrata"/>
+    <property name="type" value="uscita"/>
+   </properties>
+  </object>
+  <object id="1026" name="spawn" x="239" y="178.5">
+   <properties>
+    <property name="id" value="da_entrata"/>
+   </properties>
+   <point/>
+  </object>
+  <object id="1027" name="spawn" x="178" y="117.75">
+   <properties>
+    <property name="id" value="da_birthisland"/>
+   </properties>
+   <point/>
+  </object>
+ </objectgroup>
+</map>
