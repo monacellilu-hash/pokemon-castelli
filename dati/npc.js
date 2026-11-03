@@ -20,12 +20,24 @@ const DATI_NPC = {
      suoi amici che testavano il gioco non sapevano dove andare dopo una
      palestra — vedi docs-nogithub/RIASSUNTO_STORIA_PER_NPC.md per il
      riepilogo completo su cui si basano questi indizi. Dialoghi brevi,
-     senza spoiler sulla trama, solo indicazioni pratiche su dove andare. ── */
+     senza spoiler sulla trama, solo indicazioni pratiche su dove andare.
+     Richiesta successiva (3 nov 2026): uno solo per zona è troppo facile
+     da perdere — ogni indizio ora lo ripetono almeno 2 NPC diversi, in
+     mappe diverse, con parole diverse ma lo stesso contenuto. ── */
   'npc_hint_frascati1': {
     nome: 'Passante', direzione: 'sud', movimento: 'fisso',
     dialogo: [
       'Dopo Frascati la strada porta dritta a Grottaferrata.',
       'Se vuoi, dai un\'occhiata al Tuscolo qui a nord — ma ci ripasserai comunque più avanti, non perderci troppo tempo adesso.',
+    ],
+  },
+  // Duplicato del precedente (richiesta 3 nov 2026), più avanti sulla
+  // stessa strada: riusa l'orfano 'p2_npc3' già presente su percorso_2.tmj.
+  'p2_npc3': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Questa strada va dritta a Grottaferrata, non c\'è da sbagliare.',
+      'Il Tuscolo è là a nord, se hai voglia — ma puoi tornarci con comodo più avanti.',
     ],
   },
   'npc_hint_marino1': {
@@ -35,11 +47,37 @@ const DATI_NPC = {
       'Cerchi il Tunnel Roccioso? È a nord-est, sopra la strada per Genzano: lo chiamano Via dei Laghi.',
     ],
   },
+  // Duplicati del precedente (richiesta 3 nov 2026): due passanti diversi,
+  // uno dentro Marino e uno a Castel Gandolfo stessa, riusano orfani già
+  // presenti sui rispettivi .tmj (npc_9/npc_13 su marino, npc_1/npc_5 su
+  // castel_gandolfo — mai assegnati a nessuno finora).
+  'npc_9': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'A Castel Gandolfo c\'è chi ti insegna a spaccare le rocce, ma solo con la medaglia di Monte Porzio.',
+    ],
+  },
+  'npc_13': {
+    nome: 'Passante', direzione: 'ovest', movimento: 'fisso',
+    dialogo: [
+      'Il Tunnel Roccioso sta a nord-est, sopra la strada per Genzano — lo chiamano Via dei Laghi.',
+    ],
+  },
   'npc_hint_castelgandolfo1': {
     nome: 'Passante', direzione: 'sud', movimento: 'fisso',
     dialogo: [
       'Qui c\'è chi insegna a spaccare le rocce, ma solo a chi ha già la medaglia di Monte Porzio.',
       'Il Tunnel Roccioso che si apre con quella mossa è su, verso Via dei Laghi.',
+    ],
+  },
+  // Duplicato del precedente (richiesta 3 nov 2026): riusa 'npc_4', unico
+  // id generico libero su castel_gandolfo.tmj che NON collide con quelli
+  // (anch'essi "npc_N") già usati sopra su marino.tmj.
+  'npc_4': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Serve la medaglia di Monte Porzio per spaccare le rocce qui intorno.',
+      'Poi su, verso Via dei Laghi, si apre il Tunnel Roccioso.',
     ],
   },
 
@@ -848,6 +886,20 @@ const DATI_NPC = {
       'Dicono pure che nel deserto qui intorno ci sia qualcosa di raro... ma sai come sono le leggende metropolitane.',
     ],
   },
+  // Duplicati del precedente (richiesta 3 nov 2026), spalmati sul percorso
+  // che porta a Monte Porzio: riusano due orfani già presenti e liberi su
+  // percorso_montepo_2.tmj.
+  'npc_percorso_montepo_2_1': {
+    nome: 'Passante', direzione: 'sud', movimento: 'fisso',
+    dialogo: [
+      'Con 4 medaglie, torna a Castel Gandolfo: i ricercatori lì regalano una MN.',
+      'Il Museo delle Navi sta sopra il Lago di Nemi, se ti interessa.',
+    ],
+  },
+  'npc_percorso_montepo_2_3': {
+    nome: 'Passante', direzione: 'ovest', movimento: 'fisso',
+    dialogo: ['Qui intorno al deserto girano voci su qualcosa di raro... chissà se è vero o solo una leggenda.'],
+  },
   // Spunto "da smarrimento" (3 nov 2026, richiesta esplicita di Luca): dopo
   // Giorgia, verso la Zona Safari c'è chi dona il permesso Volo (vedi
   // 'npc_safarizone_secrethouse_1' in dati/trainer.js, Policarpo) — oggetto
@@ -855,6 +907,13 @@ const DATI_NPC = {
   'albano_npc2': {
     nome: 'Passante', direzione: 'sud', movimento: 'fisso',
     dialogo: ['Hai già la Medaglia Scudo? Allora prova la Zona Safari: dicono che lì dentro c\'è chi fa volare chiunque dimostri di meritarselo.'],
+  },
+  // Duplicato del precedente (richiesta 3 nov 2026): stesso indizio detto
+  // da un secondo NPC già dentro la Zona Safari, riusa l'orfano libero
+  // 'npc_safarizone_center_1' su safarizone_center.tmj.
+  'npc_safarizone_center_1': {
+    nome: 'Guardiano', direzione: 'sud', movimento: 'fisso',
+    dialogo: ['Con la Medaglia Scudo, chi dimostra di meritarselo qui dentro ottiene il permesso di Volo.'],
   },
   'npc_albano_casadoppia_luxury_1_1': {
     sprite: 'NPC 22', nome: 'Samanta', direzione: 'sud', movimento: 'fisso',
