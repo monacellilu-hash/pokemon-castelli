@@ -3051,6 +3051,12 @@ const OGGETTI = {
                descrizione: 'Tiene lontani i Pokémon selvatici deboli per 400 passi.' },
   repellente:  { nome: 'Repellente', categoria: 'repellente', passi: 100, prezzo: 400, icona: '🚷',
                descrizione: 'Tiene lontani i Pokémon selvatici deboli per 100 passi.' },
+  // Fune di Fuga (30 ott 2026, richiesta esplicita di Luca): riporta davanti
+  // all'ultimo Centro Pokémon usato (stato.ultimoCentroCura, stesso punto di
+  // ritorno della sconfitta in lotta). Monouso. NON usabile nella Palestra di
+  // Genzano (8ª) né nell'Osservatorio — controllo in usaFuneDiFuga (app.js).
+  fune_di_fuga: { nome: 'Fune di Fuga', categoria: 'fuga', prezzo: 550, icona: '🪢', img: 'ESCAPEROPE.png',
+               descrizione: "Ti riporta all'ultimo Centro Pokémon in cui ti sei curato. Si usa una volta sola. Non funziona nella Palestra di Genzano né all'Osservatorio." },
   // Oggetti cura-stato (ora che il motore di battaglia gestisce le alterazioni)
   antidoto:      { nome: 'Antidoto',        categoria: 'curastato', stato: 'veleno',     prezzo: 100,  icona: '🟢',
                descrizione: 'Guarisce un Pokémon avvelenato.' },
@@ -3422,10 +3428,10 @@ const POKE_MARKET = [
   // Sess. 1 ott 2026: aggiunte le cure di stato singole + repellente base,
   // su richiesta di Luca (prima mancavano del tutto nelle prime 2 città).
   { id: 'mk-frascati', comune: 'Frascati', lat: 41.8066, lon: 12.6826,
-    merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente'] },
+    merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente', 'fune_di_fuga'] },
 
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7858, lon: 12.6668,
-    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente'] },
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'antiscottatura', 'antigelo', 'repellente', 'fune_di_fuga'] },
 
   { id: 'mk-grottaferrata', comune: 'Grottaferrata', lat: 41.7873, lon: 12.6700,
     merce: ['pokeball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'pietra_luna'] },
@@ -3438,14 +3444,14 @@ const POKE_MARKET = [
     merce: ['pietra_fuoco', 'pietra_acqua', 'pietra_tuono', 'pietra_foglia', 'pietra_luna', 'pietra_sole', 'patroclo'] },
 
   { id: 'mk-castel-gandolfo', comune: 'Castel Gandolfo', lat: 41.7476, lon: 12.6500,
-    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'repellente'] },
+    merce: ['pokeball', 'superball', 'pozione', 'superpozione', 'antidoto', 'antiparalisi', 'repellente', 'fune_di_fuga'] },
 
   // Venditore speciale del Market di Castel Gandolfo (NPC dedicato, oggetti evo rari)
   { id: 'mk-castel-gandolfo-speciale', comune: 'Castel Gandolfo', lat: 41.7476, lon: 12.6500,
     merce: ['rivestimetallo', 'upgrade'] },
 
   { id: 'mk-monte-porzio', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
-    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo','repellente'] },
+    merce: ['pokeball', 'superball', 'superpozione', 'iperpozione', 'antidoto', 'antiparalisi', 'antigelo','repellente', 'fune_di_fuga'] },
 
   // Venditore speciale del Market di Monte Porzio (NPC dedicato, oggetti evo rari)
   { id: 'mk-monte-porzio-speciale', comune: 'Monte Porzio Catone', lat: 41.8150, lon: 12.7178,
@@ -3453,14 +3459,14 @@ const POKE_MARKET = [
 
   { id: 'mk-rocca-di-papa', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
     merce: ['superball', 'ultraball', 'repeatball', 'netball', 'superpozione', 'iperpozione', 'revitalizzante', 'antidototot',
-            'xattacco', 'xdifesa', 'xspatk', 'xspdef', 'xvelocita', 'xprecisione', 'repellente'] },
+            'xattacco', 'xdifesa', 'xspatk', 'xspdef', 'xvelocita', 'xprecisione', 'repellente', 'fune_di_fuga'] },
 
   // Venditore speciale del Market di Rocca di Papa (NPC dedicato, oggetti evo rari)
   { id: 'mk-rocca-di-papa-speciale', comune: 'Rocca di Papa', lat: 41.7620, lon: 12.7118,
     merce: ['pietra_fuoco'] },
 
   { id: 'mk-albano', comune: 'Albano Laziale', lat: 41.7295, lon: 12.6588,
-    merce: ['superball', 'ultraball', 'timerball', 'duskball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'etere'] },
+    merce: ['superball', 'ultraball', 'timerball', 'duskball', 'superpozione', 'iperpozione', 'revitalizzante', 'repellente', 'fune_di_fuga', 'antidototot', 'etere'] },
 
   // Venditore speciale del Market di Albano (NPC dedicato, oggetti evo rari)
   { id: 'mk-albano-speciale', comune: 'Albano Laziale', lat: 41.7295, lon: 12.6588,
@@ -3474,7 +3480,7 @@ const POKE_MARKET = [
     merce: ['pietra_luna', 'patroclo'] },
 
   { id: 'mk-ariccia', comune: 'Ariccia', lat: 41.7200, lon: 12.6746,
-    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot'] },
+    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'fune_di_fuga', 'antidototot'] },
 
   // Venditore speciale del Market di Ariccia (NPC dedicato, oggetti evo rari,
   // sessione 6 agosto: era tutto mischiato nel market base, ora split come le
@@ -3485,7 +3491,7 @@ const POKE_MARKET = [
     merce: ['pietra_sole', 'dente_oscuro', 'caramella_felicita'] },
 
   { id: 'mk-genzano', comune: 'Genzano di Roma', lat: 41.7080, lon: 12.6920,
-    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'antidototot', 'pietra_foglia', 'conchigliamutante'] },
+    merce: ['ultraball', 'iperpozione', 'revitalizzante', 'repellente', 'fune_di_fuga', 'antidototot', 'pietra_foglia', 'conchigliamutante'] },
 
   // Bazar oggetti da tenere (NPC dedicato, ultima città del path): tutti gli
   // oggetti 'held' del catalogo (potenziatori di tipo + effetti speciali).
@@ -3547,7 +3553,7 @@ const POKE_MARKET = [
   { id: 'mk-dept-2f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
     merce: ['superball', 'ultraball', 'superpozione', 'iperpozione', 'antidototot'] },
   { id: 'mk-dept-3f', comune: 'Grande Magazzino', lat: 41.79, lon: 12.69,
-    merce: ['iperpozione', 'revitalizzante', 'elisir', 'repellente', 'massimorepellente'] },
+    merce: ['iperpozione', 'revitalizzante', 'elisir', 'repellente', 'fune_di_fuga', 'massimorepellente'] },
   // 25 ott 2026 (segnalato da Luca): il commesso del 4° piano dice "MT ed
   // evolutivi" (dati/npc.js) ma la merce aveva solo evolutivi, zero MT —
   // aggiunta una selezione di 12 MT di supporto/stato, utili ma senza

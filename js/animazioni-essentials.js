@@ -288,6 +288,16 @@ const AnimazioniEssentials = (function () {
   // bersaglio: sembrava sbagliata ogni volta che è il nemico ad attaccare
   // (percorso invertito rispetto al giocatore). Corretto per matchare la
   // fonte esattamente: solo su/giù, mai di lato.
+  // 30 ott 2026 (segnalato da Luca: Palla Ombra/Idropompa "si sovrappongono"
+  // e lasciano una scia a tubo): ogni particella veniva disegnata a ogni
+  // fotogramma SENZA cancellare quello precedente, quindi lo sprite
+  // lasciava una traccia lungo tutto il percorso. Ora il canvas si pulisce
+  // UNA volta per fotogramma (il timestamp di requestAnimationFrame è lo
+  // stesso per tutte le particelle dello stesso fotogramma, quindi la prima
+  // a girare pulisce e le altre disegnano sopra, senza cancellarsi a
+  // vicenda). Per tenere la scia come prima, opts.scia = true (usato solo
+  // dai fulmini verticali, che costruiscono la saetta proprio così).
+  let _ultimoFotogrammaPulito = -1;
   function _particellaOndaVersoTarget(ctx, img, partenza, arrivo, scalaX, scalaY, ampiezzaSegno, ritardoMs, opts) {
     const { frameW, frameH, righeY, frameMs, durataMs, ampiezzaPx } = opts;
     return new Promise(resolve => {
@@ -295,6 +305,10 @@ const AnimazioniEssentials = (function () {
       const inizio = performance.now() + ritardoMs;
       const dx = arrivo.x - partenza.x, dy = arrivo.y - partenza.y;
       function passo(ora) {
+        if (!opts.scia && ora !== _ultimoFotogrammaPulito) {
+          ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height);
+          _ultimoFotogrammaPulito = ora;
+        }
         const t = ora - inizio;
         if (t < 0) { requestAnimationFrame(passo); return; }
         const frac = Math.min(1, t / durataMs);
@@ -1395,7 +1409,7 @@ const AnimazioniEssentials = (function () {
   }
   async function _giocaThunderPunchRom(attaccanteEl, bersaglioEl) {
     await _giocaPugnoElementaleRom('spark.png',
-      { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 },
+      { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0, scia: true },
       attaccanteEl, bersaglioEl);
   }
 
@@ -1986,7 +2000,7 @@ const AnimazioniEssentials = (function () {
     await Promise.all([pronta, prontaOrb]);
     const { scalaX, scalaY, arrivo } = await _preparaAnimOnda(attaccanteEl, bersaglioEl);
     const partenzaAlto = { x: arrivo.x, y: arrivo.y - 90 };
-    const opts = { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0 };
+    const opts = { frameW: 8, frameH: 64, righeY: [0], frameMs: 9999, durataMs: 160, ampiezzaPx: 0, scia: true };
 
     _scuotiSpriteRom(attaccanteEl, 1, 150);
     const attese = [];
