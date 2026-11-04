@@ -344,6 +344,15 @@ const GameMap = (function () {
       bloccaVuoti: true,
       latFissa: 41.8090, lonFissa: 12.6770,
     },
+    // Villa Aldobrandini, piano 2 — stessa impalcatura del 1F (sess. 4 nov
+    // 2026), collegata al 1F dalla coppia warp/spawn "verso piano 2"/"da
+    // piano 1" cablata sotto, pattern identico a casamia_1f/2f.
+    'villa_aldobrandini_2f': {
+      file: 'sprites/maps_tiled/Villa_Aldobrandini_2f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8090, lonFissa: 12.6770,
+    },
     'frascati_ovest': {
       file: 'sprites/maps_tiled/frascati_ovest.tmj',
       latC: 41.8090, lonC: 12.6690,

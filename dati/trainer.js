@@ -5436,4 +5436,101 @@ const DATI_TRAINER = {
     dialogo_dopo: 'Avrò un\'altra occasione... tra mille anni, magari.',
     premio: 1800,
   },
+
+  /* ── VILLA ALDOBRANDINI, 1F (richiesta esplicita di Luca, 4 nov 2026) ──
+     11 allenatori che prima erano tutti copie di 'all-lago-4' (Ilaria,
+     spiaggia del Lago Albano) con lo stesso id ripetuto — risolto dando a
+     ognuno un id, nome e squadra propri. Sprite comune a tutti: il
+     "nuotatore immerso" (solo testa fuori dall'acqua), mai usato prima come
+     sprite di un allenatore vero — vedi NPC_SPRITE_INDEX in js/map.js
+     ('nuotatore_dentro_acqua(solo testa)'). Squadre di tipo Acqua/Terra/
+     Veleno, livello post-Mewtwo (stessa fascia del Bunkerino, 70-74). ── */
+  'villa_aldobrandini_nuotatore_1': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Nuotatrice', nome: 'Ornella',
+    squadra: [{ id: 134, livello: 70 }, { id: 121, livello: 71 }],
+    dialogo_prima: 'Pure dentro la fontana della Villa, nessuno mi batte a nuoto!',
+    dialogo_dopo: 'Bella lotta, davero. Mo\' torno sott\'acqua.',
+    premio: 1750,
+  },
+  'villa_aldobrandini_nuotatore_2': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_M', vista: 6,
+    classe: 'Nuotatore', nome: 'Isidoro',
+    squadra: [{ id: 260, livello: 71 }, { id: 195, livello: 70 }],
+    dialogo_prima: 'Fango e acqua, questa è la mia zona. Vediamo si tieni botta.',
+    dialogo_dopo: 'Nfatti, manco il fango m\'ha salvato stavolta.',
+    premio: 1800,
+  },
+  'villa_aldobrandini_nuotatore_3': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Sommozzatrice', nome: 'Ermelinda',
+    squadra: [{ id: 73, livello: 70 }, { id: 89, livello: 71 }],
+    dialogo_prima: 'Chi tocca l\'acqua della Villa s\'intossica, pure coi Pokémon!',
+    dialogo_dopo: 'Mo\' me ritiro, prima che peggiori.',
+    premio: 1800,
+  },
+  'villa_aldobrandini_nuotatore_4': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_M', vista: 6,
+    classe: 'Nuotatore', nome: 'Egisto',
+    squadra: [{ id: 91, livello: 70 }, { id: 62, livello: 71 }],
+    dialogo_prima: 'So\' stato giorni intrufolato dentro queste vasche, mo\' pago pegno a chi me batte!',
+    dialogo_dopo: 'Accidenti, mo\' sì che devo uscì dall\'acqua.',
+    premio: 1750,
+  },
+  'villa_aldobrandini_nuotatore_5': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Nuotatrice', nome: 'Dorotea',
+    squadra: [{ id: 130, livello: 71 }, { id: 99, livello: 70 }],
+    dialogo_prima: 'Er mio Gyarados sta aspettando solo de famme vedè quanto vale!',
+    dialogo_dopo: 'Mai vista una lotta così, davero. Complimenti.',
+    premio: 1850,
+  },
+  'villa_aldobrandini_nuotatore_6': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_M', vista: 6,
+    classe: 'Palombaro', nome: 'Pierino',
+    squadra: [{ id: 76, livello: 71 }, { id: 105, livello: 72 }],
+    dialogo_prima: 'Sotto queste vasche c\'è più roccia che acqua, lo sai?',
+    dialogo_dopo: 'Mo\' torno a scavà, che è mejo.',
+    premio: 1850,
+  },
+  'villa_aldobrandini_nuotatore_7': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Sommozzatrice', nome: 'Addolorata',
+    squadra: [{ id: 350, livello: 72 }, { id: 119, livello: 71 }],
+    dialogo_prima: 'Er mio Milotic è er più bello de tutta la Villa. Guardalo bene, prima de perde.',
+    dialogo_dopo: 'Vabbè, la bellezza non basta sempre.',
+    premio: 1900,
+  },
+  'villa_aldobrandini_nuotatore_8': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Nuotatrice', nome: 'Benvenuta',
+    squadra: [{ id: 110, livello: 70 }, { id: 71, livello: 71 }],
+    dialogo_prima: 'L\'odore de sti fiori velenosi me piace assai. A te invece, chissà.',
+    dialogo_dopo: 'Mo\' chiudo bene er barattolo, và.',
+    premio: 1800,
+  },
+  'villa_aldobrandini_nuotatore_9': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Sommozzatrice', nome: 'Rosalba',
+    squadra: [{ id: 31, livello: 71 }, { id: 168, livello: 72 }],
+    dialogo_prima: 'Tra terra e veleno, nun c\'è partita pe\' chi s\'azzarda.',
+    dialogo_dopo: 'Embè, m\'hai azzardato tu, stavolta.',
+    premio: 1900,
+  },
+  'villa_aldobrandini_nuotatore_10': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_M', vista: 6,
+    classe: 'Nuotatore Esperto', nome: 'Firmino',
+    squadra: [{ id: 34, livello: 72 }, { id: 195, livello: 72 }, { id: 169, livello: 73 }],
+    dialogo_prima: 'Acqua, fango, veleno: la mia squadra je dà fastidio a chiunque.',
+    dialogo_dopo: 'Bella lotta davero, nun me capita spesso.',
+    premio: 2000,
+  },
+  'villa_aldobrandini_nuotatore_11': {
+    sprite: 'nuotatore_dentro_acqua(solo testa)', ritratto: 'SWIMMER_F', vista: 6,
+    classe: 'Nuotatrice Esperta', nome: 'Clelia',
+    squadra: [{ id: 365, livello: 73 }, { id: 230, livello: 74 }, { id: 319, livello: 74 }],
+    dialogo_prima: 'So\' l\'ultima vasca prima d\'arrivà in fondo alla Villa. Nun è un caso.',
+    dialogo_dopo: 'Mo\' sì che la Villa è tutta tua. Complimenti davero.',
+    premio: 2100,
+  },
 };

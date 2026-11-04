@@ -94,10 +94,10 @@
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 72, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+            0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2639, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
             0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
@@ -729,7 +729,7 @@
                          "name":"id",
                          "type":"string",
                          "value":"da_frascati_centro"
-                        },
+                        }, 
                         {
                          "name":"type",
                          "type":"string",
@@ -741,7 +741,7 @@
                  "width":26,
                  "x":450.368333333333,
                  "y":939.102333333333
-                },
+                }, 
                 {
                  "height":32,
                  "id":45,
@@ -768,15 +768,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":160
-                },
+                 "x":948,
+                 "y":917.333333333333
+                }, 
                 {
                  "height":32,
                  "id":59,
@@ -793,15 +792,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":160
-                },
+                 "x":926,
+                 "y":919.333333333333
+                }, 
                 {
                  "height":32,
                  "id":46,
@@ -828,15 +826,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":160
-                },
+                 "x":949.333333333333,
+                 "y":88.0000000000001
+                }, 
                 {
                  "height":32,
                  "id":60,
@@ -853,15 +850,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":160
-                },
+                 "x":924,
+                 "y":88
+                }, 
                 {
                  "height":32,
                  "id":47,
@@ -888,15 +884,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":192
-                },
+                 "x":7.66666666666666,
+                 "y":913.5
+                }, 
                 {
                  "height":32,
                  "id":61,
@@ -913,15 +908,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":192
-                },
+                 "x":40.3333333333334,
+                 "y":915.333333333333
+                }, 
                 {
                  "height":32,
                  "id":48,
@@ -948,15 +942,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":192
-                },
+                 "x":952,
+                 "y":628.666666666667
+                }, 
                 {
                  "height":32,
                  "id":62,
@@ -973,15 +966,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":192
-                },
+                 "x":919.333333333333,
+                 "y":630
+                }, 
                 {
                  "height":32,
                  "id":49,
@@ -1008,15 +1000,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":320
-                },
+                 "x":178,
+                 "y":25.3333333333334
+                }, 
                 {
                  "height":32,
                  "id":63,
@@ -1033,15 +1024,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":320
-                },
+                 "x":652.666666666667,
+                 "y":38.6666666666666
+                }, 
                 {
                  "height":32,
                  "id":50,
@@ -1068,15 +1058,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":320
-                },
+                 "x":652,
+                 "y":20.6666666666667
+                }, 
                 {
                  "height":32,
                  "id":64,
@@ -1093,15 +1082,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":320
-                },
+                 "x":176,
+                 "y":55.3333333333334
+                }, 
                 {
                  "height":32,
                  "id":51,
@@ -1128,15 +1116,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":352
-                },
+                 "x":468,
+                 "y":13.3333333333334
+                }, 
                 {
                  "height":32,
                  "id":65,
@@ -1153,15 +1140,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":352
-                },
+                 "x":467.75,
+                 "y":46.25
+                }, 
                 {
                  "height":32,
                  "id":52,
@@ -1188,15 +1174,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":352
-                },
+                 "x":950.666666666667,
+                 "y":408.666666666667
+                }, 
                 {
                  "height":32,
                  "id":66,
@@ -1213,15 +1198,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":352
-                },
+                 "x":924.666666666667,
+                 "y":406
+                }, 
                 {
                  "height":32,
                  "id":53,
@@ -1248,15 +1232,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":704
-                },
+                 "x":9.33333333333333,
+                 "y":250
+                }, 
                 {
                  "height":32,
                  "id":67,
@@ -1273,15 +1256,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":704
-                },
+                 "x":44,
+                 "y":247.333333333333
+                }, 
                 {
                  "height":32,
                  "id":54,
@@ -1308,15 +1290,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":704
-                },
+                 "x":10.6666666666667,
+                 "y":52
+                }, 
                 {
                  "height":32,
                  "id":68,
@@ -1333,15 +1314,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":704
-                },
+                 "x":44,
+                 "y":52.6666666666668
+                }, 
                 {
                  "height":32,
                  "id":55,
@@ -1368,15 +1348,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":768
-                },
+                 "x":11.3333333333333,
+                 "y":628
+                }, 
                 {
                  "height":32,
                  "id":69,
@@ -1393,15 +1372,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":768
-                },
+                 "x":55,
+                 "y":465.666666666667
+                }, 
                 {
                  "height":32,
                  "id":56,
@@ -1428,15 +1406,14 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":768
-                },
+                 "x":15.6666666666667,
+                 "y":436
+                }, 
                 {
                  "height":32,
                  "id":70,
@@ -1453,19 +1430,18 @@
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":768
-                },
+                 "x":36.0000000000001,
+                 "y":629.333333333333
+                }, 
                 {
                  "height":32,
-                 "id":57,
-                 "name":"teleport_7a",
+                 "id":73,
+                 "name":"teleport_6b",
                  "opacity":1,
                  "point":true,
                  "properties":[
@@ -1477,7 +1453,7 @@
                         {
                          "name":"spawn_id",
                          "type":"string",
-                         "value":"da_teleport_7b"
+                         "value":"da_teleport_6a"
                         }, 
                         {
                          "name":"teletrasporto",
@@ -1488,44 +1464,18 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":64,
-                 "y":832
-                },
+                 "x":18.6666666666667,
+                 "y":470
+                }, 
                 {
                  "height":32,
-                 "id":71,
-                 "name":"spawn_teleport_7a",
-                 "opacity":1,
-                 "point":true,
-                 "properties":[
-                        {
-                         "name":"id",
-                         "type":"string",
-                         "value":"da_teleport_7a"
-                        }, 
-                        {
-                         "name":"type",
-                         "type":"string",
-                         "value":"spawn"
-                        } 
-                 ],
-                 "rotation":0,
-                 "type":"spawn",
-                 "visible":true,
-                 "width":32,
-                 "x":64,
-                 "y":832
-                },
-                {
-                 "height":32,
-                 "id":58,
-                 "name":"teleport_7b",
+                 "id":74,
+                 "name":"teleport_6b",
                  "opacity":1,
                  "point":true,
                  "properties":[
@@ -1537,7 +1487,7 @@
                         {
                          "name":"spawn_id",
                          "type":"string",
-                         "value":"da_teleport_7a"
+                         "value":"da_teleport_6a"
                         }, 
                         {
                          "name":"teletrasporto",
@@ -1548,39 +1498,501 @@
                          "name":"type",
                          "type":"string",
                          "value":"warp"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"warp",
                  "visible":true,
                  "width":32,
-                 "x":864,
-                 "y":832
-                },
+                 "x":13.3333333333333,
+                 "y":406
+                }, 
                 {
                  "height":32,
-                 "id":72,
-                 "name":"spawn_teleport_7b",
+                 "id":75,
+                 "name":"teleport_4a",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"villa_aldobrandini"
+                        }, 
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_teleport_4b"
+                        }, 
+                        {
+                         "name":"teletrasporto",
+                         "type":"bool",
+                         "value":true
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"warp",
+                 "visible":true,
+                 "width":32,
+                 "x":492.25,
+                 "y":14.5
+                }, 
+                {
+                 "height":0,
+                 "id":76,
+                 "name":"Ornella",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_1"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":179,
+                 "y":432
+                },
+            
+                {
+                 "height":0,
+                 "id":77,
+                 "name":"Isidoro",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_2"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":243.5,
+                 "y":429
+                }, 
+                {
+                 "height":0,
+                 "id":78,
+                 "name":"Ermelinda",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_3"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":336,
+                 "y":430.5
+                }, 
+                {
+                 "height":0,
+                 "id":79,
+                 "name":"Egisto",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_4"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":468,
+                 "y":428
+                }, 
+                {
+                 "height":0,
+                 "id":80,
+                 "name":"Dorotea",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_5"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":596,
+                 "y":428
+                }, 
+                {
+                 "height":0,
+                 "id":81,
+                 "name":"Pierino",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_6"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":726,
+                 "y":425.5
+                }, 
+                {
+                 "height":0,
+                 "id":82,
+                 "name":"Addolorata",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_7"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":304,
+                 "y":619
+                }, 
+                {
+                 "height":0,
+                 "id":83,
+                 "name":"Benvenuta",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_8"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":596.5,
+                 "y":615
+                }, 
+                {
+                 "height":0,
+                 "id":84,
+                 "name":"Rosalba",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_9"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":823.5,
+                 "y":587.5
+                }, 
+                {
+                 "height":0,
+                 "id":85,
+                 "name":"Firmino",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_10"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":784,
+                 "y":38
+                }, 
+                {
+                 "height":0,
+                 "id":86,
+                 "name":"Clelia",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"direzione",
+                         "type":"string",
+                         "value":"nord"
+                        }, 
+                        {
+                         "name":"id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_nuotatore_11"
+                        }, 
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trainer"
+                        }, 
+                        {
+                         "name":"vista",
+                         "type":"string",
+                         "value":"6"
+                        }],
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":143,
+                 "y":200
+                }, 
+                {
+                 "height":0,
+                 "id":87,
+                 "name":"Oggetto - mt fendifoglia",
+                 "opacity":1,
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":496,
+                 "y":343
+                }, 
+                {
+                 "height":0,
+                 "id":88,
+                 "name":"Premere sul tasto per attivare il teletrasporto",
+                 "opacity":1,
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":463.5,
+                 "y":273.5
+                }, 
+                {
+                 "height":0,
+                 "id":89,
+                 "name":"warp per il piano 2",
+                 "opacity":1,
+                 "point":true,
+                 "properties":[
+                        {
+                         "name":"destinazione",
+                         "type":"string",
+                         "value":"villa_aldobrandini_2f"
+                        },
+                        {
+                         "name":"spawn_id",
+                         "type":"string",
+                         "value":"da_villa_aldobrandini_1f"
+                        },
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"warp"
+                        }],
+                 "rotation":0,
+                 "type":"warp",
+                 "visible":true,
+                 "width":0,
+                 "x":271.5,
+                 "y":246.5
+                },
+                {
+                 "height":0,
+                 "id":91,
+                 "name":"spawn dal piano 2",
                  "opacity":1,
                  "point":true,
                  "properties":[
                         {
                          "name":"id",
                          "type":"string",
-                         "value":"da_teleport_7b"
-                        }, 
+                         "value":"da_villa_aldobrandini_2f"
+                        },
                         {
                          "name":"type",
                          "type":"string",
                          "value":"spawn"
-                        } 
-                 ],
+                        }],
                  "rotation":0,
                  "type":"spawn",
                  "visible":true,
-                 "width":32,
-                 "x":864,
-                 "y":832
+                 "width":0,
+                 "x":240,
+                 "y":242.5
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1589,7 +2001,7 @@
          "y":0
         }],
  "nextlayerid":7,
- "nextobjectid":73,
+ "nextobjectid":92,
  "orientation":"orthogonal",
  "renderorder":"right-down",
  "tiledversion":"1.12.2",
@@ -1602,6 +2014,10 @@
         {
          "firstgid":1593,
          "source":"..\/Tsj\/outside\/Sea.tsj"
+        }, 
+        {
+         "firstgid":1691,
+         "source":"..\/Tsj\/outside\/outside.tsx"
         }],
  "tilewidth":32,
  "type":"map",
