@@ -5468,6 +5468,7 @@ const DATI_TRAINER = {
       { id: 257, livello: 90, mosse: ['flare-blitz', 'close-combat', 'stone-edge', 'thunder-punch'] }, // Blaziken
       { id: 229, livello: 90, mosse: ['fire-blast', 'dark-pulse', 'crunch', 'sludge-bomb'] },    // Houndoom
       { id: 146, livello: 95, mosse: ['fire-blast', 'hurricane', 'roost', 'ancient-power'] },    // Moltres
+      { id: 383, livello: 95, mosse: ['earthquake', 'fire-blast', 'rock-slide', 'solar-beam'] }, // Groudon
     ],
     dialogo_prima: 'Qui la mia squadra è al completo. Non sarà come al piano di sotto.',
     dialogo_dopo: 'Sei arrivato più in alto di chiunque altro. Il piano successivo ti aspetta.',
