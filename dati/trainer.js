@@ -5463,12 +5463,11 @@ const DATI_TRAINER = {
     sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
     classe: 'Guardiana della Villa', nome: 'Teodolinda',
     squadra: [
-      { id: 230, livello: 90, mosse: ['surf', 'dragon-pulse', 'ice-beam', 'rain-dance'] },     // Kingdra
-      { id: 350, livello: 90, mosse: ['surf', 'ice-beam', 'recover', 'dragon-tail'] },          // Milotic
-      { id: 130, livello: 90, mosse: ['waterfall', 'earthquake', 'dragon-dance', 'ice-fang'] }, // Gyarados
-      { id: 365, livello: 90, mosse: ['surf', 'blizzard', 'earthquake', 'protect'] },           // Walrein
-      { id: 260, livello: 90, mosse: ['surf', 'earthquake', 'ice-beam', 'stone-edge'] },        // Swampert
-      { id: 250, livello: 95, mosse: ['sacred-fire', 'brave-bird', 'recover', 'calm-mind'] },   // Ho-Oh
+      { id: 248, livello: 90, mosse: ['rock-slide', 'crunch', 'earthquake', 'fire-blast'] },     // Tyranitar
+      { id: 94,  livello: 90, mosse: ['dark-pulse', 'shadow-ball', 'psychic', 'sludge-bomb'] },  // Gengar
+      { id: 257, livello: 90, mosse: ['flare-blitz', 'close-combat', 'stone-edge', 'thunder-punch'] }, // Blaziken
+      { id: 229, livello: 90, mosse: ['fire-blast', 'dark-pulse', 'crunch', 'sludge-bomb'] },    // Houndoom
+      { id: 146, livello: 95, mosse: ['fire-blast', 'hurricane', 'roost', 'ancient-power'] },    // Moltres
     ],
     dialogo_prima: 'Qui la mia squadra è al completo. Non sarà come al piano di sotto.',
     dialogo_dopo: 'Sei arrivato più in alto di chiunque altro. Il piano successivo ti aspetta.',

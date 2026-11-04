@@ -814,6 +814,25 @@ const Battle = (function () {
     return efficacia(mossa.tipo, difensore.tipi);
   }
 
+  // Regola speciale di Villa Aldobrandini (richiesta esplicita di Luca,
+  // 4 nov 2026, segnalata in-game da un NPC vicino all'ingresso a Frascati
+  // dopo la Lega: "qui dentro le super efficaci non funzionano"): ASIMMETRICA
+  // — annulla SOLO il moltiplicatore super efficace (>1) delle mosse del
+  // GIOCATORE, mai quelle dell'avversario. Non tocca "non molto efficace"
+  // (<1) né le immunità (0): quelle restano identiche per entrambi i lati.
+  function _attaccoDelGiocatore(att) {
+    if (att === mio) return true;
+    if (Array.isArray(doppiaMieiAttivi) && doppiaMieiAttivi.includes(att)) return true;
+    return false;
+  }
+  function _superEfficaciNegateAlGiocatore() {
+    try {
+      if (typeof GameMap === 'undefined' || typeof GameMap.mappaAttuale !== 'function') return false;
+      const m = GameMap.mappaAttuale();
+      return !!(m && m.indexOf('villa_aldobrandini') === 0);
+    } catch (e) { return false; }
+  }
+
   // Abilità che scattano quando un Pokémon ENTRA in campo (inizio lotta o
   // cambio): richiesta esplicita di Luca, 9 ott 2026 — "le Abilità non
   // possono essere solo estetiche". Qui solo le due famiglie più comuni e
@@ -931,6 +950,12 @@ const Battle = (function () {
     const _ripristinaTipo = () => { mossa.tipo = tipoOriginale; };
 
     let eff = efficaciaConScrappy(mossa, attaccante, difensore);
+    // Villa Aldobrandini: niente super efficaci per il giocatore (vedi nota
+    // su _superEfficaciNegateAlGiocatore sopra) — solo il tetto a ×1, il
+    // resto della tabella tipi resta intatto.
+    if (eff > 1 && _attaccoDelGiocatore(attaccante) && _superEfficaciNegateAlGiocatore()) {
+      eff = 1;
+    }
     // Mente Infranta (mold-breaker, 20 ott 2026): ignora le Abilità
     // DIFENSIVE dell'avversario (immunità di tipo, Pellespessa, Filtro...)
     // — non le abilità "reattive" (es. Pellerugginosa resta attiva). Qui

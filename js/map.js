@@ -14428,8 +14428,19 @@ const GameMap = (function () {
       // Cursore: un pallino rosso scuro, un tile alla volta.
       this._cx = Math.floor(mapW / 2);
       this._cy = Math.floor(mapH / 2);
-      // Punto di partenza più sensato: su Borgata Tuscolana se la troviamo.
-      const partenza = this._posizioni.find(p => /tuscolana/i.test(p.nome));
+      // Punto di partenza (richiesta esplicita di Luca, 4 nov 2026 — "rileva
+      // dove sei e ti segna con un cursore dove si trova il giocatore"): si
+      // parte dalla zona/città in cui ti trovi REALMENTE sulla mappa vera
+      // (mappaCorrente, stessa variabile usata da tutto il motore — questa
+      // scena vive nella stessa closure di GameMap, non serve passare per
+      // l'export). _trovaPosizioneGiocatore fa un confronto per inclusione
+      // (normTxt) più un piccolo elenco di alias per le sigle storiche delle
+      // chiavi mappa (es. "montepo" per "monteporzio") — non è garantito
+      // trovare un corrispondente per OGNI mappa (molti dungeon post-Lega
+      // non sono disegnati su questa cartina), in quel caso resta il
+      // fallback di sempre su Borgata Tuscolana.
+      const qui = this._trovaPosizioneGiocatore(this._posizioni, mappaCorrente);
+      const partenza = qui || this._posizioni.find(p => /tuscolana/i.test(p.nome));
       if (partenza) { this._cx = partenza.tx0; this._cy = partenza.ty0; }
 
       // Il cursore vive FUORI dal container scalato (coordinate schermo
@@ -14468,6 +14479,50 @@ const GameMap = (function () {
       const esci = () => { this.scene.stop(); this.scene.launch('ZainoScene'); };
       this.input.keyboard.on('keydown-B', esci);
       this.input.keyboard.on('keydown-ESC', esci);
+    }
+
+    // Trova in "posizioni" (i rettangoli nominati della cartina) quello che
+    // corrisponde alla mappa VERA in cui si trova il giocatore in questo
+    // momento. 1) inclusione diretta via normTxt (stesso principio di
+    // risolviMappa) — copre i casi semplici ("frascati_centro" → "Frascati").
+    // 2) un piccolo elenco di alias per le sigle/abbreviazioni storiche che
+    // non condividono una sottostringa diretta (es. "montepo" vs
+    // "monteporzio"). Nessun match per i dungeon non disegnati su questa
+    // cartina (es. Bunkerino, Via Vittoria) — torna null, il chiamante
+    // ripiega sul vecchio default (Borgata Tuscolana).
+    _trovaPosizioneGiocatore(posizioni, chiaveMappa) {
+      if (!chiaveMappa || typeof normTxt !== 'function') return null;
+      const nd = normTxt(chiaveMappa);
+      let migliore = null, migliorLen = 0;
+      for (const p of posizioni) {
+        const np = normTxt(p.nome);
+        if (!np) continue;
+        if (nd === np || nd.includes(np) || np.includes(nd)) {
+          if (np.length > migliorLen) { migliore = p; migliorLen = np.length; }
+        }
+      }
+      if (migliore) return migliore;
+      const ALIAS_POSIZIONE = {
+        montepo: 'monteporzio',
+        roccapapa: 'roccadipapa',
+        villaaldobrandini: 'frascati',
+        boscosignortuscolo: 'tuscolo',
+        tunnelroccioso: 'ingressotunnelroccioso',
+        safarizone: 'zonasafari',
+        lagoalbano: 'lagodialbano',
+        lagonemi: 'lagodinemi',
+        spiaggiaalbano: 'spiaggiadialbano',
+      };
+      for (const abbr of Object.keys(ALIAS_POSIZIONE)) {
+        if (!nd.includes(abbr)) continue;
+        const pieno = ALIAS_POSIZIONE[abbr];
+        const match = posizioni.find(p => {
+          const np = normTxt(p.nome);
+          return np.includes(pieno) || pieno.includes(np);
+        });
+        if (match) return match;
+      }
+      return null;
     }
 
     _aggiornaCursore() {
@@ -15379,6 +15434,14 @@ const GameMap = (function () {
     return true;
   }
 
+  // Chiave della mappa attualmente caricata (richiesta esplicita di Luca,
+  // 4 nov 2026): serve a js/battle.js per sapere se la lotta in corso è
+  // dentro Villa Aldobrandini (regola "niente super efficaci per il
+  // giocatore"), senza bisogno di duplicare lo stato qui in due posti.
+  function mappaAttuale() {
+    return mappaCorrente;
+  }
+
   // Debug/test: id di NPC e trainer attualmente attivi sulla mappa
   function debugNpcAttivi() {
     return npcStato.map(s => ({ id: s.id, tipo: s.tipo, tx: s.tx, ty: s.ty, dir: s.dir }));
@@ -15475,7 +15538,7 @@ const GameMap = (function () {
     posizioneGiocatore, distanzaMetri, impostaVelocita,
     teleporta, vaiAMappa, rimuoviMarkerOggetto, debugStato, debugCaricaMappa,
     debugNpcAttivi, debugCondizione, debugChiamaMetodo, debugImpostaPosTile, debugCollisione, debugValoreTile, debugSpawnList,
-    temaBattaglia, mappaConsenteVolo, aggiornaVeloTempo,
+    temaBattaglia, mappaConsenteVolo, mappaAttuale, aggiornaVeloTempo,
     aggiornaVeloMeteo, contestoMeteo, aggiornaFollowerSpecie,
     debugCutscene, debugIncontri, avviaSfidaPorchettari, avviaSfidaParentiRocco, avviaLatiosLatiasScena,
     avviaEpilogoBasoCotralRocca, avviaLottaOsservatorioSingola,

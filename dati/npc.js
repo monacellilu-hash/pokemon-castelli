@@ -16,6 +16,20 @@ const SPRITE_CENCIARELS = 'Scenziato_donna';
 
 const DATI_NPC = {
 
+  /* ── Indizio su Villa Aldobrandini (richiesta esplicita di Luca, 4 nov
+     2026): compare solo dopo la Lega (stesso flag che apre il cancello
+     della Villa, vedi "villa aldobrandini" su frascati_centro.tmj), vicino
+     all'ingresso. Anticipa la regola vera applicata in js/battle.js
+     (_superEfficaciNegateAlGiocatore): dentro la Villa le mosse super
+     efficaci non funzionano PER IL GIOCATORE, ma funzionano normalmente
+     per gli avversari. ── */
+  'npc_villa_aldobrandini_indizio': {
+    nome: 'Passante', direzione: 'nord', movimento: 'fisso',
+    dialogo: [
+      'Qui dentro succedono cose strane, a quanto pare le super efficaci non funzionano.',
+    ],
+  },
+
   /* ── NPC "da smarrimento" (3 nov 2026, richiesta esplicita di Luca): i
      suoi amici che testavano il gioco non sapevano dove andare dopo una
      palestra — vedi docs-nogithub/RIASSUNTO_STORIA_PER_NPC.md per il

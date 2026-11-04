@@ -1089,6 +1089,10 @@ CUTSCENE['villa_aldobrandini_1f_sfida'] = [
   ] },
   { tipo: 'scelta_si_no', messaggio: 'Vuoi premere il tasto? Sei pronto ad affrontare le conseguenze?', testoSi: 'Sì, sono pronto', testoNo: 'No, non ancora', salva_flag: 'villa1f_risposta_sfida' },
   { tipo: 'dialogo', nome: 'Teodolinda', richiede_condizione: '!villa1f_risposta_sfida', testo: ['Va bene. Torna quando ti senti davvero pronto.'] },
+  { tipo: 'dialogo', nome: 'Teodolinda', richiede_flag: 'villa1f_risposta_sfida', testo: [
+    'Hai premuto il tasto: ora non puoi più tirarti indietro.',
+    'Mostrami quanto vali!',
+  ] },
   { tipo: 'battaglia', trainer: 'villa_aldobrandini_1f_boss', richiede_flag: 'villa1f_risposta_sfida' },
   { tipo: 'flag', nome: 'villa1f_boss_sconfitto', valore: true, richiede_flag: 'villa1f_risposta_sfida' },
   { tipo: 'flag', nome: 'villa1f_risposta_sfida', valore: false, richiede_flag: 'villa1f_risposta_sfida' },
@@ -1100,6 +1104,10 @@ CUTSCENE['villa_aldobrandini_2f_sfida'] = [
   ] },
   { tipo: 'scelta_si_no', messaggio: 'Vuoi premere il tasto? Sei pronto ad affrontare le conseguenze?', testoSi: 'Sì, sono pronto', testoNo: 'No, non ancora', salva_flag: 'villa2f_risposta_sfida' },
   { tipo: 'dialogo', nome: 'Teodolinda', richiede_condizione: '!villa2f_risposta_sfida', testo: ['Va bene. Torna quando ti senti davvero pronto.'] },
+  { tipo: 'dialogo', nome: 'Teodolinda', richiede_flag: 'villa2f_risposta_sfida', testo: [
+    'Qui la mia squadra è al completo. Non sarà come al piano di sotto.',
+    'Vediamo se riesci a superare anche questa!',
+  ] },
   { tipo: 'battaglia', trainer: 'villa_aldobrandini_2f_boss', richiede_flag: 'villa2f_risposta_sfida' },
   { tipo: 'flag', nome: 'villa2f_boss_sconfitto', valore: true, richiede_flag: 'villa2f_risposta_sfida' },
   { tipo: 'flag', nome: 'villa2f_risposta_sfida', valore: false, richiede_flag: 'villa2f_risposta_sfida' },
