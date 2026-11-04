@@ -14493,15 +14493,21 @@ const GameMap = (function () {
     _trovaPosizioneGiocatore(posizioni, chiaveMappa) {
       if (!chiaveMappa || typeof normTxt !== 'function') return null;
       const nd = normTxt(chiaveMappa);
-      let migliore = null, migliorLen = 0;
-      for (const p of posizioni) {
-        const np = normTxt(p.nome);
-        if (!np) continue;
-        if (nd === np || nd.includes(np) || np.includes(nd)) {
-          if (np.length > migliorLen) { migliore = p; migliorLen = np.length; }
-        }
-      }
-      if (migliore) return migliore;
+      // 1) match ESATTO — priorità massima. Deve venire PRIMA di qualunque
+      // confronto per sottostringa, altrimenti un nome di città corto (es.
+      // "albano") risulterebbe "più lungo/migliore" di se stesso scartato a
+      // favore di un altro match per sottostringa (es. "spiaggia di
+      // albano") — bug reale trovato 4 nov 2026, segnalato da Luca.
+      const esatto = posizioni.find(p => normTxt(p.nome) === nd);
+      if (esatto) return esatto;
+      // 2) alias noti per le sigle/abbreviazioni storiche delle chiavi
+      // mappa — PRIMA del generico per sottostringa del punto 3: altrimenti
+      // "lago_albano" finiva hijackato dalla città "albano" (sottostringa
+      // valida ma sbagliata di "lagoalbano"), mai arrivando a risolversi
+      // nel vero "lago di albano" — stesso bug di cui sopra, variante
+      // diversa. Il confronto qui dentro è ESATTO sul nome pieno (non per
+      // inclusione): altrimenti "lagodialbano".includes("albano") avrebbe
+      // fatto hijackare di nuovo il risultato verso la città "albano".
       const ALIAS_POSIZIONE = {
         montepo: 'monteporzio',
         roccapapa: 'roccadipapa',
@@ -14516,13 +14522,21 @@ const GameMap = (function () {
       for (const abbr of Object.keys(ALIAS_POSIZIONE)) {
         if (!nd.includes(abbr)) continue;
         const pieno = ALIAS_POSIZIONE[abbr];
-        const match = posizioni.find(p => {
-          const np = normTxt(p.nome);
-          return np.includes(pieno) || pieno.includes(np);
-        });
+        const match = posizioni.find(p => normTxt(p.nome) === pieno);
         if (match) return match;
       }
-      return null;
+      // 3) inclusione generica, ultima spiaggia — preferisce il match più
+      // lungo tra quelli possibili (es. "percorso 2" contro un eventuale
+      // "percorso" generico, se mai esistesse).
+      let migliore = null, migliorLen = 0;
+      for (const p of posizioni) {
+        const np = normTxt(p.nome);
+        if (!np) continue;
+        if (nd.includes(np) || np.includes(nd)) {
+          if (np.length > migliorLen) { migliore = p; migliorLen = np.length; }
+        }
+      }
+      return migliore;
     }
 
     _aggiornaCursore() {
