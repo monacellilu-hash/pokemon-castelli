@@ -5437,6 +5437,44 @@ const DATI_TRAINER = {
     premio: 1800,
   },
 
+  /* ── VILLA ALDOBRANDINI, sfide al "tasto" sulle scale (richiesta esplicita
+     di Luca, 4 nov 2026): su ogni piano un pulsante (trigger_cutscene in
+     dati/cutscene.js, cutscene 'villa_aldobrandini_1f_sfida'/'_2f_sfida')
+     chiede conferma e poi fa partire questa lotta fissa contro Teodolinda,
+     la Guardiana della Villa — stessa persona sui due piani, squadra più
+     forte al 2F. Vincere imposta il flag che sblocca il warp vero verso il
+     piano successivo (senza passare dal tasto, il warp resta bloccato). ── */
+  'villa_aldobrandini_1f_boss': {
+    sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
+    classe: 'Guardiana della Villa', nome: 'Teodolinda',
+    squadra: [
+      { id: 230, livello: 85, mosse: ['surf', 'dragon-pulse', 'ice-beam', 'rain-dance'] },    // Kingdra
+      { id: 350, livello: 85, mosse: ['surf', 'ice-beam', 'recover', 'dragon-tail'] },         // Milotic
+      { id: 130, livello: 85, mosse: ['waterfall', 'earthquake', 'dragon-dance', 'ice-fang'] }, // Gyarados
+      { id: 365, livello: 85, mosse: ['surf', 'blizzard', 'earthquake', 'protect'] },          // Walrein
+      { id: 144, livello: 85, mosse: ['ice-beam', 'hurricane', 'roost', 'tailwind'] },         // Articuno
+      { id: 249, livello: 90, mosse: ['aeroblast', 'hydro-pump', 'recover', 'calm-mind'] },    // Lugia
+    ],
+    dialogo_prima: 'Hai premuto il tasto: ora non puoi più tirarti indietro.',
+    dialogo_dopo: 'Hai dimostrato il tuo valore. La scala per il piano successivo è libera.',
+    premio: 6000,
+  },
+  'villa_aldobrandini_2f_boss': {
+    sprite: 'trainer_LADY', ritratto: 'LADY', vista: 5,
+    classe: 'Guardiana della Villa', nome: 'Teodolinda',
+    squadra: [
+      { id: 230, livello: 90, mosse: ['surf', 'dragon-pulse', 'ice-beam', 'rain-dance'] },     // Kingdra
+      { id: 350, livello: 90, mosse: ['surf', 'ice-beam', 'recover', 'dragon-tail'] },          // Milotic
+      { id: 130, livello: 90, mosse: ['waterfall', 'earthquake', 'dragon-dance', 'ice-fang'] }, // Gyarados
+      { id: 365, livello: 90, mosse: ['surf', 'blizzard', 'earthquake', 'protect'] },           // Walrein
+      { id: 260, livello: 90, mosse: ['surf', 'earthquake', 'ice-beam', 'stone-edge'] },        // Swampert
+      { id: 250, livello: 95, mosse: ['sacred-fire', 'brave-bird', 'recover', 'calm-mind'] },   // Ho-Oh
+    ],
+    dialogo_prima: 'Qui la mia squadra è al completo. Non sarà come al piano di sotto.',
+    dialogo_dopo: 'Sei arrivato più in alto di chiunque altro. Il piano successivo ti aspetta.',
+    premio: 8000,
+  },
+
   /* ── VILLA ALDOBRANDINI, 1F (richiesta esplicita di Luca, 4 nov 2026) ──
      11 allenatori che prima erano tutti copie di 'all-lago-4' (Ilaria,
      spiaggia del Lago Albano) con lo stesso id ripetuto — risolto dando a

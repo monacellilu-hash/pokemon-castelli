@@ -1931,16 +1931,27 @@
                 {
                  "height":0,
                  "id":88,
-                 "name":"Premere sul tasto per attivare il teletrasporto",
+                 "name":"Premere sul tasto per attivare il teletrasporto al piano successivo",
                  "opacity":1,
                  "point":true,
+                 "properties":[
+                        {
+                         "name":"cutscene_id",
+                         "type":"string",
+                         "value":"villa_aldobrandini_1f_sfida"
+                        },
+                        {
+                         "name":"type",
+                         "type":"string",
+                         "value":"trigger_cutscene"
+                        }],
                  "rotation":0,
-                 "type":"",
+                 "type":"trigger_cutscene",
                  "visible":true,
                  "width":0,
                  "x":463.5,
                  "y":273.5
-                }, 
+                },
                 {
                  "height":0,
                  "id":89,
@@ -1949,9 +1960,19 @@
                  "point":true,
                  "properties":[
                         {
+                         "name":"condizione",
+                         "type":"string",
+                         "value":"villa1f_boss_sconfitto"
+                        },
+                        {
                          "name":"destinazione",
                          "type":"string",
                          "value":"villa_aldobrandini_2f"
+                        },
+                        {
+                         "name":"messaggio_gate",
+                         "type":"string",
+                         "value":"🔒 Devi prima premere il tasto e superare la sfida di questo piano."
                         },
                         {
                          "name":"spawn_id",
@@ -1969,7 +1990,7 @@
                  "width":0,
                  "x":271.5,
                  "y":246.5
-                },
+                }, 
                 {
                  "height":0,
                  "id":91,
@@ -1981,7 +2002,7 @@
                          "name":"id",
                          "type":"string",
                          "value":"da_villa_aldobrandini_2f"
-                        },
+                        }, 
                         {
                          "name":"type",
                          "type":"string",

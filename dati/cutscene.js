@@ -1073,3 +1073,34 @@ CUTSCENE['lugia_capotreno_biglietto'] = [
   { tipo: 'fade_in', ms: 600, richiede_flag: 'lugia_risposta_partenza' },
   { tipo: 'flag', nome: 'lugia_risposta_partenza', valore: false, richiede_flag: 'lugia_risposta_partenza' },
 ];
+
+/* ── VILLA ALDOBRANDINI — "tasto" sulle scale di ogni piano (richiesta
+   esplicita di Luca, 4 nov 2026). Trigger: oggetto Tiled type
+   trigger_cutscene (interagibile con [A], nessun quando:'spawn'/'entra')
+   chiamato "Premere sul tasto per attivare il teletrasporto al piano
+   successivo" su Villa_Aldobrandini_1f.tmj e _2f.tmj. Vincere la lotta
+   imposta il flag che la proprietà condizione/messaggio_gate del warp VERO
+   (non i "buchi" decorativi, quelli tornano all'inizio della mappa da soli)
+   controlla — senza premere il tasto e vincere, quel warp resta bloccato. ── */
+CUTSCENE['villa_aldobrandini_1f_sfida'] = [
+  { tipo: 'dialogo', nome: 'Teodolinda', testo: [
+    'Questo piano custodisce ancora la forza di chi ha dormito qui.',
+    'Se premi quel tasto, dovrai affrontarmi: squadra al completo, livello altissimo. Non si torna indietro a metà.',
+  ] },
+  { tipo: 'scelta_si_no', messaggio: 'Vuoi premere il tasto? Sei pronto ad affrontare le conseguenze?', testoSi: 'Sì, sono pronto', testoNo: 'No, non ancora', salva_flag: 'villa1f_risposta_sfida' },
+  { tipo: 'dialogo', nome: 'Teodolinda', richiede_condizione: '!villa1f_risposta_sfida', testo: ['Va bene. Torna quando ti senti davvero pronto.'] },
+  { tipo: 'battaglia', trainer: 'villa_aldobrandini_1f_boss', richiede_flag: 'villa1f_risposta_sfida' },
+  { tipo: 'flag', nome: 'villa1f_boss_sconfitto', valore: true, richiede_flag: 'villa1f_risposta_sfida' },
+  { tipo: 'flag', nome: 'villa1f_risposta_sfida', valore: false, richiede_flag: 'villa1f_risposta_sfida' },
+];
+
+CUTSCENE['villa_aldobrandini_2f_sfida'] = [
+  { tipo: 'dialogo', nome: 'Teodolinda', testo: [
+    'Sei salito fin qui. Qui la mia squadra è al completo, e non è la stessa di sotto.',
+  ] },
+  { tipo: 'scelta_si_no', messaggio: 'Vuoi premere il tasto? Sei pronto ad affrontare le conseguenze?', testoSi: 'Sì, sono pronto', testoNo: 'No, non ancora', salva_flag: 'villa2f_risposta_sfida' },
+  { tipo: 'dialogo', nome: 'Teodolinda', richiede_condizione: '!villa2f_risposta_sfida', testo: ['Va bene. Torna quando ti senti davvero pronto.'] },
+  { tipo: 'battaglia', trainer: 'villa_aldobrandini_2f_boss', richiede_flag: 'villa2f_risposta_sfida' },
+  { tipo: 'flag', nome: 'villa2f_boss_sconfitto', valore: true, richiede_flag: 'villa2f_risposta_sfida' },
+  { tipo: 'flag', nome: 'villa2f_risposta_sfida', valore: false, richiede_flag: 'villa2f_risposta_sfida' },
+];
