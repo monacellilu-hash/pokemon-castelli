@@ -11063,6 +11063,51 @@
     },
     {
      "height": 0,
+     "id": 9003,
+     "name": "zapdos_montepo1",
+     "opacity": 1,
+     "point": true,
+     "properties": [
+      {
+       "name": "condizione",
+       "type": "string",
+       "value": "mewtwoSconfitto"
+      },
+      {
+       "name": "direzione",
+       "type": "string",
+       "value": "sud"
+      },
+      {
+       "name": "id",
+       "type": "string",
+       "value": "pokemon leggendario"
+      },
+      {
+       "name": "livello",
+       "type": "string",
+       "value": "65"
+      },
+      {
+       "name": "sprite",
+       "type": "string",
+       "value": "zapdos"
+      },
+      {
+       "name": "type",
+       "type": "string",
+       "value": "pokemon leggendario"
+      }
+     ],
+     "rotation": 0,
+     "type": "pokemon leggendario",
+     "visible": true,
+     "width": 0,
+     "x": 460,
+     "y": 442
+    },
+    {
+     "height": 0,
      "id": 376,
      "name": "grunt_montepo1_1",
      "opacity": 1,
@@ -11932,7 +11977,7 @@
   }
  ],
  "nextlayerid": 6,
- "nextobjectid": 9003,
+ "nextobjectid": 9004,
  "orientation": "orthogonal",
  "renderorder": "right-down",
  "tiledversion": "1.12.2",
