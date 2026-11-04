@@ -332,6 +332,18 @@ const GameMap = (function () {
       file: 'sprites/maps_tiled/frascati_est.tmj',
       latC: 41.8090, lonC: 12.6850,
     },
+    // Villa Aldobrandini (Frascati), interno 1F — mappa disegnata da Luca,
+    // collegata via warp a frascati_centro.tmj ma mai registrata qui (sess.
+    // 4 nov 2026, stesso dimenticatoio di casamia_1f/2f sopra). Il warp di
+    // frascati_centro punta a destinazione "villa aldobrandini" (minuscolo,
+    // con spazio): risolviMappa normalizza lettere/numeri, quindi questa
+    // chiave già combacia senza bisogno di toccare quel file.
+    'villa_aldobrandini': {
+      file: 'sprites/maps_tiled/Villa_Aldobrandini_1f.tmj',
+      interno: true,
+      bloccaVuoti: true,
+      latFissa: 41.8090, lonFissa: 12.6770,
+    },
     'frascati_ovest': {
       file: 'sprites/maps_tiled/frascati_ovest.tmj',
       latC: 41.8090, lonC: 12.6690,
